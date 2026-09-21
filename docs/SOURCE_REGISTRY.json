@@ -1,0 +1,69 @@
+{
+  "version": "0.2",
+  "updated": "2026-09-21",
+  "sources": [
+    {
+      "id": "nvdb_vaghaallare",
+      "owner": "Trafikverket",
+      "name": "NVDB – Väghållare",
+      "purpose": ["responsibility_resolver", "road_owner"],
+      "access": "open_data",
+      "status": "priority",
+      "url": "https://www.nvdb.se/sv/kund/hamta-aktuella-data/"
+    },
+    {
+      "id": "goteborg_felanmalan",
+      "owner": "Göteborgs Stad",
+      "name": "Felanmälan – gator, torg och parker",
+      "purpose": ["report_issue"],
+      "access": "public_web_no_login",
+      "status": "deeplink",
+      "url": "https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230"
+    },
+    {
+      "id": "goteborg_open_data",
+      "owner": "Göteborgs Stad",
+      "name": "Öppna data",
+      "purpose": ["near_me", "traffic", "environment"],
+      "access": "application_key_for_some_webservices",
+      "status": "priority",
+      "url": "https://data.goteborg.se/"
+    },
+    {
+      "id": "goteborg_river_service",
+      "owner": "Göteborgs Stad",
+      "name": "RiverService",
+      "purpose": ["near_me", "water_level"],
+      "access": "application_id",
+      "status": "priority",
+      "url": "https://data.goteborg.se/RiverService/v1.1/help/operations/GetMeasureSites"
+    },
+    {
+      "id": "vasttrafik",
+      "owner": "Västtrafik",
+      "name": "Publika API:er",
+      "purpose": ["public_transport", "near_me"],
+      "access": "account_oauth2",
+      "status": "phase_1_1",
+      "url": "https://developer.vasttrafik.se/"
+    },
+    {
+      "id": "riksdagen",
+      "owner": "Sveriges riksdag",
+      "name": "Riksdagens öppna data",
+      "purpose": ["decisions", "documents", "votes", "calendar"],
+      "access": "public",
+      "status": "priority",
+      "url": "https://www.riksdagen.se/sv/dokument-och-lagar/riksdagens-oppna-data/"
+    },
+    {
+      "id": "goteborg_medborgarinflytande",
+      "owner": "Göteborgs Stad",
+      "name": "Medborgarinflytande – open data",
+      "purpose": ["participation", "proposals", "meetings"],
+      "access": "public_csv",
+      "status": "phase_1_1",
+      "url": "https://medborgarinflytande.goteborg.se/open-data"
+    }
+  ]
+}
