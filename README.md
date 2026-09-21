@@ -24,19 +24,31 @@ Tjänsten ska vara användbar för alla som bor i Sverige, oavsett politisk uppf
 - Fakta och politiska ståndpunkter ska hållas tydligt åtskilda.
 - Privacy by design.
 - Ingen politisk profilering baserad på civic-användning.
-- Öppen källkod.
 - Medlemsfunktioner, om de byggs senare, ligger i ett separat och frivilligt lager.
 
 ## Pilot
 
 Första pilotområde: **Göteborg**.
 
-Se:
+## Dokumentation
+
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/MVP.md`
+- `docs/ARCHITECTURE.md`
+- `docs/PRIVACY_PRINCIPLES.md`
 - `docs/INTEGRATIONS_GOTEBORG.md`
 - `docs/ROADMAP.md`
 
-## Status
+## Utveckling
 
-Tidigt koncept / prototyp. Inga myndighetsärenden skickas ännu från prototypen.
+Den nuvarande versionen är en statisk, mobile-first PWA-prototyp. Den publiceras automatiskt från `main` via GitHub Pages-workflow när Pages är aktiverat för repositoryt.
+
+Inga riktiga myndighetsärenden skickas ännu. Externa datakällor i UI:t är fortfarande demo tills respektive adapter är inkopplad och verifierad.
+
+## Bidrag
+
+Se `CONTRIBUTING.md` och `SECURITY.md`.
+
+## Licens
+
+Kodlicens är ännu inte beslutad. Tills en licens har valts innebär offentlig källkod inte automatiskt rätt att återanvända eller distribuera koden.
