@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#174d5b">
+  <title>Sverinav — prototyp</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="brand">Sverinav</div>
+        <div class="tagline">Samhället. Enklare.</div>
+      </div>
+      <span class="demo">DEMO</span>
+    </header>
+
+    <main id="view">
+      <section class="hero">
+        <p class="eyebrow">Göteborg · prototyp</p>
+        <h1>Vad behöver du hjälp med?</h1>
+        <p>Hitta rätt väg i det offentliga Sverige utan att först behöva förstå organisationen bakom.</p>
+      </section>
+
+      <section class="grid">
+        <button class="card primary" data-screen="ansvar">
+          <span class="icon">→</span>
+          <strong>Vem ansvarar?</strong>
+          <small>Beskriv problemet så hjälper vi dig hitta rätt.</small>
+        </button>
+        <button class="card" data-screen="rapportera">
+          <span class="icon">!</span>
+          <strong>Rapportera</strong>
+          <small>Fel på gata, belysning, miljö eller offentlig plats.</small>
+        </button>
+        <button class="card" data-screen="nara">
+          <span class="icon">◎</span>
+          <strong>Nära mig</strong>
+          <small>Planer, störningar och samhällsinformation i närheten.</small>
+        </button>
+        <button class="card" data-screen="beslut">
+          <span class="icon">§</span>
+          <strong>Beslut</strong>
+          <small>Förstå beslut och gå alltid vidare till originalkällan.</small>
+        </button>
+      </section>
+
+      <section class="notice">
+        <strong>Öppen samhällstjänst.</strong>
+        <p>Den här prototypen innehåller bara demodata och skickar inget till myndigheter.</p>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button data-screen="home" class="active">Hem</button>
+      <button data-screen="nara">Nära</button>
+      <button data-screen="rapportera">Rapportera</button>
+      <button data-screen="beslut">Beslut</button>
+    </nav>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
