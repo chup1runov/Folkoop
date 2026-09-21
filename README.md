@@ -27,6 +27,11 @@ Den publika prototypen har nu gränssnitt på:
 - Soomaali
 - فارسی
 - Suomi
+- Bosanski / Hrvatski / Srpski
+- Kurdî (Kurmancî)
+- Español
+- Русский
+- Українська
 
 Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-layout.
 

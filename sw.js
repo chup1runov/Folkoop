@@ -1,4 +1,4 @@
-const CACHE = 'sverinav-v0.3.1';
+const CACHE = 'sverinav-v0.3.2';
 const BASE = self.registration.scope;
 const CORE_PATHS = ['', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icon.svg'];
 const CORE = CORE_PATHS.map(path => new URL(path, BASE).href);
