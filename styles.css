@@ -1,0 +1,50 @@
+:root{--ink:#17232c;--muted:#647681;--line:#e3eaee;--bg:#edf3f5;--teal:#174d5b;--teal-soft:#eff7f6;--green:#2c7a67}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea{font:inherit}
+button{touch-action:manipulation}
+.app-shell{max-width:480px;min-height:100dvh;margin:0 auto;background:#fff;box-shadow:0 0 36px rgba(15,35,45,.08);padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top)) 20px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);z-index:10}
+.brand-lockup{display:flex;align-items:center;gap:10px}
+.mark{width:38px;height:38px;border-radius:12px;background:var(--teal);color:#fff;font-size:22px;font-weight:800;display:grid;place-items:center;letter-spacing:-1px}
+.brand{font-weight:800;font-size:20px;letter-spacing:-.45px}
+.tagline{font-size:12px;color:var(--muted);margin-top:1px}
+.pilot{font-size:10px;font-weight:800;letter-spacing:.9px;border:1px solid #bdd0d8;border-radius:999px;padding:6px 8px;color:#496572}
+.hero{padding:30px 20px 15px}
+.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:1.05px;font-weight:800;color:#5b7d8c;margin:0 0 9px}
+.hero h1{font-size:32px;letter-spacing:-1.15px;line-height:1.05;margin:0 0 12px}
+.hero p{color:#5f707a;line-height:1.5;margin:0}
+.quick-status{display:flex;gap:8px;align-items:center;margin:2px 20px 12px;padding:10px 12px;background:#f7f9fa;border-radius:12px;font-size:12px;color:#5d6e77}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#6ba596;flex:0 0 auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 20px}
+.card{text-align:left;border:1px solid #dfe8ed;background:#fff;border-radius:18px;padding:18px;min-height:164px;cursor:pointer;transition:.15s ease}
+.card:active{transform:scale(.985)}
+.card.primary{background:var(--teal-soft);border-color:#c8e1dc}
+.card strong{display:block;font-size:16px;margin:19px 0 7px}
+.card small{display:block;color:#687983;line-height:1.38}
+.icon{width:36px;height:36px;border-radius:11px;background:#e6eef2;display:grid;place-items:center;font-weight:850;font-size:17px}
+.primary .icon{background:#d3e9e4}
+.install-card{margin:18px 20px 8px;padding:15px;border:1px solid var(--line);border-radius:16px;background:#fbfcfd;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.install-card strong{font-size:13px}
+.install-card p{margin:3px 0 0;font-size:11px;color:#6b7b84}
+.install-btn,.action{border:0;border-radius:12px;background:var(--teal);color:#fff;padding:11px 14px;font-weight:750;cursor:pointer}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:480px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:7px 6px calc(9px + env(safe-area-inset-bottom));z-index:20}
+.bottom-nav button{border:0;background:transparent;padding:9px 3px;font-size:11px;color:#71838d;cursor:pointer}
+.bottom-nav button.active{font-weight:800;color:#173f4b}
+.screen{padding:22px 20px}
+.back{border:0;background:#eef3f6;padding:9px 12px;border-radius:10px;cursor:pointer}
+.screen h2{font-size:28px;letter-spacing:-.7px;margin:24px 0 8px}
+.muted{color:#687983;line-height:1.5}
+.input,.textarea{width:100%;border:1px solid #cfdde4;border-radius:12px;padding:13px;margin:10px 0;background:#fff;color:var(--ink)}
+.textarea{min-height:120px;resize:vertical}
+.result{margin-top:16px;border:1px solid #dce6eb;border-radius:14px;padding:15px;background:#f9fbfc}
+.result p{color:#61727b;line-height:1.45}
+.list{display:grid;gap:11px;margin-top:18px}
+.item{border:1px solid #dde7eb;border-radius:14px;padding:15px}
+.item strong{display:block;margin-bottom:5px}
+.item small{color:#6b7c85;line-height:1.4}
+.source{font-size:11px;color:#52707d;margin-top:8px}
+.file-label{display:block;border:1px dashed #a9bec8;border-radius:12px;padding:15px;margin:10px 0;color:#5f727c;cursor:pointer}
+input[type=file]{display:none}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.card{min-height:auto}}
