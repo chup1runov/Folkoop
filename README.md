@@ -17,6 +17,19 @@ Tjänsten ska vara användbar för alla som bor i Sverige, oavsett politisk uppf
 3. **Nära mig** — relevant samhällsinformation, störningar, planer och samråd i närheten.
 4. **Beslut** — lättbegripliga sammanfattningar av offentliga beslut med originalkälla.
 
+## Språk
+
+Den publika prototypen har nu gränssnitt på:
+
+- Svenska
+- English
+- العربية
+- Soomaali
+- فارسی
+- Suomi
+
+Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-layout.
+
 ## Principer
 
 - Öppet för alla.
@@ -41,7 +54,7 @@ Första pilotområde: **Göteborg**.
 
 ## Utveckling
 
-Den nuvarande versionen är en statisk, mobile-first PWA-prototyp. Den publiceras automatiskt från `main` via GitHub Pages-workflow när Pages är aktiverat för repositoryt.
+Den nuvarande versionen är en statisk, mobile-first PWA-prototyp som publiceras från `main` via GitHub Pages.
 
 Inga riktiga myndighetsärenden skickas ännu. Externa datakällor i UI:t är fortfarande demo tills respektive adapter är inkopplad och verifierad.
 

@@ -3,6 +3,7 @@
   "short_name": "Sverinav",
   "description": "Ett enklare gränssnitt till samhället.",
   "lang": "sv",
+  "dir": "auto",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

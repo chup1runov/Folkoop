@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sv">
+<html lang="sv" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,64 +18,34 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="brand-lockup">
-        <div class="mark">S</div>
+        <div class="mark" aria-hidden="true">S</div>
         <div>
           <div class="brand">Sverinav</div>
-          <div class="tagline">Samhället. Enklare.</div>
+          <div class="tagline" id="tagline">Samhället. Enklare.</div>
         </div>
       </div>
-      <span class="pilot">PILOT</span>
+
+      <div class="top-actions">
+        <label class="visually-hidden" for="languageSelect" id="languageLabel">Språk</label>
+        <select id="languageSelect" class="language-select" aria-labelledby="languageLabel">
+          <option value="sv">Svenska</option>
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+          <option value="so">Soomaali</option>
+          <option value="fa">فارسی</option>
+          <option value="fi">Suomi</option>
+        </select>
+        <span class="pilot" id="pilotLabel">PILOT</span>
+      </div>
     </header>
 
-    <main id="view">
-      <section class="hero">
-        <p class="eyebrow">Göteborg · tidig prototyp</p>
-        <h1>Vad behöver du hjälp med?</h1>
-        <p>Hitta rätt väg i det offentliga Sverige utan att först behöva förstå organisationen bakom.</p>
-      </section>
+    <main id="view" aria-live="polite"></main>
 
-      <section class="quick-status">
-        <span class="status-dot"></span>
-        <span>Öppen samhällstjänst · inga riktiga ärenden skickas ännu</span>
-      </section>
-
-      <section class="grid">
-        <button class="card primary" data-screen="ansvar">
-          <span class="icon">→</span>
-          <strong>Vem ansvarar?</strong>
-          <small>Beskriv problemet så hjälper vi dig hitta rätt aktör.</small>
-        </button>
-        <button class="card" data-screen="rapportera">
-          <span class="icon">!</span>
-          <strong>Rapportera</strong>
-          <small>Fel på gata, belysning, miljö eller offentlig plats.</small>
-        </button>
-        <button class="card" data-screen="nara">
-          <span class="icon">◎</span>
-          <strong>Nära mig</strong>
-          <small>Planer, störningar och samhällsinformation i närheten.</small>
-        </button>
-        <button class="card" data-screen="beslut">
-          <span class="icon">§</span>
-          <strong>Beslut</strong>
-          <small>Förstå beslut och gå vidare till originalkällan.</small>
-        </button>
-      </section>
-
-      <section class="install-card" id="installCard">
-        <div>
-          <strong>Lägg Sverinav på hemskärmen</strong>
-          <p>Fungerar som en app direkt från webbläsaren.</p>
-        </div>
-        <button id="installButton" class="install-btn" hidden>Installera</button>
-      </section>
-    </main>
-
-    <nav class="bottom-nav" aria-label="Huvudmeny">
-      <button data-screen="home" class="active">Hem</button>
-      <button data-screen="nara">Nära</button>
-      <button data-screen="rapportera">Rapportera</button>
-      <button data-screen="beslut">Beslut</button>
+    <nav class="bottom-nav" aria-label="Huvudmeny" id="bottomNav">
+      <button data-screen="home" class="active" id="navHome">Hem</button>
+      <button data-screen="nara" id="navNear">Nära</button>
+      <button data-screen="rapportera" id="navReport">Rapportera</button>
+      <button data-screen="beslut" id="navDecisions">Beslut</button>
     </nav>
   </div>
 
