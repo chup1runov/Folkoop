@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#174d5b">
+  <meta name="description" content="Sverinav — ett enklare gränssnitt till samhället.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Sverinav">
+  <title>Sverinav — Samhället. Enklare.</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="mark">S</div>
+        <div>
+          <div class="brand">Sverinav</div>
+          <div class="tagline">Samhället. Enklare.</div>
+        </div>
+      </div>
+      <span class="pilot">PILOT</span>
+    </header>
+
+    <main id="view">
+      <section class="hero">
+        <p class="eyebrow">Göteborg · tidig prototyp</p>
+        <h1>Vad behöver du hjälp med?</h1>
+        <p>Hitta rätt väg i det offentliga Sverige utan att först behöva förstå organisationen bakom.</p>
+      </section>
+
+      <section class="quick-status">
+        <span class="status-dot"></span>
+        <span>Öppen samhällstjänst · inga riktiga ärenden skickas ännu</span>
+      </section>
+
+      <section class="grid">
+        <button class="card primary" data-screen="ansvar">
+          <span class="icon">→</span>
+          <strong>Vem ansvarar?</strong>
+          <small>Beskriv problemet så hjälper vi dig hitta rätt aktör.</small>
+        </button>
+        <button class="card" data-screen="rapportera">
+          <span class="icon">!</span>
+          <strong>Rapportera</strong>
+          <small>Fel på gata, belysning, miljö eller offentlig plats.</small>
+        </button>
+        <button class="card" data-screen="nara">
+          <span class="icon">◎</span>
+          <strong>Nära mig</strong>
+          <small>Planer, störningar och samhällsinformation i närheten.</small>
+        </button>
+        <button class="card" data-screen="beslut">
+          <span class="icon">§</span>
+          <strong>Beslut</strong>
+          <small>Förstå beslut och gå vidare till originalkällan.</small>
+        </button>
+      </section>
+
+      <section class="install-card" id="installCard">
+        <div>
+          <strong>Lägg Sverinav på hemskärmen</strong>
+          <p>Fungerar som en app direkt från webbläsaren.</p>
+        </div>
+        <button id="installButton" class="install-btn" hidden>Installera</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Huvudmeny">
+      <button data-screen="home" class="active">Hem</button>
+      <button data-screen="nara">Nära</button>
+      <button data-screen="rapportera">Rapportera</button>
+      <button data-screen="beslut">Beslut</button>
+    </nav>
+  </div>
+
+  <script src="/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    }
+  </script>
+</body>
+</html>
