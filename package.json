@@ -1,0 +1,12 @@
+{
+  "name": "sverinav",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Sverinav — Samhället. Enklare.",
+  "scripts": {
+    "start": "serve -s . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
