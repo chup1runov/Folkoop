@@ -48,6 +48,7 @@ The four primary surfaces are:
 - RTL layout for Arabic and Persian.
 - Basic security and contribution documentation.\n- PNG PWA icons (180/192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
+- Visible source freshness: daily feeds show fetch time and warn after 36h; live NVDB results show the time of the actual lookup.
 
 ### What is still demo / not connected
 
@@ -276,7 +277,7 @@ Still to do:
 - iPhone install guidance added for browsers without `beforeinstallprompt`; still verify manually on real iOS hardware,
 - first accessibility hardening pass completed; full manual WCAG audit with assistive technology still recommended,
 - static and headless-browser smoke tests added, including 390×844 mobile and iPhone-like UA coverage; extend toward interaction tests over time,
-- add API health/freshness monitoring once live sources are connected,
+- source freshness presentation added; next health work is external alerting/monitoring rather than only user-facing status,
 - service-worker strategy hardened for live APIs: cross-origin bypass + separate navigation/data/static behavior,
 - choose a licence,
 - consider branch protection after the project stabilizes.
@@ -288,7 +289,7 @@ Recommended order after v0.8 hardening:
 1. Manual iPhone + Android pilot-device pass, including the now-explicit iOS Add to Home Screen guidance, location permission and clipboard flows.
 2. Fix any issues found by real-device testing.
 3. Clean repository legacy files.
-4. Add source freshness/health presentation in the UI.
+4. Source freshness is now visible in the UI; add external alerting only when pilot traffic justifies it.
 5. Decide whether Göteborg TrafficInformation is worth requesting an APPID for.
 6. Add map only when it materially improves a live location-based task.
 7. Introduce backend/PostGIS only when static/client-side architecture becomes insufficient.
