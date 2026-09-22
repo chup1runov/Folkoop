@@ -46,7 +46,7 @@ Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-la
 
 ## Pilot
 
-Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar nu de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.
+Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.\n\nFör vägfrågor kan `Vem ansvarar?` nu, efter uttryckligt platsgodkännande, kontrollera aktuell väghållare direkt mot **Trafikverkets NVDB/NetInfo**. Positionen sparas inte.
 
 ## Publik version
 
