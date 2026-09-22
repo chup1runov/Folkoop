@@ -1,0 +1,43 @@
+import { readFile } from 'node:fs/promises';
+
+function assert(condition, message) { if (!condition) throw new Error(message); }
+function pngSize(buffer) {
+  assert(buffer.length >= 24, 'PNG is too small');
+  assert(buffer.subarray(1,4).toString('ascii') === 'PNG', 'Invalid PNG signature');
+  return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
+}
+
+const [html,css,app,sw,manifestText,icon192,icon512]=await Promise.all([
+  readFile('index.html','utf8'),readFile('styles.css','utf8'),readFile('app.js','utf8'),
+  readFile('sw.js','utf8'),readFile('manifest.webmanifest','utf8'),
+  readFile('icon-192.png'),readFile('icon-512.png')
+]);
+const manifest=JSON.parse(manifestText);
+
+assert(/class="skip-link"/.test(html),'Skip link missing');
+assert(/<main id="view" tabindex="-1">/.test(html),'Main focus target missing');
+assert(html.includes('./icon-192.png'),'Apple touch icon is not PNG');
+assert(css.includes('a:focus-visible'),'Link focus-visible style missing');
+assert(app.includes("aria-current', 'page'"),'Active navigation aria-current missing');
+assert(app.includes("event.key === 'Tab'"),'Language dialog focus trap missing');
+
+for(const code of ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']) {
+  assert(app.includes("'"+code+"'") || app.includes(code+':'),'Language missing: '+code);
+}
+for(const route of ['rapportera','nara','beslut']) assert(app.includes("screen === '"+route+"'"),'Screen route missing: '+route);
+
+assert(sw.includes("url.origin !== self.location.origin"),'Cross-origin SW bypass missing');
+assert(sw.includes("request.mode === 'navigate'"),'Navigation strategy missing');
+assert(sw.includes("url.pathname.includes(DATA_PATH)"),'JSON data strategy missing');
+assert(!sw.includes("return caches.match(new URL('', BASE).href)"),'Unsafe universal app-shell fallback remains');
+
+const icons=manifest.icons||[];
+assert(icons.some(i=>i.src==='./icon-192.png'&&i.sizes==='192x192'),'192px manifest icon missing');
+assert(icons.some(i=>i.src==='./icon-512.png'&&i.sizes==='512x512'),'512px manifest icon missing');
+assert(icons.some(i=>i.src==='./icon-512.png'&&/maskable/.test(i.purpose||'')),'Maskable icon missing');
+
+const s192=pngSize(icon192), s512=pngSize(icon512);
+assert(s192.width===192&&s192.height===192,'icon-192 dimensions wrong');
+assert(s512.width===512&&s512.height===512,'icon-512 dimensions wrong');
+
+console.log('Static pilot smoke OK: PWA, a11y, routes, languages and service-worker contracts verified.');
