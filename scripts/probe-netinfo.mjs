@@ -90,7 +90,30 @@ async function probePoint(name, lon, lat, formats) {
 
 const { formats } = await fetchCapabilities();
 
+async function probeJson(name, lon, lat) {
+  const response = await fetch(featureInfoUrl({ lon, lat, infoFormat: 'application/json' }), {
+    headers: {
+      'user-agent': 'Sverinav-NVDB-Probe/0.5 (+https://github.com/chup1runov/Sverinav)',
+      'origin': 'https://chup1runov.github.io'
+    }
+  });
+  const text = await response.text();
+  console.log('JSON_POINT', name, 'STATUS', response.status);
+  console.log('JSON_POINT_HEADERS', name, JSON.stringify(extractCors(response.headers)));
+  console.log('JSON_POINT_BODY', name, JSON.stringify(text.slice(0, 3500)));
+
+  if (!response.ok || /ServiceException|ExceptionReport/i.test(text)) {
+    throw new Error('JSON GetFeatureInfo failed for ' + name);
+  }
+
+  try {
+    JSON.parse(text);
+  } catch {
+    throw new Error('JSON GetFeatureInfo returned non-JSON for ' + name);
+  }
+}
+
 // Approximate road points used only to validate the public service contract.
-// E6/Tingstad: expected statlig. Avenyn: expected kommunal.
-await probePoint('E6_TINGSTAD', 11.9907, 57.7207, formats);
 await probePoint('AVENYN', 11.9738, 57.7002, formats);
+await probeJson('AVENYN', 11.9738, 57.7002);
+await probeJson('E20_PARTILLE', 12.1035, 57.7410);
