@@ -603,7 +603,7 @@ const languageNames = {
   bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
 };
 
-const APP_VERSION = '0.10.0';
+const APP_VERSION = '0.10.1';
 const GITHUB_REPO_URL = 'https://github.com/chup1runov/Sverinav';
 const GITHUB_FEEDBACK_URL = 'https://github.com/chup1runov/Sverinav/issues/new?template=pilot-feedback.md';
 
