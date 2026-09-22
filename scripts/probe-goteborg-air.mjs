@@ -1,6 +1,12 @@
 const ENDPOINT = 'https://geoserverextern.miljoforvaltningen.goteborg.se/geoserver/mstrat_luftovervakning/wms';
 const ORIGIN = 'https://chup1runov.github.io';
-const LAYER = 'mstrat_luftovervakning:matstationer_luft';
+
+const CANDIDATES = [
+  'matstationer_luft',
+  'mstrat_luftovervakning:matstationer_luft',
+  'mf_luft_matstationer',
+  'mstrat_luftovervakning:mf_luft_matstationer'
+];
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -27,22 +33,14 @@ async function capabilities() {
   console.log('AIR_CAP_TYPE', response.headers.get('content-type'));
 
   assert(response.ok, `Air-station GetCapabilities returned ${response.status}`);
+  assert(response.headers.get('access-control-allow-origin') === '*', 'Air-station WMS CORS does not allow GitHub Pages');
 
   const xml = await response.text();
   assert(/application\/json/i.test(xml), 'GetFeatureInfo JSON support missing');
-  const stationIndex = xml.indexOf('matstationer_luft');
-  console.log('AIR_EXACT_LAYER_INDEX', stationIndex);
-  console.log('AIR_LAYER_CONTEXT', JSON.stringify(
-    stationIndex >= 0 ? xml.slice(Math.max(0, stationIndex - 1800), stationIndex + 2600) : xml.slice(-12000)
-  ));
-  console.log('AIR_CAPABILITIES_OK', true);
-
-  return xml;
 }
 
-function featureInfoUrl() {
+function featureInfoUrl(layer) {
   // Central Göteborg in SWEREF 99 TM / EPSG:3006.
-  // Query a wide box because this is a station layer, not a continuous surface.
   const x = 319758.020;
   const y = 6400326.036;
   const span = 7000;
@@ -52,8 +50,8 @@ function featureInfoUrl() {
     SERVICE:'WMS',
     VERSION:'1.1.1',
     REQUEST:'GetFeatureInfo',
-    LAYERS:LAYER,
-    QUERY_LAYERS:LAYER,
+    LAYERS:layer,
+    QUERY_LAYERS:layer,
     STYLES:'',
     SRS:'EPSG:3006',
     BBOX:[x-span,y-span,x+span,y+span].join(','),
@@ -69,8 +67,8 @@ function featureInfoUrl() {
   return `${ENDPOINT}?${params}`;
 }
 
-async function featureInfo() {
-  const response = await fetch(featureInfoUrl(), {
+async function testLayer(layer) {
+  const response = await fetch(featureInfoUrl(layer), {
     headers:{
       accept:'application/json',
       origin:ORIGIN,
@@ -79,23 +77,39 @@ async function featureInfo() {
   });
 
   const body = await response.text();
-  console.log('AIR_INFO_STATUS', response.status);
-  console.log('AIR_INFO_CORS', response.headers.get('access-control-allow-origin'));
-  console.log('AIR_INFO_TYPE', response.headers.get('content-type'));
-  console.log('AIR_INFO_BODY', JSON.stringify(body.slice(0,5000)));
+  const isException = /ServiceException|ExceptionReport/i.test(body);
 
-  assert(response.ok, `Air-station GetFeatureInfo returned ${response.status}`);
-  assert(!/ServiceException|ExceptionReport/i.test(body), 'Air-station WMS returned an exception');
+  console.log('AIR_LAYER_TEST', JSON.stringify({
+    layer,
+    status:response.status,
+    contentType:response.headers.get('content-type'),
+    cors:response.headers.get('access-control-allow-origin'),
+    exception:isException,
+    prefix:body.slice(0,700)
+  }));
 
-  const payload = JSON.parse(body);
-  const features = Array.isArray(payload?.features) ? payload.features : [];
-  assert(features.length > 0, 'No air-monitoring station returned around central Göteborg');
+  if (!response.ok || isException) return null;
 
-  const props = features[0]?.properties || {};
-  console.log('AIR_FIRST_PROPERTIES', JSON.stringify(props));
+  try {
+    const payload = JSON.parse(body);
+    const features = Array.isArray(payload?.features) ? payload.features : [];
+    if (!features.length) return null;
+    return { layer, payload };
+  } catch {
+    return null;
+  }
 }
 
 await capabilities();
-await featureInfo();
 
+let success = null;
+for (const candidate of CANDIDATES) {
+  success = await testLayer(candidate);
+  if (success) break;
+}
+
+assert(success, 'None of the documented/legacy Göteborg air-station layer names returned usable features');
+
+console.log('AIR_WORKING_LAYER', success.layer);
+console.log('AIR_FIRST_PROPERTIES', JSON.stringify(success.payload.features[0]?.properties || {}));
 console.log('Göteborg air-monitoring station WMS contract OK.');
