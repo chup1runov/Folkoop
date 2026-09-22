@@ -32,14 +32,19 @@ jobs:
       - name: Probe Trafikverket NetInfo
         run: node scripts/probe-netinfo.mjs
 
+      - name: Fetch Göteborg open consultation plans
+        run: node scripts/fetch-goteborg-open-plans.mjs
+
       - name: Validate static app
         run: |
           node --check app.js
           node --check riksdagen.js
           node --check nvdb.js
+          node --check goteborg-plans.js
           node --check sw.js
           python -m json.tool manifest.webmanifest >/dev/null
           test -s data/riksdagen-decisions.json
+          test -s data/goteborg-open-plans.json
 
   deploy:
     if: github.event_name != 'pull_request'
@@ -56,10 +61,13 @@ jobs:
       - name: Fetch latest Riksdagen decisions
         run: node scripts/fetch-riksdagen.mjs
 
+      - name: Fetch Göteborg open consultation plans
+        run: node scripts/fetch-goteborg-open-plans.mjs
+
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js app.js manifest.webmanifest sw.js icon.svg _site/
+          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg _site/
           cp -R data _site/data
           touch _site/.nojekyll
 

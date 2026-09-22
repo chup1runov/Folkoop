@@ -42,7 +42,7 @@ The four primary surfaces are:
 - Bottom navigation.
 - `Vem ansvarar?` keyword classifier plus live Trafikverket NVDB/NetInfo road-holder verification for road issues.
 - `Rapportera` form UI.
-- `Nära mig` demo cards.
+- `Nära mig` live Göteborg consultation-plan feed plus clearly labelled demo cards for sources not yet connected.
 - `Beslut` demo cards.
 - Language selector with browser-language detection and local persistence.
 - RTL layout for Arabic and Persian.
@@ -51,9 +51,9 @@ The four primary surfaces are:
 
 ### What is still demo / not connected
 
-- No live Riksdagen data yet.
+- `Beslut` uses live normalized data from Riksdagens öppna data.
 - Live NVDB/NetInfo road-holder lookup is available for road issues when the user explicitly shares their current browser position.
-- No real Göteborg traffic/open-data integration yet.
+- `Nära mig` uses Göteborgs Stads official Plan- och byggprojekt page for current plans open for public comments. TrafficInformation still requires an APPID and is not connected yet.
 - No RiverService integration yet.
 - No Västtrafik integration yet.
 - No live Göteborgsförslaget integration yet.
@@ -157,13 +157,17 @@ Expected outcomes:
 - kommunal → relevant municipality,
 - enskild → explain private/association responsibility and next contact.
 
-### 3. Göteborg Open Data → Nära mig
+### 3. Göteborg local data → Nära mig
 
-Initial candidates:
+First live source:
 
-- traffic impact,
+- Göteborgs Stad Plan- och byggprojekt → plans currently open for public comments, with deadline and original link.
+
+Next candidates:
+
+- TrafficInformation / Trafikpåverkan (requires Göteborg APPID),
 - water levels,
-- air quality,
+- air quality when the published WMS contract is operational,
 - parking / local disruption data where suitable.
 
 ### 4. Göteborg Felanmälan → Rapportera
@@ -178,7 +182,7 @@ Do not claim a report has been submitted unless it actually has.
 
 - Västtrafik.
 - Göteborgsförslaget / medborgarinflytande.
-- Detaljplaner / samråd.
+- Detaljplaner / samråd. ✅ first live Göteborg civic-participation feed
 - Göteborg municipal decisions.
 - Mina ärenden if a suitable official integration becomes available.
 - More municipalities via adapter contracts.

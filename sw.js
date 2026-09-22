@@ -1,6 +1,6 @@
-const CACHE = 'sverinav-v0.5.0';
+const CACHE = 'sverinav-v0.6.0';
 const BASE = self.registration.scope;
-const CORE_PATHS = ['', 'index.html', 'styles.css', 'riksdagen.js', 'nvdb.js', 'app.js', 'manifest.webmanifest', 'icon.svg'];
+const CORE_PATHS = ['', 'index.html', 'styles.css', 'riksdagen.js', 'nvdb.js', 'goteborg-plans.js', 'app.js', 'manifest.webmanifest', 'icon.svg'];
 const CORE = CORE_PATHS.map(path => new URL(path, BASE).href);
 
 self.addEventListener('install', event => {

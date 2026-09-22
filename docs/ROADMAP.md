@@ -29,8 +29,8 @@
 ## Fas 1.1 — lokaldemokrati
 
 - [ ] Göteborgsförslaget
-- [ ] Påverka nära mig
-- [ ] samråd/detaljplaner
+- [x] Påverka nära mig — aktuella Göteborgs-planer öppna för synpunkter
+- [x] samråd/detaljplaner — daglig source-first feed från Göteborgs Stad
 - [ ] Västtrafik
 - [ ] kommunala beslut Göteborg
 
