@@ -33,6 +33,8 @@
         return response.json();
       })
       .then(payload => {
+        if (payload?.error) throw new Error(`Göteborg plans feed unavailable (${payload.error})`);
+        if (Number.isNaN(new Date(payload?.fetchedAt).getTime())) throw new Error('Göteborg plans feed has no valid fetchedAt timestamp');
         const items = Array.isArray(payload?.items) ? payload.items.filter(validItem) : [];
         cache = { ...payload, items };
         return cache;
