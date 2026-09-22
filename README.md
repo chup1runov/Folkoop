@@ -66,9 +66,9 @@ https://chup1runov.github.io/Sverinav/
 
 ## Utveckling
 
-Den nuvarande versionen är en statisk, mobile-first PWA-prototyp som publiceras från `main` via GitHub Pages.
+Den nuvarande versionen är en statisk, mobile-first PWA för Göteborg-piloten som publiceras från `main` via GitHub Pages.
 
-Inga riktiga myndighetsärenden skickas ännu. Externa datakällor i UI:t är fortfarande demo tills respektive adapter är inkopplad och verifierad.
+Sverinav skickar inga myndighetsärenden i användarens ställe. Livefunktioner använder verifierade officiella källor och leder vidare till originalkällan eller den officiella e-tjänsten; återstående demokort är tydligt märkta.
 
 ## Bidrag
 
