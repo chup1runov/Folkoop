@@ -1,5 +1,10 @@
 const view = document.getElementById('view');
-const languageSelect = document.getElementById('languageSelect');
+const languageButton = document.getElementById('languageButton');
+const languageCode = document.getElementById('languageCode');
+const languageSheet = document.getElementById('languageSheet');
+const languageOptions = document.getElementById('languageOptions');
+const closeLanguageButton = document.getElementById('closeLanguageButton');
+const languageBackdrop = document.getElementById('languageBackdrop');
 let deferredPrompt;
 let currentScreen = 'home';
 
@@ -451,81 +456,218 @@ function t(key) {
   return messages[currentLanguage][key] || messages.sv[key] || key;
 }
 
+function icon(name) {
+  const paths = {
+    route: '<path d="M5 18c0-3 2-5 5-5h4c3 0 5-2 5-5"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/>',
+    camera: '<path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3"/>',
+    pin: '<path d="M12 21s7-5.1 7-12a7 7 0 1 0-14 0c0 6.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/>',
+    road: '<path d="M8 3 6 21M16 3l2 18M12 3v4M12 11v4M12 19v2"/>',
+    air: '<path d="M4 8h10a3 3 0 1 0-3-3M4 12h14a3 3 0 1 1-3 3M4 16h6"/>',
+    consult: '<path d="M5 4h14v13H9l-4 3z"/><path d="M8 8h8M8 12h6"/>',
+    file: '<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/>',
+    database: '<ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>'
+  };
+  return `<svg class="svg-icon" aria-hidden="true" viewBox="0 0 24 24">${paths[name] || paths.file}</svg>`;
+}
+
+const languageNames = {
+  sv:'Svenska', en:'English', ar:'العربية', so:'Soomaali', fa:'فارسی', fi:'Suomi',
+  bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
+};
+
+const languageCodes = {sv:'SV',en:'EN',ar:'AR',so:'SO',fa:'FA',fi:'FI',bs:'BHS',ku:'KU',es:'ES',ru:'RU',uk:'UK'};
+
+function screenFromHash() {
+  const value = location.hash.replace(/^#\/?/, '');
+  return ['ansvar','rapportera','nara','beslut'].includes(value) ? value : 'home';
+}
+
 function applyLanguage(language) {
   currentLanguage = supportedLanguages.includes(language) ? language : 'sv';
   localStorage.setItem('sverinav-language', currentLanguage);
-  languageSelect.value = currentLanguage;
 
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = rtlLanguages.has(currentLanguage) ? 'rtl' : 'ltr';
 
   document.getElementById('tagline').textContent = t('tagline');
-  document.getElementById('pilotLabel').textContent = t('pilot');
-  document.getElementById('languageLabel').textContent = t('language');
   document.getElementById('navHome').textContent = t('navHome');
   document.getElementById('navNear').textContent = t('navNear');
   document.getElementById('navReport').textContent = t('navReport');
   document.getElementById('navDecisions').textContent = t('navDecisions');
-  document.getElementById('bottomNav').setAttribute('aria-label', t('language') === 'Språk' ? 'Huvudmeny' : 'Navigation');
+  document.getElementById('languageSheetTitle').textContent = t('language');
+  document.getElementById('bottomNav').setAttribute('aria-label', currentLanguage === 'sv' ? 'Huvudmeny' : 'Navigation');
+  languageCode.textContent = languageCodes[currentLanguage] || currentLanguage.toUpperCase();
 
+  renderLanguageOptions();
   render(currentScreen, false);
 }
 
-function setNav(name) {
-  document.querySelectorAll('.bottom-nav button').forEach(button => {
-    button.classList.toggle('active', button.dataset.screen === name);
+function renderLanguageOptions() {
+  languageOptions.innerHTML = supportedLanguages.map(code =>
+    `<button type="button" class="language-option" data-language="${code}" aria-pressed="${code === currentLanguage}">
+      ${languageNames[code]}
+    </button>`
+  ).join('');
+}
+
+function openLanguageSheet() {
+  languageSheet.hidden = false;
+  languageButton.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    const selected = languageOptions.querySelector('[aria-pressed="true"]');
+    (selected || closeLanguageButton).focus();
   });
+}
+
+function closeLanguageSheet() {
+  if (languageSheet.hidden) return;
+  languageSheet.hidden = true;
+  languageButton.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  languageButton.focus();
+}
+
+function setNav(name) {
+  const navName = name === 'ansvar' ? 'home' : name;
+  document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.classList.toggle('active', button.dataset.screen === navName);
+  });
+}
+
+function resolveText(text) {
+  const value = text.toLowerCase();
+  let actor = t('actorDefault');
+  let reason = t('reasonDefault');
+
+  const healthWords = ['vård', 'sjukhus', 'vårdcentral', 'health', 'hospital', 'clinic', 'صحة', 'مستشفى', 'caafimaad', 'isbitaal', 'سلامت', 'بیمارستان', 'terveys', 'sairaala', 'zdravlje', 'bolnica', 'tenduristî', 'nexweşxane', 'salud', 'hospital', 'здоровье', 'больница', 'здоров’я', 'лікарня'];
+  const railWords = ['tåg', 'järnväg', 'train', 'rail', 'قطار', 'tareen', 'راه‌آهن', 'juna', 'rautatie', 'vlak', 'željeznica', 'trên', 'tren', 'ferrocarril', 'поезд', 'железная дорога', 'поїзд', 'залізниця'];
+  const wasteWords = ['sopor', 'avfall', 'waste', 'trash', 'نفايات', 'qashin', 'زباله', 'jäte', 'otpad', 'smeti', 'çop', 'basura', 'residuos', 'мусор', 'отходы', 'сміття', 'відходи'];
+  const roadWords = ['väg', 'hål', 'gata', 'road', 'street', 'pothole', 'طريق', 'شارع', 'waddo', 'جاده', 'خیابان', 'tie', 'katu', 'cesta', 'ulica', 'rê', 'calle', 'carretera', 'дорога', 'улица', 'яма', 'вулиця'];
+
+  if (healthWords.some(word => value.includes(word))) {
+    actor = t('actorHealth');
+    reason = t('reasonHealth');
+  } else if (railWords.some(word => value.includes(word))) {
+    actor = t('actorRail');
+    reason = t('reasonRail');
+  } else if (wasteWords.some(word => value.includes(word))) {
+    actor = t('actorWaste');
+    reason = t('reasonWaste');
+  } else if (roadWords.some(word => value.includes(word))) {
+    actor = t('actorRoad');
+    reason = t('reasonRoad');
+  }
+
+  return { actor, reason };
+}
+
+function resultMarkup(text) {
+  const { actor, reason } = resolveText(text);
+  return `<div class="result">
+    <strong>${actor}</strong>
+    <p>${reason}</p>
+    <div class="source">${icon('database')}<span>${t('demoNotVerified')}</span></div>
+  </div>`;
 }
 
 function home() {
   view.innerHTML = `
-    <section class="hero">
-      <p class="eyebrow">${t('eyebrow')}</p>
-      <h1>${t('heroTitle')}</h1>
-      <p>${t('heroText')}</p>
-    </section>
+    <div class="home">
+      <section class="hero">
+        <div class="home-meta">
+          <span class="location-chip">${icon('pin')} Göteborg</span>
+          <span class="beta-badge">${t('pilot')}</span>
+        </div>
+        <h1>${t('heroTitle')}</h1>
+        <p>${t('heroText')}</p>
 
-    <section class="quick-status">
-      <span class="status-dot"></span>
-      <span>${t('status')}</span>
-    </section>
+        <div class="resolver-panel">
+          <label class="field-label" for="homeIssue">${t('reportPlaceholder')}</label>
+          <textarea id="homeIssue" class="textarea" placeholder="${t('issuePlaceholder')}"></textarea>
+          <button id="homeFindOwner" class="action" type="button">
+            ${icon('route')}<span>${t('findResponsible')}</span>
+          </button>
+          <div id="homeOwnerResult"></div>
+        </div>
+      </section>
 
-    <section class="grid">
-      <button class="card primary" data-screen="ansvar">
-        <span class="icon">→</span>
-        <strong>${t('responsibility')}</strong>
-        <small>${t('responsibilitySub')}</small>
-      </button>
-      <button class="card" data-screen="rapportera">
-        <span class="icon">!</span>
-        <strong>${t('report')}</strong>
-        <small>${t('reportSub')}</small>
-      </button>
-      <button class="card" data-screen="nara">
-        <span class="icon">◎</span>
-        <strong>${t('near')}</strong>
-        <small>${t('nearSub')}</small>
-      </button>
-      <button class="card" data-screen="beslut">
-        <span class="icon">§</span>
-        <strong>${t('decisions')}</strong>
-        <small>${t('decisionsSub')}</small>
-      </button>
-    </section>
+      <section class="quick-status">
+        <span class="status-dot"></span>
+        <span>${t('status')}</span>
+      </section>
 
-    <section class="install-card" id="installCard">
-      <div>
-        <strong>${t('installTitle')}</strong>
-        <p>${t('installText')}</p>
-      </div>
-      <button id="installButton" class="install-btn" ${deferredPrompt ? '' : 'hidden'}>${t('install')}</button>
-    </section>
+      <section class="section-block">
+        <button class="primary-action-card" data-screen="rapportera">
+          <span class="card-icon">${icon('camera')}</span>
+          <span class="card-copy">
+            <strong>${t('report')}</strong>
+            <small>${t('reportSub')}</small>
+          </span>
+          <span class="chevron" aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>${t('nearTitle')}</h2>
+          <button class="text-button" type="button" data-screen="nara">${t('navNear')} →</button>
+        </div>
+        <div class="preview-grid">
+          ${previewCard('road', t('roadwork'), t('roadworkText'), t('demoLiveLater'))}
+          ${previewCard('consult', t('consultation'), t('consultationText'), t('demoLiveLater'))}
+          ${previewCard('air', t('air'), t('airText'), t('demo'))}
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>${t('decisionsTitle')}</h2>
+          <button class="text-button" type="button" data-screen="beslut">${t('navDecisions')} →</button>
+        </div>
+        <div class="preview-card">
+          <span class="item-icon">${icon('file')}</span>
+          <div>
+            <strong>${t('nationalDecision')}</strong>
+            <p>${t('nationalDecisionText')}</p>
+            <div class="source">${icon('database')}<span>${t('nationalDecisionSource')}</span></div>
+          </div>
+        </div>
+      </section>
+
+      ${deferredPrompt ? `
+        <section class="install-card" id="installCard">
+          <div>
+            <strong>${t('installTitle')}</strong>
+            <p>${t('installText')}</p>
+          </div>
+          <button id="installButton" class="install-btn" type="button">${t('install')}</button>
+        </section>` : ''}
+
+      <p class="product-note">Sverinav · Göteborg · ${t('earlyPrototype')}</p>
+    </div>
   `;
+
+  document.getElementById('homeFindOwner').onclick = () => {
+    const text = document.getElementById('homeIssue').value;
+    document.getElementById('homeOwnerResult').innerHTML = resultMarkup(text);
+  };
+}
+
+function previewCard(iconName, title, text, source) {
+  return `<article class="preview-card">
+    <span class="item-icon">${icon(iconName)}</span>
+    <div>
+      <strong>${title}</strong>
+      <p>${text}</p>
+      <div class="source">${icon('database')}<span>${source}</span></div>
+    </div>
+  </article>`;
 }
 
 function shell(title, subtitle, body) {
   view.innerHTML = `<section class="screen">
-    <button class="back" data-screen="home">${t('back')}</button>
+    <button class="back" data-screen="home" type="button">${t('back')}</button>
     <h2>${title}</h2>
     <p class="muted">${subtitle}</p>
     ${body}
@@ -536,37 +678,21 @@ function responsibilityScreen() {
   shell(
     t('responsibilityTitle'),
     t('responsibilityHelp'),
-    `<textarea id="issue" class="textarea" placeholder="${t('issuePlaceholder')}"></textarea>
-     <button id="findOwner" class="action">${t('findResponsible')}</button>
-     <div id="ownerResult"></div>`
+    `<div class="form-stack">
+      <div class="field-group">
+        <label class="field-label" for="issue">${t('reportPlaceholder')}</label>
+        <textarea id="issue" class="textarea" placeholder="${t('issuePlaceholder')}"></textarea>
+      </div>
+      <div class="action-row">
+        <button id="findOwner" class="action" type="button">${icon('route')}<span>${t('findResponsible')}</span></button>
+      </div>
+      <div id="ownerResult"></div>
+    </div>`
   );
 
   document.getElementById('findOwner').onclick = () => {
-    const text = document.getElementById('issue').value.toLowerCase();
-    let actor = t('actorDefault');
-    let reason = t('reasonDefault');
-
-    const healthWords = ['vård', 'sjukhus', 'vårdcentral', 'health', 'hospital', 'clinic', 'صحة', 'مستشفى', 'caafimaad', 'isbitaal', 'سلامت', 'بیمارستان', 'terveys', 'sairaala', 'zdravlje', 'bolnica', 'tenduristî', 'nexweşxane', 'salud', 'hospital', 'здоровье', 'больница', 'здоров’я', 'лікарня'];
-    const railWords = ['tåg', 'järnväg', 'train', 'rail', 'قطار', 'tareen', 'راه‌آهن', 'juna', 'rautatie', 'vlak', 'željeznica', 'trên', 'tren', 'ferrocarril', 'поезд', 'железная дорога', 'поїзд', 'залізниця'];
-    const wasteWords = ['sopor', 'avfall', 'waste', 'trash', 'نفايات', 'qashin', 'زباله', 'jäte', 'otpad', 'smeti', 'çop', 'basura', 'residuos', 'мусор', 'отходы', 'сміття', 'відходи'];
-    const roadWords = ['väg', 'hål', 'gata', 'road', 'street', 'pothole', 'طريق', 'شارع', 'waddo', 'جاده', 'خیابان', 'tie', 'katu', 'cesta', 'ulica', 'rê', 'calle', 'carretera', 'дорога', 'улица', 'яма', 'дорога', 'вулиця', 'яма'];
-
-    if (healthWords.some(word => text.includes(word))) {
-      actor = t('actorHealth');
-      reason = t('reasonHealth');
-    } else if (railWords.some(word => text.includes(word))) {
-      actor = t('actorRail');
-      reason = t('reasonRail');
-    } else if (wasteWords.some(word => text.includes(word))) {
-      actor = t('actorWaste');
-      reason = t('reasonWaste');
-    } else if (roadWords.some(word => text.includes(word))) {
-      actor = t('actorRoad');
-      reason = t('reasonRoad');
-    }
-
-    document.getElementById('ownerResult').innerHTML =
-      `<div class="result"><strong>${actor}</strong><p>${reason}</p><div class="source">${t('demoNotVerified')}</div></div>`;
+    const text = document.getElementById('issue').value;
+    document.getElementById('ownerResult').innerHTML = resultMarkup(text);
   };
 }
 
@@ -574,27 +700,38 @@ function reportScreen() {
   shell(
     t('reportTitle'),
     t('reportHelp'),
-    `<label class="file-label" for="photo">${t('addPhoto')}</label>
-     <input id="photo" type="file" accept="image/*">
-     <input class="input" placeholder="${t('place')}">
-     <textarea class="textarea" placeholder="${t('reportPlaceholder')}"></textarea>
-     <button class="action">${t('preview')}</button>
-     <div class="result"><strong>${t('noRealReport')}</strong><p>${t('earlyPrototype')}</p></div>`
+    `<div class="form-stack">
+      <div class="field-group">
+        <span class="field-label">${t('addPhoto')}</span>
+        <label class="file-label" for="photo">${icon('camera')}<span>${t('addPhoto')}</span></label>
+        <input id="photo" type="file" accept="image/*">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="reportPlace">${t('place')}</label>
+        <input id="reportPlace" class="input" placeholder="${t('place')}">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="reportDescription">${t('reportPlaceholder')}</label>
+        <textarea id="reportDescription" class="textarea" placeholder="${t('reportPlaceholder')}"></textarea>
+      </div>
+      <button class="action" type="button">${t('preview')}</button>
+      <div class="result"><strong>${t('noRealReport')}</strong><p>${t('earlyPrototype')}</p></div>
+    </div>`
   );
 }
 
 function nearbyItems() {
   return [
-    { title:t('roadwork'), text:t('roadworkText'), source:t('demoLiveLater') },
-    { title:t('consultation'), text:t('consultationText'), source:t('demoLiveLater') },
-    { title:t('air'), text:t('airText'), source:t('demo') }
+    { icon:'road', title:t('roadwork'), text:t('roadworkText'), source:t('demoLiveLater') },
+    { icon:'consult', title:t('consultation'), text:t('consultationText'), source:t('demoLiveLater') },
+    { icon:'air', title:t('air'), text:t('airText'), source:t('demo') }
   ];
 }
 
 function decisionItems() {
   return [
-    { title:t('nationalDecision'), text:t('nationalDecisionText'), source:t('nationalDecisionSource') },
-    { title:t('localDecision'), text:t('localDecisionText'), source:t('demo') }
+    { icon:'file', title:t('nationalDecision'), text:t('nationalDecisionText'), source:t('nationalDecisionSource') },
+    { icon:'file', title:t('localDecision'), text:t('localDecisionText'), source:t('demo') }
   ];
 }
 
@@ -603,7 +740,14 @@ function listScreen(title, subtitle, items) {
     title,
     subtitle,
     `<div class="list">${items.map(item =>
-      `<div class="item"><strong>${item.title}</strong><small>${item.text}</small><div class="source">${item.source}</div></div>`
+      `<article class="item">
+        <span class="item-icon">${icon(item.icon)}</span>
+        <div class="item-content">
+          <strong>${item.title}</strong>
+          <small>${item.text}</small>
+          <div class="source">${icon('database')}<span>${item.source}</span></div>
+        </div>
+      </article>`
     ).join('')}</div>`
   );
 }
@@ -619,14 +763,46 @@ function render(screen, updateState = true) {
   if (screen === 'beslut') return listScreen(t('decisionsTitle'), t('decisionsHelp'), decisionItems());
 }
 
+function navigate(screen) {
+  const hash = screen === 'home' ? '' : `#${screen}`;
+  if (location.hash === hash) {
+    currentScreen = screen;
+    render(screen);
+    return;
+  }
+  location.hash = hash;
+}
+
 window.addEventListener('beforeinstallprompt', event => {
   event.preventDefault();
   deferredPrompt = event;
   if (currentScreen === 'home') render('home', false);
 });
 
+window.addEventListener('hashchange', () => {
+  currentScreen = screenFromHash();
+  render(currentScreen);
+});
+
 document.addEventListener('click', async event => {
-  if (event.target.id === 'installButton' && deferredPrompt) {
+  if (event.target.closest('#languageButton')) {
+    openLanguageSheet();
+    return;
+  }
+
+  if (event.target.closest('#closeLanguageButton') || event.target.closest('#languageBackdrop')) {
+    closeLanguageSheet();
+    return;
+  }
+
+  const languageChoice = event.target.closest('[data-language]');
+  if (languageChoice) {
+    applyLanguage(languageChoice.dataset.language);
+    closeLanguageSheet();
+    return;
+  }
+
+  if (event.target.closest('#installButton') && deferredPrompt) {
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     deferredPrompt = null;
@@ -635,11 +811,15 @@ document.addEventListener('click', async event => {
   }
 
   const target = event.target.closest('[data-screen]');
-  if (target) render(target.dataset.screen);
+  if (target) {
+    event.preventDefault();
+    navigate(target.dataset.screen);
+  }
 });
 
-languageSelect.addEventListener('change', event => {
-  applyLanguage(event.target.value);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !languageSheet.hidden) closeLanguageSheet();
 });
 
+currentScreen = screenFromHash();
 applyLanguage(currentLanguage);
