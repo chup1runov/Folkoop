@@ -443,6 +443,24 @@ const messages = {
   }
 };
 
+const planMessages = {
+  sv:{title:'Påverka i Göteborg just nu',intro:'Planer som just nu är öppna för synpunkter hos Göteborgs Stad.',open:'Öppen för synpunkter',deadline:'Sista dag',source:'Göteborgs Stad',empty:'Just nu hittades inga planer med en pågående synpunktsperiod.',error:'Kunde inte hämta aktuella planer just nu.',all:'Öppna hos Göteborgs Stad',area:'Område'},
+  en:{title:'Have your say in Gothenburg now',intro:'Plans currently open for public comments at the City of Gothenburg.',open:'Open for comments',deadline:'Deadline',source:'City of Gothenburg',empty:'No plans with an active comment period were found right now.',error:'Current plans could not be loaded right now.',all:'Open at City of Gothenburg',area:'Area'},
+  ar:{title:'شارك برأيك في غوتنبرغ الآن',intro:'خطط مفتوحة حالياً لتقديم الملاحظات لدى بلدية غوتنبرغ.',open:'مفتوح للملاحظات',deadline:'آخر موعد',source:'بلدية غوتنبرغ',empty:'لا توجد حالياً خطط ذات فترة ملاحظات مفتوحة.',error:'تعذر تحميل الخطط الحالية الآن.',all:'افتح لدى بلدية غوتنبرغ',area:'المنطقة'},
+  so:{title:'Fikradaada ka dhiibo Göteborg hadda',intro:'Qorshayaal hadda u furan fikrado dadweyne oo ka socda Göteborgs Stad.',open:'U furan fikrado',deadline:'Maalinta ugu dambaysa',source:'Göteborgs Stad',empty:'Hadda lama helin qorshe leh wakhti fikrado oo furan.',error:'Qorshayaasha hadda jira lama soo qaadi karin.',all:'Ka fur Göteborgs Stad',area:'Aagga'},
+  fa:{title:'همین حالا درباره طرح‌های یوتبری نظر بدهید',intro:'طرح‌هایی که اکنون در شهرداری یوتبری برای دریافت نظر عمومی باز هستند.',open:'باز برای نظر',deadline:'آخرین مهلت',source:'شهرداری یوتبری',empty:'در حال حاضر طرحی با مهلت فعال برای نظر پیدا نشد.',error:'فعلاً دریافت طرح‌های جاری ممکن نیست.',all:'باز کردن در شهرداری یوتبری',area:'منطقه'},
+  fi:{title:'Vaikuta Göteborgissa nyt',intro:'Göteborgin kaupungin suunnitelmat, joista voi juuri nyt antaa mielipiteen.',open:'Avoinna kommenteille',deadline:'Viimeinen päivä',source:'Göteborgin kaupunki',empty:'Tällä hetkellä ei löytynyt suunnitelmia, joiden kommentointiaika on avoinna.',error:'Ajankohtaisia suunnitelmia ei voitu hakea.',all:'Avaa Göteborgin kaupungilla',area:'Alue'},
+  bs:{title:'Uključi se u Göteborgu sada',intro:'Planovi Grada Göteborga koji su trenutno otvoreni za komentare.',open:'Otvoreno za komentare',deadline:'Krajnji rok',source:'Grad Göteborg',empty:'Trenutno nema pronađenih planova s otvorenim rokom za komentare.',error:'Trenutni planovi se sada ne mogu učitati.',all:'Otvori kod Grada Göteborga',area:'Područje'},
+  ku:{title:'Niha li Göteborgê beşdar bibe',intro:'Planên Göteborgs Stad ku niha ji bo nerîn û şîroveyan vekirî ne.',open:'Ji bo şîroveyan vekirî',deadline:'Roja dawî',source:'Göteborgs Stad',empty:'Niha planek bi dema şîroveyê ya vekirî nehat dîtin.',error:'Planên nû niha nayên barkirin.',all:'Li Göteborgs Stad veke',area:'Herêm'},
+  es:{title:'Participa en Gotemburgo ahora',intro:'Planes del Ayuntamiento de Gotemburgo actualmente abiertos a comentarios públicos.',open:'Abierto a comentarios',deadline:'Fecha límite',source:'Ayuntamiento de Gotemburgo',empty:'Ahora no se encontraron planes con un periodo de comentarios abierto.',error:'No se pudieron cargar los planes actuales.',all:'Abrir en Ayuntamiento de Gotemburgo',area:'Zona'},
+  ru:{title:'Повлиять на планы Гётеборга сейчас',intro:'Планы Göteborgs Stad, по которым сейчас можно официально оставить замечания.',open:'Открыт приём замечаний',deadline:'Последний день',source:'Göteborgs Stad',empty:'Сейчас не найдено планов с открытым периодом приёма замечаний.',error:'Не удалось загрузить актуальные планы.',all:'Открыть на Göteborgs Stad',area:'Район'},
+  uk:{title:'Вплинути на плани Гетеборга зараз',intro:'Плани Göteborgs Stad, щодо яких зараз можна офіційно подати зауваження.',open:'Відкрито для зауважень',deadline:'Останній день',source:'Göteborgs Stad',empty:'Зараз не знайдено планів з відкритим періодом подання зауважень.',error:'Не вдалося завантажити актуальні плани.',all:'Відкрити на Göteborgs Stad',area:'Район'}
+};
+
+function pt(key) {
+  return planMessages[currentLanguage]?.[key] || planMessages.en[key] || planMessages.sv[key] || key;
+}
+
 const roadMessages = {
   sv: {
     verify:'Kontrollera väghållare vid min position',
@@ -850,11 +868,7 @@ function home() {
           <h2>${t('nearTitle')}</h2>
           <button class="text-button" type="button" data-screen="nara">${t('navNear')} →</button>
         </div>
-        <div class="preview-grid">
-          ${previewCard('road', t('roadwork'), t('roadworkText'), t('demoLiveLater'))}
-          ${previewCard('consult', t('consultation'), t('consultationText'), t('demoLiveLater'))}
-          ${previewCard('air', t('air'), t('airText'), t('demo'))}
-        </div>
+        <div class="plan-list" id="homeOpenPlans">${planLoadingMarkup()}</div>
       </section>
 
       <section class="section-block">
@@ -884,6 +898,8 @@ function home() {
       <p class="product-note">Sverinav · Göteborg · ${t('earlyPrototype')}</p>
     </div>
   `;
+
+  hydratePlanList(document.getElementById('homeOpenPlans'), { limit: 1 });
 
   document.getElementById('homeFindOwner').onclick = () => {
     const text = document.getElementById('homeIssue').value;
@@ -964,9 +980,92 @@ function reportScreen() {
 function nearbyItems() {
   return [
     { icon:'road', title:t('roadwork'), text:t('roadworkText'), source:t('demoLiveLater') },
-    { icon:'consult', title:t('consultation'), text:t('consultationText'), source:t('demoLiveLater') },
     { icon:'air', title:t('air'), text:t('airText'), source:t('demo') }
   ];
+}
+
+function safeGoteborgUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' &&
+      (url.hostname === 'goteborg.se' || url.hostname.endsWith('.goteborg.se'))
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatPlanDate(value) {
+  if (!value) return '';
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return escapeHtml(value);
+  try {
+    return new Intl.DateTimeFormat(currentLanguage || 'sv', {
+      year:'numeric', month:'short', day:'numeric'
+    }).format(date);
+  } catch {
+    return escapeHtml(value);
+  }
+}
+
+function planCardMarkup(item) {
+  const href=safeGoteborgUrl(item.sourceUrl);
+  if (!href) return '';
+  return `<a class="plan-card" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+    <span class="item-icon">${icon('consult')}</span>
+    <span class="plan-copy">
+      <strong>${escapeHtml(item.title)}</strong>
+      ${item.area ? `<span class="plan-meta"><span>${pt('area')}: ${escapeHtml(item.area)}</span></span>` : ''}
+      <span class="plan-deadline">${pt('deadline')}: ${formatPlanDate(item.deadline)}</span>
+      <span class="plan-source"><span class="live-dot"></span>${pt('source')} ↗</span>
+    </span>
+  </a>`;
+}
+
+function planLoadingMarkup() {
+  return `<article class="item loading-card" aria-hidden="true">
+    <span class="item-icon">${icon('consult')}</span>
+    <div class="item-content">
+      <div class="loading-line medium"></div>
+      <div class="loading-line"></div>
+      <div class="loading-line short"></div>
+    </div>
+  </article>`;
+}
+
+async function hydratePlanList(container, { limit = null } = {}) {
+  if (!container || !window.SverinavGoteborgPlans) return;
+  try {
+    const payload=await window.SverinavGoteborgPlans.loadOpenPlans();
+    if (!container.isConnected) return;
+    const items=limit ? payload.items.slice(0,limit) : payload.items;
+    if (!items.length) {
+      container.innerHTML=`<div class="plan-empty">${pt('empty')} <a href="${escapeHtml(payload.sourceUrl)}" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
+      return;
+    }
+    container.innerHTML=items.map(planCardMarkup).filter(Boolean).join('');
+  } catch(error) {
+    console.warn('Göteborg open plans feed unavailable.', error);
+    container.innerHTML=`<div class="plan-empty">${pt('error')} <a href="https://goteborg.se/planochbyggprojekt" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
+  }
+}
+
+function nearbyScreen() {
+  shell(
+    t('nearTitle'),
+    t('nearHelp'),
+    `<div class="near-live-head">
+      <div>
+        <h3>${pt('title')}</h3>
+        <p>${pt('intro')}</p>
+      </div>
+      <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+    </div>
+    <div class="plan-list" id="openPlansList">${planLoadingMarkup()}</div>
+    <div class="list">${demoListMarkup(nearbyItems())}</div>`
+  );
+  hydratePlanList(document.getElementById('openPlansList'));
 }
 
 function decisionItems() {
@@ -1071,7 +1170,7 @@ function render(screen, updateState = true) {
   if (screen === 'home') return home();
   if (screen === 'ansvar') return responsibilityScreen();
   if (screen === 'rapportera') return reportScreen();
-  if (screen === 'nara') return listScreen(t('nearTitle'), t('nearHelp'), nearbyItems());
+  if (screen === 'nara') return nearbyScreen();
   if (screen === 'beslut') return decisionScreen();
 }
 
