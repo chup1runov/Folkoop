@@ -40,7 +40,7 @@ The four primary surfaces are:
 - PWA manifest and service worker.
 - Basic offline app shell after first visit.
 - Bottom navigation.
-- `Vem ansvarar?` demo classifier based on simple keywords.
+- `Vem ansvarar?` keyword classifier plus live Trafikverket NVDB/NetInfo road-holder verification for road issues.
 - `Rapportera` form UI.
 - `Nära mig` demo cards.
 - `Beslut` demo cards.
@@ -52,7 +52,7 @@ The four primary surfaces are:
 ### What is still demo / not connected
 
 - No live Riksdagen data yet.
-- No live NVDB road-holder lookup yet.
+- Live NVDB/NetInfo road-holder lookup is available for road issues when the user explicitly shares their current browser position.
 - No real Göteborg traffic/open-data integration yet.
 - No RiverService integration yet.
 - No Västtrafik integration yet.
@@ -145,7 +145,7 @@ Show at minimum:
 
 This should be the first real API integration because it can provide useful official data without accounts or sensitive personal data.
 
-### 2. Trafikverket / NVDB Väghållare → Vem ansvarar?
+### 2. Trafikverket / NVDB Väghållare → Vem ansvarar? ✅ first live road resolver
 
 Target flow:
 
