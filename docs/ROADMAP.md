@@ -1,4 +1,4 @@
-# Roadmap — source transparency v0.9
+# Roadmap — Göteborg pilot pack v0.10
 
 ## Fas 0 — förstudie
 
@@ -27,6 +27,9 @@
 - [x] iPhone Add to Home Screen-guidning
 - [x] automatiska static + desktop/mobile/iPhone-like headless-browser smoke tests
 - [x] source freshness/status för live-data
+- [x] Om Sverinav: oberoende status, privacy, källor och version
+- [x] in-app pilotfeedback via Web Share / clipboard
+- [x] pilotguide + teknisk feedbackmall
 
 ## Fas 1.1 — lokaldemokrati
 
