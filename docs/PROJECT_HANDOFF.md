@@ -22,7 +22,7 @@ Core proposition:
 
 Sverinav should become a simple civic interface between a person and public Sweden. The user starts from a problem or need instead of needing to know which municipality, region, authority, road owner or public system is responsible.
 
-First pilot: **Göteborg**.
+First pilot: **Göteborg**.\n\nCurrent pilot version: **v0.10.1**.
 
 ## Current MVP
 
