@@ -4,6 +4,8 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
 
 permissions:
   contents: read
@@ -25,10 +27,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Fetch latest Riksdagen decisions
+        run: node scripts/fetch-riksdagen.mjs
+
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css app.js manifest.webmanifest sw.js icon.svg _site/
+          cp index.html styles.css riksdagen.js app.js manifest.webmanifest sw.js icon.svg _site/
+          cp -R data _site/data
           touch _site/.nojekyll
 
       - name: Configure Pages
