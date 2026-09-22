@@ -36,6 +36,7 @@ jobs:
         run: |
           node --check app.js
           node --check riksdagen.js
+          node --check nvdb.js
           node --check sw.js
           python -m json.tool manifest.webmanifest >/dev/null
           test -s data/riksdagen-decisions.json
@@ -58,7 +59,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css riksdagen.js app.js manifest.webmanifest sw.js icon.svg _site/
+          cp index.html styles.css riksdagen.js nvdb.js app.js manifest.webmanifest sw.js icon.svg _site/
           cp -R data _site/data
           touch _site/.nojekyll
 
