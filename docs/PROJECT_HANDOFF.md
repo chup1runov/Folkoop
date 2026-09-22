@@ -38,7 +38,7 @@ The four primary surfaces are:
 - Mobile-first web UI.
 - Public GitHub Pages deployment.
 - PWA manifest and service worker.
-- Basic offline app shell after first visit.
+- Hardened offline app shell: same-origin navigation/static caching only; JSON has its own fallback and external official APIs bypass the service worker.
 - Bottom navigation.
 - `Vem ansvarar?` keyword classifier plus live Trafikverket NVDB/NetInfo road-holder verification for road issues.
 - `Rapportera` live road/street/cycle-path router: description + temporary geolocation → NVDB road holder → official Trafikverket or Göteborgs Stad fault-report route; user submits the official form themselves.
@@ -46,7 +46,7 @@ The four primary surfaces are:
 - `Beslut` demo cards.
 - Language selector with browser-language detection and local persistence.
 - RTL layout for Arabic and Persian.
-- Basic security and contribution documentation.
+- Basic security and contribution documentation.\n- PNG PWA icons (192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
 
 ### What is still demo / not connected
@@ -273,12 +273,12 @@ Still to do:
 
 - remove or archive the old `prototype/` directory,
 - decide whether `vercel.json` and static `package.json` are still needed,
-- add proper PNG PWA icons, especially 192×192 and 512×512,
+- proper PNG PWA icons 192×192 and 512×512 added; keep them in release checks,
 - improve iPhone install guidance,
-- add accessibility audit and form labels/focus states,
-- add unit/integration/browser smoke tests,
+- first accessibility hardening pass completed; full manual WCAG audit with assistive technology still recommended,
+- static and headless-browser smoke tests added; extend toward interaction tests over time,
 - add API health/freshness monitoring once live sources are connected,
-- update service-worker caching strategy when live APIs arrive,
+- service-worker strategy hardened for live APIs: cross-origin bypass + separate navigation/data/static behavior,
 - choose a licence,
 - consider branch protection after the project stabilizes.
 
