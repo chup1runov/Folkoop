@@ -41,7 +41,7 @@ The four primary surfaces are:
 - Basic offline app shell after first visit.
 - Bottom navigation.
 - `Vem ansvarar?` keyword classifier plus live Trafikverket NVDB/NetInfo road-holder verification for road issues.
-- `Rapportera` form UI.
+- `Rapportera` live road/street/cycle-path router: description + temporary geolocation → NVDB road holder → official Trafikverket or Göteborgs Stad fault-report route; user submits the official form themselves.
 - `Nära mig` live Göteborg consultation-plan feed plus clearly labelled demo cards for sources not yet connected.
 - `Beslut` demo cards.
 - Language selector with browser-language detection and local persistence.
@@ -57,7 +57,7 @@ The four primary surfaces are:
 - No RiverService integration yet.
 - No Västtrafik integration yet.
 - No live Göteborgsförslaget integration yet.
-- No real fault report submission.
+- No direct submission from Sverinav: `Rapportera` routes to the verified official form and never claims an issue was submitted.
 - No backend or database.
 - No real account system.
 - No push notifications.
@@ -170,13 +170,17 @@ Next candidates:
 - air quality when the published WMS contract is operational,
 - parking / local disruption data where suitable.
 
-### 4. Göteborg Felanmälan → Rapportera
+### 4. Felanmälan routing → Rapportera ✅ first live route
 
-MVP behavior:
+Current live road flow:
 
-`photo + location + description → determine responsible actor → open correct official reporting channel`
+`description + temporary location → NVDB road holder → copy description/GPS → open verified official reporting channel`
 
-Do not claim a report has been submitted unless it actually has.
+- statlig väg → Trafikverket Drift och underhåll,
+- kommunal väg in Göteborg → Göteborgs Stad Felanmälan – gator, torg och parker,
+- enskild väg → explain association/private-owner responsibility instead of inventing a universal form.
+
+Sverinav does not submit the case itself and never claims that it has been submitted.
 
 ## Planned later integrations
 
@@ -300,7 +304,7 @@ The first Göteborg pilot should not be called functionally complete until:
 - `Beslut` shows real official decisions/documents,
 - `Vem ansvarar?` can resolve at least road responsibility from real data,
 - `Nära mig` contains at least one real local official data source,
-- `Rapportera` routes at least one real issue category to the correct official channel,
+- `Rapportera` routes road/street/cycle-path issues to the correct official channel,
 - every live civic item has a visible source/original link,
 - the app works without an account,
 - no political profiling is performed.

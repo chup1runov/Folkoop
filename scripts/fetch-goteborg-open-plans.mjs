@@ -27,6 +27,25 @@ function textFromHtml(value) {
   ).replace(/\s+/g, ' ').trim();
 }
 
+async function fetchWithRetry(url, options, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timer);
+      return response;
+    } catch (error) {
+      clearTimeout(timer);
+      lastError = error;
+      if (attempt === attempts) break;
+      await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+    }
+  }
+  throw lastError;
+}
+
 function stockholmDate() {
   return new Intl.DateTimeFormat('sv-SE', {
     timeZone: 'Europe/Stockholm',
@@ -114,10 +133,10 @@ function parsePlans(sectionHtml) {
 }
 
 async function main() {
-  const response = await fetch(SOURCE_URL, {
+  const response = await fetchWithRetry(SOURCE_URL, {
     headers: {
       accept: 'text/html,application/xhtml+xml',
-      'user-agent': 'Sverinav/0.6 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'Sverinav/0.7 (+https://github.com/chup1runov/Sverinav)'
     }
   });
 

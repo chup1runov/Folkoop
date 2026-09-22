@@ -35,12 +35,16 @@ jobs:
       - name: Fetch Göteborg open consultation plans
         run: node scripts/fetch-goteborg-open-plans.mjs
 
+      - name: Verify official report routes
+        run: node scripts/probe-report-routes.mjs
+
       - name: Validate static app
         run: |
           node --check app.js
           node --check riksdagen.js
           node --check nvdb.js
           node --check goteborg-plans.js
+          node --check scripts/probe-report-routes.mjs
           node --check sw.js
           python -m json.tool manifest.webmanifest >/dev/null
           test -s data/riksdagen-decisions.json

@@ -602,3 +602,52 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
 .near-live-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:18px}
 .near-live-head h3{margin:0;font-size:18px;letter-spacing:-.25px}
 .near-live-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+
+.report-live-intro{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:start;
+  padding:14px;
+  border:1px solid var(--teal-line);
+  border-radius:16px;
+  background:linear-gradient(180deg,#f4fbf9,#fff)
+}
+.report-live-intro strong{display:block;font-size:16px;margin-bottom:4px}
+.report-live-intro p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.report-route-card{
+  margin-top:12px;
+  border:1px solid var(--teal-line);
+  border-radius:18px;
+  padding:15px;
+  background:#f7fbfa
+}
+.report-route-card>p{color:var(--muted);font-size:12px;line-height:1.5}
+.report-copy-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.report-copy-row .action{min-height:42px;font-size:12px;padding:9px 12px}
+.report-open-link{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  margin-top:12px;
+  padding:11px 14px;
+  border-radius:14px;
+  background:var(--teal);
+  color:#fff;
+  text-decoration:none;
+  font-weight:850
+}
+.report-open-link:hover{background:var(--teal-strong)}
+.report-acute{
+  margin-top:12px;
+  padding:11px 12px;
+  border-radius:12px;
+  background:#fff3e8;
+  border:1px solid #edd4bc;
+  color:#60462f;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:750
+}
+.report-not-sent,.report-photo-note{margin:10px 0 0!important;font-size:11px!important}

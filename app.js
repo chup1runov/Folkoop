@@ -461,6 +461,24 @@ function pt(key) {
   return planMessages[currentLanguage]?.[key] || planMessages.en[key] || planMessages.sv[key] || key;
 }
 
+const reportMessages = {
+  sv:{liveTitle:'Väg, gata eller cykelbana',liveIntro:'Beskriv felet. Sverinav kontrollerar väghållaren mot NVDB och leder dig till rätt officiell mottagare.',route:'Använd min position och hitta mottagare',privacy:'Position och text används bara i webbläsaren för denna kontroll och sparas inte av Sverinav.',descriptionRequired:'Beskriv problemet först.',locating:'Hämtar position…',checking:'Kontrollerar väghållare…',recipient:'Rätt officiell mottagare',stateText:'Den här vägsträckan är statlig och hanteras av Trafikverket.',municipalText:'Den här vägsträckan är kommunal och hanteras av Göteborgs Stad.',privateText:'Det här är en enskild väg. Kontakta normalt vägförening, samfällighetsförening eller berörd fastighetsägare.',open:'Öppna officiell felanmälan',copyText:'Kopiera beskrivning',copyCoords:'Kopiera GPS-koordinater',copied:'Kopierat',copyFailed:'Kunde inte kopiera automatiskt.',notSent:'Inget har skickats. Du granskar och skickar själv i den officiella tjänsten.',photo:'Foto bifogar du i den officiella tjänsten efter att du öppnat den.',acuteState:'Akut fara på statlig väg: ring Trafikverket 0771-921 921.',acuteMunicipal:'Akut fara på kommunal gata eller plats: ring Göteborgs Stad 031-365 00 00.',unsupported:'Sverinav har ännu ingen direkt felanmälan för denna väghållare.',placeLabel:'Plats eller adress (valfritt)',descriptionLabel:'Beskriv felet'},
+  en:{liveTitle:'Road, street or cycle path',liveIntro:'Describe the problem. Sverinav checks the road holder against NVDB and guides you to the correct official recipient.',route:'Use my location and find recipient',privacy:'Your location and text are used only in your browser for this check and are not stored by Sverinav.',descriptionRequired:'Describe the problem first.',locating:'Getting location…',checking:'Checking road holder…',recipient:'Correct official recipient',stateText:'This road section is state-owned and handled by Trafikverket.',municipalText:'This road section is municipal and handled by the City of Gothenburg.',privateText:'This is a private road. Normally contact the road association, joint property association or relevant property owner.',open:'Open official fault report',copyText:'Copy description',copyCoords:'Copy GPS coordinates',copied:'Copied',copyFailed:'Could not copy automatically.',notSent:'Nothing has been sent. You review and submit it yourself in the official service.',photo:'Add photos in the official service after opening it.',acuteState:'Urgent danger on a state road: call Trafikverket 0771-921 921.',acuteMunicipal:'Urgent danger on a municipal street or place: call City of Gothenburg 031-365 00 00.',unsupported:'Sverinav does not yet have a direct report route for this road holder.',placeLabel:'Location or address (optional)',descriptionLabel:'Describe the problem'},
+  ar:{liveTitle:'طريق أو شارع أو مسار دراجات',liveIntro:'صف المشكلة. يتحقق Sverinav من الجهة المسؤولة عبر NVDB ويوجهك إلى الجهة الرسمية الصحيحة.',route:'استخدم موقعي وحدد الجهة المستلمة',privacy:'يُستخدم موقعك ونصك فقط في المتصفح لهذا التحقق ولا يحفظهما Sverinav.',descriptionRequired:'صف المشكلة أولاً.',locating:'جارٍ تحديد الموقع…',checking:'جارٍ التحقق من مسؤول الطريق…',recipient:'الجهة الرسمية الصحيحة',stateText:'هذا الجزء من الطريق حكومي وتديره Trafikverket.',municipalText:'هذا الجزء من الطريق بلدي وتديره بلدية غوتنبرغ.',privateText:'هذا طريق خاص. عادةً تواصل مع جمعية الطريق أو جمعية الملكية المشتركة أو مالك العقار المعني.',open:'افتح البلاغ الرسمي',copyText:'نسخ الوصف',copyCoords:'نسخ إحداثيات GPS',copied:'تم النسخ',copyFailed:'تعذر النسخ تلقائياً.',notSent:'لم يتم إرسال أي شيء. أنت تراجع البلاغ وترسله بنفسك في الخدمة الرسمية.',photo:'أضف الصور في الخدمة الرسمية بعد فتحها.',acuteState:'خطر عاجل على طريق حكومي: اتصل بـ Trafikverket على 0771-921 921.',acuteMunicipal:'خطر عاجل في شارع أو مكان بلدي: اتصل ببلدية غوتنبرغ على 031-365 00 00.',unsupported:'لا يملك Sverinav بعد مسار بلاغ مباشر لهذه الجهة.',placeLabel:'المكان أو العنوان (اختياري)',descriptionLabel:'صف المشكلة'},
+  so:{liveTitle:'Waddo, jid ama waddo baaskiil',liveIntro:'Sharax dhibaatada. Sverinav wuxuu NVDB ka hubiyaa masuulka waddada kadibna wuxuu kuu tilmaamaa qaataha rasmiga ah.',route:'Isticmaal goobtayda oo hel qaataha',privacy:'Goobtaada iyo qoraalkaaga waxaa kaliya loogu isticmaalaa browser-ka hubintan mana kaydiyo Sverinav.',descriptionRequired:'Marka hore sharax dhibaatada.',locating:'Goobta ayaa la helayaa…',checking:'Masuulka waddada ayaa la hubinayaa…',recipient:'Qaataha rasmiga ah ee saxda ah',stateText:'Qaybtan waddadu waa waddo qaran, Trafikverket ayaana maamula.',municipalText:'Qaybtan waddadu waa waddo degmo, Göteborgs Stad ayaana maamula.',privateText:'Tani waa waddo gaar loo leeyahay. Badanaa la xiriir ururka waddada, samfällighet ama milkiilaha guriga.',open:'Fur warbixinta rasmiga ah',copyText:'Nuqul sharaxaadda',copyCoords:'Nuqul GPS',copied:'Waa la nuqulay',copyFailed:'Si toos ah looma nuquli karin.',notSent:'Waxba lama dirin. Adiga ayaa dib u eegaya oo ku diraya adeegga rasmiga ah.',photo:'Sawirrada ku dar adeegga rasmiga ah markaad furto.',acuteState:'Khatar degdeg ah oo waddo qaran ah: wac Trafikverket 0771-921 921.',acuteMunicipal:'Khatar degdeg ah oo waddo degmo ah: wac Göteborgs Stad 031-365 00 00.',unsupported:'Sverinav weli ma hayo waddo warbixin toos ah oo masuulkan ah.',placeLabel:'Goob ama cinwaan (ikhtiyaari)',descriptionLabel:'Sharax dhibaatada'},
+  fa:{liveTitle:'جاده، خیابان یا مسیر دوچرخه',liveIntro:'مشکل را توضیح دهید. Sverinav مسئول راه را با NVDB بررسی می‌کند و شما را به گیرنده رسمی درست هدایت می‌کند.',route:'از موقعیت من استفاده کن و گیرنده را پیدا کن',privacy:'موقعیت و متن فقط در مرورگر برای این بررسی استفاده می‌شوند و توسط Sverinav ذخیره نمی‌شوند.',descriptionRequired:'ابتدا مشکل را توضیح دهید.',locating:'در حال دریافت موقعیت…',checking:'در حال بررسی مسئول راه…',recipient:'گیرنده رسمی درست',stateText:'این بخش راه دولتی است و Trafikverket آن را مدیریت می‌کند.',municipalText:'این بخش راه شهرداری است و شهرداری یوتبری آن را مدیریت می‌کند.',privateText:'این یک راه خصوصی است. معمولاً با انجمن راه، samfällighet یا مالک مربوط تماس بگیرید.',open:'باز کردن گزارش رسمی',copyText:'کپی توضیحات',copyCoords:'کپی مختصات GPS',copied:'کپی شد',copyFailed:'کپی خودکار ممکن نبود.',notSent:'چیزی ارسال نشده است. شما خودتان آن را در سرویس رسمی بررسی و ارسال می‌کنید.',photo:'پس از باز کردن سرویس رسمی، عکس‌ها را همان‌جا اضافه کنید.',acuteState:'خطر فوری در راه دولتی: با Trafikverket به شماره 0771-921 921 تماس بگیرید.',acuteMunicipal:'خطر فوری در خیابان یا مکان شهرداری: با شهرداری یوتبری به شماره 031-365 00 00 تماس بگیرید.',unsupported:'Sverinav هنوز مسیر گزارش مستقیم برای این مسئول راه ندارد.',placeLabel:'مکان یا نشانی (اختیاری)',descriptionLabel:'مشکل را توضیح دهید'},
+  fi:{liveTitle:'Tie, katu tai pyörätie',liveIntro:'Kuvaa vika. Sverinav tarkistaa tienpitäjän NVDB:stä ja ohjaa oikealle viralliselle vastaanottajalle.',route:'Käytä sijaintiani ja etsi vastaanottaja',privacy:'Sijaintia ja tekstiä käytetään vain selaimessa tähän tarkistukseen eikä Sverinav tallenna niitä.',descriptionRequired:'Kuvaa ongelma ensin.',locating:'Haetaan sijaintia…',checking:'Tarkistetaan tienpitäjää…',recipient:'Oikea virallinen vastaanottaja',stateText:'Tämä tieosuus on valtion tie ja Trafikverket vastaa siitä.',municipalText:'Tämä tieosuus on kunnallinen ja Göteborgin kaupunki vastaa siitä.',privateText:'Tämä on yksityistie. Ota yleensä yhteys tiekuntaan, yhteisomistusyhdistykseen tai kiinteistönomistajaan.',open:'Avaa virallinen vikailmoitus',copyText:'Kopioi kuvaus',copyCoords:'Kopioi GPS-koordinaatit',copied:'Kopioitu',copyFailed:'Automaattinen kopiointi epäonnistui.',notSent:'Mitään ei ole lähetetty. Tarkistat ja lähetät ilmoituksen itse virallisessa palvelussa.',photo:'Lisää kuvat virallisessa palvelussa sen avaamisen jälkeen.',acuteState:'Välitön vaara valtion tiellä: soita Trafikverket 0771-921 921.',acuteMunicipal:'Välitön vaara kunnallisella kadulla tai paikalla: soita Göteborgin kaupunki 031-365 00 00.',unsupported:'Sverinavilla ei vielä ole suoraa ilmoitusreittiä tälle tienpitäjälle.',placeLabel:'Paikka tai osoite (valinnainen)',descriptionLabel:'Kuvaa vika'},
+  bs:{liveTitle:'Cesta, ulica ili biciklistička staza',liveIntro:'Opiši problem. Sverinav provjerava upravljača ceste u NVDB-u i vodi te do odgovarajućeg službenog primaoca.',route:'Koristi moju lokaciju i pronađi primaoca',privacy:'Lokacija i tekst koriste se samo u pregledniku za ovu provjeru i Sverinav ih ne čuva.',descriptionRequired:'Prvo opiši problem.',locating:'Dohvaćam lokaciju…',checking:'Provjeravam upravljača ceste…',recipient:'Odgovarajući službeni primalac',stateText:'Ova dionica je državna i njome upravlja Trafikverket.',municipalText:'Ova dionica je općinska i njome upravlja Grad Göteborg.',privateText:'Ovo je privatna cesta. Obično se kontaktira cestovna udruga, zajednica ili vlasnik nekretnine.',open:'Otvori službenu prijavu',copyText:'Kopiraj opis',copyCoords:'Kopiraj GPS koordinate',copied:'Kopirano',copyFailed:'Automatsko kopiranje nije uspjelo.',notSent:'Ništa nije poslano. Ti pregledavaš i šalješ prijavu u službenoj usluzi.',photo:'Fotografije dodaj u službenoj usluzi nakon otvaranja.',acuteState:'Hitna opasnost na državnoj cesti: nazovi Trafikverket 0771-921 921.',acuteMunicipal:'Hitna opasnost na općinskoj ulici ili mjestu: nazovi Grad Göteborg 031-365 00 00.',unsupported:'Sverinav još nema direktan kanal prijave za ovog upravljača.',placeLabel:'Mjesto ili adresa (nije obavezno)',descriptionLabel:'Opiši problem'},
+  ku:{liveTitle:'Rê, kolan an rêya bisîklêtê',liveIntro:'Pirsgirêkê rave bike. Sverinav berpirsiyarê rê di NVDB de kontrol dike û te digihîne wergirê fermî yê rast.',route:'Cihê min bi kar bîne û wergirê bibîne',privacy:'Cih û nivîsa te tenê di gerokê de ji bo vê kontrolê tê bikaranîn û Sverinav wan nahilîne.',descriptionRequired:'Pêşî pirsgirêkê rave bike.',locating:'Cih tê dîtin…',checking:'Berpirsiyarê rê tê kontrolkirin…',recipient:'Wergirê fermî yê rast',stateText:'Ev beşa rêyê ya dewletê ye û Trafikverket wê rêve dibe.',municipalText:'Ev beşa rêyê ya şaredariyê ye û Göteborgs Stad wê rêve dibe.',privateText:'Ev rêyek taybet e. Bi gelemperî bi komeleya rê, samfällighet an xwediyê milkê re têkilî dayne.',open:'Rapora fermî veke',copyText:'Ravekirinê kopî bike',copyCoords:'Koordînatên GPS kopî bike',copied:'Hate kopîkirin',copyFailed:'Kopîkirina bixweber nehat kirin.',notSent:'Tiştek nehat şandin. Tu bixwe di xizmeta fermî de kontrol û şandinê dikî.',photo:'Piştî vekirina xizmeta fermî wêneyan li wir zêde bike.',acuteState:'Xetera lezgîn li rêya dewletê: Trafikverket 0771-921 921.',acuteMunicipal:'Xetera lezgîn li kolan an cihê şaredariyê: Göteborgs Stad 031-365 00 00.',unsupported:'Sverinav hîn rêyek rasterast a raporkirinê ji bo vî berpirsiyarî tune.',placeLabel:'Cih an navnîşan (vebijarkî)',descriptionLabel:'Pirsgirêkê rave bike'},
+  es:{liveTitle:'Carretera, calle o carril bici',liveIntro:'Describe el problema. Sverinav comprueba el responsable de la vía en NVDB y te dirige al destinatario oficial correcto.',route:'Usar mi ubicación y encontrar destinatario',privacy:'Tu ubicación y texto se usan solo en el navegador para esta comprobación y Sverinav no los guarda.',descriptionRequired:'Describe primero el problema.',locating:'Obteniendo ubicación…',checking:'Comprobando responsable de la vía…',recipient:'Destinatario oficial correcto',stateText:'Este tramo es estatal y lo gestiona Trafikverket.',municipalText:'Este tramo es municipal y lo gestiona el Ayuntamiento de Gotemburgo.',privateText:'Esta es una vía privada. Normalmente debes contactar con la asociación vial, comunidad o propietario correspondiente.',open:'Abrir aviso oficial',copyText:'Copiar descripción',copyCoords:'Copiar coordenadas GPS',copied:'Copiado',copyFailed:'No se pudo copiar automáticamente.',notSent:'No se ha enviado nada. Tú revisas y envías el aviso en el servicio oficial.',photo:'Añade las fotos en el servicio oficial después de abrirlo.',acuteState:'Peligro urgente en carretera estatal: llama a Trafikverket 0771-921 921.',acuteMunicipal:'Peligro urgente en calle o lugar municipal: llama al Ayuntamiento de Gotemburgo 031-365 00 00.',unsupported:'Sverinav aún no tiene un canal directo para este responsable.',placeLabel:'Lugar o dirección (opcional)',descriptionLabel:'Describe el problema'},
+  ru:{liveTitle:'Дорога, улица или велодорожка',liveIntro:'Опиши проблему. Sverinav проверит владельца дороги по NVDB и направит к правильному официальному получателю.',route:'Использовать мою позицию и найти получателя',privacy:'Позиция и текст используются только в браузере для этой проверки и не сохраняются Sverinav.',descriptionRequired:'Сначала опиши проблему.',locating:'Определяю позицию…',checking:'Проверяю владельца дороги…',recipient:'Правильный официальный получатель',stateText:'Этот участок дороги государственный, за него отвечает Trafikverket.',municipalText:'Этот участок дороги муниципальный, за него отвечает Göteborgs Stad.',privateText:'Это частная дорога. Обычно нужно связаться с дорожным объединением, samfällighetsförening или соответствующим собственником.',open:'Открыть официальную felanmälan',copyText:'Скопировать описание',copyCoords:'Скопировать GPS-координаты',copied:'Скопировано',copyFailed:'Не удалось скопировать автоматически.',notSent:'Ничего не отправлено. Ты сам проверяешь и отправляешь обращение в официальном сервисе.',photo:'Фото добавишь уже в официальном сервисе после его открытия.',acuteState:'Срочная опасность на государственной дороге: Trafikverket 0771-921 921.',acuteMunicipal:'Срочная опасность на муниципальной улице или месте: Göteborgs Stad 031-365 00 00.',unsupported:'Для этого владельца дороги Sverinav пока не подключил прямую форму обращения.',placeLabel:'Место или адрес (необязательно)',descriptionLabel:'Опиши проблему'},
+  uk:{liveTitle:'Дорога, вулиця або велодоріжка',liveIntro:'Опишіть проблему. Sverinav перевірить власника дороги через NVDB і направить до правильного офіційного отримувача.',route:'Використати мою позицію та знайти отримувача',privacy:'Позиція й текст використовуються лише в браузері для цієї перевірки та не зберігаються Sverinav.',descriptionRequired:'Спочатку опишіть проблему.',locating:'Визначаю позицію…',checking:'Перевіряю власника дороги…',recipient:'Правильний офіційний отримувач',stateText:'Ця ділянка дороги державна, за неї відповідає Trafikverket.',municipalText:'Ця ділянка дороги муніципальна, за неї відповідає Göteborgs Stad.',privateText:'Це приватна дорога. Зазвичай потрібно звернутися до дорожнього об’єднання, samfällighetsförening або відповідного власника.',open:'Відкрити офіційну felanmälan',copyText:'Скопіювати опис',copyCoords:'Скопіювати GPS-координати',copied:'Скопійовано',copyFailed:'Не вдалося скопіювати автоматично.',notSent:'Нічого не надіслано. Ви самі перевіряєте й надсилаєте звернення в офіційному сервісі.',photo:'Фото додайте вже в офіційному сервісі після його відкриття.',acuteState:'Негайна небезпека на державній дорозі: Trafikverket 0771-921 921.',acuteMunicipal:'Негайна небезпека на муніципальній вулиці або місці: Göteborgs Stad 031-365 00 00.',unsupported:'Для цього власника дороги Sverinav ще не має прямої форми звернення.',placeLabel:'Місце або адреса (необов’язково)',descriptionLabel:'Опишіть проблему'}
+};
+
+function rpt(key) {
+  return reportMessages[currentLanguage]?.[key] || reportMessages.en[key] || reportMessages.sv[key] || key;
+}
+
 const roadMessages = {
   sv: {
     verify:'Kontrollera väghållare vid min position',
@@ -730,14 +748,14 @@ function holderExplanation(type) {
 
 function officialReportUrl(result) {
   if (result.holderType === 'statlig') {
-    return 'https://www.trafikverket.se/e-tjanster/anmal-icke-akuta-fel-pa-vag/';
+    return 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/';
   }
 
   if (
     result.holderType === 'kommunal' &&
     /göteborg/i.test(result.holderName || '')
   ) {
-    return 'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230';
+    return 'https://goteborg.se/wps/portal/kontakta-oss/felanmalan-gator-torg-och-parker';
   }
 
   return null;
@@ -953,28 +971,176 @@ function responsibilityScreen() {
   };
 }
 
+const REPORT_ROUTES = {
+  trafikverket: 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/',
+  goteborg: 'https://goteborg.se/wps/portal/kontakta-oss/felanmalan-gator-torg-och-parker'
+};
+
+async function copyTextToClipboard(text, button) {
+  const original = button.textContent;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      if (!document.execCommand('copy')) throw new Error('copy command failed');
+      textarea.remove();
+    }
+    button.textContent = rpt('copied');
+  } catch {
+    button.textContent = rpt('copyFailed');
+  }
+  setTimeout(() => { if (button.isConnected) button.textContent = original; }, 1800);
+}
+
+function reportPackage(description, place) {
+  const parts = [description.trim()];
+  if (place.trim()) parts.push(`${rpt('placeLabel')}: ${place.trim()}`);
+  return parts.filter(Boolean).join('\n\n');
+}
+
+function officialReportRoute(result) {
+  if (result.holderType === 'statlig') {
+    return { url: REPORT_ROUTES.trafikverket, acute: rpt('acuteState') };
+  }
+  if (result.holderType === 'kommunal' && /göteborg/i.test(result.holderName || '')) {
+    return { url: REPORT_ROUTES.goteborg, acute: rpt('acuteMunicipal') };
+  }
+  return { url: null, acute: '' };
+}
+
+function reportHolderText(result) {
+  if (result.holderType === 'statlig') return rpt('stateText');
+  if (result.holderType === 'kommunal' && /göteborg/i.test(result.holderName || '')) return rpt('municipalText');
+  if (result.holderType === 'enskild') return rpt('privateText');
+  return rpt('unsupported');
+}
+
+function reportRouteMarkup(result, position) {
+  const actor = result.holderName ||
+    (result.holderType === 'statlig' ? 'Trafikverket' : holderTypeLabel(result.holderType));
+  const route = officialReportRoute(result);
+  const accuracy = Number.isFinite(position.coords.accuracy) ? Math.round(position.coords.accuracy) : null;
+  const distance = Math.max(0, Math.round(result.distanceMeters || 0));
+  const coordinates = `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`;
+
+  return `<div class="report-route-card">
+    <div class="road-holder-header">
+      <span class="item-icon">${icon('route')}</span>
+      <div class="road-holder-copy">
+        <small>${rpt('recipient')}</small>
+        <strong>${escapeHtml(actor)}</strong>
+        <span class="road-holder-type">${holderTypeLabel(result.holderType)}</span>
+      </div>
+    </div>
+    <p>${reportHolderText(result)}</p>
+    <div class="road-meta">
+      <span>${rt('distance')}: ~${distance} m</span>
+      ${accuracy !== null ? `<span>${rt('accuracy')}: ±${accuracy} m</span>` : ''}
+    </div>
+    ${result.ambiguous ? `<div class="road-warning">${rt('ambiguous')}</div>` : ''}
+    ${accuracy !== null && accuracy > 80 ? `<div class="road-warning">${rt('inaccurate')}</div>` : ''}
+    ${route.acute ? `<div class="report-acute">${escapeHtml(route.acute)}</div>` : ''}
+    <div class="report-copy-row">
+      <button class="action secondary" type="button" data-copy-report>${rpt('copyText')}</button>
+      <button class="action secondary" type="button" data-copy-coords data-coordinates="${escapeHtml(coordinates)}">${rpt('copyCoords')}</button>
+    </div>
+    ${route.url ? `<a class="report-open-link" href="${escapeHtml(route.url)}" target="_blank" rel="noopener noreferrer">${rpt('open')} ↗</a>` : `<div class="road-warning">${rpt('unsupported')}</div>`}
+    <p class="report-not-sent">${rpt('notSent')}</p>
+    <p class="report-photo-note">${rpt('photo')}</p>
+    <div class="source">${icon('database')}<span>Trafikverket / NVDB</span></div>
+  </div>`;
+}
+
+async function routeRoadReport(container, button) {
+  const description = document.getElementById('reportDescription')?.value || '';
+  const place = document.getElementById('reportPlace')?.value || '';
+
+  if (!description.trim()) {
+    container.innerHTML = `<div class="road-warning">${rpt('descriptionRequired')}</div>`;
+    document.getElementById('reportDescription')?.focus();
+    return;
+  }
+
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = `${icon('pin')}<span>${rpt('locating')}</span>`;
+
+  try {
+    const position = await getCurrentPosition();
+    button.innerHTML = `${icon('database')}<span>${rpt('checking')}</span>`;
+
+    const result = await window.SverinavNVDB.resolveRoadHolder(
+      position.coords.latitude,
+      position.coords.longitude,
+      { accuracyMeters: position.coords.accuracy }
+    );
+
+    container.innerHTML = reportRouteMarkup(result, position);
+
+    const packageText = reportPackage(description, place);
+    const copyReport = container.querySelector('[data-copy-report]');
+    const copyCoords = container.querySelector('[data-copy-coords]');
+
+    copyReport?.addEventListener('click', () => copyTextToClipboard(packageText, copyReport));
+    copyCoords?.addEventListener('click', () => copyTextToClipboard(copyCoords.dataset.coordinates || '', copyCoords));
+  } catch (error) {
+    const message = error?.code === 'NO_NEARBY_ROAD'
+      ? rt('noRoad')
+      : geolocationErrorMessage(error);
+    container.innerHTML = `<div class="road-warning">${escapeHtml(message)}</div>`;
+  } finally {
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.innerHTML = original;
+  }
+}
+
 function reportScreen() {
   shell(
     t('reportTitle'),
     t('reportHelp'),
-    `<div class="form-stack">
-      <div class="field-group">
-        <span class="field-label">${t('addPhoto')}</span>
-        <label class="file-label" for="photo">${icon('camera')}<span>${t('addPhoto')}</span></label>
-        <input id="photo" type="file" accept="image/*">
+    `<div class="report-live-intro">
+      <span class="item-icon">${icon('road')}</span>
+      <div>
+        <strong>${rpt('liveTitle')}</strong>
+        <p>${rpt('liveIntro')}</p>
       </div>
+    </div>
+    <div class="form-stack">
       <div class="field-group">
-        <label class="field-label" for="reportPlace">${t('place')}</label>
-        <input id="reportPlace" class="input" placeholder="${t('place')}">
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="reportDescription">${t('reportPlaceholder')}</label>
+        <label class="field-label" for="reportDescription">${rpt('descriptionLabel')}</label>
         <textarea id="reportDescription" class="textarea" placeholder="${t('reportPlaceholder')}"></textarea>
       </div>
-      <button class="action" type="button">${t('preview')}</button>
-      <div class="result"><strong>${t('noRealReport')}</strong><p>${t('earlyPrototype')}</p></div>
+      <div class="field-group">
+        <label class="field-label" for="reportPlace">${rpt('placeLabel')}</label>
+        <input id="reportPlace" class="input" placeholder="${rpt('placeLabel')}">
+      </div>
+      <button id="routeRoadReport" class="action" type="button">
+        ${icon('pin')}<span>${rpt('route')}</span>
+      </button>
+      <p class="road-privacy">${rpt('privacy')}</p>
+      <div id="reportRouteResult" aria-live="polite"></div>
     </div>`
   );
+
+  const button = document.getElementById('routeRoadReport');
+  const container = document.getElementById('reportRouteResult');
+
+  if (!navigator.geolocation || !window.SverinavNVDB) {
+    button.disabled = true;
+    container.innerHTML = `<div class="road-warning">${rt('serviceError')}</div>`;
+    return;
+  }
+
+  button.addEventListener('click', () => routeRoadReport(container, button));
 }
 
 function nearbyItems() {

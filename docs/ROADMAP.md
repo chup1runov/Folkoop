@@ -20,7 +20,7 @@
 - [x] NVDB Väghållare adapter — live via Trafikverket NetInfo + användarens tillfälliga position
 - [ ] Göteborg Trafikpåverkan adapter
 - [ ] RiverService adapter
-- [ ] Felanmälan-router
+- [x] Felanmälan-router — väg/gata/cykelbana → NVDB → Trafikverket eller Göteborgs Stad
 - [ ] karta med källmarkering
 - [ ] riktiga PWA-ikoner 192×192 och 512×512
 - [ ] accessibility / WCAG genomgång
