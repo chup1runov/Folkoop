@@ -1,4 +1,4 @@
-const CACHE = 'sverinav-v0.9.0';
+const CACHE = 'sverinav-v0.10.0';
 const BASE = self.registration.scope;
 const APP_SHELL = new URL('', BASE).href;
 const DATA_PATH = '/data/';
