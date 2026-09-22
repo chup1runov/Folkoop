@@ -755,7 +755,7 @@ function officialReportUrl(result) {
     result.holderType === 'kommunal' &&
     /göteborg/i.test(result.holderName || '')
   ) {
-    return 'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230';
+    return 'https://goteborg.se/wps/portal/kontakta-oss/felanmalan-gator-torg-och-parker';
   }
 
   return null;
@@ -973,7 +973,7 @@ function responsibilityScreen() {
 
 const REPORT_ROUTES = {
   trafikverket: 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/',
-  goteborg: 'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230'
+  goteborg: 'https://goteborg.se/wps/portal/kontakta-oss/felanmalan-gator-torg-och-parker'
 };
 
 async function copyTextToClipboard(text, button) {
