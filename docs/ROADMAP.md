@@ -1,4 +1,4 @@
-# Roadmap v0.2
+# Roadmap v0.3
 
 ## Fas 0 — förstudie
 
@@ -7,18 +7,24 @@
 - [x] första webprototyp
 - [x] integrationskarta Göteborg
 - [x] arbetsnamn Sverinav
+- [x] publikt GitHub-repository
+- [x] GitHub Pages deployment
+- [x] PWA-bas
+- [x] flerspråkigt gränssnitt, 11 språk
 - [ ] formell varumärkesclearance
-- [ ] utvecklarkonton: Göteborg Open Data, Trafikverket, Västtrafik
+- [ ] slutligt beslut om kodlicens
 
 ## Fas 1 — datadriven PWA-prototyp
 
-- [ ] PWA-bas
 - [ ] Riksdagen adapter
 - [ ] NVDB Väghållare adapter
 - [ ] Göteborg Trafikpåverkan adapter
 - [ ] RiverService adapter
 - [ ] Felanmälan-router
 - [ ] karta med källmarkering
+- [ ] riktiga PWA-ikoner 192×192 och 512×512
+- [ ] accessibility / WCAG genomgång
+- [ ] automatiska smoke tests
 
 ## Fas 1.1 — lokaldemokrati
 
@@ -26,13 +32,14 @@
 - [ ] Påverka nära mig
 - [ ] samråd/detaljplaner
 - [ ] Västtrafik
+- [ ] kommunala beslut Göteborg
 
 ## Fas 2 — personligt läge
 
 - [ ] favoritområden
 - [ ] ämnesbevakningar
 - [ ] push-notiser
-- [ ] integritetsmodell
+- [ ] implementerad integritetsmodell
 - [ ] Mina ärenden om integration blir möjlig
 
 ## Fas 3 — nationell skalning
@@ -48,4 +55,4 @@ Inte innan den öppna civic-tjänsten fungerar och dataseparationen är designad
 
 - [ ] separat identitet
 - [ ] medlemsintegration
-- [ ] Fria tankars verkstad
+- [ ] idé-/motionsworkflow

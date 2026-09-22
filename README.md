@@ -48,8 +48,13 @@ Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-la
 
 Första pilotområde: **Göteborg**.
 
+## Publik version
+
+https://chup1runov.github.io/Sverinav/
+
 ## Dokumentation
 
+- `docs/PROJECT_HANDOFF.md` — aktuell helhetsbild och instruktion för att fortsätta projektet
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/MVP.md`
 - `docs/ARCHITECTURE.md`
