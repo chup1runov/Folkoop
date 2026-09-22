@@ -602,6 +602,13 @@ const languageNames = {
   bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
 };
 
+const closeLanguageLabels = {
+  sv:'Stäng språkval', en:'Close language menu', ar:'إغلاق قائمة اللغات',
+  so:'Xir liiska luqadaha', fa:'بستن فهرست زبان‌ها', fi:'Sulje kielivalikko',
+  bs:'Zatvori izbornik jezika', ku:'Pêşeka zimanê bigire',
+  es:'Cerrar menú de idioma', ru:'Закрыть выбор языка', uk:'Закрити вибір мови'
+};
+
 const languageCodes = {sv:'SV',en:'EN',ar:'AR',so:'SO',fa:'FA',fi:'FI',bs:'BHS',ku:'KU',es:'ES',ru:'RU',uk:'UK'};
 
 function screenFromHash() {
@@ -623,6 +630,9 @@ function applyLanguage(language) {
   document.getElementById('navDecisions').textContent = t('navDecisions');
   document.getElementById('languageSheetTitle').textContent = t('language');
   document.getElementById('bottomNav').setAttribute('aria-label', currentLanguage === 'sv' ? 'Huvudmeny' : 'Navigation');
+  const closeLabel = closeLanguageLabels[currentLanguage] || closeLanguageLabels.en;
+  closeLanguageButton.setAttribute('aria-label', closeLabel);
+  languageBackdrop.setAttribute('aria-label', closeLabel);
   languageCode.textContent = languageCodes[currentLanguage] || currentLanguage.toUpperCase();
 
   renderLanguageOptions();
@@ -641,6 +651,7 @@ function openLanguageSheet() {
   languageSheet.hidden = false;
   languageButton.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
+  document.querySelector('.app-shell')?.setAttribute('inert', '');
   requestAnimationFrame(() => {
     const selected = languageOptions.querySelector('[aria-pressed="true"]');
     (selected || closeLanguageButton).focus();
@@ -652,13 +663,17 @@ function closeLanguageSheet() {
   languageSheet.hidden = true;
   languageButton.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
+  document.querySelector('.app-shell')?.removeAttribute('inert');
   languageButton.focus();
 }
 
 function setNav(name) {
   const navName = name === 'ansvar' ? 'home' : name;
   document.querySelectorAll('.bottom-nav button').forEach(button => {
-    button.classList.toggle('active', button.dataset.screen === navName);
+    const active = button.dataset.screen === navName;
+    button.classList.toggle('active', active);
+    if (active) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
   });
 }
 
@@ -1395,7 +1410,29 @@ document.addEventListener('click', async event => {
 });
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !languageSheet.hidden) closeLanguageSheet();
+  if (languageSheet.hidden) return;
+
+  if (event.key === 'Escape') {
+    closeLanguageSheet();
+    return;
+  }
+
+  if (event.key === 'Tab') {
+    const focusable = [...languageSheet.querySelectorAll('button:not([disabled]):not([tabindex="-1"])')]
+      .filter(element => !element.hidden && element.offsetParent !== null);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 });
 
 currentScreen = screenFromHash();
