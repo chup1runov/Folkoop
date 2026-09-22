@@ -2,7 +2,7 @@ const TARGETS = [
   {
     name:'Göteborgs Stad felanmälan',
     url:'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230',
-    required:[/Felanmälan\s*-\s*gator, torg och parker/i,/Anmäl fel/i]
+    required:[/Felanmälan\s*-\s*gator, torg och parker/i,/Skicka felanmälan via vår e-tjänst/i]
   },
   {
     name:'Trafikverket drift och underhåll',
