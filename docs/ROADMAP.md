@@ -1,4 +1,4 @@
-# Roadmap — pilot hardening v0.8.1
+# Roadmap — source transparency v0.9
 
 ## Fas 0 — förstudie
 
@@ -26,6 +26,7 @@
 - [x] första accessibility / WCAG hardening-pass
 - [x] iPhone Add to Home Screen-guidning
 - [x] automatiska static + desktop/mobile/iPhone-like headless-browser smoke tests
+- [x] source freshness/status för live-data
 
 ## Fas 1.1 — lokaldemokrati
 
