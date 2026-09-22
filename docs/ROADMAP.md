@@ -1,4 +1,4 @@
-# Roadmap v0.3
+# Roadmap — pilot hardening v0.8
 
 ## Fas 0 — förstudie
 
