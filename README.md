@@ -48,6 +48,8 @@ Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-la
 
 Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.\n\nFör vägfrågor kan `Vem ansvarar?` nu, efter uttryckligt platsgodkännande, kontrollera aktuell väghållare direkt mot **Trafikverkets NVDB/NetInfo**. Positionen sparas inte.
 
+`Nära mig` visar nu också Göteborgs Stads aktuella planer som är öppna för synpunkter. Sverinav hämtar listan dagligen, filtrerar bort passerade tidsfrister och länkar till originalprojektet.
+
 ## Publik version
 
 https://chup1runov.github.io/Sverinav/
