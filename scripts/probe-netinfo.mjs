@@ -1,42 +1,35 @@
-const url = 'https://geo-netinfo.trafikverket.se/MapService/wms.axd/NetInfo_1_8?Service=WMS&request=GetCapabilities';
+const ENDPOINT = 'https://geo-netinfo.trafikverket.se/MapService/wms.axd/NetInfo_1_8';
+const ORIGIN = 'https://chup1runov.github.io';
 
-function extractFormats(xml) {
-  const block = xml.match(/<GetFeatureInfo>[\s\S]*?<\/GetFeatureInfo>/i)?.[0] || '';
-  return [...block.matchAll(/<Format>([^<]+)<\/Format>/gi)].map(match => match[1].trim());
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
 }
 
-function extractCors(headers) {
-  return {
-    allowOrigin: headers.get('access-control-allow-origin'),
-    allowMethods: headers.get('access-control-allow-methods'),
-    contentType: headers.get('content-type')
-  };
-}
+async function capabilities() {
+  const url = new URL(ENDPOINT);
+  url.search = new URLSearchParams({
+    Service: 'WMS',
+    request: 'GetCapabilities'
+  });
 
-async function fetchCapabilities() {
   const response = await fetch(url, {
     headers: {
-      'user-agent': 'Sverinav-NVDB-Probe/0.5 (+https://github.com/chup1runov/Sverinav)',
-      'origin': 'https://chup1runov.github.io'
+      origin: ORIGIN,
+      'user-agent': 'Sverinav-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Sverinav)'
     }
   });
 
-  console.log('CAPABILITIES_STATUS', response.status);
-  console.log('CAPABILITIES_HEADERS', JSON.stringify(extractCors(response.headers)));
+  assert(response.ok, `GetCapabilities returned ${response.status}`);
+  assert(response.headers.get('access-control-allow-origin') === '*', 'NetInfo CORS no longer allows GitHub Pages');
 
-  const text = await response.text();
-  console.log('CAPABILITIES_LENGTH', text.length);
-  console.log('FEATUREINFO_FORMATS', JSON.stringify(extractFormats(text)));
-  console.log('HAS_VAGHALLARE_LAYER', /<Name>Vaghallare<\/Name>/i.test(text));
+  const xml = await response.text();
+  assert(/<Name>Vaghallare<\/Name>/i.test(xml), 'Vaghallare layer missing from NetInfo');
 
-  if (!response.ok || !/<Name>Vaghallare<\/Name>/i.test(text)) {
-    throw new Error('NetInfo capabilities unavailable or Vaghallare layer missing');
-  }
-
-  return { text, formats: extractFormats(text) };
+  const featureInfoBlock = xml.match(/<GetFeatureInfo>[\s\S]*?<\/GetFeatureInfo>/i)?.[0] || '';
+  assert(/<Format>application\/json<\/Format>/i.test(featureInfoBlock), 'GetFeatureInfo JSON support missing');
 }
 
-function featureInfoUrl({ lon, lat, infoFormat }) {
+function featureInfoUrl(lat, lon) {
   const span = 0.0025;
   const params = new URLSearchParams({
     SERVICE: 'WMS',
@@ -47,73 +40,42 @@ function featureInfoUrl({ lon, lat, infoFormat }) {
     STYLES: '',
     SRS: 'EPSG:4326',
     BBOX: [lon - span, lat - span, lon + span, lat + span].join(','),
-    WIDTH: '101',
-    HEIGHT: '101',
-    X: '50',
-    Y: '50',
+    WIDTH: '61',
+    HEIGHT: '61',
+    X: '30',
+    Y: '30',
     FORMAT: 'image/png',
-    INFO_FORMAT: infoFormat,
-    FEATURE_COUNT: '10'
+    INFO_FORMAT: 'application/json',
+    FEATURE_COUNT: '20'
   });
-  return 'https://geo-netinfo.trafikverket.se/MapService/wms.axd/NetInfo_1_8?' + params;
+  return `${ENDPOINT}?${params}`;
 }
 
-async function probePoint(name, lon, lat, formats) {
-  const candidates = [
-    ...formats,
-    'application/json',
-    'application/vnd.ogc.gml',
-    'text/xml',
-    'text/html',
-    'text/plain'
-  ].filter((value, index, values) => value && values.indexOf(value) === index);
-
-  for (const infoFormat of candidates) {
-    const response = await fetch(featureInfoUrl({ lon, lat, infoFormat }), {
-      headers: {
-        'user-agent': 'Sverinav-NVDB-Probe/0.5 (+https://github.com/chup1runov/Sverinav)',
-        'origin': 'https://chup1runov.github.io'
-      }
-    });
-    const text = await response.text();
-    console.log('POINT', name, 'FORMAT', infoFormat, 'STATUS', response.status);
-    console.log('POINT_HEADERS', name, JSON.stringify(extractCors(response.headers)));
-    console.log('POINT_BODY', name, JSON.stringify(text.slice(0, 2500)));
-
-    if (response.ok && text && !/ServiceException|ExceptionReport/i.test(text)) {
-      return { infoFormat, text, headers: extractCors(response.headers) };
-    }
-  }
-
-  throw new Error('No usable GetFeatureInfo response for ' + name);
-}
-
-const { formats } = await fetchCapabilities();
-
-async function probeJson(name, lon, lat) {
-  const response = await fetch(featureInfoUrl({ lon, lat, infoFormat: 'application/json' }), {
+async function assertGothenburgMunicipalRoad() {
+  const response = await fetch(featureInfoUrl(57.7002, 11.9738), {
     headers: {
-      'user-agent': 'Sverinav-NVDB-Probe/0.5 (+https://github.com/chup1runov/Sverinav)',
-      'origin': 'https://chup1runov.github.io'
+      accept: 'application/json',
+      origin: ORIGIN,
+      'user-agent': 'Sverinav-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Sverinav)'
     }
   });
-  const text = await response.text();
-  console.log('JSON_POINT', name, 'STATUS', response.status);
-  console.log('JSON_POINT_HEADERS', name, JSON.stringify(extractCors(response.headers)));
-  console.log('JSON_POINT_BODY', name, JSON.stringify(text.slice(0, 3500)));
 
-  if (!response.ok || /ServiceException|ExceptionReport/i.test(text)) {
-    throw new Error('JSON GetFeatureInfo failed for ' + name);
-  }
+  assert(response.ok, `GetFeatureInfo returned ${response.status}`);
+  assert(response.headers.get('access-control-allow-origin') === '*', 'GetFeatureInfo CORS no longer allows GitHub Pages');
 
-  try {
-    JSON.parse(text);
-  } catch {
-    throw new Error('JSON GetFeatureInfo returned non-JSON for ' + name);
-  }
+  const payload = await response.json();
+  const features = Array.isArray(payload?.features) ? payload.features : [];
+  assert(features.length > 0, 'No Vaghallare feature returned for Göteborg test point');
+
+  const gothenburg = features.find(feature =>
+    Number(feature?.properties?.Vaghallartyp) === 2 &&
+    /göteborg/i.test(String(feature?.properties?.Vaghallarnamn || ''))
+  );
+
+  assert(gothenburg, 'Göteborg test point no longer resolves to a municipal Göteborg road');
 }
 
-// Approximate road points used only to validate the public service contract.
-await probePoint('AVENYN', 11.9738, 57.7002, formats);
-await probeJson('AVENYN', 11.9738, 57.7002);
-await probeJson('E20_PARTILLE', 12.1035, 57.7410);
+await capabilities();
+await assertGothenburgMunicipalRoad();
+
+console.log('NetInfo Vaghallare contract OK: CORS, JSON and Göteborg municipal road verified.');
