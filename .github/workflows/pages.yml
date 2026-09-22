@@ -3,7 +3,11 @@ name: Deploy Sverinav to GitHub Pages
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
 
 permissions:
   contents: read
@@ -11,11 +15,31 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'production' }}"
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Fetch latest Riksdagen decisions
+        run: node scripts/fetch-riksdagen.mjs
+
+      - name: Validate static app
+        run: |
+          node --check app.js
+          node --check riksdagen.js
+          node --check sw.js
+          python -m json.tool manifest.webmanifest >/dev/null
+          test -s data/riksdagen-decisions.json
+
   deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -25,10 +49,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Fetch latest Riksdagen decisions
+        run: node scripts/fetch-riksdagen.mjs
+
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css app.js manifest.webmanifest sw.js icon.svg _site/
+          cp index.html styles.css riksdagen.js app.js manifest.webmanifest sw.js icon.svg _site/
+          cp -R data _site/data
           touch _site/.nojekyll
 
       - name: Configure Pages

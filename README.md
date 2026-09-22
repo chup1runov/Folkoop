@@ -46,7 +46,7 @@ Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-la
 
 ## Pilot
 
-Första pilotområde: **Göteborg**.
+Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar nu de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.
 
 ## Publik version
 

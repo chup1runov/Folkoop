@@ -456,6 +456,41 @@ function t(key) {
   return messages[currentLanguage][key] || messages.sv[key] || key;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  })[character]);
+}
+
+function safeRiksdagenUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && url.hostname === 'data.riksdagen.se' ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatDecisionDate(value) {
+  if (!value) return '';
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return escapeHtml(value);
+
+  try {
+    return new Intl.DateTimeFormat(currentLanguage || 'sv', {
+      year:'numeric',
+      month:'short',
+      day:'numeric'
+    }).format(date);
+  } catch {
+    return escapeHtml(value);
+  }
+}
+
 function icon(name) {
   const paths = {
     route: '<path d="M5 18c0-3 2-5 5-5h4c3 0 5-2 5-5"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/>',
@@ -735,20 +770,91 @@ function decisionItems() {
   ];
 }
 
+function decisionLoadingMarkup() {
+  return `
+    <article class="item loading-card" aria-hidden="true">
+      <span class="item-icon">${icon('file')}</span>
+      <div class="item-content">
+        <div class="loading-line medium"></div>
+        <div class="loading-line"></div>
+        <div class="loading-line short"></div>
+      </div>
+    </article>
+    <article class="item loading-card" aria-hidden="true">
+      <span class="item-icon">${icon('file')}</span>
+      <div class="item-content">
+        <div class="loading-line"></div>
+        <div class="loading-line medium"></div>
+        <div class="loading-line short"></div>
+      </div>
+    </article>`;
+}
+
+function liveDecisionMarkup(item) {
+  const href = safeRiksdagenUrl(item.sourceUrl);
+  if (!href) return '';
+
+  const meta = [
+    item.documentType,
+    item.reference,
+    item.responsibleActor,
+    formatDecisionDate(item.decisionDate || item.publishedDate)
+  ].filter(Boolean).map(value => `<span>${escapeHtml(value)}</span>`).join('');
+
+  return `<a class="item decision-live-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+    <span class="item-icon">${icon('file')}</span>
+    <span class="item-content">
+      <strong>${escapeHtml(item.title)}</strong>
+      <span class="decision-meta">${meta}</span>
+      <span class="live-badge"><span class="live-dot"></span>Sveriges riksdag ↗</span>
+    </span>
+  </a>`;
+}
+
+async function hydrateDecisionScreen(container) {
+  if (!container || !window.SverinavRiksdagen) return;
+
+  try {
+    const payload = await window.SverinavRiksdagen.loadLatestDecisions();
+    if (!container.isConnected || currentScreen !== 'beslut') return;
+
+    const markup = payload.items.map(liveDecisionMarkup).filter(Boolean).join('');
+    if (!markup) throw new Error('No renderable Riksdagen items');
+    container.innerHTML = markup;
+  } catch (error) {
+    if (!container.isConnected || currentScreen !== 'beslut') return;
+    console.warn('Riksdagen decision feed unavailable; showing demo fallback.', error);
+    container.innerHTML = demoListMarkup(decisionItems());
+  }
+}
+
+function demoListMarkup(items) {
+  return items.map(item =>
+    `<article class="item">
+      <span class="item-icon">${icon(item.icon)}</span>
+      <div class="item-content">
+        <strong>${item.title}</strong>
+        <small>${item.text}</small>
+        <div class="source">${icon('database')}<span>${item.source}</span></div>
+      </div>
+    </article>`
+  ).join('');
+}
+
+function decisionScreen() {
+  shell(
+    t('decisionsTitle'),
+    t('decisionsHelp'),
+    `<div class="list" id="decisionList">${decisionLoadingMarkup()}</div>`
+  );
+  hydrateDecisionScreen(document.getElementById('decisionList'));
+}
+
 function listScreen(title, subtitle, items) {
   shell(
     title,
     subtitle,
-    `<div class="list">${items.map(item =>
-      `<article class="item">
-        <span class="item-icon">${icon(item.icon)}</span>
-        <div class="item-content">
-          <strong>${item.title}</strong>
-          <small>${item.text}</small>
-          <div class="source">${icon('database')}<span>${item.source}</span></div>
-        </div>
-      </article>`
-    ).join('')}</div>`
+    `<div class="list">${demoListMarkup(items)}</div>`
   );
 }
 
@@ -760,7 +866,7 @@ function render(screen, updateState = true) {
   if (screen === 'ansvar') return responsibilityScreen();
   if (screen === 'rapportera') return reportScreen();
   if (screen === 'nara') return listScreen(t('nearTitle'), t('nearHelp'), nearbyItems());
-  if (screen === 'beslut') return listScreen(t('decisionsTitle'), t('decisionsHelp'), decisionItems());
+  if (screen === 'beslut') return decisionScreen();
 }
 
 function navigate(screen) {

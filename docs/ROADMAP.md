@@ -16,7 +16,7 @@
 
 ## Fas 1 — datadriven PWA-prototyp
 
-- [ ] Riksdagen adapter
+- [x] Riksdagen adapter — senaste beslutade betänkanden, source-first
 - [ ] NVDB Väghållare adapter
 - [ ] Göteborg Trafikpåverkan adapter
 - [ ] RiverService adapter
