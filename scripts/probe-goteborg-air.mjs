@@ -30,10 +30,10 @@ async function capabilities() {
 
   const xml = await response.text();
   assert(/application\/json/i.test(xml), 'GetFeatureInfo JSON support missing');
-  const stationIndex = xml.search(/matstation|mätstation|luftovervak/i);
-  console.log('AIR_LAYER_INDEX', stationIndex);
+  const stationIndex = xml.indexOf('matstationer_luft');
+  console.log('AIR_EXACT_LAYER_INDEX', stationIndex);
   console.log('AIR_LAYER_CONTEXT', JSON.stringify(
-    stationIndex >= 0 ? xml.slice(Math.max(0, stationIndex - 1800), stationIndex + 2600) : xml.slice(-5000)
+    stationIndex >= 0 ? xml.slice(Math.max(0, stationIndex - 1800), stationIndex + 2600) : xml.slice(-12000)
   ));
   console.log('AIR_CAPABILITIES_OK', true);
 
