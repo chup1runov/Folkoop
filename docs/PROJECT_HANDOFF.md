@@ -1,6 +1,6 @@
 # Sverinav — project handoff
 
-Updated: 2026-09-22
+Updated: 2026-09-23
 
 This file is the compact source of project context for continuing development without relying on previous chat history.
 
@@ -51,6 +51,8 @@ The four primary surfaces are:
 - CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
 - Visible source freshness: daily feeds show fetch time and warn after 36h; live NVDB results show the time of the actual lookup.
+- `Om Sverinav` screen with independent/non-authority disclosure, privacy/source principles, app version and privacy-preserving pilot feedback via Web Share/clipboard.
+- First pilot test guide and GitHub technical-feedback template.
 
 ### What is still demo / not connected
 
@@ -295,7 +297,7 @@ Recommended order after v0.8 hardening:
 5. Decide whether Göteborg TrafficInformation is worth requesting an APPID for.
 6. Add map only when it materially improves a live location-based task.
 7. Introduce backend/PostGIS only when static/client-side architecture becomes insufficient.
-8. Run the first small Göteborg user pilot and collect task-completion feedback.
+8. Use `docs/PILOT_GUIDE.md` for the first 5–10 person Göteborg pilot and collect task-completion feedback.
 
 ## Definition of the first useful pilot
 

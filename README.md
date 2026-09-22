@@ -50,6 +50,12 @@ Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar de senaste beslutade be
 
 `Nära mig` visar nu också Göteborgs Stads aktuella planer som är öppna för synpunkter. Sverinav hämtar listan dagligen, filtrerar bort passerade tidsfrister och länkar till originalprojektet.\n\n`Rapportera` kan nu för väg-, gatu- och cykelbaneproblem använda tillfällig geolocation + NVDB för att hitta rätt väghållare, låta användaren kopiera beskrivning och GPS-koordinater och öppna rätt officiell felanmälan för Trafikverket eller Göteborgs Stad. Sverinav skickar inte ärendet själv.
 
+## Om pilotversionen
+
+I appens **Om Sverinav** framgår att Sverinav är ett oberoende civic-tech-projekt och inte en myndighet. Där visas också version, privacy-principer, källor och en lokal feedbackfunktion som använder telefonens/webbläsarens delningsmeny.
+
+För organiserad testning finns `docs/PILOT_GUIDE.md`. Teknisk pilotfeedback kan lämnas via GitHub issue-mallen.
+
 ## Publik version
 
 https://chup1runov.github.io/Sverinav/

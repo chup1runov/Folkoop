@@ -55,6 +55,9 @@ dump_route "#rapportera" 'id="routeRoadReport"' 390 844
 dump_route "#nara" 'class="source-health source-health--fresh"' 390 844
 dump_route "#beslut" 'class="source-health source-health--fresh"' 390 844
 
+# Pilot/about surface renders on mobile.
+dump_route "#om" 'id="pilotFeedbackForm"' 390 844
+
 # Desktop shell still renders.
 dump_route "" 'id="homeIssue"' 1280 900
 
