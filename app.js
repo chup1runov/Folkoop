@@ -976,14 +976,7 @@ function home() {
         </div>
       </section>
 
-      ${deferredPrompt ? `
-        <section class="install-card" id="installCard">
-          <div>
-            <strong>${t('installTitle')}</strong>
-            <p>${t('installText')}</p>
-          </div>
-          <button id="installButton" class="install-btn" type="button">${t('install')}</button>
-        </section>` : ''}
+      ${installCardMarkup()}
 
       <p class="product-note">Sverinav · Göteborg · ${t('earlyPrototype')}</p>
     </div>
