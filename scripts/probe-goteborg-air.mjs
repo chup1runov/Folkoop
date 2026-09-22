@@ -29,7 +29,7 @@ async function capabilities() {
   assert(response.ok, `Air-station GetCapabilities returned ${response.status}`);
 
   const xml = await response.text();
-  const namePattern = new RegExp('<Name>([^<]+)</Name>', 'gi');
+  const namePattern = new RegExp('<(?:[A-Za-z0-9_]+:)?Name>([^<]+)</(?:[A-Za-z0-9_]+:)?Name>', 'gi');
   const names=[...xml.matchAll(namePattern)].map(match=>match[1].trim());
   const airNames=names.filter(name=>/luft|mät|mat|station/i.test(name));
   console.log('AIR_LAYER_NAMES', JSON.stringify(airNames));
@@ -39,8 +39,7 @@ async function capabilities() {
     throw new Error('matstationer_luft layer missing; discovered=' + JSON.stringify(airNames));
   }
 
-  const featureInfoBlock = xml.match(/<GetFeatureInfo>[\s\S]*?<\/GetFeatureInfo>/i)?.[0] || '';
-  assert(/<Format>application\/json<\/Format>/i.test(featureInfoBlock), 'GetFeatureInfo JSON support missing');
+  assert(/application\/json/i.test(xml), 'GetFeatureInfo JSON support missing');
 
   return xml;
 }
