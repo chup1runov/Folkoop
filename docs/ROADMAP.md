@@ -17,7 +17,7 @@
 ## Fas 1 — datadriven PWA-prototyp
 
 - [x] Riksdagen adapter — senaste beslutade betänkanden, source-first
-- [ ] NVDB Väghållare adapter
+- [x] NVDB Väghållare adapter — live via Trafikverket NetInfo + användarens tillfälliga position
 - [ ] Göteborg Trafikpåverkan adapter
 - [ ] RiverService adapter
 - [ ] Felanmälan-router
