@@ -55,7 +55,7 @@ jobs:
       - name: Prepare browser smoke site
         run: |
           mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-192.png icon-512.png _site/
+          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-180.png icon-192.png icon-512.png _site/
           cp -R data _site/data
           touch _site/.nojekyll
 
@@ -83,7 +83,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-192.png icon-512.png _site/
+          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-180.png icon-192.png icon-512.png _site/
           cp -R data _site/data
           touch _site/.nojekyll
 

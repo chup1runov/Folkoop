@@ -7,19 +7,22 @@ function pngSize(buffer) {
   return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
 }
 
-const [html,css,app,sw,manifestText,icon192,icon512]=await Promise.all([
+const [html,css,app,sw,manifestText,icon180,icon192,icon512]=await Promise.all([
   readFile('index.html','utf8'),readFile('styles.css','utf8'),readFile('app.js','utf8'),
   readFile('sw.js','utf8'),readFile('manifest.webmanifest','utf8'),
-  readFile('icon-192.png'),readFile('icon-512.png')
+  readFile('icon-180.png'),readFile('icon-192.png'),readFile('icon-512.png')
 ]);
 const manifest=JSON.parse(manifestText);
 
 assert(/class="skip-link"/.test(html),'Skip link missing');
 assert(/<main id="view" tabindex="-1">/.test(html),'Main focus target missing');
-assert(html.includes('./icon-192.png'),'Apple touch icon is not PNG');
+assert(html.includes('./icon-180.png'),'Apple touch icon is not the iPhone-sized PNG');
 assert(css.includes('a:focus-visible'),'Link focus-visible style missing');
 assert(app.includes("aria-current', 'page'"),'Active navigation aria-current missing');
 assert(app.includes("event.key === 'Tab'"),'Language dialog focus trap missing');
+assert(app.includes('function isIOSDevice()'),'iOS detection missing');
+assert(app.includes('data-ios-install="true"'),'iOS Add-to-Home-Screen guidance missing');
+assert(app.includes("window.navigator.standalone === true"),'iOS standalone detection missing');
 
 for(const code of ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']) {
   assert(app.includes("'"+code+"'") || app.includes(code+':'),'Language missing: '+code);
@@ -36,7 +39,8 @@ assert(icons.some(i=>i.src==='./icon-192.png'&&i.sizes==='192x192'),'192px manif
 assert(icons.some(i=>i.src==='./icon-512.png'&&i.sizes==='512x512'),'512px manifest icon missing');
 assert(icons.some(i=>i.src==='./icon-512.png'&&/maskable/.test(i.purpose||'')),'Maskable icon missing');
 
-const s192=pngSize(icon192), s512=pngSize(icon512);
+const s180=pngSize(icon180), s192=pngSize(icon192), s512=pngSize(icon512);
+assert(s180.width===180&&s180.height===180,'icon-180 dimensions wrong');
 assert(s192.width===192&&s192.height===192,'icon-192 dimensions wrong');
 assert(s512.width===512&&s512.height===512,'icon-512 dimensions wrong');
 

@@ -1,4 +1,4 @@
-# Roadmap — pilot hardening v0.8
+# Roadmap — pilot hardening v0.8.1
 
 ## Fas 0 — förstudie
 
@@ -22,9 +22,10 @@
 - [ ] RiverService adapter
 - [x] Felanmälan-router — väg/gata/cykelbana → NVDB → Trafikverket eller Göteborgs Stad
 - [ ] karta med källmarkering
-- [x] riktiga PWA-ikoner 192×192 och 512×512
+- [x] PWA-ikoner 180×180 (iPhone), 192×192 och 512×512
 - [x] första accessibility / WCAG hardening-pass
-- [x] automatiska static + headless-browser smoke tests
+- [x] iPhone Add to Home Screen-guidning
+- [x] automatiska static + desktop/mobile/iPhone-like headless-browser smoke tests
 
 ## Fas 1.1 — lokaldemokrati
 

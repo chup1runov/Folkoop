@@ -46,7 +46,7 @@ The four primary surfaces are:
 - `Beslut` live normalized Riksdagen decision feed with original-source links.
 - Language selector with browser-language detection and local persistence.
 - RTL layout for Arabic and Persian.
-- Basic security and contribution documentation.\n- PNG PWA icons (192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
+- Basic security and contribution documentation.\n- PNG PWA icons (180/192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
 
 ### What is still demo / not connected
@@ -273,9 +273,9 @@ Still to do:
 - remove or archive the old `prototype/` directory,
 - decide whether `vercel.json` and static `package.json` are still needed,
 - proper PNG PWA icons 192×192 and 512×512 added; keep them in release checks,
-- improve iPhone install guidance,
+- iPhone install guidance added for browsers without `beforeinstallprompt`; still verify manually on real iOS hardware,
 - first accessibility hardening pass completed; full manual WCAG audit with assistive technology still recommended,
-- static and headless-browser smoke tests added; extend toward interaction tests over time,
+- static and headless-browser smoke tests added, including 390×844 mobile and iPhone-like UA coverage; extend toward interaction tests over time,
 - add API health/freshness monitoring once live sources are connected,
 - service-worker strategy hardened for live APIs: cross-origin bypass + separate navigation/data/static behavior,
 - choose a licence,
@@ -285,7 +285,7 @@ Still to do:
 
 Recommended order after v0.8 hardening:
 
-1. Manual iPhone + Android pilot-device pass, including install-to-home-screen and location permission flows.
+1. Manual iPhone + Android pilot-device pass, including the now-explicit iOS Add to Home Screen guidance, location permission and clipboard flows.
 2. Fix any issues found by real-device testing.
 3. Clean repository legacy files.
 4. Add source freshness/health presentation in the UI.

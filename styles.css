@@ -670,3 +670,11 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
 
 .bottom-nav button[aria-current="page"]{font-weight:830;color:var(--teal);background:#edf6f4}
 @media(forced-colors:active){.active,.live-badge,.road-holder-type,.plan-deadline{forced-color-adjust:auto}}
+
+.ios-install-card{display:block}
+.ios-install-copy{display:grid;gap:8px}
+.ios-install-copy>strong{font-size:14px}
+.ios-install-copy>p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}
+.ios-install-steps{display:grid;gap:7px}
+.ios-install-steps span{display:flex;align-items:flex-start;gap:8px;color:#40575f;font-size:12px;line-height:1.45}
+.ios-install-steps b{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:999px;background:var(--teal-soft);color:var(--teal-strong);font-size:11px}

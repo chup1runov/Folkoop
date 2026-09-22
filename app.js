@@ -602,6 +602,63 @@ const languageNames = {
   bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
 };
 
+const iosInstallMessages = {
+  sv:{title:'Installera på iPhone',step1:'Tryck på Dela i webbläsaren.',step2:'Välj Lägg till på hemskärmen.',note:'Sverinav öppnas sedan som en egen webbapp.'},
+  en:{title:'Install on iPhone',step1:'Tap Share in your browser.',step2:'Choose Add to Home Screen.',note:'Sverinav will then open as its own web app.'},
+  ar:{title:'ثبّت على iPhone',step1:'اضغط على مشاركة في المتصفح.',step2:'اختر إضافة إلى الشاشة الرئيسية.',note:'سيفتح Sverinav بعد ذلك كتطبيق ويب مستقل.'},
+  so:{title:'Ku rakib iPhone',step1:'Taabo Share ee browser-ka.',step2:'Dooro Add to Home Screen.',note:'Sverinav markaas wuxuu u furmi doonaa sidii web app gaar ah.'},
+  fa:{title:'نصب روی iPhone',step1:'در مرورگر روی Share بزنید.',step2:'Add to Home Screen را انتخاب کنید.',note:'سپس Sverinav مانند یک وب‌اپ مستقل باز می‌شود.'},
+  fi:{title:'Asenna iPhoneen',step1:'Napauta selaimessa Jaa.',step2:'Valitse Lisää Koti-valikkoon.',note:'Sverinav avautuu sen jälkeen omana verkkosovelluksenaan.'},
+  bs:{title:'Instaliraj na iPhone',step1:'Pritisni Dijeli u pregledniku.',step2:'Odaberi Dodaj na početni zaslon.',note:'Sverinav će se zatim otvarati kao zasebna web aplikacija.'},
+  ku:{title:'Li iPhone saz bike',step1:'Di gerokê de Share bitikîne.',step2:'Add to Home Screen hilbijêre.',note:'Paşê Sverinav wekî web appê xweser vedibe.'},
+  es:{title:'Instalar en iPhone',step1:'Pulsa Compartir en el navegador.',step2:'Elige Añadir a pantalla de inicio.',note:'Sverinav se abrirá después como una web app independiente.'},
+  ru:{title:'Установить на iPhone',step1:'Нажми «Поделиться» в браузере.',step2:'Выбери «На экран Домой».',note:'После этого Sverinav будет открываться как отдельное веб-приложение.'},
+  uk:{title:'Встановити на iPhone',step1:'Натисніть «Поділитися» у браузері.',step2:'Виберіть «На екран “Домівка”».',note:'Після цього Sverinav відкриватиметься як окремий вебзастосунок.'}
+};
+
+function iit(key) {
+  return iosInstallMessages[currentLanguage]?.[key] || iosInstallMessages.en[key] || key;
+}
+
+function isStandaloneMode() {
+  return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function isIOSDevice() {
+  const ua = navigator.userAgent || '';
+  return /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function installCardMarkup() {
+  if (isStandaloneMode()) return '';
+
+  if (isIOSDevice()) {
+    return `<section class="install-card ios-install-card" data-ios-install="true">
+      <div class="ios-install-copy">
+        <strong>${iit('title')}</strong>
+        <div class="ios-install-steps">
+          <span><b>1</b> ${iit('step1')}</span>
+          <span><b>2</b> ${iit('step2')}</span>
+        </div>
+        <p>${iit('note')}</p>
+      </div>
+    </section>`;
+  }
+
+  if (deferredPrompt) {
+    return `<section class="install-card" id="installCard">
+      <div>
+        <strong>${t('installTitle')}</strong>
+        <p>${t('installText')}</p>
+      </div>
+      <button id="installButton" class="install-btn" type="button">${t('install')}</button>
+    </section>`;
+  }
+
+  return '';
+}
+
 const closeLanguageLabels = {
   sv:'Stäng språkval', en:'Close language menu', ar:'إغلاق قائمة اللغات',
   so:'Xir liiska luqadaha', fa:'بستن فهرست زبان‌ها', fi:'Sulje kielivalikko',
@@ -919,14 +976,7 @@ function home() {
         </div>
       </section>
 
-      ${deferredPrompt ? `
-        <section class="install-card" id="installCard">
-          <div>
-            <strong>${t('installTitle')}</strong>
-            <p>${t('installText')}</p>
-          </div>
-          <button id="installButton" class="install-btn" type="button">${t('install')}</button>
-        </section>` : ''}
+      ${installCardMarkup()}
 
       <p class="product-note">Sverinav · Göteborg · ${t('earlyPrototype')}</p>
     </div>
@@ -1368,6 +1418,11 @@ function navigate(screen) {
 window.addEventListener('beforeinstallprompt', event => {
   event.preventDefault();
   deferredPrompt = event;
+  if (currentScreen === 'home') render('home', false);
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
   if (currentScreen === 'home') render('home', false);
 });
 
