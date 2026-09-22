@@ -33,7 +33,7 @@ for(const code of ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']) {
 }
 for(const route of ['rapportera','nara','beslut','om']) assert(app.includes("screen === '"+route+"'"),'Screen route missing: '+route);
 assert(html.includes('id="aboutButton"'),'About button missing');
-assert(app.includes("const APP_VERSION = '0.10.0'"),'Pilot version constant missing');
+assert(app.includes("const APP_VERSION = '0.10.1'"),'Pilot version constant missing');
 assert(app.includes('function aboutScreen()'),'About screen missing');
 assert(app.includes('navigator.share'),'Web Share pilot feedback missing');
 assert(app.includes('pilot-feedback.md'),'Technical feedback route missing');
