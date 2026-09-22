@@ -87,6 +87,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .brand{font-weight:820;font-size:20px;letter-spacing:-.45px;line-height:1.05}
 .tagline{font-size:12px;color:var(--muted);line-height:1.2}
 .top-actions{display:flex;align-items:center;gap:8px}
+.info-button{
+  width:44px;
+  height:44px;
+  border:1px solid #bed0d4;
+  border-radius:12px;
+  background:#fff;
+  color:var(--teal-strong);
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  cursor:pointer
+}
 .language-button{
   border:1px solid #bed0d4;
   background:#fff;
@@ -700,3 +712,34 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
 .source-health--stale{border-color:#e4c7a7;background:#fff5e9;color:#694d31}
 .source-health--stale .source-health-dot{background:#a76526}
 .source-health--unknown{border-color:#d9e2e4;background:#f5f7f7;color:#5a6c72}
+
+.about-stack{display:grid;gap:12px;margin-top:20px}
+.about-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px;
+  background:#fff
+}
+.about-card--notice{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  border-color:var(--teal-line);
+  background:var(--teal-soft)
+}
+.about-card h3{margin:0 0 7px;font-size:16px;letter-spacing:-.2px}
+.about-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.about-card ul{margin:9px 0 0;padding-inline-start:20px;color:#435961;font-size:12px;line-height:1.55}
+.about-source-list{display:grid;gap:4px}
+.about-meta{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.about-meta div{display:grid;gap:2px}
+.about-meta span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.45px}
+.about-meta strong{font-size:15px}
+.about-meta a,.technical-feedback-link{color:var(--teal-strong);font-size:12px;font-weight:800;text-decoration:none}
+.feedback-card form{display:grid;gap:8px;margin-top:14px}
+.feedback-card .field-label{margin-top:5px}
+.feedback-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:5px}
+.feedback-actions .action{min-height:44px;font-size:12px}
+.feedback-privacy{font-size:10px!important;color:var(--muted)!important}
+.feedback-status{min-height:16px;font-size:11px!important;color:var(--teal-strong)!important;font-weight:750}
+.technical-feedback-link{display:inline-flex;margin-top:8px;min-height:44px;align-items:center}
