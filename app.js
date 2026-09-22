@@ -602,6 +602,57 @@ const languageNames = {
   bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
 };
 
+const sourceStatusMessages = {
+  sv:{updated:'Källa uppdaterad',stale:'Data kan vara inaktuell',checked:'Kontrollerad nu',unknown:'Källstatus saknas'},
+  en:{updated:'Source updated',stale:'Data may be outdated',checked:'Checked now',unknown:'Source status unavailable'},
+  ar:{updated:'تم تحديث المصدر',stale:'قد تكون البيانات قديمة',checked:'تم التحقق الآن',unknown:'حالة المصدر غير متاحة'},
+  so:{updated:'Isha waa la cusboonaysiiyay',stale:'Xogtu way duugoobi kartaa',checked:'Hadda la hubiyay',unknown:'Xaaladda isha lama heli karo'},
+  fa:{updated:'منبع به‌روز شد',stale:'ممکن است داده‌ها قدیمی باشند',checked:'همین حالا بررسی شد',unknown:'وضعیت منبع در دسترس نیست'},
+  fi:{updated:'Lähde päivitetty',stale:'Tiedot voivat olla vanhentuneita',checked:'Tarkistettu nyt',unknown:'Lähteen tila ei ole saatavilla'},
+  bs:{updated:'Izvor ažuriran',stale:'Podaci mogu biti zastarjeli',checked:'Provjereno sada',unknown:'Status izvora nije dostupan'},
+  ku:{updated:'Çavkanî hate nûkirin',stale:'Dane dikarin kevn bin',checked:'Niha hate kontrolkirin',unknown:'Rewşa çavkaniyê tune'},
+  es:{updated:'Fuente actualizada',stale:'Los datos pueden estar desactualizados',checked:'Comprobado ahora',unknown:'Estado de la fuente no disponible'},
+  ru:{updated:'Источник обновлён',stale:'Данные могут быть устаревшими',checked:'Проверено сейчас',unknown:'Статус источника недоступен'},
+  uk:{updated:'Джерело оновлено',stale:'Дані можуть бути застарілими',checked:'Перевірено зараз',unknown:'Статус джерела недоступний'}
+};
+
+function sst(key) {
+  return sourceStatusMessages[currentLanguage]?.[key] || sourceStatusMessages.en[key] || key;
+}
+
+function formatSourceTime(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  try {
+    return new Intl.DateTimeFormat(currentLanguage || 'sv', {
+      dateStyle:'medium',
+      timeStyle:'short'
+    }).format(date);
+  } catch {
+    return date.toLocaleString();
+  }
+}
+
+function sourceFreshnessMarkup(timestamp, sourceName, { maxAgeHours = 36, live = false } = {}) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) {
+    return `<div class="source-health source-health--unknown">
+      <span class="source-health-dot"></span>
+      <span>${escapeHtml(sourceName || '')}${sourceName ? ' · ' : ''}${sst('unknown')}</span>
+    </div>`;
+  }
+
+  const ageHours = Math.max(0, (Date.now() - date.getTime()) / 36e5);
+  const stale = !live && ageHours > maxAgeHours;
+  const status = live ? sst('checked') : stale ? sst('stale') : sst('updated');
+  const level = live ? 'live' : stale ? 'stale' : 'fresh';
+
+  return `<div class="source-health source-health--${level}">
+    <span class="source-health-dot"></span>
+    <span>${escapeHtml(sourceName || '')}${sourceName ? ' · ' : ''}${status}: ${escapeHtml(formatSourceTime(date))}</span>
+  </div>`;
+}
+
 const iosInstallMessages = {
   sv:{title:'Installera på iPhone',step1:'Tryck på Dela i webbläsaren.',step2:'Välj Lägg till på hemskärmen.',note:'Sverinav öppnas sedan som en egen webbapp.'},
   en:{title:'Install on iPhone',step1:'Tap Share in your browser.',step2:'Choose Add to Home Screen.',note:'Sverinav will then open as its own web app.'},
@@ -858,6 +909,7 @@ function roadLiveResultMarkup(result) {
     ${result.ambiguous ? `<div class="road-warning">${rt('ambiguous')}</div>` : ''}
     ${lowAccuracy ? `<div class="road-warning">${rt('inaccurate')}</div>` : ''}
     <div class="live-badge"><span class="live-dot"></span>${rt('verified')}</div>
+    ${sourceFreshnessMarkup(result.checkedAt, result.sourceName || 'Trafikverket / NVDB', { live:true })}
     <div class="road-links">
       ${reportUrl ? `<a class="road-link" href="${escapeHtml(reportUrl)}" target="_blank" rel="noopener noreferrer">${rt('reportLink')} ↗</a>` : ''}
       <a class="road-link" href="${escapeHtml(result.sourceUrl)}" target="_blank" rel="noopener noreferrer">${rt('sourceLink')} ↗</a>
@@ -1119,6 +1171,7 @@ function reportRouteMarkup(result, position) {
     ${route.url ? `<a class="report-open-link" href="${escapeHtml(route.url)}" target="_blank" rel="noopener noreferrer">${rpt('open')} ↗</a>` : `<div class="road-warning">${rpt('unsupported')}</div>`}
     <p class="report-not-sent">${rpt('notSent')}</p>
     <p class="report-photo-note">${rpt('photo')}</p>
+    ${sourceFreshnessMarkup(result.checkedAt, result.sourceName || 'Trafikverket / NVDB', { live:true })}
     <div class="source">${icon('database')}<span>Trafikverket / NVDB</span></div>
   </div>`;
 }
@@ -1270,12 +1323,13 @@ async function hydratePlanList(container, { limit = null } = {}) {
   try {
     const payload=await window.SverinavGoteborgPlans.loadOpenPlans();
     if (!container.isConnected) return;
+    const status=sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Göteborgs Stad');
     const items=limit ? payload.items.slice(0,limit) : payload.items;
     if (!items.length) {
-      container.innerHTML=`<div class="plan-empty">${pt('empty')} <a href="${escapeHtml(payload.sourceUrl)}" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
+      container.innerHTML=status+`<div class="plan-empty">${pt('empty')} <a href="${escapeHtml(payload.sourceUrl)}" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
       return;
     }
-    container.innerHTML=items.map(planCardMarkup).filter(Boolean).join('');
+    container.innerHTML=status+items.map(planCardMarkup).filter(Boolean).join('');
   } catch(error) {
     console.warn('Göteborg open plans feed unavailable.', error);
     container.innerHTML=`<div class="plan-empty">${pt('error')} <a href="https://goteborg.se/planochbyggprojekt" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
@@ -1356,7 +1410,7 @@ async function hydrateDecisionScreen(container) {
 
     const markup = payload.items.map(liveDecisionMarkup).filter(Boolean).join('');
     if (!markup) throw new Error('No renderable Riksdagen items');
-    container.innerHTML = markup;
+    container.innerHTML = sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Sveriges riksdag') + markup;
   } catch (error) {
     if (!container.isConnected || currentScreen !== 'beslut') return;
     console.warn('Riksdagen decision feed unavailable; showing demo fallback.', error);

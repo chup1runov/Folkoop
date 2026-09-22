@@ -23,6 +23,8 @@
         return response.json();
       })
       .then(payload => {
+        if (payload?.error) throw new Error(`Decision feed unavailable (${payload.error})`);
+        if (Number.isNaN(new Date(payload?.fetchedAt).getTime())) throw new Error('Decision feed has no valid fetchedAt timestamp');
         const items = Array.isArray(payload?.items) ? payload.items.filter(validItem) : [];
         if (!items.length) throw new Error('Decision feed contains no valid items');
         cache = { ...payload, items };
