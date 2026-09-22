@@ -748,7 +748,7 @@ function holderExplanation(type) {
 
 function officialReportUrl(result) {
   if (result.holderType === 'statlig') {
-    return 'https://www.trafikverket.se/e-tjanster/anmal-icke-akuta-fel-pa-vag/';
+    return 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/';
   }
 
   if (
@@ -972,7 +972,7 @@ function responsibilityScreen() {
 }
 
 const REPORT_ROUTES = {
-  trafikkverket: 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/',
+  trafikverket: 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/',
   goteborg: 'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230'
 };
 
@@ -1007,7 +1007,7 @@ function reportPackage(description, place) {
 
 function officialReportRoute(result) {
   if (result.holderType === 'statlig') {
-    return { url: REPORT_ROUTES.trafikkverket, acute: rpt('acuteState') };
+    return { url: REPORT_ROUTES.trafikverket, acute: rpt('acuteState') };
   }
   if (result.holderType === 'kommunal' && /göteborg/i.test(result.holderName || '')) {
     return { url: REPORT_ROUTES.goteborg, acute: rpt('acuteMunicipal') };
