@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#174d5b">
+  <meta name="theme-color" content="#0b4f55">
   <meta name="description" content="Sverinav — ett enklare gränssnitt till samhället.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -17,41 +17,54 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand-lockup">
-        <div class="mark" aria-hidden="true">S</div>
-        <div>
-          <div class="brand">Sverinav</div>
-          <div class="tagline" id="tagline">Samhället. Enklare.</div>
-        </div>
-      </div>
+      <button class="brand-lockup" data-screen="home" aria-label="Sverinav">
+        <img class="mark" src="./icon.svg" alt="" width="40" height="40">
+        <span class="brand-text">
+          <span class="brand">Sverinav</span>
+          <span class="tagline" id="tagline">Samhället. Enklare.</span>
+        </span>
+      </button>
 
       <div class="top-actions">
-        <label class="visually-hidden" for="languageSelect" id="languageLabel">Språk</label>
-        <select id="languageSelect" class="language-select" aria-labelledby="languageLabel">
-          <option value="sv">Svenska</option>
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-          <option value="so">Soomaali</option>
-          <option value="fa">فارسی</option>
-          <option value="fi">Suomi</option>
-          <option value="bs">Bosanski / Hrvatski / Srpski</option>
-          <option value="ku">Kurdî (Kurmancî)</option>
-          <option value="es">Español</option>
-          <option value="ru">Русский</option>
-          <option value="uk">Українська</option>
-        </select>
-        <span class="pilot" id="pilotLabel">PILOT</span>
+        <button id="languageButton" class="language-button" type="button" aria-haspopup="dialog" aria-expanded="false">
+          <span aria-hidden="true">🌐</span>
+          <span id="languageCode">SV</span>
+        </button>
       </div>
     </header>
 
     <main id="view" aria-live="polite"></main>
 
     <nav class="bottom-nav" aria-label="Huvudmeny" id="bottomNav">
-      <button data-screen="home" class="active" id="navHome">Hem</button>
-      <button data-screen="nara" id="navNear">Nära</button>
-      <button data-screen="rapportera" id="navReport">Rapportera</button>
-      <button data-screen="beslut" id="navDecisions">Beslut</button>
+      <button data-screen="home" class="active">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        <span id="navHome">Hem</span>
+      </button>
+      <button data-screen="nara">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-12a7 7 0 1 0-14 0c0 6.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+        <span id="navNear">Nära</span>
+      </button>
+      <button data-screen="rapportera">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Z"/><path d="M12 7v6M12 17h.01"/></svg>
+        <span id="navReport">Rapportera</span>
+      </button>
+      <button data-screen="beslut">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/></svg>
+        <span id="navDecisions">Beslut</span>
+      </button>
     </nav>
+  </div>
+
+  <div class="language-sheet" id="languageSheet" hidden>
+    <button class="language-backdrop" id="languageBackdrop" type="button" aria-label="Close"></button>
+    <section class="language-dialog" role="dialog" aria-modal="true" aria-labelledby="languageSheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <h2 id="languageSheetTitle">Språk</h2>
+        <button class="sheet-close" id="closeLanguageButton" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="language-options" id="languageOptions"></div>
+    </section>
   </div>
 
   <script src="./app.js"></script>
