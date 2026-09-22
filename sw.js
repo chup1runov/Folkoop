@@ -1,8 +1,8 @@
-const CACHE = 'sverinav-v0.8.0';
+const CACHE = 'sverinav-v0.8.1';
 const BASE = self.registration.scope;
 const APP_SHELL = new URL('', BASE).href;
 const DATA_PATH = '/data/';
-const CORE_PATHS = ['', 'index.html', 'styles.css', 'riksdagen.js', 'nvdb.js', 'goteborg-plans.js', 'app.js', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
+const CORE_PATHS = ['', 'index.html', 'styles.css', 'riksdagen.js', 'nvdb.js', 'goteborg-plans.js', 'app.js', 'manifest.webmanifest', 'icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 const CORE = CORE_PATHS.map(path => new URL(path, BASE).href);
 const CORE_SET = new Set(CORE);
 
