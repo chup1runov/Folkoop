@@ -85,6 +85,18 @@ Language choice is stored locally in the browser. Arabic and Persian use RTL lay
 
 ## Product principles
 
+### UX direction
+
+Sverinav follows a Swedish utility/civic UX model:
+
+- the user's task comes before the structure of authorities,
+- mobile-first, but not mobile-only,
+- source-first and provenance visible in the interface,
+- minimal visual noise,
+- one obvious next action per screen,
+- familiar, calm public-service interaction patterns without imitating another brand,
+- multilingual support should be easy to reach but should not dominate the primary Swedish interface.
+
 1. **Open civic utility first.** The core service is for everyone, not only members of any organisation.
 2. **Source-first.** A user must be able to reach the original official source behind civic information.
 3. **Clear provenance.** Keep `sourceId`, `sourceUrl`, timestamps and adapter version where applicable.
