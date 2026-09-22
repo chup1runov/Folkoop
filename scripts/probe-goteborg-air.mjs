@@ -1,17 +1,12 @@
-const ENDPOINT = 'https://geoserverextern.miljoforvaltningen.goteborg.se/geoserver/luft/wms';
+const ENDPOINT = 'https://geoserverextern.miljoforvaltningen.goteborg.se/geoserver/mstrat_luftovervakning/wms';
 const ORIGIN = 'https://chup1runov.github.io';
+const LAYER = 'matstationer_luft';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-function extractLayerNames(xml) {
-  return [...xml.matchAll(/<Name>([^<]+)<\/Name>/gi)]
-    .map(match => match[1].trim())
-    .filter(name => /2023/i.test(name));
-}
-
-async function getCapabilities() {
+async function capabilities() {
   const url = new URL(ENDPOINT);
   url.search = new URLSearchParams({
     service:'WMS',
@@ -31,48 +26,48 @@ async function getCapabilities() {
   console.log('AIR_CAP_CORS', response.headers.get('access-control-allow-origin'));
   console.log('AIR_CAP_TYPE', response.headers.get('content-type'));
 
-  assert(response.ok, `Air-quality GetCapabilities returned ${response.status}`);
+  assert(response.ok, `Air-station GetCapabilities returned ${response.status}`);
 
   const xml = await response.text();
-  const layers = extractLayerNames(xml);
-  console.log('AIR_2023_LAYERS', JSON.stringify(layers));
+  assert(new RegExp(`<Name>(?:[^<]*:)?${LAYER}<\\/Name>`, 'i').test(xml), 'matstationer_luft layer missing');
 
-  assert(layers.length >= 4, 'Expected 2023 air-quality layers were not found');
-  assert(layers.some(name => /NO2.*2023.*year|2023.*NO2.*year/i.test(name)), '2023 NO2 yearly layer missing');
-  assert(layers.some(name => /PM10.*2023.*year|2023.*PM10.*year/i.test(name)), '2023 PM10 yearly layer missing');
+  const featureInfoBlock = xml.match(/<GetFeatureInfo>[\s\S]*?<\/GetFeatureInfo>/i)?.[0] || '';
+  assert(/<Format>application\/json<\/Format>/i.test(featureInfoBlock), 'GetFeatureInfo JSON support missing');
 
-  return { xml, layers };
+  return xml;
 }
 
-function featureInfoUrl(layer) {
-  // Kungsportsavenyen test point in SWEREF 99 TM / EPSG:3006.
-  const x = 319667.121;
-  const y = 6399360.192;
-  const span = 150;
+function featureInfoUrl() {
+  // Central Göteborg in SWEREF 99 TM / EPSG:3006.
+  // Query a wide box because this is a station layer, not a continuous surface.
+  const x = 319758.020;
+  const y = 6400326.036;
+  const span = 7000;
+  const size = 201;
 
   const params = new URLSearchParams({
     SERVICE:'WMS',
     VERSION:'1.1.1',
     REQUEST:'GetFeatureInfo',
-    LAYERS:layer,
-    QUERY_LAYERS:layer,
+    LAYERS:LAYER,
+    QUERY_LAYERS:LAYER,
     STYLES:'',
     SRS:'EPSG:3006',
     BBOX:[x-span,y-span,x+span,y+span].join(','),
-    WIDTH:'101',
-    HEIGHT:'101',
-    X:'50',
-    Y:'50',
+    WIDTH:String(size),
+    HEIGHT:String(size),
+    X:String(Math.floor(size/2)),
+    Y:String(Math.floor(size/2)),
     FORMAT:'image/png',
     INFO_FORMAT:'application/json',
-    FEATURE_COUNT:'10'
+    FEATURE_COUNT:'20'
   });
 
   return `${ENDPOINT}?${params}`;
 }
 
-async function probeLayer(layer) {
-  const response = await fetch(featureInfoUrl(layer), {
+async function featureInfo() {
+  const response = await fetch(featureInfoUrl(), {
     headers:{
       accept:'application/json',
       origin:ORIGIN,
@@ -80,29 +75,24 @@ async function probeLayer(layer) {
     }
   });
 
-  const body=await response.text();
-  console.log('AIR_INFO_LAYER', layer);
+  const body = await response.text();
   console.log('AIR_INFO_STATUS', response.status);
   console.log('AIR_INFO_CORS', response.headers.get('access-control-allow-origin'));
   console.log('AIR_INFO_TYPE', response.headers.get('content-type'));
-  console.log('AIR_INFO_BODY', JSON.stringify(body.slice(0,3000)));
+  console.log('AIR_INFO_BODY', JSON.stringify(body.slice(0,5000)));
 
-  assert(response.ok, `GetFeatureInfo failed for ${layer}`);
-  assert(!/ServiceException|ExceptionReport/i.test(body), `WMS exception for ${layer}`);
+  assert(response.ok, `Air-station GetFeatureInfo returned ${response.status}`);
+  assert(!/ServiceException|ExceptionReport/i.test(body), 'Air-station WMS returned an exception');
 
-  const json=JSON.parse(body);
-  const features=Array.isArray(json?.features)?json.features:[];
-  assert(features.length>0, `No air-quality feature returned for ${layer}`);
+  const payload = JSON.parse(body);
+  const features = Array.isArray(payload?.features) ? payload.features : [];
+  assert(features.length > 0, 'No air-monitoring station returned around central Göteborg');
 
-  return json;
+  const props = features[0]?.properties || {};
+  console.log('AIR_FIRST_PROPERTIES', JSON.stringify(props));
 }
 
-const { layers }=await getCapabilities();
+await capabilities();
+await featureInfo();
 
-const no2=layers.find(name => /NO2.*2023.*year|2023.*NO2.*year/i.test(name));
-const pm10=layers.find(name => /PM10.*2023.*year|2023.*PM10.*year/i.test(name));
-
-await probeLayer(no2);
-await probeLayer(pm10);
-
-console.log('Göteborg air-quality WMS contract OK.');
+console.log('Göteborg air-monitoring station WMS contract OK.');
