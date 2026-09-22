@@ -16,24 +16,49 @@ for candidate in google-chrome chromium chromium-browser; do
 done
 if [[ -z "$CHROME" ]]; then echo "No Chromium-compatible browser found on runner" >&2; exit 1; fi
 
+IOS_UA='Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1'
+
 dump_route() {
   local route="$1"
   local marker="$2"
+  local width="${3:-1280}"
+  local height="${4:-900}"
+  local ua="${5:-}"
   local profile
   profile="$(mktemp -d)"
+  local args=(
+    --headless=new
+    --no-sandbox
+    --disable-gpu
+    --disable-dev-shm-usage
+    "--window-size=${width},${height}"
+    "--user-data-dir=${profile}"
+    --virtual-time-budget=3500
+    --dump-dom
+  )
+  if [[ -n "$ua" ]]; then args+=("--user-agent=$ua"); fi
+
   local dom
-  dom="$("$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage     --user-data-dir="$profile" --virtual-time-budget=3500 --dump-dom     "http://127.0.0.1:4173/$route" 2>/tmp/chrome-stderr.log)"
+  dom="$("$CHROME" "${args[@]}" "http://127.0.0.1:4173/$route" 2>/tmp/chrome-stderr.log)"
   rm -rf "$profile"
+
   if ! grep -Fq "$marker" <<<"$dom"; then
-    echo "Browser smoke failed for $route; expected $marker" >&2
+    echo "Browser smoke failed for $route at ${width}x${height}; expected $marker" >&2
     cat /tmp/chrome-stderr.log >&2 || true
     exit 1
   fi
 }
 
-dump_route "" 'id="homeIssue"'
-dump_route "#rapportera" 'id="routeRoadReport"'
-dump_route "#nara" 'id="openPlansList"'
-dump_route "#beslut" 'id="decisionList"'
+# Mobile-sized render for all four pilot surfaces.
+dump_route "" 'id="homeIssue"' 390 844
+dump_route "#rapportera" 'id="routeRoadReport"' 390 844
+dump_route "#nara" 'id="openPlansList"' 390 844
+dump_route "#beslut" 'id="decisionList"' 390 844
 
-echo "Browser smoke OK: home, Rapportera, Nära mig and Beslut rendered in headless Chrome."
+# Desktop shell still renders.
+dump_route "" 'id="homeIssue"' 1280 900
+
+# iPhone-like browser gets explicit Add to Home Screen guidance.
+dump_route "" 'data-ios-install="true"' 390 844 "$IOS_UA"
+
+echo "Browser smoke OK: mobile surfaces, desktop shell and iPhone install guidance rendered."
