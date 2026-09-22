@@ -50,6 +50,8 @@ jobs:
           python -m json.tool manifest.webmanifest >/dev/null
           test -s data/riksdagen-decisions.json
           test -s data/goteborg-open-plans.json
+          test -s docs/PILOT_GUIDE.md
+          test -s .github/ISSUE_TEMPLATE/pilot-feedback.md
           node scripts/static-smoke.mjs
 
       - name: Prepare browser smoke site
