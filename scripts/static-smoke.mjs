@@ -31,7 +31,12 @@ assert(app.includes("window.navigator.standalone === true"),'iOS standalone dete
 for(const code of ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']) {
   assert(app.includes("'"+code+"'") || app.includes(code+':'),'Language missing: '+code);
 }
-for(const route of ['rapportera','nara','beslut']) assert(app.includes("screen === '"+route+"'"),'Screen route missing: '+route);
+for(const route of ['rapportera','nara','beslut','om']) assert(app.includes("screen === '"+route+"'"),'Screen route missing: '+route);
+assert(html.includes('id="aboutButton"'),'About button missing');
+assert(app.includes("const APP_VERSION = '0.10.0'"),'Pilot version constant missing');
+assert(app.includes('function aboutScreen()'),'About screen missing');
+assert(app.includes('navigator.share'),'Web Share pilot feedback missing');
+assert(app.includes('pilot-feedback.md'),'Technical feedback route missing');
 
 assert(sw.includes("url.origin !== self.location.origin"),'Cross-origin SW bypass missing');
 assert(sw.includes("request.mode === 'navigate'"),'Navigation strategy missing');
