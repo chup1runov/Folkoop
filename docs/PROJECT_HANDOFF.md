@@ -46,7 +46,9 @@ The four primary surfaces are:
 - `Beslut` live normalized Riksdagen decision feed with original-source links.
 - Language selector with browser-language detection and local persistence.
 - RTL layout for Arabic and Persian.
-- Basic security and contribution documentation.\n- PNG PWA icons (180/192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
+- Basic security and contribution documentation.
+- PNG PWA icons (180/192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.
+- CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
 - Visible source freshness: daily feeds show fetch time and warn after 36h; live NVDB results show the time of the actual lookup.
 
