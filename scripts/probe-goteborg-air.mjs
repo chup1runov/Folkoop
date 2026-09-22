@@ -29,7 +29,8 @@ async function capabilities() {
   assert(response.ok, `Air-station GetCapabilities returned ${response.status}`);
 
   const xml = await response.text();
-  const names=[...xml.matchAll(/<Name>([^<]+)<\\/Name>/gi)].map(match=>match[1].trim());
+  const namePattern = new RegExp('<Name>([^<]+)</Name>', 'gi');
+  const names=[...xml.matchAll(namePattern)].map(match=>match[1].trim());
   const airNames=names.filter(name=>/luft|mät|mat|station/i.test(name));
   console.log('AIR_LAYER_NAMES', JSON.stringify(airNames));
 
