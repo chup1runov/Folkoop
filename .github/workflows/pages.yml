@@ -45,10 +45,22 @@ jobs:
           node --check nvdb.js
           node --check goteborg-plans.js
           node --check scripts/probe-report-routes.mjs
+          node --check scripts/static-smoke.mjs
           node --check sw.js
           python -m json.tool manifest.webmanifest >/dev/null
           test -s data/riksdagen-decisions.json
           test -s data/goteborg-open-plans.json
+          node scripts/static-smoke.mjs
+
+      - name: Prepare browser smoke site
+        run: |
+          mkdir -p _site
+          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-192.png icon-512.png _site/
+          cp -R data _site/data
+          touch _site/.nojekyll
+
+      - name: Browser smoke
+        run: bash scripts/browser-smoke.sh
 
   deploy:
     if: github.event_name != 'pull_request'
@@ -71,7 +83,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg _site/
+          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-192.png icon-512.png _site/
           cp -R data _site/data
           touch _site/.nojekyll
 

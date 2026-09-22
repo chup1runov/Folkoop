@@ -38,22 +38,21 @@ The four primary surfaces are:
 - Mobile-first web UI.
 - Public GitHub Pages deployment.
 - PWA manifest and service worker.
-- Basic offline app shell after first visit.
+- Hardened offline app shell: same-origin navigation/static caching only; JSON has its own fallback and external official APIs bypass the service worker.
 - Bottom navigation.
 - `Vem ansvarar?` keyword classifier plus live Trafikverket NVDB/NetInfo road-holder verification for road issues.
 - `Rapportera` live road/street/cycle-path router: description + temporary geolocation → NVDB road holder → official Trafikverket or Göteborgs Stad fault-report route; user submits the official form themselves.
 - `Nära mig` live Göteborg consultation-plan feed plus clearly labelled demo cards for sources not yet connected.
-- `Beslut` demo cards.
+- `Beslut` live normalized Riksdagen decision feed with original-source links.
 - Language selector with browser-language detection and local persistence.
 - RTL layout for Arabic and Persian.
-- Basic security and contribution documentation.
+- Basic security and contribution documentation.\n- PNG PWA icons (192/512), keyboard-visible focus states, skip link, aria-current navigation and trapped focus in the language dialog.\n- CI static smoke + headless-Chrome smoke for all four primary surfaces.
 - Public source registry and integration plan.
 
 ### What is still demo / not connected
 
-- `Beslut` uses live normalized data from Riksdagens öppna data.
-- Live NVDB/NetInfo road-holder lookup is available for road issues when the user explicitly shares their current browser position.
-- `Nära mig` uses Göteborgs Stads official Plan- och byggprojekt page for current plans open for public comments. TrafficInformation still requires an APPID and is not connected yet.
+- Some secondary `Nära mig` cards remain demo until their sources are connected.
+- TrafficInformation still requires a Göteborg APPID and is not connected yet.
 - No RiverService integration yet.
 - No Västtrafik integration yet.
 - No live Göteborgsförslaget integration yet.
@@ -273,29 +272,27 @@ Still to do:
 
 - remove or archive the old `prototype/` directory,
 - decide whether `vercel.json` and static `package.json` are still needed,
-- add proper PNG PWA icons, especially 192×192 and 512×512,
+- proper PNG PWA icons 192×192 and 512×512 added; keep them in release checks,
 - improve iPhone install guidance,
-- add accessibility audit and form labels/focus states,
-- add unit/integration/browser smoke tests,
+- first accessibility hardening pass completed; full manual WCAG audit with assistive technology still recommended,
+- static and headless-browser smoke tests added; extend toward interaction tests over time,
 - add API health/freshness monitoring once live sources are connected,
-- update service-worker caching strategy when live APIs arrive,
+- service-worker strategy hardened for live APIs: cross-origin bypass + separate navigation/data/static behavior,
 - choose a licence,
 - consider branch protection after the project stabilizes.
 
 ## Next development steps
 
-Recommended order:
+Recommended order after v0.8 hardening:
 
-1. Smoke-test the current 11-language PWA on desktop + iPhone + Android.
-2. Clean repository legacy files.
-3. Add proper PWA icons and accessibility fixes.
-4. Implement **Riksdagen adapter** and make `Beslut` the first live function.
-5. Implement **NVDB Väghållare adapter** and replace the keyword road demo.
-6. Add Göteborg traffic/environment sources to `Nära mig`.
-7. Build the real `Rapportera` routing flow.
-8. Add map and geolocation only when the first live location-based sources are ready.
-9. Introduce backend/PostGIS only when static/client-side architecture becomes insufficient.
-10. Prepare a Göteborg pilot once all four MVP surfaces solve at least one real user task.
+1. Manual iPhone + Android pilot-device pass, including install-to-home-screen and location permission flows.
+2. Fix any issues found by real-device testing.
+3. Clean repository legacy files.
+4. Add source freshness/health presentation in the UI.
+5. Decide whether Göteborg TrafficInformation is worth requesting an APPID for.
+6. Add map only when it materially improves a live location-based task.
+7. Introduce backend/PostGIS only when static/client-side architecture becomes insufficient.
+8. Run the first small Göteborg user pilot and collect task-completion feedback.
 
 ## Definition of the first useful pilot
 
