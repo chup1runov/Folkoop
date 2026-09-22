@@ -443,6 +443,62 @@ const messages = {
   }
 };
 
+const roadMessages = {
+  sv: {
+    verify:'Kontrollera väghållare vid min position',
+    privacy:'Positionen används bara för denna kontroll och sparas inte.',
+    locating:'Hämtar position…',
+    checking:'Kontrollerar NVDB…',
+    state:'Statlig väg', municipal:'Kommunal väg', private:'Enskild väg',
+    responsible:'Ansvarig väghållare',
+    source:'Trafikverket / NVDB NetInfo',
+    sourceLink:'Om väghållaransvar',
+    mapLink:'Kontrollera på NVDB-kartan',
+    reportLink:'Öppna officiell felanmälan',
+    verified:'Kontrollerat mot aktuell NVDB-data',
+    distance:'Avstånd till väg', accuracy:'Platsnoggrannhet',
+    ambiguous:'Flera vägar med olika väghållare ligger mycket nära punkten. Resultatet bör kontrolleras på NVDB-kartan.',
+    inaccurate:'Din platsnoggrannhet är låg. Kontrollera resultatet på kartan innan du skickar en felanmälan.',
+    noRoad:'Ingen säker väg hittades nära din position. Flytta närmare vägen och försök igen.',
+    denied:'Sverinav fick inte tillgång till din position.',
+    unavailable:'Positionen kunde inte bestämmas.',
+    serviceError:'NVDB kunde inte kontrolleras just nu. Försök igen senare.',
+    stateExplain:'Trafikverket ansvarar för den här statliga vägsträckan.',
+    municipalExplain:'Kommunen ansvarar för den här vägsträckan.',
+    privateExplain:'Enskilda vägar förvaltas normalt av en vägförening, samfällighetsförening eller enskild fastighetsägare.'
+  },
+  en: {
+    verify:'Check road owner at my location',
+    privacy:'Your location is used only for this check and is not stored.',
+    locating:'Getting location…', checking:'Checking NVDB…',
+    state:'State road', municipal:'Municipal road', private:'Private road',
+    responsible:'Responsible road authority', source:'Trafikverket / NVDB NetInfo',
+    sourceLink:'About road responsibility', mapLink:'Check on the NVDB map', reportLink:'Open official fault report',
+    verified:'Checked against current NVDB data', distance:'Distance to road', accuracy:'Location accuracy',
+    ambiguous:'Roads with different owners are very close to this point. Verify the result on the NVDB map.',
+    inaccurate:'Your location accuracy is low. Verify the result on the map before reporting.',
+    noRoad:'No reliable road match was found nearby. Move closer to the road and try again.',
+    denied:'Sverinav was not allowed to access your location.', unavailable:'Your location could not be determined.',
+    serviceError:'NVDB could not be checked right now. Try again later.',
+    stateExplain:'Trafikverket is responsible for this state road section.',
+    municipalExplain:'The municipality is responsible for this road section.',
+    privateExplain:'Private roads are normally managed by a road association, joint property association or private property owner.'
+  },
+  ar:{verify:'تحقق من مسؤول الطريق في موقعي',privacy:'يُستخدم موقعك لهذا التحقق فقط ولا يتم حفظه.',locating:'جارٍ تحديد الموقع…',checking:'جارٍ التحقق من NVDB…',state:'طريق حكومي',municipal:'طريق بلدي',private:'طريق خاص',responsible:'الجهة المسؤولة عن الطريق',source:'Trafikverket / NVDB NetInfo',sourceLink:'حول مسؤولية الطرق',mapLink:'تحقق على خريطة NVDB',reportLink:'افتح البلاغ الرسمي',verified:'تم التحقق من بيانات NVDB الحالية',distance:'المسافة إلى الطريق',accuracy:'دقة الموقع',ambiguous:'توجد طرق بجهات مسؤولة مختلفة قريبة جدًا من هذه النقطة. تحقق من النتيجة على خريطة NVDB.',inaccurate:'دقة موقعك منخفضة. تحقق من النتيجة على الخريطة قبل الإبلاغ.',noRoad:'لم يتم العثور على طريق موثوق قريب. اقترب من الطريق وحاول مجددًا.',denied:'لم يُسمح لـ Sverinav بالوصول إلى موقعك.',unavailable:'تعذر تحديد موقعك.',serviceError:'تعذر التحقق من NVDB الآن. حاول لاحقًا.',stateExplain:'Trafikverket مسؤول عن هذا الجزء من الطريق الحكومي.',municipalExplain:'البلدية مسؤولة عن هذا الجزء من الطريق.',privateExplain:'تُدار الطرق الخاصة عادةً بواسطة جمعية طرق أو جمعية ملكية مشتركة أو مالك عقار خاص.'},
+  so:{verify:'Hubi cidda waddada ka masuulka ah meesha aan joogo',privacy:'Goobtaada waxaa loo adeegsadaa kaliya hubintan mana la kaydiyo.',locating:'Goobta ayaa la helayaa…',checking:'NVDB ayaa la hubinayaa…',state:'Waddo qaran',municipal:'Waddo degmo',private:'Waddo gaar loo leeyahay',responsible:'Masuulka waddada',source:'Trafikverket / NVDB NetInfo',sourceLink:'Masuuliyadda waddooyinka',mapLink:'Ka hubi khariidadda NVDB',reportLink:'Fur warbixinta rasmiga ah',verified:'Waxaa lagu hubiyey xogta NVDB ee hadda',distance:'Masaafada waddada',accuracy:'Saxnaanta goobta',ambiguous:'Waddooyin ay masuuliyiin kala duwan leeyihiin ayaa aad ugu dhow goobtan. Ka hubi khariidadda NVDB.',inaccurate:'Saxnaanta goobtaadu way hooseysaa. Ka hubi khariidadda ka hor intaadan warbixin dirin.',noRoad:'Waddo la hubo lagama helin meel dhow. U dhowow waddada oo mar kale isku day.',denied:'Sverinav looma oggolaan goobtaada.',unavailable:'Goobtaada lama go’aamin karin.',serviceError:'NVDB hadda lama hubin karo. Mar dambe isku day.',stateExplain:'Trafikverket ayaa masuul ka ah qaybtan waddada qaranka.',municipalExplain:'Degmada ayaa masuul ka ah qaybtan waddada.',privateExplain:'Waddooyinka gaarka ah badanaa waxaa maamula urur waddo, samfällighet ama milkiile gaar ah.'},
+  fa:{verify:'مسئول راه را در موقعیت من بررسی کن',privacy:'موقعیت شما فقط برای این بررسی استفاده می‌شود و ذخیره نمی‌شود.',locating:'در حال دریافت موقعیت…',checking:'در حال بررسی NVDB…',state:'راه دولتی',municipal:'راه شهرداری',private:'راه خصوصی',responsible:'مسئول نگهداری راه',source:'Trafikverket / NVDB NetInfo',sourceLink:'درباره مسئولیت راه',mapLink:'بررسی در نقشه NVDB',reportLink:'باز کردن گزارش رسمی',verified:'با داده‌های فعلی NVDB بررسی شد',distance:'فاصله تا راه',accuracy:'دقت موقعیت',ambiguous:'چند راه با مسئولان متفاوت بسیار نزدیک این نقطه هستند. نتیجه را در نقشه NVDB بررسی کنید.',inaccurate:'دقت موقعیت پایین است. پیش از گزارش، نتیجه را در نقشه بررسی کنید.',noRoad:'راه مطمئنی در نزدیکی پیدا نشد. به راه نزدیک‌تر شوید و دوباره امتحان کنید.',denied:'اجازه دسترسی به موقعیت به Sverinav داده نشد.',unavailable:'موقعیت قابل تعیین نبود.',serviceError:'NVDB فعلاً قابل بررسی نیست. بعداً دوباره تلاش کنید.',stateExplain:'Trafikverket مسئول این بخش از راه دولتی است.',municipalExplain:'شهرداری مسئول این بخش از راه است.',privateExplain:'راه‌های خصوصی معمولاً توسط انجمن راه، samfällighet یا مالک خصوصی اداره می‌شوند.'},
+  fi:{verify:'Tarkista tienpitäjä sijainnistani',privacy:'Sijaintia käytetään vain tähän tarkistukseen eikä sitä tallenneta.',locating:'Haetaan sijaintia…',checking:'Tarkistetaan NVDB:tä…',state:'Valtion tie',municipal:'Kunnallinen tie',private:'Yksityistie',responsible:'Tienpitäjä',source:'Trafikverket / NVDB NetInfo',sourceLink:'Tienpitovastuusta',mapLink:'Tarkista NVDB-kartalta',reportLink:'Avaa virallinen vikailmoitus',verified:'Tarkistettu ajantasaisesta NVDB-datasta',distance:'Etäisyys tiehen',accuracy:'Sijainnin tarkkuus',ambiguous:'Pisteen lähellä on eri tienpitäjien teitä. Tarkista tulos NVDB-kartalta.',inaccurate:'Sijainnin tarkkuus on heikko. Tarkista tulos kartalta ennen ilmoitusta.',noRoad:'Läheltä ei löytynyt varmaa tieosuutta. Siirry lähemmäs tietä ja yritä uudelleen.',denied:'Sverinav ei saanut käyttää sijaintiasi.',unavailable:'Sijaintia ei voitu määrittää.',serviceError:'NVDB:tä ei voitu tarkistaa juuri nyt. Yritä myöhemmin.',stateExplain:'Trafikverket vastaa tästä valtion tieosuudesta.',municipalExplain:'Kunta vastaa tästä tieosuudesta.',privateExplain:'Yksityisteitä hallinnoi yleensä tiekunta, yhteisomistusalue tai yksityinen maanomistaja.'},
+  bs:{verify:'Provjeri upravljača ceste na mojoj lokaciji',privacy:'Lokacija se koristi samo za ovu provjeru i ne čuva se.',locating:'Dohvaćam lokaciju…',checking:'Provjeravam NVDB…',state:'Državna cesta',municipal:'Općinska cesta',private:'Privatna cesta',responsible:'Odgovorni upravljač ceste',source:'Trafikverket / NVDB NetInfo',sourceLink:'O odgovornosti za ceste',mapLink:'Provjeri na NVDB karti',reportLink:'Otvori službenu prijavu',verified:'Provjereno prema aktualnim NVDB podacima',distance:'Udaljenost do ceste',accuracy:'Preciznost lokacije',ambiguous:'Vrlo blizu ove tačke nalaze se ceste s različitim upravljačima. Provjeri rezultat na NVDB karti.',inaccurate:'Preciznost lokacije je niska. Provjeri rezultat na karti prije prijave.',noRoad:'U blizini nije pronađena pouzdana cesta. Priđi bliže cesti i pokušaj ponovno.',denied:'Sverinav nije dobio pristup tvojoj lokaciji.',unavailable:'Lokacija se nije mogla odrediti.',serviceError:'NVDB se trenutno ne može provjeriti. Pokušaj kasnije.',stateExplain:'Trafikverket je odgovoran za ovu državnu dionicu.',municipalExplain:'Općina je odgovorna za ovu dionicu.',privateExplain:'Privatnim cestama obično upravlja cestovna udruga, zajednica ili privatni vlasnik.'},
+  ku:{verify:'Berpirsiyarê rê li cihê min kontrol bike',privacy:'Cihê te tenê ji bo vê kontrolê tê bikaranîn û nayê hilanîn.',locating:'Cih tê dîtin…',checking:'NVDB tê kontrolkirin…',state:'Rêya dewletê',municipal:'Rêya şaredariyê',private:'Rêya taybet',responsible:'Berpirsiyarê rê',source:'Trafikverket / NVDB NetInfo',sourceLink:'Derbarê berpirsiyariya rêyan',mapLink:'Li nexşeya NVDB kontrol bike',reportLink:'Rapora fermî veke',verified:'Bi daneyên nû yên NVDB hate kontrolkirin',distance:'Dûrbûna ji rê',accuracy:'Rastiya cihê',ambiguous:'Li nêzî vê xalê rêyên bi berpirsiyarên cuda hene. Encamê li nexşeya NVDB kontrol bike.',inaccurate:'Rastiya cihê kêm e. Berî raporkirinê encamê li nexşeyê kontrol bike.',noRoad:'Rêyek ewle li nêzî nehat dîtin. Nêzî rê bibe û dîsa biceribîne.',denied:'Destûra gihîştina cihê ji Sverinav re nehat dayîn.',unavailable:'Cih nehat diyarkirin.',serviceError:'NVDB niha nayê kontrolkirin. Paşê dîsa biceribîne.',stateExplain:'Trafikverket ji vê beşa rêya dewletê berpirsiyar e.',municipalExplain:'Şaredarî ji vê beşa rêyê berpirsiyar e.',privateExplain:'Rêyên taybet bi gelemperî ji aliyê komeleya rê, samfällighet an xwediyê taybet ve têne rêvebirin.'},
+  es:{verify:'Comprobar responsable de la vía en mi ubicación',privacy:'Tu ubicación se usa solo para esta comprobación y no se guarda.',locating:'Obteniendo ubicación…',checking:'Consultando NVDB…',state:'Carretera estatal',municipal:'Vía municipal',private:'Vía privada',responsible:'Responsable de la vía',source:'Trafikverket / NVDB NetInfo',sourceLink:'Sobre la responsabilidad vial',mapLink:'Comprobar en el mapa NVDB',reportLink:'Abrir aviso oficial',verified:'Comprobado con datos actuales de NVDB',distance:'Distancia a la vía',accuracy:'Precisión de ubicación',ambiguous:'Hay vías con responsables distintos muy cerca de este punto. Comprueba el resultado en el mapa NVDB.',inaccurate:'La precisión de tu ubicación es baja. Comprueba el resultado en el mapa antes de informar.',noRoad:'No se encontró una vía fiable cerca. Acércate a la vía e inténtalo de nuevo.',denied:'Sverinav no obtuvo permiso para acceder a tu ubicación.',unavailable:'No se pudo determinar tu ubicación.',serviceError:'No se puede consultar NVDB ahora. Inténtalo más tarde.',stateExplain:'Trafikverket es responsable de este tramo estatal.',municipalExplain:'El municipio es responsable de este tramo.',privateExplain:'Las vías privadas normalmente son gestionadas por una asociación vial, una comunidad de propietarios o un propietario privado.'},
+  ru:{verify:'Проверить ответственного за дорогу по моей позиции',privacy:'Позиция используется только для этой проверки и не сохраняется.',locating:'Определяю позицию…',checking:'Проверяю NVDB…',state:'Государственная дорога',municipal:'Муниципальная дорога',private:'Частная дорога',responsible:'Ответственный за дорогу',source:'Trafikverket / NVDB NetInfo',sourceLink:'Об ответственности за дороги',mapLink:'Проверить на карте NVDB',reportLink:'Открыть официальную форму',verified:'Проверено по актуальным данным NVDB',distance:'Расстояние до дороги',accuracy:'Точность позиции',ambiguous:'Рядом с этой точкой проходят дороги с разными ответственными. Проверь результат на карте NVDB.',inaccurate:'Точность позиции низкая. Перед отправкой обращения проверь результат на карте.',noRoad:'Надёжно определить ближайшую дорогу не удалось. Подойди ближе к дороге и попробуй снова.',denied:'Sverinav не получил доступ к позиции.',unavailable:'Не удалось определить позицию.',serviceError:'Сейчас не удалось проверить NVDB. Попробуй позже.',stateExplain:'За этот участок государственной дороги отвечает Trafikverket.',municipalExplain:'За этот участок дороги отвечает муниципалитет.',privateExplain:'Частными дорогами обычно управляет дорожное объединение, samfällighetsförening или частный собственник.'},
+  uk:{verify:'Перевірити відповідального за дорогу за моєю позицією',privacy:'Позиція використовується лише для цієї перевірки й не зберігається.',locating:'Визначаю позицію…',checking:'Перевіряю NVDB…',state:'Державна дорога',municipal:'Муніципальна дорога',private:'Приватна дорога',responsible:'Відповідальний за дорогу',source:'Trafikverket / NVDB NetInfo',sourceLink:'Про відповідальність за дороги',mapLink:'Перевірити на карті NVDB',reportLink:'Відкрити офіційну форму',verified:'Перевірено за актуальними даними NVDB',distance:'Відстань до дороги',accuracy:'Точність позиції',ambiguous:'Поруч із цією точкою проходять дороги з різними відповідальними. Перевірте результат на карті NVDB.',inaccurate:'Точність позиції низька. Перед надсиланням звернення перевірте результат на карті.',noRoad:'Не вдалося надійно визначити найближчу дорогу. Підійдіть ближче до дороги та спробуйте знову.',denied:'Sverinav не отримав доступ до позиції.',unavailable:'Не вдалося визначити позицію.',serviceError:'Зараз не вдалося перевірити NVDB. Спробуйте пізніше.',stateExplain:'За цю ділянку державної дороги відповідає Trafikverket.',municipalExplain:'За цю ділянку дороги відповідає муніципалітет.',privateExplain:'Приватними дорогами зазвичай керує дорожнє об’єднання, samfällighetsförening або приватний власник.'}
+};
+
+function rt(key) {
+  return roadMessages[currentLanguage]?.[key] || roadMessages.en[key] || roadMessages.sv[key] || key;
+}
+
 function detectInitialLanguage() {
   const saved = localStorage.getItem('sverinav-language');
   if (supportedLanguages.includes(saved)) return saved;
@@ -574,6 +630,7 @@ function resolveText(text) {
   const value = text.toLowerCase();
   let actor = t('actorDefault');
   let reason = t('reasonDefault');
+  let category = 'other';
 
   const healthWords = ['vård', 'sjukhus', 'vårdcentral', 'health', 'hospital', 'clinic', 'صحة', 'مستشفى', 'caafimaad', 'isbitaal', 'سلامت', 'بیمارستان', 'terveys', 'sairaala', 'zdravlje', 'bolnica', 'tenduristî', 'nexweşxane', 'salud', 'hospital', 'здоровье', 'больница', 'здоров’я', 'лікарня'];
   const railWords = ['tåg', 'järnväg', 'train', 'rail', 'قطار', 'tareen', 'راه‌آهن', 'juna', 'rautatie', 'vlak', 'željeznica', 'trên', 'tren', 'ferrocarril', 'поезд', 'железная дорога', 'поїзд', 'залізниця'];
@@ -583,27 +640,168 @@ function resolveText(text) {
   if (healthWords.some(word => value.includes(word))) {
     actor = t('actorHealth');
     reason = t('reasonHealth');
+    category = 'health';
   } else if (railWords.some(word => value.includes(word))) {
     actor = t('actorRail');
     reason = t('reasonRail');
+    category = 'rail';
   } else if (wasteWords.some(word => value.includes(word))) {
     actor = t('actorWaste');
     reason = t('reasonWaste');
+    category = 'waste';
   } else if (roadWords.some(word => value.includes(word))) {
     actor = t('actorRoad');
     reason = t('reasonRoad');
+    category = 'road';
   }
 
-  return { actor, reason };
+  return { actor, reason, category };
+}
+
+function roadResolverActionMarkup() {
+  if (!navigator.geolocation || !window.SverinavNVDB) return '';
+  return `<div class="road-live-actions">
+    <button class="action secondary" type="button" data-road-resolve>
+      ${icon('pin')}<span>${rt('verify')}</span>
+    </button>
+    <p class="road-privacy">${rt('privacy')}</p>
+  </div>`;
 }
 
 function resultMarkup(text) {
-  const { actor, reason } = resolveText(text);
+  const { actor, reason, category } = resolveText(text);
+
+  if (category === 'road') {
+    return `<div class="result">
+      <strong>${actor}</strong>
+      <p>${reason}</p>
+      ${roadResolverActionMarkup()}
+      <div class="source">${icon('database')}<span>Trafikverket / NVDB</span></div>
+    </div>`;
+  }
+
   return `<div class="result">
     <strong>${actor}</strong>
     <p>${reason}</p>
     <div class="source">${icon('database')}<span>${t('demoNotVerified')}</span></div>
   </div>`;
+}
+
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 30000
+    });
+  });
+}
+
+function holderTypeLabel(type) {
+  if (type === 'statlig') return rt('state');
+  if (type === 'kommunal') return rt('municipal');
+  return rt('private');
+}
+
+function holderExplanation(type) {
+  if (type === 'statlig') return rt('stateExplain');
+  if (type === 'kommunal') return rt('municipalExplain');
+  return rt('privateExplain');
+}
+
+function officialReportUrl(result) {
+  if (result.holderType === 'statlig') {
+    return 'https://www.trafikverket.se/e-tjanster/anmal-icke-akuta-fel-pa-vag/';
+  }
+
+  if (
+    result.holderType === 'kommunal' &&
+    /göteborg/i.test(result.holderName || '')
+  ) {
+    return 'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.20120828-110230';
+  }
+
+  return null;
+}
+
+function roadLiveResultMarkup(result) {
+  const actor = result.holderName ||
+    (result.holderType === 'statlig' ? 'Trafikverket' : holderTypeLabel(result.holderType));
+  const reportUrl = officialReportUrl(result);
+  const accuracy = Number.isFinite(result.accuracyMeters) ? Math.round(result.accuracyMeters) : null;
+  const distance = Math.max(0, Math.round(result.distanceMeters || 0));
+  const lowAccuracy = accuracy !== null && accuracy > 80;
+
+  return `<div class="road-live-result">
+    <div class="road-holder-header">
+      <span class="item-icon">${icon('road')}</span>
+      <div class="road-holder-copy">
+        <small>${rt('responsible')}</small>
+        <strong>${escapeHtml(actor)}</strong>
+        <span class="road-holder-type">${holderTypeLabel(result.holderType)}</span>
+      </div>
+    </div>
+    <p>${holderExplanation(result.holderType)}</p>
+    <div class="road-meta">
+      <span>${rt('distance')}: ~${distance} m</span>
+      ${accuracy !== null ? `<span>${rt('accuracy')}: ±${accuracy} m</span>` : ''}
+    </div>
+    ${result.ambiguous ? `<div class="road-warning">${rt('ambiguous')}</div>` : ''}
+    ${lowAccuracy ? `<div class="road-warning">${rt('inaccurate')}</div>` : ''}
+    <div class="live-badge"><span class="live-dot"></span>${rt('verified')}</div>
+    <div class="road-links">
+      ${reportUrl ? `<a class="road-link" href="${escapeHtml(reportUrl)}" target="_blank" rel="noopener noreferrer">${rt('reportLink')} ↗</a>` : ''}
+      <a class="road-link" href="${escapeHtml(result.sourceUrl)}" target="_blank" rel="noopener noreferrer">${rt('sourceLink')} ↗</a>
+      <a class="road-link" href="${escapeHtml(result.mapUrl)}" target="_blank" rel="noopener noreferrer">${rt('mapLink')} ↗</a>
+    </div>
+  </div>`;
+}
+
+function geolocationErrorMessage(error) {
+  if (error?.code === 1) return rt('denied');
+  if (error?.code === 2 || error?.code === 3) return rt('unavailable');
+  return rt('serviceError');
+}
+
+async function resolveRoadFromPosition(container, button) {
+  if (!container || !button || !window.SverinavNVDB) return;
+
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = `${icon('pin')}<span>${rt('locating')}</span>`;
+
+  try {
+    const position = await getCurrentPosition();
+    button.innerHTML = `${icon('database')}<span>${rt('checking')}</span>`;
+
+    const result = await window.SverinavNVDB.resolveRoadHolder(
+      position.coords.latitude,
+      position.coords.longitude,
+      { accuracyMeters: position.coords.accuracy }
+    );
+
+    container.innerHTML = roadLiveResultMarkup(result);
+  } catch (error) {
+    const message = error?.code === 'NO_NEARBY_ROAD'
+      ? rt('noRoad')
+      : geolocationErrorMessage(error);
+
+    container.innerHTML = `<div class="road-warning">${escapeHtml(message)}</div>`;
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.innerHTML = original;
+  }
+}
+
+function bindRoadResolver(container) {
+  const button = container?.querySelector('[data-road-resolve]');
+  if (!button) return;
+
+  button.addEventListener('click', () => {
+    const result = container.querySelector('.result');
+    resolveRoadFromPosition(result || container, button);
+  });
 }
 
 function home() {
@@ -685,7 +883,9 @@ function home() {
 
   document.getElementById('homeFindOwner').onclick = () => {
     const text = document.getElementById('homeIssue').value;
-    document.getElementById('homeOwnerResult').innerHTML = resultMarkup(text);
+    const container = document.getElementById('homeOwnerResult');
+    container.innerHTML = resultMarkup(text);
+    bindRoadResolver(container);
   };
 }
 
@@ -727,7 +927,9 @@ function responsibilityScreen() {
 
   document.getElementById('findOwner').onclick = () => {
     const text = document.getElementById('issue').value;
-    document.getElementById('ownerResult').innerHTML = resultMarkup(text);
+    const container = document.getElementById('ownerResult');
+    container.innerHTML = resultMarkup(text);
+    bindRoadResolver(container);
   };
 }
 
