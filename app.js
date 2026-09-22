@@ -665,6 +665,7 @@ function roadResolverActionMarkup() {
       ${icon('pin')}<span>${rt('verify')}</span>
     </button>
     <p class="road-privacy">${rt('privacy')}</p>
+    <div data-road-live aria-live="polite"></div>
   </div>`;
 }
 
@@ -782,6 +783,9 @@ async function resolveRoadFromPosition(container, button) {
     );
 
     container.innerHTML = roadLiveResultMarkup(result);
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.innerHTML = original;
   } catch (error) {
     const message = error?.code === 'NO_NEARBY_ROAD'
       ? rt('noRoad')
@@ -796,11 +800,11 @@ async function resolveRoadFromPosition(container, button) {
 
 function bindRoadResolver(container) {
   const button = container?.querySelector('[data-road-resolve]');
-  if (!button) return;
+  const liveRegion = container?.querySelector('[data-road-live]');
+  if (!button || !liveRegion) return;
 
   button.addEventListener('click', () => {
-    const result = container.querySelector('.result');
-    resolveRoadFromPosition(result || container, button);
+    resolveRoadFromPosition(liveRegion, button);
   });
 }
 
