@@ -30,6 +30,7 @@ async function capabilities() {
 
   const xml = await response.text();
   const namePattern = new RegExp('<(?:[A-Za-z0-9_]+:)?Name>([^<]+)</(?:[A-Za-z0-9_]+:)?Name>', 'gi');
+  console.log('AIR_CAP_PREFIX', JSON.stringify(xml.slice(0, 5000)));
   const names=[...xml.matchAll(namePattern)].map(match=>match[1].trim());
   const airNames=names.filter(name=>/luft|mät|mat|station/i.test(name));
   console.log('AIR_LAYER_NAMES', JSON.stringify(airNames));
