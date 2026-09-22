@@ -1,6 +1,6 @@
 const ENDPOINT = 'https://geoserverextern.miljoforvaltningen.goteborg.se/geoserver/mstrat_luftovervakning/wms';
 const ORIGIN = 'https://chup1runov.github.io';
-const LAYER = 'matstationer_luft';
+const LAYER = 'mstrat_luftovervakning:matstationer_luft';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
