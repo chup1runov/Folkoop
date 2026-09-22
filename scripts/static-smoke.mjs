@@ -7,9 +7,10 @@ function pngSize(buffer) {
   return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
 }
 
-const [html,css,app,sw,manifestText,icon180,icon192,icon512]=await Promise.all([
+const [html,css,app,sw,manifestText,riksdagenLoader,plansLoader,icon180,icon192,icon512]=await Promise.all([
   readFile('index.html','utf8'),readFile('styles.css','utf8'),readFile('app.js','utf8'),
   readFile('sw.js','utf8'),readFile('manifest.webmanifest','utf8'),
+  readFile('riksdagen.js','utf8'),readFile('goteborg-plans.js','utf8'),
   readFile('icon-180.png'),readFile('icon-192.png'),readFile('icon-512.png')
 ]);
 const manifest=JSON.parse(manifestText);
@@ -22,6 +23,9 @@ assert(app.includes("aria-current', 'page'"),'Active navigation aria-current mis
 assert(app.includes("event.key === 'Tab'"),'Language dialog focus trap missing');
 assert(app.includes('function isIOSDevice()'),'iOS detection missing');
 assert(app.includes('data-ios-install="true"'),'iOS Add-to-Home-Screen guidance missing');
+assert(app.includes('function sourceFreshnessMarkup('),'Source freshness UI missing');
+assert(app.includes("maxAgeHours = 36"),'Daily source freshness threshold missing');
+assert(app.includes("{ live:true }"),'Live-source checked-now status missing');
 assert(app.includes("window.navigator.standalone === true"),'iOS standalone detection missing');
 
 for(const code of ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']) {
@@ -32,6 +36,8 @@ for(const route of ['rapportera','nara','beslut']) assert(app.includes("screen =
 assert(sw.includes("url.origin !== self.location.origin"),'Cross-origin SW bypass missing');
 assert(sw.includes("request.mode === 'navigate'"),'Navigation strategy missing');
 assert(sw.includes("url.pathname.includes(DATA_PATH)"),'JSON data strategy missing');
+assert(riksdagenLoader.includes("payload?.error"),'Riksdagen loader must reject offline error payloads');
+assert(plansLoader.includes("payload?.error"),'Göteborg plans loader must reject offline error payloads');
 assert(!sw.includes("return caches.match(new URL('', BASE).href)"),'Unsafe universal app-shell fallback remains');
 
 const icons=manifest.icons||[];
