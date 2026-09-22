@@ -25,10 +25,25 @@ body{
 button,input,textarea,select{font:inherit}
 button{touch-action:manipulation}
 button,input,textarea{color:inherit}
-button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{
   outline:3px solid var(--focus);
   outline-offset:3px
 }
+.skip-link{
+  position:fixed;
+  inset-inline-start:12px;
+  top:8px;
+  z-index:200;
+  transform:translateY(-160%);
+  padding:10px 13px;
+  border-radius:10px;
+  background:#fff;
+  color:var(--teal-strong);
+  font-weight:800;
+  box-shadow:var(--shadow)
+}
+.skip-link:focus{transform:translateY(0)}
+
 .app-shell{
   width:min(100%,920px);
   min-height:100dvh;
@@ -77,7 +92,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   background:#fff;
   color:#29484f;
   border-radius:12px;
-  min-height:40px;
+  min-height:44px;
   padding:0 11px;
   display:flex;
   align-items:center;
@@ -214,6 +229,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 }
 .section-head h2{font-size:20px;letter-spacing:-.35px;margin:0}
 .text-button{
+  min-height:44px;
   border:0;
   background:transparent;
   color:var(--teal);
@@ -354,7 +370,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   border:1px solid var(--line);
   background:#f7f9f9;
   color:#34515a;
-  min-height:40px;
+  min-height:44px;
   padding:8px 12px;
   border-radius:11px;
   cursor:pointer;
@@ -415,7 +431,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sheet-head h2{font-size:22px;margin:0}
 .sheet-close{
-  width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:#fff;
+  width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;
   font-size:26px;line-height:1;cursor:pointer;color:#425b62
 }
 .language-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
@@ -651,3 +667,6 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
   font-weight:750
 }
 .report-not-sent,.report-photo-note{margin:10px 0 0!important;font-size:11px!important}
+
+.bottom-nav button[aria-current="page"]{font-weight:830;color:var(--teal);background:#edf6f4}
+@media(forced-colors:active){.active,.live-badge,.road-holder-type,.plan-deadline{forced-color-adjust:auto}}
