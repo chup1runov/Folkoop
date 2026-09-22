@@ -5,6 +5,20 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+async function fetchWithRetry(url, options, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await fetch(url, options);
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts) break;
+      await new Promise(resolve => setTimeout(resolve, attempt * 750));
+    }
+  }
+  throw lastError;
+}
+
 async function capabilities() {
   const url = new URL(ENDPOINT);
   url.search = new URLSearchParams({
@@ -12,7 +26,7 @@ async function capabilities() {
     request: 'GetCapabilities'
   });
 
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     headers: {
       origin: ORIGIN,
       'user-agent': 'Sverinav-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Sverinav)'
@@ -52,7 +66,7 @@ function featureInfoUrl(lat, lon) {
 }
 
 async function assertGothenburgMunicipalRoad() {
-  const response = await fetch(featureInfoUrl(57.7002, 11.9738), {
+  const response = await fetchWithRetry(featureInfoUrl(57.7002, 11.9738), {
     headers: {
       accept: 'application/json',
       origin: ORIGIN,
