@@ -11,10 +11,11 @@
   <title>Sverinav — Samhället. Enklare.</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#view">Hoppa till innehåll</a>
   <div class="app-shell">
     <header class="topbar">
       <button class="brand-lockup" data-screen="home" aria-label="Sverinav">
@@ -33,22 +34,22 @@
       </div>
     </header>
 
-    <main id="view" aria-live="polite"></main>
+    <main id="view" tabindex="-1"></main>
 
     <nav class="bottom-nav" aria-label="Huvudmeny" id="bottomNav">
-      <button data-screen="home" class="active">
+      <button type="button" data-screen="home" class="active">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
         <span id="navHome">Hem</span>
       </button>
-      <button data-screen="nara">
+      <button type="button" data-screen="nara">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-12a7 7 0 1 0-14 0c0 6.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
         <span id="navNear">Nära</span>
       </button>
-      <button data-screen="rapportera">
+      <button type="button" data-screen="rapportera">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Z"/><path d="M12 7v6M12 17h.01"/></svg>
         <span id="navReport">Rapportera</span>
       </button>
-      <button data-screen="beslut">
+      <button type="button" data-screen="beslut">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/></svg>
         <span id="navDecisions">Beslut</span>
       </button>
@@ -56,12 +57,12 @@
   </div>
 
   <div class="language-sheet" id="languageSheet" hidden>
-    <button class="language-backdrop" id="languageBackdrop" type="button" aria-label="Close"></button>
+    <button class="language-backdrop" id="languageBackdrop" type="button" tabindex="-1" aria-label="Stäng språkval"></button>
     <section class="language-dialog" role="dialog" aria-modal="true" aria-labelledby="languageSheetTitle">
       <div class="sheet-handle" aria-hidden="true"></div>
       <div class="sheet-head">
         <h2 id="languageSheetTitle">Språk</h2>
-        <button class="sheet-close" id="closeLanguageButton" type="button" aria-label="Close">×</button>
+        <button class="sheet-close" id="closeLanguageButton" type="button" aria-label="Stäng språkval">×</button>
       </div>
       <div class="language-options" id="languageOptions"></div>
     </section>
