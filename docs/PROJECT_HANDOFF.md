@@ -1,56 +1,47 @@
 # Sverinav — project handoff
 
-Updated: 2026-09-23. Current release target: **v0.12.0 Compact**. Confirm the latest GitHub Actions result before claiming a release is published.
+Updated 2026-09-23. Current release target: **v0.14.0 editorial update**. Check the latest GitHub Actions result before saying a release is published.
 
 ## Canonical project
 
-- Repository: https://github.com/chup1runov/Sverinav
-- Branch: main
-- Public app: https://chup1runov.github.io/Sverinav/
-- GitHub is authoritative for public-safe requirements, code and technical documentation. Private conversations/decision journals belong in Box, never public commits. Archive during active work, not by promising an unconfigured background export.
+Repository: https://github.com/chup1runov/Sverinav ; default branch main. App: https://chup1runov.github.io/Sverinav/ . Code and public-safe requirements belong here; private conversation journals stay in Box. Archive during active work only; do not promise unconfigured background exports.
 
-## Product
+## Product and author-approved direction
 
-**Sverinav — Samhället. Enklare.** An independent civic interface to public Sweden, starting with Göteborg. The user's task comes before authority structure. Mobile-first, not mobile-only; source-first, minimal visual noise, no party-political profiling. The civic service works without an account or personnummer. Any later membership layer must remain separate and optional.
+Sverinav is an independent digital civic project. Start with a person's need rather than authority structure. Save time finding official services and understanding a concrete next step. Mobile-first, source-first, compact, no political profiling. Free access for residents is a project principle, distinct from the undecided code licence and future organisational funding.
 
-Four bottom tabs: **Idag, Nära, Rapportera, Beslut**. Responsibility lookup is accessible from Idag. Om Sverinav explains independence, limitations, source/privacy behavior, version and optional feedback.
+Initiator and maintainer: Pavel Chuprunov, chup1runov. Public contacts explicitly approved for publication: chup1runov@gmail.com and https://t.me/chup1runov . Do not substitute other private addresses or biography. The initiator reports that the idea arose in 2021; the code repository creation is independently recorded as 2026-09-21. See docs/EDITORIAL_V014.md for the public biography source and factual boundaries.
 
-## Current behavior
+Four bottom tabs remain Idag, Nära, Rapportera, Beslut. The existing Om route provides purpose, author, direct contacts, qualified history, practical FAQ, privacy and source notes. New copy is in about-copy.js. about-project.js preserves original feedback controls and changes only the editorial presentation. It adds no requests or storage. Native details/summary keep long answers collapsed. The code-repository promotion is not shown on this screen; official source links remain.
 
-Idag is a compact summary, not a news feed. It shows SMHI SNOW1gv1 forecasts for a selected approximate district, county-level warnings for Västra Götaland, the official Västtrafik journey link and one upcoming Göteborg consultation deadline. Details/summary reveal weather hours and area settings. Active warnings and failures are not collapsed. Water and ticket links are under More services and explicitly remain external handoffs. No real departure board, water-state aggregation or ticket wallet is implemented.
+## Actual behaviour
 
-Vem ansvarar? uses a keyword entry and optional NVDB road-holder check, after explicit geolocation action. Coordinates are transmitted to Trafikverket; they do not stay exclusively in the browser. Road ambiguity/poor accuracy prevents automatic routing to a definite recipient. Address text is a note, not a geocoder.
+Idag v0.12 Compact remains: forecast for a chosen coarse Göteborg area, SMHI warnings for Västra Götaland County, an official Västtrafik planning link and one Göteborg consultation deadline. Choosing the weather area does not filter all other content. No integrated departure board, ticket sale/payment verification or water-interruption aggregation. Water and To Go are external handoffs. Active warnings and failed source checks stay visible.
 
-Rapportera: description + temporary current location → NVDB → copy text/GPS → official Trafikverket or Göteborg form. No automatic submission, no fake sent state. Private roads receive association/owner guidance rather than an invented universal form. Photos are attached in the official service.
+Responsibility: keywords plus an optional road-holder query to NVDB after an explicit geolocation action. Coordinates are sent to Trafikverket, not kept exclusively in the browser. No coordinate history. Ambiguous/low-accuracy matches must not produce a definite official recipient. The address field is a note, not a geocoder.
 
-Nära: Göteborg plans open for comments, deadlines rechecked on every read against Europe/Stockholm. Beslut: original Riksdag committee-report metadata (Betänkande), not AI political interpretation or an automatic assertion that every document is a law. Both have fetch timestamps and original links; daily feeds warn after 36 hours. Error is not equivalent to zero results.
+Rapportera prepares text and opens the official route. Users review and submit themselves. No fabricated sent, accepted or resolved status. Private roads receive association/owner guidance. Photo attachment happens in the official service.
 
-## Languages and storage
+Nära lists Göteborg consultations with deadlines rechecked on read against Europe/Stockholm. Beslut displays Riksdag committee-report metadata with original links, not a promise that every document is a current law. Fetch dates and decision dates stay separate. A feed error is not an empty successful response. Daily feeds warn after 36 hours.
 
-Svenska, English, العربية, Soomaali, فارسی, Suomi, Bosanski/Hrvatski/Srpski, Kurdî (Kurmancî), Español, Русский, Українська. Arabic/Persian are RTL. Language and coarse weather area may be local preferences. Draft text/disclosure state are memory-only; no coordinate history. Provider technical logs may exist. Do not put secrets, exact user addresses, coordinates, private motivations or Box identifiers in public documentation/tests.
+## Planned, not implemented
 
-## Engineering and audits
+Accepted value work remains in docs/VALUE_ROADMAP.md: honest scope labels, voluntary setup, authorised saved-stop departures, relevant changes, calendar actions and manual problem location. Editorial v0.14 does not ship these features.
 
-Static PWA on GitHub Pages, no production backend/database/account/push service. Read docs/IDAG_AND_AUDIT.md for the v0.11 source, privacy and 20-group audit record; read docs/COMPACT_V012.md for the current layout, limits and test scope. Tests cover deterministic logic and Chromium /Sverinav/ interactions. Mobile Chromium/UA emulation is not real Safari, WebKit, installed iOS PWA, VoiceOver or GPS evidence.
+Short optional civic activities, progression and neighbour help are a newly approved direction. They are described as future work in the UI. See docs/CIVIC_ACTIVITIES.md: no rewards for political positions, signatures or complaint volume; distinguish completed learning steps from verified real outcomes. No streak punishment, fake completion or promised earnings. Reward funding and tasks involving minors require separate safeguarding, moderation and applicable legal review before implementation. No task marketplace, points currency, rewards or payments are live.
 
-Build with node scripts/build-site.mjs or npm start. package.json controls the built APP_VERSION through a deterministic tested stamp; raw app.js has an earlier fallback literal. Release tests assert built version and service-worker agreement. Only allowlisted public static assets enter _site. Deploy uses the tested artifact, not a refetched/rebuilt source snapshot. Offline HTML/public JSON have separate handling; external coordinate requests bypass the service worker. Cache cleanup is app-scoped.
+## Privacy and languages
 
-SVG icons are local original paths in civic-core.js. PNG icons: 180/192/512. Legacy prototype/, src/resolver.ts and vercel.json are not active production components. Current-source secret checks are not a complete Git-history/security certification. Municipal HTML scraping remains fragile.
+Eleven UI languages: sv,en,ar,so,fa,fi,bs,ku,es,ru,uk. Arabic/Persian use RTL. Language and coarse weather area can be local preferences; drafts and open panels are memory-only. Provider technical logs may exist. No account or personnummer required. Do not leak private case text, coordinates, home addresses or secrets to source, analytics, test fixtures or public issues. Approved public contact details above are not secrets.
 
-## Boundaries and future work
+## Engineering
 
-No Västtrafik API departures/ticket sales yet; contractual reseller/BoB access is required before implementing valid tickets. TrafficInformation needs an APPID. RiverService, live air-quality WMS, Göteborgsförslaget, local decisions, Mina ärenden, saved areas and push notifications are future work, not shipped capabilities. Do not substitute official-source gaps with demo data or claim everything is calm.
+Static GitHub Pages PWA, no production database/backend/account/push service. package.json is authoritative for the built APP_VERSION via scripts/release-version.mjs. Raw app.js retains an older development literal; use the actual _site build. Service-worker version is checked against package. Allowlisted static assets only; deploy the same tested artifact, without a second source fetch/build. Scope cache cleanup to this app, keep public JSON and HTML strategies separate, bypass external coordinate requests.
 
-Keep the spelling Sverinav; do not emphasize NAV. Formal trademark/domain clearance is pending. Source-code licence is undecided: public code is not a final open-source licence grant. No licence, partnership, billable hosting or financial commitment was selected during Compact.
+Node tests and Chromium /Sverinav/ interactions are regression evidence, not real iPhone/Safari/VoiceOver or a full security certification. Local navigation can be restricted; DOM previews must be labelled accordingly. Editorial translations still benefit from native-speaker review. Older prototype/, src/resolver.ts and vercel.json are not production components. Never remove third-party notices or rewrite historical commits merely to change editorial wording.
 
-Longer-term TypeScript, MapLibre, PostgreSQL/PostGIS and a backend are options only when justified by working tasks. Do not migrate frameworks merely for appearance.
+## Licence and next decisions
 
-## Next steps
+No final code licence installed. Public source access, free use of the hosted service, permission to fork commercially and ownership of the brand are different decisions. A commercial-use restriction cannot be presented as an open-source licence. Do not choose AGPL or a restrictive source-available licence without the maintainer's explicit decision after explaining trade-offs. Review third-party code/data and contribution rights; formal trademark clearance remains pending.
 
-1. Manual iPhone/Safari and Android pass, including native disclosures, large text, installation, permissions and clipboard.
-2. Use docs/PILOT_GUIDE.md with 5–10 testers; measure task completion, not assumed popularity.
-3. Prioritise an authorised saved-stop departure view, then reliable local deadlines/calendar actions.
-4. Add new sources only with explicit scope, freshness, unknown/error states and original links.
-5. Finish licence/brand decisions and repository cleanup separately.
-
-When continuing: check current main + latest workflow, read this handoff and both audit reports, preserve privacy/source contracts and avoid treating old chat/demo descriptions as current code.
+Next: confirm this release, correct remaining scope labels, then saved-stop value and a small neutral activity-guide experiment. Do not replace user testing with more home-screen sections. Real-device and small resident pilot tests are still needed.

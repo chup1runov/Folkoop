@@ -1,10 +1,10 @@
 /* Cache only this app's public shell/feeds. Never cache coordinates or external APIs. */
-const VERSION='0.13.0';
+const VERSION='0.14.0';
 const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
 const SHELL=new URL('index.html',BASE).href;
-const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png'];
+const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png'];
 const CORE=new Set(CORE_PATHS.map(p=>new URL(p,BASE).href));
 const FEEDS=new Set(['data/riksdagen-decisions.json','data/goteborg-open-plans.json'].map(p=>new URL(p,BASE).href));
 async function remember(request,response){
@@ -25,7 +25,6 @@ async function dataResponse(request){
   }
 }
 async function navigationResponse(request){
-  // A versioned cached shell and its static assets stay together until the next SW activation.
   const cached=await saved(SHELL);if(cached)return cached;
   try{const r=await fetch(request);if(!r.ok)throw new Error('HTTP');return r;}catch{return new Response('Offline',{status:503,headers:{'content-type':'text/plain; charset=utf-8'}});}
 }
