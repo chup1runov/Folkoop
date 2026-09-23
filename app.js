@@ -537,7 +537,7 @@ function rt(key) {
 }
 
 function detectInitialLanguage() {
-  const saved = localStorage.getItem('sverinav-language');
+  const saved = SverinavCore.storage.get('sverinav-language');
   if (supportedLanguages.includes(saved)) return saved;
   const browser = (navigator.language || 'sv').toLowerCase().split('-')[0];
   return supportedLanguages.includes(browser) ? browser : 'sv';
@@ -584,26 +584,14 @@ function formatDecisionDate(value) {
   }
 }
 
-function icon(name) {
-  const paths = {
-    route: '<path d="M5 18c0-3 2-5 5-5h4c3 0 5-2 5-5"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/>',
-    camera: '<path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3"/>',
-    pin: '<path d="M12 21s7-5.1 7-12a7 7 0 1 0-14 0c0 6.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/>',
-    road: '<path d="M8 3 6 21M16 3l2 18M12 3v4M12 11v4M12 19v2"/>',
-    air: '<path d="M4 8h10a3 3 0 1 0-3-3M4 12h14a3 3 0 1 1-3 3M4 16h6"/>',
-    consult: '<path d="M5 4h14v13H9l-4 3z"/><path d="M8 8h8M8 12h6"/>',
-    file: '<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/>',
-    database: '<ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>'
-  };
-  return `<svg class="svg-icon" aria-hidden="true" viewBox="0 0 24 24">${paths[name] || paths.file}</svg>`;
-}
+function icon(name) { return SverinavCore.icon(name); }
 
 const languageNames = {
   sv:'Svenska', en:'English', ar:'العربية', so:'Soomaali', fa:'فارسی', fi:'Suomi',
   bs:'Bosanski / Hrvatski / Srpski', ku:'Kurdî (Kurmancî)', es:'Español', ru:'Русский', uk:'Українська'
 };
 
-const APP_VERSION = '0.10.1';
+const APP_VERSION = '0.11.0';
 const GITHUB_REPO_URL = 'https://github.com/chup1runov/Sverinav';
 const GITHUB_FEEDBACK_URL = 'https://github.com/chup1runov/Sverinav/issues/new?template=pilot-feedback.md';
 
@@ -624,6 +612,9 @@ const pilotMessages = {
 function pmt(key) {
   return pilotMessages[currentLanguage]?.[key] || pilotMessages.en[key] || key;
 }
+
+const auditCopy = {"sv":{"retrieved":"Data hämtade","checked":"Uppslag utfört","cached":"Sparad kopia; kunde inte uppdatera","privacy":"Vid vägkontroll skickas koordinater till Trafikverket. Sverinav sparar inte koordinater eller ärendetext. Vald språk- och väderregion sparas lokalt. GitHub och externa tjänster kan behandla tekniska besöksuppgifter.","uncertain":"Möjlig väghållare — kontrollera platsen på originalkartan.","memo":"Adressfältet är en anteckning, inte en adressökning. GPS-kontrollen gäller platsen där du befinner dig.","publicIssue":"GitHub-ärenden är offentliga. Lägg inte in personuppgifter, hemadress eller koordinater.","noDecisions":"Dokumenten kunde inte hämtas. Öppna Riksdagens original."},"en":{"retrieved":"Data retrieved","checked":"Lookup performed","cached":"Saved copy; update failed","privacy":"Road checks send coordinates to Trafikverket. Sverinav does not persist coordinates or report text. Language and weather area are saved locally. GitHub and external services may process technical visit data.","uncertain":"Possible road holder — verify the location on the original map.","memo":"The address field is a note, not an address search. GPS checks your current location.","publicIssue":"GitHub issues are public. Do not include personal information, home address or coordinates.","noDecisions":"Documents could not be retrieved. Open the Riksdag source."},"ru":{"retrieved":"Данные получены","checked":"Проверка выполнена","cached":"Сохранённая копия; обновление не удалось","privacy":"При проверке дороги координаты передаются Trafikverket. Sverinav не сохраняет координаты и текст обращения. Язык и район погоды хранятся локально. GitHub и внешние сервисы могут обрабатывать технические данные посещения.","uncertain":"Возможный ответственный — проверь место на карте первоисточника.","memo":"Адрес — заметка, а не поиск адреса. Проверка GPS относится к месту, где ты находишься.","publicIssue":"Обращения на GitHub публичны. Не добавляй личные данные, домашний адрес и координаты.","noDecisions":"Документы загрузить не удалось. Открой первоисточник Риксдага."},"uk":{"retrieved":"Дані отримано","checked":"Перевірку виконано","cached":"Збережена копія; оновлення не вдалося","privacy":"Під час перевірки дороги координати передаються Trafikverket. Sverinav не зберігає координати й текст звернення. Мова та район погоди зберігаються локально. GitHub і зовнішні сервіси можуть обробляти технічні дані відвідування.","uncertain":"Можливий відповідальний — перевірте місце на карті першоджерела.","memo":"Адреса — нотатка, а не пошук адреси. Перевірка GPS стосується вашого поточного місця.","publicIssue":"Звернення на GitHub публічні. Не додавайте особисті дані, домашню адресу та координати.","noDecisions":"Не вдалося завантажити документи. Відкрийте першоджерело Риксдагу."},"fi":{"retrieved":"Tiedot haettu","checked":"Haku tehty","cached":"Tallennettu kopio; päivitys epäonnistui","privacy":"Tietarkistus lähettää koordinaatit Trafikverketille. Sverinav ei tallenna koordinaatteja tai ilmoitustekstiä. Kieli ja sääalue tallentuvat paikallisesti. GitHub ja ulkoiset palvelut voivat käsitellä teknisiä käyntitietoja.","uncertain":"Mahdollinen tienpitäjä — tarkista paikka alkuperäiseltä kartalta.","memo":"Osoite on muistiinpano, ei osoitehaku. GPS tarkistaa nykyisen sijaintisi.","publicIssue":"GitHub-ilmoitukset ovat julkisia. Älä lisää henkilötietoja, kotiosoitetta tai koordinaatteja.","noDecisions":"Asiakirjoja ei voitu hakea. Avaa valtiopäivien alkuperäinen lähde."},"es":{"retrieved":"Datos obtenidos","checked":"Consulta realizada","cached":"Copia guardada; no se pudo actualizar","privacy":"La consulta vial envía coordenadas a Trafikverket. Sverinav no guarda coordenadas ni texto del aviso. El idioma y zona meteorológica se guardan localmente. GitHub y servicios externos pueden procesar datos técnicos de visita.","uncertain":"Posible responsable — verifica el lugar en el mapa original.","memo":"La dirección es una nota, no una búsqueda. El GPS consulta tu ubicación actual.","publicIssue":"Los avisos de GitHub son públicos. No incluyas datos personales, dirección de casa ni coordenadas.","noDecisions":"No se pudieron obtener documentos. Abre la fuente del Parlamento."},"bs":{"retrieved":"Podaci preuzeti","checked":"Provjera izvršena","cached":"Sačuvana kopija; ažuriranje nije uspjelo","privacy":"Provjera ceste šalje koordinate Trafikverketu. Sverinav ne čuva koordinate ni tekst prijave. Jezik i područje prognoze čuvaju se lokalno. GitHub i vanjske usluge mogu obrađivati tehničke podatke posjete.","uncertain":"Mogući upravljač — provjeri mjesto na originalnoj karti.","memo":"Adresa je bilješka, ne pretraga adrese. GPS provjerava tvoju trenutnu lokaciju.","publicIssue":"GitHub prijave su javne. Ne dodaj lične podatke, kućnu adresu ili koordinate.","noDecisions":"Dokumenti nisu preuzeti. Otvori izvor parlamenta."},"ar":{"retrieved":"تم جلب البيانات","checked":"تم الفحص","cached":"نسخة محفوظة؛ تعذر التحديث","privacy":"يرسل فحص الطريق الإحداثيات إلى Trafikverket. لا يحفظ Sverinav الإحداثيات أو نص البلاغ. تُحفظ اللغة ومنطقة الطقس محلياً. قد تعالج GitHub والخدمات الخارجية بيانات زيارة تقنية.","uncertain":"المسؤول المحتمل — تحقق من المكان على الخريطة الأصلية.","memo":"العنوان ملاحظة وليس بحثاً عن عنوان. يفحص GPS موقعك الحالي.","publicIssue":"بلاغات GitHub عامة. لا تضف بيانات شخصية أو عنوان المنزل أو الإحداثيات.","noDecisions":"تعذر جلب الوثائق. افتح مصدر البرلمان الأصلي."},"fa":{"retrieved":"داده‌ها دریافت شد","checked":"بررسی انجام شد","cached":"نسخه ذخیره‌شده؛ به‌روزرسانی ناموفق","privacy":"بررسی راه مختصات را به Trafikverket می‌فرستد. Sverinav مختصات یا متن گزارش را ذخیره نمی‌کند. زبان و منطقه هوا محلی ذخیره می‌شوند. GitHub و خدمات خارجی ممکن است داده‌های فنی بازدید را پردازش کنند.","uncertain":"مسئول احتمالی — مکان را روی نقشه اصلی بررسی کنید.","memo":"نشانی یادداشت است نه جستجوی نشانی. GPS موقعیت فعلی شما را بررسی می‌کند.","publicIssue":"گزارش‌های GitHub عمومی هستند. اطلاعات شخصی، نشانی خانه یا مختصات اضافه نکنید.","noDecisions":"دریافت اسناد ناموفق بود. منبع اصلی پارلمان را باز کنید."},"so":{"retrieved":"Xogta la helay","checked":"Hubinta la sameeyay","cached":"Nuqul kaydsan; cusboonaysiintu ma shaqayn","privacy":"Hubinta waddadu waxay koordinateyada u dirtaa Trafikverket. Sverinav ma kaydiyo koordinateyada ama qoraalka warbixinta. Luqadda iyo aagga cimilada waxaa lagu kaydiyaa qalabka. GitHub iyo adeegyada kale waxay farsamayn karaan xogta farsamada booqashada.","uncertain":"Masuul suurtagal ah — goobta ka hubi khariidadda asalka ah.","memo":"Cinwaanku waa qoraal, ma aha raadinta cinwaan. GPS wuxuu hubiyaa halka aad hadda joogto.","publicIssue":"Arrimaha GitHub waa dadweyne. Ha ku darin xog shaqsiyeed, cinwaan guri ama koordinateyaal.","noDecisions":"Dukumentiyada lama helin. Fur isha baarlamaanka."},"ku":{"retrieved":"Dane hatin wergirtin","checked":"Kontrol hate kirin","cached":"Kopiya hilanîn; nûkirin nehat","privacy":"Kontrola rê koordînatan ji Trafikverket re dişîne. Sverinav koordînat û nivîsa raporê nahilîne. Ziman û herêma hewayê li cih têne hilanîn. GitHub û xizmetên derveyî dikarin daneyên teknîkî yên serdanê bi kar bînin.","uncertain":"Berpirsiyarê gengaz — cih li nexşeya orîjînal kontrol bike.","memo":"Navnîşan notek e, ne lêgerîna navnîşanê. GPS cihê niha kontrol dike.","publicIssue":"Raporên GitHub giştî ne. Dane kesane, navnîşana malê an koordînat zêde neke.","noDecisions":"Belge nehatin wergirtin. Çavkaniya parlamentoyê veke."}};
+function at(key) { return auditCopy[currentLanguage]?.[key] || auditCopy.en[key]; }
 
 const sourceStatusMessages = {
   sv:{updated:'Källa uppdaterad',stale:'Data kan vara inaktuell',checked:'Kontrollerad nu',unknown:'Källstatus saknas'},
@@ -649,31 +640,21 @@ function formatSourceTime(value) {
   try {
     return new Intl.DateTimeFormat(currentLanguage || 'sv', {
       dateStyle:'medium',
-      timeStyle:'short'
+      timeStyle:'short',
+      timeZone:'Europe/Stockholm'
     }).format(date);
   } catch {
     return date.toLocaleString();
   }
 }
 
-function sourceFreshnessMarkup(timestamp, sourceName, { maxAgeHours = 36, live = false } = {}) {
-  const date = new Date(timestamp);
-  if (Number.isNaN(date.getTime())) {
-    return `<div class="source-health source-health--unknown">
-      <span class="source-health-dot"></span>
-      <span>${escapeHtml(sourceName || '')}${sourceName ? ' · ' : ''}${sst('unknown')}</span>
-    </div>`;
-  }
-
-  const ageHours = Math.max(0, (Date.now() - date.getTime()) / 36e5);
-  const stale = !live && ageHours > maxAgeHours;
-  const status = live ? sst('checked') : stale ? sst('stale') : sst('updated');
-  const level = live ? 'live' : stale ? 'stale' : 'fresh';
-
-  return `<div class="source-health source-health--${level}">
-    <span class="source-health-dot"></span>
-    <span>${escapeHtml(sourceName || '')}${sourceName ? ' · ' : ''}${status}: ${escapeHtml(formatSourceTime(date))}</span>
-  </div>`;
+function sourceFreshnessMarkup(timestamp, sourceName, { maxAgeHours = 36, live = false, cached = false } = {}) {
+  const time = SverinavCore.timestamp(timestamp);
+  const valid = time !== null && time <= Date.now() + 300000;
+  const stale = valid && Date.now() - time > maxAgeHours * 36e5;
+  const level = !valid ? 'unknown' : cached || stale ? 'stale' : live ? 'live' : 'fresh';
+  const label = !valid ? sst('unknown') : cached ? at('cached') : stale ? sst('stale') : live ? at('checked') : at('retrieved');
+  return `<div class="source-health source-health--${level}"><span class="source-health-dot" aria-hidden="true"></span><span>${escapeHtml(sourceName || '')} · ${escapeHtml(label)}${valid ? ': ' + escapeHtml(formatSourceTime(new Date(time))) : ''}</span></div>`;
 }
 
 const iosInstallMessages = {
@@ -749,13 +730,13 @@ function screenFromHash() {
 
 function applyLanguage(language) {
   currentLanguage = supportedLanguages.includes(language) ? language : 'sv';
-  localStorage.setItem('sverinav-language', currentLanguage);
+  SverinavCore.storage.set('sverinav-language', currentLanguage);
 
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = rtlLanguages.has(currentLanguage) ? 'rtl' : 'ltr';
 
   document.getElementById('tagline').textContent = t('tagline');
-  document.getElementById('navHome').textContent = t('navHome');
+  document.getElementById('navHome').textContent = SverinavToday.label(currentLanguage);
   document.getElementById('navNear').textContent = t('navNear');
   document.getElementById('navReport').textContent = t('navReport');
   document.getElementById('navDecisions').textContent = t('navDecisions');
@@ -767,6 +748,14 @@ function applyLanguage(language) {
   languageBackdrop.setAttribute('aria-label', closeLabel);
   languageCode.textContent = languageCodes[currentLanguage] || currentLanguage.toUpperCase();
 
+  for (const [screen,name] of Object.entries({home:'sun',nara:'pin',rapportera:'camera',beslut:'file'})) {
+    const svg=document.querySelector(`.bottom-nav [data-screen="${screen}"] svg`);
+    if(svg) svg.outerHTML=icon(name);
+  }
+  aboutButton.innerHTML=icon('info');
+  document.querySelector('#languageButton span[aria-hidden]')?.replaceChildren();
+  const globe=document.querySelector('#languageButton span[aria-hidden]');
+  if(globe) globe.innerHTML=icon('language');
   renderLanguageOptions();
   render(currentScreen, false);
 }
@@ -847,7 +836,7 @@ function roadResolverActionMarkup() {
     <button class="action secondary" type="button" data-road-resolve>
       ${icon('pin')}<span>${rt('verify')}</span>
     </button>
-    <p class="road-privacy">${rt('privacy')}</p>
+    <p class="road-privacy">${at('privacy')}</p>
     <div data-road-live aria-live="polite"></div>
   </div>`;
 }
@@ -858,7 +847,7 @@ function resultMarkup(text) {
   if (category === 'road') {
     return `<div class="result">
       <strong>${actor}</strong>
-      <p>${reason}</p>
+      <p>${t('demoNotVerified')}</p>
       ${roadResolverActionMarkup()}
       <div class="source">${icon('database')}<span>Trafikverket / NVDB</span></div>
     </div>`;
@@ -893,7 +882,11 @@ function holderExplanation(type) {
   return rt('privateExplain');
 }
 
+function roadMatchUncertain(result) {
+  return result.ambiguous || !Number.isFinite(result.accuracyMeters) || result.accuracyMeters > 80 || result.distanceMeters > 40;
+}
 function officialReportUrl(result) {
+  if (roadMatchUncertain(result)) return null;
   if (result.holderType === 'statlig') {
     return 'https://etjanster.trafikverket.se/anonyma-tjanster/kundfragor-trafikverket/vag/drift-underhall/';
   }
@@ -920,19 +913,19 @@ function roadLiveResultMarkup(result) {
     <div class="road-holder-header">
       <span class="item-icon">${icon('road')}</span>
       <div class="road-holder-copy">
-        <small>${rt('responsible')}</small>
+        <small>${roadMatchUncertain(result) ? at('uncertain') : rt('responsible')}</small>
         <strong>${escapeHtml(actor)}</strong>
         <span class="road-holder-type">${holderTypeLabel(result.holderType)}</span>
       </div>
     </div>
-    <p>${holderExplanation(result.holderType)}</p>
+    <p>${roadMatchUncertain(result) ? at('uncertain') : holderExplanation(result.holderType)}</p>
     <div class="road-meta">
       <span>${rt('distance')}: ~${distance} m</span>
       ${accuracy !== null ? `<span>${rt('accuracy')}: ±${accuracy} m</span>` : ''}
     </div>
     ${result.ambiguous ? `<div class="road-warning">${rt('ambiguous')}</div>` : ''}
     ${lowAccuracy ? `<div class="road-warning">${rt('inaccurate')}</div>` : ''}
-    <div class="live-badge"><span class="live-dot"></span>${rt('verified')}</div>
+    <div class="source">${roadMatchUncertain(result) ? at('uncertain') : rt('verified')}</div>
     ${sourceFreshnessMarkup(result.checkedAt, result.sourceName || 'Trafikverket / NVDB', { live:true })}
     <div class="road-links">
       ${reportUrl ? `<a class="road-link" href="${escapeHtml(reportUrl)}" target="_blank" rel="noopener noreferrer">${rt('reportLink')} ↗</a>` : ''}
@@ -958,6 +951,7 @@ async function resolveRoadFromPosition(container, button) {
 
   try {
     const position = await getCurrentPosition();
+    if (!container.isConnected) return;
     button.innerHTML = `${icon('database')}<span>${rt('checking')}</span>`;
 
     const result = await window.SverinavNVDB.resolveRoadHolder(
@@ -966,6 +960,7 @@ async function resolveRoadFromPosition(container, button) {
       { accuracyMeters: position.coords.accuracy }
     );
 
+    if (!container.isConnected) return;
     container.innerHTML = roadLiveResultMarkup(result);
     button.disabled = false;
     button.removeAttribute('aria-busy');
@@ -993,79 +988,7 @@ function bindRoadResolver(container) {
 }
 
 function home() {
-  view.innerHTML = `
-    <div class="home">
-      <section class="hero">
-        <div class="home-meta">
-          <span class="location-chip">${icon('pin')} Göteborg</span>
-          <span class="beta-badge">${t('pilot')}</span>
-        </div>
-        <h1>${t('heroTitle')}</h1>
-        <p>${t('heroText')}</p>
-
-        <div class="resolver-panel">
-          <label class="field-label" for="homeIssue">${t('reportPlaceholder')}</label>
-          <textarea id="homeIssue" class="textarea" placeholder="${t('issuePlaceholder')}"></textarea>
-          <button id="homeFindOwner" class="action" type="button">
-            ${icon('route')}<span>${t('findResponsible')}</span>
-          </button>
-          <div id="homeOwnerResult"></div>
-        </div>
-      </section>
-
-      <section class="quick-status">
-        <span class="status-dot"></span>
-        <span>${t('status')}</span>
-      </section>
-
-      <section class="section-block">
-        <button class="primary-action-card" data-screen="rapportera">
-          <span class="card-icon">${icon('camera')}</span>
-          <span class="card-copy">
-            <strong>${t('report')}</strong>
-            <small>${t('reportSub')}</small>
-          </span>
-          <span class="chevron" aria-hidden="true">›</span>
-        </button>
-      </section>
-
-      <section class="section-block">
-        <div class="section-head">
-          <h2>${t('nearTitle')}</h2>
-          <button class="text-button" type="button" data-screen="nara">${t('navNear')} →</button>
-        </div>
-        <div class="plan-list" id="homeOpenPlans">${planLoadingMarkup()}</div>
-      </section>
-
-      <section class="section-block">
-        <div class="section-head">
-          <h2>${t('decisionsTitle')}</h2>
-          <button class="text-button" type="button" data-screen="beslut">${t('navDecisions')} →</button>
-        </div>
-        <div class="preview-card">
-          <span class="item-icon">${icon('file')}</span>
-          <div>
-            <strong>${t('nationalDecision')}</strong>
-            <p>${t('nationalDecisionText')}</p>
-            <div class="source">${icon('database')}<span>${t('nationalDecisionSource')}</span></div>
-          </div>
-        </div>
-      </section>
-
-      ${installCardMarkup()}
-
-      <p class="product-note">Sverinav · Göteborg · ${t('earlyPrototype')}</p>
-    </div>
-  `;
-
-  hydratePlanList(document.getElementById('homeOpenPlans'), { limit: 1 });
-
-  document.getElementById('homeFindOwner').onclick = () => {
-    const text = document.getElementById('homeIssue').value;
-    const container = document.getElementById('homeOwnerResult');
-    container.innerHTML = resultMarkup(text);
-    bindRoadResolver(container);
-  };
+  SverinavToday.render(view,currentLanguage,{t,install:installCardMarkup,plans:hydratePlanList,decisions:hydrateDecisionScreen});
 }
 
 function previewCard(iconName, title, text, source) {
@@ -1082,7 +1005,7 @@ function previewCard(iconName, title, text, source) {
 function shell(title, subtitle, body) {
   view.innerHTML = `<section class="screen">
     <button class="back" data-screen="home" type="button">${t('back')}</button>
-    <h2>${title}</h2>
+    <h1 tabindex="-1">${title}</h1>
     <p class="muted">${subtitle}</p>
     ${body}
   </section>`;
@@ -1091,7 +1014,7 @@ function shell(title, subtitle, body) {
 function responsibilityScreen() {
   shell(
     t('responsibilityTitle'),
-    t('responsibilityHelp'),
+    t('responsibilitySub'),
     `<div class="form-stack">
       <div class="field-group">
         <label class="field-label" for="issue">${t('reportPlaceholder')}</label>
@@ -1119,25 +1042,25 @@ const REPORT_ROUTES = {
 
 async function copyTextToClipboard(text, button) {
   const original = button.textContent;
+  let copied = false, textarea = null;
+  const previous = document.activeElement;
   try {
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      if (!document.execCommand('copy')) throw new Error('copy command failed');
-      textarea.remove();
+      try { await navigator.clipboard.writeText(text); copied = true; } catch { /* Try the explicit gesture fallback. */ }
     }
-    button.textContent = rpt('copied');
-  } catch {
-    button.textContent = rpt('copyFailed');
-  }
-  setTimeout(() => { if (button.isConnected) button.textContent = original; }, 1800);
+    if (!copied) {
+      textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.cssText = 'position:fixed;inset:0;opacity:0;font-size:16px';
+      document.body.appendChild(textarea);
+      textarea.focus(); textarea.select(); textarea.setSelectionRange(0,text.length);
+      copied = document.execCommand('copy') === true;
+    }
+  } catch { copied = false; }
+  finally { textarea?.remove(); if (previous?.isConnected) previous.focus({preventScroll:true}); }
+  if (button.isConnected) button.textContent = copied ? rpt('copied') : rpt('copyFailed');
+  setTimeout(() => { if (button.isConnected) button.textContent = original; },1800);
+  return copied;
 }
 
 function reportPackage(description, place) {
@@ -1147,6 +1070,7 @@ function reportPackage(description, place) {
 }
 
 function officialReportRoute(result) {
+  if (roadMatchUncertain(result)) return {url:null,acute:''};
   if (result.holderType === 'statlig') {
     return { url: REPORT_ROUTES.trafikverket, acute: rpt('acuteState') };
   }
@@ -1175,12 +1099,12 @@ function reportRouteMarkup(result, position) {
     <div class="road-holder-header">
       <span class="item-icon">${icon('route')}</span>
       <div class="road-holder-copy">
-        <small>${rpt('recipient')}</small>
+        <small>${roadMatchUncertain(result) ? at('uncertain') : rpt('recipient')}</small>
         <strong>${escapeHtml(actor)}</strong>
         <span class="road-holder-type">${holderTypeLabel(result.holderType)}</span>
       </div>
     </div>
-    <p>${reportHolderText(result)}</p>
+    <p>${roadMatchUncertain(result) ? at('uncertain') : reportHolderText(result)}</p>
     <div class="road-meta">
       <span>${rt('distance')}: ~${distance} m</span>
       ${accuracy !== null ? `<span>${rt('accuracy')}: ±${accuracy} m</span>` : ''}
@@ -1193,6 +1117,7 @@ function reportRouteMarkup(result, position) {
       <button class="action secondary" type="button" data-copy-coords data-coordinates="${escapeHtml(coordinates)}">${rpt('copyCoords')}</button>
     </div>
     ${route.url ? `<a class="report-open-link" href="${escapeHtml(route.url)}" target="_blank" rel="noopener noreferrer">${rpt('open')} ↗</a>` : `<div class="road-warning">${rpt('unsupported')}</div>`}
+    <a class="road-link" href="https://www.trafikverket.se/e-tjanster/sveriges-vagar-pa-karta-via-nvdb/" target="_blank" rel="noopener noreferrer">${rt('mapLink')} ↗</a>
     <p class="report-not-sent">${rpt('notSent')}</p>
     <p class="report-photo-note">${rpt('photo')}</p>
     ${sourceFreshnessMarkup(result.checkedAt, result.sourceName || 'Trafikverket / NVDB', { live:true })}
@@ -1211,12 +1136,15 @@ async function routeRoadReport(container, button) {
   }
 
   const original = button.innerHTML;
+  const inputs = [...document.querySelectorAll('#reportDescription,#reportPlace')];
+  inputs.forEach(input => input.disabled = true);
   button.disabled = true;
   button.setAttribute('aria-busy', 'true');
   button.innerHTML = `${icon('pin')}<span>${rpt('locating')}</span>`;
 
   try {
     const position = await getCurrentPosition();
+    if (!container.isConnected) return;
     button.innerHTML = `${icon('database')}<span>${rpt('checking')}</span>`;
 
     const result = await window.SverinavNVDB.resolveRoadHolder(
@@ -1225,6 +1153,7 @@ async function routeRoadReport(container, button) {
       { accuracyMeters: position.coords.accuracy }
     );
 
+    if (!container.isConnected) return;
     container.innerHTML = reportRouteMarkup(result, position);
 
     const packageText = reportPackage(description, place);
@@ -1239,6 +1168,7 @@ async function routeRoadReport(container, button) {
       : geolocationErrorMessage(error);
     container.innerHTML = `<div class="road-warning">${escapeHtml(message)}</div>`;
   } finally {
+    inputs.forEach(input => input.disabled = false);
     button.disabled = false;
     button.removeAttribute('aria-busy');
     button.innerHTML = original;
@@ -1263,12 +1193,13 @@ function reportScreen() {
       </div>
       <div class="field-group">
         <label class="field-label" for="reportPlace">${rpt('placeLabel')}</label>
-        <input id="reportPlace" class="input" placeholder="${rpt('placeLabel')}">
+        <input id="reportPlace" class="input" placeholder="${rpt('placeLabel')}" aria-describedby="reportPlaceHelp">
+        <p id="reportPlaceHelp" class="help-text">${at('memo')}</p>
       </div>
       <button id="routeRoadReport" class="action" type="button">
         ${icon('pin')}<span>${rpt('route')}</span>
       </button>
-      <p class="road-privacy">${rpt('privacy')}</p>
+      <p class="road-privacy">${at('privacy')}</p>
       <div id="reportRouteResult" aria-live="polite"></div>
     </div>`
   );
@@ -1283,6 +1214,7 @@ function reportScreen() {
   }
 
   button.addEventListener('click', () => routeRoadReport(container, button));
+  for (const input of document.querySelectorAll('#reportDescription,#reportPlace')) input.addEventListener('input', () => container.replaceChildren());
 }
 
 function nearbyItems() {
@@ -1292,17 +1224,7 @@ function nearbyItems() {
   ];
 }
 
-function safeGoteborgUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' &&
-      (url.hostname === 'goteborg.se' || url.hostname.endsWith('.goteborg.se'))
-      ? url.href
-      : null;
-  } catch {
-    return null;
-  }
-}
+function safeGoteborgUrl(value) { return SverinavCore.officialUrl(value,['goteborg.se','www.goteborg.se']); }
 
 function formatPlanDate(value) {
   if (!value) return '';
@@ -1347,10 +1269,10 @@ async function hydratePlanList(container, { limit = null } = {}) {
   try {
     const payload=await window.SverinavGoteborgPlans.loadOpenPlans();
     if (!container.isConnected) return;
-    const status=sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Göteborgs Stad');
+    const status=sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Göteborgs Stad', {cached:payload._cached});
     const items=limit ? payload.items.slice(0,limit) : payload.items;
     if (!items.length) {
-      container.innerHTML=status+`<div class="plan-empty">${pt('empty')} <a href="${escapeHtml(payload.sourceUrl)}" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
+      container.innerHTML=status+`<div class="plan-empty">${pt('empty')} <a href="${escapeHtml(safeGoteborgUrl(payload.sourceUrl) || 'https://goteborg.se/planochbyggprojekt')}" target="_blank" rel="noopener noreferrer">${pt('all')} ↗</a></div>`;
       return;
     }
     container.innerHTML=status+items.map(planCardMarkup).filter(Boolean).join('');
@@ -1363,16 +1285,16 @@ async function hydratePlanList(container, { limit = null } = {}) {
 function nearbyScreen() {
   shell(
     t('nearTitle'),
-    t('nearHelp'),
+    pt('intro'),
     `<div class="near-live-head">
       <div>
         <h3>${pt('title')}</h3>
         <p>${pt('intro')}</p>
       </div>
-      <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+      <span class="source">Göteborgs Stad</span>
     </div>
     <div class="plan-list" id="openPlansList">${planLoadingMarkup()}</div>
-    <div class="list">${demoListMarkup(nearbyItems())}</div>`
+`
   );
   hydratePlanList(document.getElementById('openPlansList'));
 }
@@ -1425,20 +1347,19 @@ function liveDecisionMarkup(item) {
   </a>`;
 }
 
-async function hydrateDecisionScreen(container) {
+async function hydrateDecisionScreen(container, {limit = null} = {}) {
   if (!container || !window.SverinavRiksdagen) return;
 
   try {
     const payload = await window.SverinavRiksdagen.loadLatestDecisions();
-    if (!container.isConnected || currentScreen !== 'beslut') return;
+    if (!container.isConnected) return;
 
-    const markup = payload.items.map(liveDecisionMarkup).filter(Boolean).join('');
+    const markup = (limit ? payload.items.slice(0,limit) : payload.items).map(liveDecisionMarkup).filter(Boolean).join('');
     if (!markup) throw new Error('No renderable Riksdagen items');
-    container.innerHTML = sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Sveriges riksdag') + markup;
+    container.innerHTML = sourceFreshnessMarkup(payload.fetchedAt, payload.sourceName || 'Sveriges riksdag', {cached:payload._cached}) + markup;
   } catch (error) {
-    if (!container.isConnected || currentScreen !== 'beslut') return;
-    console.warn('Riksdagen decision feed unavailable; showing demo fallback.', error);
-    container.innerHTML = demoListMarkup(decisionItems());
+    if (!container.isConnected) return;
+    container.innerHTML = `<div class="plan-empty">${at('noDecisions')} <a href="https://www.riksdagen.se/sv/dokument-och-lagar/" target="_blank" rel="noopener noreferrer">Sveriges riksdag ↗</a></div>`;
   }
 }
 
@@ -1458,7 +1379,7 @@ function demoListMarkup(items) {
 function decisionScreen() {
   shell(
     t('decisionsTitle'),
-    t('decisionsHelp'),
+    'Sveriges riksdag · Betänkanden · Originaldokument',
     `<div class="list" id="decisionList">${decisionLoadingMarkup()}</div>`
   );
   hydrateDecisionScreen(document.getElementById('decisionList'));
@@ -1485,7 +1406,7 @@ function feedbackText() {
     `${pmt('result')}: ${resultLabel}`,
     `${pmt('notes')}: ${notes}`,
     `Språk / Language: ${currentLanguage}`,
-    `App: ${location.origin}${location.pathname}`
+    'App: https://chup1runov.github.io/Sverinav/'
   ].join('\n');
 }
 
@@ -1502,12 +1423,12 @@ async function sharePilotFeedback(button) {
       feedbackStatus(pmt('shared'));
       return;
     }
-    await copyTextToClipboard(text, button);
-    feedbackStatus(pmt('copied'));
+    const ok = await copyTextToClipboard(text, button);
+    feedbackStatus(ok ? pmt('copied') : rpt('copyFailed'));
   } catch (error) {
     if (error?.name !== 'AbortError') {
-      await copyTextToClipboard(text, button);
-      feedbackStatus(pmt('copied'));
+      const ok = await copyTextToClipboard(text, button);
+      feedbackStatus(ok ? pmt('copied') : rpt('copyFailed'));
     }
   }
 }
@@ -1529,7 +1450,7 @@ function aboutScreen() {
         <h3>${pmt('privacyTitle')}</h3>
         <ul>
           <li>${pmt('privacy1')}</li>
-          <li>${pmt('privacy2')}</li>
+          <li>${at('privacy')}</li>
           <li>${pmt('privacy3')}</li>
         </ul>
       </section>
@@ -1538,6 +1459,7 @@ function aboutScreen() {
         <h3>${pmt('sourcesTitle')}</h3>
         <p>${pmt('sourcesText')}</p>
         <ul class="about-source-list">
+          <li>SMHI — ${SverinavToday.label(currentLanguage)}</li>
           <li>Sveriges riksdag — beslut och dokument</li>
           <li>Trafikverket / NVDB — väghållare</li>
           <li>Göteborgs Stad — planer och felanmälan</li>
@@ -1574,30 +1496,33 @@ function aboutScreen() {
           <p class="feedback-privacy">${pmt('feedbackPrivacy')}</p>
           <p id="pilotFeedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
         </form>
+        <p class="help-text">${at('publicIssue')}</p>
         <a class="technical-feedback-link" href="${GITHUB_FEEDBACK_URL}" target="_blank" rel="noopener noreferrer">${pmt('technical')} ↗</a>
       </section>
     </div>`
   );
 
+  document.getElementById('pilotFeedbackForm').addEventListener('submit',event => event.preventDefault());
   const shareButton = document.getElementById('sharePilotFeedback');
   const copyButton = document.getElementById('copyPilotFeedback');
   shareButton?.addEventListener('click', () => sharePilotFeedback(shareButton));
   copyButton?.addEventListener('click', async () => {
-    await copyTextToClipboard(feedbackText(), copyButton);
-    feedbackStatus(pmt('copied'));
+    const ok = await copyTextToClipboard(feedbackText(), copyButton);
+    feedbackStatus(ok ? pmt('copied') : rpt('copyFailed'));
   });
 }
 
+// Drafts exist only in memory; switching language/routes must not silently erase typing.
+const uiDrafts = new Map();
+const DRAFT_IDS=['issue','reportDescription','reportPlace','pilotFeedbackTask','pilotFeedbackNotes','pilotFeedbackResult'];
 function render(screen, updateState = true) {
+  for (const id of DRAFT_IDS) {const el=document.getElementById(id);if(el)uiDrafts.set(id,el.value);}
+  SverinavToday.stop();
   if (updateState) currentScreen = screen;
   setNav(screen);
-
-  if (screen === 'home') return home();
-  if (screen === 'ansvar') return responsibilityScreen();
-  if (screen === 'rapportera') return reportScreen();
-  if (screen === 'nara') return nearbyScreen();
-  if (screen === 'beslut') return decisionScreen();
-  if (screen === 'om') return aboutScreen();
+  const screens={home,ansvar:responsibilityScreen,rapportera:reportScreen,nara:nearbyScreen,beslut:decisionScreen,om:aboutScreen};
+  (screens[screen] || home)();
+  for (const id of DRAFT_IDS) {const el=document.getElementById(id);if(el&&uiDrafts.has(id))el.value=uiDrafts.get(id);}
 }
 
 function navigate(screen) {
@@ -1624,9 +1549,12 @@ window.addEventListener('appinstalled', () => {
 window.addEventListener('hashchange', () => {
   currentScreen = screenFromHash();
   render(currentScreen);
+  view.querySelector('h1')?.focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:'instant'});
 });
 
 document.addEventListener('click', async event => {
+  if (event.target.closest('.skip-link')) { event.preventDefault(); view.focus(); return; }
   if (event.target.closest('#languageButton')) {
     openLanguageSheet();
     return;

@@ -1,4 +1,4 @@
-# Roadmap — Göteborg pilot pack v0.10
+# Roadmap — Idag v0.11
 
 ## Fas 0 — förstudie
 
@@ -61,3 +61,14 @@ Inte innan den öppna civic-tjänsten fungerar och dataseparationen är designad
 - [ ] separat identitet
 - [ ] medlemsintegration
 - [ ] idé-/motionsworkflow
+
+## Idag
+- [x] SMHI SNOW1gv1 forecast for coarse area presets
+- [x] SMHI county warnings with explicit scope
+- [x] Public transport / ticket / water handoffs (links only)
+- [x] Shared labelled SVG icon system
+- [x] Regression tests for audited failures
+- [ ] Authorised live Västtrafik departures
+- [ ] Official live water status
+- [ ] Real-device Safari / VoiceOver pilot
+- [ ] User research to validate daily return value

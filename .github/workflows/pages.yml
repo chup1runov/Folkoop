@@ -1,102 +1,99 @@
-name: Deploy Sverinav to GitHub Pages
-
+name: Validate and deploy Sverinav
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "17 5 * * *"
-
+    - cron: '17 5 * * *'
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: "pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'production' }}"
   cancel-in-progress: true
-
 jobs:
   validate:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 12
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Fetch latest Riksdagen decisions
-        run: node scripts/fetch-riksdagen.mjs
-
-      - name: Probe Trafikverket NetInfo
-        run: node scripts/probe-netinfo.mjs
-
-      - name: Fetch Göteborg open consultation plans
-        run: node scripts/fetch-goteborg-open-plans.mjs
-
-      - name: Verify official report routes
-        run: node scripts/probe-report-routes.mjs
-
-      - name: Validate static app
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax, versions, assets and deterministic regression tests
         run: |
-          node --check app.js
-          node --check riksdagen.js
-          node --check nvdb.js
-          node --check goteborg-plans.js
-          node --check scripts/probe-report-routes.mjs
-          node --check scripts/static-smoke.mjs
-          node --check sw.js
-          python -m json.tool manifest.webmanifest >/dev/null
-          test -s data/riksdagen-decisions.json
-          test -s data/goteborg-open-plans.json
-          test -s docs/PILOT_GUIDE.md
-          test -s .github/ISSUE_TEMPLATE/pilot-feedback.md
+          for file in *.js scripts/*.mjs; do node --check "$file"; done
+          python -m py_compile tests/browser.py
           node scripts/static-smoke.mjs
-
-      - name: Prepare browser smoke site
-        run: |
-          mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-180.png icon-192.png icon-512.png _site/
-          cp -R data _site/data
-          touch _site/.nojekyll
-
-      - name: Browser smoke
+          node --test tests/*.test.mjs
+      - name: Install pinned browser test driver
+        run: python -m pip install 'playwright==1.57.0'
+      - name: Prepare static browser test build
+        run: node scripts/build-site.mjs
+      - name: Browser interactions at actual project subpath
         run: bash scripts/browser-smoke.sh
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    needs: validate
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Fetch latest Riksdagen decisions
+      - name: Fetch Riksdagen once
         run: node scripts/fetch-riksdagen.mjs
-
-      - name: Fetch Göteborg open consultation plans
+      - name: Fetch Gothenburg consultations once
         run: node scripts/fetch-goteborg-open-plans.mjs
-
-      - name: Prepare static site
+      - name: Validate normalized live feeds
         run: |
-          mkdir -p _site
-          cp index.html styles.css riksdagen.js nvdb.js goteborg-plans.js app.js manifest.webmanifest sw.js icon.svg icon-180.png icon-192.png icon-512.png _site/
-          cp -R data _site/data
-          touch _site/.nojekyll
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
+          node --input-type=module <<'JS'
+          import {readFile} from 'node:fs/promises';
+          import './civic-core.js';
+          for(const [file,id,hosts] of [['riksdagen-decisions','riksdagen_open_data',['data.riksdagen.se']],['goteborg-open-plans','goteborg_open_plans',['goteborg.se','www.goteborg.se']]]){
+            const p=JSON.parse(await readFile(`data/${file}.json`,'utf8'));
+            SverinavCore.feed(p,id,hosts);
+            console.log(`${id}: ${p.items.length} validated records`);
+          }
+          JS
+      - name: Final artifact with the same tested static files
+        run: node scripts/build-site.mjs
+      - name: Retain QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-qa
+          path: qa-output/
+          retention-days: 7
+      - name: Upload single production artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
-
-      - name: Deploy to GitHub Pages
+  sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check direct SMHI browser contracts
+        run: node scripts/probe-daily.mjs
+      - name: Check live road-holder service
+        if: always()
+        run: node scripts/probe-netinfo.mjs
+      - name: Check official report handoffs
+        if: always()
+        run: node scripts/probe-report-routes.mjs
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy tested artifact without fetching or rebuilding
         id: deployment
         uses: actions/deploy-pages@v4

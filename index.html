@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b4f55">
+  <meta name="referrer" content="no-referrer">
   <meta name="description" content="Sverinav — ett enklare gränssnitt till samhället.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -16,8 +17,8 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#view">Hoppa till innehåll</a>
   <div class="app-shell">
+    <a class="skip-link" href="#view">Hoppa till innehåll</a>
     <header class="topbar">
       <button class="brand-lockup" data-screen="home" aria-label="Sverinav">
         <img class="mark" src="./icon.svg" alt="" width="40" height="40">
@@ -70,6 +71,9 @@
     </section>
   </div>
 
+  <script src="./civic-core.js"></script>
+  <script src="./daily-data.js"></script>
+  <script src="./today.js"></script>
   <script src="./riksdagen.js"></script>
   <script src="./nvdb.js"></script>
   <script src="./goteborg-plans.js"></script>

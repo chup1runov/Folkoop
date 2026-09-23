@@ -7,3 +7,8 @@ build/
 .env.*
 .DS_Store
 *.log
+
+_qa/
+qa-output/
+__pycache__/
+*.pyc
