@@ -1,0 +1,169 @@
+SVERINAV — RESTRICTED RIGHTS NOTICE AND OFFICIAL-SERVICE PERMISSION
+Version 1.0 — 23 September 2026
+Copyright (c) 2026 Pavel Chuprunov, to the extent of rights he holds.
+All rights reserved, subject to the express permissions and boundaries below.
+
+This is a proprietary rights reservation, not an open-source or free-software
+licence. Public source visibility is not a general permission to reuse it.
+The GitHub and mandatory-law boundaries in section 5 prevail over every
+restriction and approval requirement in this notice.
+
+1. COVERED MATERIAL AND RIGHTS HOLDER
+
+The Rights Holder is Pavel Chuprunov. Permission requests: chup1runov@gmail.com.
+Covered Material means original Sverinav code, documentation, editorial text,
+guides and visual assets only to the extent that he holds the relevant
+legally enforceable rights. Mere inclusion in this repository establishes
+neither originality nor ownership.
+
+This notice claims no exclusive rights in third-party components, official
+or open data, public-domain material, unprotectable ideas or facts, a user's
+own text, or material owned by another person. Separate licences and notices
+continue to govern the material to which they apply.
+
+2. NARROW PERMISSION FOR THE OFFICIAL SERVICE
+
+Residents may access and use https://chup1runov.github.io/Sverinav/ for its
+intended end-user functions without a fee to Sverinav. This permission
+includes the loading, execution, browser storage and installed-PWA offline
+copies technically necessary for that use. It does not authorise a mirror,
+independent deployment, software distribution or use of the underlying
+editorial or software library in another product.
+
+Users may use the intended copy/share/export functions for their own notes,
+prepared submissions and other user output, and retain their own rights in
+that output. This does not transfer the underlying code, editorial library,
+assets or brand. External services and information retain their own terms.
+A replacement official origin requires the Rights Holder's express notice.
+
+3. NO OTHER VOLUNTARY REUSE GRANT
+
+Except for section 2 and rights preserved by section 5, prior express written
+permission from the Rights Holder is required for any act requiring his
+permission under applicable law. No additional permission is granted to:
+
+- copy, reproduce, publish, distribute, sell, rent, lend, sublicense, transfer
+  or otherwise supply Covered Material or its protected parts;
+- modify, translate, adapt, package, embed, rebrand or create derivative code,
+  documentation, guides, editorial text or visual assets;
+- run, deploy, self-host or offer a separate instance, mirror, white-label
+  product, software-as-a-service, distributed application or competing
+  service using Covered Material;
+- integrate protected parts in another product, plugin, service, collection,
+  dataset or automated extraction or content-processing pipeline;
+- reverse engineer, decompile or disassemble beyond rights preserved in
+  section 5;
+- remove or falsify applicable authorship, rights, licence or provenance
+  notices where doing so requires the Rights Holder's permission;
+- use protected Sverinav branding for another product or falsely imply
+  affiliation, endorsement or authorisation.
+
+The same reservation applies to commercial, non-commercial, private,
+internal, educational, research, charitable, paid and unpaid uses. There is
+no general exception merely because a separate copy is free or attributed.
+These are reservations of enforceable rights, not an assertion that every
+listed act is restricted in every circumstance.
+
+To the extent that applicable law permits a rights reservation for text and
+data mining or model training involving Covered Material, those rights are
+expressly reserved as well. This does not override a non-excludable statutory
+exception, GitHub's contractual permissions, third-party licences or other
+rights preserved in section 5. This notice alone is not a technical access
+control or a guarantee that a particular opt-out mechanism is legally adequate.
+
+No patent or trademark licence is granted. No registered patent or trademark
+is asserted by this notice.
+
+4. EXPRESS, SPECIFIC OWNER APPROVAL
+
+Any additional voluntary permission must expressly identify its recipient,
+material or version, permitted acts, purpose, deployment or distribution if
+any, duration and other agreed limits, in a written approval from Pavel
+Chuprunov. Permission for one recipient, use or version does not extend to
+another. No transfer, sublicensing or delegation is authorised unless the
+approval expressly provides for it, subject to section 5.
+
+Silence, public availability, a star, a feature discussion, receipt of a
+request, a functionality review or payment without an agreement does not
+supply that separate approval. GitHub permissions and statutory rights do
+not need a separate owner approval under this section. Agreed fees,
+termination and other conditions must have their actual contractual basis;
+this notice does not invent retroactive terms.
+
+5. PREVAILING PLATFORM, LEGAL AND THIRD-PARTY BOUNDARIES
+
+(a) GitHub. Nothing in this notice withdraws, conditions on owner approval,
+charges for, narrows or obstructs rights already granted or required under
+the applicable GitHub agreement. This includes public viewing; use,
+display, performance and reproduction through GitHub as permitted by that
+agreement and GitHub functionality, including authorised forking; and
+GitHub's and its affiliates' applicable hosting, processing and other
+contractual rights. The applicable agreement determines their actual scope.
+This notice neither enlarges nor purports to replace that scope. If any
+restriction here conflicts with such a right, the right prevails to the
+extent of the conflict. A GitHub-authorised fork is not by itself a new,
+unrestricted licence for all uses of its contents. No promise is made that
+GitHub offers a per-fork owner-consent control for public repositories.
+
+(b) Law. Nothing removes rights or exceptions that cannot lawfully be
+excluded, including applicable lawful-user rights to necessary backup,
+observation, study, testing and narrowly permitted interoperability work.
+Lawful quotation, criticism, discussion, independent creation and truthful
+references are not prohibited. This notice creates no ownership of an idea,
+no confidentiality obligation for publicly available code and no restriction
+on an act for which no permission is legally required.
+
+(c) Prior and third-party rights. Valid prior grants, specific third-party
+licences, official/open-data terms, contributors' rights and other binding
+agreements are not cancelled or relicensed by this notice. Their own terms
+and applicable law determine their continuation. The Rights Holder's own
+acts, and agents acting within his actual authorisation, are not restricted
+by a reservation of his rights. No broader permission to others is implied.
+
+6. CONTRIBUTIONS AND PERMISSION PROCESS
+
+Before accepting substantial third-party code, assets or editorial content,
+the maintainer and contributor must explicitly settle provenance, ownership
+and the permissions needed for incorporation, distribution and any intended
+relicensing. A contribution or pull request is not an automatic assignment
+of exclusive rights. Applicable GitHub contribution terms remain in place;
+a separate contributor agreement may be needed. Non-waivable moral rights
+remain unaffected. See CONTRIBUTING.md and LICENSING.md.
+
+7. SUPPORT, PRIVACY AND ENFORCEMENT
+
+A bug report, security report or permission request grants no additional
+reuse licence and does not transfer the reporter's rights or private data.
+Do not send passwords, identity numbers or private case records in requests.
+The notice does not require payment or approval merely to exercise a right
+preserved in section 5.
+
+Any restriction, claim, injunction, damages or termination requires an
+actual legal or contractual basis. No automatic fine, ownership of another
+person's work, or penalty for lawfully viewing or forking is imposed.
+
+8. NO WARRANTY BEYOND MANDATORY OBLIGATIONS
+
+To the extent permitted by applicable law, the service and materials are
+provided as available, without a promise of accuracy, uninterrupted access,
+fitness, non-infringement or support. No mandatory consumer protection or
+liability that cannot lawfully be excluded is excluded.
+
+9. ADOPTION, LATER TERMS AND INTERPRETATION
+
+This version applies prospectively to Covered Material distributed with
+this notice from its adoption in the repository's default branch. It does
+not rewrite Git history or revoke valid prior grants. Documents expressly
+marked as drafts or historical proposals do not grant a different licence.
+
+No automatic conversion to a free/open-source licence is scheduled. Broader
+voluntary permissions or a future licensing change require the Rights
+Holder's express approval. This notice is a rights reservation and limited
+permission, not a claim that merely viewing a page signs a separate contract.
+Governing law and forum for any negotiated permission should be settled in
+that agreement subject to mandatory law; no blanket consumer forum waiver
+is imposed here.
+
+If a restriction is unenforceable, it applies only to the extent lawfully
+permitted; the boundaries in section 5 remain fully effective. No provision
+is to be read as enlarging the Rights Holder's underlying rights.

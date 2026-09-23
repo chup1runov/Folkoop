@@ -32,12 +32,18 @@ Eleven languages: Swedish, English, Arabic, Somali, Persian, Finnish, Bosnian/Cr
 
 ## Development and verification
 
+The commands below document the maintainer's and expressly authorised contributors' workflow; they are not an additional reuse licence. Read LICENSE and CONTRIBUTING.md first.
+
 `npm run build` prepares the allowlisted static `_site` build. `npm start` serves the built app. `npm test` runs deterministic checks. CI validates source contracts and runs Chromium interactions at `/Sverinav/`, then publishes one tested artifact. Real-device iPhone/Safari and native-language editorial review remain separate work.
 
 Read `docs/PROJECT_HANDOFF.md` first; `docs/IDAG_AND_AUDIT.md`, `docs/COMPACT_V012.md` and `docs/EDITORIAL_V014.md` describe verified scope and limits. `docs/VALUE_ROADMAP.md` and `docs/CIVIC_ACTIVITIES.md` describe future requirements, not current capabilities. `docs/PILOT_GUIDE.md` covers resident testing.
 
-## Licence
+## Licence and permissions
 
-No final code licence has been selected. Public repository access does not grant unrestricted reuse or commercial redistribution. Free use of the hosted civic service is a separate principle. Third-party code and data retain their own terms. No new licence is granted by this editorial update.
+**Proprietary — all rights reserved subject to [LICENSE](LICENSE).** Public visibility is not an open-source licence. Any additional reuse requiring the owner's consent, including non-commercial modification, redistribution, integration or separate hosting, needs prior express written permission from Pavel Chuprunov.
 
-See `CONTRIBUTING.md` and `SECURITY.md`. Private conversation archives do not belong in this repository.
+Normal use of the official site/PWA stays free for residents. Applicable GitHub viewing/forking and other platform rights, mandatory legal exceptions, prior permissions and third-party licences are preserved and take priority. Nothing here requires owner approval to exercise those already-valid rights.
+
+Read [LICENSING.md](LICENSING.md) for the approval process and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the third-party boundary. Historical proposals and earlier release notes are not the current licence. No automatic change to a free licence is scheduled.
+
+See `CONTRIBUTING.md` and `SECURITY.md`. Private conversation archives and individual permission agreements do not belong in this repository.
