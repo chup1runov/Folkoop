@@ -50,7 +50,7 @@ async def main():
   assert page.url.endswith('#rapportera'), 'Skip link changed route'
   passed.append('Skip link does not reset the route')
   await page.click('#aboutButton')
-  await page.evaluate("navigator.clipboard.writeText=async()=>{throw new Error('denied')};document.execCommand=()=>false")
+  await page.evaluate("() => { navigator.clipboard.writeText=async()=>{throw new Error('denied')};document.execCommand=()=>false; }")
   await page.fill('#pilotFeedbackTask','Copy test')
   await page.click('#copyPilotFeedback')
   await expect(page.locator('#pilotFeedbackStatus')).to_contain_text('Не удалось')
@@ -84,7 +84,8 @@ async def main():
   await page.evaluate("globalThis.testUncertain=roadMatchUncertain({ambiguous:true,accuracyMeters:5,distanceMeters:2});globalThis.testRoute=officialReportUrl({holderType:'statlig',ambiguous:true,accuracyMeters:5,distanceMeters:2})")
   assert await page.evaluate('testUncertain && testRoute===null')
   passed.append('Ambiguous match cannot auto-route to one official recipient')
-  await page.goto(BASE);await page.evaluate("SverinavDaily.loadWarnings=async()=>{throw new Error('offline')}")
+  await page.goto(BASE)
+  await page.evaluate("() => { SverinavDaily.loadWarnings=async()=>{throw new Error('offline')}; }")
   await page.click('#dailyRefresh');await expect(page.locator('#dailyWarnings .source-unavailable')).to_be_visible()
   passed.append('Warning-source failure is not an all-clear')
   assert errors==[], '\n'.join(errors)
