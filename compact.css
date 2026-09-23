@@ -1,0 +1,84 @@
+/* Compact is information hierarchy, not smaller controls. Scoped to Idag. */
+.topbar .tagline{display:none}
+.compact-today{max-width:720px;padding:18px 18px 22px}
+.compact-today .today-heading{margin-bottom:10px;gap:12px}
+.compact-today .today-heading h1{font-size:32px;line-height:1.15;margin-top:2px;letter-spacing:-.7px}
+.compact-today .today-date{font-size:13px}
+.compact-today summary{cursor:pointer;list-style:none;min-height:44px}
+.compact-today summary::-webkit-details-marker{display:none}
+.compact-today summary::marker{content:''}
+.compact-today summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:12px}
+.compact-chevron{font-size:25px;line-height:1;flex:none;color:var(--muted);transform:rotate(90deg);transition:transform .15s ease}
+.compact-today details[open]>summary .compact-chevron{transform:rotate(-90deg)}
+.compact-today .compact-row>.compact-chevron{transform:none}
+html[dir="rtl"] .compact-today .compact-row>.compact-chevron{transform:rotate(180deg)}
+.compact-icon{width:32px;min-height:32px;display:grid;place-items:center;flex:none;color:var(--teal)}
+.compact-icon .svg-icon{width:22px;height:22px}
+.compact-area{margin-bottom:12px}
+.compact-area>summary{display:flex;align-items:center;gap:7px;color:var(--teal-strong)}
+.compact-area>summary strong{min-width:0;overflow-wrap:anywhere;font-size:15px}
+.compact-summary-hint{margin-inline-start:auto;font-size:13px;font-weight:500;color:var(--muted)}
+.compact-area .compact-summary-hint{white-space:nowrap}
+.compact-detail-body{padding:12px 14px;border-top:1px solid var(--line)}
+.compact-today .daily-note{font-size:13px;line-height:1.45;margin:6px 0 10px}
+.compact-today .compact-meta{display:block;font-size:13px;font-weight:400;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+.compact-weather{border:1px solid var(--teal-line);background:linear-gradient(140deg,#eef8f5,#fff);border-radius:18px;margin-bottom:10px}
+.compact-weather>summary{display:block;padding:13px 15px}
+.compact-section-label{display:flex;align-items:center;gap:8px;font-size:16px}
+.compact-section-label .svg-icon{color:var(--teal);width:22px;height:22px}
+.compact-loading{display:block;min-height:70px;padding-block:20px;color:var(--muted)}
+.compact-today #dailyWeather{display:block}
+.compact-today .weather-main{display:flex;align-items:center;gap:12px;margin:9px 0}
+.compact-today .weather-main>strong{font-size:43px;letter-spacing:-1px;white-space:nowrap}
+.compact-today .weather-main>strong>span{font-size:22px}
+.compact-today .weather-main .compact-forecast-metrics{display:grid;gap:4px;font-size:13px;text-align:end;min-width:0;line-height:1.4}
+.compact-forecast-metrics>span{display:block;overflow-wrap:anywhere}
+.compact-forecast-metrics b{color:var(--ink);font-weight:650;white-space:nowrap}
+.compact-today .weather-hours{font-size:15px}
+.compact-today .weather-hours caption{font-size:15px}
+.compact-today .weather-hours th,.compact-today .weather-hours td{padding-block:9px}
+.compact-today .daily-link{font-size:14px;margin:0;min-height:44px}
+.compact-warning{margin:0 0 12px}
+.compact-warning summary{display:flex;align-items:center;gap:9px;padding:9px 5px}
+.compact-warning summary strong{font-size:14px;line-height:1.35}
+.compact-row-copy{flex:1;min-width:0;overflow-wrap:anywhere}
+.compact-row-copy>strong{display:block;line-height:1.35;font-size:16px;font-weight:700}
+.compact-row-copy>small{display:block;font-size:13px;line-height:1.4;font-weight:400;color:var(--muted);margin-top:2px}
+.compact-row-group{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden;margin-bottom:12px}
+.compact-row{display:flex;align-items:center;gap:9px;width:100%;padding:12px;min-height:58px;background:transparent;border:0;text-align:start;text-decoration:none;color:var(--ink);font:inherit;cursor:pointer}
+.compact-row:hover{background:var(--surface-soft)}
+.compact-external{font-size:20px;color:var(--muted);flex:none}
+.compact-services{border-top:1px solid var(--line)}
+.compact-services summary.compact-row{min-height:55px}
+.compact-services[open]>summary .compact-chevron{transform:rotate(-90deg)}
+.compact-services .compact-row-copy{font-size:16px;font-weight:700}
+.compact-service-body{border-top:1px solid var(--line);padding-bottom:6px}
+.compact-service-body>p.daily-note{margin:0;padding:0 14px 10px 53px}
+html[dir="rtl"] .compact-service-body>p.daily-note{padding-left:14px;padding-right:53px}
+.compact-deadline{margin:6px 0 16px}
+.compact-deadline>.section-head{margin:0;align-items:center;gap:10px}
+.compact-deadline h2{display:flex;align-items:center;gap:8px;font-size:17px;margin:0;line-height:1.3;letter-spacing:-.2px}
+.compact-deadline h2 .svg-icon{color:var(--teal)}
+.compact-deadline .text-button{min-height:44px;flex:none;font-size:14px}
+.compact-deadline .plan-list{gap:6px;margin-top:0}
+.compact-deadline .source-health{border:0;background:transparent;padding:0;margin:0;font-size:13px}
+.compact-deadline .source-health--stale,.compact-deadline .source-health--unknown{border:1px solid #e4c7a7;background:#fff5e9;padding:8px;border-radius:10px}
+.compact-deadline .plan-card{border:0;border-radius:12px;padding:7px 0;display:block;box-shadow:none}
+.compact-deadline .plan-card .item-icon{display:none}
+.compact-deadline .plan-copy strong{font-size:16px;line-height:1.4;margin:0 0 5px;display:block}
+.compact-deadline .plan-meta{font-size:13px;margin-top:4px}
+.compact-deadline .plan-deadline{font-size:13px;line-height:1.3;margin:3px 8px 0 0;padding:5px 8px}
+.compact-deadline .plan-source{font-size:13px;line-height:1.4;margin-top:5px}
+.compact-deadline .plan-empty{font-size:14px}
+.compact-install>summary{display:flex;align-items:center;gap:8px;justify-content:space-between;font-size:14px;color:var(--teal-strong);padding:8px 2px}
+.compact-install .install-card{margin:0;border:0;padding:0;background:transparent}
+.compact-install .daily-note{margin:8px 0}
+.compact-active-warnings{padding:13px;border:1px solid #d2a876;border-radius:14px;background:#fff6eb}
+.compact-active-warnings h2{display:flex;align-items:center;gap:8px;font-size:17px;margin:0;line-height:1.4}
+.compact-active-warnings h3{font-size:16px}
+.compact-active-warnings p,.compact-active-warnings time,.compact-active-warnings .warning-level{font-size:14px}
+.compact-active-warnings .warning-item{padding-inline-start:10px;padding-inline-end:0}
+.compact-today .source-unavailable{display:block;font-size:14px;line-height:1.45;margin:8px 0}
+@media(min-width:680px){.compact-today{padding:24px 28px}.compact-weather>summary{padding:16px 20px}.compact-today .weather-main>strong{font-size:48px}}
+@media(max-width:359px){.compact-today{padding:16px 14px}.compact-area>summary{flex-wrap:wrap;gap:5px}.compact-area .compact-summary-hint{display:none}.compact-area .compact-chevron{margin-inline-start:auto}.compact-today .weather-main>strong{font-size:38px}.compact-today .compact-meta{font-size:13px}.compact-deadline>.section-head{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.compact-chevron{transition:none}}

@@ -1,10 +1,10 @@
 /* Cache only this app's public shell/feeds. Never cache coordinates or external APIs. */
-const VERSION='0.11.0';
+const VERSION='0.12.0';
 const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
 const SHELL=new URL('index.html',BASE).href;
-const CORE_PATHS=['','index.html','styles.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png'];
+const CORE_PATHS=['','index.html','styles.css','compact.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png'];
 const CORE=new Set(CORE_PATHS.map(p=>new URL(p,BASE).href));
 const FEEDS=new Set(['data/riksdagen-decisions.json','data/goteborg-open-plans.json'].map(p=>new URL(p,BASE).href));
 async function remember(request,response){
