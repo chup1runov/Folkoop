@@ -20,8 +20,8 @@ async def main():
   context=await browser.new_context(viewport={'width':390,'height':844},locale='sv-SE',is_mobile=True,has_touch=True,service_workers='block')
   async def routes(route):
    url=route.request.url
-   if 'opendata-download-metfcst' in url:await route.fulfill(json=forecast)
-   elif 'opendata-download-warnings' in url:await route.fulfill(json=[])
+   if 'opendata-download-metfcst' in url:await route.fulfill(json=forecast,content_type='application/json',headers={'access-control-allow-origin':'*'})
+   elif 'opendata-download-warnings' in url:await route.fulfill(body='[]',content_type='application/json',headers={'access-control-allow-origin':'*'})
    elif url.endswith('data/riksdagen-decisions.json'):await route.fulfill(json=feed)
    elif url.endswith('data/goteborg-open-plans.json'):await route.fulfill(json=plan)
    elif url.startswith(BASE):await route.continue_()
@@ -33,10 +33,10 @@ async def main():
   await expect(page.locator('#dailyWeather .weather-main')).to_be_visible()
   await expect(page.locator('#homeDecisions .decision-live-link')).to_have_count(1)
   await expect(page.locator('#homeOpenPlans .plan-card')).to_have_count(1)
+  await page.screenshot(path=str(OUT/'idag-mobile.png'),full_page=True)
   await expect(page.locator('#dailyWarnings')).to_contain_text('Inga aktuella')
   assert await page.evaluate("document.documentElement.scrollWidth <= innerWidth"), 'Mobile overflow'
   passed.append('Idag renders forecast, warning result and both civic feeds at /Sverinav/')
-  await page.screenshot(path=str(OUT/'idag-mobile.png'),full_page=True)
   await page.select_option('#weatherArea','hisingen')
   await expect(page.locator('#dailyWeather .weather-main')).to_be_visible()
   assert await page.evaluate("localStorage.getItem('sverinav-weather-area')")=='hisingen'
@@ -88,7 +88,6 @@ async def main():
   passed.append('Warning-source failure is not an all-clear')
   assert errors==[], '\n'.join(errors)
   await context.close()
-  # Browser storage denied from initial load must still render a usable home.
   blocked=await browser.new_context(service_workers='block',locale='sv-SE')
   await blocked.route('**/*',routes)
   await blocked.add_init_script("Storage.prototype.getItem=()=>{throw new Error('denied')};Storage.prototype.setItem=()=>{throw new Error('denied')}")
