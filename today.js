@@ -16,53 +16,95 @@
     ku:['Îro','Hewa','Saetên pêş','Ba','Îhtîmala baranê','Hişyarî û agahdarî','Herêma Västra Götaland · ne kontrola navnîşanê','Di bersiva hatî de ji bo herêmê agahdariya çalak tune.','Çavkanî nehat kontrolkirin. Orîjînalê veke.','Nû bike','Herêma hewayê hilbijêre','Herêma nêzîk li vir tê hilanîn û ji SMHI re tê şandin. GPS nayê bikaranîn.','Çavkaniyê veke','Rêwîtiya min','Bilêt · Västtrafik To Go','Sverinav bilêtên derbasdar nafiroşe û nîşan nade. Xizmeta fermî ya Västtrafik bi kar bîne.','Av','Birîna avê li Göteborgs Stad kontrol bike. Rewş li vir bixweber nayê kontrolkirin.','Li Göteborg beşdar bibe','Ji parlamentoyê','Hate wergirtin','Pêşbînî hate weşandin','Xizmeta fermî','Berpirsiyarê bibîne an pirsgirêkê rapor bike']
   };
   const LINKS={weather:'https://www.smhi.se/vader/prognoser-och-varningar',warnings:'https://www.smhi.se/vader/prognoser-och-varningar/varningar-och-meddelanden',trip:'https://www.vasttrafik.se/reseplanering/',tickets:'https://www.vasttrafik.se/biljetter/mer-om-biljetter/vasttrafik-to-go/',water:'https://goteborg.se/wps/portal/start/bygga-bo-och-leva-hallbart/vatten-och-avlopp/vattenavstangningar-och-andra-storningar/vattenavstangningar'};
+  // All disclosure preferences are in memory only; no new tracking or location storage.
+  const COMPACT_KEYS=['details','quiet','deadline','more','choose','forecast','unverified'];
+  const COMPACT_COPY={
+    sv:['Detaljer','Inga meddelanden för länet','Nästa deadline','Fler tjänster','Byt område','Prognos','Status visas inte här'],
+    en:['Details','No county notices','Next deadline','More services','Change area','Forecast','Status is not shown here'],
+    ru:['Подробнее','Нет сообщений для лена','Ближайший срок','Другие сервисы','Сменить район','Прогноз','Статус здесь не проверяется'],
+    uk:['Докладніше','Немає повідомлень для лену','Найближчий термін','Інші сервіси','Змінити район','Прогноз','Статус тут не перевіряється'],
+    fi:['Lisätiedot','Ei läänin tiedotteita','Seuraava määräaika','Lisää palveluja','Vaihda aluetta','Ennuste','Tilaa ei näytetä tässä'],
+    es:['Detalles','Sin avisos en la provincia','Próxima fecha límite','Más servicios','Cambiar zona','Pronóstico','El estado no se muestra aquí'],
+    bs:['Detalji','Nema obavijesti za okrug','Sljedeći rok','Više usluga','Promijeni područje','Prognoza','Stanje se ovdje ne prikazuje'],
+    ar:['التفاصيل','لا توجد إشعارات للمقاطعة','الموعد النهائي التالي','خدمات أخرى','تغيير المنطقة','التوقعات','لا تُعرض الحالة هنا'],
+    fa:['جزئیات','پیامی برای استان نیست','مهلت بعدی','خدمات بیشتر','تغییر منطقه','پیش‌بینی','وضعیت اینجا نمایش داده نمی‌شود'],
+    so:['Faahfaahin','Ogeysiis gobolka ma jiro','Wakhtiga kama dambaysta ah','Adeegyo kale','Beddel aagga','Saadaasha','Xaaladda halkan laguma muujiyo'],
+    ku:['Hûrgilî','Agahdariya herêmê tune','Dema dawî ya pêş','Xizmetên din','Herêmê biguherîne','Pêşbînî','Rewş li vir nayê nîşandan']
+  };
+  const opened=new Set();
   let controller=null,timer=null;
   function stop(){controller?.abort();controller=null;clearInterval(timer);timer=null;}
   function render(container,language,helpers){
     stop();
     const C=SverinavCore,D=SverinavDaily,E=C.escape,I=C.icon;
-    const values=COPY[language]||COPY.en,L=Object.fromEntries(KEYS.map((k,i)=>[k,values[i]]));
-    let area=C.storage.get('sverinav-weather-area');if(!Object.hasOwn(D.AREAS,area)) area='centrum';
+    const values=COPY[language]||COPY.en,L=Object.fromEntries(KEYS.map((key,i)=>[key,values[i]]));
+    const short=COMPACT_COPY[language]||COMPACT_COPY.en,S=Object.fromEntries(COMPACT_KEYS.map((key,i)=>[key,short[i]]));
+    let area=C.storage.get('sverinav-weather-area');if(!Object.hasOwn(D.AREAS,area))area='centrum';
     const fmt=(value,timeOnly=false)=>new Intl.DateTimeFormat(language,{timeZone:'Europe/Stockholm',...(timeOnly?{hour:'2-digit',minute:'2-digit'}:{dateStyle:'medium',timeStyle:'short'})}).format(new Date(value));
+    const chevron='<span class="compact-chevron" aria-hidden="true">›</span>';
     const link=(name,label)=>`<a class="daily-link" href="${LINKS[name]}" target="_blank" rel="noopener noreferrer">${E(label||L.open)} <span aria-hidden="true">↗</span></a>`;
-    container.innerHTML=`<div class="today" id="todayScreen">
+    const externalRow=(name,iconName,title,subtitle)=>`<a class="compact-row" href="${LINKS[name]}" target="_blank" rel="noopener noreferrer"><span class="compact-icon">${I(iconName)}</span><span class="compact-row-copy"><strong>${E(title)}</strong><small>${E(subtitle)}</small></span><span class="compact-external" aria-hidden="true">↗</span></a>`;
+    const openAttribute=id=>opened.has(id)?' open':'';
+    const installMarkup=helpers.install();
+    container.innerHTML=`<div class="today compact-today" id="todayScreen">
       <header class="today-heading"><div><p class="today-date">${E(new Intl.DateTimeFormat(language,{timeZone:'Europe/Stockholm',weekday:'long',day:'numeric',month:'long'}).format(Date.now()))}</p><h1 tabindex="-1">${E(L.today)}</h1></div><button id="dailyRefresh" class="icon-button" type="button" aria-label="${E(L.refresh)}">${I('refresh')}</button></header>
-      <label class="field-label" for="weatherArea">${E(L.area)}</label><select class="input" id="weatherArea" aria-describedby="areaNotice">${Object.entries(D.AREAS).map(([key,a])=>`<option value="${key}" ${key===area?'selected':''}>${E(a.name)}</option>`).join('')}</select><p class="daily-note" id="areaNotice">${E(L.areaNote)}</p>
-      <div class="daily-grid"><section class="daily-card weather-panel"><h2>${I('weather')}${E(L.weather)}</h2><div id="dailyWeather" aria-live="polite" aria-busy="true"><p class="daily-note">SMHI…</p></div>${link('weather')}</section>
-      <section class="daily-card"><h2>${I('warning')}${E(L.warnings)}</h2><p class="daily-note">${E(L.region)}</p><div id="dailyWarnings" aria-live="polite" aria-busy="true"><p class="daily-note">SMHI…</p></div>${link('warnings')}</section></div>
-      <section class="daily-card"><h2>${I('bus')}${E(L.trip)}</h2><p class="service-tag">Västtrafik · ${E(L.official)}</p>${link('trip',L.trip)}${link('tickets',L.tickets)}<p class="daily-note">${E(L.ticketNote)}</p></section>
-      <section class="daily-card"><h2>${I('water')}${E(L.water)}</h2><p>${E(L.waterNote)}</p>${link('water','Göteborgs Stad')}</section>
-      <section class="daily-tools" aria-label="${E(L.help)}"><button class="primary-action-card" type="button" data-screen="ansvar"><span class="card-icon">${I('route')}</span><span class="card-copy"><strong>${E(helpers.t('responsibility'))}</strong><small>${E(helpers.t('responsibilitySub'))}</small></span><span aria-hidden="true">→</span></button><button class="primary-action-card" type="button" data-screen="rapportera"><span class="card-icon">${I('camera')}</span><span class="card-copy"><strong>${E(helpers.t('report'))}</strong><small>${E(helpers.t('reportSub'))}</small></span><span aria-hidden="true">→</span></button></section>
-      <section class="daily-card"><div class="section-head"><h2>${I('calendar')}${E(L.plans)}</h2><button type="button" data-screen="nara" class="text-button">${E(helpers.t('navNear'))} →</button></div><div id="homeOpenPlans" class="plan-list"></div></section>
-      <section class="daily-card"><div class="section-head"><h2>${I('file')}${E(L.decisions)}</h2><button type="button" data-screen="beslut" class="text-button">${E(helpers.t('navDecisions'))} →</button></div><div id="homeDecisions" class="list"></div></section>
-      ${helpers.install()}<p class="product-note">Sverinav · Göteborg · ${E(helpers.t('pilot'))}</p></div>`;
-    const w=container.querySelector('#dailyWeather'),a=container.querySelector('#dailyWarnings'),refresh=container.querySelector('#dailyRefresh');
-    function error(target){if(target.isConnected)target.innerHTML=`<p class="source-unavailable" role="status">${E(L.error)}</p>`;}
+      <details class="compact-area" id="areaDetails"${openAttribute('areaDetails')}><summary aria-label="${E(L.area)}"><span class="compact-icon">${I('pin')}</span><strong id="currentWeatherArea">${E(D.AREAS[area].name)}</strong><span class="compact-summary-hint">${E(S.choose)}</span>${chevron}</summary><div class="compact-detail-body"><label class="field-label" for="weatherArea">${E(L.area)}</label><p class="daily-note" id="areaNotice">${E(L.areaNote)}</p><select class="input" id="weatherArea" aria-describedby="areaNotice">${Object.entries(D.AREAS).map(([key,a])=>`<option value="${key}" ${key===area?'selected':''}>${E(a.name)}</option>`).join('')}</select></div></details>
+      <details class="compact-weather" id="weatherDetails"${openAttribute('weatherDetails')}><summary><span class="compact-section-label">${I('weather')}<strong>${E(L.weather)}</strong><span class="compact-summary-hint">${E(S.details)}</span>${chevron}</span><span id="dailyWeather" aria-live="polite" aria-busy="true"><span class="compact-loading">SMHI…</span></span></summary><div class="compact-detail-body" id="weatherDetailContent"><p class="daily-note">SMHI…</p></div></details>
+      <section class="compact-warning" aria-label="${E(L.warnings)}"><div id="dailyWarnings" aria-live="polite" aria-busy="true"><p class="daily-note">${E(L.warnings)} · SMHI…</p></div></section>
+      <div class="compact-row-group" id="compactJourney">${externalRow('trip','bus',L.trip,'Västtrafik · '+L.official)}</div>
+      <section class="compact-deadline" aria-labelledby="compactDeadlineTitle"><div class="section-head"><h2 id="compactDeadlineTitle">${I('calendar')}${E(S.deadline)}</h2><button type="button" data-screen="nara" class="text-button">${E(helpers.t('navNear'))} <span aria-hidden="true">→</span></button></div><div id="homeOpenPlans" class="plan-list"></div></section>
+      <div class="compact-row-group"><button class="compact-row" type="button" data-screen="ansvar"><span class="compact-icon">${I('route')}</span><span class="compact-row-copy"><strong>${E(helpers.t('findResponsible'))}</strong></span>${chevron}</button>
+      <details id="serviceDetails" class="compact-services"${openAttribute('serviceDetails')}><summary class="compact-row"><span class="compact-icon">${I('info')}</span><strong class="compact-row-copy">${E(S.more)}</strong>${chevron}</summary><div class="compact-service-body">${externalRow('water','water',L.water,'Göteborgs Stad · '+S.unverified)}<p class="daily-note">${E(L.waterNote)}</p>${externalRow('tickets','ticket',L.tickets,L.official)}<p class="daily-note">${E(L.ticketNote)}</p></div></details></div>
+      ${installMarkup?`<details class="compact-install"><summary>${E(helpers.t('installTitle'))}${chevron}</summary><div class="compact-detail-body">${installMarkup}</div></details>`:''}
+    </div>`;
+    const w=container.querySelector('#dailyWeather'),a=container.querySelector('#dailyWarnings'),refresh=container.querySelector('#dailyRefresh'),weatherBody=container.querySelector('#weatherDetailContent');
+    for(const id of ['areaDetails','weatherDetails','serviceDetails']){
+      const detail=container.querySelector('#'+id);
+      detail.addEventListener('toggle',()=>{if(detail.open)opened.add(id);else opened.delete(id);});
+    }
+    function error(target,inline=false){
+      if(!target.isConnected)return;
+      const tag=inline?'span':'div';
+      target.innerHTML=`<${tag} class="source-unavailable" role="status">${E(L.error)}</${tag}>`;
+      if(!inline)target.insertAdjacentHTML('beforeend',`<p class="compact-meta">${E(L.region)}</p>${link('warnings')}`);
+    }
     async function update(force=false){
       controller?.abort();const current=new AbortController();controller=current;
       refresh.disabled=true;w.setAttribute('aria-busy','true');a.setAttribute('aria-busy','true');
-      // Old values must not look current while a new area or request is being checked.
-      w.innerHTML='<p class="daily-note">SMHI…</p>';a.innerHTML='<p class="daily-note">SMHI…</p>';
+      w.innerHTML='<span class="compact-loading">SMHI…</span>';weatherBody.innerHTML='<p class="daily-note">SMHI…</p>';
+      // Pending/failed checks must never leave a previously reassuring status on screen.
+      a.innerHTML=`<p class="daily-note">${E(L.warnings)} · SMHI…</p>`;
       const active=()=>!current.signal.aborted&&container.querySelector('#todayScreen')?.isConnected&&w.isConnected;
       await Promise.allSettled([
         D.loadForecast(area,{signal:current.signal,force}).then(r=>{
           if(!active())return;const rows=r.payload.rows,first=rows[0],data=first.data;
           const number=n=>D.finite(n)?new Intl.NumberFormat(language,{maximumFractionDigits:1}).format(n):'—';
           const probability=n=>D.finite(n)&&n>=0&&n<=100?number(n)+'%':'—';
-          w.innerHTML=`<div class="weather-main"><strong>${number(data.air_temperature)}<span>°C</span></strong><span>${E(fmt(first.time,true))}</span></div><p>${E(L.wind)}: ${number(data.wind_speed)} m/s · ${E(L.precip)}: ${probability(data.probability_of_precipitation)}</p><table class="weather-hours"><caption>${E(L.next)}</caption><tbody>${rows.slice(0,4).map(row=>`<tr><th scope="row"><time datetime="${E(row.time)}">${E(fmt(row.time,true))}</time></th><td>${number(row.data.air_temperature)} °C</td><td><span class="visually-hidden">${E(L.precip)}: </span>${probability(row.data.probability_of_precipitation)}</td></tr>`).join('')}</tbody></table><p class="daily-note">SMHI · ${E(L.forecast)}: ${E(fmt(r.payload.referenceTime))}<br>${E(L.received)}: ${E(fmt(r.fetchedAt))}</p>`;
-        }).catch(e=>{if(active())error(w);}),
+          w.innerHTML=`<span class="weather-main"><strong>${number(data.air_temperature)}<span>°C</span></strong><span class="compact-forecast-metrics"><span>${E(L.precip)} <b>${probability(data.probability_of_precipitation)}</b></span><span>${E(L.wind)} <b>${number(data.wind_speed)} m/s</b></span></span></span><span class="compact-meta">SMHI · ${E(S.forecast)} ${E(fmt(first.time,true))} · ${E(L.received)} ${E(fmt(r.fetchedAt,true))}</span>`;
+          weatherBody.innerHTML=`<table class="weather-hours"><caption>${E(L.next)}</caption><tbody>${rows.slice(0,6).map(row=>`<tr><th scope="row"><time datetime="${E(row.time)}">${E(fmt(row.time,true))}</time></th><td>${number(row.data.air_temperature)} °C</td><td><span class="visually-hidden">${E(L.precip)}: </span>${probability(row.data.probability_of_precipitation)}</td></tr>`).join('')}</tbody></table><p class="daily-note">${E(L.forecast)}: ${E(fmt(r.payload.referenceTime))}<br>${E(L.received)}: ${E(fmt(r.fetchedAt))}</p>${link('weather')}`;
+        }).catch(()=>{if(active()){error(w,true);weatherBody.innerHTML=link('weather');}}),
         D.loadWarnings({signal:current.signal,force}).then(r=>{
           if(!active())return;
-          a.innerHTML=(r.payload.length?r.payload.slice(0,6).map(item=>`<article class="warning-item"><span class="warning-level" lang="sv">${E(item.levelLabel)}</span><h3 lang="sv">${E(item.title)}</h3><p lang="sv">${E(item.area)}</p>${item.end?`<time datetime="${E(item.end)}">→ ${E(fmt(item.end))}</time>`:''}</article>`).join(''):`<p>${E(L.none)}</p>`)+`<p class="daily-note">SMHI · ${E(L.received)}: ${E(fmt(r.fetchedAt))}</p>`;
-        }).catch(e=>{if(active())error(a);})
+          const meta=`<span class="compact-meta">SMHI · Västra Götaland · ${E(L.received)} ${E(fmt(r.fetchedAt,true))}</span>`;
+          if(r.payload.length){
+            // Active notices are fully visible. Compactness must not hide safety information.
+            a.innerHTML=`<div class="compact-active-warnings"><h2>${I('warning')}${E(L.warnings)} (${r.payload.length})</h2><p class="daily-note">${E(L.region)}</p>${r.payload.slice(0,6).map(item=>`<article class="warning-item"><span class="warning-level" lang="sv">${E(item.levelLabel)}</span><h3 lang="sv">${E(item.title)}</h3><p lang="sv">${E(item.area)}</p>${item.end?`<time datetime="${E(item.end)}">→ ${E(fmt(item.end))}</time>`:''}</article>`).join('')}${meta}${link('warnings')}</div>`;
+          }else{
+            a.innerHTML=`<details id="warningDetails"><summary><span class="compact-icon">${I('warning')}</span><span class="compact-row-copy"><strong>${E(S.quiet)}</strong>${meta}</span>${chevron}</summary><div class="compact-detail-body"><p class="daily-note">${E(L.none)}</p><p class="daily-note">${E(L.region)}</p>${link('warnings')}</div></details>`;
+          }
+        }).catch(()=>{if(active())error(a);})
       ]);
       if(active()){refresh.disabled=false;w.removeAttribute('aria-busy');a.removeAttribute('aria-busy');}
     }
-    container.querySelector('#weatherArea').addEventListener('change',e=>{area=e.target.value;C.storage.set('sverinav-weather-area',area);update();});
+    container.querySelector('#weatherArea').addEventListener('change',e=>{
+      area=e.target.value;C.storage.set('sverinav-weather-area',area);
+      container.querySelector('#currentWeatherArea').textContent=D.AREAS[area].name;
+      update();
+    });
     refresh.addEventListener('click',()=>update(true));
-    helpers.plans(container.querySelector('#homeOpenPlans'),{limit:2});
-    helpers.decisions(container.querySelector('#homeDecisions'),{limit:2});
+    helpers.plans(container.querySelector('#homeOpenPlans'),{limit:1});
+    // Riksdag belongs in Beslut; no hidden request or repeated document list on Idag.
     update();timer=setInterval(()=>{if(document.visibilityState==='visible'&&w.isConnected)update();},15*60000);
   }
-  globalThis.SverinavToday={render,stop,COPY,KEYS,label:language=>(COPY[language]||COPY.en)[0]};
+  globalThis.SverinavToday={render,stop,COPY,KEYS,COMPACT_COPY,COMPACT_KEYS,label:language=>(COPY[language]||COPY.en)[0]};
 })();
