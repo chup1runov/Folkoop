@@ -71,6 +71,7 @@ async def main():
   passed.append('320px and desktop widths do not overflow')
   await page.set_viewport_size({'width':1280,'height':900});await page.screenshot(path=str(OUT/'idag-desktop.png'),full_page=True)
   await page.click('#languageButton')
+  await expect(page.locator('.language-option[aria-pressed="true"]')).to_be_focused()
   await page.locator('.language-option').last.focus();await page.keyboard.press('Tab')
   await expect(page.locator('#closeLanguageButton')).to_be_focused()
   await page.keyboard.press('Escape');await expect(page.locator('#languageButton')).to_be_focused()
