@@ -1,50 +1,20 @@
+/* Recheck deadline against Sweden's date, including when the app uses a cached feed. */
 (() => {
-  const DATA_URL = './data/goteborg-open-plans.json';
-  let cache = null;
-  let pending = null;
-
-  function validSourceUrl(value) {
-    try {
-      const url = new URL(value);
-      return url.protocol === 'https:' &&
-        (url.hostname === 'goteborg.se' || url.hostname.endsWith('.goteborg.se'));
-    } catch {
-      return false;
-    }
+  let cache=null,pending=null,received=0;
+  function active(payload) {
+    const today=SverinavCore.stockholmDay();
+    return {...payload,items:payload.items.filter(i=>i.deadline>=today)};
   }
-
-  function validItem(item) {
-    return item &&
-      typeof item.title === 'string' &&
-      /^\d{4}-\d{2}-\d{2}$/.test(item.deadline || '') &&
-      validSourceUrl(item.sourceUrl);
-  }
-
-  async function loadOpenPlans({ force = false } = {}) {
-    if (!force && cache) return cache;
-    if (!force && pending) return pending;
-
-    pending = fetch(DATA_URL, {
-      headers: { accept: 'application/json' },
-      cache: 'no-cache'
-    })
-      .then(response => {
-        if (!response.ok) throw new Error(`Göteborg plans feed unavailable (${response.status})`);
-        return response.json();
-      })
-      .then(payload => {
-        if (payload?.error) throw new Error(`Göteborg plans feed unavailable (${payload.error})`);
-        if (Number.isNaN(new Date(payload?.fetchedAt).getTime())) throw new Error('Göteborg plans feed has no valid fetchedAt timestamp');
-        const items = Array.isArray(payload?.items) ? payload.items.filter(validItem) : [];
-        cache = { ...payload, items };
-        return cache;
-      })
-      .finally(() => {
-        pending = null;
-      });
-
+  async function loadOpenPlans({force=false}={}) {
+    if(!force && cache && Date.now()-received<300000)return active(cache);
+    if(pending)return pending;
+    pending=(async()=>{
+      const r=await SverinavCore.fetchJSON('./data/goteborg-open-plans.json');
+      const payload=SverinavCore.feed(r.payload,'goteborg_open_plans',['goteborg.se','www.goteborg.se']);
+      if(!SverinavCore.officialUrl(payload.sourceUrl,['goteborg.se','www.goteborg.se']) || payload.items.some(i=>!SverinavCore.dateOnly(i.deadline)))throw new Error('INVALID_PLAN_FEED');
+      cache={...payload,_cached:r.cached};received=Date.now();return active(cache);
+    })().finally(()=>{pending=null;});
     return pending;
   }
-
-  window.SverinavGoteborgPlans = { loadOpenPlans };
+  globalThis.SverinavGoteborgPlans={loadOpenPlans,active};
 })();

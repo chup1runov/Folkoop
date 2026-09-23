@@ -100,16 +100,11 @@
   }
 
   function isCurrentlyValid(properties) {
-    const validTo = Number(properties?.VALID_TO);
-    if (!Number.isFinite(validTo) || validTo === 99991231) return true;
-
-    const now = new Date();
-    const today = Number(
-      String(now.getFullYear()) +
-      String(now.getMonth() + 1).padStart(2, '0') +
-      String(now.getDate()).padStart(2, '0')
-    );
-    return validTo >= today;
+    const today=Number(SverinavCore.stockholmDay().replaceAll('-',''));
+    const from=properties?.VALID_FROM, to=properties?.VALID_TO;
+    if (from != null && from !== '' && (!Number.isFinite(Number(from)) || Number(from)>today)) return false;
+    if (to != null && to !== '' && (!Number.isFinite(Number(to)) || Number(to)<today)) return false;
+    return true;
   }
 
   function normalizeFeature(feature, targetLat, targetLon) {
@@ -150,6 +145,8 @@
       const response = await fetch(featureInfoUrl(lat, lon, attempt.span, attempt.size), {
         headers: { accept: 'application/json' },
         cache: 'no-store',
+        credentials: 'omit',
+        referrerPolicy: 'no-referrer',
         signal: controller.signal
       });
 
@@ -177,9 +174,10 @@
   }
 
   async function resolveRoadHolder(lat, lon, options = {}) {
+    if (lat == null || lon == null || lat === '' || lon === '') throw new Error('INVALID_COORDINATES');
     const latitude = Number(lat);
     const longitude = Number(lon);
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude)>90 || Math.abs(longitude)>180) {
       throw new Error('INVALID_COORDINATES');
     }
 
@@ -205,12 +203,12 @@
 
     const best = candidates[0];
     const competing = candidates.find(candidate =>
-      candidate.holderType !== best.holderType &&
+      [candidate.holderType,candidate.holderName,candidate.organizationNumber].join('|') !== [best.holderType,best.holderName,best.organizationNumber].join('|') &&
       candidate.distanceMeters <= 35 &&
       candidate.distanceMeters - best.distanceMeters <= 8
     );
 
-    const accuracyMeters = Number.isFinite(Number(options.accuracyMeters))
+    const accuracyMeters = typeof options.accuracyMeters === 'number' && Number.isFinite(options.accuracyMeters) && options.accuracyMeters >= 0
       ? Number(options.accuracyMeters)
       : null;
 

@@ -1,3 +1,4 @@
+import { fetchBounded } from './http.mjs';
 const API_URL = new URL('https://data.riksdagen.se/dokumentlista/');
 
 const params = {
@@ -48,28 +49,28 @@ function normalize(document) {
 
   return {
     id,
-    kind: 'riksdag_decision',
+    kind: 'decided_committee_report',
     title: asText(document.titel) || asText(document.beteckning) || 'Riksdagsbeslut',
-    documentType: asText(document.typ) || asText(document.doktyp) || 'Betänkande',
+    documentType: 'Betänkande',
     reference: asText(document.beteckning),
     session: asText(document.rm),
     organCode,
-    responsibleActor: COMMITTEES[organCode] || organCode || 'Sveriges riksdag',
-    decisionDate: asDate(document.beslutsdag || document.datum || document.systemdatum),
+    responsibleActor: Object.entries(COMMITTEES).find(([code])=>code.toLowerCase()===organCode.toLowerCase())?.[1] || organCode || 'Sveriges riksdag',
+    decisionDate: asDate(document.beslutsdag),
     publishedDate: asDate(document.datum || document.systemdatum),
     status: asText(document.status),
     sourceId: 'riksdagen_open_data',
     sourceName: 'Sveriges riksdag',
     sourceUrl: originalUrl(document),
-    adapterVersion: 'riksdagen-decisions-v1'
+    adapterVersion: 'riksdagen-decisions-v2'
   };
 }
 
 async function main() {
-  const response = await fetch(API_URL, {
+  const response = await fetchBounded(API_URL, {
     headers: {
       accept: 'application/json',
-      'user-agent': 'Sverinav/0.4 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'Sverinav/0.11 (+https://github.com/chup1runov/Sverinav)'
     }
   });
 
@@ -93,7 +94,7 @@ async function main() {
     sourceName: 'Sveriges riksdag',
     sourceQuery: API_URL.toString(),
     fetchedAt: new Date().toISOString(),
-    adapterVersion: 'riksdagen-decisions-v1',
+    adapterVersion: 'riksdagen-decisions-v2',
     items: documents
   };
 

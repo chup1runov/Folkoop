@@ -1,3 +1,4 @@
+import {fetchBounded as fetchWithRetry} from './http.mjs';
 const TARGETS = [
   {
     name:'Göteborgs Stad felanmälan',
@@ -12,31 +13,6 @@ const TARGETS = [
     finalPath:/\/anonyma-tjanster\/kundfragor-trafikverket\/vag\/drift-underhall\/?$/i
   }
 ];
-
-async function fetchWithRetry(url, attempts=3) {
-  let lastError;
-  for (let attempt=1; attempt<=attempts; attempt+=1) {
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),12000);
-    try {
-      const response=await fetch(url,{
-        headers:{
-          accept:'text/html,application/xhtml+xml',
-          'user-agent':'Sverinav-Report-Route-Test/0.7 (+https://github.com/chup1runov/Sverinav)'
-        },
-        redirect:'follow',
-        signal:controller.signal
-      });
-      clearTimeout(timer);
-      return response;
-    } catch(error) {
-      clearTimeout(timer);
-      lastError=error;
-      if (attempt<attempts) await new Promise(resolve=>setTimeout(resolve,attempt*750));
-    }
-  }
-  throw lastError;
-}
 
 for (const target of TARGETS) {
   const response=await fetchWithRetry(target.url);

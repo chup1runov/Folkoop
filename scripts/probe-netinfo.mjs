@@ -1,22 +1,9 @@
+import {fetchBounded as fetchWithRetry} from './http.mjs';
 const ENDPOINT = 'https://geo-netinfo.trafikverket.se/MapService/wms.axd/NetInfo_1_8';
 const ORIGIN = 'https://chup1runov.github.io';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
-}
-
-async function fetchWithRetry(url, options, attempts = 3) {
-  let lastError;
-  for (let attempt = 1; attempt <= attempts; attempt += 1) {
-    try {
-      return await fetch(url, options);
-    } catch (error) {
-      lastError = error;
-      if (attempt === attempts) break;
-      await new Promise(resolve => setTimeout(resolve, attempt * 750));
-    }
-  }
-  throw lastError;
 }
 
 async function capabilities() {

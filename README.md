@@ -4,6 +4,10 @@
 
 Sverinav är ett öppet civic-tech-projekt som ska göra det enklare att förstå, använda och påverka det offentliga Sverige.
 
+## Idag — v0.11
+
+Idag visar SMHI:s timprognos och länsvarningar, Göteborgs öppna samråd och Riksdagens dokument. Resor, biljetter och vatten länkar till officiella tjänster; de är inte integrerade betalnings- eller driftstatusfunktioner. Se `docs/IDAG_AND_AUDIT.md` för källa, omfattning, regressionstester och kvarvarande begränsningar.
+
 ## Grundidé
 
 Sverige saknar inte digitala tjänster. Sverige saknar ett enkelt gränssnitt till dem.
@@ -46,9 +50,15 @@ Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-la
 
 ## Pilot
 
-Första pilotområde: **Göteborg**.\n\n`Beslut` hämtar de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.\n\nFör vägfrågor kan `Vem ansvarar?` nu, efter uttryckligt platsgodkännande, kontrollera aktuell väghållare direkt mot **Trafikverkets NVDB/NetInfo**. Positionen sparas inte.
+Första pilotområde: **Göteborg**.
 
-`Nära mig` visar nu också Göteborgs Stads aktuella planer som är öppna för synpunkter. Sverinav hämtar listan dagligen, filtrerar bort passerade tidsfrister och länkar till originalprojektet.\n\n`Rapportera` kan nu för väg-, gatu- och cykelbaneproblem använda tillfällig geolocation + NVDB för att hitta rätt väghållare, låta användaren kopiera beskrivning och GPS-koordinater och öppna rätt officiell felanmälan för Trafikverket eller Göteborgs Stad. Sverinav skickar inte ärendet själv.
+`Beslut` hämtar de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.
+
+För vägfrågor kan `Vem ansvarar?` nu, efter uttryckligt platsgodkännande, kontrollera aktuell väghållare direkt mot **Trafikverkets NVDB/NetInfo**. Positionen sparas inte.
+
+`Nära mig` visar nu också Göteborgs Stads aktuella planer som är öppna för synpunkter. Sverinav hämtar listan dagligen, filtrerar bort passerade tidsfrister och länkar till originalprojektet.
+
+`Rapportera` kan nu för väg-, gatu- och cykelbaneproblem använda tillfällig geolocation + NVDB för att hitta rätt väghållare, låta användaren kopiera beskrivning och GPS-koordinater och öppna rätt officiell felanmälan för Trafikverket eller Göteborgs Stad. Sverinav skickar inte ärendet själv.
 
 ## Om pilotversionen
 

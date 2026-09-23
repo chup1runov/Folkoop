@@ -22,7 +22,9 @@ Core proposition:
 
 Sverinav should become a simple civic interface between a person and public Sweden. The user starts from a problem or need instead of needing to know which municipality, region, authority, road owner or public system is responsible.
 
-First pilot: **Göteborg**.\n\nCurrent pilot version: **v0.10.1**.
+First pilot: **Göteborg**.
+
+Current pilot version: **v0.11.0**.
 
 ## Current MVP
 
@@ -320,3 +322,8 @@ For a new chat or contributor:
 3. Read `docs/ROADMAP.md`.
 4. Check the current `main` branch and latest GitHub Pages workflow.
 5. Treat GitHub code as authoritative over old chat descriptions or old prototypes.
+
+
+## v0.11 continuation
+
+Home is now Idag (SMHI forecast + county warnings, existing civic feeds, explicit external transport/water handoffs). Read `docs/IDAG_AND_AUDIT.md` and current test results before continuing. Do not conflate Chromium emulation with actual iOS testing. User conversations and private motivations are archived in Box, never in public commits. After each completed milestone archive the available conversation/decision journal privately and record only public-safe implementation details here. Do not promise background archiving.
