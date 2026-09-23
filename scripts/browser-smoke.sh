@@ -10,3 +10,4 @@ for _ in $(seq 1 20); do
   sleep .25
 done
 BASE_URL=http://127.0.0.1:4173/Sverinav/ python3 tests/browser.py
+BASE_URL=http://127.0.0.1:4173/Sverinav/ python3 tests/about-browser.py

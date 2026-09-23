@@ -16,6 +16,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./compact.css">
+  <link rel="stylesheet" href="./about-project.css">
 </head>
 <body>
   <div class="app-shell">
@@ -28,7 +29,6 @@
           <span class="tagline" id="tagline">Samhället. Enklare.</span>
         </span>
       </button>
-
       <div class="top-actions">
         <button id="aboutButton" class="info-button" type="button" data-screen="om" aria-label="Om Sverinav">i</button>
         <button id="languageButton" class="language-button" type="button" aria-haspopup="dialog" aria-expanded="false">
@@ -37,9 +37,7 @@
         </button>
       </div>
     </header>
-
     <main id="view" tabindex="-1"></main>
-
     <nav class="bottom-nav" aria-label="Huvudmeny" id="bottomNav">
       <button type="button" data-screen="home" class="active">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
@@ -59,7 +57,6 @@
       </button>
     </nav>
   </div>
-
   <div class="language-sheet" id="languageSheet" hidden>
     <button class="language-backdrop" id="languageBackdrop" type="button" tabindex="-1" aria-label="Stäng språkval"></button>
     <section class="language-dialog" role="dialog" aria-modal="true" aria-labelledby="languageSheetTitle">
@@ -71,7 +68,6 @@
       <div class="language-options" id="languageOptions"></div>
     </section>
   </div>
-
   <script src="./civic-core.js"></script>
   <script src="./daily-data.js"></script>
   <script src="./today.js"></script>
@@ -79,6 +75,7 @@
   <script src="./nvdb.js"></script>
   <script src="./goteborg-plans.js"></script>
   <script src="./app.js"></script>
+  <script src="./about-project.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

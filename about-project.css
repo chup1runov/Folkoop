@@ -1,0 +1,21 @@
+/* About stays inside the existing Om route; no extra primary navigation. */
+.about-stack .project-author h2,.about-stack .project-story h2,.project-faq>h2{font-size:19px;line-height:1.3;margin:0 0 10px;letter-spacing:-.2px}
+.about-stack .project-author p,.about-stack .project-story>p{font-size:15px;line-height:1.55}
+.project-author-name{display:inline-flex;align-items:center;min-height:44px;font-size:21px;font-weight:750;color:var(--ink);text-decoration:none;max-width:100%;overflow-wrap:anywhere}
+.project-contact-button{display:flex;align-items:center;justify-content:center;min-height:48px;margin-top:14px;padding:12px 14px;border-radius:13px;background:var(--teal);color:#fff;text-decoration:none;font-size:16px;font-weight:750;text-align:center}
+.project-contact-button:hover{background:var(--teal-strong)}
+.about-stack .project-contact-note{font-size:13px;line-height:1.5;margin-top:9px;color:var(--muted)}
+.project-story>.project-disclosure{margin-top:13px}
+.project-faq{margin-top:6px}
+.project-disclosure{border:1px solid var(--line);border-radius:13px;background:var(--surface);overflow-wrap:anywhere}
+.project-faq>.project-disclosure+.project-disclosure{margin-top:7px}
+.project-disclosure>summary{min-height:48px;padding:12px 14px;cursor:pointer;font-size:15px;font-weight:700;line-height:1.5}
+.project-disclosure>summary::marker{color:var(--teal)}
+.project-disclosure>summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:10px}
+.project-answer{border-top:1px solid var(--line);padding:12px 14px}
+.about-stack .project-answer p,.about-stack .project-answer ul{font-size:15px;line-height:1.6;margin:0 0 9px;color:var(--muted)}
+.project-answer p:last-child{margin-bottom:0}
+.project-history-link{display:inline-flex;align-items:center;min-height:44px;color:var(--teal-strong);font-size:14px;font-weight:700}
+.about-stack .project-existing{margin:0}
+.project-author a:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+@media(forced-colors:active){.project-contact-button{border:1px solid ButtonText}}
