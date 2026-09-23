@@ -19,3 +19,7 @@
 .about-stack .project-existing{margin:0}
 .project-author a:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
 @media(forced-colors:active){.project-contact-button{border:1px solid ButtonText}}
+.project-contact-actions{display:grid;gap:8px;margin-top:12px}
+.project-contact-actions .project-contact-button{margin-top:0;overflow-wrap:anywhere;word-break:break-word}
+.project-contact-button.secondary{background:var(--surface);color:var(--teal-strong);border:1px solid var(--teal-line)}
+.about-stack .project-bio{margin-top:12px}

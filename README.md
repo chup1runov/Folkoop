@@ -1,95 +1,43 @@
 # Sverinav
 
-**Samhället. Enklare.**
+**Samhället. Enklare.** Ett oberoende digitalt samhällsprojekt som hjälper invånare att hitta rätt offentlig tjänst och spara tid.
 
-Sverinav är ett öppet civic-tech-projekt som ska göra det enklare att förstå, använda och påverka det offentliga Sverige.
+Public app: https://chup1runov.github.io/Sverinav/
 
-## Idag — v0.11
+## Current pilot — v0.14
 
-Idag visar SMHI:s timprognos och länsvarningar, Göteborgs öppna samråd och Riksdagens dokument. Resor, biljetter och vatten länkar till officiella tjänster; de är inte integrerade betalnings- eller driftstatusfunktioner. Se `docs/IDAG_AND_AUDIT.md` för källa, omfattning, regressionstester och kvarvarande begränsningar.
+- **Idag:** compact SMHI forecast and explicit county warnings, an official travel link and a Göteborg consultation deadline. Weather-area selection does not filter all other sources.
+- **Nära:** Göteborg plans open for comments, with deadlines and originals.
+- **Rapportera:** prepare a road issue, check the road holder through NVDB after an explicit location action, then open the official service. The user submits the actual report.
+- **Beslut:** Riksdag document metadata, not a guarantee every item is enacted law.
+- **Om:** purpose, author, direct contact, history and practical FAQ. Optional civic activities and rewards are described as plans, not completed integrations.
 
-## Grundidé
+Travel tickets and water remain official links. No valid ticket display, payment verification, integrated departures or water-status aggregation is implemented.
 
-Sverige saknar inte digitala tjänster. Sverige saknar ett enkelt gränssnitt till dem.
+## Author and history
 
-Tjänsten ska vara användbar för alla som bor i Sverige, oavsett politisk uppfattning eller medlemskap i någon organisation.
+Initiator: **Pavel Chuprunov**, @chup1runov.
 
-## Första MVP
+Email: chup1runov@gmail.com. Telegram: https://t.me/chup1runov . These contacts were explicitly approved for public use.
 
-1. **Vem ansvarar?** — hitta rätt kommun, region, myndighet eller annan ansvarig aktör.
-2. **Rapportera** — hjälp att rapportera problem och komma till rätt officiell kanal.
-3. **Nära mig** — relevant samhällsinformation, störningar, planer och samråd i närheten.
-4. **Beslut** — lättbegripliga sammanfattningar av offentliga beslut med originalkälla.
+According to the initiator, the idea arose in **2021**. The code repository was created **21 September 2026**. First pilot: Göteborg. A short public-source biography and its source are documented in `docs/EDITORIAL_V014.md`.
 
-## Språk
+## Principles
 
-Den publika prototypen har nu gränssnitt på:
+Free for residents is a project principle. External services have separate terms and charges. Future organisational tools/funding are under consideration, not an active commercial programme.
 
-- Svenska
-- English
-- العربية
-- Soomaali
-- فارسی
-- Suomi
-- Bosanski / Hrvatski / Srpski
-- Kurdî (Kurmancî)
-- Español
-- Русский
-- Українська
+Official sources, clear scope, freshness and original links. No automatic authority submissions, political profiling, fabricated all-clear states, compulsory account or personnummer. Coordinates used for a road query are transmitted to Trafikverket; Sverinav does not persist coordinate history or case text. Provider logs can exist. Language and coarse forecast area may be local preferences; drafts stay in tab memory.
 
-Språkvalet sparas lokalt i webbläsaren. Arabiska och persiska visas med RTL-layout.
+Eleven languages: Swedish, English, Arabic, Somali, Persian, Finnish, Bosnian/Croatian/Serbian, Kurmanji, Spanish, Russian and Ukrainian. Arabic and Persian support RTL.
 
-## Principer
+## Development and verification
 
-- Öppet för alla.
-- Source-first: offentliga fakta ska kunna spåras till originalkälla.
-- Fakta och politiska ståndpunkter ska hållas tydligt åtskilda.
-- Privacy by design.
-- Ingen politisk profilering baserad på civic-användning.
-- Medlemsfunktioner, om de byggs senare, ligger i ett separat och frivilligt lager.
+`npm run build` prepares the allowlisted static `_site` build. `npm start` serves the built app. `npm test` runs deterministic checks. CI validates source contracts and runs Chromium interactions at `/Sverinav/`, then publishes one tested artifact. Real-device iPhone/Safari and native-language editorial review remain separate work.
 
-## Pilot
+Read `docs/PROJECT_HANDOFF.md` first; `docs/IDAG_AND_AUDIT.md`, `docs/COMPACT_V012.md` and `docs/EDITORIAL_V014.md` describe verified scope and limits. `docs/VALUE_ROADMAP.md` and `docs/CIVIC_ACTIVITIES.md` describe future requirements, not current capabilities. `docs/PILOT_GUIDE.md` covers resident testing.
 
-Första pilotområde: **Göteborg**.
+## Licence
 
-`Beslut` hämtar de senaste beslutade betänkandena via **Riksdagens öppna data** och länkar alltid vidare till originalkällan.
+No final code licence has been selected. Public repository access does not grant unrestricted reuse or commercial redistribution. Free use of the hosted civic service is a separate principle. Third-party code and data retain their own terms. No new licence is granted by this editorial update.
 
-För vägfrågor kan `Vem ansvarar?` nu, efter uttryckligt platsgodkännande, kontrollera aktuell väghållare direkt mot **Trafikverkets NVDB/NetInfo**. Positionen sparas inte.
-
-`Nära mig` visar nu också Göteborgs Stads aktuella planer som är öppna för synpunkter. Sverinav hämtar listan dagligen, filtrerar bort passerade tidsfrister och länkar till originalprojektet.
-
-`Rapportera` kan nu för väg-, gatu- och cykelbaneproblem använda tillfällig geolocation + NVDB för att hitta rätt väghållare, låta användaren kopiera beskrivning och GPS-koordinater och öppna rätt officiell felanmälan för Trafikverket eller Göteborgs Stad. Sverinav skickar inte ärendet själv.
-
-## Om pilotversionen
-
-I appens **Om Sverinav** framgår att Sverinav är ett oberoende civic-tech-projekt och inte en myndighet. Där visas också version, privacy-principer, källor och en lokal feedbackfunktion som använder telefonens/webbläsarens delningsmeny.
-
-För organiserad testning finns `docs/PILOT_GUIDE.md`. Teknisk pilotfeedback kan lämnas via GitHub issue-mallen.
-
-## Publik version
-
-https://chup1runov.github.io/Sverinav/
-
-## Dokumentation
-
-- `docs/PROJECT_HANDOFF.md` — aktuell helhetsbild och instruktion för att fortsätta projektet
-- `docs/PRODUCT_CONCEPT.md`
-- `docs/MVP.md`
-- `docs/ARCHITECTURE.md`
-- `docs/PRIVACY_PRINCIPLES.md`
-- `docs/INTEGRATIONS_GOTEBORG.md`
-- `docs/ROADMAP.md`
-
-## Utveckling
-
-Den nuvarande versionen är en statisk, mobile-first PWA för Göteborg-piloten som publiceras från `main` via GitHub Pages.
-
-Sverinav skickar inga myndighetsärenden i användarens ställe. Livefunktioner använder verifierade officiella källor och leder vidare till originalkällan eller den officiella e-tjänsten; återstående demokort är tydligt märkta.
-
-## Bidrag
-
-Se `CONTRIBUTING.md` och `SECURITY.md`.
-
-## Licens
-
-Kodlicens är ännu inte beslutad. Tills en licens har valts innebär offentlig källkod inte automatiskt rätt att återanvända eller distribuera koden.
+See `CONTRIBUTING.md` and `SECURITY.md`. Private conversation archives do not belong in this repository.
