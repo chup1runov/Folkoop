@@ -1,0 +1,38 @@
+name: Contact the project / Kontakta projektet
+description: A public question or suggestion for Pavel about Sverinav.
+title: "[Contact] "
+assignees:
+  - chup1runov
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Public conversation, not private support. / Offentligt, inte privat.**
+        A GitHub account is required. Anyone can read this issue after you submit it.
+        Do not include personnummer, addresses, GPS coordinates, passwords or private case documents.
+        This is not an authority complaint or an emergency channel. No response time is promised.
+        Do not post vulnerability details here; see the repository security policy.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic / Ämne
+      options:
+        - Project question / Fråga om projektet
+        - Suggestion / Förslag
+        - Collaboration / Samarbete
+    validations:
+      required: true
+  - type: textarea
+    id: message
+    attributes:
+      label: Message / Meddelande
+      description: Write in your preferred language. Include only information suitable for public posting.
+    validations:
+      required: true
+  - type: checkboxes
+    id: public-consent
+    attributes:
+      label: Before publishing / Innan publicering
+      options:
+        - label: I understand this message is public and have removed sensitive information.
+          required: true
