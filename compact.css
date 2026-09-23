@@ -82,3 +82,8 @@ html[dir="rtl"] .compact-service-body>p.daily-note{padding-left:14px;padding-rig
 @media(min-width:680px){.compact-today{padding:24px 28px}.compact-weather>summary{padding:16px 20px}.compact-today .weather-main>strong{font-size:48px}}
 @media(max-width:359px){.compact-today{padding:16px 14px}.compact-area>summary{flex-wrap:wrap;gap:5px}.compact-area .compact-summary-hint{display:none}.compact-area .compact-chevron{margin-inline-start:auto}.compact-today .weather-main>strong{font-size:38px}.compact-today .compact-meta{font-size:13px}.compact-deadline>.section-head{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.compact-chevron{transition:none}}
+/* Keep directional glyphs and numeric units independent from RTL text mirroring. */
+.compact-chevron{direction:ltr;unicode-bidi:isolate}
+.compact-forecast-metrics b,.compact-today .weather-main>strong{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.compact-today .weather-hours td{direction:ltr;unicode-bidi:isolate}
+.compact-row-group :is(a,button,summary):focus-visible{outline-offset:-3px}
