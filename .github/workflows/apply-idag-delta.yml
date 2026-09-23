@@ -1,0 +1,54 @@
+name: Apply reviewed Idag delta
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  apply:
+    if: github.repository == 'chup1runov/Sverinav' && github.head_ref == 'feature/idag-audit-v0.11' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Apply validated text delta
+        run: |
+          python3 <<'PY'
+          import base64, hashlib, json, lzma
+          from pathlib import Path
+          raw = base64.b64decode(''.join(Path(f'audit-transfer-part{i}.txt').read_text().strip() for i in range(4)), validate=True)
+          assert hashlib.sha256(raw).hexdigest() == '95cb4e41b60261db250d70db434e35b93804da6500d34fd806e088ea6da2ef96', 'Transfer checksum mismatch'
+          delta = json.loads(lzma.decompress(raw))
+          allowed = {'.gitignore','README.md','app.js','civic-core.js','daily-data.js','docs/IDAG_AND_AUDIT.md','docs/PROJECT_HANDOFF.md','docs/ROADMAP.md','goteborg-plans.js','index.html','manifest.webmanifest','nvdb.js','package.json','riksdagen.js','scripts/browser-smoke.sh','scripts/build-site.mjs','scripts/fetch-goteborg-open-plans.mjs','scripts/fetch-riksdagen.mjs','scripts/http.mjs','scripts/probe-daily.mjs','scripts/probe-netinfo.mjs','scripts/probe-report-routes.mjs','scripts/static-smoke.mjs','styles.css','sw.js','tests/browser.py','tests/core.test.mjs','tests/sw.test.mjs','today.js'}
+          assert {d['path'] for d in delta} == allowed and len(delta) == len(allowed)
+          results = []
+          for change in delta:
+              path = Path(change['path'])
+              old = path.read_text() if path.exists() else ''
+              assert (hashlib.sha256(old.encode()).hexdigest() if path.exists() else None) == change['before'], f'Base mismatch: {path}'
+              lines = old.splitlines(keepends=True)
+              for start, end, text in reversed(change['ops']):
+                  assert 0 <= start <= end <= len(lines)
+                  lines[start:end] = text.splitlines(keepends=True)
+              new = ''.join(lines)
+              assert hashlib.sha256(new.encode()).hexdigest() == change['after'], f'Result mismatch: {path}'
+              results.append((path,new))
+          for path,new in results:
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(new)
+              print(f'Applied {path}')
+          PY
+          for f in *.js scripts/*.mjs; do node --check "$f"; done
+          python3 -m py_compile tests/browser.py
+          node --test tests/*.test.mjs
+      - name: Commit reviewed changes to work branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .gitignore README.md app.js civic-core.js daily-data.js docs/IDAG_AND_AUDIT.md docs/PROJECT_HANDOFF.md docs/ROADMAP.md goteborg-plans.js index.html manifest.webmanifest nvdb.js package.json riksdagen.js scripts/browser-smoke.sh scripts/build-site.mjs scripts/fetch-goteborg-open-plans.mjs scripts/fetch-riksdagen.mjs scripts/http.mjs scripts/probe-daily.mjs scripts/probe-netinfo.mjs scripts/probe-report-routes.mjs scripts/static-smoke.mjs styles.css sw.js tests/browser.py tests/core.test.mjs tests/sw.test.mjs today.js
+          git commit -m 'Implement Idag and audit production flows'
+          git push origin HEAD:feature/idag-audit-v0.11
