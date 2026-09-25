@@ -43,7 +43,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
   enabled:!!cfg,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
-  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:false}});},
+  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
   async verify(email,code){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
    const attempt=++authAttempt;
@@ -53,7 +53,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    // Ask Auth instead of trusting localStorage or decoded JWT claims.
    const who=await request('/auth/v1/user',{auth:false,token:result.access_token});
    if(attempt!==authAttempt)throw fail('STALE');
-   session={id:id(who?.id),token:result.access_token,expiresAt:clock()+result.expires_in*1000};notify();return user();
+   session={id:id(who?.id),token:result.access_token,expiresAt:clock()+result.expires_in*1000};
+   try{await rpc('fk_claim_first_pilot');}catch(e){clear();throw e;}
+   notify();return user();
   },
   async logout(){const token=session?.token;clear();if(token)await request('/auth/v1/logout?scope=local',{method:'POST',auth:false,token});},
   profile(){return rows('fk_profiles?select=id,name,skills,about,listed&id=eq.'+id(user()?.id));},
