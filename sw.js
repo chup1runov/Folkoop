@@ -1,5 +1,5 @@
 /* Public shell/feeds only. Never cache Auth, network profiles/posts or coordinates. */
-const VERSION='0.22.0';
+const VERSION='0.23.0';
 const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
