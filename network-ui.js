@@ -313,13 +313,14 @@ function renderCooperation(u,r){
 }
 
 function render(){
- const r=route(),relevant=['me','people','communities','messages','together','projects'].includes(r);host.hidden=!relevant;
- document.getElementById('workspace').hidden=!!(api?.enabled&&['people','communities','messages'].includes(r));
+ const r=route(),hasUser=!!api?.user(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
+ document.getElementById('workspace').hidden=!!(api?.enabled&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)));
  syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=api.user();
  if(!u){html=`<h2>${esc(t('login'))}</h2><p>${esc(t('invite'))}</p><form id="netLogin" class="editor card"><label>${esc(t('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="button">${esc(t('send'))}</button><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10"></label><button name="operation" value="verify" class="button secondary">${esc(t('verify'))}</button></form>`;}
+ else if(r==='home'){html=renderHome(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
@@ -343,8 +344,8 @@ function render(){
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox()
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox,homePosts,assignedTasks,myConfirmations,allProcesses]=await Promise.all([
+  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox(),api.homePosts(),api.assignedTasks(),api.myPurchaseConfirmations(),api.purchaseProcesses()
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
@@ -373,7 +374,7 @@ async function load(){
   api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
  ]):[[],[],[]];
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -477,7 +478,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
