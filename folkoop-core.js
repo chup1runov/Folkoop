@@ -2,14 +2,14 @@
 (() => {
   'use strict';
   const LANGS = ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'];
-  const ROUTES = ['home','people','together','projects','city','center','me','messages'];
+  const ROUTES = ['home','people','communities','together','projects','city','center','me','messages','settings','about'];
   const KINDS = ['need','offer','purchase','resource','project','event'];
   const KEY = 'folkoop-workspace-v1';
   const text = (v, max) => typeof v === 'string' ? v.slice(0, max).trim() : '';
   function clean(input) {
     const x = input && typeof input === 'object' ? input : {};
     const p = x.profile && typeof x.profile === 'object' ? x.profile : {};
-    return {version:1, profile:{name:text(p.name,60),skills:text(p.skills,200),about:text(p.about,600)},
+    return {version:1, profile:{name:text(p.name,60),city:text(p.city,120),skills:text(p.skills,200),about:text(p.about,600)},
       drafts:Array.isArray(x.drafts) ? x.drafts.slice(0,100).filter(d => d && KINDS.includes(d.kind) && /^[a-zA-Z0-9-]{1,80}$/.test(d.id || '') && text(d.title,100)).map(d=>({id:d.id,kind:d.kind,title:text(d.title,100),body:text(d.body,1500),done:d.done===true})) : []};
   }
   function workspace(storage) {
