@@ -429,7 +429,12 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   await load();notice=t('saved');
  });
 });
-host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
+host.addEventListener('click',e=>{const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;run(async()=>{
+  if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
+  if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
+  await load();notice='';
+ });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
   if(a==='join')await api.joinCooperation(id);
