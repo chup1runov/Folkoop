@@ -136,7 +136,7 @@ async def main():
   assert state['profile'][0]['skills']==''
   assert await page.evaluate("!Object.values(localStorage).some(x=>x.includes('synthetic-only'))")
   passed.append('Private-by-default profile, optional skills and no persistent token')
-  await page.click('#nav a[href="#/people"]')
+  await page.click('#nav a[href="#/communities"]')
   await page.fill('#netGroup [name=name]','Test workshop')
   await page.fill('#netGroup [name=description]','A synthetic test, not a real community')
   await page.click('#netGroup button')
