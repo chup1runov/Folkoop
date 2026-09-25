@@ -48,6 +48,105 @@ function myPage(){
  return head('myTitle','myText')+`<div class="profile-grid"><form id="profileForm" class="card editor"><div class="profile-avatar" aria-hidden="true">${icon('me')}</div><label>${esc(t('name'))}<input name="name" maxlength="60" autocomplete="nickname" value="${esc(p.name||'')}"></label><label>${esc(t('cityProfile'))}<input name="city" maxlength="120" autocomplete="address-level2" value="${esc(p.city||'')}"></label><p class="meta">${esc(t('cityHelp'))}</p><label>${esc(t('skills'))}<input name="skills" maxlength="200" value="${esc(p.skills||'')}"></label><label>${esc(t('about'))}<textarea name="about" rows="4" maxlength="600">${esc(p.about||'')}</textarea></label><p class="meta">${esc(t('privacy'))}</p><button class="button" type="submit">${esc(t('saveProfile'))}</button></form><aside><div class="card"><h2>${esc(t('profileSaved'))}</h2><p>${esc(t('myText'))}</p><label class="checkbox"><input id="remember" type="checkbox"${store.isPersistent()?' checked':''}> <span>${esc(t('remember'))}</span></label><p class="meta">${esc(t(store.isPersistent()?'device':'memory'))}</p><div class="stack"><button class="button secondary" type="button" data-action="export">${esc(t('export'))}</button><button class="text-button danger" type="button" data-action="clear">${esc(t('clear'))}</button></div></div><div class="card"><strong class="stat">${store.get().drafts.length}</strong><p>${esc(t('count'))}</p>${a('projects','projects','text-link')}</div></aside></div><h2>${esc(t('drafts'))}</h2>${drafts()}`;
 }
 function center(){return head('centerTitle','centerText')+`<div class="feature-grid">${[1,2,3].map(n=>`<article class="card"><span class="small-icon">${icon(['','people','together','center'][n])}</span><h2>${esc(t('centerCard'+n))}</h2><p>${esc(t('centerCard'+n+'Text'))}</p><span class="badge muted-badge">${esc(t('future'))}</span></article>`).join('')}</div><div class="actions">${button('event','proposeEvent')}</div>${form()}${drafts(['event'])}`;}
+
+function settingsPage(){
+ return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
+}
+function aboutPage(){
+ return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong> · v0.22 pilot</p><p class="meta">People · cooperation · projects · city · real life.</p></div>`;
+}
+function cityShell(){
+ const city=selectedCity();
+ if(!city)return head('cityMissingTitle','cityMissingText')+`<div class="actions">${a('me','profileLink')}</div>`;
+ if(!citySupported(city))return head('cityUnsupportedTitle','cityUnsupportedText')+`<article class="card"><h2>${esc(city)}</h2><p>${esc(t('cityUnsupportedText'))}</p><div class="actions">${a('me','profileLink','button secondary')}</div></article>`;
+ return head('city','cityText')+`<a class="text-link" href="./city.html?embedded=1" target="_blank" rel="noopener">${esc(t('cityFull'))} ↗</a>`;
+}
+
+const tutorialCopy={
+ en:{
+  me:'Your profile: name, city, skills and what you want others to know. Your city controls which local City tools may be shown.',
+  home:'Home is the starting point: current activity, shortcuts and what needs your attention.',
+  messages:'Messages contains direct chats, group chats and work chats linked to cooperation.',
+  people:'People is the directory of pilot participants who chose to be discoverable.',
+  communities:'Communities are longer-lived groups with members and publications.',
+  together:'Together is for needs, offers, shared resources and joint purchases.',
+  projects:'Projects is for teams, tasks, roles, progress and a linked work chat.',
+  city:'City connects the app to local civic information for the city you selected in Profile. The current local pilot is Göteborg.',
+  center:'Center is the physical/offline layer: meetings, learning, equipment and human help.',
+  settings:'Settings contains language, app preferences and this introduction.',
+  about:'About explains what FOLKOOP is, what it is trying to do and the limits of the current pilot.'
+ },
+ ru:{
+  me:'Профиль: имя, город, навыки и то, что ты хочешь показать другим. Выбранный город определяет, какие местные инструменты можно показывать.',
+  home:'Главная — стартовый экран: текущая активность, быстрые действия и то, что требует внимания.',
+  messages:'Сообщения — личные, групповые и рабочие чаты, связанные с кооперацией.',
+  people:'Люди — каталог участников пилота, которые сами включили видимость профиля.',
+  communities:'Сообщества — постоянные группы с участниками и публикациями.',
+  together:'Вместе — потребности, предложения, общие ресурсы и совместные закупки.',
+  projects:'Проекты — команды, задачи, роли, прогресс и связанный рабочий чат.',
+  city:'Город — местные гражданские инструменты для города, который указан в Профиле. Сейчас локальный пилот подключён к Göteborg.',
+  center:'Центр — физический слой: встречи, обучение, оборудование и помощь людей в реальном мире.',
+  settings:'Настройки — язык, параметры приложения и возможность заново пройти эту инструкцию.',
+  about:'О нас — что такое FOLKOOP, зачем он создаётся и какие ограничения есть у текущего пилота.'
+ },
+ sv:{
+  me:'Profil: namn, stad, färdigheter och det du vill visa andra. Din valda stad styr vilka lokala stadsverktyg som kan visas.',
+  home:'Hem är startpunkten: aktivitet, genvägar och sådant som behöver din uppmärksamhet.',
+  messages:'Meddelanden innehåller direktchattar, gruppchattar och arbetschattar kopplade till samarbete.',
+  people:'Människor är katalogen över pilotdeltagare som själva valt att vara synliga.',
+  communities:'Gemenskaper är mer långvariga grupper med medlemmar och publikationer.',
+  together:'Tillsammans är för behov, erbjudanden, delade resurser och gemensamma köp.',
+  projects:'Projekt är för team, uppgifter, roller, framsteg och en kopplad arbetschatt.',
+  city:'Stad kopplar appen till lokal samhällsinformation för staden du valt i Profil. Den lokala piloten är nu Göteborg.',
+  center:'Center är det fysiska lagret: möten, lärande, utrustning och mänsklig hjälp.',
+  settings:'Inställningar innehåller språk, appval och möjlighet att visa introduktionen igen.',
+  about:'Om oss förklarar vad FOLKOOP är, vad projektet försöker göra och pilotens nuvarande begränsningar.'
+ }
+};
+function tutorialText(route){
+ const source=tutorialCopy[lang]||tutorialCopy.en;
+ return source[route]||tutorialCopy.en[route]||'';
+}
+function ensureOnboarding(){
+ let dialog=document.getElementById('onboarding');
+ if(dialog)return dialog;
+ dialog=document.createElement('div');
+ dialog.id='onboarding';
+ dialog.className='onboarding';
+ dialog.hidden=true;
+ dialog.innerHTML='<div class="onboarding-backdrop"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="row"><span id="onboardingProgress" class="eyebrow"></span><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><p id="onboardingBody"></p><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><button type="button" class="button" data-onboarding="next"></button></div></section>';
+ document.body.append(dialog);
+ return dialog;
+}
+function showOnboarding(step=0){
+ onboardingOpen=true;
+ onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
+ const route=onboardingSteps[onboardingStep];
+ const dialog=ensureOnboarding();
+ dialog.hidden=false;
+ location.hash='#/'+route;
+ dialog.querySelector('#onboardingProgress').textContent=t('tutorialProgress')+' '+(onboardingStep+1)+' / '+onboardingSteps.length;
+ dialog.querySelector('#onboardingTitle').textContent=navText(route);
+ dialog.querySelector('#onboardingBody').textContent=tutorialText(route);
+ dialog.querySelector('[data-onboarding="skip"]').textContent=t('tutorialSkip');
+ const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=t('tutorialBack');back.disabled=onboardingStep===0;
+ dialog.querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');
+ document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('tutorial-target',a.getAttribute('href')==='#/'+route));
+}
+function finishOnboarding(){
+ onboardingOpen=false;
+ const dialog=ensureOnboarding();dialog.hidden=true;
+ document.querySelectorAll('#nav a').forEach(a=>a.classList.remove('tutorial-target'));
+ try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
+}
+function openMenu(){
+ menuOpen=true;document.body.classList.add('menu-open');
+ const b=$('#mobileMenuToggle');if(b)b.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+ menuOpen=false;document.body.classList.remove('menu-open');
+ const b=$('#mobileMenuToggle');if(b)b.setAttribute('aria-expanded','false');
+}
 function showCity(){
  $('#cityWorkspace').hidden=false;
  if(!frame){frame=document.createElement('iframe');frame.id='cityFrame';frame.title=t('city');frame.setAttribute('allow','geolocation');frame.referrerPolicy='no-referrer';frame.src='./city.html?embedded=1#'+initialCityHash;frame.addEventListener('load',()=>sendCity());$('#cityWorkspace').append(frame);}
