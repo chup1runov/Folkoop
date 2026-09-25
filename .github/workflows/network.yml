@@ -36,7 +36,9 @@ jobs:
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250005_messaging_indexes.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250006_cooperation.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250007_purchase_offers.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250008_purchase_lifecycle.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-first-pilot.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-purchase-lifecycle.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-purchase-offers.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-cooperation.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-messaging.sql

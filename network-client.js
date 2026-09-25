@@ -48,6 +48,16 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function deliveryMode(value){if(!['pickup','delivery','both'].includes(value))throw fail('INVALID_INPUT');return value;}
  function optionalDate(value){if(value===null||value===undefined||value==='')return null;if(!/^\d{4}-\d{2}-\d{2}$/.test(value))throw fail('INVALID_INPUT');return value;}
  function integer(value,min,max){const n=Number(value);if(!Number.isInteger(n)||n<min||n>max)throw fail('INVALID_INPUT');return n;}
+ function timestamp(value,{required=false}={}){
+  if(value===null||value===undefined||value===''){if(required)throw fail('INVALID_INPUT');return null;}
+  const d=new Date(value);if(!Number.isFinite(d.getTime()))throw fail('INVALID_INPUT');return d.toISOString();
+ }
+ function bool(value){if(typeof value!=='boolean')throw fail('INVALID_INPUT');return value;}
+ function pickupWindow(start,end){
+  const s=timestamp(start),e=timestamp(end);
+  if(s&&e&&Date.parse(e)<Date.parse(s))throw fail('INVALID_INPUT');
+  return [s,e];
+ }
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
@@ -123,8 +133,19 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   withdrawPurchaseOffer(cid){return rpc('fk_withdraw_purchase_offer',{p_cooperation:id(cid)});},
   choosePurchaseOffer(cid,offerId){return rpc('fk_choose_purchase_offer',{p_cooperation:id(cid),p_offer:offerId?id(offerId):null});},
   reportPurchaseOffer(offerId,reason){return rpc('fk_report_purchase_offer',{p_offer:id(offerId),p_reason:text(reason,1000,2)});},
+  purchaseProcess(cid){return rows('fk_purchase_process?select=cooperation_id,stage,confirmation_deadline,external_order_reference,ordered_at,expected_delivery_at,delivery_note,delivered_at,pickup_place,pickup_start,pickup_end,result_note,finished_at,updated_at&cooperation_id=eq.'+id(cid)+'&limit=1');},
+  purchaseConfirmations(cid){return rows('fk_purchase_confirmations?select=cooperation_id,user_id,quantity,decision,note,decided_at,collected_at,collected_note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
+  startPurchaseConfirmation(cid,deadline){return rpc('fk_start_purchase_confirmation',{p_cooperation:id(cid),p_deadline:timestamp(deadline,{required:true})});},
+  confirmPurchaseParticipation(cid,confirmed,note=''){return rpc('fk_confirm_purchase_participation',{p_cooperation:id(cid),p_confirm:bool(confirmed),p_note:text(note,500)});},
+  resetPurchaseConfirmation(cid){return rpc('fk_reset_purchase_confirmation',{p_cooperation:id(cid)});},
+  markPurchaseOrdered(cid,v={}){const [start,end]=pickupWindow(v.pickupStart,v.pickupEnd);return rpc('fk_mark_purchase_ordered',{p_cooperation:id(cid),p_reference:text(v.reference||'',120),p_expected_delivery:timestamp(v.expectedDelivery),p_note:text(v.note||'',1000),p_pickup_place:text(v.pickupPlace||'',200),p_pickup_start:start,p_pickup_end:end});},
+  setPurchaseDeliveryPlan(cid,v={}){const [start,end]=pickupWindow(v.pickupStart,v.pickupEnd);return rpc('fk_set_purchase_delivery_plan',{p_cooperation:id(cid),p_expected_delivery:timestamp(v.expectedDelivery),p_note:text(v.note||'',1000),p_pickup_place:text(v.pickupPlace||'',200),p_pickup_start:start,p_pickup_end:end});},
+  markPurchaseDelivered(cid,note=''){return rpc('fk_mark_purchase_delivered',{p_cooperation:id(cid),p_note:text(note,1000)});},
+  markPurchaseCollected(cid,collected,note=''){return rpc('fk_mark_purchase_collected',{p_cooperation:id(cid),p_collected:bool(collected),p_note:text(note,500)});},
+  finishPurchase(cid,note=''){return rpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)});},
+  cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -139,9 +160,10 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_project_tasks?creator_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_purchase_commitments?user_id=eq.'+uid+'&limit=500'),
    rows('fk_purchase_offers?provider_id=eq.'+uid+'&order=updated_at.desc&limit=500'),
-   rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500')
+   rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500'),
+   rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }

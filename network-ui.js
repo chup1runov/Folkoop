@@ -22,15 +22,28 @@ const offerCopy={
  ru:{offers:'Предложения поставщиков',offerHelp:'Участник пилота с видимым профилем может предложить условия для этой совместной закупки. Это координация, а не оплата и не юридически подтверждённый заказ.',makeOffer:'Предложить или изменить условия',unitPrice:'Цена за единицу',currency:'Валюта',minQuantity:'Минимальное количество',availableQuantity:'Доступное количество',delivery:'Получение',pickup:'Самовывоз',deliveryOnly:'Доставка',both:'Самовывоз или доставка',deliveryFee:'Стоимость доставки',leadTime:'Срок, дней',validUntil:'Действует до',offerNote:'Условия / комментарий',saveOffer:'Сохранить предложение',withdrawOffer:'Отозвать моё предложение',selected:'Выбрано',selectOffer:'Выбрать предложение',clearSelection:'Снять выбор',provider:'Поставщик',messageProvider:'Написать поставщику',reportOffer:'Пожаловаться на предложение',profileRequired:'Чтобы предложить условия, включи видимость сетевого профиля в «Моей странице».',noOffers:'Активных предложений поставщиков пока нет.',notOrder:'Выбор предложения только отмечает предпочтительный вариант в пилоте. Платёж, отправка заказа и договор автоматически не создаются.',availability:'Доступно',minimum:'Минимум',days:'дн.'},
  sv:{offers:'Leverantörserbjudanden',offerHelp:'Pilotdeltagare med synlig profil kan föreslå villkor för det gemensamma köpet. Detta är samordning, inte checkout eller bindande beställning.',makeOffer:'Skapa eller uppdatera erbjudande',unitPrice:'Pris per enhet',currency:'Valuta',minQuantity:'Minsta kvantitet',availableQuantity:'Tillgänglig kvantitet',delivery:'Leveranssätt',pickup:'Hämtning',deliveryOnly:'Leverans',both:'Hämtning eller leverans',deliveryFee:'Leveransavgift',leadTime:'Ledtid, dagar',validUntil:'Giltigt till',offerNote:'Villkor / kommentar',saveOffer:'Spara erbjudande',withdrawOffer:'Dra tillbaka mitt erbjudande',selected:'Valt',selectOffer:'Välj erbjudande',clearSelection:'Ta bort val',provider:'Leverantör',messageProvider:'Skriv till leverantör',reportOffer:'Rapportera erbjudande',profileRequired:'Aktivera synlighet för nätverksprofilen på Min sida innan du lämnar ett leverantörserbjudande.',noOffers:'Inga aktiva leverantörserbjudanden ännu.',notOrder:'Ett valt erbjudande markerar bara ett föredraget alternativ i piloten. Ingen betalning, beställning eller avtal skapas automatiskt.',availability:'Tillgängligt',minimum:'Minimum',days:'dagar'}
 };
+const lifecycleCopy={
+ en:{lifecycle:'Purchase lifecycle',collecting:'Collecting quantities',offer_selected:'Offer selected',confirming:'Final confirmation',ordered:'Marked ordered externally',delivered:'Marked delivered',distributing:'Distribution / pickup',done:'Completed',cancelled:'Cancelled',confirmationDeadline:'Confirmation deadline',startConfirmation:'Start final confirmation',confirmations:'Participant confirmations',pending:'Pending',confirmed:'Confirmed',declined:'Declined',confirmYes:'Confirm my quantity',confirmNo:'Decline participation',responseNote:'Confirmation note',resetConfirmation:'Reset confirmation',markOrdered:'Mark external order as placed',externalReference:'External order reference',externalOrderNotice:'This is your own record that an order was placed outside FOLKOOP. FOLKOOP does not send the order or verify it.',expectedDelivery:'Expected delivery',pickupPlace:'Pickup place',pickupStart:'Pickup starts',pickupEnd:'Pickup ends',deliveryNote:'Delivery / organizer note',saveDeliveryPlan:'Save delivery plan',markDelivered:'Mark delivered',deliverySelfReport:'This delivery status is reported by the organizer and is not independently verified.',collectionNote:'Pickup note',markCollected:'Mark my share collected',undoCollected:'Undo collected mark',finishPurchase:'Finish purchase',resultNote:'Result note',cancelPurchase:'Cancel purchase process',cancelReason:'Cancellation reason',allResponsesNeeded:'All snapshotted participants must answer before the organizer can mark an external order.',confirmedTotal:'Confirmed total',collected:'Collected',notCollected:'Not collected',noSnapshot:'You do not have a snapshotted quantity in this confirmation round.',frozen:'Quantities, membership and supplier terms are frozen after confirmation starts.',selfReported:'Self-reported status',resultSelfReport:'Completion is an organizer record, not independent verification.'},
+ ru:{lifecycle:'Этапы закупки',collecting:'Сбор количества',offer_selected:'Предложение выбрано',confirming:'Финальное подтверждение',ordered:'Отмечено: заказ оформлен вне FOLKOOP',delivered:'Отмечено: доставлено',distributing:'Выдача участникам',done:'Завершено',cancelled:'Отменено',confirmationDeadline:'Срок подтверждения',startConfirmation:'Начать финальное подтверждение',confirmations:'Подтверждения участников',pending:'Ожидается',confirmed:'Подтверждено',declined:'Отказ',confirmYes:'Подтверждаю своё количество',confirmNo:'Отказываюсь от участия',responseNote:'Комментарий к подтверждению',resetConfirmation:'Сбросить подтверждение',markOrdered:'Отметить, что внешний заказ оформлен',externalReference:'Номер / ссылка внешнего заказа',externalOrderNotice:'Это твоя собственная отметка, что заказ оформлен вне FOLKOOP. FOLKOOP не отправляет заказ поставщику и не проверяет факт заказа.',expectedDelivery:'Ожидаемая доставка',pickupPlace:'Место выдачи',pickupStart:'Начало выдачи',pickupEnd:'Конец выдачи',deliveryNote:'Комментарий по доставке / организатора',saveDeliveryPlan:'Сохранить план доставки',markDelivered:'Отметить как доставленное',deliverySelfReport:'Статус доставки указывает организатор; FOLKOOP его независимо не проверяет.',collectionNote:'Комментарий к получению',markCollected:'Я получил свою долю',undoCollected:'Снять отметку о получении',finishPurchase:'Завершить закупку',resultNote:'Итоговый комментарий',cancelPurchase:'Отменить закупку',cancelReason:'Причина отмены',allResponsesNeeded:'Перед отметкой внешнего заказа должны ответить все участники, попавшие в снимок количества.',confirmedTotal:'Подтверждённый объём',collected:'Получено',notCollected:'Не получено',noSnapshot:'В этом раунде подтверждения для тебя нет зафиксированного количества.',frozen:'После начала подтверждения количество, состав участников и условия поставщика замораживаются.',selfReported:'Статус со слов пользователя',resultSelfReport:'Завершение — отметка организатора, а не независимая проверка.'},
+ sv:{lifecycle:'Köpets steg',collecting:'Samlar kvantiteter',offer_selected:'Erbjudande valt',confirming:'Slutlig bekräftelse',ordered:'Markerat beställt externt',delivered:'Markerat levererat',distributing:'Utdelning / hämtning',done:'Slutfört',cancelled:'Avbrutet',confirmationDeadline:'Sista bekräftelsetid',startConfirmation:'Starta slutlig bekräftelse',confirmations:'Deltagarnas bekräftelser',pending:'Väntar',confirmed:'Bekräftat',declined:'Avböjt',confirmYes:'Bekräfta min kvantitet',confirmNo:'Avstå deltagande',responseNote:'Kommentar till bekräftelsen',resetConfirmation:'Återställ bekräftelsen',markOrdered:'Markera extern beställning som lagd',externalReference:'Extern orderreferens',externalOrderNotice:'Detta är din egen notering om att en beställning gjorts utanför FOLKOOP. FOLKOOP skickar eller verifierar inte beställningen.',expectedDelivery:'Förväntad leverans',pickupPlace:'Utlämningsplats',pickupStart:'Utlämning börjar',pickupEnd:'Utlämning slutar',deliveryNote:'Leverans-/organisatörsnotering',saveDeliveryPlan:'Spara leveransplan',markDelivered:'Markera levererat',deliverySelfReport:'Leveransstatus rapporteras av organisatören och verifieras inte oberoende.',collectionNote:'Kommentar till hämtning',markCollected:'Markera min andel hämtad',undoCollected:'Ångra hämtmarkering',finishPurchase:'Slutför köpet',resultNote:'Resultatnotering',cancelPurchase:'Avbryt köpprocessen',cancelReason:'Orsak till avbrott',allResponsesNeeded:'Alla deltagare i kvantitetssnapshoten måste svara innan extern beställning kan markeras.',confirmedTotal:'Bekräftad mängd',collected:'Hämtat',notCollected:'Inte hämtat',noSnapshot:'Du har ingen låst kvantitet i denna bekräftelserunda.',frozen:'Efter bekräftelsestart fryses kvantiteter, medlemskap och leverantörsvillkor.',selfReported:'Självrapporterad status',resultSelfReport:'Slutförandet är organisatörens notering, inte en oberoende verifiering.'}
+};
 const lang=()=>['sv','en','ru'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>({sv,en,ru}[lang()][k]||en[k]);
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null;
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 const route=()=>FolkoopCore.route(location.hash);
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
 const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
 const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
 const ot=k=>offerCopy[lang()][k]||offerCopy.en[k]||k;
+const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
+function localDateTime(value){
+ if(!value)return '';
+ const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
+ const pad=n=>String(n).padStart(2,'0');
+ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+
 const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
 const obtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ot(key))}</button>`;
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
@@ -77,6 +90,85 @@ function renderMessages(u){
  return html;
 }
 
+function renderPurchaseLifecycle(u,coop,owner){
+ const process=data.purchaseProcess[0]||{stage:data.purchaseChoice.length?'offer_selected':'collecting'};
+ const stage=process.stage||'collecting';
+ const confirmations=data.purchaseConfirmations||[];
+ const mine=confirmations.find(x=>x.user_id===u.id);
+ const pending=confirmations.filter(x=>x.decision==='pending').length;
+ const confirmed=confirmations.filter(x=>x.decision==='confirmed');
+ const declined=confirmations.filter(x=>x.decision==='declined').length;
+ const confirmedTotal=confirmed.reduce((a,x)=>a+Number(x.quantity||0),0);
+ const profileName=id=>id===u.id?mt('you'):(coopProfile(id)?.name||ct('noProfile'));
+ let html=`<section class="card"><div class="row"><h3>${esc(lt('lifecycle'))}</h3><span class="badge">${esc(lt(stage))}</span></div><p class="meta">${esc(lt('selfReported'))}</p>`;
+ if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(new Date(process.confirmation_deadline).toLocaleString())}</p>`;
+ if(process.external_order_reference)html+=`<p><strong>${esc(lt('externalReference'))}:</strong> ${esc(process.external_order_reference)}</p>`;
+ if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(new Date(process.expected_delivery_at).toLocaleString())}</p>`;
+ if(process.pickup_place)html+=`<p><strong>${esc(lt('pickupPlace'))}:</strong> ${esc(process.pickup_place)}</p>`;
+ if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(new Date(process.pickup_start).toLocaleString())}${process.pickup_end?' – '+esc(new Date(process.pickup_end).toLocaleString()):''}</p>`;
+ if(process.delivery_note)html+=`<p style="white-space:pre-wrap">${esc(process.delivery_note)}</p>`;
+ if(process.result_note)html+=`<p style="white-space:pre-wrap"><strong>${esc(lt('resultNote'))}:</strong> ${esc(process.result_note)}</p>`;
+ html+='</section>';
+
+ if(stage==='offer_selected'&&owner){
+  const d=lifecycleDrafts.netPurchaseStart||{};
+  html+=`<form id="netPurchaseStart" class="editor card"><h3>${esc(lt('startConfirmation'))}</h3><p class="meta">${esc(lt('frozen'))}</p><label>${esc(lt('confirmationDeadline'))}<input name="deadline" type="datetime-local" required value="${esc(d.deadline||'')}"></label><button class="button">${esc(lt('startConfirmation'))}</button></form>`;
+ }
+
+ if(stage==='confirming'){
+  html+=`<h3>${esc(lt('confirmations'))}</h3><div class="draft-grid">${confirmations.map(x=>`<article class="card"><strong>${esc(profileName(x.user_id))}</strong><p>${esc(String(x.quantity))} ${esc(coop.unit)}</p><span class="badge">${esc(lt(x.decision))}</span>${x.note?`<p class="meta">${esc(x.note)}</p>`:''}</article>`).join('')||`<div class="empty"><p>${esc(lt('noSnapshot'))}</p></div>`}</div><p><strong>${esc(lt('confirmedTotal'))}: ${esc(String(confirmedTotal))} ${esc(coop.unit)}</strong> · ${esc(lt('pending'))}: ${pending} · ${esc(lt('declined'))}: ${declined}</p>`;
+  if(mine){
+   const d=lifecycleDrafts.netPurchaseConfirm||{};
+   html+=`<form id="netPurchaseConfirm" class="editor card"><label>${esc(lt('responseNote'))}<input name="note" maxlength="500" value="${esc(d.note||mine.note||'')}"></label><div class="actions"><button name="operation" value="yes" class="button">${esc(lt('confirmYes'))}</button><button name="operation" value="no" class="button secondary">${esc(lt('confirmNo'))}</button></div></form>`;
+  }else{
+   html+=`<aside class="notice"><p>${esc(lt('noSnapshot'))}</p></aside>`;
+  }
+  if(owner){
+   html+=`<div class="actions">${cbtn('resetConfirmation','resetConfirmation',coop.id)}</div>`;
+   if(pending===0&&confirmed.length>0){
+    const d=lifecycleDrafts.netPurchaseOrdered||{};
+    html+=`<form id="netPurchaseOrdered" class="editor card"><h3>${esc(lt('markOrdered'))}</h3><p class="meta">${esc(lt('externalOrderNotice'))}</p><label>${esc(lt('externalReference'))}<input name="reference" maxlength="120" value="${esc(d.reference||'')}"></label><label>${esc(lt('expectedDelivery'))}<input name="expectedDelivery" type="datetime-local" value="${esc(d.expectedDelivery||'')}"></label><label>${esc(lt('pickupPlace'))}<input name="pickupPlace" maxlength="200" value="${esc(d.pickupPlace||'')}"></label><label>${esc(lt('pickupStart'))}<input name="pickupStart" type="datetime-local" value="${esc(d.pickupStart||'')}"></label><label>${esc(lt('pickupEnd'))}<input name="pickupEnd" type="datetime-local" value="${esc(d.pickupEnd||'')}"></label><label>${esc(lt('deliveryNote'))}<textarea name="note" maxlength="1000" rows="3">${esc(d.note||'')}</textarea></label><button class="button">${esc(lt('markOrdered'))}</button></form>`;
+   }else{
+    html+=`<p class="meta">${esc(lt('allResponsesNeeded'))}</p>`;
+   }
+  }
+ }
+
+ if(['ordered','delivered','distributing'].includes(stage)){
+  if(owner){
+   const d=lifecycleDrafts.netPurchaseDeliveryPlan||{
+    expectedDelivery:localDateTime(process.expected_delivery_at),
+    pickupPlace:process.pickup_place||'',
+    pickupStart:localDateTime(process.pickup_start),
+    pickupEnd:localDateTime(process.pickup_end),
+    note:process.delivery_note||''
+   };
+   html+=`<form id="netPurchaseDeliveryPlan" class="editor card"><h3>${esc(lt('saveDeliveryPlan'))}</h3><label>${esc(lt('expectedDelivery'))}<input name="expectedDelivery" type="datetime-local" value="${esc(d.expectedDelivery||'')}"></label><label>${esc(lt('pickupPlace'))}<input name="pickupPlace" maxlength="200" value="${esc(d.pickupPlace||'')}"></label><label>${esc(lt('pickupStart'))}<input name="pickupStart" type="datetime-local" value="${esc(d.pickupStart||'')}"></label><label>${esc(lt('pickupEnd'))}<input name="pickupEnd" type="datetime-local" value="${esc(d.pickupEnd||'')}"></label><label>${esc(lt('deliveryNote'))}<textarea name="note" maxlength="1000" rows="3">${esc(d.note||'')}</textarea></label><button class="button secondary">${esc(lt('saveDeliveryPlan'))}</button></form>`;
+  }
+  if(stage==='ordered'&&owner){
+   const d=lifecycleDrafts.netPurchaseDelivered||{};
+   html+=`<form id="netPurchaseDelivered" class="editor card"><p class="meta">${esc(lt('deliverySelfReport'))}</p><label>${esc(lt('deliveryNote'))}<input name="note" maxlength="1000" value="${esc(d.note||'')}"></label><button class="button">${esc(lt('markDelivered'))}</button></form>`;
+  }
+ }
+
+ if(['delivered','distributing'].includes(stage)){
+  if(mine?.decision==='confirmed'){
+   const d=lifecycleDrafts.netPurchaseCollected||{};
+   html+=`<form id="netPurchaseCollected" class="editor card"><label>${esc(lt('collectionNote'))}<input name="note" maxlength="500" value="${esc(d.note||mine.collected_note||'')}"></label><div class="actions"><button name="operation" value="yes" class="button">${esc(lt('markCollected'))}</button>${mine.collected_at?`<button name="operation" value="no" class="button secondary">${esc(lt('undoCollected'))}</button>`:''}</div></form>`;
+  }
+  if(owner){
+   const d=lifecycleDrafts.netPurchaseFinish||{};
+   html+=`<form id="netPurchaseFinish" class="editor card"><p class="meta">${esc(lt('resultSelfReport'))}</p><label>${esc(lt('resultNote'))}<textarea name="note" maxlength="2000" rows="3">${esc(d.note||'')}</textarea></label><button class="button">${esc(lt('finishPurchase'))}</button></form>`;
+  }
+ }
+
+ if(owner&&!['done','cancelled'].includes(stage)){
+  const d=lifecycleDrafts.netPurchaseCancel||{};
+  html+=`<form id="netPurchaseCancel" class="editor card"><label>${esc(lt('cancelReason'))}<input name="reason" maxlength="2000" minlength="3" required value="${esc(d.reason||'')}"></label><button class="button secondary">${esc(lt('cancelPurchase'))}</button></form>`;
+ }
+ return html;
+}
+
 function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
@@ -114,6 +206,7 @@ function renderCooperation(u,r){
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
    html+=`<h3>${esc(ct('progress'))}</h3><div class="draft-grid">${data.commitments.map(x=>{const p=coopProfile(x.user_id);return `<article class="card"><strong>${esc(x.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p>${esc(String(x.quantity))} ${esc(coop.unit)}</p><p class="meta">${esc(x.note||'')}</p></article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCommitment" class="editor card"><label>${esc(ct('commitment'))}<input name="quantity" type="number" min="0" step="0.001" required value="${esc(cd.quantity)}"></label><label>${esc(ct('commitNote'))}<input name="note" maxlength="500" value="${esc(cd.note)}"></label><div class="actions"><button class="button">${esc(ct('saveCommit'))}</button>${mine?cbtn('removeCommit','removeCommit',coop.id):''}</div></form>`;
+   html+=renderPurchaseLifecycle(u,coop,owner);
   }
   if(coop.kind==='project'){
    html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${data.projectTasks.map(task=>{const p=coopProfile(task.assignee_id);const canManage=owner||task.creator_id===u.id;return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details)}</p><p class="meta">${esc(ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</p><form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>${canManage?`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const mp=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(mp?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const p=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button">${esc(ct('saveTask'))}</button></form>`;
@@ -173,10 +266,11 @@ async function load(){
   selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
   selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([])
  ]):[[],[],[]];
- const [purchaseOffers,purchaseChoice]=selectedCooperation?.kind==='purchase'?await Promise.all([
-  api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop)
- ]):[[],[]];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice};
+ const [purchaseOffers,purchaseChoice,purchaseProcess]=selectedCooperation?.kind==='purchase'?await Promise.all([
+  api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
+ ]):[[],[],[]];
+ const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -200,6 +294,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
  if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
  if(f.id==='netPurchaseOffer')offerDraft={cooperationId:selectedCoop,unitPrice:v.unitPrice||'',currency:(v.currency||'').toUpperCase(),minQuantity:v.minQuantity||'',availableQuantity:v.availableQuantity||'',deliveryMode:v.deliveryMode||'pickup',deliveryFee:v.deliveryFee||'0',leadTimeDays:v.leadTimeDays||'0',validUntil:v.validUntil||'',note:v.note||''};
+ if(f.id?.startsWith('netPurchase')&&f.id!=='netPurchaseOffer')lifecycleDrafts[f.id]=v;
 });
 host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
@@ -213,6 +308,14 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
   if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
   if(f.id==='netPurchaseOffer'){await api.savePurchaseOffer(selectedCoop,{unitPrice:values.unitPrice,currency:values.currency,minQuantity:values.minQuantity,availableQuantity:values.availableQuantity,deliveryMode:values.deliveryMode,deliveryFee:values.deliveryFee,leadTimeDays:values.leadTimeDays,validUntil:values.validUntil,note:values.note});offerDraft=null;}
+  if(f.id==='netPurchaseStart'){await api.startPurchaseConfirmation(selectedCoop,values.deadline);delete lifecycleDrafts.netPurchaseStart;}
+  if(f.id==='netPurchaseConfirm'){await api.confirmPurchaseParticipation(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseConfirm;}
+  if(f.id==='netPurchaseOrdered'){await api.markPurchaseOrdered(selectedCoop,{reference:values.reference,expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseOrdered;}
+  if(f.id==='netPurchaseDeliveryPlan'){await api.setPurchaseDeliveryPlan(selectedCoop,{expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseDeliveryPlan;}
+  if(f.id==='netPurchaseDelivered'){await api.markPurchaseDelivered(selectedCoop,values.note||'');delete lifecycleDrafts.netPurchaseDelivered;}
+  if(f.id==='netPurchaseCollected'){await api.markPurchaseCollected(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseCollected;}
+  if(f.id==='netPurchaseFinish'){await api.finishPurchase(selectedCoop,values.note||'');delete lifecycleDrafts.netPurchaseFinish;}
+  if(f.id==='netPurchaseCancel'){await api.cancelPurchase(selectedCoop,values.reason);delete lifecycleDrafts.netPurchaseCancel;}
   if(f.id==='netTaskCreate'){await api.createProjectTask(selectedCoop,{title:values.title,details:values.details,assignee:values.assignee});taskDraft={title:'',details:'',assignee:''};}
   if(f.classList.contains('netTaskStatus'))await api.setProjectTaskStatus(values.task,values.status);
   if(f.classList.contains('netTaskAssign'))await api.assignProjectTask(values.task,values.assignee||null);
@@ -223,7 +326,7 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
  });
 });
 host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
-  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;}
+  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
@@ -232,6 +335,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   if(a==='deleteUpdate'){if(!confirm(t('confirm')))return;await api.deleteCooperationUpdate(id);}
   if(a==='deleteTask'){if(!confirm(t('confirm')))return;await api.deleteProjectTask(id);}
   if(a==='removeCommit')await api.setPurchaseCommitment(selectedCoop,0,'');
+  if(a==='resetConfirmation'){if(!confirm(t('confirm')))return;await api.resetPurchaseConfirmation(selectedCoop);lifecycleDrafts={};}
   if(a==='withdrawOffer'){if(!confirm(t('confirm')))return;await api.withdrawPurchaseOffer(selectedCoop);offerDraft=null;}
   if(a==='selectOffer')await api.choosePurchaseOffer(selectedCoop,id);
   if(a==='clearOffer')await api.choosePurchaseOffer(selectedCoop,null);
@@ -268,7 +372,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[]};render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('hashchange',()=>{version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
