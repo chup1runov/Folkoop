@@ -32,9 +32,14 @@ const activityCopy={
  ru:{activity:'Активность',notifications:'Уведомления об активности',workChat:'Рабочий чат',linkedChat:'Связан с этой кооперацией',managedChat:'Состав чата управляется участниками кооперации.',unread:'непрочитано',noActivity:'Активности пока нет.',recentActivity:'Последняя активность',created:'создал кооперацию',member_joined:'присоединился',member_left:'вышел',cooperation_status:'изменил статус',update_posted:'добавил обновление',task_created:'создал задачу',task_updated:'изменил задачу',task_deleted:'удалил задачу',purchase_stage:'изменил этап закупки',offer_changed:'изменил предложение поставщика',confirmation_changed:'изменил подтверждение закупки',collection_changed:'изменил статус получения',openActivity:'Открыть',messagesUnread:'Непрочитанные сообщения'},
  sv:{activity:'Aktivitet',notifications:'Aktivitetsnotiser',workChat:'Arbetschatt',linkedChat:'Kopplad till detta samarbete',managedChat:'Chattmedlemskapet styrs av samarbetets deltagare.',unread:'oläst',noActivity:'Ingen aktivitet ännu.',recentActivity:'Senaste aktivitet',created:'skapade samarbetet',member_joined:'gick med',member_left:'lämnade',cooperation_status:'ändrade status',update_posted:'lade till en uppdatering',task_created:'skapade en uppgift',task_updated:'ändrade en uppgift',task_deleted:'raderade en uppgift',purchase_stage:'ändrade köpsteget',offer_changed:'ändrade ett leverantörserbjudande',confirmation_changed:'ändrade köpbekräftelsen',collection_changed:'ändrade hämtningsstatus',openActivity:'Öppna',messagesUnread:'Olästa meddelanden'}
 };
+const homeCopy={
+ en:{title:'Home',subtitle:'One information field for what changed, what needs your action and what can be done together.',attention:'Needs your attention',nothingUrgent:'Nothing urgent right now.',messages:'Unread messages',invitations:'Chat invitations',task:'Task assigned to you',confirmation:'Confirm your purchase quantity',activity:'Unread cooperation activity',deadline:'Deadline',open:'Open',feed:'What is happening',communityPost:'Community publication',quick:'Do something together',need:'I need something',offer:'I can help',purchase:'Buy together',project:'Start a project',community:'Create a community',city:'Open my city',myWork:'My active cooperation',noFeed:'No shared activity yet. Start with a real need or project.',from:'from',assigned:'Assigned',pending:'Pending',why:'Home is intentionally action-first, not an endless engagement feed.'},
+ ru:{title:'Главная',subtitle:'Единое информационное поле: что изменилось, что требует твоего действия и что можно сделать вместе.',attention:'Требует внимания',nothingUrgent:'Сейчас ничего срочного.',messages:'Непрочитанные сообщения',invitations:'Приглашения в чаты',task:'Задача назначена тебе',confirmation:'Подтверди количество в закупке',activity:'Непрочитанная активность',deadline:'Срок',open:'Открыть',feed:'Что происходит',communityPost:'Публикация сообщества',quick:'Сделать вместе',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',project:'Создать проект',community:'Создать сообщество',city:'Открыть мой город',myWork:'Мои активные дела',noFeed:'Общей активности пока нет. Начни с реальной потребности или проекта.',from:'от',assigned:'Назначено',pending:'Ожидается',why:'Главная специально построена вокруг действий, а не бесконечной ленты ради вовлечения.'},
+ sv:{title:'Hem',subtitle:'Ett gemensamt informationsfält för vad som ändrats, vad som kräver din handling och vad som kan göras tillsammans.',attention:'Behöver din uppmärksamhet',nothingUrgent:'Inget brådskande just nu.',messages:'Olästa meddelanden',invitations:'Chattinbjudningar',task:'Uppgift tilldelad dig',confirmation:'Bekräfta din köpvolym',activity:'Oläst samarbetsaktivitet',deadline:'Sista tid',open:'Öppna',feed:'Vad händer',communityPost:'Publikation i gemenskap',quick:'Gör något tillsammans',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',project:'Starta projekt',community:'Skapa gemenskap',city:'Öppna min stad',myWork:'Mina aktiva samarbeten',noFeed:'Ingen gemensam aktivitet ännu. Börja med ett verkligt behov eller projekt.',from:'från',assigned:'Tilldelad',pending:'Väntar',why:'Hem är medvetet handlingsorienterat, inte en oändlig engagemangsfeed.'}
+};
 const lang=()=>['sv','en','ru'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>({sv,en,ru}[lang()][k]||en[k]);
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 let internalHash='';
 const route=()=>FolkoopCore.route(location.hash);
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
@@ -45,6 +50,7 @@ const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
 const ot=k=>offerCopy[lang()][k]||offerCopy.en[k]||k;
 const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
 const at=k=>activityCopy[lang()][k]||activityCopy.en[k]||k;
+const ht=k=>homeCopy[lang()][k]||homeCopy.en[k]||k;
 const abtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(at(key))}</button>`;
 
 function localDateTime(value){
@@ -94,6 +100,51 @@ function chatLabel(chat,u){
  const other=data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id!==u.id);
  return profileFor(other?.user_id)?.name||mt('direct');
 }
+function renderHome(u){
+ const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
+ const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
+ const pendingConfirmations=data.myConfirmations.filter(x=>x.decision==='pending').map(x=>({confirmation:x,process:data.allProcesses.find(p=>p.cooperation_id===x.cooperation_id),coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.process?.stage==='confirming'&&x.coop);
+ const assigned=data.assignedTasks.filter(x=>x.status!=='done').map(x=>({...x,coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.coop);
+ const unreadActivity=data.activityInbox.filter(x=>Number(x.unread_count||0)>0);
+ const attention=[];
+ pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+new Date(x.process.confirmation_deadline).toLocaleString():'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
+ assigned.slice(0,5).forEach(x=>attention.push({type:'task',title:x.title,meta:x.coop.title+' · '+ct(x.status),coop:x.coop}));
+ if(unreadMessages)attention.push({type:'messages',title:ht('messages')+' · '+unreadMessages,meta:'',route:'messages'});
+ if(invites)attention.push({type:'invitations',title:ht('invitations')+' · '+invites,meta:'',route:'messages'});
+ unreadActivity.slice(0,4).forEach(x=>attention.push({type:'activity',title:x.cooperation_title,meta:ht('activity')+' · '+x.unread_count,coop:data.cooperations.find(c=>c.id===x.cooperation_id)}));
+
+ const memberIds=new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id));
+ const active=data.cooperations.filter(x=>memberIds.has(x.id)&&['open','active'].includes(x.status)).slice(0,8);
+
+ const feed=[];
+ data.activityInbox.filter(x=>x.last_activity_at).forEach(x=>feed.push({kind:'activity',time:x.last_activity_at,coop:data.cooperations.find(c=>c.id===x.cooperation_id),title:x.cooperation_title,event:x}));
+ data.homePosts.forEach(p=>feed.push({kind:'post',time:p.created_at,post:p,group:data.groups.find(g=>g.id===p.community_id)}));
+ feed.sort((a,b)=>Date.parse(b.time||0)-Date.parse(a.time||0));
+
+ const actionCard=item=>{
+  if(item.route)return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<a class="button secondary" href="#/${item.route}">${esc(ht('open'))}</a></article>`;
+  const coop=item.coop;
+  if(!coop)return '';
+  return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<button class="button secondary" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button></article>`;
+ };
+ const feedCard=item=>{
+  if(item.kind==='post'){
+   const author=profileFor(item.post.author_id)?.name||t('by');
+   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(item.post.created_at||'')}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+  }
+  const e=item.event,coop=item.coop;
+  const actor=e.last_actor_id===u.id?mt('you'):(coopProfile(e.last_actor_id)?.name||ct('noProfile'));
+  let label=e.last_label||'';if(e.last_event_type==='purchase_stage')label=lt(label);
+  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(actor+' '+at(e.last_event_type||'activity')+(label?' · '+label:''))}</p><p class="meta">${esc(e.last_activity_at||'')}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+ };
+
+ return `<section class="home-dashboard"><div class="row"><div><p class="eyebrow">FOLKOOP</p><h1>${esc(ht('title'))}</h1><p class="home-subtitle">${esc(ht('subtitle'))}</p></div>${btn('refresh','refresh')}</div>
+ <section class="home-section"><div class="row"><h2>${esc(ht('attention'))}</h2><span class="meta">${esc(ht('why'))}</span></div><div class="home-attention-grid">${attention.length?attention.map(actionCard).join(''):`<div class="empty"><p>${esc(ht('nothingUrgent'))}</p></div>`}</div></section>
+ <section class="home-section"><h2>${esc(ht('quick'))}</h2><div class="quick-grid home-quick"><button class="quick" type="button" data-home="createCoop" data-kind="need">${esc(ht('need'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="offer">${esc(ht('offer'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="purchase">${esc(ht('purchase'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="project">${esc(ht('project'))}<span aria-hidden="true">＋</span></button><a class="quick" href="#/communities">${esc(ht('community'))}<span aria-hidden="true">→</span></a><a class="quick" href="#/city">${esc(ht('city'))}<span aria-hidden="true">→</span></a></div></section>
+ <section class="home-section"><h2>${esc(ht('myWork'))}</h2><div class="draft-grid">${active.map(x=>`<article class="card"><span class="badge">${esc(kindLabel(x.kind))}</span><h3>${esc(x.title)}</h3><p class="meta">${esc(statusLabel(x.status))} · ${esc(x.location_text||'')}</p><button class="text-button" type="button" data-home="openCoop" data-id="${esc(x.id)}">${esc(ht('open'))}</button></article>`).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div></section>
+ <section class="home-section"><h2>${esc(ht('feed'))}</h2><div class="home-feed">${feed.slice(0,12).map(feedCard).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div></section></section>`;
+}
+
 function renderMessages(u){
  const chat=data.chats.find(x=>x.id===selectedChat);
  const ownMember=chat&&data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id===u.id);
@@ -262,13 +313,14 @@ function renderCooperation(u,r){
 }
 
 function render(){
- const r=route(),relevant=['me','people','communities','messages','together','projects'].includes(r);host.hidden=!relevant;
- document.getElementById('workspace').hidden=!!(api?.enabled&&['people','communities','messages'].includes(r));
+ const r=route(),hasUser=!!api?.user(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
+ document.getElementById('workspace').hidden=!!(api?.enabled&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)));
  syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=api.user();
  if(!u){html=`<h2>${esc(t('login'))}</h2><p>${esc(t('invite'))}</p><form id="netLogin" class="editor card"><label>${esc(t('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="button">${esc(t('send'))}</button><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10"></label><button name="operation" value="verify" class="button secondary">${esc(t('verify'))}</button></form>`;}
+ else if(r==='home'){html=renderHome(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
@@ -292,8 +344,8 @@ function render(){
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox()
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox,homePosts,assignedTasks,myConfirmations,allProcesses]=await Promise.all([
+  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox(),api.homePosts(),api.assignedTasks(),api.myPurchaseConfirmations(),api.purchaseProcesses()
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
@@ -322,7 +374,7 @@ async function load(){
   api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
  ]):[[],[],[]];
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -377,7 +429,12 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   await load();notice=t('saved');
  });
 });
-host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
+host.addEventListener('click',e=>{const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;run(async()=>{
+  if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
+  if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
+  await load();notice='';
+ });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
   if(a==='join')await api.joinCooperation(id);
@@ -426,7 +483,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
