@@ -1,10 +1,10 @@
 # FOLKOOP — current handoff
 
-25 September 2026. Current development slice: v0.21.0. Check exact commit CI and deployment before claiming it is live.
+25 September 2026. Current development slice: v0.22.0. Check exact commit CI and deployment before claiming it is live.
 
 ## Canonical decisions
 
-Continue `chup1runov/Sverinav` as one FOLKOOP product. The repository slug is still unchanged. User-facing areas: People, Together, Projects, City, Center, My page; Messages is a separate entry.
+Continue `chup1runov/Sverinav` as one FOLKOOP product. The repository slug is still unchanged. User-facing navigation order: Profile, Home, Messages, People, Communities, Together, Projects, City, Center, Settings, About.
 
 Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
 
@@ -60,7 +60,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `202609250007_purchase_offers.sql` — supplier offer comparison for joint purchases.
 - `202609250008_purchase_lifecycle.sql` — confirmation, external-order, delivery, pickup and completion state machine.
 - `202609250009_activity_chat.sql` — linked work chats, activity journal and unread summaries.
-- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md`, `PURCHASE_LIFECYCLE_V020.md`, `ACTIVITY_CHAT_V021.md` — slice-specific constraints.
+- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md`, `PURCHASE_LIFECYCLE_V020.md`, `ACTIVITY_CHAT_V021.md`, `NAVIGATION_ONBOARDING_V022.md` — slice-specific constraints.
 
 ## Verification
 
@@ -74,7 +74,7 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 
 ## Next engineering priorities
 
-After v0.21 is green and deployed:
+After v0.22 is green and deployed:
 - run real two-account hosted checks for messaging and cooperation;
 - add pagination to message/activity lists and verify unread behavior across two real sessions;
 - test the full shared-purchase lifecycle with two real pilot accounts and one nonbinding supplier quote; verify that self-reported status labels remain clear;
