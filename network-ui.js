@@ -215,11 +215,13 @@ function renderCooperation(u,r){
   const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
   const member=!!membership,owner=coop.owner_id===u.id;
   const members=data.coopMembers.filter(m=>m.cooperation_id===coop.id);
+  const linkedChat=data.coopChats.find(x=>x.cooperation_id===coop.id);
   const sum=data.commitments.reduce((a,x)=>a+Number(x.quantity||0),0);
   html+=cbtn('back','back');
   html+=`<article class="card"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p style="white-space:pre-wrap">${esc(coop.description)}</p>`;
   if(coop.kind==='purchase')html+=`<p><strong>${esc(ct('progress'))}: ${esc(String(sum))} / ${esc(String(coop.target_quantity))} ${esc(coop.unit)}</strong></p><p class="meta">${esc(ct('purchaseHelp'))}</p>`;
   html+=`<div class="actions">${owner?'':member?cbtn('leave','leave',coop.id):((['open','active'].includes(coop.status))?cbtn('join','join',coop.id):'')}${owner?cbtn('delete','delete',coop.id):''}</div></article>`;
+  if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}<span class="meta">${esc(at('managedChat'))}</span></div>`;
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
    html+=`<form id="netCoopEdit" class="editor card"><h3>${esc(ct('edit'))}</h3><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<button class="button">${esc(t('save'))}</button></form>`;
@@ -239,6 +241,7 @@ function renderCooperation(u,r){
    html+=`<aside class="notice"><p>${esc(ct('memberOnly'))}</p></aside>`;
    return html;
   }
+  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(e.created_at||'')}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
   html+=`<h3>${esc(ct('members'))}</h3><div class="draft-grid">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="card"><div class="row"><strong>${esc(name)}</strong>${remove}</div><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></article>`;}).join('')}</div>`;
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
