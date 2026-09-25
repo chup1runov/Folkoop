@@ -114,6 +114,8 @@ async def main():
     elif '/fk_purchase_commitments?' in url:
      target=url.split('cooperation_id=eq.')[1].split('&')[0] if 'cooperation_id=eq.' in url else None
      result=[x for x in state['commitments'] if target is None or x['cooperation_id']==target]
+    elif '/fk_purchase_offers?' in url:result=state['purchase_offers']
+    elif '/fk_purchase_offer_choice?' in url:result=state['purchase_choice']
     await route.fulfill(body=json.dumps(result),content_type='application/json');return
    await route.continue_()
   await context.route('**/*',routing)
