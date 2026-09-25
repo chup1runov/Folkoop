@@ -294,6 +294,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
  if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
  if(f.id==='netPurchaseOffer')offerDraft={cooperationId:selectedCoop,unitPrice:v.unitPrice||'',currency:(v.currency||'').toUpperCase(),minQuantity:v.minQuantity||'',availableQuantity:v.availableQuantity||'',deliveryMode:v.deliveryMode||'pickup',deliveryFee:v.deliveryFee||'0',leadTimeDays:v.leadTimeDays||'0',validUntil:v.validUntil||'',note:v.note||''};
+ if(f.id?.startsWith('netPurchase')&&f.id!=='netPurchaseOffer')lifecycleDrafts[f.id]=v;
 });
 host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
@@ -307,6 +308,14 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
   if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
   if(f.id==='netPurchaseOffer'){await api.savePurchaseOffer(selectedCoop,{unitPrice:values.unitPrice,currency:values.currency,minQuantity:values.minQuantity,availableQuantity:values.availableQuantity,deliveryMode:values.deliveryMode,deliveryFee:values.deliveryFee,leadTimeDays:values.leadTimeDays,validUntil:values.validUntil,note:values.note});offerDraft=null;}
+  if(f.id==='netPurchaseStart'){await api.startPurchaseConfirmation(selectedCoop,values.deadline);delete lifecycleDrafts.netPurchaseStart;}
+  if(f.id==='netPurchaseConfirm'){await api.confirmPurchaseParticipation(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseConfirm;}
+  if(f.id==='netPurchaseOrdered'){await api.markPurchaseOrdered(selectedCoop,{reference:values.reference,expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseOrdered;}
+  if(f.id==='netPurchaseDeliveryPlan'){await api.setPurchaseDeliveryPlan(selectedCoop,{expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseDeliveryPlan;}
+  if(f.id==='netPurchaseDelivered'){await api.markPurchaseDelivered(selectedCoop,values.note||'');delete lifecycleDrafts.netPurchaseDelivered;}
+  if(f.id==='netPurchaseCollected'){await api.markPurchaseCollected(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseCollected;}
+  if(f.id==='netPurchaseFinish'){await api.finishPurchase(selectedCoop,values.note||'');delete lifecycleDrafts.netPurchaseFinish;}
+  if(f.id==='netPurchaseCancel'){await api.cancelPurchase(selectedCoop,values.reason);delete lifecycleDrafts.netPurchaseCancel;}
   if(f.id==='netTaskCreate'){await api.createProjectTask(selectedCoop,{title:values.title,details:values.details,assignee:values.assignee});taskDraft={title:'',details:'',assignee:''};}
   if(f.classList.contains('netTaskStatus'))await api.setProjectTaskStatus(values.task,values.status);
   if(f.classList.contains('netTaskAssign'))await api.assignProjectTask(values.task,values.assignee||null);
@@ -317,7 +326,7 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
  });
 });
 host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
-  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;}
+  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
@@ -326,6 +335,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   if(a==='deleteUpdate'){if(!confirm(t('confirm')))return;await api.deleteCooperationUpdate(id);}
   if(a==='deleteTask'){if(!confirm(t('confirm')))return;await api.deleteProjectTask(id);}
   if(a==='removeCommit')await api.setPurchaseCommitment(selectedCoop,0,'');
+  if(a==='resetConfirmation'){if(!confirm(t('confirm')))return;await api.resetPurchaseConfirmation(selectedCoop);lifecycleDrafts={};}
   if(a==='withdrawOffer'){if(!confirm(t('confirm')))return;await api.withdrawPurchaseOffer(selectedCoop);offerDraft=null;}
   if(a==='selectOffer')await api.choosePurchaseOffer(selectedCoop,id);
   if(a==='clearOffer')await api.choosePurchaseOffer(selectedCoop,null);
@@ -362,7 +372,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[]};render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('hashchange',()=>{version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
