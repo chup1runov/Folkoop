@@ -87,7 +87,7 @@ async def main():
   await page.check('#netProfile [name=listed]')
   await page.click('#netProfile button')
 
-  await page.click('#nav a[href="#/projects"]')
+  await page.evaluate("location.hash='#/projects'")
   await page.fill('#netCoopCreate [name=title]','Shared Workshop')
   await page.fill('#netCoopCreate [name=description]','Linked chat test')
   await page.click('#netCoopCreate button')
@@ -113,7 +113,7 @@ async def main():
   await expect(page.locator('#networkPanel .net-count').first).to_have_text('2')
   passed.append('Activity and chat unread counts are independent and visible in navigation')
 
-  await page.click('#nav a[href="#/me"]')
+  await page.evaluate("location.hash='#/me'")
   await expect(page.locator('#networkPanel')).to_contain_text('Progress from another member')
   await expect(page.locator('#networkPanel')).to_contain_text('Shared Workshop')
   passed.append('My page surfaces in-app cooperation activity notifications')

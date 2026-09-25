@@ -70,7 +70,7 @@ async def main():
 
   await page.fill('#netProfile [name=name]','Synthetic Buyer')
   await page.click('#netProfile button')
-  await page.click('#nav a[href="#/together"]')
+  await page.evaluate("location.hash='#/together'")
   await page.select_option('#netCoopCreate [name=kind]','purchase')
   await page.fill('#netCoopCreate [name=title]','Совместные дрова')
   await page.fill('#netCoopCreate [name=description]','Собираем общий заказ')

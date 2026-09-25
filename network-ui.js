@@ -262,8 +262,8 @@ function renderCooperation(u,r){
 }
 
 function render(){
- const r=route(),relevant=['me','people','messages','together','projects'].includes(r);host.hidden=!relevant;
- document.getElementById('workspace').hidden=!!(api?.enabled&&['people','messages'].includes(r));
+ const r=route(),relevant=['me','people','communities','messages','together','projects'].includes(r);host.hidden=!relevant;
+ document.getElementById('workspace').hidden=!!(api?.enabled&&['people','communities','messages'].includes(r));
  syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
@@ -274,14 +274,16 @@ function render(){
  else if(r==='me'){
   const p=profileDraft||data.profile;
   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}${renderActivityNotifications(u)}<h3>${esc(t('localTitle'))}</h3>`;
- }else{
+ }else if(r==='people'){
+  html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
+ }else if(r==='communities'){
   const group=data.groups.find(g=>g.id===selected),membership=data.memberships.find(m=>m.community_id===selected),member=membership&&!membership.banned;
   html=`<div class="row"><h2>${esc(t('groups'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><p>${esc(t('desc'))}</p>`;
   if(group){
    html+=`${btn('back','back')}<article class="card"><h2>${esc(group.name)}</h2><p>${esc(group.description)}</p><div class="actions">${membership?.banned?esc(t('banned')):member?(group.owner_id===u.id?btn('deleteGroup','ownerDelete',group.id):btn('leave','leave',group.id)):btn('join','join',group.id)}</div></article>`;
    if(member){html+=`<form id="netPost" class="editor card">${field('body','post',postDrafts[selected]||'',3000,true)}<button class="button">${esc(t('publish'))}</button></form><h3>${esc(t('members'))}</h3>`+data.posts.map(p=>`<article class="card"><small>${esc(p.author_id===u.id?t('own'):t('by')+' '+p.author_id.slice(0,8))}</small><p style="white-space:pre-wrap">${esc(p.body)}</p><div class="actions">${p.author_id===u.id||group.owner_id===u.id?btn('deletePost','delete',p.id):''}${p.author_id!==u.id?btn('report','report',p.id)+btn('block','block',p.author_id)+(group.owner_id===u.id?btn('ban','ban',p.author_id):''):''}</div></article>`).join('');}
   }else{
-   html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div><h3>${esc(t('directory'))}</h3><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')}</div>`;
+   html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div>`;
   }
  }
  host.innerHTML=html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
