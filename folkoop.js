@@ -148,17 +148,20 @@ function closeMenu(){
  const b=$('#mobileMenuToggle');if(b)b.setAttribute('aria-expanded','false');
 }
 function showCity(){
+ if(!citySupported(selectedCity())){$('#cityWorkspace').hidden=true;sendCity();return;}
  $('#cityWorkspace').hidden=false;
  if(!frame){frame=document.createElement('iframe');frame.id='cityFrame';frame.title=t('city');frame.setAttribute('allow','geolocation');frame.referrerPolicy='no-referrer';frame.src='./city.html?embedded=1#'+initialCityHash;frame.addEventListener('load',()=>sendCity());$('#cityWorkspace').append(frame);}
  sendCity();
 }
-function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,visible:current==='city'},location.origin);}
+function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,visible:current==='city'&&citySupported(selectedCity())},location.origin);}
 function render(focus=false){
- document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${t(current)} · FOLKOOP`;
- $('#nav').innerHTML=['people','together','projects','city','center','me'].map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''}>${icon(k)}<span>${esc(t(k))}</span></a>`).join('');
+ document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
+ $('#nav').innerHTML=NAV_ORDER.map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''} data-nav="${k}">${icon(k)}<span>${esc(navText(k))}</span></a>`).join('');
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
  $('#messageLink').setAttribute('aria-label',t('messages'));$('#messageLabel').textContent=t('messages');
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');
+ const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
+ const location=$('#locationLabel');if(location)location.textContent=(selectedCity()?selectedCity()+' · ':'')+'pilot';
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
  const partial=!I.FULL.includes(lang);$('#translationNote').hidden=!partial;$('#translationNote').textContent=t('partial');
  const root=$('#workspace');root.lang=partial?'en':lang;root.dir=partial?'ltr':document.documentElement.dir;
@@ -167,14 +170,18 @@ function render(focus=false){
  if(current==='home')body=home()+form();
  if(current==='me')body=myPage();
  if(current==='center')body=center();
+ if(current==='settings')body=settingsPage();
+ if(current==='about')body=aboutPage();
  if(current==='people')body=head('peopleTitle','peopleText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(store.get().profile.name||t('me'))}</h2><p>${esc(store.get().profile.skills||t('emptyProfile'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><h2>${esc(t('projects'))}</h2><p>${esc(t('nextBody'))}</p>${a('projects','projects','text-link')}</article><article class="card"><h2>${esc(t('messages'))}</h2><span class="badge muted-badge">${esc(t('future'))}</span></article></div>`;
+ if(current==='communities')body=head('communities','peopleText');
  if(current==='messages')body=head('messages','messageText')+a('people','people','button secondary');
  if(current==='projects'||current==='together'){
   const kinds=current==='projects'?['project']:['need','offer','purchase','resource'];
   body=head(current+'Title',current+'Text')+`<div class="actions">${kinds.map(k=>button(k,k)).join('')}</div>`+form()+`<label class="search">${esc(t('search'))}<input id="draftSearch" type="search" value="${esc(query)}"></label><div id="draftList">${drafts(kinds)}</div>`;
  }
- if(current==='city')body=head('city','cityText')+`<a class="text-link" href="./city.html?embedded=1" target="_blank" rel="noopener">${esc(t('cityFull'))} ↗</a>`;
- root.innerHTML=body;if(current==='city')showCity();else sendCity();
+ if(current==='city')body=cityShell();
+ root.innerHTML=body;if(current==='city'&&citySupported(selectedCity()))showCity();else sendCity();
+ if(onboardingOpen)showOnboarding(onboardingStep);
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);}catch{}render();}
