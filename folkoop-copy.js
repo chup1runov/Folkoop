@@ -1,0 +1,84 @@
+/* First shell translations: sv/en/ru. All eleven City languages remain available. */
+(() => {
+'use strict';
+const en={
+ home:'Overview',people:'People',together:'Together',projects:'Projects',city:'City',center:'Center',me:'My page',messages:'Messages',language:'Language',
+ tagline:'Different people. Common ground.',hero:'Find your people.\nDo more together.',intro:'A place to meet, share resources and turn common interests into real projects.',
+ pilot:'FIRST WORKING VERSION',scope:'The City tools work. The new social features are a local workspace, not a live network yet.',
+ newProject:'Create a project draft',openCity:'Open City',need:'I need',offer:'I can help',purchase:'Buy together',resource:'Share a resource',project:'Project',event:'Event',
+ local:'Private draft · not published',memory:'This session only. Refreshing closes unsaved work. Turn on device storage in My page to keep it.',device:'Saved on this browser only. Nothing is sent to other people.',
+ title:'Title',body:'Describe the idea, help or resources you need',kind:'Type',create:'Save draft',cancel:'Cancel',remove:'Delete',done:'Mark as done',undo:'Reopen',marked:'Marked done by you · not independently verified',
+ noDrafts:'No drafts yet',noDraftsText:'Start with something you would like to do together. A draft is private until a real publishing service is connected.',
+ peopleTitle:'People, not just profiles',peopleText:'The future network will connect people and communities through interests, skills and shared tasks. No real member directory or messaging is connected in this version.',
+ togetherTitle:'A little easier, together',togetherText:'Ask for help, offer a skill, plan a joint purchase or share equipment. In this version you can prepare private drafts; no orders or payments are sent.',
+ projectsTitle:'From an idea to a shared project',projectsText:'Describe a goal and the people or resources it needs. These drafts are yours, not public projects with registered participants.',
+ centerTitle:'A place to meet in real life',centerText:'Meetings, learning, equipment and human help. This is the Center concept: no open venue, available equipment or confirmed programme is claimed yet.',
+ centerCard1:'Meet & learn',centerCard1Text:'Conversation tables, creative workshops and participant-led events.',centerCard2:'Make & share',centerCard2Text:'Shared tools, project meetings and partner spaces.',centerCard3:'A human welcome',centerCard3Text:'A host who helps people find one another and take the next step.',
+ proposeEvent:'Draft an event idea',myTitle:'My page',myText:'Your optional profile, skills and drafts. This is not a registered account or a public profile.',
+ name:'Name or nickname',skills:'Skills and interests',about:'About me',saveProfile:'Save profile',remember:'Keep my profile and drafts on this device',privacy:'Do not enter identity numbers, a home address or sensitive information. Other people using this browser could see saved data.',
+ export:'Export my data',clear:'Delete my local data',confirmDelete:'Delete this draft?',confirmClear:'Delete your FOLKOOP profile and drafts from this browser? This cannot be undone.',
+ savedMemory:'Updated for this session. Nothing was published.',savedDevice:'Saved on this device. Nothing was published.',failed:'Device storage failed. The latest change is in memory only. Export it before leaving.',deleted:'Deleted.',max:'Draft limit reached or invalid draft.',
+ drafts:'My drafts',profileLink:'Set up My page',future:'Planned, not connected',messageText:'Private and group chats belong in FOLKOOP. They need server accounts, delivery, privacy controls and moderation. This version does not simulate sending messages.',
+ cityText:'Official sources and existing tools. No account required. You review and submit official reports yourself.',cityFull:'Open City in a full page',cityLoading:'Loading City…',search:'Filter your drafts',noMatch:'No matching drafts',close:'Close',skip:'Skip to content',
+ mission:'We do not need to be the same to act together.',missionBody:'FOLKOOP helps different people find common interests, pool resources and work together. Cooperation includes everyday help, work, projects and city life — not only shopping.',
+ centreStatus:'Center · in development',count:'drafts',profileSaved:'Local profile',emptyProfile:'You can begin without a profile.',next:'Start with a real need',nextBody:'Write down an idea, see what you can offer, or use the City tools.',
+ partial:'New sections are currently in English. City keeps the selected language.',select:'Choose a section',check:'Your own note',
+};
+const sv={...en,
+ home:'Översikt',people:'Människor',together:'Tillsammans',projects:'Projekt',city:'Stad',center:'Center',me:'Min sida',messages:'Meddelanden',language:'Språk',
+ tagline:'Olika människor. Gemensamma möjligheter.',hero:'Hitta människor.\nGör mer tillsammans.',intro:'Möt andra, dela resurser och gör gemensamma intressen till verkliga projekt.',
+ pilot:'FÖRSTA FUNGERANDE VERSIONEN',scope:'Stadens verktyg fungerar. De nya sociala delarna är en lokal arbetsyta, ännu inte ett aktivt nätverk.',
+ newProject:'Skapa ett projektutkast',openCity:'Öppna Stad',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',resource:'Dela en resurs',project:'Projekt',event:'Evenemang',
+ local:'Privat utkast · inte publicerat',memory:'Endast denna session. Aktivera lagring på enheten på Min sida för att behålla arbetet efter omladdning.',device:'Sparat endast i denna webbläsare. Inget skickas till andra.',
+ title:'Rubrik',body:'Beskriv idén, hjälpen eller resurserna du behöver',kind:'Typ',create:'Spara utkast',cancel:'Avbryt',remove:'Ta bort',done:'Markera som klart',undo:'Öppna igen',marked:'Klarmarkerat av dig · inte oberoende verifierat',
+ noDrafts:'Inga utkast ännu',noDraftsText:'Börja med något du vill göra tillsammans. Utkastet är privat tills en riktig publiceringstjänst finns.',
+ peopleTitle:'Människor, inte bara profiler',peopleText:'Det framtida nätverket kopplar samman människor och grupper genom intressen, färdigheter och uppgifter. Denna version har ännu ingen medlemskatalog eller meddelandetjänst.',
+ togetherTitle:'Lite enklare, tillsammans',togetherText:'Be om hjälp, erbjud en färdighet, planera gemensamma köp eller dela utrustning. Du kan förbereda privata utkast; inga beställningar eller betalningar skickas.',
+ projectsTitle:'Från idé till gemensamt projekt',projectsText:'Beskriv målet och vilka personer eller resurser som behövs. Utkasten är dina, inte publicerade projekt med anmälda deltagare.',
+ centerTitle:'En plats att mötas på riktigt',centerText:'Möten, lärande, utrustning och mänskligt stöd. Detta är Center-konceptet: ingen öppen lokal, tillgänglig utrustning eller fastställt program utlovas ännu.',
+ centerCard1:'Möt & lär',centerCard1Text:'Samtalsbord, kreativa verkstäder och deltagarledda evenemang.',centerCard2:'Skapa & dela',centerCard2Text:'Gemensamma verktyg, projektmöten och partnerlokaler.',centerCard3:'Ett mänskligt välkomnande',centerCard3Text:'En värd som hjälper människor att hitta varandra och ta nästa steg.',
+ proposeEvent:'Skriv en evenemangsidé',myTitle:'Min sida',myText:'Din frivilliga profil, dina färdigheter och utkast. Detta är inte ett registrerat konto eller en offentlig profil.',
+ name:'Namn eller smeknamn',skills:'Färdigheter och intressen',about:'Om mig',saveProfile:'Spara profil',remember:'Behåll min profil och mina utkast på denna enhet',privacy:'Skriv inte personnummer, hemadress eller känsliga uppgifter. Andra som använder webbläsaren kan se sparade data.',
+ export:'Exportera mina data',clear:'Radera mina lokala data',confirmDelete:'Ta bort detta utkast?',confirmClear:'Radera FOLKOOP-profilen och utkasten i denna webbläsare? Det går inte att ångra.',
+ savedMemory:'Uppdaterat för denna session. Inget publicerades.',savedDevice:'Sparat på denna enhet. Inget publicerades.',failed:'Lagringen misslyckades. Den senaste ändringen finns bara i minnet. Exportera innan du lämnar sidan.',deleted:'Borttaget.',max:'Utkastgränsen är nådd eller utkastet är ogiltigt.',
+ drafts:'Mina utkast',profileLink:'Fyll i Min sida',future:'Planerat, inte anslutet',messageText:'Privata chattar och gruppchattar hör hemma i FOLKOOP. De behöver serverkonton, leverans, integritetsskydd och moderering. Denna version låtsas inte skicka meddelanden.',
+ cityText:'Officiella källor och befintliga verktyg. Inget konto krävs. Du granskar och skickar själv officiella anmälningar.',cityFull:'Öppna Stad som helsida',cityLoading:'Laddar Stad…',search:'Filtrera dina utkast',noMatch:'Inga matchande utkast',close:'Stäng',skip:'Hoppa till innehåll',
+ mission:'Vi behöver inte vara lika för att göra något tillsammans.',missionBody:'FOLKOOP hjälper olika människor att hitta gemensamma intressen, samla resurser och samarbeta. Samarbete omfattar vardagshjälp, arbete, projekt och stadsliv — inte bara inköp.',
+ centreStatus:'Center · under utveckling',count:'utkast',profileSaved:'Lokal profil',emptyProfile:'Du kan börja utan profil.',next:'Börja med ett verkligt behov',nextBody:'Skriv ned en idé, se vad du kan bidra med eller använd stadens verktyg.',partial:'De nya delarna är tills vidare på engelska. Stad behåller det valda språket.',select:'Välj en del',check:'Din egen anteckning'
+};
+const ru={...en,
+ home:'Обзор',people:'Люди',together:'Вместе',projects:'Проекты',city:'Город',center:'Центр',me:'Моя страница',messages:'Сообщения',language:'Язык',
+ tagline:'Разные люди. Общие возможности.',hero:'Находи людей.\nДелайте вместе.',intro:'Знакомства, взаимопомощь и общие ресурсы — чтобы превращать идеи в реальные дела.',
+ pilot:'ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ',scope:'Городские инструменты работают. Новые социальные разделы пока локальные: это ещё не действующая сеть пользователей.',
+ newProject:'Создать черновик проекта',openCity:'Открыть город',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',resource:'Поделиться ресурсом',project:'Проект',event:'Мероприятие',
+ local:'Личный черновик · не опубликован',memory:'Только в этой сессии. Чтобы не потерять работу после перезагрузки, включи сохранение на устройстве в «Моей странице».',device:'Сохранено только в этом браузере. Другим людям ничего не отправляется.',
+ title:'Название',body:'Опиши идею, нужную помощь или ресурсы',kind:'Тип',create:'Сохранить черновик',cancel:'Отмена',remove:'Удалить',done:'Отметить готовым',undo:'Вернуть в работу',marked:'Отмечено тобой · результат не проверен независимо',
+ noDrafts:'Здесь пока нет черновиков',noDraftsText:'Начни с того, что хотелось бы сделать вместе. Черновик останется личным: сервис публикации ещё не подключён.',
+ peopleTitle:'Люди, а не только профили',peopleText:'Будущая сеть свяжет людей и сообщества через интересы, навыки и общие дела. В этой версии ещё нет каталога реальных участников и обмена сообщениями.',
+ togetherTitle:'Вместе немного проще',togetherText:'Попроси помощи, предложи навык, подготовь совместную покупку или обмен вещами. Пока доступны личные черновики: заказы и платежи не отправляются.',
+ projectsTitle:'От идеи — к общему делу',projectsText:'Опиши цель и нужных людей или ресурсы. Это твои черновики, а не опубликованные проекты с записавшимися участниками.',
+ centerTitle:'Место для настоящих встреч',centerText:'Знакомства, обучение, оборудование и человеческая помощь. Пока это концепция Центра: открытого помещения, доступной техники и подтверждённой программы ещё нет.',
+ centerCard1:'Встречаться и учиться',centerCard1Text:'Разговорные клубы, творческие мастерские и события самих участников.',centerCard2:'Создавать и делиться',centerCard2Text:'Общие инструменты, проектные встречи и партнёрские пространства.',centerCard3:'Человеческое знакомство',centerCard3Text:'Ведущий, который поможет найти людей и сделать следующий шаг.',
+ proposeEvent:'Набросать идею встречи',myTitle:'Моя страница',myText:'Твой необязательный профиль, навыки и черновики. Это ещё не зарегистрированный аккаунт и не публичная страница.',
+ name:'Имя или псевдоним',skills:'Навыки и интересы',about:'О себе',saveProfile:'Сохранить профиль',remember:'Сохранять мой профиль и черновики на этом устройстве',privacy:'Не указывай персональные номера, домашний адрес и чувствительные сведения. Сохранённое могут увидеть другие пользователи этого браузера.',
+ export:'Выгрузить мои данные',clear:'Удалить мои локальные данные',confirmDelete:'Удалить этот черновик?',confirmClear:'Удалить профиль FOLKOOP и черновики из этого браузера? Отменить удаление нельзя.',
+ savedMemory:'Изменения сохранены на время сессии. Ничего не опубликовано.',savedDevice:'Сохранено на этом устройстве. Ничего не опубликовано.',failed:'Браузер не сохранил данные. Последнее изменение осталось только в памяти. Выгрузи его перед закрытием.',deleted:'Удалено.',max:'Достигнут лимит черновиков или неверные данные.',
+ drafts:'Мои черновики',profileLink:'Заполнить мою страницу',future:'Запланировано · не подключено',messageText:'В FOLKOOP будут личные и групповые чаты. Для них нужны серверные аккаунты, доставка, настройки приватности и модерация. Эта версия не имитирует отправку сообщений.',
+ cityText:'Официальные источники и сохранённые городские инструменты. Без регистрации. Официальное обращение ты проверяешь и отправляешь сам.',cityFull:'Открыть город на весь экран',cityLoading:'Загружаем город…',search:'Поиск по твоим черновикам',noMatch:'Ничего не найдено',close:'Закрыть',skip:'К содержимому',
+ mission:'Нам не нужно быть одинаковыми, чтобы действовать вместе.',missionBody:'FOLKOOP помогает разным людям находить общие интересы, объединять ресурсы и сотрудничать. Это взаимопомощь, работа, проекты и жизнь города — не только покупки.',
+ centreStatus:'Центр · в разработке',count:'черновиков',profileSaved:'Локальный профиль',emptyProfile:'Можно начать без профиля.',next:'Начни с реальной потребности',nextBody:'Запиши идею, предложи помощь или воспользуйся городскими инструментами.',partial:'Новые разделы пока на английском. «Город» сохраняет выбранный язык.',select:'Выбери раздел',check:'Твоя собственная отметка'
+};
+const nav={
+ ar:['الأشخاص','معًا','المشاريع','المدينة','المركز','صفحتي','اللغة','الأقسام الجديدة بالإنجليزية حاليًا. المدينة متاحة باللغة المختارة.'],
+ so:['Dadka','Wadajir','Mashaariic','Magaalada','Xarunta','Boggeyga','Luqad','Qaybaha cusub hadda waa Ingiriisi. Magaaladu waxay haysataa luqadda la doortay.'],
+ fa:['افراد','با هم','پروژه‌ها','شهر','مرکز','صفحه من','زبان','بخش‌های جدید فعلاً انگلیسی هستند. بخش شهر زبان انتخاب‌شده را حفظ می‌کند.'],
+ fi:['Ihmiset','Yhdessä','Projektit','Kaupunki','Keskus','Oma sivu','Kieli','Uudet osiot ovat toistaiseksi englanniksi. Kaupunki säilyttää valitun kielen.'],
+ bs:['Ljudi','Zajedno','Projekti','Grad','Centar','Moja stranica','Jezik','Novi dijelovi su trenutno na engleskom. Grad zadržava odabrani jezik.'],
+ ku:['Mirov','Bi hev re','Proje','Bajar','Navend','Rûpela min','Ziman','Beşên nû niha bi Îngilîzî ne. Bajar zimanê hilbijartî diparêze.'],
+ es:['Personas','Juntos','Proyectos','Ciudad','Centro','Mi página','Idioma','Las secciones nuevas están en inglés por ahora. Ciudad conserva el idioma elegido.'],
+ uk:['Люди','Разом','Проєкти','Місто','Центр','Моя сторінка','Мова','Нові розділи поки англійською. Місто зберігає вибрану мову.']
+};
+const COPY={sv,en,ru};
+for(const [lang,values] of Object.entries(nav)){COPY[lang]={...en};['people','together','projects','city','center','me','language','partial'].forEach((k,i)=>COPY[lang][k]=values[i]);}
+globalThis.FolkoopCopy={COPY,FULL:['sv','en','ru'],NAMES:{sv:'Svenska',en:'English',ar:'العربية',so:'Soomaali',fa:'فارسی',fi:'Suomi',bs:'Bosanski / Hrvatski / Srpski',ku:'Kurmancî',es:'Español',ru:'Русский',uk:'Українська'}};
+})();

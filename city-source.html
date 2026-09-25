@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="sv" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b4f55">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Sverinav — ett enklare gränssnitt till samhället.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Sverinav">
+  <title>Sverinav — Samhället. Enklare.</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./compact.css">
+  <link rel="stylesheet" href="./about-project.css">
+</head>
+<body>
+  <div class="app-shell">
+    <a class="skip-link" href="#view">Hoppa till innehåll</a>
+    <header class="topbar">
+      <button class="brand-lockup" data-screen="home" aria-label="Sverinav">
+        <img class="mark" src="./icon.svg" alt="" width="40" height="40">
+        <span class="brand-text">
+          <span class="brand">Sverinav</span>
+          <span class="tagline" id="tagline">Samhället. Enklare.</span>
+        </span>
+      </button>
+      <div class="top-actions">
+        <button id="aboutButton" class="info-button" type="button" data-screen="om" aria-label="Om Sverinav">i</button>
+        <button id="languageButton" class="language-button" type="button" aria-haspopup="dialog" aria-expanded="false">
+          <span aria-hidden="true">🌐</span>
+          <span id="languageCode">SV</span>
+        </button>
+      </div>
+    </header>
+    <main id="view" tabindex="-1"></main>
+    <nav class="bottom-nav" aria-label="Huvudmeny" id="bottomNav">
+      <button type="button" data-screen="home" class="active">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        <span id="navHome">Hem</span>
+      </button>
+      <button type="button" data-screen="nara">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-12a7 7 0 1 0-14 0c0 6.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+        <span id="navNear">Nära</span>
+      </button>
+      <button type="button" data-screen="rapportera">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Z"/><path d="M12 7v6M12 17h.01"/></svg>
+        <span id="navReport">Rapportera</span>
+      </button>
+      <button type="button" data-screen="beslut">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/></svg>
+        <span id="navDecisions">Beslut</span>
+      </button>
+    </nav>
+  </div>
+  <div class="language-sheet" id="languageSheet" hidden>
+    <button class="language-backdrop" id="languageBackdrop" type="button" tabindex="-1" aria-label="Stäng språkval"></button>
+    <section class="language-dialog" role="dialog" aria-modal="true" aria-labelledby="languageSheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <h2 id="languageSheetTitle">Språk</h2>
+        <button class="sheet-close" id="closeLanguageButton" type="button" aria-label="Stäng språkval">×</button>
+      </div>
+      <div class="language-options" id="languageOptions"></div>
+    </section>
+  </div>
+  <script src="./civic-core.js"></script>
+  <script src="./daily-data.js"></script>
+  <script src="./today.js"></script>
+  <script src="./riksdagen.js"></script>
+  <script src="./nvdb.js"></script>
+  <script src="./goteborg-plans.js"></script>
+  <script src="./app.js"></script>
+  <script src="./about-copy.js"></script>
+  <script src="./about-project.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

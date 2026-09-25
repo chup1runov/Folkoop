@@ -1,38 +1,13 @@
 {
-  "name": "Sverinav",
-  "short_name": "Sverinav",
-  "description": "Ett enklare gränssnitt till samhället.",
+  "name": "FOLKOOP",
+  "short_name": "FOLKOOP",
+  "description": "Människor, samarbete, projekt, stad och center.",
   "lang": "sv",
   "dir": "auto",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0b4f55",
-  "icons": [
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
-  ]
+  "background_color": "#f6f3ee",
+  "theme_color": "#1F1F1F",
+  "icons": [{"src":"./folkoop-mark.png","sizes":"96x96","type":"image/png","purpose":"any"}]
 }
