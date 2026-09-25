@@ -4,12 +4,14 @@
 
 This is the continuation of this repository, not a second project. The public Pages URL remains `https://chup1runov.github.io/Sverinav/` until a separate repository/domain migration is completed. No repository rename is claimed.
 
-## Current pilot state — v0.21.0
+## Current pilot state — v0.22.0
 
-Navigation: **People · Together · Projects · City · Center · My page**, with Messages as a separate entry.
+Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
 - local private workspace and optional browser-only persistence;
+- explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
+- eleven-step first-run onboarding that can be replayed from Settings;
 - server-backed pilot profile and opt-in directory;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
