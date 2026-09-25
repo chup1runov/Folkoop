@@ -231,7 +231,7 @@ window.addEventListener('message',e=>{
 $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(menuOpen)closeMenu();}});
 render();
-let onboardingDone=false;try{onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';}catch{}
+let onboardingDone=false;try{onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';}catch{onboardingDone=true;}
 if(!onboardingDone)setTimeout(()=>showOnboarding(0),150);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
