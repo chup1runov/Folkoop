@@ -1,13 +1,9 @@
 {
-  "name": "folkoop",
-  "version": "0.15.0",
-  "private": true,
-  "license": "SEE LICENSE IN LICENSE",
-  "description": "FOLKOOP — people, cooperation, projects, city and center.",
-  "scripts": {
-    "build": "node scripts/build-site.mjs",
-    "start": "node scripts/build-site.mjs && serve -s _site -l ${PORT:-3000}",
-    "test": "node --test tests/*.test.mjs"
-  },
-  "dependencies": {"serve": "^14.2.4"}
+ "name":"folkoop",
+ "version":"0.16.0",
+ "private":true,
+ "license":"SEE LICENSE IN LICENSE",
+ "description":"FOLKOOP — people, cooperation, projects, city and center.",
+ "scripts":{"build":"node scripts/build-site.mjs","start":"node scripts/build-site.mjs && serve -s _site -l ${PORT:-3000}","test":"node --test tests/*.test.mjs"},
+ "dependencies":{"serve":"^14.2.4"}
 }
