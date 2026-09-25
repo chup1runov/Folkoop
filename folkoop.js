@@ -184,17 +184,27 @@ function render(focus=false){
  if(onboardingOpen)showOnboarding(onboardingStep);
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
-function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);}catch{}render();}
+function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
-window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
+ const onboarding=e.target.closest('[data-onboarding]');
+ if(onboarding){
+  const action=onboarding.dataset.onboarding;
+  if(action==='skip'){finishOnboarding();return;}
+  if(action==='back'){showOnboarding(onboardingStep-1);return;}
+  if(action==='next'){if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;}
+ }
+ const navLink=e.target.closest('#nav a');if(navLink){closeMenu();return;}
  const target=e.target.closest('button');if(!target)return;
+ if(target.id==='mobileMenuToggle'){menuOpen?closeMenu():openMenu();return;}
  if(target.dataset.create){capture();formKind=target.dataset.create;scratch={kind:formKind};render();$('#draftForm input[name="title"]')?.focus();return;}
  if(target.dataset.toggle){status(store.toggle(target.dataset.toggle));render();return;}
  if(target.dataset.delete&&confirm(t('confirmDelete'))){status(store.remove(target.dataset.delete));render();return;}
  const action=target.dataset.action;
  if(action==='cancel'){formKind=null;scratch={};render();}
+ if(action==='tutorial'){showOnboarding(0);return;}
  if(action==='clear'&&confirm(t('confirmClear'))){if(store.clear()){scratch={};profileScratch=null;render();$('#status').textContent=t('deleted');}else status(false);}
  if(action==='export'){
   capture();const file=new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(file);const link=document.createElement('a');link.href=url;link.download='folkoop-my-data.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -219,6 +229,9 @@ window.addEventListener('message',e=>{
  if(C.LANGS.includes(e.data.language)&&e.data.language!==lang)changeLanguage(e.data.language);
 });
 $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(menuOpen)closeMenu();}});
 render();
+let onboardingDone=false;try{onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';}catch{}
+if(!onboardingDone)setTimeout(()=>showOnboarding(0),150);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
