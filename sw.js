@@ -1,10 +1,10 @@
 /* Cache only this app's public shell/feeds. Never cache coordinates or external APIs. */
-const VERSION='0.14.0';
+const VERSION='0.15.0';
 const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
 const SHELL=new URL('index.html',BASE).href;
-const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png'];
+const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js','folkoop-copy.js','folkoop.js','folkoop.css','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png'];
 const CORE=new Set(CORE_PATHS.map(p=>new URL(p,BASE).href));
 const FEEDS=new Set(['data/riksdagen-decisions.json','data/goteborg-open-plans.json'].map(p=>new URL(p,BASE).href));
 async function remember(request,response){
@@ -45,5 +45,9 @@ self.addEventListener('fetch',event=>{
   if(request.method!=='GET'||url.origin!==BASE.origin||!url.pathname.startsWith(BASE.pathname))return;
   if(FEEDS.has(url.href)){event.respondWith(dataResponse(request));return;}
   if(request.mode==='navigate'&&(url.pathname===BASE.pathname||url.pathname===new URL('index.html',BASE).pathname)){event.respondWith(navigationResponse(request));return;}
+  // City has a presentation-only query; cache its canonical public shell, never arbitrary queries.
+  if(request.mode==='navigate' && url.pathname===new URL('city.html',BASE).pathname){
+    event.respondWith(coreResponse(new Request(new URL('city.html',BASE).href)));return;
+  }
   if(CORE.has(url.href))event.respondWith(coreResponse(request));
 });
