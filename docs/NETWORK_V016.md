@@ -1,6 +1,6 @@
 # Network pilot foundation — v0.16.0
 
-25 September 2026. This release adds executable Auth/PostgREST integration, a server migration, account/community UI and authorization tests. It does NOT provision a hosted database or activate public sign-ups. `network-config.js` remains disabled. Never interpret successful mocked UI tests as a real hosted Supabase test.
+25 September 2026. v0.16 introduced executable Auth/PostgREST integration, the account/community UI and authorization tests. v0.16.1 provisions a dedicated Free Supabase project, applies the reviewed migrations, enables the public client with a publishable key and supports a one-time first-pilot bootstrap. This is still a controlled pilot, not public onboarding.
 
 ## Scope and retained decisions
 
@@ -14,7 +14,7 @@ Moderation: hide/unhide participant, report a visible post, owner post deletion 
 
 ## Auth decisions
 
-Email OTP through Supabase Auth. No custom password database, email service, cryptography or JWT signing. The client uses explicit HTTP calls to `/auth/v1/otp`, `/verify`, `/user`, `/logout` and PostgREST. `create_user:false` prevents automatic registration through this app. The backend must ALSO disable public signup and use a private pilot allowlist.
+Email OTP through Supabase Auth. No custom password database, email service, cryptography or JWT signing. The client uses explicit HTTP calls to `/auth/v1/otp`, `/verify`, `/user`, `/logout` and PostgREST. For the zero-cost first bootstrap, `create_user:true` is used because the built-in SMTP will deliver only to project-team addresses. After verification the client calls `fk_claim_first_pilot`; only the first authenticated account can claim an empty pilot list, and later non-pilot accounts are denied.
 
 Only a `sb_publishable_...` key is allowed in browser configuration. Secret/service_role keys must not be placed in source, browser storage, URLs, client logs or chat. Auth verifies each code; the client asks Auth for the user and keeps the access token in memory only. It does not retain refresh tokens. Reload, tab close or expiry requires fresh sign-in. Sign-out clears local network state even if remote session revocation fails. In-flight responses are invalidated on identity change.
 
@@ -22,9 +22,9 @@ Backend errors are presented as bounded generic states. A timeout is not proof a
 
 ## Activation gate — do not skip
 
-1. Obtain owner approval of the Supabase organization and actual new-project cost. Create a dedicated FOLKOOP project in an approved region. Do not repurpose databases belonging to another project.
-2. Apply `supabase/migrations/202609250001_network.sql` once using migration tooling. Never apply the CI Auth bootstrap or test SQL to a hosted/live project.
-3. Configure email OTP template with `{{ .Token }}`, approved Site URL, disabled public signup, Auth rate limits and working email delivery. Review SMTP/provider terms and costs. No email has been sent by this release.
+1. Dedicated project `folkoop` is active on the Free plan in `eu-north-1`; `kravcentralen-staging` was paused with owner approval to free the slot. Do not reactivate it if that would force a paid plan.
+2. Migrations `202609250001_network.sql` and `202609250002_first_pilot.sql` have been applied to the dedicated FOLKOOP project. Never apply CI bootstrap/test SQL to hosted/live projects.
+3. Built-in Supabase email is used only for the first project-team bootstrap at zero cost. General-user onboarding remains blocked until a genuinely free delivery/OAuth route is configured and tested.
 4. Select named pilot operators, approve privacy/retention and conduct rules, account-export/deletion handling and safeguarding before admitting participants. Keep initial participation controlled; the full public/minor-serving product is not launched here.
 5. Explicitly invite approved testers through Auth, then insert their UUIDs into `folkoop_private.pilots` through privileged administration. No usernames, real tester emails or secrets go into Git.
 6. Set project URL + publishable key and `enabled:true`. Advance package/SW release version so installed clients receive the changed public configuration. Do not force activation over an unsaved draft.
