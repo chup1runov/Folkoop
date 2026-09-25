@@ -1,25 +1,79 @@
 # FOLKOOP — current handoff
 
-25 September 2026. Current development slice: v0.16.0. Check exact commit CI and deployment before claiming it is live. Read `docs/NETWORK_V016.md` before activating anything.
+25 September 2026. Current development slice: v0.18.0. Check exact commit CI and deployment before claiming it is live.
 
 ## Canonical decisions
 
-Continue `chup1runov/Sverinav` as one FOLKOOP product. The repository slug is unchanged. User-facing names: People, Together, Projects, City, Center, My page. My page does not replace technical authorization infrastructure. Preserve the existing FOLKUNO graphic mark. The former civic baseline is on `archive/sverinav-v0.14-before-folkoop` at `09e29aad3cad3b9d3ee4403881e02ac4b9022073`.
+Continue `chup1runov/Sverinav` as one FOLKOOP product. The repository slug is still unchanged. User-facing areas: People, Together, Projects, City, Center, My page; Messages is a separate entry.
 
-Cooperation means mutual help, skills, shared resources, professional and project collaboration, neighborhood needs and real-world meetings — not only buying. No political profiling or rewards for opinions. Do not publish private concept archives or internal manuals.
+Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
+
+The former civic baseline is preserved on `archive/sverinav-v0.14-before-folkoop`.
 
 ## Actual state
 
-The v0.15 shell/local workspace and City continue to work. v0.16 adds a SQL schema with RLS and gated Auth/network UI: optional network profile, opt-in discovery, communities, membership and shared publications, blocking/reporting and owner moderation. These require a dedicated Supabase database and explicitly configured `network-config.js`. Configuration stays DISABLED until the owner approves infrastructure and the activation checklist passes. No hosted database, live users or working mail delivery are claimed by a code commit.
+### Local/private layer
 
-Local drafts are not uploaded automatically. Network tokens stay in memory, not localStorage. Profile visibility is private by default; publications are shared with current group members. Initial network access is a controlled pilot allowlist, not a change to the long-term public audience. No complete messenger, private groups, E2EE, checkout, payments, rewards or operating Center is delivered.
+The original FOLKOOP shell still provides optional browser-local profile data and private drafts for needs, offers, purchases, resources, projects and events. Local drafts are never uploaded automatically and are distinct from server network objects.
 
-City: official-source navigation without compulsory login; no automatic submissions. Preserve freshness and source-error states, eleven City languages and RTL. New network copy is SV/EN/RU; other selected languages keep the existing explicit English fallback.
+### Network/account layer
 
-## Files and tests
+A dedicated Supabase Free project named `folkoop` is active. Browser configuration contains only the public project URL and publishable key. Auth tokens live in memory only.
 
-`folkoop.html` builds the root; `city-source.html` + `folkoop-city.js` build the internal `city.html`. Original `index.html` stays a legacy regression source fixture for now. `network-client.js` handles HTTP; `network-ui.js` implements the account/group panels. Public assets are explicitly allowlisted. SQL/tests are not bundled. Existing licence and third-party notices are unchanged.
+Network capabilities now include:
+- optional server profile and opt-in discovery;
+- communities, membership and shared publications;
+- blocking/reporting and owner moderation;
+- direct and group messaging with invitations, manual refresh and per-member read markers;
+- unified cooperation objects for need / offer / purchase / resource / project;
+- cooperation participants and member updates;
+- shared-purchase target quantity and per-member quantity commitments;
+- project tasks, assignment and task status.
 
-Run existing Node/browser suites plus `tests/network.test.mjs`, `tests/network-browser.py` and real PostgreSQL `tests/network-rls.sql` through the dedicated CI job. CI Auth bootstrap must NEVER run on a live project. Require both workflows before merging. Mocked UI tests, SQL role tests and actual hosted Auth delivery are separate evidence levels.
+All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
 
-Next: approve dedicated backend organization/cost; migrate, configure OTP/SMTP and pilot operations; run real two-account end-to-end checks; only then activate. After that, build proper messaging, shared project state and richer cooperation flows. Do not silently connect another project's database or publish service-role keys.
+General public onboarding is not ready. The current free built-in email path is suitable only for the controlled pilot bootstrap/team-address flow. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
+
+Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket realtime in this slice. Shared-purchase quantities are coordination values only: no checkout, payment, escrow, vendor settlement or delivery guarantee is implemented.
+
+### City
+
+Former Sverinav civic behavior remains inside City: official-source navigation, report preparation, Gothenburg plans, Riksdag metadata, weather/warnings and source/error states. City does not require a network account and does not automatically submit official reports.
+
+### Center
+
+Center preserves the physical/community-space direction from FOLKUNO. No operational venue, equipment inventory or confirmed program should be fabricated.
+
+## Key files
+
+- `network-client.js` — Auth/PostgREST client; memory-only token.
+- `network-ui.js` — account, communities, messages, cooperation/project UI.
+- `supabase/migrations/202609250001_network.sql` — base network/RLS.
+- `202609250002_first_pilot.sql` — one-time pilot bootstrap.
+- `202609250003_rls_performance.sql` — RLS/index tuning.
+- `202609250004_messaging.sql` + `005_messaging_indexes.sql` — messaging.
+- `202609250006_cooperation.sql` — unified cooperation engine.
+- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md` — slice-specific constraints.
+
+## Verification
+
+Before merging any network change require BOTH:
+1. existing application/browser validation;
+2. `.github/workflows/network.yml` PostgreSQL authorization tests.
+
+The PostgreSQL CI uses disposable synthetic Auth claims; it is not proof of hosted email delivery or real-device behavior. Browser tests use synthetic Supabase responses; they are not a real multi-account hosted test.
+
+Hosted migrations must be applied only after the exact PR passes both suites. Never apply CI fixture SQL to the hosted project.
+
+## Next engineering priorities
+
+After v0.18 is green and deployed:
+- run real two-account hosted checks for messaging and cooperation;
+- add pagination and clearer unread/activity summaries;
+- decide whether cooperation objects create/link a group conversation;
+- build structured group-buy offer/vendor comparison without payments;
+- add project milestones/files only if a zero-cost, privacy-safe storage plan is chosen;
+- expand free public authentication route;
+- keep improving Center/City integration without coupling account access to civic basics.
+
+Do not silently enable paid plans, paid SMTP, paid push, paid storage or payment-processing services.
