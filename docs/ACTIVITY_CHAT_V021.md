@@ -49,6 +49,8 @@ Own actions do not count toward the cooperation activity unread total. Own chat 
 
 Opening a cooperation marks its activity read. Opening a conversation marks its messages read.
 
+Internal notification-to-route transitions preserve the in-flight refresh that opened the destination; user-initiated navigation still invalidates stale network responses. This prevents a route change from cancelling its own read/update load while retaining the existing stale-response protection.
+
 Server RPCs provide aggregate inbox summaries:
 - `fk_chat_inbox()`;
 - `fk_activity_inbox()`.
