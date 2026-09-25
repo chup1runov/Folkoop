@@ -288,8 +288,8 @@ function render(){
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers()
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox]=await Promise.all([
+  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox()
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
@@ -299,20 +299,26 @@ async function load(){
   const newest=chatMessages.at(-1)?.created_at;
   if(newest&&(!ownChatMember.last_read_at||Date.parse(newest)>Date.parse(ownChatMember.last_read_at))){
    await api.markChatRead(selectedChat);ownChatMember.last_read_at=new Date().toISOString();
+   const inbox=chatInbox.find(x=>x.conversation_id===selectedChat);if(inbox)inbox.unread_count=0;
   }
  }
  const ownCoopMember=selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
  const selectedCooperation=selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
- const [coopUpdates,projectTasks,commitments]=ownCoopMember?await Promise.all([
+ const [coopUpdates,projectTasks,commitments,coopActivity]=ownCoopMember?await Promise.all([
   api.cooperationUpdates(selectedCoop),
   selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
-  selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([])
- ]):[[],[],[]];
+  selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([]),
+  api.cooperationActivity(selectedCoop)
+ ]):[[],[],[],[]];
+ if(ownCoopMember){
+  const inbox=activityInbox.find(x=>x.cooperation_id===selectedCoop);
+  if(Number(inbox?.unread_count||0)>0){await api.markCooperationRead(selectedCoop);inbox.unread_count=0;}
+ }
  const [purchaseOffers,purchaseChoice,purchaseProcess]=selectedCooperation?.kind==='purchase'?await Promise.all([
   api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
  ]):[[],[],[]];
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
