@@ -27,16 +27,26 @@ const lifecycleCopy={
  ru:{lifecycle:'Этапы закупки',collecting:'Сбор количества',offer_selected:'Предложение выбрано',confirming:'Финальное подтверждение',ordered:'Отмечено: заказ оформлен вне FOLKOOP',delivered:'Отмечено: доставлено',distributing:'Выдача участникам',done:'Завершено',cancelled:'Отменено',confirmationDeadline:'Срок подтверждения',startConfirmation:'Начать финальное подтверждение',confirmations:'Подтверждения участников',pending:'Ожидается',confirmed:'Подтверждено',declined:'Отказ',confirmYes:'Подтверждаю своё количество',confirmNo:'Отказываюсь от участия',responseNote:'Комментарий к подтверждению',resetConfirmation:'Сбросить подтверждение',markOrdered:'Отметить, что внешний заказ оформлен',externalReference:'Номер / ссылка внешнего заказа',externalOrderNotice:'Это твоя собственная отметка, что заказ оформлен вне FOLKOOP. FOLKOOP не отправляет заказ поставщику и не проверяет факт заказа.',expectedDelivery:'Ожидаемая доставка',pickupPlace:'Место выдачи',pickupStart:'Начало выдачи',pickupEnd:'Конец выдачи',deliveryNote:'Комментарий по доставке / организатора',saveDeliveryPlan:'Сохранить план доставки',markDelivered:'Отметить как доставленное',deliverySelfReport:'Статус доставки указывает организатор; FOLKOOP его независимо не проверяет.',collectionNote:'Комментарий к получению',markCollected:'Я получил свою долю',undoCollected:'Снять отметку о получении',finishPurchase:'Завершить закупку',resultNote:'Итоговый комментарий',cancelPurchase:'Отменить закупку',cancelReason:'Причина отмены',allResponsesNeeded:'Перед отметкой внешнего заказа должны ответить все участники, попавшие в снимок количества.',confirmedTotal:'Подтверждённый объём',collected:'Получено',notCollected:'Не получено',noSnapshot:'В этом раунде подтверждения для тебя нет зафиксированного количества.',frozen:'После начала подтверждения количество, состав участников и условия поставщика замораживаются.',selfReported:'Статус со слов пользователя',resultSelfReport:'Завершение — отметка организатора, а не независимая проверка.'},
  sv:{lifecycle:'Köpets steg',collecting:'Samlar kvantiteter',offer_selected:'Erbjudande valt',confirming:'Slutlig bekräftelse',ordered:'Markerat beställt externt',delivered:'Markerat levererat',distributing:'Utdelning / hämtning',done:'Slutfört',cancelled:'Avbrutet',confirmationDeadline:'Sista bekräftelsetid',startConfirmation:'Starta slutlig bekräftelse',confirmations:'Deltagarnas bekräftelser',pending:'Väntar',confirmed:'Bekräftat',declined:'Avböjt',confirmYes:'Bekräfta min kvantitet',confirmNo:'Avstå deltagande',responseNote:'Kommentar till bekräftelsen',resetConfirmation:'Återställ bekräftelsen',markOrdered:'Markera extern beställning som lagd',externalReference:'Extern orderreferens',externalOrderNotice:'Detta är din egen notering om att en beställning gjorts utanför FOLKOOP. FOLKOOP skickar eller verifierar inte beställningen.',expectedDelivery:'Förväntad leverans',pickupPlace:'Utlämningsplats',pickupStart:'Utlämning börjar',pickupEnd:'Utlämning slutar',deliveryNote:'Leverans-/organisatörsnotering',saveDeliveryPlan:'Spara leveransplan',markDelivered:'Markera levererat',deliverySelfReport:'Leveransstatus rapporteras av organisatören och verifieras inte oberoende.',collectionNote:'Kommentar till hämtning',markCollected:'Markera min andel hämtad',undoCollected:'Ångra hämtmarkering',finishPurchase:'Slutför köpet',resultNote:'Resultatnotering',cancelPurchase:'Avbryt köpprocessen',cancelReason:'Orsak till avbrott',allResponsesNeeded:'Alla deltagare i kvantitetssnapshoten måste svara innan extern beställning kan markeras.',confirmedTotal:'Bekräftad mängd',collected:'Hämtat',notCollected:'Inte hämtat',noSnapshot:'Du har ingen låst kvantitet i denna bekräftelserunda.',frozen:'Efter bekräftelsestart fryses kvantiteter, medlemskap och leverantörsvillkor.',selfReported:'Självrapporterad status',resultSelfReport:'Slutförandet är organisatörens notering, inte en oberoende verifiering.'}
 };
+const activityCopy={
+ en:{activity:'Activity',notifications:'Activity notifications',workChat:'Work chat',linkedChat:'Linked to this cooperation',managedChat:'Membership is managed by the cooperation.',unread:'unread',noActivity:'No activity yet.',recentActivity:'Recent activity',created:'created the cooperation',member_joined:'joined',member_left:'left',cooperation_status:'changed status',update_posted:'posted an update',task_created:'created a task',task_updated:'updated a task',task_deleted:'deleted a task',purchase_stage:'changed purchase stage',offer_changed:'changed a supplier offer',confirmation_changed:'updated purchase confirmation',collection_changed:'updated pickup status',openActivity:'Open',messagesUnread:'Unread messages'},
+ ru:{activity:'Активность',notifications:'Уведомления об активности',workChat:'Рабочий чат',linkedChat:'Связан с этой кооперацией',managedChat:'Состав чата управляется участниками кооперации.',unread:'непрочитано',noActivity:'Активности пока нет.',recentActivity:'Последняя активность',created:'создал кооперацию',member_joined:'присоединился',member_left:'вышел',cooperation_status:'изменил статус',update_posted:'добавил обновление',task_created:'создал задачу',task_updated:'изменил задачу',task_deleted:'удалил задачу',purchase_stage:'изменил этап закупки',offer_changed:'изменил предложение поставщика',confirmation_changed:'изменил подтверждение закупки',collection_changed:'изменил статус получения',openActivity:'Открыть',messagesUnread:'Непрочитанные сообщения'},
+ sv:{activity:'Aktivitet',notifications:'Aktivitetsnotiser',workChat:'Arbetschatt',linkedChat:'Kopplad till detta samarbete',managedChat:'Chattmedlemskapet styrs av samarbetets deltagare.',unread:'oläst',noActivity:'Ingen aktivitet ännu.',recentActivity:'Senaste aktivitet',created:'skapade samarbetet',member_joined:'gick med',member_left:'lämnade',cooperation_status:'ändrade status',update_posted:'lade till en uppdatering',task_created:'skapade en uppgift',task_updated:'ändrade en uppgift',task_deleted:'raderade en uppgift',purchase_stage:'ändrade köpsteget',offer_changed:'ändrade ett leverantörserbjudande',confirmation_changed:'ändrade köpbekräftelsen',collection_changed:'ändrade hämtningsstatus',openActivity:'Öppna',messagesUnread:'Olästa meddelanden'}
+};
 const lang=()=>['sv','en','ru'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>({sv,en,ru}[lang()][k]||en[k]);
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let internalHash='';
 const route=()=>FolkoopCore.route(location.hash);
+function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
 const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
 const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
 const ot=k=>offerCopy[lang()][k]||offerCopy.en[k]||k;
 const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
+const at=k=>activityCopy[lang()][k]||activityCopy.en[k]||k;
+const abtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(at(key))}</button>`;
+
 function localDateTime(value){
  if(!value)return '';
  const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
@@ -49,6 +59,33 @@ const obtn=(action,key,id='')=>`<button class="button secondary" type="button" d
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 const kindLabel=k=>ct(k);
 const statusLabel=s=>ct(({open:'openStatus',active:'activeStatus',done:'doneStatus',cancelled:'cancelledStatus'})[s]||s);
+function activityLabel(e,u){
+ const actor=e?.actor_id===u?.id?mt('you'):(coopProfile(e?.actor_id)?.name||ct('noProfile'));
+ let label=e?.label||'';
+ if(e?.event_type==='purchase_stage')label=lt(label);
+ if(e?.event_type==='confirmation_changed')label=lt(label);
+ if(e?.event_type==='collection_changed')label=label==='collected'?lt('collected'):lt('notCollected');
+ return actor+' '+at(e?.event_type||'activity')+(label?' · '+label:'');
+}
+function setCountBadge(el,count){
+ if(!el)return;
+ el.querySelectorAll(':scope > .net-count').forEach(x=>x.remove());
+ const n=Number(count||0);
+ if(n>0){const b=document.createElement('span');b.className='net-count';b.textContent=n>99?'99+':String(n);b.setAttribute('aria-label',n+' '+at('unread'));el.append(b);}
+}
+function syncBadges(){
+ const u=api?.user?.();
+ const messageCount=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0)+data.chatInvites.filter(x=>x.user_id===u?.id).length;
+ const togetherCount=data.activityInbox.filter(x=>x.cooperation_kind!=='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
+ const projectCount=data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
+ setCountBadge(document.getElementById('messageLink'),messageCount);
+ setCountBadge(document.querySelector('#nav a[href="#/together"]'),togetherCount);
+ setCountBadge(document.querySelector('#nav a[href="#/projects"]'),projectCount);
+}
+function renderActivityNotifications(u){
+ const rows=data.activityInbox.filter(x=>x.last_activity_at).slice(0,12);
+ return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),actor=x.last_actor_id===u.id?mt('you'):(coopProfile(x.last_actor_id)?.name||ct('noProfile'));let label=x.last_label||'';if(x.last_event_type==='purchase_stage')label=lt(label);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(actor+' '+at(x.last_event_type||'activity')+(label?' · '+label:''))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+}
 
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 function chatLabel(chat,u){
@@ -61,32 +98,34 @@ function renderMessages(u){
  const chat=data.chats.find(x=>x.id===selectedChat);
  const ownMember=chat&&data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id===u.id);
  const ownInvite=chat&&data.chatInvites.find(i=>i.conversation_id===chat.id&&i.user_id===u.id);
+ const linked=chat&&data.coopChats.find(x=>x.conversation_id===chat.id);
  const discoverable=data.directory.filter(p=>p.id!==u.id);
  let html=`<div class="row"><div><h2>${esc(mt('messagesTitle'))}</h2><p class="meta">${esc(mt('messagesDesc'))}</p></div><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div>`;
  if(chat){
-  html+=`${btn('backChats','back','') }<article class="card"><h2>${esc(chatLabel(chat,u))}</h2><p class="meta">${esc(mt('notEncrypted'))}</p>`;
+  html+=`${btn('backChats','back','')}<article class="card"><div class="row"><h2>${esc(chatLabel(chat,u))}</h2>${linked?`<span class="badge">${esc(at('workChat'))}</span>`:''}</div><p class="meta">${esc(mt('notEncrypted'))}</p>`;
+  if(linked)html+=`<p class="meta">${esc(at('managedChat'))}</p><div class="actions">${abtn('openNotify','openActivity',linked.cooperation_id)}</div>`;
   if(ownInvite&&!ownMember){
    html+=`<div class="actions">${btn('acceptChat','accept',chat.id)}${btn('declineChat','decline',chat.id)}</div></article>`;
    return html;
   }
   if(!ownMember){html+=`<p>${esc(t('denied'))}</p></article>`;return html;}
   const members=data.chatMembers.filter(m=>m.conversation_id===chat.id);
-  html+=`<h3>${esc(mt('membersList'))}</h3><div class="stack">${members.map(m=>{const p=profileFor(m.user_id);const name=m.user_id===u.id?mt('you'):(p?.name||m.user_id.slice(0,8));const remove=chat.kind==='group'&&chat.owner_id===u.id&&m.user_id!==u.id?btn('removeChatMember','removeMember',m.user_id):'';return `<div class="row"><span>${esc(name)}</span>${remove}</div>`;}).join('')}</div></article>`;
-  if(chat.kind==='group'&&chat.owner_id===u.id){
+  html+=`<h3>${esc(mt('membersList'))}</h3><div class="stack">${members.map(m=>{const p=profileFor(m.user_id);const name=m.user_id===u.id?mt('you'):(p?.name||m.user_id.slice(0,8));const remove=!linked&&chat.kind==='group'&&chat.owner_id===u.id&&m.user_id!==u.id?btn('removeChatMember','removeMember',m.user_id):'';return `<div class="row"><span>${esc(name)}</span>${remove}</div>`;}).join('')}</div></article>`;
+  if(!linked&&chat.kind==='group'&&chat.owner_id===u.id){
    const existing=new Set(members.map(m=>m.user_id).concat(data.chatInvites.filter(i=>i.conversation_id===chat.id).map(i=>i.user_id)));
    const candidates=discoverable.filter(p=>!existing.has(p.id));
    html+=`<form id="netChatInvite" class="editor card"><label>${esc(mt('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(p=>`<option value="${esc(p.id)}"${p.id===inviteTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('invite'))}</button></form>`;
   }
   html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(m.created_at||'')}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
   html+=`<form id="netMessage" class="editor card"><label>${esc(mt('message'))}<textarea name="body" maxlength="4000" rows="3" required>${esc(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${esc(mt('sendMessage'))}</button></form>`;
-  if(chat.kind==='group')html+=`<div class="actions">${chat.owner_id===u.id?btn('deleteChat','deleteChat',chat.id):btn('leaveChat','leaveChat',chat.id)}</div>`;
+  if(!linked&&chat.kind==='group')html+=`<div class="actions">${chat.owner_id===u.id?btn('deleteChat','deleteChat',chat.id):btn('leaveChat','leaveChat',chat.id)}</div>`;
   return html;
  }
  const invitations=data.chatInvites.filter(i=>i.user_id===u.id).map(i=>data.chats.find(c=>c.id===i.conversation_id)).filter(Boolean);
  html+=`<div class="profile-grid"><form id="netDirect" class="editor card"><h3>${esc(mt('direct'))}</h3><label>${esc(mt('choosePerson'))}<select name="other" required><option value="">—</option>${discoverable.map(p=>`<option value="${esc(p.id)}"${p.id===directTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('startDirect'))}</button><p class="meta">${discoverable.length?'':esc(mt('noPeople'))}</p></form><form id="netNewChat" class="editor card"><h3>${esc(mt('newGroupChat'))}</h3><label>${esc(mt('groupTitle'))}<input name="title" maxlength="80" required value="${esc(chatDraft.title||'')}"></label><fieldset><legend>${esc(mt('chooseMembers'))}</legend>${discoverable.map(p=>`<label class="checkbox"><input type="checkbox" name="members" value="${esc(p.id)}"${chatDraft.members.includes(p.id)?' checked':''}> <span>${esc(p.name)}</span></label>`).join('')||`<p class="meta">${esc(mt('noPeople'))}</p>`}</fieldset><button class="button" ${discoverable.length?'':'disabled'}>${esc(t('create'))}</button></form></div>`;
  if(invitations.length)html+=`<h3>${esc(mt('invitations'))}</h3><div class="draft-grid">${invitations.map(ch=>`<article class="card"><h3>${esc(chatLabel(ch,u))}</h3><span class="badge">${esc(mt('invitePending'))}</span><div class="actions">${btn('openChat','open',ch.id)}${btn('acceptChat','accept',ch.id)}${btn('declineChat','decline',ch.id)}</div></article>`).join('')}</div>`;
  const joined=data.chats.filter(ch=>data.chatMembers.some(m=>m.conversation_id===ch.id&&m.user_id===u.id));
- html+=`<h3>${esc(mt('conversation'))}</h3><div class="draft-grid">${joined.map(ch=>`<article class="card"><h3>${esc(chatLabel(ch,u))}</h3><p class="meta">${esc(ch.kind==='group'?mt('groupChat'):mt('direct'))}</p>${btn('openChat','open',ch.id)}</article>`).join('')||`<div class="empty"><p>${esc(mt('noChats'))}</p></div>`}</div>`;
+ html+=`<h3>${esc(mt('conversation'))}</h3><div class="draft-grid">${joined.map(ch=>{const unread=Number(data.chatInbox.find(x=>x.conversation_id===ch.id)?.unread_count||0),link=data.coopChats.find(x=>x.conversation_id===ch.id);return `<article class="card"><div class="row"><h3>${esc(chatLabel(ch,u))}</h3>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><p class="meta">${esc(link?at('linkedChat'):(ch.kind==='group'?mt('groupChat'):mt('direct')))}</p>${btn('openChat','open',ch.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(mt('noChats'))}</p></div>`}</div>`;
  return html;
 }
 
@@ -178,11 +217,13 @@ function renderCooperation(u,r){
   const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
   const member=!!membership,owner=coop.owner_id===u.id;
   const members=data.coopMembers.filter(m=>m.cooperation_id===coop.id);
+  const linkedChat=data.coopChats.find(x=>x.cooperation_id===coop.id);
   const sum=data.commitments.reduce((a,x)=>a+Number(x.quantity||0),0);
   html+=cbtn('back','back');
   html+=`<article class="card"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p style="white-space:pre-wrap">${esc(coop.description)}</p>`;
   if(coop.kind==='purchase')html+=`<p><strong>${esc(ct('progress'))}: ${esc(String(sum))} / ${esc(String(coop.target_quantity))} ${esc(coop.unit)}</strong></p><p class="meta">${esc(ct('purchaseHelp'))}</p>`;
   html+=`<div class="actions">${owner?'':member?cbtn('leave','leave',coop.id):((['open','active'].includes(coop.status))?cbtn('join','join',coop.id):'')}${owner?cbtn('delete','delete',coop.id):''}</div></article>`;
+  if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}<span class="meta">${esc(at('managedChat'))}</span></div>`;
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
    html+=`<form id="netCoopEdit" class="editor card"><h3>${esc(ct('edit'))}</h3><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<button class="button">${esc(t('save'))}</button></form>`;
@@ -202,6 +243,7 @@ function renderCooperation(u,r){
    html+=`<aside class="notice"><p>${esc(ct('memberOnly'))}</p></aside>`;
    return html;
   }
+  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(e.created_at||'')}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
   html+=`<h3>${esc(ct('members'))}</h3><div class="draft-grid">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="card"><div class="row"><strong>${esc(name)}</strong>${remove}</div><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></article>`;}).join('')}</div>`;
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
@@ -215,13 +257,14 @@ function renderCooperation(u,r){
   return html;
  }
  const kind=projectMode?'project':coopDraft.kind;
- html+=`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form><h3>${esc(projectMode?ct('projectsTitle'):ct('togetherTitle'))}</h3><div class="draft-grid">${list.map(x=>`<article class="card"><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><p class="meta">${esc(ct('localBelow'))}</p>`;
+ html+=`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form><h3>${esc(projectMode?ct('projectsTitle'):ct('togetherTitle'))}</h3><div class="draft-grid">${list.map(x=>{const unread=Number(data.activityInbox.find(a=>a.cooperation_id===x.id)?.unread_count||0);return `<article class="card"><div class="row"><span><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span></span>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><p class="meta">${esc(ct('localBelow'))}</p>`;
  return html;
 }
 
 function render(){
  const r=route(),relevant=['me','people','messages','together','projects'].includes(r);host.hidden=!relevant;
  document.getElementById('workspace').hidden=!!(api?.enabled&&['people','messages'].includes(r));
+ syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=api.user();
@@ -230,7 +273,7 @@ function render(){
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
   const p=profileDraft||data.profile;
-  html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}<h3>${esc(t('localTitle'))}</h3>`;
+  html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}${renderActivityNotifications(u)}<h3>${esc(t('localTitle'))}</h3>`;
  }else{
   const group=data.groups.find(g=>g.id===selected),membership=data.memberships.find(m=>m.community_id===selected),member=membership&&!membership.banned;
   html=`<div class="row"><h2>${esc(t('groups'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><p>${esc(t('desc'))}</p>`;
@@ -243,11 +286,12 @@ function render(){
  }
  host.innerHTML=html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.querySelectorAll('button').forEach(b=>b.disabled=busy);
+ syncBadges();
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers()
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox]=await Promise.all([
+  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox()
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
@@ -257,20 +301,26 @@ async function load(){
   const newest=chatMessages.at(-1)?.created_at;
   if(newest&&(!ownChatMember.last_read_at||Date.parse(newest)>Date.parse(ownChatMember.last_read_at))){
    await api.markChatRead(selectedChat);ownChatMember.last_read_at=new Date().toISOString();
+   const inbox=chatInbox.find(x=>x.conversation_id===selectedChat);if(inbox)inbox.unread_count=0;
   }
  }
  const ownCoopMember=selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
  const selectedCooperation=selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
- const [coopUpdates,projectTasks,commitments]=ownCoopMember?await Promise.all([
+ const [coopUpdates,projectTasks,commitments,coopActivity]=ownCoopMember?await Promise.all([
   api.cooperationUpdates(selectedCoop),
   selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
-  selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([])
- ]):[[],[],[]];
+  selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([]),
+  api.cooperationActivity(selectedCoop)
+ ]):[[],[],[],[]];
+ if(ownCoopMember){
+  const inbox=activityInbox.find(x=>x.cooperation_id===selectedCoop);
+  if(Number(inbox?.unread_count||0)>0){await api.markCooperationRead(selectedCoop);inbox.unread_count=0;}
+ }
  const [purchaseOffers,purchaseChoice,purchaseProcess]=selectedCooperation?.kind==='purchase'?await Promise.all([
   api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
  ]):[[],[],[]];
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -341,7 +391,9 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   if(a==='clearOffer')await api.choosePurchaseOffer(selectedCoop,null);
   if(a==='reportOffer'){const reason=prompt(t('reason'));if(reason===null)return;await api.reportPurchaseOffer(id,reason);notice=t('reported');}
   if(a==='blockProvider')await api.block(id);
-  if(a==='messageProvider'){selectedChat=await api.startDirect(id);location.hash='#/messages';}
+  if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
+  if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
+  if(a==='openNotify'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;
  run(async()=>{
@@ -372,8 +424,8 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
-window.addEventListener('hashchange',()=>{version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
 })();

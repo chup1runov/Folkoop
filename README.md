@@ -4,7 +4,7 @@
 
 This is the continuation of this repository, not a second project. The public Pages URL remains `https://chup1runov.github.io/Sverinav/` until a separate repository/domain migration is completed. No repository rename is claimed.
 
-## Current pilot state — v0.20.0
+## Current pilot state — v0.21.0
 
 Navigation: **People · Together · Projects · City · Center · My page**, with Messages as a separate entry.
 
@@ -13,15 +13,17 @@ Implemented:
 - server-backed pilot profile and opt-in directory;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
+- automatically linked work chat for every cooperation object, synchronized with cooperation membership;
 - a unified cooperation engine for needs, offers, shared purchases, shared resources and projects;
 - project participants, project tasks and assignees;
 - shared-purchase target quantity and member quantity commitments;
 - structured supplier offers for shared purchases, including unit price, minimum/available quantity, delivery terms and preferred-offer selection;
 - shared-purchase lifecycle: final participant confirmation, frozen quantities/terms, organizer external-order mark, delivery/pickup plan, participant collection marks and explicit completion/cancellation;
 - member updates and owner/member access controls;
+- cooperation activity journal, in-app activity summaries and separate unread counters for work/chat activity;
 - the preserved City civic tools and official-source behavior.
 
-Local drafts are still separate from network objects and are never uploaded automatically. The cooperation/marketplace layer does **not** perform checkout, payments, escrow, vendor settlement, order submission or delivery guarantees. Supplier offers are comparison data, and order/delivery/completion stages are self-reported coordination records inside the pilot. Messaging is manual-refresh, server-stored text and is not end-to-end encrypted. Center remains a product/physical-space concept rather than a claimed operating venue.
+Local drafts are still separate from network objects and are never uploaded automatically. The cooperation/marketplace layer does **not** perform checkout, payments, escrow, vendor settlement, order submission or delivery guarantees. Supplier offers are comparison data, and order/delivery/completion stages are self-reported coordination records inside the pilot. Messaging and activity are manual-refresh/server-read-marker based, not push/realtime, and messaging is not end-to-end encrypted. Center remains a product/physical-space concept rather than a claimed operating venue.
 
 The dedicated Supabase backend is on the Free plan and the repository policy is zero-cost infrastructure unless the owner separately approves otherwise. General public onboarding is still limited by the free authentication delivery path; this is a controlled pilot, not a public launch.
 
