@@ -39,11 +39,11 @@ async def main():
 
   # Full menu order is preserved on mobile behind the menu button.
   await page.click('#mobileMenuToggle')
-  await expect(page.locator('body')).to_have_class(lambda v:'menu-open' in v)
+  assert 'menu-open' in (await page.locator('body').get_attribute('class') or '')
   labels=await page.locator('#nav a span').all_text_contents()
   assert labels[:11]==['Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр','Настройки','О нас'],labels
   await page.click('#nav a[href="#/settings"]')
-  await expect(page.locator('body')).not_to_have_class(lambda v:'menu-open' in v)
+  assert 'menu-open' not in (await page.locator('body').get_attribute('class') or '')
   await expect(page.locator('#workspace')).to_contain_text('Повторить инструкцию')
   passed.append('Mobile drawer exposes the requested ordered navigation and closes after selection')
 
