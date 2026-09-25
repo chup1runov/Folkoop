@@ -1,4 +1,4 @@
-name: Validate and deploy Sverinav
+name: Validate and deploy FOLKOOP
 on:
   push:
     branches: [main]
