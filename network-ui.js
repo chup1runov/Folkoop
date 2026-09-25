@@ -90,6 +90,85 @@ function renderMessages(u){
  return html;
 }
 
+function renderPurchaseLifecycle(u,coop,owner){
+ const process=data.purchaseProcess[0]||{stage:data.purchaseChoice.length?'offer_selected':'collecting'};
+ const stage=process.stage||'collecting';
+ const confirmations=data.purchaseConfirmations||[];
+ const mine=confirmations.find(x=>x.user_id===u.id);
+ const pending=confirmations.filter(x=>x.decision==='pending').length;
+ const confirmed=confirmations.filter(x=>x.decision==='confirmed');
+ const declined=confirmations.filter(x=>x.decision==='declined').length;
+ const confirmedTotal=confirmed.reduce((a,x)=>a+Number(x.quantity||0),0);
+ const profileName=id=>id===u.id?mt('you'):(coopProfile(id)?.name||ct('noProfile'));
+ let html=`<section class="card"><div class="row"><h3>${esc(lt('lifecycle'))}</h3><span class="badge">${esc(lt(stage))}</span></div><p class="meta">${esc(lt('selfReported'))}</p>`;
+ if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(new Date(process.confirmation_deadline).toLocaleString())}</p>`;
+ if(process.external_order_reference)html+=`<p><strong>${esc(lt('externalReference'))}:</strong> ${esc(process.external_order_reference)}</p>`;
+ if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(new Date(process.expected_delivery_at).toLocaleString())}</p>`;
+ if(process.pickup_place)html+=`<p><strong>${esc(lt('pickupPlace'))}:</strong> ${esc(process.pickup_place)}</p>`;
+ if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(new Date(process.pickup_start).toLocaleString())}${process.pickup_end?' – '+esc(new Date(process.pickup_end).toLocaleString()):''}</p>`;
+ if(process.delivery_note)html+=`<p style="white-space:pre-wrap">${esc(process.delivery_note)}</p>`;
+ if(process.result_note)html+=`<p style="white-space:pre-wrap"><strong>${esc(lt('resultNote'))}:</strong> ${esc(process.result_note)}</p>`;
+ html+='</section>';
+
+ if(stage==='offer_selected'&&owner){
+  const d=lifecycleDrafts.netPurchaseStart||{};
+  html+=`<form id="netPurchaseStart" class="editor card"><h3>${esc(lt('startConfirmation'))}</h3><p class="meta">${esc(lt('frozen'))}</p><label>${esc(lt('confirmationDeadline'))}<input name="deadline" type="datetime-local" required value="${esc(d.deadline||'')}"></label><button class="button">${esc(lt('startConfirmation'))}</button></form>`;
+ }
+
+ if(stage==='confirming'){
+  html+=`<h3>${esc(lt('confirmations'))}</h3><div class="draft-grid">${confirmations.map(x=>`<article class="card"><strong>${esc(profileName(x.user_id))}</strong><p>${esc(String(x.quantity))} ${esc(coop.unit)}</p><span class="badge">${esc(lt(x.decision))}</span>${x.note?`<p class="meta">${esc(x.note)}</p>`:''}</article>`).join('')||`<div class="empty"><p>${esc(lt('noSnapshot'))}</p></div>`}</div><p><strong>${esc(lt('confirmedTotal'))}: ${esc(String(confirmedTotal))} ${esc(coop.unit)}</strong> · ${esc(lt('pending'))}: ${pending} · ${esc(lt('declined'))}: ${declined}</p>`;
+  if(mine){
+   const d=lifecycleDrafts.netPurchaseConfirm||{};
+   html+=`<form id="netPurchaseConfirm" class="editor card"><label>${esc(lt('responseNote'))}<input name="note" maxlength="500" value="${esc(d.note||mine.note||'')}"></label><div class="actions"><button name="operation" value="yes" class="button">${esc(lt('confirmYes'))}</button><button name="operation" value="no" class="button secondary">${esc(lt('confirmNo'))}</button></div></form>`;
+  }else{
+   html+=`<aside class="notice"><p>${esc(lt('noSnapshot'))}</p></aside>`;
+  }
+  if(owner){
+   html+=`<div class="actions">${cbtn('resetConfirmation','resetConfirmation',coop.id)}</div>`;
+   if(pending===0&&confirmed.length>0){
+    const d=lifecycleDrafts.netPurchaseOrdered||{};
+    html+=`<form id="netPurchaseOrdered" class="editor card"><h3>${esc(lt('markOrdered'))}</h3><p class="meta">${esc(lt('externalOrderNotice'))}</p><label>${esc(lt('externalReference'))}<input name="reference" maxlength="120" value="${esc(d.reference||'')}"></label><label>${esc(lt('expectedDelivery'))}<input name="expectedDelivery" type="datetime-local" value="${esc(d.expectedDelivery||'')}"></label><label>${esc(lt('pickupPlace'))}<input name="pickupPlace" maxlength="200" value="${esc(d.pickupPlace||'')}"></label><label>${esc(lt('pickupStart'))}<input name="pickupStart" type="datetime-local" value="${esc(d.pickupStart||'')}"></label><label>${esc(lt('pickupEnd'))}<input name="pickupEnd" type="datetime-local" value="${esc(d.pickupEnd||'')}"></label><label>${esc(lt('deliveryNote'))}<textarea name="note" maxlength="1000" rows="3">${esc(d.note||'')}</textarea></label><button class="button">${esc(lt('markOrdered'))}</button></form>`;
+   }else{
+    html+=`<p class="meta">${esc(lt('allResponsesNeeded'))}</p>`;
+   }
+  }
+ }
+
+ if(['ordered','delivered','distributing'].includes(stage)){
+  if(owner){
+   const d=lifecycleDrafts.netPurchaseDeliveryPlan||{
+    expectedDelivery:localDateTime(process.expected_delivery_at),
+    pickupPlace:process.pickup_place||'',
+    pickupStart:localDateTime(process.pickup_start),
+    pickupEnd:localDateTime(process.pickup_end),
+    note:process.delivery_note||''
+   };
+   html+=`<form id="netPurchaseDeliveryPlan" class="editor card"><h3>${esc(lt('saveDeliveryPlan'))}</h3><label>${esc(lt('expectedDelivery'))}<input name="expectedDelivery" type="datetime-local" value="${esc(d.expectedDelivery||'')}"></label><label>${esc(lt('pickupPlace'))}<input name="pickupPlace" maxlength="200" value="${esc(d.pickupPlace||'')}"></label><label>${esc(lt('pickupStart'))}<input name="pickupStart" type="datetime-local" value="${esc(d.pickupStart||'')}"></label><label>${esc(lt('pickupEnd'))}<input name="pickupEnd" type="datetime-local" value="${esc(d.pickupEnd||'')}"></label><label>${esc(lt('deliveryNote'))}<textarea name="note" maxlength="1000" rows="3">${esc(d.note||'')}</textarea></label><button class="button secondary">${esc(lt('saveDeliveryPlan'))}</button></form>`;
+  }
+  if(stage==='ordered'&&owner){
+   const d=lifecycleDrafts.netPurchaseDelivered||{};
+   html+=`<form id="netPurchaseDelivered" class="editor card"><p class="meta">${esc(lt('deliverySelfReport'))}</p><label>${esc(lt('deliveryNote'))}<input name="note" maxlength="1000" value="${esc(d.note||'')}"></label><button class="button">${esc(lt('markDelivered'))}</button></form>`;
+  }
+ }
+
+ if(['delivered','distributing'].includes(stage)){
+  if(mine?.decision==='confirmed'){
+   const d=lifecycleDrafts.netPurchaseCollected||{};
+   html+=`<form id="netPurchaseCollected" class="editor card"><label>${esc(lt('collectionNote'))}<input name="note" maxlength="500" value="${esc(d.note||mine.collected_note||'')}"></label><div class="actions"><button name="operation" value="yes" class="button">${esc(lt('markCollected'))}</button>${mine.collected_at?`<button name="operation" value="no" class="button secondary">${esc(lt('undoCollected'))}</button>`:''}</div></form>`;
+  }
+  if(owner){
+   const d=lifecycleDrafts.netPurchaseFinish||{};
+   html+=`<form id="netPurchaseFinish" class="editor card"><p class="meta">${esc(lt('resultSelfReport'))}</p><label>${esc(lt('resultNote'))}<textarea name="note" maxlength="2000" rows="3">${esc(d.note||'')}</textarea></label><button class="button">${esc(lt('finishPurchase'))}</button></form>`;
+  }
+ }
+
+ if(owner&&!['done','cancelled'].includes(stage)){
+  const d=lifecycleDrafts.netPurchaseCancel||{};
+  html+=`<form id="netPurchaseCancel" class="editor card"><label>${esc(lt('cancelReason'))}<input name="reason" maxlength="2000" minlength="3" required value="${esc(d.reason||'')}"></label><button class="button secondary">${esc(lt('cancelPurchase'))}</button></form>`;
+ }
+ return html;
+}
+
 function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
