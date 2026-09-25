@@ -4,17 +4,26 @@
 
 This is the continuation of this repository, not a second project. The public Pages URL remains `https://chup1runov.github.io/Sverinav/` until a separate repository/domain migration is completed. No repository rename is claimed.
 
-## v0.15.0 — first migration slice
+## Current pilot state — v0.18.0
 
-Navigation: **People · Together · Projects · City · Center · My page**. Messages is a separate entry. “My page” is a user-facing section; shared technical infrastructure is not removed or renamed into a profile.
+Navigation: **People · Together · Projects · City · Center · My page**, with Messages as a separate entry.
 
-Implemented: the new shell, local profile editing, private drafts for help/offers/joint purchases/resources/projects/events, filtering, own completion notes, export, deletion and optional browser-only persistence. No account is required. Without device-storage consent, data lasts only for the current session.
+Implemented:
+- local private workspace and optional browser-only persistence;
+- server-backed pilot profile and opt-in directory;
+- communities and member publications;
+- direct and group messaging with invitations, blocking/reporting and owner moderation;
+- a unified cooperation engine for needs, offers, shared purchases, shared resources and projects;
+- project participants, project tasks and assignees;
+- shared-purchase target quantity and member quantity commitments;
+- member updates and owner/member access controls;
+- the preserved City civic tools and official-source behavior.
 
-The existing official-source tools remain inside **City**: weather and warnings, Gothenburg plans, road-holder lookup and report preparation, and Riksdag document metadata. External source availability is not guaranteed; original error/freshness states remain. Users submit official reports themselves.
+Local drafts are still separate from network objects and are never uploaded automatically. The cooperation layer does **not** perform checkout, payments, escrow, vendor settlement or delivery guarantees. Messaging is manual-refresh, server-stored text and is not end-to-end encrypted. Center remains a product/physical-space concept rather than a claimed operating venue.
 
-**Not implemented:** server accounts, member directory, social feed, private/group message delivery, shared projects, checkout, payments, stock, live venues or confirmed Center events. Local drafts are never represented as public posts or confirmed outcomes. No fake members or transactions are seeded.
+The dedicated Supabase backend is on the Free plan and the repository policy is zero-cost infrastructure unless the owner separately approves otherwise. General public onboarding is still limited by the free authentication delivery path; this is a controlled pilot, not a public launch.
 
-All eleven existing City languages remain. Navigation has eleven languages; detailed new shell copy is currently Swedish/English/Russian. The other eight explicitly disclose English fallback. Native-language review remains necessary.
+All eleven existing City languages remain. Navigation has eleven languages; detailed new network copy is currently Swedish/English/Russian, with explicit English fallback elsewhere. Native-language review remains necessary.
 
 ## Build and test
 

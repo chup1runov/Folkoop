@@ -12,6 +12,10 @@ PID='33333333-3333-4333-8333-333333333333'
 OTHER='44444444-4444-4444-8444-444444444444'
 CHAT='55555555-5555-4555-8555-555555555555'
 MSG='66666666-6666-4666-8666-666666666666'
+BUY='77777777-7777-4777-8777-777777777777'
+PROJECT='88888888-8888-4888-8888-888888888888'
+UPDATE='99999999-9999-4999-8999-999999999999'
+TASK='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 async def main():
  passed=[]
@@ -29,7 +33,7 @@ async def main():
   assert await page.locator('#netLogin').count()==0
   passed.append('Disabled backend does not fake sign-in or interrupt local My page')
   await context.close()
-  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
+  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'cooperations':[],'coop_members':[],'coop_updates':[],'tasks':[],'commitments':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
   context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
   async def routing(route):
    url=route.request.url
@@ -56,6 +60,33 @@ async def main():
      for m in state['chat_members']:
       if m['conversation_id']==payload['p_conversation'] and m['user_id']==UID:m['last_read_at']='2026-09-25T10:01:30Z'
      result=None
+    elif url.endswith('/fk_create_cooperation'):
+     coop_id=PROJECT if payload['p_kind']=='project' else BUY
+     state['cooperations']=[x for x in state['cooperations'] if x['id']!=coop_id]
+     state['cooperations'].append({'id':coop_id,'owner_id':UID,'kind':payload['p_kind'],'title':payload['p_title'],'description':payload['p_description'],'location_text':payload['p_location'],'status':'open','target_quantity':payload['p_target_quantity'],'unit':payload['p_unit'],'created_at':'2026-09-25T12:00:00Z','updated_at':'2026-09-25T12:00:00Z'})
+     state['coop_members']=[m for m in state['coop_members'] if m['cooperation_id']!=coop_id]+[{'cooperation_id':coop_id,'user_id':UID,'role':'owner','joined_at':'2026-09-25T12:00:00Z'}]
+     result=coop_id
+    elif url.endswith('/fk_set_purchase_commitment'):
+     state['commitments']=[x for x in state['commitments'] if not (x['cooperation_id']==payload['p_cooperation'] and x['user_id']==UID)]
+     if float(payload['p_quantity'])>0:state['commitments'].append({'cooperation_id':payload['p_cooperation'],'user_id':UID,'quantity':payload['p_quantity'],'note':payload['p_note'],'updated_at':'2026-09-25T12:01:00Z'})
+     result=None
+    elif url.endswith('/fk_add_cooperation_update'):
+     state['coop_updates'].append({'id':UPDATE,'cooperation_id':payload['p_cooperation'],'author_id':UID,'body':payload['p_body'],'created_at':'2026-09-25T12:02:00Z'});result=UPDATE
+    elif url.endswith('/fk_create_project_task'):
+     state['tasks'].append({'id':TASK,'cooperation_id':payload['p_cooperation'],'creator_id':UID,'assignee_id':payload['p_assignee'],'title':payload['p_title'],'details':payload['p_details'],'status':'todo','created_at':'2026-09-25T12:03:00Z','updated_at':'2026-09-25T12:03:00Z'});result=TASK
+    elif url.endswith('/fk_set_project_task_status'):
+     for task in state['tasks']:
+      if task['id']==payload['p_task']:task['status']=payload['p_status']
+     result=None
+    elif url.endswith('/fk_assign_project_task'):
+     for task in state['tasks']:
+      if task['id']==payload['p_task']:task['assignee_id']=payload['p_assignee']
+     result=None
+    elif url.endswith('/fk_update_cooperation'):
+     for x in state['cooperations']:
+      if x['id']==payload['p_cooperation']:
+       x.update({'title':payload['p_title'],'description':payload['p_description'],'location_text':payload['p_location'],'status':payload['p_status'],'target_quantity':payload['p_target_quantity'],'unit':payload['p_unit']})
+     result=None
     elif url.endswith('/fk_publish'):
      if state['fail_post']:
       await route.fulfill(status=500,json={'private_error':'must not echo'});return
@@ -71,6 +102,17 @@ async def main():
     elif '/fk_conversation_members?' in url:result=state['chat_members']
     elif '/fk_conversation_invites?' in url:result=state['chat_invites']
     elif '/fk_messages?' in url:result=state['chat_messages']
+    elif '/fk_cooperations?' in url:result=state['cooperations']
+    elif '/fk_cooperation_members?' in url:result=state['coop_members']
+    elif '/fk_cooperation_updates?' in url:
+     target=url.split('cooperation_id=eq.')[1].split('&')[0] if 'cooperation_id=eq.' in url else None
+     result=[x for x in state['coop_updates'] if target is None or x['cooperation_id']==target]
+    elif '/fk_project_tasks?' in url:
+     target=url.split('cooperation_id=eq.')[1].split('&')[0] if 'cooperation_id=eq.' in url else None
+     result=[x for x in state['tasks'] if target is None or x['cooperation_id']==target]
+    elif '/fk_purchase_commitments?' in url:
+     target=url.split('cooperation_id=eq.')[1].split('&')[0] if 'cooperation_id=eq.' in url else None
+     result=[x for x in state['commitments'] if target is None or x['cooperation_id']==target]
     await route.fulfill(body=json.dumps(result),content_type='application/json');return
    await route.continue_()
   await context.route('**/*',routing)
@@ -115,6 +157,39 @@ async def main():
   passed.append('Network controls reflow at 320,390,1280px')
   await page.set_viewport_size({'width':390,'height':844})
   await page.select_option('#language','ru')
+  await page.click('#nav a[href="#/together"]')
+  await expect(page.locator('#networkPanel')).to_contain_text('Кооперация')
+  await page.select_option('#netCoopCreate [name=kind]','purchase')
+  await page.fill('#netCoopCreate [name=title]','Совместные дрова')
+  await page.fill('#netCoopCreate [name=description]','Собираем общий заказ')
+  await page.fill('#netCoopCreate [name=location]','Göteborg')
+  await page.fill('#netCoopCreate [name=targetQuantity]','10')
+  await page.fill('#netCoopCreate [name=unit]','m3')
+  await page.click('#netCoopCreate button')
+  await expect(page.locator('#netCommitment')).to_be_visible()
+  await page.fill('#netCommitment [name=quantity]','2')
+  await page.fill('#netCommitment [name=note]','Нужна доставка')
+  await page.click('#netCommitment button.button')
+  await expect(page.locator('#networkPanel')).to_contain_text('2 / 10 m3')
+  await page.fill('#netCoopUpdate [name=body]','Готов забрать в субботу')
+  await page.click('#netCoopUpdate button')
+  await expect(page.locator('#networkPanel')).to_contain_text('Готов забрать в субботу')
+  assert await page.locator('#workspace').is_visible()
+  passed.append('Together creates a shared purchase, quantity commitment and member update while local drafts remain separate')
+  await page.click('[data-coop=back]')
+  await page.click('#nav a[href="#/projects"]')
+  await page.fill('#netCoopCreate [name=title]','Общая мастерская')
+  await page.fill('#netCoopCreate [name=description]','Ищем помещение и команду')
+  await page.click('#netCoopCreate button')
+  await expect(page.locator('#netTaskCreate')).to_be_visible()
+  await page.fill('#netTaskCreate [name=title]','Найти помещение')
+  await page.fill('#netTaskCreate [name=details]','Сравнить три варианта')
+  await page.click('#netTaskCreate button')
+  await expect(page.locator('#networkPanel')).to_contain_text('Найти помещение')
+  assert any(url.endswith('/fk_create_cooperation') and payload.get('p_kind')=='purchase' for url,payload in state['requests'])
+  assert any(url.endswith('/fk_set_purchase_commitment') for url,_ in state['requests'])
+  assert any(url.endswith('/fk_create_project_task') for url,_ in state['requests'])
+  passed.append('Projects create a shared project and server-backed task')
   await page.click('#messageLink')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await page.select_option('#netDirect [name=other]',OTHER)

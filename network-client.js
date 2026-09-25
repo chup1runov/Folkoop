@@ -40,6 +40,10 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function id(value){if(!UUID.test(value||''))throw fail('INVALID_INPUT');return value;}
  function text(value,max,min=0){if(typeof value!=='string'||value.trim().length<min||value.length>max)throw fail('INVALID_INPUT');return value.trim();}
  function idList(values,max=49){if(!Array.isArray(values)||values.length>max)throw fail('INVALID_INPUT');const out=[...new Set(values.map(id))];if(!out.length)throw fail('INVALID_INPUT');return out;}
+ function kind(value){if(!['need','offer','purchase','resource','project'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function status(value){if(!['open','active','done','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function taskStatus(value){if(!['todo','doing','done'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function quantity(value,{allowZero=false}={}){const n=Number(value);if(!Number.isFinite(n)||(allowZero?n<0:n<=0)||n>1000000000)throw fail('INVALID_INPUT');return n;}
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
@@ -91,8 +95,26 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   deleteMessage(mid){return rpc('fk_delete_message',{p_message:id(mid)});},
   reportMessage(mid,reason){return rpc('fk_report_message',{p_message:id(mid),p_reason:text(reason,1000,2)});},
   deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},
+  cooperations(){return rows('fk_cooperations?select=id,owner_id,kind,title,description,location_text,status,target_quantity,unit,created_at,updated_at&order=created_at.desc&limit=200');},
+  cooperationMembers(){return rows('fk_cooperation_members?select=cooperation_id,user_id,role,joined_at&limit=1000');},
+  cooperationUpdates(cid){return rows('fk_cooperation_updates?select=id,cooperation_id,author_id,body,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  projectTasks(cid){return rows('fk_project_tasks?select=id,cooperation_id,creator_id,assignee_id,title,details,status,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=200');},
+  purchaseCommitments(cid){return rows('fk_purchase_commitments?select=cooperation_id,user_id,quantity,note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
+  createCooperation(v){const k=kind(v.kind);const target=k==='purchase'?quantity(v.targetQuantity):null;const unit=k==='purchase'?text(v.unit,30,1):'';return rpc('fk_create_cooperation',{p_kind:k,p_title:text(v.title,120,2),p_description:text(v.description||'',3000),p_location:text(v.location||'',120),p_target_quantity:target,p_unit:unit});},
+  joinCooperation(cid){return rpc('fk_join_cooperation',{p_cooperation:id(cid)});},
+  leaveCooperation(cid){return rpc('fk_leave_cooperation',{p_cooperation:id(cid)});},
+  updateCooperation(cid,v){const k=kind(v.kind);const target=k==='purchase'?quantity(v.targetQuantity):null;const unit=k==='purchase'?text(v.unit,30,1):'';return rpc('fk_update_cooperation',{p_cooperation:id(cid),p_title:text(v.title,120,2),p_description:text(v.description||'',3000),p_location:text(v.location||'',120),p_status:status(v.status),p_target_quantity:target,p_unit:unit});},
+  removeCooperationMember(cid,uid){return rpc('fk_remove_cooperation_member',{p_cooperation:id(cid),p_user:id(uid)});},
+  deleteCooperation(cid){return rpc('fk_delete_cooperation',{p_cooperation:id(cid)});},
+  addCooperationUpdate(cid,body){return rpc('fk_add_cooperation_update',{p_cooperation:id(cid),p_body:text(body,3000,1)});},
+  deleteCooperationUpdate(uid){return rpc('fk_delete_cooperation_update',{p_update:id(uid)});},
+  createProjectTask(cid,v){return rpc('fk_create_project_task',{p_cooperation:id(cid),p_title:text(v.title,160,1),p_details:text(v.details||'',2000),p_assignee:v.assignee?id(v.assignee):null});},
+  setProjectTaskStatus(tid,value){return rpc('fk_set_project_task_status',{p_task:id(tid),p_status:taskStatus(value)});},
+  assignProjectTask(tid,uid){return rpc('fk_assign_project_task',{p_task:id(tid),p_assignee:uid?id(uid):null});},
+  deleteProjectTask(tid){return rpc('fk_delete_project_task',{p_task:id(tid)});},
+  setPurchaseCommitment(cid,value,note=''){return rpc('fk_set_purchase_commitment',{p_cooperation:id(cid),p_quantity:quantity(value,{allowZero:true}),p_note:text(note,500)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -101,9 +123,13 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_conversation_members?user_id=eq.'+uid+'&limit=500'),
    rows('fk_messages?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_message_reports?reporter_id=eq.'+uid+'&limit=1000'),
-   rows('fk_conversation_invites?user_id=eq.'+uid+'&limit=500')
+   rows('fk_conversation_invites?user_id=eq.'+uid+'&limit=500'),
+   rows('fk_cooperation_members?user_id=eq.'+uid+'&limit=500'),
+   rows('fk_cooperation_updates?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
+   rows('fk_project_tasks?creator_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
+   rows('fk_purchase_commitments?user_id=eq.'+uid+'&limit=500')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }

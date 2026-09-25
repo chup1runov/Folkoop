@@ -12,13 +12,24 @@ const chatCopy={
  ru:{messagesTitle:'Сообщения',messagesDesc:'Личные и групповые разговоры участников пилота. Сообщения хранятся на сервере, обновляются вручную и пока не имеют сквозного шифрования.',direct:'Личный разговор',startDirect:'Начать разговор',choosePerson:'Выбери человека',groupChat:'Групповой разговор',newGroupChat:'Создать групповой разговор',groupTitle:'Название разговора',chooseMembers:'Пригласить людей',invitations:'Приглашения',accept:'Принять',decline:'Отклонить',conversation:'Разговор',sendMessage:'Отправить',message:'Сообщение',noChats:'Разговоров пока нет.',backChats:'Все разговоры',invite:'Пригласить',leaveChat:'Выйти из разговора',deleteChat:'Удалить групповой разговор',removeMember:'Удалить',membersList:'Участники',manual:'Обновить',notEncrypted:'Ручное обновление · без сквозного шифрования',you:'Ты',reportMessage:'Пожаловаться на сообщение',deletedMessage:'Сообщение удалено.',invitePending:'Ожидает ответа',noPeople:'Пока нет доступных для поиска участников пилота.'},
  sv:{messagesTitle:'Meddelanden',messagesDesc:'Direkta och gruppsamtal för pilotdeltagare. Meddelanden lagras på servern, uppdateras manuellt och är ännu inte end-to-end-krypterade.',direct:'Direktsamtal',startDirect:'Starta samtal',choosePerson:'Välj en person',groupChat:'Gruppsamtal',newGroupChat:'Skapa gruppsamtal',groupTitle:'Samtalets namn',chooseMembers:'Bjud in personer',invitations:'Inbjudningar',accept:'Acceptera',decline:'Avböj',conversation:'Samtal',sendMessage:'Skicka',message:'Meddelande',noChats:'Inga samtal ännu.',backChats:'Alla samtal',invite:'Bjud in',leaveChat:'Lämna samtalet',deleteChat:'Radera gruppsamtalet',removeMember:'Ta bort',membersList:'Deltagare',manual:'Uppdatera',notEncrypted:'Manuell uppdatering · inte end-to-end-krypterat',you:'Du',reportMessage:'Rapportera meddelande',deletedMessage:'Meddelandet raderades.',invitePending:'Väntar på svar',noPeople:'Det finns ännu inga sökbara pilotprofiler.'}
 };
+const coopCopy={
+ en:{togetherTitle:'Cooperate',projectsTitle:'Projects',networkDesc:'Shared cooperation objects are visible to pilot participants. Joining reveals the participant workspace. Local drafts below stay private.',projectDesc:'Projects have participants, updates and tasks. Local project drafts below stay private until you choose to recreate them on the network.',newCoop:'Create cooperation',kind:'Type',need:'Need',offer:'Offer',purchase:'Joint purchase',resource:'Shared resource',project:'Project',title:'Title',description:'Description',location:'Area / place',target:'Target quantity',unit:'Unit',status:'Status',openStatus:'Open',activeStatus:'Active',doneStatus:'Done',cancelledStatus:'Cancelled',join:'Join',leave:'Leave',delete:'Delete cooperation',edit:'Edit cooperation',members:'Participants',updates:'Updates',newUpdate:'Add update',publishUpdate:'Post update',back:'All',progress:'Progress',commitment:'My quantity',commitNote:'Note',saveCommit:'Save quantity',removeCommit:'Remove quantity',tasks:'Tasks',newTask:'Add task',taskTitle:'Task',taskDetails:'Details',assignee:'Assignee',unassigned:'Unassigned',todo:'To do',doing:'Doing',done:'Done',saveTask:'Save task',assign:'Assign',remove:'Remove',owner:'Owner',member:'Member',empty:'Nothing here yet.',created:'Created',localBelow:'Private local drafts remain below.',quantityNeeded:'Joint purchases require a positive target and unit.',memberOnly:'Join to see participants, updates and project work.',deleteUpdate:'Delete update',deleteTask:'Delete task',editSaved:'Updated.',purchaseHelp:'Quantity is a physical amount, not a payment. No checkout or money transfer is performed.',noProfile:'Participant',open:'Open'},
+ ru:{togetherTitle:'Кооперация',projectsTitle:'Проекты',networkDesc:'Сетевые объекты видят участники пилота. После вступления открывается рабочая область участников. Локальные черновики ниже остаются приватными.',projectDesc:'У проектов есть участники, обновления и задачи. Локальные черновики проектов ниже остаются приватными, пока ты сам не создашь сетевой проект.',newCoop:'Создать',kind:'Тип',need:'Мне нужно',offer:'Я предлагаю',purchase:'Совместная покупка',resource:'Общий ресурс',project:'Проект',title:'Название',description:'Описание',location:'Район / место',target:'Целевое количество',unit:'Единица',status:'Статус',openStatus:'Открыто',activeStatus:'В работе',doneStatus:'Завершено',cancelledStatus:'Отменено',join:'Присоединиться',leave:'Выйти',delete:'Удалить',edit:'Редактировать',members:'Участники',updates:'Обновления',newUpdate:'Добавить обновление',publishUpdate:'Опубликовать обновление',back:'Все',progress:'Прогресс',commitment:'Моё количество',commitNote:'Комментарий',saveCommit:'Сохранить количество',removeCommit:'Убрать количество',tasks:'Задачи',newTask:'Добавить задачу',taskTitle:'Задача',taskDetails:'Подробности',assignee:'Исполнитель',unassigned:'Не назначен',todo:'Нужно сделать',doing:'В работе',done:'Готово',saveTask:'Сохранить задачу',assign:'Назначить',remove:'Удалить',owner:'Владелец',member:'Участник',empty:'Здесь пока пусто.',created:'Создано',localBelow:'Ниже остаются приватные локальные черновики.',quantityNeeded:'Для совместной покупки нужны положительное целевое количество и единица измерения.',memberOnly:'Вступи, чтобы видеть участников, обновления и рабочие данные.',deleteUpdate:'Удалить обновление',deleteTask:'Удалить задачу',editSaved:'Обновлено.',purchaseHelp:'Количество — это физический объём, не платёж. Оплата и перевод денег здесь не выполняются.',noProfile:'Участник',open:'Открыть'},
+ sv:{togetherTitle:'Samarbeta',projectsTitle:'Projekt',networkDesc:'Gemensamma samarbetsobjekt visas för pilotdeltagare. Efter anslutning öppnas deltagarnas arbetsyta. Lokala utkast nedan förblir privata.',projectDesc:'Projekt har deltagare, uppdateringar och uppgifter. Lokala projektutkast nedan är privata tills du själv skapar ett nätverksprojekt.',newCoop:'Skapa',kind:'Typ',need:'Jag behöver',offer:'Jag erbjuder',purchase:'Gemensamt köp',resource:'Delad resurs',project:'Projekt',title:'Rubrik',description:'Beskrivning',location:'Område / plats',target:'Målkvantitet',unit:'Enhet',status:'Status',openStatus:'Öppet',activeStatus:'Pågår',doneStatus:'Klart',cancelledStatus:'Avbrutet',join:'Gå med',leave:'Lämna',delete:'Radera',edit:'Redigera',members:'Deltagare',updates:'Uppdateringar',newUpdate:'Lägg till uppdatering',publishUpdate:'Publicera uppdatering',back:'Alla',progress:'Framsteg',commitment:'Min kvantitet',commitNote:'Kommentar',saveCommit:'Spara kvantitet',removeCommit:'Ta bort kvantitet',tasks:'Uppgifter',newTask:'Lägg till uppgift',taskTitle:'Uppgift',taskDetails:'Detaljer',assignee:'Ansvarig',unassigned:'Ej tilldelad',todo:'Att göra',doing:'Pågår',done:'Klar',saveTask:'Spara uppgift',assign:'Tilldela',remove:'Ta bort',owner:'Ägare',member:'Deltagare',empty:'Här är det tomt ännu.',created:'Skapad',localBelow:'Privata lokala utkast finns kvar nedan.',quantityNeeded:'Gemensamma köp kräver en positiv målkvantitet och enhet.',memberOnly:'Gå med för att se deltagare, uppdateringar och arbetsdata.',deleteUpdate:'Radera uppdatering',deleteTask:'Radera uppgift',editSaved:'Uppdaterat.',purchaseHelp:'Kvantiteten är en fysisk mängd, inte en betalning. Ingen checkout eller penningöverföring görs här.',noProfile:'Deltagare',open:'Öppna'}
+};
 const lang=()=>['sv','en','ru'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>({sv,en,ru}[lang()][k]||en[k]);
-let selected=null,selectedChat=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={};
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''};
 const route=()=>FolkoopCore.route(location.hash);
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
 const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
+const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
+const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
+const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
+const kindLabel=k=>ct(k);
+const statusLabel=s=>ct(({open:'openStatus',active:'activeStatus',done:'doneStatus',cancelled:'cancelledStatus'})[s]||s);
+
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 function chatLabel(chat,u){
  if(!chat)return mt('conversation');
@@ -59,14 +70,53 @@ function renderMessages(u){
  return html;
 }
 
+function renderCooperation(u,r){
+ const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource'];
+ const list=data.cooperations.filter(x=>allowed.includes(x.kind));
+ const coop=list.find(x=>x.id===selectedCoop);
+ let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div>`;
+ if(coop){
+  const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
+  const member=!!membership,owner=coop.owner_id===u.id;
+  const members=data.coopMembers.filter(m=>m.cooperation_id===coop.id);
+  const sum=data.commitments.reduce((a,x)=>a+Number(x.quantity||0),0);
+  html+=cbtn('back','back');
+  html+=`<article class="card"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p style="white-space:pre-wrap">${esc(coop.description)}</p>`;
+  if(coop.kind==='purchase')html+=`<p><strong>${esc(ct('progress'))}: ${esc(String(sum))} / ${esc(String(coop.target_quantity))} ${esc(coop.unit)}</strong></p><p class="meta">${esc(ct('purchaseHelp'))}</p>`;
+  html+=`<div class="actions">${owner?'':member?cbtn('leave','leave',coop.id):((['open','active'].includes(coop.status))?cbtn('join','join',coop.id):'')}${owner?cbtn('delete','delete',coop.id):''}</div></article>`;
+  if(owner){
+   const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
+   html+=`<form id="netCoopEdit" class="editor card"><h3>${esc(ct('edit'))}</h3><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<button class="button">${esc(t('save'))}</button></form>`;
+  }
+  if(!member){
+   html+=`<aside class="notice"><p>${esc(ct('memberOnly'))}</p></aside>`;
+   return html;
+  }
+  html+=`<h3>${esc(ct('members'))}</h3><div class="draft-grid">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="card"><div class="row"><strong>${esc(name)}</strong>${remove}</div><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></article>`;}).join('')}</div>`;
+  if(coop.kind==='purchase'){
+   const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
+   html+=`<h3>${esc(ct('progress'))}</h3><div class="draft-grid">${data.commitments.map(x=>{const p=coopProfile(x.user_id);return `<article class="card"><strong>${esc(x.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p>${esc(String(x.quantity))} ${esc(coop.unit)}</p><p class="meta">${esc(x.note||'')}</p></article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCommitment" class="editor card"><label>${esc(ct('commitment'))}<input name="quantity" type="number" min="0" step="0.001" required value="${esc(cd.quantity)}"></label><label>${esc(ct('commitNote'))}<input name="note" maxlength="500" value="${esc(cd.note)}"></label><div class="actions"><button class="button">${esc(ct('saveCommit'))}</button>${mine?cbtn('removeCommit','removeCommit',coop.id):''}</div></form>`;
+  }
+  if(coop.kind==='project'){
+   html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${data.projectTasks.map(task=>{const p=coopProfile(task.assignee_id);const canManage=owner||task.creator_id===u.id;return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details)}</p><p class="meta">${esc(ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</p><form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>${canManage?`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const mp=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(mp?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const p=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button">${esc(ct('saveTask'))}</button></form>`;
+  }
+  html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="card"><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p style="white-space:pre-wrap">${esc(x.body)}</p><p class="meta">${esc(x.created_at||'')}</p>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
+  return html;
+ }
+ const kind=projectMode?'project':coopDraft.kind;
+ html+=`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form><h3>${esc(projectMode?ct('projectsTitle'):ct('togetherTitle'))}</h3><div class="draft-grid">${list.map(x=>`<article class="card"><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><p class="meta">${esc(ct('localBelow'))}</p>`;
+ return html;
+}
+
 function render(){
- const r=route(),relevant=['me','people','messages'].includes(r);host.hidden=!relevant;
+ const r=route(),relevant=['me','people','messages','together','projects'].includes(r);host.hidden=!relevant;
  document.getElementById('workspace').hidden=!!(api?.enabled&&['people','messages'].includes(r));
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=api.user();
  if(!u){html=`<h2>${esc(t('login'))}</h2><p>${esc(t('invite'))}</p><form id="netLogin" class="editor card"><label>${esc(t('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="button">${esc(t('send'))}</button><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10"></label><button name="operation" value="verify" class="button secondary">${esc(t('verify'))}</button></form>`;}
  else if(r==='messages'){html=renderMessages(u);}
+ else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
   const p=profileDraft||data.profile;
   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}<h3>${esc(t('localTitle'))}</h3>`;
@@ -85,8 +135,8 @@ function render(){
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles()
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers]=await Promise.all([
+  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers()
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
@@ -98,7 +148,14 @@ async function load(){
    await api.markChatRead(selectedChat);ownChatMember.last_read_at=new Date().toISOString();
   }
  }
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages};
+ const ownCoopMember=selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
+ const selectedCooperation=selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
+ const [coopUpdates,projectTasks,commitments]=ownCoopMember?await Promise.all([
+  api.cooperationUpdates(selectedCoop),
+  selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
+  selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([])
+ ]):[[],[],[]];
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -116,6 +173,11 @@ host.addEventListener('input',e=>{
  if(f.id==='netNewChat'){const fd=new FormData(f);chatDraft={title:String(fd.get('title')||''),members:fd.getAll('members').map(String)};}
  if(f.id==='netChatInvite')inviteTarget=v.user||'';
  if(f.id==='netMessage')messageDrafts[selectedChat]=v.body||'';
+ if(f.id==='netCoopCreate'){coopDraft={kind:v.kind||'project',title:v.title||'',description:v.description||'',location:v.location||'',targetQuantity:v.targetQuantity||'',unit:v.unit||''};if(e.target.name==='kind')render();}
+ if(f.id==='netCoopEdit')coopEditDraft={title:v.title||'',description:v.description||'',location:v.location||'',status:v.status||'open',targetQuantity:v.targetQuantity||'',unit:v.unit||''};
+ if(f.id==='netCoopUpdate')coopUpdateDraft=v.body||'';
+ if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
+ if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
 });
 host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
@@ -124,13 +186,31 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   if(f.id==='netNewChat'){const fd=new FormData(f);selectedChat=await api.createGroupChat(String(fd.get('title')||''),fd.getAll('members').map(String));chatDraft={title:'',members:[]};}
   if(f.id==='netChatInvite'){await api.inviteChat(selectedChat,values.user);inviteTarget='';}
   if(f.id==='netMessage'){await api.sendMessage(selectedChat,values.body);delete messageDrafts[selectedChat];}
+  if(f.id==='netCoopCreate'){const fd=new FormData(f),kind=String(fd.get('kind')||'project');selectedCoop=await api.createCooperation({kind,title:String(fd.get('title')||''),description:String(fd.get('description')||''),location:String(fd.get('location')||''),targetQuantity:String(fd.get('targetQuantity')||''),unit:String(fd.get('unit')||'')});coopDraft={kind:kind==='project'?'project':'need',title:'',description:'',location:'',targetQuantity:'',unit:''};}
+  if(f.id==='netCoopEdit'){const coop=data.cooperations.find(x=>x.id===selectedCoop);await api.updateCooperation(selectedCoop,{kind:coop.kind,title:values.title,description:values.description,location:values.location,status:values.status,targetQuantity:values.targetQuantity,unit:values.unit});coopEditDraft=null;}
+  if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
+  if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
+  if(f.id==='netTaskCreate'){await api.createProjectTask(selectedCoop,{title:values.title,details:values.details,assignee:values.assignee});taskDraft={title:'',details:'',assignee:''};}
+  if(f.classList.contains('netTaskStatus'))await api.setProjectTaskStatus(values.task,values.status);
+  if(f.classList.contains('netTaskAssign'))await api.assignProjectTask(values.task,values.assignee||null);
   if(f.id==='netProfile'){await api.saveProfile({name:values.name,skills:values.skills,about:values.about,listed:values.listed==='on'});profileDraft=null;}
   if(f.id==='netGroup'){selected=await api.createCommunity(values.name,values.description);groupDraft={};}
   if(f.id==='netPost'){await api.publish(selected,values.body);delete postDrafts[selected];}
   await load();notice=t('saved');
  });
 });
-host.addEventListener('click',e=>{const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;
+host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
+  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};}
+  if(a==='open')selectedCoop=id;
+  if(a==='join')await api.joinCooperation(id);
+  if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
+  if(a==='delete'){if(!confirm(t('confirm')))return;await api.deleteCooperation(id);selectedCoop=null;}
+  if(a==='removeMember'){if(!confirm(t('confirm')))return;await api.removeCooperationMember(selectedCoop,id);}
+  if(a==='deleteUpdate'){if(!confirm(t('confirm')))return;await api.deleteCooperationUpdate(id);}
+  if(a==='deleteTask'){if(!confirm(t('confirm')))return;await api.deleteProjectTask(id);}
+  if(a==='removeCommit')await api.setPurchaseCommitment(selectedCoop,0,'');
+  await load();notice='';
+ });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;
  run(async()=>{
   if(a==='logout'){await api.logout();notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
@@ -159,7 +239,7 @@ host.addEventListener('click',e=>{const b=e.target.closest('[data-net]');if(!b)r
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[]};render();});
+api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],cooperations:[],coopMembers:[],coopUpdates:[],projectTasks:[],commitments:[]};render();});
 window.addEventListener('hashchange',()=>{version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
