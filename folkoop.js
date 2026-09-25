@@ -26,7 +26,7 @@ const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==
 
 const a=(route,label,cls='button')=>`<a class="${cls}" href="#/${route}">${esc(t(label))}${icon('arrow')}</a>`;
 const button=(kind,key,cls='button')=>`<button class="${cls}" type="button" data-create="${kind}">${esc(t(key))}${icon('plus')}</button>`;
-function head(title,body){return `<header class="section-head"><p class="eyebrow">FOLKOOP / ${esc(t(current))}</p><h1 tabindex="-1">${esc(t(title))}</h1><p>${esc(t(body))}</p></header>`;}
+function head(title,body){return `<header class="section-head"><p class="eyebrow">FOLKOOP / ${esc(navText(current))}</p><h1 tabindex="-1">${esc(t(title))}</h1><p>${esc(t(body))}</p></header>`;}
 function capture(){
  const f=$('#draftForm');if(f)scratch={...Object.fromEntries(new FormData(f)),kind:f.elements.kind.value};
  const p=$('#profileForm');if(p)profileScratch=Object.fromEntries(new FormData(p));
