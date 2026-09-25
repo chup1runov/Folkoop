@@ -69,14 +69,14 @@ const ru={...en,
  centreStatus:'Центр · в разработке',count:'черновиков',profileSaved:'Локальный профиль',emptyProfile:'Можно начать без профиля.',settingsTitle:'Настройки',settingsText:'Язык, знакомство с приложением и локальные настройки.',repeatTutorial:'Повторить инструкцию по FOLKOOP',aboutTitle:'О FOLKOOP',aboutText:'FOLKOOP — кооперативная социальная платформа для людей, сообществ, проектов, городской жизни и совместных действий в реальности.',cityMissingTitle:'Укажи свой город',cityMissingText:'Сначала укажи город в Профиле, затем открывай местные инструменты раздела «Город».',cityUnsupportedTitle:'Инструменты для этого города ещё не подключены',cityUnsupportedText:'Сейчас городской пилот подключён к Göteborg. Выбранный тобой город сохранён, но FOLKOOP не будет показывать данные Göteborg так, будто они относятся к другому городу.',menu:'Меню',closeMenu:'Закрыть меню',tutorialSkip:'Пропустить',tutorialBack:'Назад',tutorialNext:'Далее',tutorialDone:'Начать пользоваться FOLKOOP',tutorialProgress:'Шаг',next:'Начни с реальной потребности',nextBody:'Запиши идею, предложи помощь или воспользуйся городскими инструментами.',partial:'Новые разделы пока на английском. «Город» сохраняет выбранный язык.',select:'Выбери раздел',check:'Твоя собственная отметка'
 };
 const nav={
- ar:['الأشخاص','معًا','المشاريع','المدينة','المركز','صفحتي','اللغة','الأقسام الجديدة بالإنجليزية حاليًا. المدينة متاحة باللغة المختارة.'],
- so:['Dadka','Wadajir','Mashaariic','Magaalada','Xarunta','Boggeyga','Luqad','Qaybaha cusub hadda waa Ingiriisi. Magaaladu waxay haysataa luqadda la doortay.'],
- fa:['افراد','با هم','پروژه‌ها','شهر','مرکز','صفحه من','زبان','بخش‌های جدید فعلاً انگلیسی هستند. بخش شهر زبان انتخاب‌شده را حفظ می‌کند.'],
- fi:['Ihmiset','Yhdessä','Projektit','Kaupunki','Keskus','Oma sivu','Kieli','Uudet osiot ovat toistaiseksi englanniksi. Kaupunki säilyttää valitun kielen.'],
- bs:['Ljudi','Zajedno','Projekti','Grad','Centar','Moja stranica','Jezik','Novi dijelovi su trenutno na engleskom. Grad zadržava odabrani jezik.'],
- ku:['Mirov','Bi hev re','Proje','Bajar','Navend','Rûpela min','Ziman','Beşên nû niha bi Îngilîzî ne. Bajar zimanê hilbijartî diparêze.'],
- es:['Personas','Juntos','Proyectos','Ciudad','Centro','Mi página','Idioma','Las secciones nuevas están en inglés por ahora. Ciudad conserva el idioma elegido.'],
- uk:['Люди','Разом','Проєкти','Місто','Центр','Моя сторінка','Мова','Нові розділи поки англійською. Місто зберігає вибрану мову.']
+ ar:['الأشخاص','معًا','المشاريع','المدينة','المركز','الملف الشخصي','اللغة','الأقسام الجديدة بالإنجليزية حاليًا. المدينة متاحة باللغة المختارة.'],
+ so:['Dadka','Wadajir','Mashaariic','Magaalada','Xarunta','Profile','Luqad','Qaybaha cusub hadda waa Ingiriisi. Magaaladu waxay haysataa luqadda la doortay.'],
+ fa:['افراد','با هم','پروژه‌ها','شهر','مرکز','پروفایل','زبان','بخش‌های جدید فعلاً انگلیسی هستند. بخش شهر زبان انتخاب‌شده را حفظ می‌کند.'],
+ fi:['Ihmiset','Yhdessä','Projektit','Kaupunki','Keskus','Profiili','Kieli','Uudet osiot ovat toistaiseksi englanniksi. Kaupunki säilyttää valitun kielen.'],
+ bs:['Ljudi','Zajedno','Projekti','Grad','Centar','Profil','Jezik','Novi dijelovi su trenutno na engleskom. Grad zadržava odabrani jezik.'],
+ ku:['Mirov','Bi hev re','Proje','Bajar','Navend','Profîl','Ziman','Beşên nû niha bi Îngilîzî ne. Bajar zimanê hilbijartî diparêze.'],
+ es:['Personas','Juntos','Proyectos','Ciudad','Centro','Perfil','Idioma','Las secciones nuevas están en inglés por ahora. Ciudad conserva el idioma elegido.'],
+ uk:['Люди','Разом','Проєкти','Місто','Центр','Профіль','Мова','Нові розділи поки англійською. Місто зберігає вибрану мову.']
 };
 const COPY={sv,en,ru};
 for(const [lang,values] of Object.entries(nav)){COPY[lang]={...en};['people','together','projects','city','center','me','language','partial'].forEach((k,i)=>COPY[lang][k]=values[i]);}
