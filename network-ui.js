@@ -57,6 +57,33 @@ const obtn=(action,key,id='')=>`<button class="button secondary" type="button" d
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 const kindLabel=k=>ct(k);
 const statusLabel=s=>ct(({open:'openStatus',active:'activeStatus',done:'doneStatus',cancelled:'cancelledStatus'})[s]||s);
+function activityLabel(e,u){
+ const actor=e?.actor_id===u?.id?mt('you'):(coopProfile(e?.actor_id)?.name||ct('noProfile'));
+ let label=e?.label||'';
+ if(e?.event_type==='purchase_stage')label=lt(label);
+ if(e?.event_type==='confirmation_changed')label=lt(label);
+ if(e?.event_type==='collection_changed')label=label==='collected'?lt('collected'):lt('notCollected');
+ return actor+' '+at(e?.event_type||'activity')+(label?' · '+label:'');
+}
+function setCountBadge(el,count){
+ if(!el)return;
+ el.querySelectorAll(':scope > .net-count').forEach(x=>x.remove());
+ const n=Number(count||0);
+ if(n>0){const b=document.createElement('span');b.className='net-count';b.textContent=n>99?'99+':String(n);b.setAttribute('aria-label',n+' '+at('unread'));el.append(b);}
+}
+function syncBadges(){
+ const u=api?.user?.();
+ const messageCount=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0)+data.chatInvites.filter(x=>x.user_id===u?.id).length;
+ const togetherCount=data.activityInbox.filter(x=>x.cooperation_kind!=='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
+ const projectCount=data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
+ setCountBadge(document.getElementById('messageLink'),messageCount);
+ setCountBadge(document.querySelector('#nav a[href="#/together"]'),togetherCount);
+ setCountBadge(document.querySelector('#nav a[href="#/projects"]'),projectCount);
+}
+function renderActivityNotifications(u){
+ const rows=data.activityInbox.filter(x=>x.last_activity_at).slice(0,12);
+ return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),actor=x.last_actor_id===u.id?mt('you'):(coopProfile(x.last_actor_id)?.name||ct('noProfile'));let label=x.last_label||'';if(x.last_event_type==='purchase_stage')label=lt(label);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(actor+' '+at(x.last_event_type||'activity')+(label?' · '+label:''))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+}
 
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 function chatLabel(chat,u){
