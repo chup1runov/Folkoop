@@ -2,9 +2,9 @@
 
 **Different people. Common ground.** A cooperative social platform combining people, shared resources, projects, city navigation and real-world community centers.
 
-This is the continuation of this repository, not a second project. The public Pages URL remains `https://chup1runov.github.io/Sverinav/` until a separate repository/domain migration is completed. No repository rename is claimed.
+This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.22.0
+## Current pilot state — v0.23.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
@@ -12,6 +12,7 @@ Implemented:
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
 - eleven-step first-run onboarding that can be replayed from Settings;
+- signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
@@ -37,7 +38,7 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PROJECT_HANDOFF.md` and `docs/FOLKOOP_MIGRATION.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
+Start with `docs/PROJECT_HANDOFF.md`, `docs/FOLKOOP_MIGRATION.md` and `docs/TOKARENKO_KOOPSET_RESEARCH.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
 
 ## Identity and rights
 
