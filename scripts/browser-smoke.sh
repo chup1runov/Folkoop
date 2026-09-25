@@ -14,3 +14,4 @@ python3 tests/city-regression.py tests/browser.py
 python3 tests/city-regression.py tests/about-browser.py
 python3 tests/folkoop-browser.py
 python3 tests/network-browser.py
+python3 tests/marketplace-browser.py

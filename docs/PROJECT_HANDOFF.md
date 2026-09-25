@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-25 September 2026. Current development slice: v0.18.0. Check exact commit CI and deployment before claiming it is live.
+25 September 2026. Current development slice: v0.19.0. Check exact commit CI and deployment before claiming it is live.
 
 ## Canonical decisions
 
@@ -28,6 +28,7 @@ Network capabilities now include:
 - unified cooperation objects for need / offer / purchase / resource / project;
 - cooperation participants and member updates;
 - shared-purchase target quantity and per-member quantity commitments;
+- structured supplier offers for shared purchases, including price/quantity/delivery terms and owner preferred-offer selection;
 - project tasks, assignment and task status.
 
 All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
@@ -53,7 +54,8 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `202609250003_rls_performance.sql` — RLS/index tuning.
 - `202609250004_messaging.sql` + `005_messaging_indexes.sql` — messaging.
 - `202609250006_cooperation.sql` — unified cooperation engine.
-- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md` — slice-specific constraints.
+- `202609250007_purchase_offers.sql` — supplier offer comparison for joint purchases.
+- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md` — slice-specific constraints.
 
 ## Verification
 
@@ -67,11 +69,11 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 
 ## Next engineering priorities
 
-After v0.18 is green and deployed:
+After v0.19 is green and deployed:
 - run real two-account hosted checks for messaging and cooperation;
 - add pagination and clearer unread/activity summaries;
 - decide whether cooperation objects create/link a group conversation;
-- build structured group-buy offer/vendor comparison without payments;
+- test supplier-offer comparison with two real pilot accounts and at least one real-world nonbinding quote;
 - add project milestones/files only if a zero-cost, privacy-safe storage plan is chosen;
 - expand free public authentication route;
 - keep improving Center/City integration without coupling account access to civic basics.
