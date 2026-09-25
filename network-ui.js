@@ -100,6 +100,51 @@ function chatLabel(chat,u){
  const other=data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id!==u.id);
  return profileFor(other?.user_id)?.name||mt('direct');
 }
+function renderHome(u){
+ const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
+ const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
+ const pendingConfirmations=data.myConfirmations.filter(x=>x.decision==='pending').map(x=>({confirmation:x,process:data.allProcesses.find(p=>p.cooperation_id===x.cooperation_id),coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.process?.stage==='confirming'&&x.coop);
+ const assigned=data.assignedTasks.filter(x=>x.status!=='done').map(x=>({...x,coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.coop);
+ const unreadActivity=data.activityInbox.filter(x=>Number(x.unread_count||0)>0);
+ const attention=[];
+ pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+new Date(x.process.confirmation_deadline).toLocaleString():'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
+ assigned.slice(0,5).forEach(x=>attention.push({type:'task',title:x.title,meta:x.coop.title+' · '+ct(x.status),coop:x.coop}));
+ if(unreadMessages)attention.push({type:'messages',title:ht('messages')+' · '+unreadMessages,meta:'',route:'messages'});
+ if(invites)attention.push({type:'invitations',title:ht('invitations')+' · '+invites,meta:'',route:'messages'});
+ unreadActivity.slice(0,4).forEach(x=>attention.push({type:'activity',title:x.cooperation_title,meta:ht('activity')+' · '+x.unread_count,coop:data.cooperations.find(c=>c.id===x.cooperation_id)}));
+
+ const memberIds=new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id));
+ const active=data.cooperations.filter(x=>memberIds.has(x.id)&&['open','active'].includes(x.status)).slice(0,8);
+
+ const feed=[];
+ data.activityInbox.filter(x=>x.last_activity_at).forEach(x=>feed.push({kind:'activity',time:x.last_activity_at,coop:data.cooperations.find(c=>c.id===x.cooperation_id),title:x.cooperation_title,event:x}));
+ data.homePosts.forEach(p=>feed.push({kind:'post',time:p.created_at,post:p,group:data.groups.find(g=>g.id===p.community_id)}));
+ feed.sort((a,b)=>Date.parse(b.time||0)-Date.parse(a.time||0));
+
+ const actionCard=item=>{
+  if(item.route)return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<a class="button secondary" href="#/${item.route}">${esc(ht('open'))}</a></article>`;
+  const coop=item.coop;
+  if(!coop)return '';
+  return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<button class="button secondary" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button></article>`;
+ };
+ const feedCard=item=>{
+  if(item.kind==='post'){
+   const author=profileFor(item.post.author_id)?.name||t('by');
+   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(item.post.created_at||'')}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+  }
+  const e=item.event,coop=item.coop;
+  const actor=e.last_actor_id===u.id?mt('you'):(coopProfile(e.last_actor_id)?.name||ct('noProfile'));
+  let label=e.last_label||'';if(e.last_event_type==='purchase_stage')label=lt(label);
+  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(actor+' '+at(e.last_event_type||'activity')+(label?' · '+label:''))}</p><p class="meta">${esc(e.last_activity_at||'')}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+ };
+
+ return `<section class="home-dashboard"><div class="row"><div><p class="eyebrow">FOLKOOP</p><h1>${esc(ht('title'))}</h1><p class="home-subtitle">${esc(ht('subtitle'))}</p></div>${btn('refresh','refresh')}</div>
+ <section class="home-section"><div class="row"><h2>${esc(ht('attention'))}</h2><span class="meta">${esc(ht('why'))}</span></div><div class="home-attention-grid">${attention.length?attention.map(actionCard).join(''):`<div class="empty"><p>${esc(ht('nothingUrgent'))}</p></div>`}</div></section>
+ <section class="home-section"><h2>${esc(ht('quick'))}</h2><div class="quick-grid home-quick"><button class="quick" type="button" data-home="createCoop" data-kind="need">${esc(ht('need'))}${icon('plus')}</button><button class="quick" type="button" data-home="createCoop" data-kind="offer">${esc(ht('offer'))}${icon('plus')}</button><button class="quick" type="button" data-home="createCoop" data-kind="purchase">${esc(ht('purchase'))}${icon('plus')}</button><button class="quick" type="button" data-home="createCoop" data-kind="project">${esc(ht('project'))}${icon('plus')}</button><a class="quick" href="#/communities">${esc(ht('community'))}${icon('arrow')}</a><a class="quick" href="#/city">${esc(ht('city'))}${icon('arrow')}</a></div></section>
+ <section class="home-section"><h2>${esc(ht('myWork'))}</h2><div class="draft-grid">${active.map(x=>`<article class="card"><span class="badge">${esc(kindLabel(x.kind))}</span><h3>${esc(x.title)}</h3><p class="meta">${esc(statusLabel(x.status))} · ${esc(x.location_text||'')}</p><button class="text-button" type="button" data-home="openCoop" data-id="${esc(x.id)}">${esc(ht('open'))}</button></article>`).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div></section>
+ <section class="home-section"><h2>${esc(ht('feed'))}</h2><div class="home-feed">${feed.slice(0,12).map(feedCard).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div></section></section>`;
+}
+
 function renderMessages(u){
  const chat=data.chats.find(x=>x.id===selectedChat);
  const ownMember=chat&&data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id===u.id);
