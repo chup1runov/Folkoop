@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-25 September 2026. Current development slice: v0.20.0. Check exact commit CI and deployment before claiming it is live.
+25 September 2026. Current development slice: v0.21.0. Check exact commit CI and deployment before claiming it is live.
 
 ## Canonical decisions
 
@@ -25,8 +25,10 @@ Network capabilities now include:
 - communities, membership and shared publications;
 - blocking/reporting and owner moderation;
 - direct and group messaging with invitations, manual refresh and per-member read markers;
+- automatic work chat linked to each cooperation object, with chat membership synchronized from cooperation membership;
 - unified cooperation objects for need / offer / purchase / resource / project;
 - cooperation participants and member updates;
+- server activity journal, My-page activity summaries and separate unread counters for cooperation activity and chat messages;
 - shared-purchase target quantity and per-member quantity commitments;
 - structured supplier offers for shared purchases, including price/quantity/delivery terms and owner preferred-offer selection;
 - shared-purchase lifecycle with final quantity confirmation, frozen terms, self-reported external order/delivery, pickup plan, collection marks and explicit completion/cancellation;
@@ -57,7 +59,8 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `202609250006_cooperation.sql` — unified cooperation engine.
 - `202609250007_purchase_offers.sql` — supplier offer comparison for joint purchases.
 - `202609250008_purchase_lifecycle.sql` — confirmation, external-order, delivery, pickup and completion state machine.
-- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md`, `PURCHASE_LIFECYCLE_V020.md` — slice-specific constraints.
+- `202609250009_activity_chat.sql` — linked work chats, activity journal and unread summaries.
+- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md`, `PURCHASE_LIFECYCLE_V020.md`, `ACTIVITY_CHAT_V021.md` — slice-specific constraints.
 
 ## Verification
 
@@ -71,10 +74,9 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 
 ## Next engineering priorities
 
-After v0.20 is green and deployed:
+After v0.21 is green and deployed:
 - run real two-account hosted checks for messaging and cooperation;
-- add pagination and clearer unread/activity summaries;
-- decide whether cooperation objects create/link a group conversation;
+- add pagination to message/activity lists and verify unread behavior across two real sessions;
 - test the full shared-purchase lifecycle with two real pilot accounts and one nonbinding supplier quote; verify that self-reported status labels remain clear;
 - add project milestones/files only if a zero-cost, privacy-safe storage plan is chosen;
 - expand free public authentication route;
