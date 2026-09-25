@@ -266,7 +266,7 @@ create or replace function public.fk_save_purchase_offer(
  p_note text
 ) returns uuid
 language plpgsql security definer set search_path=''
-as $
+as $$
 declare
  uid uuid:=folkoop_private.actor();
  oid uuid;
@@ -276,37 +276,105 @@ begin
  select owner_id into owner from public.fk_cooperations
  where id=p_cooperation and kind='purchase' and status in ('open','active');
  if owner is null then raise insufficient_privilege using message='UNAVAILABLE'; end if;
+
  insert into public.fk_purchase_process(cooperation_id) values(p_cooperation) on conflict do nothing;
  select stage into st from public.fk_purchase_process where cooperation_id=p_cooperation;
  if st not in ('collecting','offer_selected') then raise exception 'FROZEN_PROCESS'; end if;
+
  if not exists(select 1 from public.fk_profiles where id=uid and listed) then
   raise insufficient_privilege using message='DISCOVERABLE_PROFILE_REQUIRED';
  end if;
  if folkoop_private.is_blocked(owner) then
   raise insufficient_privilege using message='UNAVAILABLE';
  end if;
+
  if p_unit_price is null or p_unit_price<=0 or p_unit_price>1000000000 then raise exception 'INVALID_PRICE'; end if;
  p_currency:=upper(btrim(coalesce(p_currency,'')));
- if p_currency !~ '^[A-Z]{3}(p_cooperation uuid) returns void
+ if p_currency !~ '^[A-Z]{3}$' then raise exception 'INVALID_CURRENCY'; end if;
+ if p_min_quantity is null or p_min_quantity<=0 or p_min_quantity>1000000000 then raise exception 'INVALID_QUANTITY'; end if;
+ if p_available_quantity is not null and (p_available_quantity<=0 or p_available_quantity>1000000000 or p_available_quantity<p_min_quantity) then
+  raise exception 'INVALID_QUANTITY';
+ end if;
+ if p_delivery_mode not in ('pickup','delivery','both') then raise exception 'INVALID_DELIVERY'; end if;
+ p_delivery_fee:=coalesce(p_delivery_fee,0);
+ if p_delivery_fee<0 or p_delivery_fee>1000000000 then raise exception 'INVALID_PRICE'; end if;
+ if p_delivery_mode='pickup' then p_delivery_fee:=0; end if;
+ p_lead_time_days:=coalesce(p_lead_time_days,0);
+ if p_lead_time_days<0 or p_lead_time_days>365 then raise exception 'INVALID_LEAD_TIME'; end if;
+ if p_valid_until is not null and p_valid_until<current_date then raise exception 'EXPIRED_OFFER'; end if;
+
+ if (select count(*) from public.fk_purchase_offers where cooperation_id=p_cooperation and withdrawn_at is null)>=100
+    and not exists(select 1 from public.fk_purchase_offers where cooperation_id=p_cooperation and provider_id=uid) then
+  raise exception 'LIMIT_REACHED';
+ end if;
+
+ insert into public.fk_purchase_offers(
+  cooperation_id,provider_id,unit_price,currency,min_quantity,available_quantity,
+  delivery_mode,delivery_fee,lead_time_days,valid_until,note,withdrawn_at,updated_at
+ ) values(
+  p_cooperation,uid,p_unit_price,p_currency,p_min_quantity,p_available_quantity,
+  p_delivery_mode,p_delivery_fee,p_lead_time_days,p_valid_until,coalesce(p_note,''),null,now()
+ )
+ on conflict(cooperation_id,provider_id) do update set
+  unit_price=excluded.unit_price,
+  currency=excluded.currency,
+  min_quantity=excluded.min_quantity,
+  available_quantity=excluded.available_quantity,
+  delivery_mode=excluded.delivery_mode,
+  delivery_fee=excluded.delivery_fee,
+  lead_time_days=excluded.lead_time_days,
+  valid_until=excluded.valid_until,
+  note=excluded.note,
+  withdrawn_at=null,
+  updated_at=now()
+ returning id into oid;
+
+ -- Changing a selected offer invalidates the previous selection.
+ if exists(select 1 from public.fk_purchase_offer_choice where cooperation_id=p_cooperation and offer_id=oid) then
+  delete from public.fk_purchase_offer_choice where cooperation_id=p_cooperation and offer_id=oid;
+  update public.fk_purchase_process set stage='collecting',updated_at=now() where cooperation_id=p_cooperation;
+ end if;
+
+ return oid;
+end $$;
+
+-- Suppliers may withdraw before an external order is marked.
+-- Withdrawing a selected offer during confirmation resets the confirmation round.
+create or replace function public.fk_withdraw_purchase_offer(p_cooperation uuid) returns void
 language plpgsql security definer set search_path=''
 as $$
 declare uid uuid:=folkoop_private.actor(); oid uuid; selected boolean; st text;
 begin
  insert into public.fk_purchase_process(cooperation_id) values(p_cooperation) on conflict do nothing;
  select stage into st from public.fk_purchase_process where cooperation_id=p_cooperation for update;
- if st in ('ordered','delivered','distributing','done','cancelled') then raise exception 'FROZEN_PROCESS'; end if;
+
+ if st in ('ordered','delivered','distributing','done','cancelled') then
+  raise exception 'FROZEN_PROCESS';
+ end if;
+
  update public.fk_purchase_offers
  set withdrawn_at=now(),updated_at=now()
  where cooperation_id=p_cooperation and provider_id=uid and withdrawn_at is null
  returning id into oid;
+
  if oid is not null then
-  select exists(select 1 from public.fk_purchase_offer_choice where cooperation_id=p_cooperation and offer_id=oid) into selected;
+  select exists(
+   select 1 from public.fk_purchase_offer_choice
+   where cooperation_id=p_cooperation and offer_id=oid
+  ) into selected;
+
   if selected then
-   delete from public.fk_purchase_offer_choice where cooperation_id=p_cooperation and offer_id=oid;
-   delete from public.fk_purchase_confirmations where cooperation_id=p_cooperation;
+   delete from public.fk_purchase_offer_choice
+   where cooperation_id=p_cooperation and offer_id=oid;
+
+   delete from public.fk_purchase_confirmations
+   where cooperation_id=p_cooperation;
+
    update public.fk_purchase_process
-    set stage='collecting',confirmation_deadline=null,updated_at=now()
-    where cooperation_id=p_cooperation;
+   set stage='collecting',
+       confirmation_deadline=null,
+       updated_at=now()
+   where cooperation_id=p_cooperation;
   end if;
  end if;
 end $$;
@@ -356,6 +424,7 @@ language plpgsql security definer set search_path=''
 as $$
 declare uid uuid:=folkoop_private.actor(); deadline timestamptz;
 begin
+ if p_confirm is null then raise exception 'INVALID_DECISION'; end if;
  if not folkoop_private.coop_member(p_cooperation) then raise insufficient_privilege using message='MEMBERSHIP_REQUIRED'; end if;
  select confirmation_deadline into deadline
  from public.fk_purchase_process
@@ -495,6 +564,7 @@ language plpgsql security definer set search_path=''
 as $$
 declare uid uuid:=folkoop_private.actor(); st text;
 begin
+ if p_collected is null then raise exception 'INVALID_DECISION'; end if;
  if not folkoop_private.coop_member(p_cooperation) then raise insufficient_privilege using message='MEMBERSHIP_REQUIRED'; end if;
  select stage into st from public.fk_purchase_process where cooperation_id=p_cooperation;
  if st not in ('delivered','distributing') then raise exception 'INVALID_STAGE'; end if;
