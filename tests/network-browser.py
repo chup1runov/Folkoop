@@ -114,6 +114,7 @@ async def main():
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   passed.append('Network controls reflow at 320,390,1280px')
   await page.set_viewport_size({'width':390,'height':844})
+  await page.select_option('#language','ru')
   await page.click('#messageLink')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await page.select_option('#netDirect [name=other]',OTHER)
