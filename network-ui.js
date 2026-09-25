@@ -35,7 +35,9 @@ const activityCopy={
 const lang=()=>['sv','en','ru'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>({sv,en,ru}[lang()][k]||en[k]);
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let internalHash='';
 const route=()=>FolkoopCore.route(location.hash);
+function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
 const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
@@ -389,9 +391,9 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
   if(a==='clearOffer')await api.choosePurchaseOffer(selectedCoop,null);
   if(a==='reportOffer'){const reason=prompt(t('reason'));if(reason===null)return;await api.reportPurchaseOffer(id,reason);notice=t('reported');}
   if(a==='blockProvider')await api.block(id);
-  if(a==='messageProvider'){selectedChat=await api.startDirect(id);location.hash='#/messages';}
-  if(a==='openLinkedChat'){selectedChat=id;location.hash='#/messages';}
-  if(a==='openNotify'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);location.hash=target?.kind==='project'?'#/projects':'#/together';}
+  if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
+  if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
+  if(a==='openNotify'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;
  run(async()=>{
@@ -423,7 +425,7 @@ host.addEventListener('click',e=>{const cb=e.target.closest('[data-coop]');if(cb
  });
 });
 api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
-window.addEventListener('hashchange',()=>{version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 render();
 })();
