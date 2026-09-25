@@ -59,6 +59,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   return [s,e];
  }
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
+ async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
   enabled:!!cfg,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
@@ -133,6 +134,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   withdrawPurchaseOffer(cid){return rpc('fk_withdraw_purchase_offer',{p_cooperation:id(cid)});},
   choosePurchaseOffer(cid,offerId){return rpc('fk_choose_purchase_offer',{p_cooperation:id(cid),p_offer:offerId?id(offerId):null});},
   reportPurchaseOffer(offerId,reason){return rpc('fk_report_purchase_offer',{p_offer:id(offerId),p_reason:text(reason,1000,2)});},
+  cooperationChats(){return rows('fk_cooperation_chats?select=cooperation_id,conversation_id,created_at&limit=500');},
+  cooperationActivity(cid){return rows('fk_cooperation_activity?select=id,cooperation_id,actor_id,subject_id,event_type,label,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.desc&limit=100');},
+  markCooperationRead(cid){return rpc('fk_mark_cooperation_read',{p_cooperation:id(cid)});},
+  chatInbox(){return rpcRows('fk_chat_inbox');},
+  activityInbox(){return rpcRows('fk_activity_inbox');},
   purchaseProcess(cid){return rows('fk_purchase_process?select=cooperation_id,stage,confirmation_deadline,external_order_reference,ordered_at,expected_delivery_at,delivery_note,delivered_at,pickup_place,pickup_start,pickup_end,result_note,finished_at,updated_at&cooperation_id=eq.'+id(cid)+'&limit=1');},
   purchaseConfirmations(cid){return rows('fk_purchase_confirmations?select=cooperation_id,user_id,quantity,decision,note,decided_at,collected_at,collected_note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
   startPurchaseConfirmation(cid,deadline){return rpc('fk_start_purchase_confirmation',{p_cooperation:id(cid),p_deadline:timestamp(deadline,{required:true})});},
