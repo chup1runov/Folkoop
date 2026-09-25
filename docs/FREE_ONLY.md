@@ -17,7 +17,7 @@ This document is an operating requirement, **not** a provider-side spending cap 
 
 ### Database
 
-The connected Supabase organization is on Free. Its project cost estimate is $0/month, but both active free project slots are currently occupied by other products. No FOLKOOP hosted project was created and neither existing project was changed.
+The connected Supabase organization is on Free. The owner explicitly approved pausing `kravcentralen-staging`; that project was paused, releasing one free slot. A dedicated `folkoop` project was then created in `eu-north-1` at a confirmed cost estimate of $0/month. The production `kravcentralen` project was not changed.
 
 Supabase permits two active free projects across organizations where a user is owner/admin; paused projects do not count. Creating another organization does not supply an independent extra quota. Pausing another project would stop that environment; restoring it later also requires available capacity. Approval is required before any such change.
 
@@ -25,9 +25,9 @@ Supabase states that Free is not charged. Exceeding quotas can instead restrict 
 
 ### Authentication and email
 
-The v0.16 implementation uses email OTP. Supabase's built-in sender is restricted to team addresses, currently two messages per hour, and is not a production email delivery service. Do not invite ordinary app users into the infrastructure organization just to bypass that restriction.
+The v0.16.1 pilot uses email OTP with Supabase's built-in sender. That sender is restricted to project-team addresses and is not a production mail service. It is used only to bootstrap the first owner/test account at zero cost. Do not add ordinary app users to the infrastructure organization merely to receive login mail.
 
-Keep network activation disabled until a genuinely free authentication route is configured and tested. Candidates are social OAuth (included in Supabase Free; provider registration and application support still required) or independently verified free SMTP with a valid sender. Neither is configured by this document. Do not disable verification or implement weak custom authentication to avoid mail costs. No real emails or accounts were created during this budget review.
+The first authenticated account may claim the empty pilot slot exactly once; after that, self-admission is denied. Broader participation still requires a genuinely free authentication/delivery route such as properly configured social OAuth or independently verified free SMTP. Do not disable verification or implement weak custom authentication to avoid mail costs.
 
 ### Frontend hosting and CI
 
@@ -39,17 +39,17 @@ Use standard GitHub-hosted runners for this public repository. Do not switch to 
 
 ## Activation checklist
 
-1. Resolve free database capacity without disrupting another product without approval.
-2. Obtain a fresh $0 estimate for the actual approved organization and confirm the applicable creation conditions. Keep its plan Free.
-3. Resolve frontend hosting terms and the free authentication/delivery path; no payment method or paid subscription may be added by the assistant.
-4. Apply only the FOLKOOP application migration to its dedicated backend. Never apply disposable CI fixtures to a hosted project.
+1. Keep the dedicated FOLKOOP project on Free; do not reactivate `kravcentralen-staging` while that would require a paid slot.
+2. Re-check cost and free quota before any future resource creation.
+3. Keep the first bootstrap limited to project-team email; resolve a genuinely free broader authentication route before admitting ordinary users.
+4. Apply only reviewed FOLKOOP migrations to the dedicated backend. Never apply disposable CI fixtures to a hosted project.
 5. Complete the privacy, moderation, allowlist and real two-account checks in [NETWORK_V016.md](NETWORK_V016.md). Free pricing does not waive those gates.
 6. Only after those checks enable the network configuration and advance the app/service-worker release. Do not expose private keys or upload local drafts implicitly.
 7. Track actual usage against the free quotas. If service is restricted, report the restriction rather than pretending requests succeeded or automatically upgrading.
 
 ## Outcome of this change
 
-Documentation only. No application runtime code, billing settings, existing databases, authentication settings or network activation were changed. No new hosting or paid resource was provisioned. Further deployment depends on the capacity and authentication decisions above.
+Current state: `kravcentralen-staging` is paused; dedicated Free project `folkoop` exists; reviewed network migrations are applied; the public client uses only the publishable key. No paid plan, paid add-on or payment method was enabled. Built-in mail remains suitable only for the initial team-member bootstrap, not general user onboarding.
 
 ## Primary sources checked 25 September 2026
 

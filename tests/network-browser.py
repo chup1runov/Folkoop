@@ -15,6 +15,11 @@ async def main():
  async with async_playwright() as pw:
   browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
+  async def disabled_config(route):
+   if route.request.url.endswith('/network-config.js'):
+    await route.fulfill(body='globalThis.FolkoopNetworkConfig={enabled:false,url:\'\',publishableKey:\'\'};',content_type='application/javascript');return
+   await route.continue_()
+  await context.route('**/*',disabled_config)
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#/me')
   await expect(page.locator('#networkPanel')).to_contain_text('Сервер ещё не подключён')
@@ -32,6 +37,7 @@ async def main():
     state['requests'].append((url,payload));result=[]
     if url.endswith('/verify'):result={'access_token':'synthetic-only','expires_in':3600}
     elif url.endswith('/user'):result={'id':UID}
+    elif url.endswith('/fk_claim_first_pilot'):result=True
     elif url.endswith('/fk_save_profile'):
      state['profile']=[{'id':UID,'name':payload['p_name'],'skills':payload['p_skills'],'about':payload['p_about'],'listed':payload['p_listed']}];result=None
     elif url.endswith('/fk_create_community'):
@@ -52,8 +58,8 @@ async def main():
   await page.goto(BASE+'#/me')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.click('#netLogin [value=code]')
-  await expect(page.locator('#netStatus')).to_contain_text('Если адрес приглашён')
-  assert state['requests'][0][1]['create_user'] is False
+  await expect(page.locator('#netStatus')).to_contain_text('Если адрес разрешён')
+  assert state['requests'][0][1]['create_user'] is True
   await page.fill('#netLogin [name=code]','123456')
   await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netProfile')).to_be_visible()
