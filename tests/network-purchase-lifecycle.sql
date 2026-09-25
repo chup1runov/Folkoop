@@ -49,6 +49,16 @@ select set_config('request.jwt.claim.sub','51515151-5151-4515-8515-515151515151'
 select public.fk_choose_purchase_offer(:'purchase_id',:'offer_id');
 select fk_lifecycle_test.ok((select stage='offer_selected' from public.fk_purchase_process where cooperation_id=:'purchase_id'),'selecting offer advances lifecycle');
 
+-- Supplier edits selected terms before confirmation: owner must explicitly select again.
+select set_config('request.jwt.claim.sub','73737373-7373-4737-8737-737373737373',true);
+select public.fk_save_purchase_offer(
+ :'purchase_id',101,'SEK',8,20,'delivery',200,2,current_date+30,'Updated before confirmation'
+);
+select fk_lifecycle_test.ok((select count(*)=0 from public.fk_purchase_offer_choice where cooperation_id=:'purchase_id'),'editing selected supplier terms clears the old choice');
+select fk_lifecycle_test.ok((select stage='collecting' from public.fk_purchase_process where cooperation_id=:'purchase_id'),'edited selected offer returns process to collecting');
+
+select set_config('request.jwt.claim.sub','51515151-5151-4515-8515-515151515151',true);
+select public.fk_choose_purchase_offer(:'purchase_id',:'offer_id');
 select public.fk_start_purchase_confirmation(:'purchase_id',now()+interval '2 days');
 select fk_lifecycle_test.ok((select stage='confirming' from public.fk_purchase_process where cooperation_id=:'purchase_id'),'owner starts final confirmation');
 select fk_lifecycle_test.ok((select count(*)=2 from public.fk_purchase_confirmations where cooperation_id=:'purchase_id'),'commitments are snapshotted into confirmations');
