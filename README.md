@@ -38,7 +38,7 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PROJECT_HANDOFF.md`, `docs/FOLKOOP_MIGRATION.md` and `docs/TOKARENKO_KOOPSET_RESEARCH.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
+Start with `docs/PROJECT_HANDOFF.md`, `docs/FOLKOOP_MIGRATION.md` and `docs/TOKARENKO_KOOPSET_RESEARCH.md`. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
 
 ## Identity and rights
 
