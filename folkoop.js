@@ -9,6 +9,8 @@ if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
 const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
 const ONBOARDING_KEY='folkoop-onboarding-v1';
+const introParam=new URL(location.href).searchParams.get('intro');
+const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false;
 const onboardingSteps=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
 
@@ -232,6 +234,6 @@ $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(menuOpen)closeMenu();}});
 render();
 let onboardingDone=false;try{onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';}catch{onboardingDone=true;}
-if(!onboardingDone)setTimeout(()=>showOnboarding(0),150);
+if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),150);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
