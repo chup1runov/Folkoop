@@ -2,6 +2,18 @@
 (() => {
 'use strict';
 if(new URL(location.href).searchParams.get('embedded')!=='1')return;
+
+// In the embedded City view, the legacy bottom-fixed navigation could sit
+// outside the iframe viewport. Reuse the same controls, but place them before
+// the City content and keep them sticky at the top. No handlers or labels are
+// replaced, so the existing City behaviour stays intact.
+const tabs=document.querySelector('.bottom-nav');
+const content=document.querySelector('#view');
+if(tabs&&content)content.before(tabs);
+const style=document.createElement('style');
+style.textContent='.topbar{position:static}.bottom-nav{position:sticky;top:0;bottom:auto;left:auto;transform:none;width:100%;padding-bottom:7px}.app-shell{padding-bottom:20px}';
+document.head.append(style);
+
 const cityNames={sv:'Stad',en:'City',ar:'المدينة',so:'Magaalada',fa:'شهر',fi:'Kaupunki',bs:'Grad',ku:'Bajar',es:'Ciudad',ru:'Город',uk:'Місто'};
 let lastLanguage='', wasHidden=false;
 function refreshBrand(){
