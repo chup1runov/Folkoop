@@ -16,6 +16,7 @@ BUY='77777777-7777-4777-8777-777777777777'
 PROJECT='88888888-8888-4888-8888-888888888888'
 UPDATE='99999999-9999-4999-8999-999999999999'
 TASK='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa'
+OFFER='bbbbbbbb-1111-4111-8111-bbbbbbbbbbbb'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 async def main():
  passed=[]
@@ -33,7 +34,7 @@ async def main():
   assert await page.locator('#netLogin').count()==0
   passed.append('Disabled backend does not fake sign-in or interrupt local My page')
   await context.close()
-  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'cooperations':[],'coop_members':[],'coop_updates':[],'tasks':[],'commitments':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
+  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'cooperations':[],'coop_members':[],'coop_updates':[],'tasks':[],'commitments':[],'purchase_offers':[],'purchase_choice':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
   context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
   async def routing(route):
    url=route.request.url
