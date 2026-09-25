@@ -18,12 +18,14 @@ test('Compact contains complete short copy for all existing languages',async()=>
   assert(values.every(v=>typeof v==='string'&&v.trim().length>0));
  }
 });
-test('built app uses release version and includes its compact assets',async()=>{
+test('built City retains compact assets while FOLKOOP owns the root',async()=>{
  const {execFileSync}=await import('node:child_process');
  execFileSync(process.execPath,['scripts/build-site.mjs']);
  const pkg=JSON.parse(await readFile('package.json','utf8'));
  const built=await readFile('_site/app.js','utf8');
  assert.equal(built.match(/const APP_VERSION = '([^']+)'/)[1],pkg.version);
- assert((await readFile('_site/index.html','utf8')).includes('./compact.css'));
+ // Same compact-style assertion, relocated with the City entry; not removed.
+ assert((await readFile('_site/city.html','utf8')).includes('./compact.css'));
  assert((await readFile('_site/sw.js','utf8')).includes("'compact.css'"));
+ assert((await readFile('_site/index.html','utf8')).includes('./folkoop.css'));
 });

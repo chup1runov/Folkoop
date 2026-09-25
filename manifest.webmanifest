@@ -1,13 +1,16 @@
 {
-  "name": "FOLKOOP",
-  "short_name": "FOLKOOP",
-  "description": "Människor, samarbete, projekt, stad och center.",
-  "lang": "sv",
-  "dir": "auto",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#f6f3ee",
-  "theme_color": "#1F1F1F",
-  "icons": [{"src":"./folkoop-mark.png","sizes":"96x96","type":"image/png","purpose":"any"}]
+  "name":"FOLKOOP",
+  "short_name":"FOLKOOP",
+  "description":"Människor, samarbete, projekt, stad och center.",
+  "lang":"sv",
+  "dir":"auto",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f6f3ee",
+  "theme_color":"#1F1F1F",
+  "icons":[
+    {"src":"./folkoop-mark.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"./folkoop-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
 }

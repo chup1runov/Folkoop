@@ -2,7 +2,7 @@ import {mkdir,copyFile,cp,rm,writeFile,readFile} from 'node:fs/promises';
 import {releaseVersion} from './release-version.mjs';
 // city-source.html is the preserved City entry; index.html is a frozen regression fixture.
 // The built root is FOLKOOP; City is an internal module, not a second product.
-const files=['city-source.html','folkoop.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','sw.js','icon.svg','icon-180.png','icon-192.png','icon-512.png','LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md','folkoop-core.js','folkoop-copy.js','folkoop.js','folkoop.css','folkoop-city.js','folkoop-mark.png'];
+const files=['city-source.html','folkoop.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','sw.js','icon.svg','icon-180.png','icon-192.png','icon-512.png','LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md','folkoop-core.js','folkoop-copy.js','folkoop.js','folkoop.css','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png'];
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const app=releaseVersion(await readFile('app.js','utf8'),pkg.version);
 await rm('_site',{recursive:true,force:true});await mkdir('_site',{recursive:true});
