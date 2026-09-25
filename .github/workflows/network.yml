@@ -30,4 +30,6 @@ jobs:
           set -euo pipefail
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-bootstrap.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250001_network.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250002_first_pilot.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-first-pilot.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-rls.sql
