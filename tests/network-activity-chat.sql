@@ -32,6 +32,17 @@ select fk_activity_test.ok((select count(*)=1 from public.fk_conversations where
 select fk_activity_test.ok((select count(*)=1 from public.fk_conversation_members where conversation_id=:'chat_id' and user_id='11111111-aaaa-4111-8111-111111111111' and role='owner'),'owner is linked-chat owner');
 select fk_activity_test.ok((select count(*)>=1 from public.fk_cooperation_activity where cooperation_id=:'coop_id' and event_type='created'),'cooperation creation is journaled');
 
+-- This whole fixture is one DB transaction, so now() is transaction-stable.
+-- Move the synthetic owner's initial markers into the past to model later HTTP requests.
+reset role;
+update public.fk_cooperation_reads
+ set last_read_at='2000-01-01T00:00:00Z'
+ where cooperation_id=:'coop_id' and user_id='11111111-aaaa-4111-8111-111111111111';
+update public.fk_conversation_members
+ set last_read_at='2000-01-01T00:00:00Z'
+ where conversation_id=:'chat_id' and user_id='11111111-aaaa-4111-8111-111111111111';
+set local role authenticated;
+
 -- Second pilot joins; membership and chat access are synchronized.
 select set_config('request.jwt.claim.sub','22222222-bbbb-4222-8222-222222222222',true);
 select public.fk_save_profile('Member','Design','',true);
