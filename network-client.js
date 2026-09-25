@@ -39,6 +39,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  }
  function id(value){if(!UUID.test(value||''))throw fail('INVALID_INPUT');return value;}
  function text(value,max,min=0){if(typeof value!=='string'||value.trim().length<min||value.length>max)throw fail('INVALID_INPUT');return value.trim();}
+ function idList(values,max=49){if(!Array.isArray(values)||values.length>max)throw fail('INVALID_INPUT');const out=[...new Set(values.map(id))];if(!out.length)throw fail('INVALID_INPUT');return out;}
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
@@ -73,10 +74,36 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   blocks(){return rows('fk_blocks?select=target_id&limit=100');},
   report(pid,reason){return rpc('fk_report',{p_post:id(pid),p_reason:text(reason,1000,2)});},
   deleteCommunity(cid){return rpc('fk_delete_community',{p_community:id(cid)});},
+  visibleProfiles(){return rows('fk_profiles?select=id,name,skills,about,listed&order=name.asc&limit=200');},
+  chats(){return rows('fk_conversations?select=id,kind,owner_id,title,created_at&order=created_at.desc&limit=100');},
+  chatMembers(){return rows('fk_conversation_members?select=conversation_id,user_id,role,joined_at,last_read_at&limit=500');},
+  chatInvites(){return rows('fk_conversation_invites?select=conversation_id,user_id,invited_by,created_at&order=created_at.desc&limit=100');},
+  chatMessages(cid){return rows('fk_messages?select=id,conversation_id,author_id,body,created_at&conversation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  startDirect(uid){return rpc('fk_start_direct',{p_other:id(uid)});},
+  createGroupChat(title,members){return rpc('fk_create_group_chat',{p_title:text(title,80,2),p_members:idList(members)});},
+  inviteChat(cid,uid){return rpc('fk_invite_chat',{p_conversation:id(cid),p_user:id(uid)});},
+  acceptChat(cid){return rpc('fk_accept_chat_invite',{p_conversation:id(cid)});},
+  declineChat(cid){return rpc('fk_decline_chat_invite',{p_conversation:id(cid)});},
+  leaveChat(cid){return rpc('fk_leave_chat',{p_conversation:id(cid)});},
+  removeChatMember(cid,uid){return rpc('fk_remove_chat_member',{p_conversation:id(cid),p_user:id(uid)});},
+  sendMessage(cid,body){return rpc('fk_send_message',{p_conversation:id(cid),p_body:text(body,4000,1)});},
+  markChatRead(cid){return rpc('fk_mark_chat_read',{p_conversation:id(cid)});},
+  deleteMessage(mid){return rpc('fk_delete_message',{p_message:id(mid)});},
+  reportMessage(mid,reason){return rpc('fk_report_message',{p_message:id(mid),p_reason:text(reason,1000,2)});},
+  deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports]=await Promise.all([
-   rows('fk_profiles?id=eq.'+uid),rows('fk_memberships?user_id=eq.'+uid),rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),rows('fk_blocks?user_id=eq.'+uid),rows('fk_reports?reporter_id=eq.'+uid+'&limit=1000')]);
-   return {profile,memberships,posts,blocks,reports,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites]=await Promise.all([
+   rows('fk_profiles?id=eq.'+uid),
+   rows('fk_memberships?user_id=eq.'+uid),
+   rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
+   rows('fk_blocks?user_id=eq.'+uid),
+   rows('fk_reports?reporter_id=eq.'+uid+'&limit=1000'),
+   rows('fk_conversation_members?user_id=eq.'+uid+'&limit=500'),
+   rows('fk_messages?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
+   rows('fk_message_reports?reporter_id=eq.'+uid+'&limit=1000'),
+   rows('fk_conversation_invites?user_id=eq.'+uid+'&limit=500')
+  ]);
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }
