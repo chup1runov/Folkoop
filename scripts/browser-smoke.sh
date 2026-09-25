@@ -17,3 +17,4 @@ python3 tests/network-browser.py
 python3 tests/marketplace-browser.py
 python3 tests/purchase-lifecycle-browser.py
 python3 tests/activity-chat-browser.py
+python3 tests/onboarding-browser.py
