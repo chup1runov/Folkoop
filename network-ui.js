@@ -262,6 +262,7 @@ function renderCooperation(u,r){
 function render(){
  const r=route(),relevant=['me','people','messages','together','projects'].includes(r);host.hidden=!relevant;
  document.getElementById('workspace').hidden=!!(api?.enabled&&['people','messages'].includes(r));
+ syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=api.user();
@@ -283,6 +284,7 @@ function render(){
  }
  host.innerHTML=html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.querySelectorAll('button').forEach(b=>b.disabled=busy);
+ syncBadges();
 }
 async function load(){
  const v=version,u=api.user();if(!u)return;
