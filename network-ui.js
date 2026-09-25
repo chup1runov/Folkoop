@@ -173,7 +173,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netNewChat'){const fd=new FormData(f);chatDraft={title:String(fd.get('title')||''),members:fd.getAll('members').map(String)};}
  if(f.id==='netChatInvite')inviteTarget=v.user||'';
  if(f.id==='netMessage')messageDrafts[selectedChat]=v.body||'';
- if(f.id==='netCoopCreate'){coopDraft={kind:v.kind||'project',title:v.title||'',description:v.description||'',location:v.location||'',targetQuantity:v.targetQuantity||'',unit:v.unit||''};render();}
+ if(f.id==='netCoopCreate'){coopDraft={kind:v.kind||'project',title:v.title||'',description:v.description||'',location:v.location||'',targetQuantity:v.targetQuantity||'',unit:v.unit||''};if(e.target.name==='kind')render();}
  if(f.id==='netCoopEdit')coopEditDraft={title:v.title||'',description:v.description||'',location:v.location||'',status:v.status||'open',targetQuantity:v.targetQuantity||'',unit:v.unit||''};
  if(f.id==='netCoopUpdate')coopUpdateDraft=v.body||'';
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
