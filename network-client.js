@@ -44,6 +44,10 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function status(value){if(!['open','active','done','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
  function taskStatus(value){if(!['todo','doing','done'].includes(value))throw fail('INVALID_INPUT');return value;}
  function quantity(value,{allowZero=false}={}){const n=Number(value);if(!Number.isFinite(n)||(allowZero?n<0:n<=0)||n>1000000000)throw fail('INVALID_INPUT');return n;}
+ function currency(value){const v=text(value,3,3).toUpperCase();if(!/^[A-Z]{3}$/.test(v))throw fail('INVALID_INPUT');return v;}
+ function deliveryMode(value){if(!['pickup','delivery','both'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function optionalDate(value){if(value===null||value===undefined||value==='')return null;if(!/^\d{4}-\d{2}-\d{2}$/.test(value))throw fail('INVALID_INPUT');return value;}
+ function integer(value,min,max){const n=Number(value);if(!Number.isInteger(n)||n<min||n>max)throw fail('INVALID_INPUT');return n;}
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
@@ -113,8 +117,14 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   assignProjectTask(tid,uid){return rpc('fk_assign_project_task',{p_task:id(tid),p_assignee:uid?id(uid):null});},
   deleteProjectTask(tid){return rpc('fk_delete_project_task',{p_task:id(tid)});},
   setPurchaseCommitment(cid,value,note=''){return rpc('fk_set_purchase_commitment',{p_cooperation:id(cid),p_quantity:quantity(value,{allowZero:true}),p_note:text(note,500)});},
+  purchaseOffers(cid){return rows('fk_purchase_offers?select=id,cooperation_id,provider_id,unit_price,currency,min_quantity,available_quantity,delivery_mode,delivery_fee,lead_time_days,valid_until,note,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&withdrawn_at=is.null&order=unit_price.asc&limit=100');},
+  purchaseChoice(cid){return rows('fk_purchase_offer_choice?select=cooperation_id,offer_id,selected_by,selected_at&cooperation_id=eq.'+id(cid)+'&limit=1');},
+  savePurchaseOffer(cid,v){const mode=deliveryMode(v.deliveryMode);const fee=mode==='pickup'?0:quantity(v.deliveryFee??0,{allowZero:true});return rpc('fk_save_purchase_offer',{p_cooperation:id(cid),p_unit_price:quantity(v.unitPrice),p_currency:currency(v.currency),p_min_quantity:quantity(v.minQuantity),p_available_quantity:(v.availableQuantity===null||v.availableQuantity===undefined||v.availableQuantity==='')?null:quantity(v.availableQuantity),p_delivery_mode:mode,p_delivery_fee:fee,p_lead_time_days:integer(v.leadTimeDays??0,0,365),p_valid_until:optionalDate(v.validUntil),p_note:text(v.note||'',1000)});},
+  withdrawPurchaseOffer(cid){return rpc('fk_withdraw_purchase_offer',{p_cooperation:id(cid)});},
+  choosePurchaseOffer(cid,offerId){return rpc('fk_choose_purchase_offer',{p_cooperation:id(cid),p_offer:offerId?id(offerId):null});},
+  reportPurchaseOffer(offerId,reason){return rpc('fk_report_purchase_offer',{p_offer:id(offerId),p_reason:text(reason,1000,2)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -127,9 +137,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_cooperation_members?user_id=eq.'+uid+'&limit=500'),
    rows('fk_cooperation_updates?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_project_tasks?creator_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
-   rows('fk_purchase_commitments?user_id=eq.'+uid+'&limit=500')
+   rows('fk_purchase_commitments?user_id=eq.'+uid+'&limit=500'),
+   rows('fk_purchase_offers?provider_id=eq.'+uid+'&order=updated_at.desc&limit=500'),
+   rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }
