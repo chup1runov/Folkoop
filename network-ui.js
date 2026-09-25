@@ -266,10 +266,11 @@ async function load(){
   selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
   selectedCooperation?.kind==='purchase'?api.purchaseCommitments(selectedCoop):Promise.resolve([])
  ]):[[],[],[]];
- const [purchaseOffers,purchaseChoice]=selectedCooperation?.kind==='purchase'?await Promise.all([
-  api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop)
- ]):[[],[]];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice};
+ const [purchaseOffers,purchaseChoice,purchaseProcess]=selectedCooperation?.kind==='purchase'?await Promise.all([
+  api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
+ ]):[[],[],[]];
+ const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,cooperations,coopMembers,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
