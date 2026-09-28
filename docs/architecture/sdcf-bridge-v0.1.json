@@ -11,7 +11,11 @@
       "id": "M01",
       "folkoop": "fk_cooperations",
       "meaning": "Intent-bearing cooperation workspace and lifecycle context.",
-      "sdcf": ["SystemScope", "Objective", "Plan"],
+      "sdcf": [
+        "SystemScope",
+        "Objective",
+        "Plan"
+      ],
       "mapping": "contextual",
       "note": "A cooperation row is not identical to any single SDCF class; its kind, description and lifecycle determine which SDCF roles are relevant."
     },
@@ -19,15 +23,24 @@
       "id": "M02",
       "folkoop": "fk_cooperation_members",
       "meaning": "People participating in a cooperation with owner/member roles.",
-      "sdcf": ["Agent", "Role"],
+      "sdcf": [
+        "Agent"
+      ],
       "mapping": "direct-role",
-      "note": "Membership is contextual participation, not a permanent property of the person."
+      "note": "Membership is contextual participation, not a permanent property of the person.",
+      "semanticRoles": [
+        "contextual participant role"
+      ]
     },
     {
       "id": "M03",
       "folkoop": "fk_project_tasks",
       "meaning": "Planned work and task execution state.",
-      "sdcf": ["Plan", "Action", "Claim"],
+      "sdcf": [
+        "Plan",
+        "Action",
+        "Claim"
+      ],
       "mapping": "contextual",
       "note": "todo/doing describe planned or ongoing work. done is a claim about task completion, not independent proof of a real-world outcome."
     },
@@ -35,15 +48,22 @@
       "id": "M04",
       "folkoop": "fk_purchase_offers",
       "meaning": "Supplier alternatives for a shared purchase.",
-      "sdcf": ["Alternative"],
+      "sdcf": [
+        "InformationItem"
+      ],
       "mapping": "direct-role",
-      "note": "Offer data remains provider-supplied unless independently verified."
+      "note": "Offer data remains provider-supplied unless independently verified.",
+      "semanticRoles": [
+        "alternative considered by a Decision"
+      ]
     },
     {
       "id": "M05",
       "folkoop": "fk_purchase_offer_choice",
       "meaning": "Recorded selection of one purchase alternative.",
-      "sdcf": ["Decision"],
+      "sdcf": [
+        "Decision"
+      ],
       "mapping": "direct-role",
       "note": "The selected offer must remain traceable to the alternatives actually considered."
     },
@@ -51,7 +71,10 @@
       "id": "M06",
       "folkoop": "fk_purchase_process",
       "meaning": "Shared-purchase process state machine.",
-      "sdcf": ["Process", "State"],
+      "sdcf": [
+        "Process",
+        "State"
+      ],
       "mapping": "direct-role",
       "note": "ordered/delivered/done are coordination states and may be self-reported; they are not automatically externally verified outcomes."
     },
@@ -59,33 +82,55 @@
       "id": "M07",
       "folkoop": "fk_cooperation_activity",
       "meaning": "Server-recorded cooperation activity journal.",
-      "sdcf": ["Process", "Provenance"],
+      "sdcf": [
+        "Process"
+      ],
       "mapping": "direct-role",
-      "note": "An activity record establishes that FOLKOOP recorded an event; it is not by itself evidence that the corresponding real-world effect occurred."
+      "note": "An activity record establishes that FOLKOOP recorded an event; it is not by itself evidence that the corresponding real-world effect occurred.",
+      "semanticRoles": [
+        "PROV-O provenance activity"
+      ]
     },
     {
       "id": "M08",
       "folkoop": "CivicItem sourceId/sourceUrl/fetchedAt/sourceUpdatedAt/confidence",
       "meaning": "Source and freshness metadata for civic information.",
-      "sdcf": ["Provenance", "ObservationResult", "Evidence"],
+      "sdcf": [
+        "InformationItem"
+      ],
       "mapping": "contextual",
-      "note": "Source metadata can support a claim, but the source record and the claim remain separate."
+      "note": "Source metadata can support a claim, but the source record and the claim remain separate.",
+      "semanticRoles": [
+        "PROV-O provenance entity",
+        "evidence relative to a Claim"
+      ]
     },
     {
       "id": "M09",
       "folkoop": "resolveResponsibility()",
       "meaning": "Rule-based civic routing recommendation.",
-      "sdcf": ["Claim", "DecisionSupport"],
+      "sdcf": [
+        "Claim"
+      ],
       "mapping": "contextual",
-      "note": "A resolver result is a routing recommendation backed by a source identifier; it is not the authority's own legal decision."
+      "note": "A resolver result is a routing recommendation backed by a source identifier; it is not the authority's own legal decision.",
+      "semanticRoles": [
+        "decision support / routing recommendation"
+      ]
     },
     {
       "id": "M10",
       "folkoop": "future match/recommendation",
       "meaning": "Possible future algorithmic recommendation of a person, resource or opportunity.",
-      "sdcf": ["Prediction", "DecisionSupport", "Model"],
+      "sdcf": [
+        "Prediction",
+        "Model"
+      ],
       "mapping": "future",
-      "note": "No current pilot capability is upgraded to an SDCF prediction merely by this bridge."
+      "note": "No current pilot capability is upgraded to an SDCF prediction merely by this bridge.",
+      "semanticRoles": [
+        "decision support"
+      ]
     }
   ],
   "guards": [
@@ -143,22 +188,55 @@
   "futureTriggers": [
     {
       "condition": "structured real-world outcome verification becomes a demonstrated pilot need",
-      "requiredSemantics": ["Outcome", "Evidence", "Agent", "Provenance"],
+      "requiredSemantics": [
+        "outcome role",
+        "evidence role",
+        "Agent",
+        "PROV-O provenance"
+      ],
       "preferredImplementation": "small relational outcome/confirmation tables first; semantic export later"
     },
     {
       "condition": "algorithmic or AI matching is introduced",
-      "requiredSemantics": ["Model", "Prediction", "Uncertainty", "Provenance"],
-      "requiredMetadata": ["method_or_model_version", "generated_at", "basis", "sensitive_attribute_exclusion"]
+      "requiredSemantics": [
+        "Model",
+        "Prediction",
+        "Uncertainty",
+        "PROV-O provenance"
+      ],
+      "requiredMetadata": [
+        "method_or_model_version",
+        "generated_at",
+        "basis",
+        "sensitive_attribute_exclusion"
+      ]
     },
     {
       "condition": "City routing adds consequential inference or automated submission",
-      "requiredSemantics": ["Claim", "Evidence", "Decision", "Authority", "Provenance"],
-      "requiredMetadata": ["source_version", "routing_rule_version", "confidence_or_uncertainty", "authority_boundary"]
+      "requiredSemantics": [
+        "Claim",
+        "evidence role",
+        "Decision",
+        "authority relation",
+        "PROV-O provenance"
+      ],
+      "requiredMetadata": [
+        "source_version",
+        "routing_rule_version",
+        "confidence_or_uncertainty",
+        "authority_boundary"
+      ]
     },
     {
       "condition": "FOLKOOP becomes multi-city with interoperable Nodes or external partners",
-      "requiredSemantics": ["SystemScope", "Agent", "Role", "Action", "Outcome", "Provenance"],
+      "requiredSemantics": [
+        "SystemScope",
+        "Agent",
+        "contextual role",
+        "Action",
+        "outcome role",
+        "PROV-O provenance"
+      ],
       "preferredImplementation": "versioned adapter/export layer rather than replacing the operational PostgreSQL model"
     }
   ]
