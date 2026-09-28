@@ -1,0 +1,37 @@
+name: One-time post-v024 branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/post-v024-branch-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Delete only verified merged work branches
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          check_and_delete() {
+            branch="$1"
+            expected="$2"
+            ref="refs/remotes/origin/$branch"
+            if ! git show-ref --verify --quiet "$ref"; then
+              echo "Already absent: $branch"
+              return
+            fi
+            actual="$(git rev-parse "$ref")"
+            test "$actual" = "$expected"
+            git diff --quiet origin/main "$ref" -- . ':(exclude).github/workflows/post-v024-branch-cleanup.yml'
+            git push origin ":refs/heads/$branch"
+          }
+          check_and_delete 'feature/pilot-invite-admission-v024' '7fee5859528fd85a83c406d8bd6da173bb9c3a66'
+          check_and_delete 'ops/v024-hosted-activation-record' '5c02a135506619f25229cc0389b09365276b0fae'
