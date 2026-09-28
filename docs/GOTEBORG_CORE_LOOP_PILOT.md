@@ -46,6 +46,8 @@ The objective is **local density**, not maximum signup count.
 
 Invite-only controlled pilot.
 
+For this first core-loop pilot, participants are **18+**. This avoids mixing the product hypothesis test with safeguarding requirements for minors; later youth participation requires its own reviewed safeguards.
+
 A practical working range is approximately **20–40 participants**. This is not a statistical power claim. It is a manageable cohort large enough to create multiple possible matches while still allowing manual safety review and post-pilot interviews.
 
 Participants should have real, current needs/offers. Do not create fake cooperation objects merely to improve pilot metrics.
