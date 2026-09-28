@@ -1,4 +1,5 @@
 -- Disposable CI database ONLY; never run on a live Supabase project.
+create extension if not exists pgcrypto;
 create role anon nologin;
 create role authenticated nologin;
 create schema auth;
