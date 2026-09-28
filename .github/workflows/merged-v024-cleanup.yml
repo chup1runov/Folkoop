@@ -1,0 +1,38 @@
+name: One-time merged v024 branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/merged-v024-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify squash ancestry and delete merged refs
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          cleanup() {
+            branch="$1"
+            expected_head="$2"
+            squash_commit="$3"
+            ref="refs/remotes/origin/$branch"
+            if ! git show-ref --verify --quiet "$ref"; then
+              echo "Already absent: $branch"
+              return
+            fi
+            test "$(git rev-parse "$ref")" = "$expected_head"
+            git cat-file -e "$squash_commit^{commit}"
+            git merge-base --is-ancestor "$squash_commit" origin/main
+            git push origin ":refs/heads/$branch"
+          }
+          cleanup 'feature/pilot-invite-admission-v024' '7fee5859528fd85a83c406d8bd6da173bb9c3a66' '02c235948c0ddb67a0d2560f0093c5126401e017'
+          cleanup 'ops/v024-hosted-activation-record' '5c02a135506619f25229cc0389b09365276b0fae' 'da778885a856db1c44f7e7318024be8a306d7c43'
