@@ -100,10 +100,10 @@ function home(opts={}){
  ensureActor();teleportTo(null,{mode:'home',instant:opts.instant});
 }
 function welcome(){
- ensureActor();actor.hidden=false;actor.disabled=true;arm.hidden=true;actor.classList.add('is-welcome');pose('welcome');
+ ensureActor();actor.hidden=true;actor.disabled=true;arm.hidden=true;actor.classList.add('is-welcome');pose('welcome');
 }
 function leaveWelcome(){
- ensureActor();actor.classList.remove('is-welcome');
+ ensureActor();actor.hidden=false;actor.classList.remove('is-welcome');
 }
 function element(){return ensureActor();}
 function refresh(){
