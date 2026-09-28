@@ -58,14 +58,14 @@ During onboarding she can:
 
 After onboarding she returns to the lower corner and becomes the clickable contextual helper.
 
-No canvas/video/3D engine is required.
+A tiny same-origin canvas pass removes the Character Pack's connected dark edge background once per source image; no video/3D/animation engine is required.
 
 ## Performance model
 
 The character layer is deliberately small:
 - two transparent WebP files totalling only a few tens of kilobytes;
 - one small local JavaScript controller;
-- CSS transforms/opacity/keyframes;
+- one small one-time client-side canvas cleanup for the source background;\n- CSS transforms/opacity/keyframes;
 - no animation server;
 - no AI/model request;
 - no websocket;
