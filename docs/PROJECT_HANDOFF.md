@@ -50,7 +50,8 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 
 ## Key files
 
-- `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics, cold-start strategy and feature decision rules.
+- `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics and cold-start strategy.
+- `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
