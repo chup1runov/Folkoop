@@ -312,6 +312,8 @@ It is to prove that one sufficiently dense local network can repeatedly convert 
 
 Expansion to another city should follow evidence that the local model works, not merely the completion of more software features.
 
+The first concrete test is defined in `docs/GOTEBORG_CORE_LOOP_PILOT.md`: a deliberately narrow need/offer pilot measuring the path from genuine intent to confirmed real-world outcome and repeat cooperation.
+
 ## Primary users
 
 FOLKOOP is intentionally broad, but the product should enter through concrete use cases rather than "for everyone".
