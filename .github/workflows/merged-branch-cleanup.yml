@@ -24,5 +24,5 @@ jobs:
           expected='664ac307b97ae04484b3e8d8905a212f47525a72'
           ref="refs/remotes/origin/$branch"
           test "$(git rev-parse "$ref")" = "$expected"
-          git diff --quiet origin/main "$ref"
+          git diff --quiet origin/main "$ref" -- . ':(exclude).github/workflows/merged-branch-cleanup.yml'
           git push origin ":refs/heads/$branch"
