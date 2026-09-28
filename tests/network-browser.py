@@ -180,7 +180,11 @@ async def main():
   assert await page.locator('#netCoopCreate [name=kind]').input_value()=='purchase'
   assert await page.locator('#netCoopCreate [name=targetQuantity]').input_value()=='10'
   assert await page.locator('#netCoopCreate [name=unit]').input_value()=='m3'
-  assert await page.locator('#netCoopCreate').evaluate('(f)=>f.checkValidity()')
+  purchase_validity=await page.locator('#netCoopCreate').evaluate("""(f)=>({
+   valid:f.checkValidity(),
+   fields:[...f.elements].filter(x=>x.name).map(x=>({name:x.name,value:x.value,required:x.required,valid:x.validity.valid,message:x.validationMessage}))
+  })""")
+  assert purchase_validity['valid'],purchase_validity
   purchase_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
   await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
   _,purchase_payload=await wait_request(state,'/fk_create_cooperation',purchase_creates)
@@ -200,7 +204,11 @@ async def main():
   await page.fill('#netCoopCreate [name=title]','Общая мастерская')
   await page.fill('#netCoopCreate [name=description]','Ищем помещение и команду')
   assert await page.locator('#netCoopCreate [name=kind]').input_value()=='project'
-  assert await page.locator('#netCoopCreate').evaluate('(f)=>f.checkValidity()')
+  project_validity=await page.locator('#netCoopCreate').evaluate("""(f)=>({
+   valid:f.checkValidity(),
+   fields:[...f.elements].filter(x=>x.name).map(x=>({name:x.name,value:x.value,required:x.required,valid:x.validity.valid,message:x.validationMessage}))
+  })""")
+  assert project_validity['valid'],project_validity
   project_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
   await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
   _,project_payload=await wait_request(state,'/fk_create_cooperation',project_creates)
