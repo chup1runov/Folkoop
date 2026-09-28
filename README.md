@@ -4,7 +4,7 @@
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.24.0
+## Current pilot state — v0.25.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
@@ -15,6 +15,7 @@ Implemented:
 - signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
 - invite-only network admission after Auth verification; plaintext invite codes are never stored in the database;
+- Google OAuth browser scaffold is implemented but disabled by configuration until provider credentials and a two-account hosted test are complete;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
 - automatically linked work chat for every cooperation object, synchronized with cooperation membership;
