@@ -18,24 +18,11 @@ jobs:
           fetch-depth: 0
       - name: Fetch branch refs
         run: git fetch origin '+refs/heads/*:refs/remotes/origin/*'
-      - name: Delete only verified obsolete branches
+      - name: Delete verified temporary housekeeping branches
         env:
           BRANCHES: >-
-            feature/folkoop-v0.15
-            feature/folkoop-v0.16-network
-            feature/folkoop-v0.16.1-free-bootstrap
-            feature/folkoop-v0.16.2-db-tune
-            feature/folkoop-v0.17-messaging
-            feature/folkoop-v0.18-cooperation
-            feature/folkoop-v0.19-purchase-offers
-            fix/v019-network-browser-regression
-            feature/folkoop-v0.20-purchase-lifecycle
-            feature/folkoop-v0.21-activity-chat
-            ci/v021-exact-head-check
-            feature/folkoop-v0.22-navigation-onboarding
-            feature/folkoop-v0.23-action-home
-            feature/home-welcome-research-v0.23.1
             housekeeping-remove-public-gmail-2026-09-28
+            housekeeping/remove-public-gmail-2026-09-28
         run: |
           set -euo pipefail
           for branch in $BRANCHES; do
@@ -47,8 +34,8 @@ jobs:
             if git merge-base --is-ancestor "$ref" origin/main; then
               echo "Deleting ancestor branch: $branch"
               git push origin --delete "$branch"
-            elif git diff --quiet origin/main "$ref"; then
-              echo "Deleting tree-equivalent branch: $branch"
+            elif git diff --quiet origin/main "$ref" -- . ':(exclude).github/workflows/branch-cleanup.yml'; then
+              echo "Deleting branch equivalent except for this temporary workflow: $branch"
               git push origin --delete "$branch"
             else
               echo "::error::Refusing to delete $branch: unique content remains"
