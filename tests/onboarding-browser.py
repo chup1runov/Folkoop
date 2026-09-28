@@ -44,7 +44,7 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#ksyushaActor').bounding_box()
-  assert box and box['left']>=0 and box['top']>=0 and box['right'] if 'right' in box else True
+  assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   if title=='Четыре быстрых действия':
    await expect(page.locator('#ksyushaActor')).to_have_class(r'.*is-perched.*')
   if idx<len(titles)-1:
