@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-28 September 2026. Current development slice: v0.24.0 invite-only pilot admission. Check exact commit CI, hosted migration state and deployment before claiming it is live.
+28 September 2026. Current development slice: v0.25.0 disabled Google OAuth scaffold on top of v0.24 invite-only admission. Check exact commit CI, hosted migration state and deployment before claiming it is live.
 
 ## Canonical decisions
 
@@ -36,7 +36,7 @@ Network capabilities now include:
 
 All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
 
-General public onboarding is not ready. v0.24 invite-code admission is now applied on the hosted project; only SHA-256 hashes are stored privately, and four unused one-time pilot slots P01–P04 are seeded. A post-migration hosted transaction smoke passed 21/21 checks and rolled back cleanly. The remaining blocker is ordinary participant Auth: the built-in email path is still restricted to project-team addresses. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
+General public onboarding is not ready. v0.25 adds a fail-closed Google OAuth popup/callback scaffold, but production config keeps `googleOAuthEnabled:false` until external Google/Supabase provider setup and two-account verification are complete. v0.24 invite-code admission is now applied on the hosted project; only SHA-256 hashes are stored privately, and four unused one-time pilot slots P01–P04 are seeded. A post-migration hosted transaction smoke passed 21/21 checks and rolled back cleanly. The remaining blocker is ordinary participant Auth: the built-in email path is still restricted to project-team addresses. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
 
 Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket realtime in this slice. Shared-purchase quantities are coordination values only: no checkout, payment, escrow, vendor settlement or delivery guarantee is implemented.
 
@@ -55,6 +55,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
 - `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
+- `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
 - `supabase/migrations/202609250001_network.sql` — base network/RLS.
 - `202609250002_first_pilot.sql` — historical one-user pilot bootstrap contract.
