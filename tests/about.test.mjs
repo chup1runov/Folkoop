@@ -23,11 +23,12 @@ test('about: idea year attributed separately from repository creation',()=>{
  assert.equal(new URL(A.BIO_SOURCE).hostname,'www.mittskifte.org');
 });
 test('about: approved contacts contain no automatic message or position payload',()=>{
- assert.equal(A.CONTACT.email,'mailto:chup1runov@gmail.com');
+ assert.equal(A.CONTACT.github,'https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml');
  assert.equal(A.CONTACT.telegram,'https://t.me/chup1runov');
- assert.equal(new URL(A.CONTACT.email).search,'');assert.equal(new URL(A.CONTACT.telegram).search,'');
+ const contact=new URL(A.CONTACT.github);assert.equal(contact.hostname,'github.com');assert.equal(contact.searchParams.get('template'),'contact-author.yml');
+ assert.equal(new URL(A.CONTACT.telegram).search,'');
  assert(!script.includes('navigator.geolocation'));assert(!script.includes('localStorage'));
- assert(!script.includes('fetch('));assert(!script.includes('issues/new'));
+ assert(!script.includes('fetch('));assert(!script.includes('chup1runov@gmail.com'));assert(!copy.includes('gmail.com'));
 });
 test('about: activities and finance remain plans, not a launched rewards service',()=>{
  assert(A.COPY.en.questions[7][1].includes('not available'));
