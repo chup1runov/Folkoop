@@ -26,3 +26,12 @@ test('storage failure after consent returns failure while preserving in-memory e
 test('returned snapshots cannot mutate live state',()=>{const w=C.workspace();w.add(item);w.get().drafts[0].title='changed';assert.equal(w.get().drafts[0].title,'Together');});
 test('erase resets profile, drafts and consent without clearing unrelated preferences',()=>{const s=memory(),w=C.workspace(s);s.setItem('sverinav-language','ru');w.profile({name:'Test'});w.add(item);w.remember(true);assert(w.clear());assert.equal(w.get().drafts.length,0);assert.equal(w.get().profile.name,'');assert.equal(w.isPersistent(),false);assert.equal(s.getItem('sverinav-language'),'ru');});
 test('new shell has no third-party network calls or payment simulation',async()=>{const s=await readFile('folkoop.js','utf8');assert(!/\bfetch\(/.test(s));assert(!/WebSocket|sendBeacon/.test(s));assert(s.includes("e.origin!==location.origin"));assert(s.includes("e.source!==frame.contentWindow"));});
+
+test('Ksyusha presence is local-only and ships canonical lightweight assets',async()=>{
+ const guide=await readFile('ksyusha-guide.js','utf8');
+ assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
+ for(const asset of ['ksyusha-wave.webp','ksyusha-welcome.webp','ksyusha-point.webp','ksyusha-idle.webp'])assert((await readFile(asset)).length>1000,asset);
+ const shell=await readFile('folkoop.js','utf8');
+ assert(shell.includes("folkoop-onboarding-v3"));
+ assert(shell.includes("folkoop-language-choice-v1"));
+});
