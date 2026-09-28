@@ -51,7 +51,7 @@ Use standard GitHub-hosted runners for this public repository. Do not switch to 
 
 ## Outcome of this change
 
-Current state: `kravcentralen-staging` is paused; dedicated Free project `folkoop` exists; reviewed network migrations are applied; the public client uses only the publishable key. No paid plan, paid add-on or payment method was enabled. Built-in mail remains suitable only for the initial team-member bootstrap, not general user onboarding.
+Current state: `kravcentralen-staging` is paused; dedicated Free project `folkoop` exists; reviewed network migrations through v0.24 invite admission are applied; the public client uses only the publishable key. Four one-time invite hashes are seeded privately for the controlled pilot. No paid plan, paid add-on or payment method was enabled. Built-in mail remains restricted to project-team addresses and is not a general participant Auth route.
 
 ## Primary sources checked 25 September 2026
 
