@@ -53,7 +53,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics and cold-start strategy.
 - `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
-- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI Ksyusha helper.\n- `docs/ONBOARDING_KSYUSHA_V027.md` — historical language-first gate implementation.\n- `docs/ONBOARDING_KSYUSHA_V028.md` — canonical Mura multi-pose web runtime, alpha asset contract and explicit remaining authored-art gap.
+- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.\n- `docs/PRE_PILOT_PRIVACY_DATA_MAP.md` — current technical data map; distinguishes narrow profile deletion from broad/destructive Auth-user cascades and blocks ordinary-participant closure until policy is decided.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI Ksyusha helper.\n- `docs/ONBOARDING_KSYUSHA_V027.md` — historical language-first gate implementation.\n- `docs/ONBOARDING_KSYUSHA_V028.md` — canonical Mura multi-pose web runtime, alpha asset contract and explicit remaining authored-art gap.
 - `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
@@ -86,6 +86,7 @@ Product priority is now the Göteborg core-loop pilot rather than adding breadth
 
 Before that pilot:
 - keep the 21/21 post-v0.24 hosted transaction smoke as the current database/RLS/admission baseline;
+- resolve the P0 privacy/account-lifecycle decisions before ordinary participants; `Delete profile` is not account deletion and raw Auth deletion is not an approved closure path;
 - configure and verify the Google OAuth pilot route before distributing any plaintext invite codes;
 - fix only defects that block the core loop or safety;
 - prepare private pilot outcome logging outside the public repository.
