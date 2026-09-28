@@ -1,0 +1,28 @@
+name: One-time product policy branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/policy-branch-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify and delete merged policy branch
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          branch='product/permanent-decision-policy'
+          expected='3d8f28fee317f05e4de18b6746e8d8e68fb8fd7c'
+          ref="refs/remotes/origin/$branch"
+          test "$(git rev-parse "$ref")" = "$expected"
+          git diff --quiet origin/main "$ref" -- . ':(exclude).github/workflows/policy-branch-cleanup.yml'
+          git push origin ":refs/heads/$branch"
