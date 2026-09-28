@@ -6,16 +6,20 @@ const ctx=vm.createContext({URL,AbortController,setTimeout,clearTimeout});
 vm.runInContext(await readFile('network-client.js','utf8'),ctx);
 const N=ctx.FolkoopNetwork;
 const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishableKey:'sb_publishable_example_for_tests_only'};
+const oauthCfg={...cfg,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/Folkoop/auth-callback.html'};
 const uid='11111111-1111-4111-8111-111111111111',cid='22222222-2222-4222-8222-222222222222';
 const json=(v,status=200)=>new Response(JSON.stringify(v),{status,headers:{'content-type':'application/json'}});
-function setup(extra){const calls=[];let now=1000;
- const c=N.client(cfg,{clock:()=>now,transport:async(url,o)=>{calls.push({url,...o});if(extra){const r=await extra(url,o);if(r)return r;}
+function setup(extra,config=cfg){const calls=[];let now=1000;
+ const c=N.client(config,{clock:()=>now,transport:async(url,o)=>{calls.push({url,...o});if(extra){const r=await extra(url,o);if(r)return r;}
  if(url.endsWith('/verify'))return json({access_token:'test-token',expires_in:100,refresh_token:'never-store'});
  if(url.endsWith('/user'))return json({id:uid,email:'synthetic@example.test'});
  if(url.includes('/rpc/'))return json(null);return json([]);
  }});return{c,calls,expire(){now+=200000;},login:(invite='FOLK-TEST-INVITE-01')=>c.verify('synthetic@example.test','123456',invite)};}
 test('disabled configuration never sends requests',async()=>{const c=N.client({enabled:false},{transport:()=>{throw Error('MUST_NOT_CALL');}});assert(!c.enabled);await assert.rejects(c.requestCode('test@example.test'),e=>e.code==='DISABLED');});
 test('configuration fails closed without HTTPS project and publishable key',()=>{for(const change of [{url:'http://abcdefghijklmnopqrst.supabase.co'},{url:'https://attacker.example'},{url:cfg.url+'/other'},{url:cfg.url+'?token=x'},{url:'https://x@abcdefghijklmnopqrst.supabase.co'},{publishableKey:'sb_secret_DO_NOT_SHIP'},{publishableKey:'eyJlegacyJWT'}])assert.throws(()=>N.client({...cfg,...change}),e=>e.code==='CONFIG');});
+test('Google OAuth scaffold is disabled unless explicitly configured',()=>{const s=setup();assert.equal(s.c.googleOAuthEnabled,false);assert.throws(()=>s.c.googleOAuthUrl(),e=>e.code==='DISABLED');});
+test('Google OAuth URL contains only provider and configured redirect',()=>{const s=setup(null,oauthCfg);assert.equal(s.c.googleOAuthEnabled,true);const u=new URL(s.c.googleOAuthUrl());assert.equal(u.origin,cfg.url);assert.equal(u.pathname,'/auth/v1/authorize');assert.equal(u.searchParams.get('provider'),'google');assert.equal(u.searchParams.get('redirect_to'),oauthCfg.oauthRedirectUrl);assert(!u.href.includes('FOLK-TEST-INVITE'));});
+test('OAuth completion verifies user then claims pilot without persisting provider data',async()=>{const s=setup(null,oauthCfg);await s.c.completeOAuth('x'.repeat(32),3600,'FOLK-TEST-INVITE-01');assert.equal(s.c.user().id,uid);assert.equal(s.calls.length,2);assert(s.calls[0].url.endsWith('/auth/v1/user'));assert.equal(s.calls[0].headers.Authorization,'Bearer '+'x'.repeat(32));assert(s.calls[1].url.endsWith('/rest/v1/rpc/fk_claim_pilot_invite'));assert.deepEqual(JSON.parse(s.calls[1].body),{p_code:'FOLK-TEST-INVITE-01'});});
 test('OTP request may create an Auth user without secrets in URL',async()=>{const s=setup();await s.c.requestCode('test@example.test');const r=s.calls[0];assert.equal(r.method,'POST');assert.equal(JSON.parse(r.body).create_user,true);assert(!r.url.includes('test@'));assert.equal(r.credentials,'omit');assert.equal(r.cache,'no-store');assert.equal(r.redirect,'error');assert(!r.headers.Authorization);});
 test('bad email rejected before transport',async()=>{const s=setup();await assert.rejects(s.c.requestCode('invalid'),e=>e.code==='INVALID_INPUT');assert.equal(s.calls.length,0);});
 test('bad OTP rejected before transport',async()=>{const s=setup();await assert.rejects(s.c.verify('test@example.test','abcdef'),e=>e.code==='INVALID_INPUT');assert.equal(s.calls.length,0);});

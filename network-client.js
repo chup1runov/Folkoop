@@ -6,9 +6,10 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]
 const fail=code=>Object.assign(new Error(code),{code});
 function configuration(value){
  if(value?.enabled!==true)return null;
- let u;try{u=new URL(value.url);}catch{throw fail('CONFIG');}
+ let u,r;try{u=new URL(value.url);r=new URL(value.oauthRedirectUrl||'https://invalid.example/');}catch{throw fail('CONFIG');}
  if(u.protocol!=='https:'||!/^\w{20}\.supabase\.co$/.test(u.hostname)||u.port||u.username||u.password||u.pathname!=='/'||u.search||u.hash||!/^sb_publishable_[A-Za-z0-9_-]{10,200}$/.test(value.publishableKey||''))throw fail('CONFIG');
- return {url:u.origin,key:value.publishableKey};
+ if(value.googleOAuthEnabled===true&&(r.protocol!=='https:'||r.username||r.password||r.search||r.hash))throw fail('CONFIG');
+ return {url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
 }
 function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.now}={}){
  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
@@ -67,7 +68,21 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
-  enabled:!!cfg,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
+  enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
+  googleOAuthUrl(){
+   if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');
+   const u=new URL(cfg.url+'/auth/v1/authorize');u.searchParams.set('provider','google');u.searchParams.set('redirect_to',cfg.oauthRedirectUrl);return u.href;
+  },
+  async completeOAuth(accessToken,expiresIn,inviteCode=''){
+   if(typeof accessToken!=='string'||accessToken.length<20||accessToken.length>12000)throw fail('INVALID_INPUT');
+   const seconds=Number(expiresIn);if(!Number.isFinite(seconds)||seconds<=0||seconds>86400)throw fail('INVALID_INPUT');
+   const invite=text(inviteCode,120),attempt=++authAttempt;
+   const who=await request('/auth/v1/user',{auth:false,token:accessToken});
+   if(attempt!==authAttempt)throw fail('STALE');
+   session={id:id(who?.id),token:accessToken,expiresAt:clock()+seconds*1000};
+   try{await rpc('fk_claim_pilot_invite',{p_code:invite});}catch(e){clear();throw e;}
+   notify();return user();
+  },
   async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
   async verify(email,code,inviteCode=''){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');

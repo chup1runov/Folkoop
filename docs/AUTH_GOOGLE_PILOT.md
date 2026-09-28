@@ -4,7 +4,7 @@
 
 ## Status
 
-**Preferred participant Auth route; not enabled yet.**
+**Application scaffold prepared; Google provider still not enabled.**
 
 FOLKOOP v0.24 already has hosted invite-only admission. The remaining pilot blocker is a genuinely usable Auth route for ordinary invited participants.
 
@@ -15,6 +15,8 @@ Google OAuth is the preferred first candidate because it:
 - does not require FOLKOOP to store participant passwords.
 
 This choice is for the controlled Göteborg pilot, not a permanent requirement that every future FOLKOOP user have a Google account.
+
+v0.25 prepares a fail-closed popup/callback flow behind `googleOAuthEnabled:false`. No Google button appears until the provider is configured and the flag is deliberately enabled. The callback does not use localStorage/sessionStorage: it clears the fragment and passes the short-lived Supabase access token only to the same-origin opener tab via `postMessage`; FOLKOOP then verifies `/auth/v1/user` and applies the normal invite gate.
 
 ## Current public endpoints
 
@@ -37,6 +39,22 @@ Supabase Google-provider callback URI:
 ## External setup gate
 
 These provider-side steps require access to a Google Cloud / Google Auth Platform account and cannot be completed from the currently connected project tools.
+
+### Google testing-mode constraint
+
+For the initial two-account technical test, Google Auth Platform **Testing** mode is suitable.
+
+Current Google documentation states:
+- Testing mode supports up to **100 explicitly listed test users**.
+- A test user's authorization expires **7 days after consent**.
+- Development/testing apps do not need full OAuth verification, but users can see an unverified/test warning.
+
+That means Testing mode is acceptable for the first A/B hosted verification. For the planned three-week human pilot, either participants must re-authorize after seven days or the publishing/verification strategy must be reviewed before rollout. Do not silently treat the two-account test configuration as a production-ready identity setup.
+
+Primary Google references:
+- https://support.google.com/cloud/answer/15549945
+- https://support.google.com/cloud/answer/13464323
+- https://developers.google.com/workspace/guides/configure-oauth-consent
 
 ### 1. Google Auth Platform
 
@@ -80,21 +98,19 @@ The application should use a dedicated same-origin callback page such as:
 
 That callback must be added to Supabase's allowed Redirect URLs before a live OAuth test.
 
-## Application implementation gate
+## Application implementation status
 
-Do not enable a Google sign-in button until the provider is configured.
+v0.25 implements the following pieces but keeps them disabled in production until provider setup is complete:
 
-The implementation PR should:
-
-1. add a dedicated same-origin OAuth callback page;
-2. initiate Google Auth through Supabase;
-3. keep the access token in memory only;
-4. verify the returned Supabase user through `/auth/v1/user`;
-5. call `fk_claim_pilot_invite` after Auth succeeds;
-6. require a one-time FOLKOOP invite code only on first admission;
-7. clear the Auth session if FOLKOOP admission fails;
-8. preserve existing email-OTP support for project-team testing until deliberately retired;
-9. fail closed when the Google provider flag is disabled.
+1. dedicated same-origin OAuth callback page;
+2. native Supabase `/auth/v1/authorize?provider=google` popup route;
+3. callback-fragment parsing with immediate URL cleanup;
+4. same-origin/source checked `postMessage` back to the opener;
+5. memory-only Supabase access token;
+6. `/auth/v1/user` verification before creating the in-memory session;
+7. the existing `fk_claim_pilot_invite` gate after Auth succeeds;
+8. preserved email-OTP support for project-team testing;
+9. fail-closed behavior while `googleOAuthEnabled` is false.
 
 No provider token is needed by FOLKOOP. Do not request or retain Google API access beyond identity.
 
