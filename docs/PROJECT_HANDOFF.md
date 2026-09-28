@@ -51,6 +51,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 ## Key files
 
 - `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics, cold-start strategy and feature decision rules.
+- `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
 - `supabase/migrations/202609250001_network.sql` — base network/RLS.
@@ -76,12 +77,16 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 
 ## Next engineering priorities
 
-After v0.23 is green and deployed:
-- run real two-account hosted checks for messaging and cooperation;
-- add pagination to message/activity/Home feeds and verify attention ordering across two real sessions;
-- test the full shared-purchase lifecycle with two real pilot accounts and one nonbinding supplier quote; verify that self-reported status labels remain clear;
-- add project milestones/files only if a zero-cost, privacy-safe storage plan is chosen;
-- expand free public authentication route;
-- keep improving Center/City integration without coupling account access to civic basics.
+Product priority is now the Göteborg core-loop pilot rather than adding breadth.
+
+Before that pilot:
+- run real two-account hosted checks for `need` / `offer`, joining, linked work chat, status changes and blocking;
+- resolve a genuinely free pilot authentication route for the invited cohort;
+- fix only defects that block the core loop or safety;
+- prepare private pilot outcome logging outside the public repository.
+
+Do **not** delay the core-loop pilot for pagination, AI matching, payments, ratings, advanced marketplace work or new Center/City breadth unless a blocking dependency is demonstrated.
+
+After evidence, use the observed bottleneck to choose the next engineering slice.
 
 Do not silently enable paid plans, paid SMTP, paid push, paid storage or payment-processing services.
