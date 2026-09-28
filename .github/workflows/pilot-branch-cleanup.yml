@@ -1,0 +1,28 @@
+name: One-time merged pilot branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/pilot-branch-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify and delete merged pilot branch
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          branch='product/goteborg-core-loop-pilot-v1'
+          expected='6bb6253c028819e34ad93c71e6382d7b8a6a1f6e'
+          ref="refs/remotes/origin/$branch"
+          test "$(git rev-parse "$ref")" = "$expected"
+          git diff --quiet origin/main "$ref" -- . ':(exclude).github/workflows/pilot-branch-cleanup.yml'
+          git push origin ":refs/heads/$branch"
