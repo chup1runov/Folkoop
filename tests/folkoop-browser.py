@@ -13,7 +13,7 @@ async def main():
    if route.request.url.startswith(BASE):await route.continue_()
    else:await route.abort()
   await context.route('**/*',local_only)
-  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v1','done')")
+  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v2','done')")
   page=await context.new_page();errors=[]
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
@@ -97,7 +97,7 @@ async def main():
   results.append('Blocked storage does not prevent starting or editing My page')
   await blocked.close()
   offline=await browser.new_context(service_workers='allow',locale='en-US')
-  await offline.add_init_script("localStorage.setItem('folkoop-onboarding-v1','done');localStorage.setItem('folkoop-workspace-v1',JSON.stringify({version:1,profile:{name:'Offline',city:'Göteborg',skills:'',about:''},drafts:[]}))")
+  await offline.add_init_script("localStorage.setItem('folkoop-onboarding-v2','done');localStorage.setItem('folkoop-workspace-v1',JSON.stringify({version:1,profile:{name:'Offline',city:'Göteborg',skills:'',about:''},drafts:[]}))")
   op=await offline.new_page();await op.goto(BASE)
   await op.evaluate('navigator.serviceWorker.ready');await op.wait_for_function('!!navigator.serviceWorker.controller')
   await offline.set_offline(True);await op.reload()
