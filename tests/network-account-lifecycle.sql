@@ -78,8 +78,7 @@ insert into public.fk_project_tasks(id,cooperation_id,creator_id,assignee_id,tit
  ('30000000-0000-4000-8000-000000000003','30000000-0000-4000-8000-000000000001','a1111111-1111-4111-8111-111111111111','b2222222-2222-4222-8222-222222222222','Alice-created task');
 insert into public.fk_cooperation_activity(cooperation_id,actor_id,event_type,label) values
  ('30000000-0000-4000-8000-000000000001','a1111111-1111-4111-8111-111111111111','update_posted','Alice activity');
-insert into public.fk_cooperation_reads(cooperation_id,user_id) values
- ('30000000-0000-4000-8000-000000000001','a1111111-1111-4111-8111-111111111111');
+-- fk_cooperation_reads is populated automatically by the membership/activity trigger.
 
 -- A-owned cooperation: deleting A removes the whole shared object and B membership.
 insert into public.fk_cooperations(id,owner_id,kind,title,description) values
