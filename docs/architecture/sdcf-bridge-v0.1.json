@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "bridgeVersion": "0.1",
+  "referenceFramework": "SDCF v0.6-beta-rc2",
+  "status": "advisory",
+  "runtimeDependency": false,
+  "productPriority": "Göteborg core-loop first. Feature breadth later.",
+  "purpose": "Keep FOLKOOP cooperation, outcome and civic-routing semantics compatible with the SDCF type-safety model without adding RDF/OWL/SHACL to the production runtime.",
+  "mappings": [
+    {
+      "id": "M01",
+      "folkoop": "fk_cooperations",
+      "meaning": "Intent-bearing cooperation workspace and lifecycle context.",
+      "sdcf": ["SystemScope", "Objective", "Plan"],
+      "mapping": "contextual",
+      "note": "A cooperation row is not identical to any single SDCF class; its kind, description and lifecycle determine which SDCF roles are relevant."
+    },
+    {
+      "id": "M02",
+      "folkoop": "fk_cooperation_members",
+      "meaning": "People participating in a cooperation with owner/member roles.",
+      "sdcf": ["Agent", "Role"],
+      "mapping": "direct-role",
+      "note": "Membership is contextual participation, not a permanent property of the person."
+    },
+    {
+      "id": "M03",
+      "folkoop": "fk_project_tasks",
+      "meaning": "Planned work and task execution state.",
+      "sdcf": ["Plan", "Action", "Claim"],
+      "mapping": "contextual",
+      "note": "todo/doing describe planned or ongoing work. done is a claim about task completion, not independent proof of a real-world outcome."
+    },
+    {
+      "id": "M04",
+      "folkoop": "fk_purchase_offers",
+      "meaning": "Supplier alternatives for a shared purchase.",
+      "sdcf": ["Alternative"],
+      "mapping": "direct-role",
+      "note": "Offer data remains provider-supplied unless independently verified."
+    },
+    {
+      "id": "M05",
+      "folkoop": "fk_purchase_offer_choice",
+      "meaning": "Recorded selection of one purchase alternative.",
+      "sdcf": ["Decision"],
+      "mapping": "direct-role",
+      "note": "The selected offer must remain traceable to the alternatives actually considered."
+    },
+    {
+      "id": "M06",
+      "folkoop": "fk_purchase_process",
+      "meaning": "Shared-purchase process state machine.",
+      "sdcf": ["Process", "State"],
+      "mapping": "direct-role",
+      "note": "ordered/delivered/done are coordination states and may be self-reported; they are not automatically externally verified outcomes."
+    },
+    {
+      "id": "M07",
+      "folkoop": "fk_cooperation_activity",
+      "meaning": "Server-recorded cooperation activity journal.",
+      "sdcf": ["Process", "Provenance"],
+      "mapping": "direct-role",
+      "note": "An activity record establishes that FOLKOOP recorded an event; it is not by itself evidence that the corresponding real-world effect occurred."
+    },
+    {
+      "id": "M08",
+      "folkoop": "CivicItem sourceId/sourceUrl/fetchedAt/sourceUpdatedAt/confidence",
+      "meaning": "Source and freshness metadata for civic information.",
+      "sdcf": ["Provenance", "ObservationResult", "Evidence"],
+      "mapping": "contextual",
+      "note": "Source metadata can support a claim, but the source record and the claim remain separate."
+    },
+    {
+      "id": "M09",
+      "folkoop": "resolveResponsibility()",
+      "meaning": "Rule-based civic routing recommendation.",
+      "sdcf": ["Claim", "DecisionSupport"],
+      "mapping": "contextual",
+      "note": "A resolver result is a routing recommendation backed by a source identifier; it is not the authority's own legal decision."
+    },
+    {
+      "id": "M10",
+      "folkoop": "future match/recommendation",
+      "meaning": "Possible future algorithmic recommendation of a person, resource or opportunity.",
+      "sdcf": ["Prediction", "DecisionSupport", "Model"],
+      "mapping": "future",
+      "note": "No current pilot capability is upgraded to an SDCF prediction merely by this bridge."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G01",
+      "name": "done_is_not_confirmed_outcome",
+      "rule": "A UI/database done state must not be reported as an independently confirmed real-world Outcome without separate confirmation or evidence."
+    },
+    {
+      "id": "G02",
+      "name": "activity_is_not_real_world_evidence",
+      "rule": "A cooperation activity-log event proves only that FOLKOOP recorded the event or state change, not that the external effect occurred."
+    },
+    {
+      "id": "G03",
+      "name": "source_is_not_claim",
+      "rule": "City source metadata and a claim inferred from that source must remain distinguishable."
+    },
+    {
+      "id": "G04",
+      "name": "routing_is_not_authority_decision",
+      "rule": "A FOLKOOP civic-routing result must not be presented as an official authority decision unless a real authority integration produced that decision."
+    },
+    {
+      "id": "G05",
+      "name": "organic_and_facilitated_matches_remain_distinct",
+      "rule": "Operator-facilitated matches must remain distinguishable from organic product discovery and matching."
+    },
+    {
+      "id": "G06",
+      "name": "unknown_is_not_false",
+      "rule": "Missing evidence or missing verification must not be converted into a negative factual claim."
+    },
+    {
+      "id": "G07",
+      "name": "recommendation_requires_provenance",
+      "rule": "Any future algorithmic recommendation must retain method/model version, generation time and an inspectable basis."
+    },
+    {
+      "id": "G08",
+      "name": "no_sensitive_matching_by_default",
+      "rule": "Political beliefs, religion, health, migration status and other sensitive categories must not be inferred or used for matching by default."
+    },
+    {
+      "id": "G09",
+      "name": "ontology_is_not_user_interface",
+      "rule": "SDCF terminology must not become a user-facing requirement for ordinary FOLKOOP participants."
+    },
+    {
+      "id": "G10",
+      "name": "no_runtime_semantic_stack_before_evidence",
+      "rule": "The Göteborg pilot must not be delayed by adding RDF, OWL, SHACL or an SDCF graph database to the production runtime without a demonstrated product or safety need."
+    }
+  ],
+  "futureTriggers": [
+    {
+      "condition": "structured real-world outcome verification becomes a demonstrated pilot need",
+      "requiredSemantics": ["Outcome", "Evidence", "Agent", "Provenance"],
+      "preferredImplementation": "small relational outcome/confirmation tables first; semantic export later"
+    },
+    {
+      "condition": "algorithmic or AI matching is introduced",
+      "requiredSemantics": ["Model", "Prediction", "Uncertainty", "Provenance"],
+      "requiredMetadata": ["method_or_model_version", "generated_at", "basis", "sensitive_attribute_exclusion"]
+    },
+    {
+      "condition": "City routing adds consequential inference or automated submission",
+      "requiredSemantics": ["Claim", "Evidence", "Decision", "Authority", "Provenance"],
+      "requiredMetadata": ["source_version", "routing_rule_version", "confidence_or_uncertainty", "authority_boundary"]
+    },
+    {
+      "condition": "FOLKOOP becomes multi-city with interoperable Nodes or external partners",
+      "requiredSemantics": ["SystemScope", "Agent", "Role", "Action", "Outcome", "Provenance"],
+      "preferredImplementation": "versioned adapter/export layer rather than replacing the operational PostgreSQL model"
+    }
+  ]
+}
