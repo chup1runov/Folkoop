@@ -17,7 +17,8 @@ Do not start the real-account test until all of the following are true:
 - two unused pilot invite codes are available privately;
 - the private Box pilot workspace is accessible;
 - no paid service has been enabled;
-- the two test participants are adults and understand this is a controlled pilot.
+- the two test participants are adults and understand this is a controlled pilot;
+- the P0 privacy decisions in `docs/PRE_PILOT_PRIVACY_DATA_MAP.md` are resolved before the test involves ordinary (non-developer) participants.
 
 If Google OAuth is used, complete `docs/AUTH_GOOGLE_PILOT.md` first.
 
