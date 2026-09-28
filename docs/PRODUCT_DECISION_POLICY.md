@@ -115,6 +115,23 @@ Examples:
 
 Measurement definitions in the active pilot document prevail.
 
+## SDCF semantic-integrity gate
+
+The lightweight FOLKOOP/SDCF bridge in `docs/architecture/SDCF_BRIDGE.md` applies when a proposed feature introduces a stronger epistemic or decision claim than the current pilot records.
+
+Before approving a feature that introduces any of the following:
+
+- structured verified outcomes;
+- algorithmic/AI matching;
+- model-generated recommendations;
+- consequential City inference;
+- automated decision support;
+- multi-city semantic interoperability;
+
+the design must identify which bridge mappings/guards apply, or record why they are not applicable.
+
+This requirement is documentation/validation only for the current Göteborg pilot. It must **not** be used as a reason to add RDF, OWL, SHACL or a graph database to the production runtime before evidence demonstrates a product, safety or interoperability need.
+
 ## No manufactured network effects
 
 Operators may onboard, explain, moderate and facilitate.
