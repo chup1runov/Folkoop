@@ -54,6 +54,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
 - `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.
+- `docs/PRE_PILOT_PRIVACY_DATA_MAP.md` — hosted/Box data inventory and P0 privacy decisions required before ordinary participants.
 - `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
