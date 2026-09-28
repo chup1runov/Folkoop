@@ -28,7 +28,12 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const response=await transport(cfg.url+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',redirect:'error',signal:controller.signal});
    if(version!==epoch)throw fail('STALE');
    if(!response.ok){
+    let detail=null;
+    if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
+     try{detail=await response.json();}catch{}
+    }
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
+    if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     throw fail(response.status===429?'RATE_LIMIT':response.status===403?'DENIED':'REQUEST_FAILED');
    }
    if(response.status===204)return null;
@@ -64,8 +69,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  return Object.freeze({
   enabled:!!cfg,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
-  async verify(email,code){
+  async verify(email,code,inviteCode=''){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
+   const invite=text(inviteCode,120);
    const attempt=++authAttempt;
    const result=await request('/auth/v1/verify',{method:'POST',auth:false,body:{email,token:code,type:'email'}});
    if(attempt!==authAttempt)throw fail('STALE');
@@ -74,7 +80,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const who=await request('/auth/v1/user',{auth:false,token:result.access_token});
    if(attempt!==authAttempt)throw fail('STALE');
    session={id:id(who?.id),token:result.access_token,expiresAt:clock()+result.expires_in*1000};
-   try{await rpc('fk_claim_first_pilot');}catch(e){clear();throw e;}
+   try{await rpc('fk_claim_pilot_invite',{p_code:invite});}catch(e){clear();throw e;}
    notify();return user();
   },
   async logout(){const token=session?.token;clear();if(token)await request('/auth/v1/logout?scope=local',{method:'POST',auth:false,token});},
