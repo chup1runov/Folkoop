@@ -1,47 +1,12 @@
 /* Lightweight local Ksyusha presence for FOLKOOP. No network/API calls. */
 (() => {
 'use strict';
-const SOURCE='./ksyusha-source.webp';
-let preparedSrc='',preparedPromise=null;
-function transparentAsset(){
- if(preparedSrc)return Promise.resolve(preparedSrc);
- if(preparedPromise)return preparedPromise;
- preparedPromise=new Promise((resolve,reject)=>{
-  const source=new Image();
-  source.onload=()=>{
-   try{
-    const canvas=document.createElement('canvas'),w=source.naturalWidth,h=source.naturalHeight;
-    canvas.width=w;canvas.height=h;
-    const ctx=canvas.getContext('2d',{willReadFrequently:true});
-    if(!ctx)throw new Error('CANVAS_UNAVAILABLE');
-    ctx.drawImage(source,0,0);
-    const frame=ctx.getImageData(0,0,w,h),data=frame.data,seen=new Uint8Array(w*h),stack=[];
-    const candidate=i=>{
-     const p=i*4,r=data[p],g=data[p+1],b=data[p+2],a=data[p+3],hi=Math.max(r,g,b),lo=Math.min(r,g,b);
-     return a>0&&hi<98&&(hi-lo)<30;
-    };
-    const push=i=>{if(i>=0&&i<w*h&&!seen[i]&&candidate(i)){seen[i]=1;stack.push(i);}};
-    for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
-    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
-    while(stack.length){
-     const i=stack.pop(),p=i*4,x=i%w,y=(i/w)|0;data[p+3]=0;
-     if(x>0)push(i-1);if(x<w-1)push(i+1);if(y>0)push(i-w);if(y<h-1)push(i+w);
-    }
-    ctx.putImageData(frame,0,0);
-    preparedSrc=canvas.toDataURL('image/png');
-    resolve(preparedSrc);
-   }catch(error){reject(error);}
-  };
-  source.onerror=()=>reject(new Error('KSYUSHA_ASSET_FAILED'));
-  source.src=SOURCE;
- });
- return preparedPromise;
-}
-function hydrateArt(el){
- el.style.visibility='hidden';
- transparentAsset().then(src=>{if(!el.isConnected)return;el.src=src;el.style.visibility='visible';})
- .catch(()=>{if(!el.isConnected)return;el.src=SOURCE;el.style.visibility='visible';el.classList.add('ksyusha-source-fallback');});
-}
+const ASSETS=Object.freeze({
+ welcome:'./ksyusha-wave.webp',
+ calm:'./ksyusha-idle.webp',
+ point:'./ksyusha-idle.webp',
+ idle:'./ksyusha-idle.webp'
+});
 const reduced=()=>globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 let actor=null,img=null,arm=null,currentTarget=null,currentMode='home',teleportTimer=0;
@@ -54,10 +19,9 @@ function ensureActor(){
  actor.type='button';
  actor.setAttribute('aria-label','Ksyusha · FOLKOOP helper');
  actor.setAttribute('aria-expanded','false');
- actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="ksyusha-point-arm" aria-hidden="true"><i></i></span><img alt="" width="192" height="208" decoding="async">';
+ actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="ksyusha-point-arm" aria-hidden="true"><i></i></span><img src="'+ASSETS.idle+'" alt="" width="192" height="208" decoding="async">';
  document.body.append(actor);
  img=actor.querySelector('img');
- hydrateArt(img);
  arm=actor.querySelector('.ksyusha-point-arm');
  actor.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('folkoop:helper-toggle')));
  actor.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();actor.click();}});
@@ -65,6 +29,7 @@ function ensureActor(){
 }
 function pose(name){
  ensureActor();
+ img.src=ASSETS[name]||ASSETS.idle;
  actor.dataset.pose=name;
 }
 function dims(){
@@ -157,9 +122,8 @@ function ensureLanguageGate(){
  gate.setAttribute('role','dialog');
  gate.setAttribute('aria-modal','true');
  gate.setAttribute('aria-labelledby','ksyushaLanguageTitle');
- gate.innerHTML='<div class="ksyusha-language-backdrop"></div><div class="ksyusha-language-card"><div class="ksyusha-language-character"><img alt="" width="192" height="208"></div><div class="ksyusha-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="ksyushaLanguageTitle">Hej! · Hi! · Привет!</h1><p class="ksyusha-language-hello">Jag heter Ksyusha · I’m Ksyusha · Меня зовут Ксюша</p><p class="ksyusha-language-prompt">Välj språk · Choose language · Выбери язык</p><div id="ksyushaLanguageChoices" class="ksyusha-language-choices"></div></div></div>';
+ gate.innerHTML='<div class="ksyusha-language-backdrop"></div><div class="ksyusha-language-card"><div class="ksyusha-language-character"><img src="'+ASSETS.welcome+'" alt="" width="192" height="208"></div><div class="ksyusha-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="ksyushaLanguageTitle">Hej! · Hi! · Привет!</h1><p class="ksyusha-language-hello">Jag heter Ksyusha · I’m Ksyusha · Меня зовут Ксюша</p><p class="ksyusha-language-prompt">Välj språk · Choose language · Выбери язык</p><div id="ksyushaLanguageChoices" class="ksyusha-language-choices"></div></div></div>';
  document.body.append(gate);
- hydrateArt(gate.querySelector('.ksyusha-language-character img'));
  gate.addEventListener('click',e=>{
   const b=e.target.closest('[data-ksyusha-lang]');
   if(!b)return;
