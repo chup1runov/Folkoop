@@ -30,15 +30,16 @@
 .ksyusha-actor>img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;transition:transform .22s ease}
 .ksyusha-actor.is-home:not(:disabled):hover>img{transform:translateY(-4px) rotate(-1deg)}
 .ksyusha-actor[data-pose="idle"]>img{animation:ksyusha-breathe 3.6s ease-in-out infinite}
-.ksyusha-actor[data-pose="point"]>img{animation:ksyusha-point-body 1.3s ease-in-out infinite}
-.ksyusha-actor[data-pose="calm"]>img{animation:ksyusha-perch-body 2.7s ease-in-out infinite}
-.ksyusha-actor.is-perched>img{transform:translateY(8px) rotate(-2deg)}
-.ksyusha-actor.is-perched::after{content:"";position:absolute;left:18%;right:16%;top:62%;height:4px;border-radius:999px;background:#1f1f1f22;z-index:1;box-shadow:0 3px 8px #0002}
-.ksyusha-point-arm{position:absolute;z-index:1;left:53%;top:39%;width:var(--point-length,64px);height:8px;border-radius:999px;background:#efc5a7;transform-origin:2px 50%;transform:rotate(var(--point-angle,0deg));box-shadow:0 1px 1px #7b47331a;pointer-events:none}
-.ksyusha-point-arm[hidden]{display:none!important}
-.ksyusha-point-arm::before{content:"";position:absolute;right:-7px;top:-3px;width:15px;height:14px;border-radius:7px 8px 7px 7px;background:#efc5a7}
-.ksyusha-point-arm::after{content:"";position:absolute;right:-16px;top:2px;width:17px;height:5px;border-radius:999px;background:#efc5a7;transform:rotate(-4deg);transform-origin:left center}
-.ksyusha-point-arm i{position:absolute;right:-9px;top:-7px;width:5px;height:11px;border-radius:999px;background:#efc5a7;transform:rotate(-28deg)}
+.ksyusha-actor[data-pose="point"]>img,.ksyusha-actor[data-pose="inspect"]>img,.ksyusha-actor[data-pose="search"]>img{animation:ksyusha-point-body 1.3s ease-in-out infinite}
+.ksyusha-actor[data-pose="idea"]>img{animation:ksyusha-idea-body 1.8s ease-in-out infinite}
+.ksyusha-actor[data-pose="perch"]>img{animation:ksyusha-perch-body 2.7s ease-in-out infinite}
+.ksyusha-actor[data-pose="wink"]>img{animation:ksyusha-helper-wink 2.4s ease-in-out infinite}
+.ksyusha-actor.is-perched>img{transform:translateY(4px)}
+.ksyusha-actor.is-perched::after{content:"";position:absolute;left:18%;right:16%;top:72%;height:4px;border-radius:999px;background:#1f1f1f22;z-index:1;box-shadow:0 3px 8px #0002}
+.ksyusha-pointer{position:absolute;z-index:1;left:58%;top:27%;width:var(--point-length,64px);height:3px;border-radius:999px;background:repeating-linear-gradient(90deg,var(--orange) 0 8px,transparent 8px 13px);transform-origin:2px 50%;transform:rotate(var(--point-angle,0deg));filter:drop-shadow(0 1px 1px #0002);pointer-events:none}
+.ksyusha-pointer[hidden]{display:none!important}
+.ksyusha-pointer::after{content:"";position:absolute;right:-1px;top:50%;width:10px;height:10px;border-top:3px solid var(--orange);border-right:3px solid var(--orange);transform:translateY(-50%) rotate(45deg);transform-origin:center}
+.ksyusha-pointer::before,.ksyusha-pointer i{display:none}
 .ksyusha-puff{position:absolute;z-index:4;inset:38% auto auto 50%;width:8px;height:8px;pointer-events:none;opacity:0}
 .ksyusha-puff i{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #e5d7cd}
 .ksyusha-puff i:nth-child(1){transform:translate(-24px,-9px)}.ksyusha-puff i:nth-child(2){transform:translate(15px,-17px)}.ksyusha-puff i:nth-child(3){transform:translate(20px,14px)}.ksyusha-puff i:nth-child(4){transform:translate(-15px,18px)}
@@ -55,8 +56,10 @@
 .onboarding[data-no-target="0"] .onboarding-card{backdrop-filter:saturate(1.05)}
 .onboarding .ksyusha-actor{z-index:103}
 @keyframes ksyusha-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.01)}}
-@keyframes ksyusha-point-body{0%,100%{transform:rotate(0)}50%{transform:rotate(-1.3deg) translateY(-1px)}}
-@keyframes ksyusha-perch-body{0%,100%{transform:translateY(8px) rotate(-2deg)}50%{transform:translateY(5px) rotate(-1deg)}}
+@keyframes ksyusha-point-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes ksyusha-idea-body{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015)}}
+@keyframes ksyusha-perch-body{0%,100%{transform:translateY(4px)}50%{transform:translateY(1px)}}
+@keyframes ksyusha-helper-wink{0%,78%,100%{transform:translateY(0)}84%{transform:translateY(-3px)}}
 @keyframes ksyusha-puff{0%{opacity:0;transform:scale(.5)}45%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
 @keyframes ksyusha-pop{0%{opacity:0;transform:scale(.55)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
 @keyframes ksyusha-welcome-bob{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-6px) rotate(-.5deg)}55%{transform:translateY(-6px) rotate(.5deg)}}
