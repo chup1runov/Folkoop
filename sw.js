@@ -4,7 +4,7 @@ const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
 const SHELL=new URL('index.html',BASE).href;
-const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js','folkoop-copy.js','ksyusha-guide.js','folkoop.js','folkoop.css','ksyusha-wave.webp','ksyusha-welcome.webp','ksyusha-point.webp','ksyusha-idle.webp','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js','network-form-focus.js','network-ui.js','home-welcome.js'];
+const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js','folkoop-copy.js','ksyusha-guide.js','folkoop.js','folkoop.css','ksyusha-base.png','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js','network-form-focus.js','network-ui.js','home-welcome.js'];
 const CORE=new Set(CORE_PATHS.map(p=>new URL(p,BASE).href));
 const FEEDS=new Set(['data/riksdagen-decisions.json','data/goteborg-open-plans.json'].map(p=>new URL(p,BASE).href));
 async function remember(request,response){try{await (await caches.open(CACHE)).put(request,response.clone());}catch{}return response;}
