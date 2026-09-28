@@ -4,7 +4,7 @@
   const AUTHOR = Object.freeze({name:'Pavel Chuprunov',handle:'chup1runov'});
   const IDEA_YEAR = 2021;
   const REPOSITORY_CREATED = '2026-09-21';
-  const CONTACT = Object.freeze({email:'mailto:chup1runov@gmail.com',telegram:'https://t.me/chup1runov'});
+  const CONTACT = Object.freeze({github:'https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml',telegram:'https://t.me/chup1runov'});
   const BIO_SOURCE = 'https://www.mittskifte.org/petitions/infor-tjansten-nattstopp-i-goteborg-for-okad-trygghet-i-kollektivtrafiken';
   const FAQ_SOURCES = Object.freeze({
     2:['Sveriges riksdag','https://www.riksdagen.se/sv/sa-fungerar-riksdagen/riksdagens-uppgifter/beslutar-om-lagar/'],
@@ -44,10 +44,10 @@
     const bio=element('p',L.bio,'project-bio');bio.id='projectBio';
     author.append(bio,link('MittSkifte ↗',BIO_SOURCE,'project-history-link'));
     const contacts=element('div',undefined,'project-contact-actions');
-    const mail=link('chup1runov@gmail.com',CONTACT.email,'project-contact-button');mail.id='contactAuthor';mail.dir='ltr';
+    const github=link('GitHub · Contact the project ↗',CONTACT.github,'project-contact-button');github.id='contactAuthor';github.dir='ltr';
     const telegram=link('Telegram · @chup1runov ↗',CONTACT.telegram,'project-contact-button secondary');telegram.id='contactTelegram';telegram.dir='ltr';
-    for(const a of [mail,telegram])a.setAttribute('aria-describedby','projectContactNote');
-    contacts.append(mail,telegram);
+    for(const a of [github,telegram])a.setAttribute('aria-describedby','projectContactNote');
+    contacts.append(github,telegram);
     const note=element('p',L.contactNote,'project-contact-note');note.id='projectContactNote';
     author.append(contacts,note);
     const story=element('section',undefined,'about-card project-story');story.lang=locale;
