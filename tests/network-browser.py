@@ -45,7 +45,7 @@ async def main():
     state['requests'].append((url,payload));result=[]
     if url.endswith('/verify'):result={'access_token':'synthetic-only','expires_in':3600}
     elif url.endswith('/user'):result={'id':UID}
-    elif url.endswith('/fk_claim_first_pilot'):result=True
+    elif url.endswith('/fk_claim_pilot_invite'):result=True
     elif url.endswith('/fk_save_profile'):
      state['profile']=[{'id':UID,'name':payload['p_name'],'skills':payload['p_skills'],'about':payload['p_about'],'listed':payload['p_listed']}];result=None
     elif url.endswith('/fk_create_community'):
@@ -126,9 +126,11 @@ async def main():
   await expect(page.locator('#netStatus')).to_contain_text('Если адрес разрешён')
   assert state['requests'][0][1]['create_user'] is True
   await page.fill('#netLogin [name=code]','123456')
+  await page.fill('#netLogin [name=inviteCode]','FOLK-TEST-INVITE-01')
   await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netProfile')).to_be_visible()
-  passed.append('OTP request then Auth verification, not fabricated login')
+  assert any(url.endswith('/fk_claim_pilot_invite') and payload=={'p_code':'FOLK-TEST-INVITE-01'} for url,payload in state['requests'])
+  passed.append('OTP verification plus explicit pilot invite admission, not fabricated login')
   await page.fill('#netProfile [name=name]','Synthetic Alice')
   await page.click('#netProfile button')
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере')

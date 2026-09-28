@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-25 September 2026. Current development slice: v0.23.0. Check exact commit CI and deployment before claiming it is live.
+28 September 2026. Current development slice: v0.24.0 invite-only pilot admission. Check exact commit CI, hosted migration state and deployment before claiming it is live.
 
 ## Canonical decisions
 
@@ -36,7 +36,7 @@ Network capabilities now include:
 
 All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
 
-General public onboarding is not ready. The current free built-in email path is suitable only for the controlled pilot bootstrap/team-address flow. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
+General public onboarding is not ready. v0.24 adds one-time invite-code admission after Auth verification, with only SHA-256 hashes stored privately. The current free built-in email path is still suitable only for project-team addresses, so invite admission does not yet provide a general participant Auth route. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
 
 Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket realtime in this slice. Shared-purchase quantities are coordination values only: no checkout, payment, escrow, vendor settlement or delivery guarantee is implemented.
 
@@ -56,7 +56,8 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
 - `supabase/migrations/202609250001_network.sql` — base network/RLS.
-- `202609250002_first_pilot.sql` — one-time pilot bootstrap.
+- `202609250002_first_pilot.sql` — historical one-user pilot bootstrap contract.
+- `202609280001_pilot_invites.sql` — v0.24 invite-only admission; existing pilots re-enter idempotently and new users require an operator-created code.
 - `202609250003_rls_performance.sql` — RLS/index tuning.
 - `202609250004_messaging.sql` + `005_messaging_indexes.sql` — messaging.
 - `202609250006_cooperation.sql` — unified cooperation engine.
@@ -81,7 +82,7 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 Product priority is now the Göteborg core-loop pilot rather than adding breadth.
 
 Before that pilot:
-- run real two-account hosted checks for `need` / `offer`, joining, linked work chat, status changes and blocking;
+- keep the 17/17 hosted transaction smoke as the current database/RLS baseline and re-run admission-specific hosted checks after v0.24 migration;
 - resolve a genuinely free pilot authentication route for the invited cohort;
 - fix only defects that block the core loop or safety;
 - prepare private pilot outcome logging outside the public repository.

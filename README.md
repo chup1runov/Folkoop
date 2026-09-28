@@ -4,7 +4,7 @@
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.23.0
+## Current pilot state — v0.24.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
@@ -14,6 +14,7 @@ Implemented:
 - eleven-step first-run onboarding that can be replayed from Settings;
 - signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
+- invite-only network admission after Auth verification; plaintext invite codes are never stored in the database;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
 - automatically linked work chat for every cooperation object, synchronized with cooperation membership;
@@ -28,7 +29,7 @@ Implemented:
 
 Local drafts are still separate from network objects and are never uploaded automatically. The cooperation/marketplace layer does **not** perform checkout, payments, escrow, vendor settlement, order submission or delivery guarantees. Supplier offers are comparison data, and order/delivery/completion stages are self-reported coordination records inside the pilot. Messaging and activity are manual-refresh/server-read-marker based, not push/realtime, and messaging is not end-to-end encrypted. Center remains a product/physical-space concept rather than a claimed operating venue.
 
-The dedicated Supabase backend is on the Free plan and the repository policy is zero-cost infrastructure unless the owner separately approves otherwise. General public onboarding is still limited by the free authentication delivery path; this is a controlled pilot, not a public launch.
+The dedicated Supabase backend is on the Free plan and the repository policy is zero-cost infrastructure unless the owner separately approves otherwise. General public onboarding is still limited by the free authentication delivery path. Invite codes control FOLKOOP admission but do not replace Auth delivery; this remains a controlled pilot, not a public launch.
 
 All eleven existing City languages remain. Navigation has eleven languages; detailed new network copy is currently Swedish/English/Russian, with explicit English fallback elsewhere. Native-language review remains necessary.
 
