@@ -20,7 +20,7 @@ The Rights Holder and his expressly authorised agents can continue development w
 
 ## Asking for additional permission
 
-Email **chup1runov@gmail.com** with:
+Use the repository's **[Contact the project / Kontakta projektet](https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml)** GitHub issue form to start a permission request. GitHub issues are public, so do not include confidential material. Include:
 
 1. Recipient/person or legal entity and a contact.
 2. Exact files, assets and commit/version concerned.
