@@ -28,7 +28,7 @@ test('about: approved contacts contain no automatic message or position payload'
  const contact=new URL(A.CONTACT.github);assert.equal(contact.hostname,'github.com');assert.equal(contact.searchParams.get('template'),'contact-author.yml');
  assert.equal(new URL(A.CONTACT.telegram).search,'');
  assert(!script.includes('navigator.geolocation'));assert(!script.includes('localStorage'));
- assert(!script.includes('fetch('));assert(!script.includes('chup1runov@gmail.com'));assert(!copy.includes('gmail.com'));
+ assert(!script.includes('fetch('));assert(!script.includes('gmail.com'));assert(!copy.includes('gmail.com'));
 });
 test('about: activities and finance remain plans, not a launched rewards service',()=>{
  assert(A.COPY.en.questions[7][1].includes('not available'));
