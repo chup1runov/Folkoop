@@ -6,7 +6,7 @@
 
 Continue `chup1runov/Folkoop` as one FOLKOOP product. The repository was renamed from Sverinav without starting a second product or rewriting history. User-facing navigation order: Profile, Home, Messages, People, Communities, Together, Projects, City, Center, Settings, About.
 
-Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
+Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. `docs/PRODUCT_CONCEPT.md` is the canonical product thesis: Intent -> Match -> Commit -> Coordinate -> Act -> Outcome, with useful real-world outcomes prioritized over feed engagement. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
 
 The former civic baseline is preserved by the archival tag `archive/sverinav-v0.14-before-folkoop`. The blocked Göteborg air-quality experiment is preserved separately by `archive/experiment-goteborg-air-quality-v0.6`.
 
@@ -50,6 +50,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 
 ## Key files
 
+- `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics, cold-start strategy and feature decision rules.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
 - `supabase/migrations/202609250001_network.sql` — base network/RLS.
