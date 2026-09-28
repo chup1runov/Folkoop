@@ -60,6 +60,11 @@ async def mobile_flow(browser,passed):
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   if title=='Четыре быстрых действия':
    assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-perched')")
+   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='idea'
+  if title in ('Люди','Сообщества','Город'):
+   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='search'
+  if title=='Ксюша · помощник FOLKOOP':
+   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='wink'
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)

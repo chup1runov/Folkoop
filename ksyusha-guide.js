@@ -2,61 +2,26 @@
 (() => {
 'use strict';
 const ASSETS=Object.freeze({
- welcome:'./ksyusha-wave.webp',
- calm:'./ksyusha-idle.webp',
- point:'./ksyusha-idle.webp',
- idle:'./ksyusha-idle.webp'
+ welcome:'./ksyusha-please.webp',
+ idle:'./ksyusha-confident.webp',
+ point:'./ksyusha-inspect.webp',
+ inspect:'./ksyusha-inspect.webp',
+ idea:'./ksyusha-idea.webp',
+ search:'./ksyusha-searching.webp',
+ perch:'./ksyusha-lean-in.webp',
+ wink:'./ksyusha-wink.webp'
 });
-const prepared=new Map();
-function transparentAsset(src){
- if(prepared.has(src))return prepared.get(src);
- const promise=new Promise((resolve,reject)=>{
-  const source=new Image();
-  source.onload=()=>{
-   try{
-    const w=source.naturalWidth,h=source.naturalHeight,canvas=document.createElement('canvas');
-    canvas.width=w;canvas.height=h;
-    const ctx=canvas.getContext('2d',{willReadFrequently:true});
-    if(!ctx)throw new Error('CANVAS_UNAVAILABLE');
-    ctx.drawImage(source,0,0);
-    const frame=ctx.getImageData(0,0,w,h),data=frame.data,seen=new Uint8Array(w*h),stack=[];
-    const dark=i=>{
-     const p=i*4,r=data[p],g=data[p+1],b=data[p+2],a=data[p+3],hi=Math.max(r,g,b),lo=Math.min(r,g,b);
-     return a>0&&hi<105&&(hi-lo)<34;
-    };
-    const push=i=>{if(i>=0&&i<w*h&&!seen[i]&&dark(i)){seen[i]=1;stack.push(i);}};
-    for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
-    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
-    while(stack.length){
-     const i=stack.pop(),p=i*4,x=i%w,y=(i/w)|0;data[p+3]=0;
-     if(x>0)push(i-1);if(x<w-1)push(i+1);if(y>0)push(i-w);if(y<h-1)push(i+w);
-    }
-    ctx.putImageData(frame,0,0);
-    resolve(canvas.toDataURL('image/png'));
-   }catch(error){reject(error);}
-  };
-  source.onerror=()=>reject(new Error('KSYUSHA_ASSET_FAILED'));
-  source.src=src;
- });
- prepared.set(src,promise);return promise;
-}
-// Reuse prepared art without blanking it on every step/resize. A late image
-// result must never replace a newer requested pose.
-const artRequests=new WeakMap();
+// v0.28 uses the canonical 192x208 alpha WebPs embedded in Mura's first-party
+// Character Pack. No canvas matte removal or generated replacement art.
+const artState=new WeakMap();
 function setArt(el,src){
- if(artRequests.get(el)?.src===src)return;
- const request={src};artRequests.set(el,request);
- if(!el.getAttribute('src'))el.style.visibility='hidden';
- const install=(value,fallback=false)=>{
-  if(!el.isConnected||artRequests.get(el)!==request)return;
-  el.src=value;el.style.visibility='visible';
-  el.classList.toggle('ksyusha-source-fallback',fallback);
- };
- transparentAsset(src).then(value=>install(value)).catch(()=>install(src,true));
+ if(artState.get(el)===src)return;
+ artState.set(el,src);
+ el.src=src;el.style.visibility='visible';
 }
 const reduced=()=>globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-let actor=null,img=null,arm=null,currentTarget=null,currentMode='home',teleportTimer=0,motionGeneration=0,refreshFrame=0;
+let actor=null,img=null,pointer=null,currentTarget=null,currentMode='home',currentPose=null,teleportTimer=0,motionGeneration=0,refreshFrame=0;
 
 function ensureActor(){
  if(actor)return actor;
@@ -67,10 +32,10 @@ function ensureActor(){
  actor.setAttribute('aria-label','Ksyusha · FOLKOOP helper');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
- actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="ksyusha-point-arm" aria-hidden="true"><i></i></span><img alt="" width="192" height="208" decoding="async">';
+ actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="ksyusha-pointer" aria-hidden="true"><i></i></span><img alt="" width="192" height="208" decoding="async">';
  document.body.append(actor);
  img=actor.querySelector('img');setArt(img,ASSETS.idle);
- arm=actor.querySelector('.ksyusha-point-arm');
+ pointer=actor.querySelector('.ksyusha-pointer');
  actor.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('folkoop:helper-toggle')));
  actor.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();actor.click();}});
  return actor;
@@ -92,9 +57,9 @@ function setPoint(targetRect,actorRect){
  const dx=tx-fromX,dy=ty-fromY;
  const dist=clamp(Math.hypot(dx,dy),34,Math.min(150,innerWidth*.28));
  const angle=Math.atan2(dy,dx)*180/Math.PI;
- arm.style.setProperty('--point-angle',angle+'deg');
- arm.style.setProperty('--point-length',dist+'px');
- arm.hidden=false;
+ pointer.style.setProperty('--point-angle',angle+'deg');
+ pointer.style.setProperty('--point-length',dist+'px');
+ pointer.hidden=false;
  actor.dataset.pointSide=dx<0?'left':'right';
 }
 // Both dialogs are local presentation UI. Only their own controls are observed;
@@ -193,19 +158,19 @@ function layoutTour(target){
  }
  updateSpotlight(target);
 }
-function applyPosition(target,mode='point'){
- ensureActor();currentTarget=target||null;currentMode=mode;
+function applyPosition(target,mode='point',poseName=null){
+ ensureActor();currentTarget=target||null;currentMode=mode;currentPose=poseName;
  const {w,h}=dims();actor.style.setProperty('--ksyusha-w',w+'px');
  actor.classList.toggle('is-perched',mode==='perch');
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
  if(mode==='home'||!target){
   actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';actor.style.bottom=innerWidth<720?'10px':'18px';
-  arm.hidden=true;pose('idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
+  pointer.hidden=true;pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
  }
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
- const candidates=mode==='perch'?[[r.left+r.width/2-w/2,r.top-h*.62]]:[];
+ const candidates=mode==='perch'?[[r.left+r.width/2-w/2,r.top-h*.56]]:[[r.left+r.width/2-w/2,r.bottom+12]];
  candidates.push([r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+16],[12,12],[innerWidth-w-12,12]);
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);
@@ -213,12 +178,12 @@ function applyPosition(target,mode='point'){
   const distance=Math.hypot(x+w/2-r.left-r.width/2,y+h/2-r.top-r.height/2);
   return {x,y,score:overlap(box,card)*10000+(mode==='perch'?0:overlap(box,r)*100)+distance+index*.01};
  }).sort((a,b)=>a.score-b.score)[0];
- actor.style.left=best.x+'px';actor.style.top=best.y+'px';pose(mode==='perch'?'calm':'point');
+ actor.style.left=best.x+'px';actor.style.top=best.y+'px';pose(poseName||(mode==='perch'?'perch':'point'));
  const generation=motionGeneration;
  requestAnimationFrame(()=>{
-  if(generation!==motionGeneration||currentTarget!==target||currentMode!==mode)return;
+  if(generation!==motionGeneration||currentTarget!==target||currentMode!==mode||currentPose!==poseName)return;
   if(mode==='point'&&target.isConnected)setPoint(target.getBoundingClientRect(),actor.getBoundingClientRect());
-  else arm.hidden=true;
+  else pointer.hidden=true;
  });
 }
 function cancelTeleport(){
@@ -226,27 +191,27 @@ function cancelTeleport(){
  actor?.classList.remove('teleport-in','teleport-out');
 }
 function teleportTo(target,opts={}){
- const mode=opts.mode||'point';ensureActor();cancelTeleport();
- currentTarget=target||null;currentMode=mode;
+ const mode=opts.mode||'point',poseName=opts.pose||null;ensureActor();cancelTeleport();
+ currentTarget=target||null;currentMode=mode;currentPose=poseName;
  if(mode==='home'){
-  applyPosition(null,'home');layoutTour(actor);
+  applyPosition(null,'home',poseName);layoutTour(actor);
   // Returning to the helper must be immediately usable, even when a previous
   // teleport was interrupted by Skip, Escape, resize, or a fast Next click.
   return;
  }
  layoutTour(target);
- if(reduced()||opts.instant){applyPosition(target,mode);return;}
+ if(reduced()||opts.instant){applyPosition(target,mode,poseName);return;}
  const generation=motionGeneration;actor.classList.add('teleport-out');
  teleportTimer=setTimeout(()=>{
   if(generation!==motionGeneration)return;
-  applyPosition(target,mode);actor.classList.remove('teleport-out');
+  applyPosition(target,mode,poseName);actor.classList.remove('teleport-out');
   void actor.offsetWidth;actor.classList.add('teleport-in');
   teleportTimer=setTimeout(()=>{if(generation===motionGeneration)actor.classList.remove('teleport-in');},380);
  },150);
 }
-function home(opts={}){ensureActor();teleportTo(null,{mode:'home',instant:opts.instant});}
+function home(opts={}){ensureActor();teleportTo(null,{mode:'home',instant:opts.instant,pose:opts.pose});}
 function welcome(){
- ensureActor();cancelTeleport();actor.hidden=true;actor.disabled=true;arm.hidden=true;actor.classList.add('is-welcome');pose('welcome');
+ ensureActor();cancelTeleport();actor.hidden=true;actor.disabled=true;pointer.hidden=true;actor.classList.add('is-welcome');pose('welcome');
 }
 function leaveWelcome(){
  ensureActor();actor.hidden=false;actor.classList.remove('is-welcome');
@@ -254,8 +219,8 @@ function leaveWelcome(){
 function element(){return ensureActor();}
 function refresh(){
  cancelTeleport();
- if(currentMode==='home'){applyPosition(null,'home');layoutTour(actor);}
- else if(currentTarget?.isConnected){layoutTour(currentTarget);applyPosition(currentTarget,currentMode);}
+ if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
+ else if(currentTarget?.isConnected){layoutTour(currentTarget);applyPosition(currentTarget,currentMode,currentPose);}
 }
 function setExpanded(value){
  ensureActor().setAttribute('aria-expanded',String(!!value));
@@ -302,7 +267,7 @@ window.addEventListener('scroll',()=>{
  refreshFrame=requestAnimationFrame(()=>{
   refreshFrame=0;
   const target=currentMode==='home'?actor:currentTarget;
-  if(target?.isConnected){updateSpotlight(target);if(currentMode!=='home')applyPosition(target,currentMode);}
+  if(target?.isConnected){updateSpotlight(target);if(currentMode!=='home')applyPosition(target,currentMode,currentPose);}
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);

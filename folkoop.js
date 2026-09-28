@@ -14,20 +14,20 @@ const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false;
 const onboardingSteps=[
- {id:'welcome',route:'home',target:'.brand',motion:'point'},
- {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point'},
- {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point'},
- {id:'quick',route:'home',target:'.quick-grid',motion:'perch'},
- {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point'},
- {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point'},
- {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point'},
- {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point'},
- {id:'projects',route:'projects',target:'#nav a[href="#/projects"]',motion:'point'},
- {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point'},
- {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch'},
- {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point'},
- {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point'},
- {id:'helper',route:'home',target:'#ksyushaActor',motion:'home'}
+ {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
+ {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point',pose:'inspect'},
+ {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'inspect'},
+ {id:'quick',route:'home',target:'.quick-grid',motion:'perch',pose:'idea'},
+ {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point',pose:'inspect'},
+ {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point',pose:'search'},
+ {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point',pose:'search'},
+ {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point',pose:'inspect'},
+ {id:'projects',route:'projects',target:'#nav a[href="#/projects"]',motion:'point',pose:'idea'},
+ {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point',pose:'search'},
+ {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch',pose:'perch'},
+ {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point',pose:'inspect'},
+ {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point',pose:'inspect'},
+ {id:'helper',route:'home',target:'#ksyushaActor',motion:'home',pose:'wink'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -228,7 +228,7 @@ function ensureOnboarding(){
 function onboardingTarget(step){
  const mobileToggle=$('#mobileMenuToggle');
  const mobileMenu=mobileToggle&&getComputedStyle(mobileToggle).display!=='none';
- if(step.id==='helper')globalThis.FolkoopKsyushaGuide?.home({instant:true});
+ if(step.id==='helper')globalThis.FolkoopKsyushaGuide?.home({instant:true,pose:step.pose||'wink'});
  if(step.target.startsWith('#nav')&&mobileMenu)openMenu();
  else if(menuOpen&&!step.target.startsWith('#nav'))closeMenu();
  return document.querySelector(step.target);
@@ -247,7 +247,7 @@ function positionOnboarding(step){
   spot.style.width=Math.min(innerWidth-12,rect.width+pad*2)+'px';
   spot.style.height=Math.min(innerHeight-12,rect.height+pad*2)+'px';
   dialog.querySelector('.onboarding-card').dataset.side=rect.left+rect.width/2<innerWidth/2?'right':'left';
-  if(step.id!=='helper')globalThis.FolkoopKsyushaGuide?.teleportTo(target,{mode:step.motion||'point'});
+  if(step.id!=='helper')globalThis.FolkoopKsyushaGuide?.teleportTo(target,{mode:step.motion||'point',pose:step.pose||null});
  });
 }
 function showOnboarding(step=0){

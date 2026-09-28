@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-28 September 2026. Current development slice: v0.27.0 language-first onboarding + physical local Ksyusha presence on top of the existing v0.25 Auth scaffold. Check exact commit CI, hosted migration state and deployment before claiming it is live.
+28 September 2026. Current development slice: v0.28.0 canonical Mura multi-pose onboarding + physical local Ksyusha presence on top of the existing v0.25 Auth scaffold. Check exact commit CI, hosted migration state and deployment before claiming it is live.
 
 ## Canonical decisions
 
@@ -53,7 +53,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics and cold-start strategy.
 - `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
-- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI Ksyusha helper.\n- `docs/ONBOARDING_KSYUSHA_V027.md` — language-first gate, canonical Mura Ksyusha assets, teleport/point/perch web behavior.
+- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI Ksyusha helper.\n- `docs/ONBOARDING_KSYUSHA_V027.md` — historical language-first gate implementation.\n- `docs/ONBOARDING_KSYUSHA_V028.md` — canonical Mura multi-pose web runtime, alpha asset contract and explicit remaining authored-art gap.
 - `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
