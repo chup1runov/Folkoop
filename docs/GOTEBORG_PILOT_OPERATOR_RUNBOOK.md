@@ -152,10 +152,11 @@ This is an important distinction between identity authentication and first-time 
 
 For developer-only test accounts, decide explicitly whether to retain or remove test data.
 
-If removing:
-- delete technical cooperation/profile data using supported paths;
-- remove Auth users only through an approved operator/admin procedure;
-- confirm no unexpected orphan rows remain.
+If removing developer-only test data:
+- delete technical cooperation/profile data using supported lifecycle paths first;
+- do **not** treat raw Auth-user deletion as ordinary account closure: current FKs can delete owner-controlled shared communities, group chats or cooperations and dependent rows belonging to other users;
+- remove synthetic/developer Auth users only through an approved operator/admin procedure after reviewing owned shared objects;
+- confirm the expected cascades with `tests/network-account-lifecycle.sql` and check that no unexpected orphan/shared-data loss occurred.
 
 Do not manually edit protected tables merely to make the UI look clean.
 
