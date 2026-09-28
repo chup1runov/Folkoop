@@ -18,6 +18,13 @@ UPDATE='99999999-9999-4999-8999-999999999999'
 TASK='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa'
 OFFER='bbbbbbbb-1111-4111-8111-bbbbbbbbbbbb'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
+async def wait_request(state,suffix,before,timeout=5):
+ loop=asyncio.get_running_loop();deadline=loop.time()+timeout
+ while loop.time()<deadline:
+  matches=[(url,payload) for url,payload in state['requests'] if url.endswith(suffix)]
+  if len(matches)>before:return matches[-1]
+  await asyncio.sleep(0.05)
+ raise AssertionError(f'No {suffix} request after action; recent requests={state["requests"][-12:]}')
 async def main():
  passed=[]
  async with async_playwright() as pw:
@@ -170,9 +177,18 @@ async def main():
   await page.fill('#netCoopCreate [name=location]','Göteborg')
   await page.fill('#netCoopCreate [name=targetQuantity]','10')
   await page.fill('#netCoopCreate [name=unit]','m3')
-  async with page.expect_response(lambda r: r.url.endswith('/fk_create_cooperation')) as created:
-   await page.click('#netCoopCreate button')
-  assert (await created.value).ok
+  assert await page.locator('#netCoopCreate [name=kind]').input_value()=='purchase'
+  assert await page.locator('#netCoopCreate [name=targetQuantity]').input_value()=='10'
+  assert await page.locator('#netCoopCreate [name=unit]').input_value()=='m3'
+  purchase_validity=await page.locator('#netCoopCreate').evaluate("""(f)=>({
+   valid:f.checkValidity(),
+   fields:[...f.elements].filter(x=>x.name).map(x=>({name:x.name,value:x.value,required:x.required,valid:x.validity.valid,message:x.validationMessage}))
+  })""")
+  assert purchase_validity['valid'],purchase_validity
+  purchase_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
+  await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
+  _,purchase_payload=await wait_request(state,'/fk_create_cooperation',purchase_creates)
+  assert purchase_payload['p_kind']=='purchase',purchase_payload
   await expect(page.locator('#netCommitment')).to_be_visible(timeout=15000)
   await page.fill('#netCommitment [name=quantity]','2')
   await page.fill('#netCommitment [name=note]','Нужна доставка')
@@ -187,9 +203,16 @@ async def main():
   await page.evaluate("location.hash='#/projects'")
   await page.fill('#netCoopCreate [name=title]','Общая мастерская')
   await page.fill('#netCoopCreate [name=description]','Ищем помещение и команду')
-  async with page.expect_response(lambda r: r.url.endswith('/fk_create_cooperation')) as created_project:
-   await page.click('#netCoopCreate button')
-  assert (await created_project.value).ok
+  assert await page.locator('#netCoopCreate [name=kind]').input_value()=='project'
+  project_validity=await page.locator('#netCoopCreate').evaluate("""(f)=>({
+   valid:f.checkValidity(),
+   fields:[...f.elements].filter(x=>x.name).map(x=>({name:x.name,value:x.value,required:x.required,valid:x.validity.valid,message:x.validationMessage}))
+  })""")
+  assert project_validity['valid'],project_validity
+  project_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
+  await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
+  _,project_payload=await wait_request(state,'/fk_create_cooperation',project_creates)
+  assert project_payload['p_kind']=='project',project_payload
   await expect(page.locator('#netTaskCreate')).to_be_visible(timeout=15000)
   await page.fill('#netTaskCreate [name=title]','Найти помещение')
   await page.fill('#netTaskCreate [name=details]','Сравнить три варианта')
