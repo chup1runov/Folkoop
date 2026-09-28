@@ -1,0 +1,10 @@
+/* v0.27.1 — modal containment and collision-free tour space */
+.guide-tour-open{overflow:hidden}
+.guide-tour-open .sidebar{padding-bottom:calc(var(--guide-card-height,280px) + 160px);transition:none}
+.guide-tour-open .content{padding-bottom:calc(var(--guide-card-height,280px) + 200px)}
+.guide-tour-open .onboarding-card{overscroll-behavior:contain;scrollbar-gutter:stable}
+.ksyusha-language-card{overscroll-behavior:contain;max-height:calc(100dvh - 48px)}
+@media(max-width:720px){.ksyusha-language-card{max-height:calc(100dvh - 20px)}}
+@media(prefers-reduced-motion:reduce){
+ .ksyusha-actor,.ksyusha-actor>img,.ksyusha-point-arm,.ksyusha-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
+}
