@@ -33,16 +33,17 @@ Canonical visual identity:
 - white sneakers;
 - full-body chibi / semi-cartoon 2.5D style.
 
-The FOLKOOP web bundle copies one lightweight transparent canonical full-body PNG (`look-center.png`) from that pack.
+The FOLKOOP web bundle copies two lightweight transparent canonical WebP states from that pack:
+- `waving.webp` for the first greeting;
+- `idle.webp` as the full-body base state for the tour and persistent helper.
 
 Web behavior then adds:
-- welcome bob/wave-like body motion;
 - a lightweight vector pointing arm/hand;
 - teleport/puff transitions;
 - perch positioning;
-- idle breathing motion.
+- idle/body motion through CSS transforms.
 
-This keeps the visual identity canonical while avoiding multiple heavier sprite states. The source Character Pack remains the visual authority if future FOLKOOP art diverges.
+This keeps the visual identity canonical without shipping the heavier full pose bundle. The source Character Pack remains the visual authority if future FOLKOOP art diverges.
 
 ## Physical presence
 
@@ -62,7 +63,7 @@ No canvas/video/3D engine is required.
 ## Performance model
 
 The character layer is deliberately small:
-- one transparent PNG of roughly a few kilobytes;
+- two transparent WebP files totalling only a few tens of kilobytes;
 - one small local JavaScript controller;
 - CSS transforms/opacity/keyframes;
 - no animation server;
