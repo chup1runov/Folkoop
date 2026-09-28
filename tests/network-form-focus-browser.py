@@ -65,7 +65,8 @@ async def scenario(browser, kind, partial):
                                 content_type='application/javascript')
         elif url.startswith(API + '/'):
             payload = route.request.post_data_json if route.request.post_data else {}
-            await route.fulfill(json=await api_response(url, payload))
+            # Empty arrays also need JSON content type for the strict client.
+            await route.fulfill(json=await api_response(url, payload), content_type='application/json')
         elif not OFFLINE and url.startswith(BASE):
             await route.continue_()
         else:
@@ -151,7 +152,11 @@ async def scenario(browser, kind, partial):
         assert not errors, errors
         result.update(passed=True, writes=1, native_click=True, native_validation=True)
     except Exception as error:
-        result.update(error=str(error), page_errors=errors)
+        result.update(error=str(error), page_errors=errors, writes=state['writes'])
+        if not page.is_closed():
+            result['status'] = await page.locator('#netStatus').text_content()
+            result['fields'] = await page.locator('#netCoopCreate').evaluate_all(
+                '(forms)=>forms.flatMap(f=>[...f.elements].filter(e=>e.name).map(e=>({name:e.name,value:e.value,valid:e.validity.valid})))')
     finally:
         release.set()
         await context.close()
