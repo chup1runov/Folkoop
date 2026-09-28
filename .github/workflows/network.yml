@@ -48,3 +48,4 @@ jobs:
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-messaging.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-rls.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-account-lifecycle.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-security-definer.sql
