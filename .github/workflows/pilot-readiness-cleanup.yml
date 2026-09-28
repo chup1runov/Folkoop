@@ -1,0 +1,29 @@
+name: One-time pilot-readiness branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/pilot-readiness-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify squash ancestry and delete merged ref
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          branch='pilot/readiness-v0251'
+          expected_head='0a8f28bd99d6f4e0385baf955cb201f55aff11b3'
+          squash_commit='09915dc4456593b09cfdec4070570226b898dbfe'
+          ref="refs/remotes/origin/$branch"
+          test "$(git rev-parse "$ref")" = "$expected_head"
+          git merge-base --is-ancestor "$squash_commit" origin/main
+          git push origin ":refs/heads/$branch"
