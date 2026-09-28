@@ -103,6 +103,33 @@ insert into public.fk_purchase_process(cooperation_id) values
 insert into public.fk_purchase_confirmations(cooperation_id,user_id,quantity) values
  ('30000000-0000-4000-8000-000000000005','a1111111-1111-4111-8111-111111111111',2);
 
+-- Preflight must expose destructive ownership separately before deletion.
+select fk_account_test.ok(
+ (folkoop_private.account_closure_inventory('a1111111-1111-4111-8111-111111111111'::uuid)
+   #>> '{owned_shared,communities}')::int=1,
+ 'preflight finds one owned community'
+);
+select fk_account_test.ok(
+ (folkoop_private.account_closure_inventory('a1111111-1111-4111-8111-111111111111'::uuid)
+   #>> '{owned_shared,standalone_group_chats}')::int=1,
+ 'preflight finds one standalone owned group chat'
+);
+select fk_account_test.ok(
+ (folkoop_private.account_closure_inventory('a1111111-1111-4111-8111-111111111111'::uuid)
+   #>> '{owned_shared,cooperations}')::int=1,
+ 'preflight finds one owned cooperation'
+);
+select fk_account_test.ok(
+ (folkoop_private.account_closure_inventory('a1111111-1111-4111-8111-111111111111'::uuid)
+   #>> '{private_pilot,admission}')::int=1,
+ 'preflight includes private pilot admission'
+);
+select fk_account_test.ok(
+ not has_function_privilege('authenticated',
+   'folkoop_private.account_closure_inventory(uuid)'::regprocedure,'execute'),
+ 'participant role cannot execute operator preflight'
+);
+
 -- The actual operation under test.
 delete from auth.users where id='a1111111-1111-4111-8111-111111111111';
 
