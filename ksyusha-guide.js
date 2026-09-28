@@ -177,7 +177,7 @@ function applyPosition(target,mode='point',poseName=null){
  }).sort((a,b)=>a.score-b.score)[0];
  actor.style.left=best.x+'px';actor.style.top=best.y+'px';
  let resolved=poseName||(mode==='perch'?'sit-edge':'point');
- if(mode==='point'&&resolved==='point')resolved=pointPose(r,actor.getBoundingClientRect());
+ if(mode==='point'&&resolved==='point')resolved=pointPose(r,{left:best.x,top:best.y,width:w,height:h});
  pose(resolved);
 }
 function cancelTeleport(){
