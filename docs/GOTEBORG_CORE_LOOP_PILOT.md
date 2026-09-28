@@ -415,6 +415,10 @@ Unless required for safety or a blocking defect, do not delay the pilot to add:
 
 The purpose of the pilot is to test cooperation, not software completeness.
 
+## Technical operator gate
+
+Before inviting ordinary participants, complete `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` with two independent real Auth accounts. The technical gate is not product-market evidence; it only proves that the multi-account cooperation flow behaves correctly.
+
 ## Pilot output
 
 At the end, produce one evidence report containing:
