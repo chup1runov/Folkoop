@@ -453,6 +453,9 @@ Important current limitations include:
 
 ## Product decision rule
 
+The persistent governance rule is defined in `docs/PRODUCT_DECISION_POLICY.md`. It is the short operational gate for future feature work.
+
+
 When evaluating a proposed feature, ask:
 
 1. What user intent does it start from?
