@@ -2,10 +2,10 @@
 (() => {
 'use strict';
 const ASSETS=Object.freeze({
- welcome:'./ksyusha-wave.webp',
- calm:'./ksyusha-welcome.webp',
- point:'./ksyusha-point.webp',
- idle:'./ksyusha-idle.webp'
+ welcome:'./ksyusha-base.png',
+ calm:'./ksyusha-base.png',
+ point:'./ksyusha-base.png',
+ idle:'./ksyusha-base.png'
 });
 const reduced=()=>globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
