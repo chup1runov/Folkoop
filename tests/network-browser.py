@@ -180,8 +180,9 @@ async def main():
   assert await page.locator('#netCoopCreate [name=kind]').input_value()=='purchase'
   assert await page.locator('#netCoopCreate [name=targetQuantity]').input_value()=='10'
   assert await page.locator('#netCoopCreate [name=unit]').input_value()=='m3'
+  assert await page.locator('#netCoopCreate').evaluate('(f)=>f.checkValidity()')
   purchase_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
-  await page.click('#netCoopCreate button')
+  await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
   _,purchase_payload=await wait_request(state,'/fk_create_cooperation',purchase_creates)
   assert purchase_payload['p_kind']=='purchase',purchase_payload
   await expect(page.locator('#netCommitment')).to_be_visible(timeout=15000)
@@ -199,8 +200,9 @@ async def main():
   await page.fill('#netCoopCreate [name=title]','Общая мастерская')
   await page.fill('#netCoopCreate [name=description]','Ищем помещение и команду')
   assert await page.locator('#netCoopCreate [name=kind]').input_value()=='project'
+  assert await page.locator('#netCoopCreate').evaluate('(f)=>f.checkValidity()')
   project_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
-  await page.click('#netCoopCreate button')
+  await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
   _,project_payload=await wait_request(state,'/fk_create_cooperation',project_creates)
   assert project_payload['p_kind']=='project',project_payload
   await expect(page.locator('#netTaskCreate')).to_be_visible(timeout=15000)
