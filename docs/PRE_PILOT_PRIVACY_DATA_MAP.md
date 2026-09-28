@@ -27,7 +27,11 @@ workflow for ordinary participants**.
 
 CI now includes `tests/network-account-lifecycle.sql` to lock the present
 database behavior and prevent future documentation from drifting away from the
-actual foreign-key semantics.
+actual foreign-key semantics. The audit also reproduced a lifecycle-trigger bug:
+FK-driven membership deletion attempted to log the already-deleted user UUID as
+an activity actor. `202609290001_account_lifecycle_trigger.sql` fixes that narrow
+integrity defect by recording system-cascade `member_left` activity with
+`actor_id = NULL`.
 
 ## Systems in scope
 
@@ -149,8 +153,11 @@ survives deletion of a non-owner but is deleted when its cooperation is deleted.
 
 `fk_cooperation_activity.actor_id -> auth.users ON DELETE SET NULL`.
 
-So an activity row can remain while its actor UUID is cleared. This is the one
-explicit pseudonymising-style FK in the current cooperation activity path.
+So an activity row can remain while its actor UUID is cleared. The account-lifecycle
+hardening migration also ensures that the membership-sync trigger uses a NULL
+actor for FK-driven `member_left` events after the Auth row has disappeared,
+instead of aborting the Auth deletion with a foreign-key error. This is the one
+explicit pseudonymising-style path in the current cooperation activity model.
 
 `fk_cooperation_reads.user_id` cascades.
 

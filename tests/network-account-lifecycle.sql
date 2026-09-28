@@ -106,6 +106,8 @@ insert into public.fk_purchase_confirmations(cooperation_id,user_id,quantity) va
 -- The actual operation under test.
 delete from auth.users where id='a1111111-1111-4111-8111-111111111111';
 
+select fk_account_test.ok(exists(select 1 from public.fk_cooperation_activity where cooperation_id='30000000-0000-4000-8000-000000000001' and event_type='member_left' and subject_id='a1111111-1111-4111-8111-111111111111' and actor_id is null),'FK-driven member removal records member_left with NULL actor');
+
 select fk_account_test.ok(not exists(select 1 from public.fk_profiles where id='a1111111-1111-4111-8111-111111111111'),'Auth delete cascades profile');
 select fk_account_test.ok(not exists(select 1 from folkoop_private.pilots where user_id='a1111111-1111-4111-8111-111111111111'),'Auth delete cascades pilot admission');
 select fk_account_test.ok(not exists(select 1 from folkoop_private.write_budgets where user_id='a1111111-1111-4111-8111-111111111111'),'Auth delete cascades write budget');
