@@ -237,7 +237,7 @@ function positionOnboarding(step){
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
- target.classList.add('tutorial-target');
+ if(step.id!=='helper')target.classList.add('tutorial-target');
  if(step.id!=='helper')target.scrollIntoView({block:'center',inline:'nearest',behavior:'auto'});
  requestAnimationFrame(()=>{
   const rect=target.getBoundingClientRect(),pad=7;
