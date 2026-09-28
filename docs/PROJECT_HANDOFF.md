@@ -8,7 +8,7 @@ Continue `chup1runov/Folkoop` as one FOLKOOP product. The repository was renamed
 
 Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
 
-The former civic baseline is preserved on `archive/sverinav-v0.14-before-folkoop`.
+The former civic baseline is preserved by the archival tag `archive/sverinav-v0.14-before-folkoop`. The blocked Göteborg air-quality experiment is preserved separately by `archive/experiment-goteborg-air-quality-v0.6`.
 
 ## Actual state
 
