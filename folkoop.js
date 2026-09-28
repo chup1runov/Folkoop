@@ -271,7 +271,7 @@ function finishOnboarding(){
  dialog.querySelector('#onboardingSpotlight').hidden=true;
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(menuOpen)closeMenu();
- globalThis.FolkoopKsyushaGuide?.home();
+ globalThis.FolkoopKsyushaGuide?.home({instant:true});
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
 }
 function openMenu(){
