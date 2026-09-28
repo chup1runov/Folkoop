@@ -131,14 +131,28 @@ Browser/client tests must verify:
 - invite-specific denial clears the new session;
 - existing pilot can pass a blank invite code.
 
-## Activation gate
+## Hosted activation status — 28 September 2026
 
-Do not apply this migration to the hosted project until the exact PR passes:
-1. deterministic/browser validation;
-2. PostgreSQL authorization tests.
+PR #36 passed both required suites and was squash-merged before hosted activation.
 
-After hosted application:
-- seed a small number of invite hashes privately;
-- keep plaintext codes outside GitHub;
-- re-run a hosted transaction smoke against the new admission contract;
-- leave the database clean until an actual participant Auth route is ready.
+The migration `folkoop_pilot_invites_v024` is applied to the hosted `folkoop` project.
+
+A post-migration transaction-only hosted smoke used separate synthetic JWT subjects and the real invite RPC/RLS/cooperation functions. **21/21 checks passed**, including:
+- two independent one-time invite admissions;
+- consumed-code reuse denial;
+- blank-code re-entry for an existing pilot;
+- closed legacy bootstrap;
+- Need discovery and pre-join member privacy;
+- join and linked-chat synchronization;
+- work message/activity visibility;
+- status progression to `done`;
+- leave removing cooperation/chat access;
+- block hiding a listed profile.
+
+The transaction was rolled back and the project was verified clean afterward.
+
+Four unused one-time invite hashes (P01–P04) are seeded for the first controlled participants. The corresponding plaintext codes are stored only in the private Box pilot workspace and expire on 1 November 2026 UTC.
+
+Direct grants on `folkoop_private.pilot_invites` remain restricted to the database owner; browser roles reach admission only through the explicit authenticated RPC.
+
+The remaining launch blocker is **ordinary participant Auth**, not FOLKOOP admission. See `docs/AUTH_GOOGLE_PILOT.md`.
