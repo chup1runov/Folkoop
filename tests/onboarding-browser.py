@@ -12,6 +12,17 @@ async def local_only_factory(context):
   else: await route.abort()
  await context.route('**/*',local_only)
 
+async def settled_actor(page):
+ # The shell schedules placement on animation frames; a visible actor can still
+ # be at its previous/home position. Wait for placement and both teleport phases
+ # instead of racing a 150ms timer or sampling an unfinished 380ms entrance.
+ await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
+ await page.wait_for_function("""() => {
+  const actor=document.getElementById('ksyushaActor');
+  return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
+   !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
+ }""")
+
 async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
  await local_only_factory(context)
@@ -39,6 +50,8 @@ async def mobile_flow(browser,passed):
   'Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр',
   'Настройки','О нас','Ксюша · помощник FOLKOOP'
  ]
+ await settled_actor(page)
+ assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-tour')")
  first_box=await page.locator('#ksyushaActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
@@ -49,10 +62,10 @@ async def mobile_flow(browser,passed):
    assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-perched')")
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
-   await page.wait_for_timeout(420)
+   await settled_actor(page)
 
  moved_box=await page.locator('#ksyushaActor').bounding_box()
- assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8)
+ assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8),(first_box,moved_box)
  await expect(page.locator('[data-onboarding=next]')).to_have_text('Начать пользоваться FOLKOOP')
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
@@ -90,7 +103,7 @@ async def desktop_flow(browser,passed):
  await page.click('[data-ksyusha-lang="en"]')
  await expect(page.locator('#onboarding')).to_be_visible()
  await page.click('[data-onboarding=next]')
- await page.wait_for_timeout(420)
+ await settled_actor(page)
  actor=await page.locator('#ksyushaActor').bounding_box()
  assert actor and actor['x']>=0 and actor['x']+actor['width']<=1366 and actor['y']>=0 and actor['y']+actor['height']<=900,actor
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
