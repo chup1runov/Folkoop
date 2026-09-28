@@ -1,7 +1,7 @@
 # FOLKOOP migration ledger — v0.15.0
 
 Baseline: `09e29aad3cad3b9d3ee4403881e02ac4b9022073` (Sverinav v0.14.0).
-Snapshot branch: `archive/sverinav-v0.14-before-folkoop`.
+Snapshot tag: `archive/sverinav-v0.14-before-folkoop`.
 One repository and one developing product. Repository slug and Pages address are unchanged in this slice.
 
 | Requirement | Destination | Current delivery |
@@ -15,7 +15,7 @@ One repository and one developing product. Repository slug and Pages address are
 | FOLKUNO human/community concept | Across People / Together / Projects / City / Center | Public purpose preserved; private operating manuals not published |
 | FOLKUNO master graphic mark | FOLKOOP brand | Raster crop from owner-supplied master identity board, with FOLKOOP wordmark |
 | Eleven languages and RTL | City + shared navigation | Retained; detailed new copy sv/en/ru, other fallback explicitly disclosed |
-| History and rights | Repository + archival branch | No history rewrite, force push, licensing change or new repository |
+| History and rights | Repository + archival tag | No history rewrite, force push, licensing change or new repository |
 
 ## Deliberate limitations
 
@@ -25,7 +25,7 @@ The original civic source remains readable and regression-tested. A temporary ex
 
 ## Rollback
 
-The archive branch points to the exact baseline. Revert the migration commit(s) through the normal Git workflow; do not reset/force-push shared history. Confirm the reverted service-worker version is advanced for a rollback release, so installed clients can receive it without forced activation or cache collisions.
+The archival tag points to the exact baseline. Revert the migration commit(s) through the normal Git workflow; do not reset/force-push shared history. Confirm the reverted service-worker version is advanced for a rollback release, so installed clients can receive it without forced activation or cache collisions.
 
 ## Brand provenance
 
