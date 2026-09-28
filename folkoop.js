@@ -71,7 +71,7 @@ function settingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
 }
 function aboutPage(){
- return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong> · v0.22 pilot</p><p class="meta">People · cooperation · projects · city · real life.</p></div>`;
+ return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong> · pilot</p><p class="meta">People · cooperation · projects · city · real life.</p></div>`;
 }
 function cityShell(){
  const city=selectedCity();
