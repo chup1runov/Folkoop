@@ -5,7 +5,7 @@ Prepared 23 September 2026. Version 1.0-draft. This document does not currently 
 
 ## 1. Scope and rights holder
 
-The proposed rights holder is Pavel Chuprunov (contact: chup1runov@gmail.com). These terms concern only original Sverinav code, documentation, editorial text and visual assets in which he holds the relevant enforceable rights (the **Covered Material**). Subject to the exceptions below, all rights in that material are reserved. This is not an open-source or free-software licence.
+The proposed rights holder is Pavel Chuprunov (contact: use the repository's public GitHub contact form; do not include confidential material in a public issue). These terms concern only original Sverinav code, documentation, editorial text and visual assets in which he holds the relevant enforceable rights (the **Covered Material**). Subject to the exceptions below, all rights in that material are reserved. This is not an open-source or free-software licence.
 
 No claim is made to exclusive ownership of third-party components, official government information, public-domain material, unprotectable ideas or facts, user-authored submissions, or another person's rights. A file's inclusion in this repository does not by itself establish ownership. Specific third-party licences and notices take precedence for the material they cover.
 
