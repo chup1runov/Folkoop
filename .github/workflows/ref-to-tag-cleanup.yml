@@ -21,6 +21,8 @@ jobs:
       - name: Create verified archival tags and delete branch refs
         run: |
           set -euo pipefail
+          git config user.name 'Pavel Chuprunov'
+          git config user.email '17845704+chup1runov@users.noreply.github.com'
 
           archive_branch='archive/sverinav-v0.14-before-folkoop'
           archive_sha='09e29aad3cad3b9d3ee4403881e02ac4b9022073'
