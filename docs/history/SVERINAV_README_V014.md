@@ -18,7 +18,7 @@ Travel tickets and water remain official links. No valid ticket display, payment
 
 Initiator: **Pavel Chuprunov**, @chup1runov.
 
-Email: chup1runov@gmail.com. Telegram: https://t.me/chup1runov . These contacts were explicitly approved for public use.
+Current contact: use the repository's GitHub contact form or Telegram: https://t.me/chup1runov . The previously published personal email was retired from the current tree during privacy housekeeping.
 
 According to the initiator, the idea arose in **2021**. The code repository was created **21 September 2026**. First pilot: Göteborg. A short public-source biography and its source are documented in `docs/EDITORIAL_V014.md`.
 

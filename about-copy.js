@@ -5,7 +5,7 @@ by:'Кто делает проект',role:'Инициатор и ответст
 intro:'Sverinav — независимый цифровой гражданский проект. Он помогает находить нужные государственные и муниципальные сервисы Швеции и экономить время при решении повседневных вопросов.',
 purpose:'Начинай со своего вопроса, а не с поиска нужного ведомства. Sverinav объединяет короткую повседневную сводку и путь к официальному источнику. Мы планируем короткие пошаговые задания: решать местные проблемы, участвовать в обсуждении общих вопросов и помогать соседям. Игровые задания и награды ещё не запущены.',
 bio:'Павел Чупрунов занимается гражданскими инициативами. На MittSkifte опубликована его кампания за введение ночных остановок общественного транспорта по запросу пассажиров в Гётеборге.',
-contactNote:'Почта или Telegram откроются отдельно. Ты сам отправляешь сообщение; текст обращения и геопозиция из Sverinav не добавляются. Не присылай personnummer, пароли и чувствительные документы. Это не экстренная служба.',
+contactNote:'GitHub или Telegram откроются отдельно. Ты сам отправляешь сообщение; текст обращения и геопозиция из Sverinav не добавляются. Не присылай personnummer, пароли и чувствительные документы. Это не экстренная служба.',
 dateNote:'Идея проекта возникла в 2021 году — по словам автора. Репозиторий кода создан 21 сентября 2026 года. Первый пилотный регион — Гётеборг.',
 questions:[
 ['Это платно?','Sverinav бесплатен для жителей. Сохранять его бесплатным — принцип проекта. В текущем пилоте не нужен аккаунт. Внешние сервисы, например билеты, имеют собственные условия и стоимость.'],
@@ -25,7 +25,7 @@ by:'Personen bakom',role:'Initiativtagare och projektansvarig',why:'Varför finn
 intro:'Sverinav är ett oberoende digitalt samhällsprojekt. Det hjälper invånare att hitta rätt bland Sveriges statliga och kommunala tjänster och spara tid i vardagsärenden.',
 purpose:'Börja med din fråga, inte med namnet på rätt myndighet. Sverinav samlar en kort vardagsöversikt och vägen till originalkällan. Vi planerar korta stegvisa uppdrag för lokala problem, samhällsfrågor och grannhjälp. Speluppdrag och belöningar är ännu inte lanserade.',
 bio:'Pavel Chuprunov arbetar med medborgarinitiativ. På MittSkifte finns hans kampanj för nattstopp på begäran i Göteborgs kollektivtrafik.',
-contactNote:'E-post eller Telegram öppnas separat. Du skickar själv; Sverinav lägger inte till ärendetext eller position. Skicka inte personnummer, lösenord eller känsliga dokument. Ingen akutkanal.',
+contactNote:'GitHub eller Telegram öppnas separat. Du skickar själv; Sverinav lägger inte till ärendetext eller position. Skicka inte personnummer, lösenord eller känsliga dokument. Ingen akutkanal.',
 dateNote:'Enligt initiativtagaren uppstod idén 2021. Kodarkivet skapades den 21 september 2026. Första pilotområdet är Göteborg.',
 questions:[
 ['Kostar det något?','Sverinav är gratis för invånare. Att fortsätta vara gratis är en princip för projektet. Piloten kräver inget konto. Externa tjänster, exempelvis biljetter, har egna villkor och avgifter.'],
@@ -45,7 +45,7 @@ by:'Who is behind it',role:'Project initiator and maintainer',why:'Why does Sver
 intro:'Sverinav is an independent digital civic project. It helps residents find Swedish national and municipal services and save time on everyday public-service tasks.',
 purpose:'Start with your question, not the name of the right authority. Sverinav combines a short daily overview with a path to official sources. We plan short step-by-step activities for local problems, public issues and helping neighbours. Game-based activities and rewards have not launched.',
 bio:'Pavel Chuprunov develops civic initiatives. MittSkifte hosts his campaign for request-based night stops on Gothenburg public transport.',
-contactNote:'Email or Telegram opens separately. You send the message yourself; Sverinav adds no report text or location. Do not send identity numbers, passwords or sensitive documents. Not an emergency channel.',
+contactNote:'GitHub or Telegram opens separately. You send the message yourself; Sverinav adds no report text or location. Do not send identity numbers, passwords or sensitive documents. Not an emergency channel.',
 dateNote:'According to the initiator, the idea arose in 2021. The code repository was created on 21 September 2026. Gothenburg is the first pilot area.',
 questions:[
 ['Does it cost anything?','Sverinav is free for residents. Keeping it free is a project principle. The pilot needs no account. External services, including tickets, have their own terms and charges.'],
@@ -65,7 +65,7 @@ by:'Хто робить проєкт',role:'Ініціатор і відпові
 intro:'Sverinav — незалежний цифровий громадянський проєкт. Він допомагає знаходити державні та муніципальні сервіси Швеції й заощаджувати час у повсякденних справах.',
 purpose:'Починайте зі свого питання, а не з пошуку відомства. Sverinav поєднує щоденний огляд і шлях до офіційного джерела. Плануємо короткі покрокові завдання для місцевих проблем, суспільних питань і допомоги сусідам. Ігрові завдання й нагороди ще не запущено.',
 bio:'Павло Чупрунов займається громадянськими ініціативами. На MittSkifte опубліковано його кампанію за нічні зупинки громадського транспорту на прохання пасажирів у Гетеборзі.',
-contactNote:'Пошта або Telegram відкриються окремо. Повідомлення надсилаєте ви; текст звернення й геопозиція не додаються. Не надсилайте personnummer, паролі та чутливі документи. Це не екстрена служба.',
+contactNote:'GitHub або Telegram відкриються окремо. Повідомлення надсилаєте ви; текст звернення й геопозиція не додаються. Не надсилайте personnummer, паролі та чутливі документи. Це не екстрена служба.',
 dateNote:'За словами ініціатора, ідея виникла 2021 року. Репозиторій створено 21 вересня 2026 року. Перший пілот — Гетеборг.',
 questions:[
 ['Це платно?','Sverinav безплатний для жителів. Зберігати його безплатним — принцип проєкту. Пілот не потребує акаунта. Зовнішні сервіси, наприклад квитки, мають власні умови й вартість.'],
@@ -85,7 +85,7 @@ by:'Hankkeen tekijä',role:'Hankkeen alullepanija ja ylläpitäjä',why:'Miksi S
 intro:'Sverinav on itsenäinen digitaalinen kansalaisprojekti. Se auttaa löytämään Ruotsin valtion ja kuntien palvelut ja säästämään aikaa arjen asioinnissa.',
 purpose:'Aloita kysymyksestäsi, älä viranomaisen nimestä. Sverinav yhdistää lyhyen päiväkatsauksen ja viralliset lähteet. Suunnittelemme vaiheittaisia tehtäviä paikallisiin ongelmiin, yhteiskunnan kysymyksiin ja naapuriapuun. Pelitehtäviä tai palkintoja ei ole vielä julkaistu.',
 bio:'Pavel Chuprunov tekee kansalaisaloitteita. MittSkiftessä on hänen kampanjansa pyynnöstä tehtävistä yöpysähdyksistä Göteborgin joukkoliikenteessä.',
-contactNote:'Sähköposti tai Telegram avautuu erikseen. Lähetät viestin itse; ilmoitustekstiä tai sijaintia ei lisätä. Älä lähetä henkilötunnuksia, salasanoja tai arkaluonteisia asiakirjoja. Ei hätäpalvelu.',
+contactNote:'GitHub tai Telegram avautuu erikseen. Lähetät viestin itse; ilmoitustekstiä tai sijaintia ei lisätä. Älä lähetä henkilötunnuksia, salasanoja tai arkaluonteisia asiakirjoja. Ei hätäpalvelu.',
 dateNote:'Aloitteentekijän mukaan idea syntyi vuonna 2021. Koodivarasto luotiin 21. syyskuuta 2026. Ensimmäinen pilottialue on Göteborg.',
 questions:[
 ['Maksaako käyttö?','Sverinav on asukkaille maksuton. Maksuttomuuden säilyttäminen on hankkeen periaate. Pilotti ei vaadi tiliä. Ulkoisilla palveluilla, kuten lipuilla, on omat ehtonsa ja hintansa.'],
@@ -105,7 +105,7 @@ by:'Quién está detrás',role:'Impulsor y responsable del proyecto',why:'¿Por 
 intro:'Sverinav es un proyecto ciudadano digital e independiente. Ayuda a encontrar servicios estatales y municipales de Suecia y ahorrar tiempo en gestiones cotidianas.',
 purpose:'Empieza por tu pregunta, no por el nombre de la autoridad. Sverinav combina un resumen diario y fuentes oficiales. Planeamos actividades breves por pasos para problemas locales, asuntos públicos y ayuda vecinal. Las actividades de juego y recompensas aún no están disponibles.',
 bio:'Pavel Chuprunov impulsa iniciativas ciudadanas. MittSkifte publica su campaña para introducir paradas nocturnas a petición en el transporte público de Gotemburgo.',
-contactNote:'El correo o Telegram se abre por separado. Tú envías el mensaje; no se añade texto del aviso ni ubicación. No envíes números personales, contraseñas ni documentos sensibles. No es un canal de emergencias.',
+contactNote:'GitHub o Telegram se abre por separado. Tú envías el mensaje; no se añade texto del aviso ni ubicación. No envíes números personales, contraseñas ni documentos sensibles. No es un canal de emergencias.',
 dateNote:'Según el impulsor, la idea nació en 2021. El repositorio se creó el 21 de septiembre de 2026. El primer piloto es Gotemburgo.',
 questions:[
 ['¿Tiene coste?','Sverinav es gratuito para residentes. Mantenerlo gratuito es un principio del proyecto. El piloto no exige cuenta. Los servicios externos, como billetes, tienen condiciones y tarifas propias.'],
@@ -125,7 +125,7 @@ by:'Ko stoji iza projekta',role:'Pokretač i odgovorna osoba projekta',why:'Zaš
 intro:'Sverinav je nezavisni digitalni građanski projekat. Pomaže stanovnicima da pronađu državne i općinske usluge Švedske i uštede vrijeme u svakodnevnim poslovima.',
 purpose:'Počni od svog pitanja, ne naziva institucije. Sverinav spaja dnevni pregled i službene izvore. Planiramo kratke zadatke korak po korak za lokalne probleme, javna pitanja i pomoć komšijama. Igrivi zadaci i nagrade još nisu pokrenuti.',
 bio:'Pavel Chuprunov pokreće građanske inicijative. Na MittSkifte je njegova kampanja za noćna zaustavljanja javnog prijevoza na zahtjev u Göteborgu.',
-contactNote:'E-pošta ili Telegram otvara se zasebno. Sam šalješ poruku; tekst prijave i lokacija se ne dodaju. Ne šalji personnummer, lozinke ili osjetljive dokumente. Nije hitna služba.',
+contactNote:'GitHub ili Telegram otvara se zasebno. Sam šalješ poruku; tekst prijave i lokacija se ne dodaju. Ne šalji personnummer, lozinke ili osjetljive dokumente. Nije hitna služba.',
 dateNote:'Prema inicijatoru, ideja je nastala 2021. Repozitorij je kreiran 21. septembra 2026. Prvi pilot je Göteborg.',
 questions:[
 ['Da li se plaća?','Sverinav je besplatan za stanovnike. Očuvanje besplatnog pristupa je princip projekta. Pilot ne zahtijeva račun. Vanjske usluge, poput karata, imaju svoje uslove i cijene.'],
@@ -145,7 +145,7 @@ by:'من وراء المشروع',role:'صاحب المبادرة والمسؤو
 intro:'Sverinav مشروع مدني رقمي مستقل. يساعد السكان على إيجاد الخدمات الحكومية والبلدية في السويد وتوفير الوقت في شؤونهم اليومية.',
 purpose:'ابدأ بسؤالك لا باسم الجهة. يجمع Sverinav ملخصاً يومياً وطريقاً إلى المصادر الرسمية. نخطط لمهام قصيرة بخطوات واضحة للمشكلات المحلية والشؤون العامة ومساعدة الجيران. المهام والألعاب والمكافآت لم تُطلق بعد.',
 bio:'يعمل Pavel Chuprunov على مبادرات مدنية. تنشر MittSkifte حملته لإتاحة توقف النقل العام ليلاً عند طلب الركاب في غوتنبرغ.',
-contactNote:'يفتح البريد أو Telegram منفصلاً. أنت ترسل الرسالة؛ لا يُضاف نص البلاغ أو الموقع تلقائياً. لا ترسل الرقم الشخصي أو كلمات المرور أو وثائق حساسة. ليست خدمة طوارئ.',
+contactNote:'يفتح GitHub أو Telegram منفصلاً. أنت ترسل الرسالة؛ لا يُضاف نص البلاغ أو الموقع تلقائياً. لا ترسل الرقم الشخصي أو كلمات المرور أو وثائق حساسة. ليست خدمة طوارئ.',
 dateNote:'وفقاً لصاحب المبادرة، ظهرت الفكرة عام 2021. أُنشئ مستودع الكود في 21 سبتمبر 2026. المنطقة التجريبية الأولى غوتنبرغ.',
 questions:[
 ['هل الاستخدام مدفوع؟','Sverinav مجاني للسكان. إبقاؤه مجانياً مبدأ للمشروع. النسخة التجريبية لا تتطلب حساباً. للخدمات الخارجية مثل التذاكر شروطها ورسومها.'],
@@ -165,7 +165,7 @@ by:'چه کسی پشت پروژه است',role:'آغازگر و مسئول پر�
 intro:'Sverinav یک پروژه مستقل دیجیتال و مدنی است. به ساکنان کمک می‌کند خدمات دولتی و شهرداری سوئد را پیدا کنند و در امور روزمره وقت کمتری صرف کنند.',
 purpose:'از پرسش خود شروع کنید، نه نام نهاد. Sverinav مرور روزانه و مسیر منابع رسمی را گرد هم می‌آورد. فعالیت‌های کوتاه مرحله‌ای برای مسائل محلی، عمومی و کمک به همسایگان برنامه‌ریزی شده‌اند. بازی‌ها و پاداش‌ها هنوز راه‌اندازی نشده‌اند.',
 bio:'Pavel Chuprunov در زمینه ابتکارهای مدنی فعالیت می‌کند. MittSkifte کارزار او برای توقف شبانه حمل‌ونقل عمومی به درخواست مسافر در یوتبری را منتشر کرده است.',
-contactNote:'ایمیل یا Telegram جداگانه باز می‌شود. خودتان پیام را می‌فرستید؛ متن گزارش و مکان اضافه نمی‌شود. شماره شخصی، رمز یا مدارک حساس نفرستید. این خدمت اضطراری نیست.',
+contactNote:'GitHub یا Telegram جداگانه باز می‌شود. خودتان پیام را می‌فرستید؛ متن گزارش و مکان اضافه نمی‌شود. شماره شخصی، رمز یا مدارک حساس نفرستید. این خدمت اضطراری نیست.',
 dateNote:'به گفته آغازگر، ایده در سال ۲۰۲۱ شکل گرفت. مخزن کد در ۲۱ سپتامبر ۲۰۲۶ ایجاد شد. نخستین منطقه آزمایشی یوتبری است.',
 questions:[
 ['آیا هزینه دارد؟','Sverinav برای ساکنان رایگان است. رایگان ماندن اصل پروژه است. نسخه آزمایشی حساب نمی‌خواهد. خدمات بیرونی مانند بلیت شرایط و هزینه خود را دارند.'],
@@ -185,7 +185,7 @@ by:'Qofka mashruuca ka dambeeya',role:'Bilaabaha iyo masuulka mashruuca',why:'Ma
 intro:'Sverinav waa mashruuc muwaadinimo dijitaal ah oo madax-bannaan. Wuxuu dadka ka caawiyaa helidda adeegyada dowladda iyo degmooyinka Sweden iyo badbaadinta waqtiga arrimaha maalinlaha ah.',
 purpose:'Ka bilow su’aashaada, ma aha magaca hay’adda. Sverinav wuxuu isku daraa warbixin kooban iyo ilo rasmi ah. Waxaan qorshaynaynaa hawlo gaagaaban oo tallaabooyin leh oo arrimaha deegaanka, bulshada iyo caawinta deriska ah. Hawlaha ciyaarta iyo abaalmarinnadu weli ma bilaabmin.',
 bio:'Pavel Chuprunov wuxuu ka shaqeeyaa dadaallo muwaadinimo. MittSkifte waxaa ku qoran ololihiisa joogsiyada habeenkii ee gaadiidka Göteborg marka rakaabku codsado.',
-contactNote:'Email ama Telegram ayaa gooni u furmaya. Adiga ayaa dira; qoraalka warbixinta iyo goobta laguma daro. Ha dirin personnummer, furaha sirta ama dukumenti xasaasi ah. Ma aha adeeg degdeg ah.',
+contactNote:'GitHub ama Telegram ayaa gooni u furmaya. Adiga ayaa dira; qoraalka warbixinta iyo goobta laguma daro. Ha dirin personnummer, furaha sirta ama dukumenti xasaasi ah. Ma aha adeeg degdeg ah.',
 dateNote:'Sida uu sheegay bilaabaha, fikraddu waxay dhalatay 2021. Kaydka koodka waxaa la sameeyay 21 Sebtembar 2026. Tijaabada koowaad waa Göteborg.',
 questions:[
 ['Lacag ma laga bixiyaa?','Sverinav waa bilaash dadka deggan. Inuu bilaash ahaado waa mabda’a mashruuca. Tijaabadu akoon uma baahna. Adeegyada dibadda sida tigidhadu waxay leeyihiin qiimo iyo shuruudo u gaar ah.'],
@@ -205,7 +205,7 @@ by:'Kesê li pişt projeyê',role:'Destpêker û berpirsiyarê projeyê',why:'Sv
 intro:'Sverinav projeyek dijîtal a hemwelatî ya serbixwe ye. Alîkariya niştecihan dike ku xizmetên dewlet û şaredariyên Swêdê bibînin û di karên rojane de demê biparêzin.',
 purpose:'Bi pirsa xwe dest pê bike, ne bi navê saziyê. Sverinav kurteya rojane û çavkaniyên fermî dicivîne. Em karên kurt ên gav-bi-gav ji bo pirsgirêkên herêmê, mijarên giştî û alîkariya cîranan plan dikin. Karên lîstikê û xelat hîn nehatine destpêkirin.',
 bio:'Pavel Chuprunov li ser destpêşxeriyên hemwelatî dixebite. Li MittSkifte kampanyaya wî ji bo rawestina şevê ya veguhastina giştî bi daxwaza rêwiyan li Göteborgê heye.',
-contactNote:'E-name an Telegram cuda vedibe. Tu peyamê dişînî; nivîsa raporê û cih nayên zêdekirin. Personnummer, şîfre an belgeyên hestiyar neşîne. Ne xeta awarte ye.',
+contactNote:'GitHub an Telegram cuda vedibe. Tu peyamê dişînî; nivîsa raporê û cih nayên zêdekirin. Personnummer, şîfre an belgeyên hestiyar neşîne. Ne xeta awarte ye.',
 dateNote:'Li gor destpêker, fikir di 2021 de derket. Depoya kodê di 21 Îlona 2026 de hate afirandin. Pilota yekem Göteborg e.',
 questions:[
 ['Bi pere ye?','Sverinav ji bo niştecihan belaş e. Belaş mayîn prensîba projeyê ye. Pilot hesab naxwaze. Xizmetên derve wek bilêt şert û bihayên xwe hene.'],

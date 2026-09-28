@@ -20,12 +20,12 @@ async def main():
   await expect(page.locator('#projectAuthor')).to_contain_text('Pavel Chuprunov')
   await expect(page.locator('#projectBio')).to_contain_text('MittSkifte')
   await expect(page.locator('#projectFaq > details')).to_have_count(11)
-  await expect(page.locator('#contactAuthor')).to_have_attribute('href','mailto:chup1runov@gmail.com')
+  await expect(page.locator('#contactAuthor')).to_have_attribute('href','https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml')
   await expect(page.locator('#contactTelegram')).to_have_attribute('href','https://t.me/chup1runov')
   await expect(page.locator('#projectContactNote')).to_be_visible()
   assert await page.locator('.about-meta a').count()==0
   assert external==[], 'About must not make third-party requests'
-  passed.append('Direct Om renders approved email/Telegram and sourced bio, with no external requests or repository promotion')
+  passed.append('Direct Om renders approved GitHub/Telegram contacts and sourced bio, with no external requests or repository promotion')
   await page.locator('#projectHistory > summary').click()
   await expect(page.locator('#projectHistory')).to_have_attribute('data-idea-year','2021')
   await expect(page.locator('#projectHistory')).to_contain_text('2021')
@@ -53,7 +53,7 @@ async def main():
    await expect(page.locator('#projectAuthor')).to_have_attribute('lang',lang)
    await expect(page.locator('#projectFaq > details')).to_have_count(11)
    await expect(page.locator('#pilotFeedbackTask')).to_have_value('Test draft, never send')
-   await expect(page.locator('#contactAuthor')).to_have_attribute('href','mailto:chup1runov@gmail.com')
+   await expect(page.locator('#contactAuthor')).to_have_attribute('href','https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml')
    for width in [320,390]:
     await page.set_viewport_size({'width':width,'height':844})
     assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'),f'overflow {lang} {width}'

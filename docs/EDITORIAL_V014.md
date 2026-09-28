@@ -1,11 +1,11 @@
 # Editorial revision v0.14 — scope and source record
 
-Changes approved on 23 September 2026: clearer digital civic-project description, direct email/Telegram contact, attributed idea date, a short public-source biography, practical FAQ, no repository promotion on the About screen. Editorial copy is separate from rendering in about-copy.js. All eleven languages are retained. Existing privacy and feedback controls are not replaced.
+Changes approved on 23 September 2026: clearer digital civic-project description, direct project contact, attributed idea date, a short public-source biography, practical FAQ, no repository promotion on the About screen. Editorial copy is separate from rendering in about-copy.js. All eleven languages are retained. Existing privacy and feedback controls are not replaced.
 
 ## Public facts and author statement
 
 - Author name: Pavel Chuprunov, public repository maintainer.
-- Approved public email: chup1runov@gmail.com ; Telegram https://t.me/chup1runov . No private contact from connected accounts is substituted.
+- Current public contact routes: the repository's GitHub contact form and Telegram https://t.me/chup1runov . The previously published personal email was retired from the current tree during privacy housekeeping; no private contact from connected accounts is substituted.
 - Idea year **2021** is an explicit statement from the initiator, not an independently documented launch date.
 - Code repository creation **2026-09-21T08:49:32Z** is from GitHub repository metadata, https://api.github.com/repos/chup1runov/Sverinav .
 - Biography is deliberately limited to a sourced civic initiative: the MittSkifte campaign for request-based night stops in Göteborg names Pavel Chuprunov as its creator. It does not establish that the proposal was adopted or that he holds an official post. Source: https://www.mittskifte.org/petitions/infor-tjansten-nattstopp-i-goteborg-for-okad-trygghet-i-kollektivtrafiken .
