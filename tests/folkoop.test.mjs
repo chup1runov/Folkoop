@@ -30,7 +30,7 @@ test('new shell has no third-party network calls or payment simulation',async()=
 test('Ksyusha presence is local-only and ships canonical lightweight assets',async()=>{
  const guide=await readFile('ksyusha-guide.js','utf8');
  assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
- for(const asset of ['ksyusha-wave.webp','ksyusha-welcome.webp','ksyusha-point.webp','ksyusha-idle.webp'])assert((await readFile(asset)).length>1000,asset);
+ assert((await readFile('ksyusha-base.png')).length>1000);
  const shell=await readFile('folkoop.js','utf8');
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
