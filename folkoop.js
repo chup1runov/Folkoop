@@ -8,26 +8,26 @@ let lang='sv';try{const saved=storage?.getItem('sverinav-language');lang=C.LANGS
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
 const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
-const ONBOARDING_KEY='folkoop-onboarding-v2';
+const ONBOARDING_KEY='folkoop-onboarding-v3';
+const LANGUAGE_KEY='folkoop-language-choice-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false;
 const onboardingSteps=[
- {id:'welcome',route:'home',target:'.brand'},
- {id:'me',route:'me',target:'#nav a[href="#/me"]'},
- {id:'home',route:'home',target:'#nav a[href="#/home"]'},
- {id:'quick',route:'home',target:'.quick-grid'},
- {id:'messages',route:'messages',target:'#nav a[href="#/messages"]'},
- {id:'people',route:'people',target:'#nav a[href="#/people"]'},
- {id:'communities',route:'communities',target:'#nav a[href="#/communities"]'},
- {id:'together',route:'together',target:'#nav a[href="#/together"]'},
- {id:'projects',route:'projects',target:'#nav a[href="#/projects"]'},
- {id:'city',route:'city',target:'#nav a[href="#/city"]'},
- {id:'center',route:'center',target:'#nav a[href="#/center"]'},
- {id:'settings',route:'settings',target:'#nav a[href="#/settings"]'},
- {id:'language',route:'settings',target:'#language'},
- {id:'about',route:'about',target:'#nav a[href="#/about"]'},
- {id:'helper',route:'home',target:'#folkoopHelperButton'}
+ {id:'welcome',route:'home',target:'.brand',motion:'point'},
+ {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point'},
+ {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point'},
+ {id:'quick',route:'home',target:'.quick-grid',motion:'perch'},
+ {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point'},
+ {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point'},
+ {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point'},
+ {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point'},
+ {id:'projects',route:'projects',target:'#nav a[href="#/projects"]',motion:'point'},
+ {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point'},
+ {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch'},
+ {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point'},
+ {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point'},
+ {id:'helper',route:'home',target:'#ksyushaActor',motion:'home'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -199,15 +199,14 @@ function ensureHelper(){
  shell=document.createElement('div');
  shell.id='folkoopHelperShell';
  shell.className='folkoop-helper-shell';
- shell.innerHTML='<button id="folkoopHelperButton" class="folkoop-helper-button" type="button" data-helper="toggle" aria-expanded="false" aria-controls="folkoopHelperPanel"><span aria-hidden="true">К</span></button><section id="folkoopHelperPanel" class="folkoop-helper-panel" role="dialog" aria-modal="false" aria-labelledby="folkoopHelperTitle" hidden><div class="folkoop-helper-head"><div><strong id="folkoopHelperTitle"></strong><span id="folkoopHelperLabel"></span></div><button type="button" class="text-button" data-helper="close" id="folkoopHelperClose"></button></div><p id="folkoopHelperIntro" class="meta"></p><p id="folkoopHelperBody"></p><button type="button" class="button secondary" data-helper="tour" id="folkoopHelperTour"></button></section>';
+ shell.innerHTML='<section id="folkoopHelperPanel" class="folkoop-helper-panel" role="dialog" aria-modal="false" aria-labelledby="folkoopHelperTitle" hidden><div class="folkoop-helper-head"><div><strong id="folkoopHelperTitle"></strong><span id="folkoopHelperLabel"></span></div><button type="button" class="text-button" data-helper="close" id="folkoopHelperClose"></button></div><p id="folkoopHelperIntro" class="meta"></p><p id="folkoopHelperBody"></p><button type="button" class="button secondary" data-helper="tour" id="folkoopHelperTour"></button></section>';
  document.body.append(shell);
  return shell;
 }
 function updateHelper(){
- const shell=ensureHelper(),source=helperSource(),button=shell.querySelector('#folkoopHelperButton'),panel=shell.querySelector('#folkoopHelperPanel');
- button.setAttribute('aria-label',source.open);
- button.setAttribute('aria-expanded',String(helperOpen));
+ const shell=ensureHelper(),source=helperSource(),panel=shell.querySelector('#folkoopHelperPanel');
  panel.hidden=!helperOpen;
+ globalThis.FolkoopKsyushaGuide?.setExpanded(helperOpen);
  shell.querySelector('#folkoopHelperTitle').textContent=source.name;
  shell.querySelector('#folkoopHelperLabel').textContent=source.label;
  shell.querySelector('#folkoopHelperClose').textContent=source.close;
@@ -229,6 +228,7 @@ function ensureOnboarding(){
 function onboardingTarget(step){
  const mobileToggle=$('#mobileMenuToggle');
  const mobileMenu=mobileToggle&&getComputedStyle(mobileToggle).display!=='none';
+ if(step.id==='helper')globalThis.FolkoopKsyushaGuide?.home({instant:true});
  if(step.target.startsWith('#nav')&&mobileMenu)openMenu();
  else if(menuOpen&&!step.target.startsWith('#nav'))closeMenu();
  return document.querySelector(step.target);
@@ -237,8 +237,8 @@ function positionOnboarding(step){
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
- target.classList.add('tutorial-target');
- target.scrollIntoView({block:'center',inline:'nearest',behavior:'auto'});
+ if(step.id!=='helper')target.classList.add('tutorial-target');
+ if(step.id!=='helper')target.scrollIntoView({block:'center',inline:'nearest',behavior:'auto'});
  requestAnimationFrame(()=>{
   const rect=target.getBoundingClientRect(),pad=7;
   spot.hidden=false;dialog.dataset.noTarget='0';
@@ -247,6 +247,7 @@ function positionOnboarding(step){
   spot.style.width=Math.min(innerWidth-12,rect.width+pad*2)+'px';
   spot.style.height=Math.min(innerHeight-12,rect.height+pad*2)+'px';
   dialog.querySelector('.onboarding-card').dataset.side=rect.left+rect.width/2<innerWidth/2?'right':'left';
+  if(step.id!=='helper')globalThis.FolkoopKsyushaGuide?.teleportTo(target,{mode:step.motion||'point'});
  });
 }
 function showOnboarding(step=0){
@@ -270,6 +271,7 @@ function finishOnboarding(){
  dialog.querySelector('#onboardingSpotlight').hidden=true;
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(menuOpen)closeMenu();
+ globalThis.FolkoopKsyushaGuide?.home({instant:true});
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
 }
 function openMenu(){
@@ -318,9 +320,20 @@ function render(focus=false){
  if(onboardingOpen)showOnboarding(onboardingStep);
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
-function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
+function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
+window.addEventListener('folkoop:language-picked',e=>{
+ const value=e.detail?.language;
+ if(!C.LANGS.includes(value))return;
+ globalThis.FolkoopKsyushaGuide?.hideLanguageGate();
+ changeLanguage(value);
+ setTimeout(()=>showOnboarding(0),80);
+});
+window.addEventListener('folkoop:helper-toggle',()=>{
+ if(onboardingOpen)return;
+ helperOpen=!helperOpen;updateHelper();
+});
 window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const helper=e.target.closest('[data-helper]');
@@ -328,7 +341,7 @@ document.addEventListener('click',e=>{
   const action=helper.dataset.helper;
   if(action==='toggle'){helperOpen=!helperOpen;updateHelper();return;}
   if(action==='close'){helperOpen=false;updateHelper();return;}
-  if(action==='tour'){helperOpen=false;updateHelper();showOnboarding(0);return;}
+  if(action==='tour'){helperOpen=false;updateHelper();startFullIntroduction();return;}
  }
  const onboarding=e.target.closest('[data-onboarding]');
  if(onboarding){
@@ -345,7 +358,7 @@ document.addEventListener('click',e=>{
  if(target.dataset.delete&&confirm(t('confirmDelete'))){status(store.remove(target.dataset.delete));render();return;}
  const action=target.dataset.action;
  if(action==='cancel'){formKind=null;scratch={};render();}
- if(action==='tutorial'){showOnboarding(0);return;}
+ if(action==='tutorial'){startFullIntroduction();return;}
  if(action==='clear'&&confirm(t('confirmClear'))){if(store.clear()){scratch={};profileScratch=null;render();$('#status').textContent=t('deleted');}else status(false);}
  if(action==='export'){
   capture();const file=new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(file);const link=document.createElement('a');link.href=url;link.download='folkoop-my-data.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -373,8 +386,23 @@ $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
 window.addEventListener('resize',()=>{if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
 ensureHelper();
+globalThis.FolkoopKsyushaGuide?.home({instant:true});
 render();
-let onboardingDone=false;try{onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';}catch{onboardingDone=false;}
-if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),150);
+function startFullIntroduction(){
+ onboardingOpen=false;
+ const dialog=ensureOnboarding();dialog.hidden=true;
+ helperOpen=false;updateHelper();
+ if(globalThis.FolkoopKsyushaGuide){
+  globalThis.FolkoopKsyushaGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
+ }else showOnboarding(0);
+}
+let onboardingDone=false,languageChosen=false;
+try{
+ onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';
+ languageChosen=storage?.getItem(LANGUAGE_KEY)==='done';
+}catch{}
+if(!onboardingSuppressed&&(introParam==='1'||!onboardingDone)){
+ setTimeout(()=>{if(introParam==='1'||!languageChosen)startFullIntroduction();else showOnboarding(0);},120);
+}
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
