@@ -25,9 +25,11 @@ Supabase states that Free is not charged. Exceeding quotas can instead restrict 
 
 ### Authentication and email
 
-The v0.16.1 pilot uses email OTP with Supabase's built-in sender. That sender is restricted to project-team addresses and is not a production mail service. It is used only to bootstrap the first owner/test account at zero cost. Do not add ordinary app users to the infrastructure organization merely to receive login mail.
+The pilot still uses email OTP with Supabase's built-in sender. That sender is restricted to project-team addresses and is not a production mail service. Do not add ordinary app users to the infrastructure organization merely to receive login mail.
 
-The first authenticated account may claim the empty pilot slot exactly once; after that, self-admission is denied. Broader participation still requires a genuinely free authentication/delivery route such as properly configured social OAuth or independently verified free SMTP. Do not disable verification or implement weak custom authentication to avoid mail costs.
+v0.24 separates Auth from FOLKOOP admission. New network participants must consume an operator-created one-time pilot invitation code after Auth verification; existing enabled pilots may re-enter without reusing a code. Only SHA-256 invite hashes are stored in the private database schema. This prevents open self-admission but does **not** solve ordinary-user Auth delivery.
+
+Broader participation still requires a genuinely free authentication/delivery route such as an appropriately configured social OAuth provider or another independently verified free route. Do not disable verification or implement weak custom authentication to avoid mail costs.
 
 ### Frontend hosting and CI
 
@@ -41,7 +43,7 @@ Use standard GitHub-hosted runners for this public repository. Do not switch to 
 
 1. Keep the dedicated FOLKOOP project on Free; do not reactivate `kravcentralen-staging` while that would require a paid slot.
 2. Re-check cost and free quota before any future resource creation.
-3. Keep the first bootstrap limited to project-team email; resolve a genuinely free broader authentication route before admitting ordinary users.
+3. Keep pilot admission invite-only and resolve a genuinely free broader authentication route before admitting ordinary users. Invite codes do not replace Auth verification.
 4. Apply only reviewed FOLKOOP migrations to the dedicated backend. Never apply disposable CI fixtures to a hosted project.
 5. Complete the privacy, moderation, allowlist and real two-account checks in [NETWORK_V016.md](NETWORK_V016.md). Free pricing does not waive those gates.
 6. Only after those checks enable the network configuration and advance the app/service-worker release. Do not expose private keys or upload local drafts implicitly.
