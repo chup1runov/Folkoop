@@ -19,8 +19,14 @@ GEOMETRY = """() => {
  const overlap=(a,b)=>a&&b ? Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)) : 0;
  const actor=box('#ksyushaActor'),card=box('.onboarding-card');
  const target=box('.tutorial-target')||actor;
+ const contained=r=>r&&card&&r.x>=card.x-.5&&r.y>=card.y-.5&&r.x+r.w<=card.x+card.w+.5&&r.y+r.h<=card.y+card.h+.5;
+ const heading=box('#onboardingTitle'),next=box('[data-onboarding="next"]'),back=box('[data-onboarding="back"]'),skip=box('[data-onboarding="skip"]'),copy=box('#onboardingBody');
+ const button=document.querySelector('[data-onboarding="next"]');
+ const hit=next&&document.elementFromPoint(next.x+next.w/2,next.y+next.h/2);
  return {title:document.querySelector('#onboardingTitle').textContent,actor,card,target,
   actorOverlap:overlap(actor,card),targetOverlap:overlap(target,card),
+  controlsVisible:[heading,next,back,skip].every(contained)&&!!hit&&button.contains(hit),
+  copyHeight:copy?.h||0,copyScrollTop:document.querySelector('#onboardingBody').scrollTop,
   animation:getComputedStyle(document.querySelector('#ksyushaActor>img')).animationName,
   focusInTour:!!document.activeElement.closest('.onboarding-card'),
   outside:[actor,card].some(r=>!r||r.x<-.5||r.y<-.5||r.x+r.w>innerWidth+.5||r.y+r.h>innerHeight+.5)};
@@ -57,13 +63,17 @@ async def main():
     if record['animation']!='none': failures.append(f'{width} step {index+1}: reduced motion ignored')
     if record['targetOverlap']>4: failures.append(f'{width} step {index+1}: highlighted target covered by explanation')
     if record['actorOverlap']>4: failures.append(f'{width} step {index+1}: character covered by explanation')
+    if not record['controlsVisible']: failures.append(f'{width} step {index+1}: title or buttons clipped before clicking/scrolling')
+    if record['copyHeight']<18: failures.append(f'{width} step {index+1}: explanation viewport too short to read')
+    if record['copyScrollTop']>1: failures.append(f'{width} step {index+1}: new explanation did not start at the top')
     if index==0:
      await page.locator('[data-onboarding="skip"]').focus()
      await page.keyboard.press('Shift+Tab')
      if not await page.evaluate("!!document.activeElement.closest('.onboarding-card')"):
       failures.append(f'{width}: tour leaks keyboard focus')
-    if index in (0,3,10,13) or record['targetOverlap']>4 or record['actorOverlap']>4:
+    if index in (0,3,10,13) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
      await page.screenshot(path=str(OUT/f'audit-tour-{width}-{index+1}.png'))
+    await page.locator('#onboardingBody').evaluate('e=>e.scrollTop=e.scrollHeight')
     await page.click('[data-onboarding="next"]')
     await page.wait_for_timeout(220)
    await expect(page.locator('#onboarding')).to_be_hidden()
@@ -80,7 +90,7 @@ async def main():
    await context.close()
   await browser.close()
  if not failures:
-  passed=['Keyboard focus stays in the language gate and tour', 'Reduced motion disables character animation', 'All 14 targets and the character remain unobscured at four viewport sizes', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
+  passed=['Keyboard focus stays in the language gate and tour', 'Reduced motion disables character animation', 'All 14 targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
  result={'passed':passed,'failures':failures,'geometry':records,'limits':['Chromium emulation only; real iOS Safari and physical devices not tested','No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  for item in passed: print('PASS '+item)

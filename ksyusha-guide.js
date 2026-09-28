@@ -161,6 +161,13 @@ function layoutTour(target){
  const card=root.querySelector('.onboarding-card');
  if(!card||!target?.isConnected)return;
  card.setAttribute('aria-describedby','onboardingBody');
+ const copy=root.querySelector('#onboardingBody'),step=root.querySelector('#onboardingProgress')?.textContent;
+ if(copy){
+  copy.tabIndex=0;
+  copy.setAttribute('role','region');
+  copy.setAttribute('aria-labelledby','onboardingTitle');
+  if(card.dataset.guideStep!==step){card.scrollTop=0;copy.scrollTop=0;card.dataset.guideStep=step;}
+ }
  const mobile=innerWidth<=720,short=innerHeight<520,gap=mobile||short?12:24;
  const helper=target===actor;
  let r=target.getBoundingClientRect();
