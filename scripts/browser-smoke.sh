@@ -21,3 +21,4 @@ python3 tests/activity-chat-browser.py
 python3 tests/onboarding-browser.py
 python3 tests/home-browser.py
 python3 tests/home-welcome-browser.py
+python3 tests/onboarding-audit-browser.py
