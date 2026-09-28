@@ -1,6 +1,6 @@
 # FOLKOOP
 
-**Different people. Common ground.** A cooperative social platform combining people, shared resources, projects, city navigation and real-world community centers.
+**Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
@@ -38,7 +38,7 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PROJECT_HANDOFF.md`, `docs/FOLKOOP_MIGRATION.md` and `docs/TOKARENKO_KOOPSET_RESEARCH.md`. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
+Start with `docs/PRODUCT_CONCEPT.md` for the product thesis and decision rules, then `docs/PROJECT_HANDOFF.md` for current implementation state. `docs/FOLKOOP_MIGRATION.md` records the Sverinav/FOLKUNO integration history, and `docs/TOKARENKO_KOOPSET_RESEARCH.md` separates source-supported KООПСЕТЬ ideas from FOLKOOP design choices. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
 
 ## Identity and rights
 
