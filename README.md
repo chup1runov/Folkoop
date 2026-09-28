@@ -4,7 +4,7 @@
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.25.0
+## Current pilot state — v0.26.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
