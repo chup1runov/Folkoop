@@ -451,6 +451,28 @@ Important current limitations include:
 - no validated large-scale recommendation engine;
 - no proven product-market fit.
 
+## Semantic and decision-integrity bridge
+
+FOLKOOP uses a lightweight architectural bridge to the separate SDCF systems-reasoning framework.
+
+The bridge is defined in:
+
+- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/sdcf-bridge-v0.1.json`
+
+For the current Göteborg pilot this is **not a production RDF/OWL/SHACL dependency**. It is a semantic guardrail for places where FOLKOOP could otherwise overstate what its data proves.
+
+In particular:
+
+- a database/UI `done` state is not automatically a confirmed real-world outcome;
+- an activity-log event records product provenance, not proof of an external effect;
+- a City source and a claim inferred from that source remain distinct;
+- a FOLKOOP routing recommendation is not an authority decision;
+- organic and operator-facilitated matches remain distinguishable;
+- any future algorithmic recommendation must retain method/model provenance and must not silently use sensitive categories.
+
+If pilot evidence later justifies structured outcome verification, model-driven matching, consequential City inference or multi-city interoperability, FOLKOOP should adopt only the required SDCF semantics through a versioned adapter rather than replacing the operational PostgreSQL model.
+
 ## Product decision rule
 
 The persistent governance rule is defined in `docs/PRODUCT_DECISION_POLICY.md`. It is the short operational gate for future feature work.
