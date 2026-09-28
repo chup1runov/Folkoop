@@ -46,7 +46,7 @@ async def mobile_flow(browser,passed):
   box=await page.locator('#ksyushaActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   if title=='Четыре быстрых действия':
-   await expect(page.locator('#ksyushaActor')).to_have_class(r'.*is-perched.*')
+   assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-perched')")
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await page.wait_for_timeout(420)
