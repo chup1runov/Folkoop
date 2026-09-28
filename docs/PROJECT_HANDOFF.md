@@ -36,7 +36,7 @@ Network capabilities now include:
 
 All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
 
-General public onboarding is not ready. v0.24 adds one-time invite-code admission after Auth verification, with only SHA-256 hashes stored privately. The current free built-in email path is still suitable only for project-team addresses, so invite admission does not yet provide a general participant Auth route. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
+General public onboarding is not ready. v0.24 invite-code admission is now applied on the hosted project; only SHA-256 hashes are stored privately, and four unused one-time pilot slots P01–P04 are seeded. A post-migration hosted transaction smoke passed 21/21 checks and rolled back cleanly. The remaining blocker is ordinary participant Auth: the built-in email path is still restricted to project-team addresses. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
 
 Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket realtime in this slice. Shared-purchase quantities are coordination values only: no checkout, payment, escrow, vendor settlement or delivery guarantee is implemented.
 
@@ -53,6 +53,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics and cold-start strategy.
 - `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
+- `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
 - `supabase/migrations/202609250001_network.sql` — base network/RLS.
@@ -82,8 +83,8 @@ Hosted migrations must be applied only after the exact PR passes both suites. Ne
 Product priority is now the Göteborg core-loop pilot rather than adding breadth.
 
 Before that pilot:
-- keep the 17/17 hosted transaction smoke as the current database/RLS baseline and re-run admission-specific hosted checks after v0.24 migration;
-- resolve a genuinely free pilot authentication route for the invited cohort;
+- keep the 21/21 post-v0.24 hosted transaction smoke as the current database/RLS/admission baseline;
+- configure and verify the Google OAuth pilot route before distributing any plaintext invite codes;
 - fix only defects that block the core loop or safety;
 - prepare private pilot outcome logging outside the public repository.
 
