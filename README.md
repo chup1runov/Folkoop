@@ -4,14 +4,14 @@
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.28.0
+## Current pilot state — v0.29.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
-- language-first onboarding with a physical Ksyusha guide using canonical 192×208 Mura poses, lightweight motion/direction cue, spotlight tour and replay from Settings;
+- language-first onboarding with a physical Ksyusha guide using canonical Mura poses, authored left/right/up/down pointing, real sit-edge body anatomy, spotlight tour and replay from Settings;
 - signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
 - invite-only network admission after Auth verification; plaintext invite codes are never stored in the database;

@@ -21,3 +21,15 @@ for(const asset of assets)test(`Mura pose ${asset} is canonical 192x208 alpha We
  assert(meta.flags&0x10,'VP8X alpha flag missing');
  assert(file.length>7000&&file.length<20000,'unexpected pose payload size');
 });
+
+const pngAssets=['ksyusha-point-left.png','ksyusha-point-right.png','ksyusha-point-up.png','ksyusha-point-down.png','ksyusha-sit-edge.png'];
+function pngMeta(buffer){
+ assert.equal(buffer.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+ assert.equal(buffer.subarray(12,16).toString('ascii'),'IHDR');
+ return {width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),bitDepth:buffer[24],colorType:buffer[25]};
+}
+for(const asset of pngAssets)test(`Mura v0.29 pose ${asset} is canonical 192x208 RGBA PNG`,async()=>{
+ const file=await readFile(asset),meta=pngMeta(file);
+ assert.deepEqual(meta,{width:192,height:208,bitDepth:8,colorType:6});
+ assert(file.length>20_000&&file.length<50_000,'unexpected pose payload size');
+});

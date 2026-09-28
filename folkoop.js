@@ -15,18 +15,18 @@ const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!==
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
- {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point',pose:'inspect'},
- {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'inspect'},
- {id:'quick',route:'home',target:'.quick-grid',motion:'perch',pose:'idea'},
- {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point',pose:'inspect'},
- {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point',pose:'search'},
- {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point',pose:'search'},
- {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point',pose:'inspect'},
+ {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point',pose:'point'},
+ {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
+ {id:'quick',route:'home',target:'.quick-grid',motion:'perch',pose:'sit-edge'},
+ {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point',pose:'point'},
+ {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point',pose:'point'},
+ {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point',pose:'point'},
+ {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point',pose:'point'},
  {id:'projects',route:'projects',target:'#nav a[href="#/projects"]',motion:'point',pose:'idea'},
- {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point',pose:'search'},
- {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch',pose:'perch'},
- {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point',pose:'inspect'},
- {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point',pose:'inspect'},
+ {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point',pose:'point'},
+ {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch',pose:'sit-edge'},
+ {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point',pose:'point'},
+ {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point',pose:'point'},
  {id:'helper',route:'home',target:'#ksyushaActor',motion:'home',pose:'wink'}
 ];
 

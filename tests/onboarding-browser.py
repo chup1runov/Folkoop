@@ -1,4 +1,4 @@
-"""FOLKOOP v0.27 language-first onboarding and physical Ksyusha presence."""
+"""FOLKOOP v0.29 language-first onboarding with authored directional/sit-edge Ksyusha poses."""
 import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
@@ -22,6 +22,17 @@ async def settled_actor(page):
   return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
    !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
  }""")
+
+
+async def assert_directional_pose(page):
+ pose=await page.locator('#ksyushaActor').get_attribute('data-pose')
+ actor=await page.locator('#ksyushaActor').bounding_box()
+ target=await page.locator('.tutorial-target').bounding_box()
+ assert actor and target
+ dx=(target['x']+target['width']/2)-(actor['x']+actor['width']/2)
+ dy=(target['y']+target['height']/2)-(actor['y']+actor['height']*.42)
+ expected=('point-left' if dx<0 else 'point-right') if abs(dx)>=abs(dy) else ('point-up' if dy<0 else 'point-down')
+ assert pose==expected,(pose,expected,dx,dy)
 
 async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
@@ -58,11 +69,16 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#ksyushaActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  if title=='Четыре быстрых действия':
+  if title in ('Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Город','Настройки','О нас'):
+   await assert_directional_pose(page)
+  if title in ('Четыре быстрых действия','Центр'):
    assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-perched')")
+   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='sit-edge'
+   target=await page.locator('.tutorial-target').bounding_box()
+   seat=box['y']+box['height']*.44
+   assert target and abs(seat-target['y'])<14,(title,seat,target)
+  if title=='Проекты':
    assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='idea'
-  if title in ('Люди','Сообщества','Город'):
-   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='search'
   if title=='Ксюша · помощник FOLKOOP':
    assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='wink'
   if idx<len(titles)-1:
@@ -75,7 +91,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('Ksyusha physically relocates through the 14-step tour and can perch on highlighted UI')
+ passed.append('Ksyusha uses real directional pointing poses and sit-edge alignment through the 14-step tour')
 
  await expect(page.locator('#ksyushaActor')).to_be_visible()
  await page.click('#ksyushaActor')
@@ -93,7 +109,7 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#ksyushaLanguageGate')).to_be_visible()
  passed.append('Replay from Settings restarts from language, preserving the language-first contract')
  await page.keyboard.press('Escape')
- await page.screenshot(path=str(OUT/'folkoop-v027-language-ksyusha-mobile.png'),full_page=True)
+ await page.screenshot(path=str(OUT/'folkoop-v029-directional-ksyusha-mobile.png'),full_page=True)
  assert errors==[],errors
  await context.close()
 
@@ -125,7 +141,7 @@ async def main():
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':['Chromium emulation; not real iOS Safari','Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Ksyusha motion is local CSS/JS using canonical Mura Character Pack WebP assets; no AI service is called']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':['Chromium emulation; not real iOS Safari','Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Ksyusha motion is local CSS/JS using canonical Mura WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
 asyncio.run(main())

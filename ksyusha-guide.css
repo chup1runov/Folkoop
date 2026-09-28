@@ -1,4 +1,4 @@
-/* v0.27.1 — modal containment and collision-free tour space */
+/* v0.29 — modal containment, collision-free tour space and authored pose motion */
 .guide-tour-open{overflow:hidden}
 .guide-tour-open .sidebar{padding-bottom:calc(var(--guide-card-height,280px) + 160px);transition:none}
 .guide-tour-open .content{padding-bottom:calc(var(--guide-card-height,280px) + 200px)}
@@ -22,5 +22,5 @@
  .guide-tour-open .onboarding-actions .button{min-height:42px;padding:8px 12px}
 }
 @media(prefers-reduced-motion:reduce){
- .ksyusha-actor,.ksyusha-actor>img,.ksyusha-pointer,.ksyusha-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
+ .ksyusha-actor,.ksyusha-actor>img,.ksyusha-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
 }

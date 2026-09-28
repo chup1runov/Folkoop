@@ -4,15 +4,16 @@
 const ASSETS=Object.freeze({
  welcome:'./ksyusha-please.webp',
  idle:'./ksyusha-confident.webp',
- point:'./ksyusha-inspect.webp',
- inspect:'./ksyusha-inspect.webp',
  idea:'./ksyusha-idea.webp',
- search:'./ksyusha-searching.webp',
- perch:'./ksyusha-lean-in.webp',
- wink:'./ksyusha-wink.webp'
+ wink:'./ksyusha-wink.webp',
+ 'point-left':'./ksyusha-point-left.png',
+ 'point-right':'./ksyusha-point-right.png',
+ 'point-up':'./ksyusha-point-up.png',
+ 'point-down':'./ksyusha-point-down.png',
+ 'sit-edge':'./ksyusha-sit-edge.png'
 });
-// v0.28 uses the canonical 192x208 alpha WebPs embedded in Mura's first-party
-// Character Pack. No canvas matte removal or generated replacement art.
+// v0.29 consumes the exact 192x208 RGBA pose assets accepted into Mura main.
+// Pointing is body artwork, not a DOM/CSS arm.
 const artState=new WeakMap();
 function setArt(el,src){
  if(artState.get(el)===src)return;
@@ -21,7 +22,7 @@ function setArt(el,src){
 }
 const reduced=()=>globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-let actor=null,img=null,pointer=null,currentTarget=null,currentMode='home',currentPose=null,teleportTimer=0,motionGeneration=0,refreshFrame=0;
+let actor=null,img=null,currentTarget=null,currentMode='home',currentPose=null,teleportTimer=0,motionGeneration=0,refreshFrame=0;
 
 function ensureActor(){
  if(actor)return actor;
@@ -32,10 +33,9 @@ function ensureActor(){
  actor.setAttribute('aria-label','Ksyusha · FOLKOOP helper');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
- actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="ksyusha-pointer" aria-hidden="true"><i></i></span><img alt="" width="192" height="208" decoding="async">';
+ actor.innerHTML='<span class="ksyusha-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
  document.body.append(actor);
  img=actor.querySelector('img');setArt(img,ASSETS.idle);
- pointer=actor.querySelector('.ksyusha-pointer');
  actor.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('folkoop:helper-toggle')));
  actor.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();actor.click();}});
  return actor;
@@ -46,21 +46,16 @@ function pose(name){
  actor.dataset.pose=name;
 }
 function dims(){
- const mobile=innerWidth<720||innerHeight<520;
- const w=mobile?86:118;
+ const short=innerHeight<520,mobile=innerWidth<720;
+ const w=short?82:mobile?96:124;
  return {w,h:w*(208/192)};
 }
-function setPoint(targetRect,actorRect){
- const ax=actorRect.width*.55, ay=actorRect.height*.39;
- const fromX=actorRect.left+ax,fromY=actorRect.top+ay;
+function pointPose(targetRect,actorRect){
+ const fromX=actorRect.left+actorRect.width/2,fromY=actorRect.top+actorRect.height*.42;
  const tx=targetRect.left+targetRect.width/2,ty=targetRect.top+targetRect.height/2;
  const dx=tx-fromX,dy=ty-fromY;
- const dist=clamp(Math.hypot(dx,dy),34,Math.min(150,innerWidth*.28));
- const angle=Math.atan2(dy,dx)*180/Math.PI;
- pointer.style.setProperty('--point-angle',angle+'deg');
- pointer.style.setProperty('--point-length',dist+'px');
- pointer.hidden=false;
- actor.dataset.pointSide=dx<0?'left':'right';
+ if(Math.abs(dx)>=Math.abs(dy))return dx<0?'point-left':'point-right';
+ return dy<0?'point-up':'point-down';
 }
 // Both dialogs are local presentation UI. Only their own controls are observed;
 // no messages, account data or user activity history are inspected or retained.
@@ -166,25 +161,24 @@ function applyPosition(target,mode='point',poseName=null){
  actor.classList.toggle('is-tour',mode!=='home');
  if(mode==='home'||!target){
   actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';actor.style.bottom=innerWidth<720?'10px':'18px';
-  pointer.hidden=true;pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
+  pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
  }
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
- const candidates=mode==='perch'?[[r.left+r.width/2-w/2,r.top-h*.56]]:[[r.left+r.width/2-w/2,r.bottom+12]];
- candidates.push([r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+16],[12,12],[innerWidth-w-12,12]);
+ const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
+ const candidates=mode==='perch'
+  ?[[seatX,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
+  :[[r.left+r.width/2-w/2,r.bottom+12],[r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[12,12],[innerWidth-w-12,12]];
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);
   const box={left:x,top:y,right:x+w,bottom:y+h};
   const distance=Math.hypot(x+w/2-r.left-r.width/2,y+h/2-r.top-r.height/2);
   return {x,y,score:overlap(box,card)*10000+(mode==='perch'?0:overlap(box,r)*100)+distance+index*.01};
  }).sort((a,b)=>a.score-b.score)[0];
- actor.style.left=best.x+'px';actor.style.top=best.y+'px';pose(poseName||(mode==='perch'?'perch':'point'));
- const generation=motionGeneration;
- requestAnimationFrame(()=>{
-  if(generation!==motionGeneration||currentTarget!==target||currentMode!==mode||currentPose!==poseName)return;
-  if(mode==='point'&&target.isConnected)setPoint(target.getBoundingClientRect(),actor.getBoundingClientRect());
-  else pointer.hidden=true;
- });
+ actor.style.left=best.x+'px';actor.style.top=best.y+'px';
+ let resolved=poseName||(mode==='perch'?'sit-edge':'point');
+ if(mode==='point'&&resolved==='point')resolved=pointPose(r,actor.getBoundingClientRect());
+ pose(resolved);
 }
 function cancelTeleport(){
  clearTimeout(teleportTimer);teleportTimer=0;motionGeneration++;
@@ -211,7 +205,7 @@ function teleportTo(target,opts={}){
 }
 function home(opts={}){ensureActor();teleportTo(null,{mode:'home',instant:opts.instant,pose:opts.pose});}
 function welcome(){
- ensureActor();cancelTeleport();actor.hidden=true;actor.disabled=true;pointer.hidden=true;actor.classList.add('is-welcome');pose('welcome');
+ ensureActor();cancelTeleport();actor.hidden=true;actor.disabled=true;actor.classList.add('is-welcome');pose('welcome');
 }
 function leaveWelcome(){
  ensureActor();actor.hidden=false;actor.classList.remove('is-welcome');

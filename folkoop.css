@@ -7,7 +7,7 @@
 @media(max-width:720px){.onboarding-card,.onboarding-card[data-side="left"]{left:12px;right:12px;bottom:12px;width:auto;max-height:48vh;padding:18px}.onboarding-card h2{font-size:1.35rem}.onboarding-actions .button{min-height:42px;padding:10px 13px}.folkoop-helper-shell{right:12px;bottom:12px}.folkoop-helper-button{width:50px;height:50px}.folkoop-helper-panel{right:0;bottom:60px;width:min(340px,calc(100vw - 24px))}.onboarding-spotlight{border-radius:13px}}
 
 
-/* v0.27 — canonical Ksyusha character presence + language-first gate */
+/* v0.29 — authored directional Ksyusha poses + real sit-edge placement */
 .language-gate-open{overflow:hidden}
 .ksyusha-language-gate{position:fixed;inset:0;z-index:140;display:grid;place-items:center;padding:24px}
 .ksyusha-language-gate[hidden]{display:none!important}
@@ -23,23 +23,17 @@
 .ksyusha-language-choice:hover,.ksyusha-language-choice:focus-visible{background:var(--soft);border-color:#d9a28d}
 .ksyusha-language-choice.is-current{box-shadow:0 0 0 2px #e65a3a33 inset}
 .ksyusha-language-choice strong{font-size:.92rem}.ksyusha-language-choice span{font-size:.68rem;color:var(--muted);letter-spacing:.08em}
-.ksyusha-actor{--ksyusha-w:118px;position:fixed;width:var(--ksyusha-w);height:auto;aspect-ratio:192/208;border:0;background:transparent;padding:0;margin:0;z-index:103;transition:left .32s cubic-bezier(.2,.75,.25,1),top .32s cubic-bezier(.2,.75,.25,1),right .32s,bottom .32s,filter .2s,opacity .2s,transform .2s;filter:drop-shadow(0 10px 14px #0003);overflow:visible;touch-action:manipulation}
+.ksyusha-actor{--ksyusha-w:124px;position:fixed;width:var(--ksyusha-w);height:auto;aspect-ratio:192/208;border:0;background:transparent;padding:0;margin:0;z-index:103;transition:left .32s cubic-bezier(.2,.75,.25,1),top .32s cubic-bezier(.2,.75,.25,1),right .32s,bottom .32s,filter .2s,opacity .2s,transform .2s;filter:drop-shadow(0 10px 14px #0003);overflow:visible;touch-action:manipulation}
 .ksyusha-actor[hidden]{display:none!important}
 .ksyusha-actor:not(:disabled){cursor:pointer}
 .ksyusha-actor:disabled{cursor:default}
 .ksyusha-actor>img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;transition:transform .22s ease}
 .ksyusha-actor.is-home:not(:disabled):hover>img{transform:translateY(-4px) rotate(-1deg)}
 .ksyusha-actor[data-pose="idle"]>img{animation:ksyusha-breathe 3.6s ease-in-out infinite}
-.ksyusha-actor[data-pose="point"]>img,.ksyusha-actor[data-pose="inspect"]>img,.ksyusha-actor[data-pose="search"]>img{animation:ksyusha-point-body 1.3s ease-in-out infinite}
+.ksyusha-actor[data-pose^="point-"]>img{animation:ksyusha-point-body 1.3s ease-in-out infinite}
 .ksyusha-actor[data-pose="idea"]>img{animation:ksyusha-idea-body 1.8s ease-in-out infinite}
-.ksyusha-actor[data-pose="perch"]>img{animation:ksyusha-perch-body 2.7s ease-in-out infinite}
+.ksyusha-actor[data-pose="sit-edge"]>img{animation:ksyusha-sit-body 2.7s ease-in-out infinite}
 .ksyusha-actor[data-pose="wink"]>img{animation:ksyusha-helper-wink 2.4s ease-in-out infinite}
-.ksyusha-actor.is-perched>img{transform:translateY(4px)}
-.ksyusha-actor.is-perched::after{content:"";position:absolute;left:18%;right:16%;top:72%;height:4px;border-radius:999px;background:#1f1f1f22;z-index:1;box-shadow:0 3px 8px #0002}
-.ksyusha-pointer{position:absolute;z-index:1;left:58%;top:27%;width:var(--point-length,64px);height:3px;border-radius:999px;background:repeating-linear-gradient(90deg,var(--orange) 0 8px,transparent 8px 13px);transform-origin:2px 50%;transform:rotate(var(--point-angle,0deg));filter:drop-shadow(0 1px 1px #0002);pointer-events:none}
-.ksyusha-pointer[hidden]{display:none!important}
-.ksyusha-pointer::after{content:"";position:absolute;right:-1px;top:50%;width:10px;height:10px;border-top:3px solid var(--orange);border-right:3px solid var(--orange);transform:translateY(-50%) rotate(45deg);transform-origin:center}
-.ksyusha-pointer::before,.ksyusha-pointer i{display:none}
 .ksyusha-puff{position:absolute;z-index:4;inset:38% auto auto 50%;width:8px;height:8px;pointer-events:none;opacity:0}
 .ksyusha-puff i{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #e5d7cd}
 .ksyusha-puff i:nth-child(1){transform:translate(-24px,-9px)}.ksyusha-puff i:nth-child(2){transform:translate(15px,-17px)}.ksyusha-puff i:nth-child(3){transform:translate(20px,14px)}.ksyusha-puff i:nth-child(4){transform:translate(-15px,18px)}
@@ -58,7 +52,7 @@
 @keyframes ksyusha-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.01)}}
 @keyframes ksyusha-point-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @keyframes ksyusha-idea-body{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015)}}
-@keyframes ksyusha-perch-body{0%,100%{transform:translateY(4px)}50%{transform:translateY(1px)}}
+@keyframes ksyusha-sit-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
 @keyframes ksyusha-helper-wink{0%,78%,100%{transform:translateY(0)}84%{transform:translateY(-3px)}}
 @keyframes ksyusha-puff{0%{opacity:0;transform:scale(.5)}45%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
 @keyframes ksyusha-pop{0%{opacity:0;transform:scale(.55)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
