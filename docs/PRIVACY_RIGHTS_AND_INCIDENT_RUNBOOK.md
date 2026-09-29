@@ -117,7 +117,9 @@ Use `ACCOUNT_CLOSURE_RUNBOOK.md`.
 Key rules:
 - "Delete profile" is not account closure;
 - never begin with raw `auth.users DELETE`;
-- revoke/terminate active sessions first using a supported Supabase path;
+- disable pilot admission/authorization first;
+- globally revoke refresh sessions using a supported Supabase path, while
+  remembering that an already-issued access JWT can remain valid until expiry;
 - run the private account-closure inventory;
 - resolve owned shared containers before Auth removal;
 - apply the retention/legal-hold exceptions defined in
