@@ -27,6 +27,10 @@
    note:'Den personliga startsidan visas efter inloggning. Privata utkast förblir separata. Inga betalningar eller garanterade besparingar.'
   }
  };
+ const extra=globalThis.FolkoopExtraCopy?.languages||{};
+ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extra))){
+  if(extra[code]?.homeWelcome)copy[code]=extra[code].homeWelcome;
+ }
  const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function markup(language='en') {
   const text=Object.hasOwn(copy,language)?copy[language]:copy.en;
