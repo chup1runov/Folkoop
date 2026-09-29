@@ -9,7 +9,8 @@ a final privacy notice or legal advice.
 Policy choices are intentionally separated from mechanics:
 - `PRE_PILOT_PRIVACY_DECISIONS.md` — working legal-basis, retention and closure defaults;
 - `PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md` — operator rights/breach procedure;
-- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft.
+- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft;
+- `SERVICE_DPA_REVIEW.md` — provider/DPA and legal-basis decision record.
 
 ## Executive finding
 
@@ -293,12 +294,14 @@ The repository now contains working pilot defaults for legal basis, retention,
 account closure, rights handling, participant information and incident response.
 
 Ordinary participant invitations remain blocked until:
-1. the actual controller identity is confirmed;
-2. the actual privacy-contact route is confirmed;
-3. the controller approves the working legal-basis choices;
-4. the processor/hosting decisions in `SERVICE_DPA_REVIEW.md` remain valid;
-5. the participant privacy notice remains aligned with the actual services;
-6. the final Auth route and two-account technical gate pass.
+1. the processor/hosting decisions in `SERVICE_DPA_REVIEW.md` remain valid;
+2. the participant privacy notice remains aligned with the actual active Auth
+   provider and services;
+3. pilot terms establish the service relationship used for the Art. 6(1)(b)
+   processing;
+4. the final Auth route and two-account technical gate pass;
+5. account closure is rehearsed with developer/test identities;
+6. ordinary participant invitations are explicitly authorized.
 
 This technical map remains the source of truth for database mechanics. The
 decision documents above are the source of truth for pilot policy.
