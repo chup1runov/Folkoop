@@ -98,7 +98,7 @@ pilot, not the future end of FOLKOOP as a project.
 
 | Data category | Default retention | At account closure / withdrawal |
 |---|---|---|
-| Supabase Auth identity | While admitted to the pilot; erase as the last step of approved account closure | Revoke/terminate active sessions first, resolve owned shared objects, then remove Auth identity |
+| Supabase Auth identity | While admitted to the pilot; erase as the last step of approved account closure | Disable pilot admission first; globally revoke refresh sessions; resolve owned shared objects; then remove Auth identity. Already-issued access JWTs can remain valid until expiry, so logout alone is not the access-control boundary |
 | Pilot admission / write-budget state | While admitted | Delete with closure |
 | Profile | While admitted | Delete |
 | Memberships / blocks / read state | While admitted or needed for active object | Delete |
@@ -126,21 +126,24 @@ A participant-facing "Delete profile" action is **not** account closure.
 Approved pilot account closure follows this order:
 
 1. Verify the request proportionately to the identity level used for onboarding.
-2. Stop further pilot access/contact and revoke active Auth sessions using a
-   supported Supabase admin/session path. Do not assume deleting the Auth user
-   invalidates already-issued access tokens.
-3. Run `folkoop_private.account_closure_inventory(<user_uuid>)`.
-4. If any `owned_shared` count is non-zero, resolve every object before Auth
+2. Disable the participant's pilot admission/authorization first so a
+   still-valid JWT cannot continue to use the admitted pilot path.
+3. Revoke refresh sessions globally using a supported Supabase Auth path.
+   Supabase documents that already-issued access JWTs can remain valid until
+   their `exp`; logout/session revocation alone is therefore not the immediate
+   authorization boundary.
+4. Run `folkoop_private.account_closure_inventory(<user_uuid>)`.
+5. If any `owned_shared` count is non-zero, resolve every object before Auth
    deletion:
    - if other active participants still need the shared object, transfer ownership
      to a consenting remaining participant after operator review;
    - otherwise delete the container after checking the effect on other
      participants.
-5. Delete the closing participant's user-scoped profile/content/state unless a
+6. Delete the closing participant's user-scoped profile/content/state unless a
    documented moderation/legal hold applies.
-6. Apply the Box retention/erasure rules above.
-7. Remove the Auth identity **last**.
-8. Re-run the closure inventory / integrity checks and record completion without
+7. Apply the Box retention/erasure rules above.
+8. Remove the Auth identity **last**.
+9. Re-run the closure inventory / integrity checks and record completion without
    retaining unnecessary personal content.
 
 Self-service destructive Auth deletion remains prohibited for the first pilot.
@@ -268,6 +271,8 @@ processing begins.
   https://supabase.com/docs/guides/platform/regions
 - Supabase DPA:
   https://supabase.com/legal/customer-resources/data-processing-addendum
+- Supabase Auth sign-out/session semantics:
+  https://supabase.com/docs/guides/auth/signout
 - Box trust/GDPR:
   https://www.box.com/trust
 - Box subprocessors:
