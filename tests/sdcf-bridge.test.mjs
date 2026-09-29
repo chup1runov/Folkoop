@@ -29,6 +29,9 @@ test('SDCF bridge preserves outcome and provenance boundaries', async () => {
 test('City provenance contract binds current adapters to source and adapter versions', async () => {
   const bridge = await loadBridge();
   const city = bridge.cityProvenanceContract;
+  assert.equal(city.status, 'partially-runtime-enforced');
+  assert.equal(city.runtimeEnforcement.path, 'civic-core.js');
+  assert.ok(city.runtimeEnforcement.enforces.includes('adapterVersion'));
   assert.deepEqual(city.feedEnvelope.required, ['schemaVersion','sourceId','fetchedAt','adapterVersion','items']);
   assert.ok(city.feedEnvelope.itemInheritance.includes('fetchedAt'));
   assert.ok(city.feedEnvelope.itemInheritance.includes('adapterVersion'));
