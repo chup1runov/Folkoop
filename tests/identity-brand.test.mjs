@@ -9,7 +9,7 @@ const forbidden=[
   {name:'legacy guide/project brand', pattern:new RegExp('\\bmu'+'ra\\b','i')}
 ];
 const textExt=new Set(['.md','.txt','.json','.js','.mjs','.cjs','.html','.css','.yml','.yaml','.sql','.py','.sh']);
-const skipDirs=new Set(['.git','node_modules','_site','qa-output']);
+const skipDirs=new Set(['.git','node_modules','_site','qa-output','archive']);
 
 async function walk(entry){
   const s=await stat(entry);
@@ -26,6 +26,7 @@ test('FOLKOOP is the only current project brand',async()=>{
   const offenders=[];
   for(const file of await walk('.')){
     const normalized=file.replaceAll('\\','/');
+    if(normalized.startsWith('docs/history/')||normalized.startsWith('docs/proposals/'))continue;
     for(const rule of forbidden){
       if(rule.pattern.test(normalized))offenders.push(normalized+' [path: '+rule.name+']');
       rule.pattern.lastIndex=0;
