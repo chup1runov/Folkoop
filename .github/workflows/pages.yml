@@ -108,6 +108,9 @@ jobs:
       - name: Check official report handoffs
         if: always()
         run: node scripts/probe-report-routes.mjs
+      - name: Check hosted Supabase Auth readiness
+        if: always()
+        run: node scripts/probe-auth-readiness.mjs
   deploy:
     if: github.event_name != 'pull_request'
     needs: [validate, webkit]

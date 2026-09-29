@@ -14,6 +14,7 @@ Do not start the real-account test until all of the following are true:
 - PostgreSQL authorization CI is green;
 - hosted Supabase migrations match the repository;
 - participant Auth is configured and tested;
+- `npm run auth:require-google` passes when Google OAuth is the selected route;
 - two unused pilot invite codes are available privately;
 - the private Box pilot workspace is accessible;
 - no paid service has been enabled;
