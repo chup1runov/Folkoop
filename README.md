@@ -2,8 +2,6 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
-
 ## Current pilot state — v0.31.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
@@ -11,7 +9,7 @@ Navigation: **Profile · Home · Messages · People · Communities · Together �
 Implemented:
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
-- language-first onboarding with a physical Mura guide using canonical Mura poses, authored left/right/up/down pointing, real sit-edge body anatomy, spotlight tour and replay from Settings;
+- language-first onboarding with a physical FOLKOOP guide guide using canonical FOLKOOP guide poses, authored left/right/up/down pointing, real sit-edge body anatomy, spotlight tour and replay from Settings;
 - signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
 - invite-only network admission after Auth verification; first admission now requires explicit versioned Pilot Terms acceptance and Privacy Notice acknowledgement recorded server-side; plaintext invite codes are never stored in the database;
@@ -40,12 +38,10 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/architecture/SDCF_BRIDGE.md` for the non-runtime semantic/outcome-integrity bridge, then `docs/PROJECT_HANDOFF.md` for current implementation state. `docs/FOLKOOP_MIGRATION.md` records the Sverinav/FOLKUNO integration history, and `docs/TOKARENKO_KOOPSET_RESEARCH.md` separates source-supported KООПСЕТЬ ideas from FOLKOOP design choices. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
+Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/architecture/SDCF_BRIDGE.md` for the non-runtime semantic/outcome-integrity bridge, then `docs/PROJECT_HANDOFF.md` for current implementation state. md` separates source-supported KООПСЕТЬ ideas from FOLKOOP design choices. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
 
 ## Identity and rights
 
-Initiator: Pavel Chuprunov, @chup1runov. The owner approved continuing the existing repository as FOLKOOP and reusing the FOLKUNO graphic mark. The mark is cropped from the supplied master identity board; it is not a newly invented logo or a claimed vector master. FOLKOOP remains a working brand; no legal clearance is asserted.
-
-**Proprietary — all rights reserved subject to LICENSE.** Existing GitHub grants, mandatory exceptions, prior permissions and third-party rights remain unchanged. Free resident use does not grant unrestricted code reuse. Read `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md`.
+Initiator: Pavel Chuprunov, @chup1runov. FOLKOOP is the single current project identity. Former component identities are not current product brands. Historical source states remain available through Git history, not as separate products in the current tree.\n\n**Proprietary — all rights reserved subject to LICENSE.** Existing GitHub grants, mandatory exceptions, prior permissions and third-party rights remain unchanged. Free resident use does not grant unrestricted code reuse. Read `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md`.
 
 Never put private conversation archives, credentials, identity numbers, home addresses or confidential cases in this public repository.
