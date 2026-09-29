@@ -386,3 +386,20 @@ The Sharetribe deep dive focuses on:
 - reviews and marketplace operator tools;
 - Shared Resource and Shared Purchase boundaries;
 - what FOLKOOP should implement natively vs integrate with specialist marketplace/payment infrastructure.
+
+
+## Competitor synthesis / master roadmap
+
+The nine deep dives are synthesized into one product-architecture and sequencing document:
+
+- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+
+It defines:
+- what FOLKOOP should own natively;
+- what patterns to adapt from competitors;
+- which specialist domains should be integrated/routed externally;
+- proposed FOLKOOP v2 object architecture;
+- cooperation vs belonging loops;
+- evidence-routed post-pilot development phases;
+- permanent "do not build by default" boundaries;
+- metrics and feature decision gates.
