@@ -4,9 +4,9 @@ import {readdir,readFile,stat} from 'node:fs/promises';
 import path from 'node:path';
 
 const forbidden=[
-  {name:'legacy civic brand', pattern:/sverinav/i},
-  {name:'legacy physical-space brand', pattern:/folkuno/i},
-  {name:'legacy guide/project brand', pattern:/\bmura\b/i}
+  {name:'legacy civic brand', pattern:new RegExp('sveri'+'nav','i')},
+  {name:'legacy physical-space brand', pattern:new RegExp('folk'+'uno','i')},
+  {name:'legacy guide/project brand', pattern:new RegExp('\\bmu'+'ra\\b','i')}
 ];
 const textExt=new Set(['.md','.txt','.json','.js','.mjs','.cjs','.html','.css','.yml','.yaml','.sql','.py','.sh']);
 const skipDirs=new Set(['.git','node_modules','_site','qa-output']);
