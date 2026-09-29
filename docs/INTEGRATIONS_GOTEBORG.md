@@ -5,7 +5,7 @@ Datum: 2026-09-21
 ## Integrationsnivåer
 
 1. **API** — data kan hämtas maskinellt.
-2. **Officiell vidarekoppling** — Sverinav hittar rätt mottagare och öppnar rätt officiell tjänst.
+2. **Officiell vidarekoppling** — FOLKOOP hittar rätt mottagare och öppnar rätt officiell tjänst.
 3. **Ej redo** — kräver avtal, stabil API eller mer teknisk utredning.
 
 | Funktion | Officiell källa | Teknik | MVP |
@@ -37,7 +37,7 @@ Utfall:
 
 Göteborgs Stad har redan en felanmälan för gator, torg och parker.
 
-MVP: Sverinav samlar plats + beskrivning + foto, bestämmer ansvarig aktör och öppnar rätt officiell tjänst. Ingen automatisk inskickning utan dokumenterat API eller avtal.
+MVP: FOLKOOP samlar plats + beskrivning + foto, bestämmer ansvarig aktör och öppnar rätt officiell tjänst. Ingen automatisk inskickning utan dokumenterat API eller avtal.
 
 ## Nära mig
 
