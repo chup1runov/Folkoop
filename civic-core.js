@@ -52,7 +52,8 @@
   }
   function feed(payload, sourceId, hosts) {
     const ts=timestamp(payload?.fetchedAt);
-    if(!payload || payload.error || payload.schemaVersion!==1 || payload.sourceId!==sourceId || ts===null || ts>Date.now()+300000 || !Array.isArray(payload.items)) throw new Error('INVALID_FEED');
+    const adapter=typeof payload?.adapterVersion==='string' ? payload.adapterVersion.trim() : '';
+    if(!payload || payload.error || payload.schemaVersion!==1 || payload.sourceId!==sourceId || ts===null || ts>Date.now()+300000 || !/^[a-z0-9][a-z0-9._-]{2,79}$/i.test(adapter) || !Array.isArray(payload.items)) throw new Error('INVALID_FEED');
     if(payload.items.some(i=>!i || typeof i.title!=='string' || !i.title.trim() || !officialUrl(i.sourceUrl,hosts))) throw new Error('INVALID_ITEM');
     return payload;
   }

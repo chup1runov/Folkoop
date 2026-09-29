@@ -10,8 +10,8 @@ passed=[]
 async def main():
  now=datetime.now(timezone.utc);iso=lambda d:d.isoformat().replace('+00:00','Z')
  forecast={'referenceTime':iso(now),'timeSeries':[{'time':iso(now+timedelta(hours=i)),'data':{'air_temperature':13+i/10,'wind_speed':2.7,'probability_of_precipitation':30}} for i in range(1,7)]}
- feed={'schemaVersion':1,'fetchedAt':iso(now),'sourceId':'riksdagen_open_data','sourceName':'Sveriges riksdag','items':[{'title':'Testdata — utskottsdokument','sourceUrl':'https://data.riksdagen.se/dokument/test.html','documentType':'Betänkande'}]}
- plan={'schemaVersion':1,'fetchedAt':iso(now),'sourceId':'goteborg_open_plans','sourceName':'Göteborgs Stad','sourceUrl':'https://goteborg.se/planochbyggprojekt','items':[{'title':'Testdata — samråd','deadline':(now+timedelta(days=3)).date().isoformat(),'sourceUrl':'https://goteborg.se/test-plan'}]}
+ feed={'schemaVersion':1,'fetchedAt':iso(now),'sourceId':'riksdagen_open_data','sourceName':'Sveriges riksdag','adapterVersion':'riksdagen-decisions-v2','items':[{'title':'Testdata — utskottsdokument','sourceUrl':'https://data.riksdagen.se/dokument/test.html','documentType':'Betänkande'}]}
+ plan={'schemaVersion':1,'fetchedAt':iso(now),'sourceId':'goteborg_open_plans','sourceName':'Göteborgs Stad','sourceUrl':'https://goteborg.se/planochbyggprojekt','adapterVersion':'goteborg-open-plans-v1','items':[{'title':'Testdata — samråd','deadline':(now+timedelta(days=3)).date().isoformat(),'sourceUrl':'https://goteborg.se/test-plan'}]}
  async with async_playwright() as pw:
   browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   context=await browser.new_context(viewport={'width':390,'height':844},locale='sv-SE',is_mobile=True,has_touch=True,service_workers='block')
