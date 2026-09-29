@@ -4,6 +4,7 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 const ctx=vm.createContext({});
 vm.runInContext(await readFile('folkoop-core.js','utf8'),ctx);
+vm.runInContext(await readFile('folkoop-i18n-extra.js','utf8'),ctx);
 vm.runInContext(await readFile('folkoop-copy.js','utf8'),ctx);
 const C=ctx.FolkoopCore,I=ctx.FolkoopCopy;
 const memory=()=>{const values=new Map();return{getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k),values};};
@@ -11,7 +12,7 @@ const item={id:'safe-123',kind:'project',title:'Together',body:'Build a workshop
 test('expanded social navigation includes Profile, Home, social, cooperation and utility sections',()=>{for(const k of ['me','home','messages','people','communities','together','projects','city','center','settings','about'])assert(C.ROUTES.includes(k));assert(!C.ROUTES.includes('core'));assert.equal(I.COPY.ru.me,'Профиль');assert.equal(I.COPY.ru.communities,'Сообщества');assert.equal(I.COPY.ru.settings,'Настройки');assert.equal(I.COPY.ru.aboutPage,'О нас');});
 test('routes reject unknown paths and executable values',()=>{assert.equal(C.route('#/projects'),'projects');assert.equal(C.route('#javascript:alert(1)'),'home');assert.equal(C.route('#/constructor'),'home');});
 test('eleven existing language choices and native navigation labels are retained',()=>{assert.equal(C.LANGS.length,11);for(const lang of C.LANGS)for(const k of ['home','messages','people','communities','together','projects','city','center','me','settings','aboutPage','partial'])assert(I.COPY[lang][k]);});
-test('partial shell translations are explicitly disclosed',()=>{assert.equal(I.FULL.length,3);assert(I.COPY.uk.partial.includes('англійською'));});
+test('all eleven shell translations are complete',()=>{assert.equal(I.FULL.length,11);const keys=Object.keys(I.COPY.en).sort();for(const lang of C.LANGS){assert.deepEqual(Object.keys(I.COPY[lang]).sort(),keys,lang);for(const key of keys)assert.equal(typeof I.COPY[lang][key]==='string'&&I.COPY[lang][key].trim().length>0,true,lang+':'+key);}});
 test('local workspace never writes before consent',()=>{const s=memory(),w=C.workspace(s);w.profile({name:'Test'});w.add(item);assert.equal(s.values.size,0);assert.equal(w.get().drafts.length,1);assert.equal(w.isPersistent(),false);});
 test('consented data persists and reloads',()=>{const s=memory(),w=C.workspace(s);w.add(item);assert(w.remember(true));assert.equal(C.workspace(s).get().drafts[0].title,'Together');});
 test('revoking persistence removes only the FOLKOOP key, retains in-memory work',()=>{const s=memory(),w=C.workspace(s);s.setItem('unrelated','keep');w.add(item);w.remember(true);assert(w.remember(false));assert.equal(s.getItem(C.KEY),null);assert.equal(s.getItem('unrelated'),'keep');assert.equal(w.get().drafts.length,1);});
