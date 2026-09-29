@@ -143,7 +143,7 @@ over:
 | 6 | Multiple contextual places/communities | 🟡 groups/events beyond neighborhood | 🟡 | ADAPT | POST-PILOT | Important for work/study/volunteering. |
 | 7 | Locality without public exact address | ✅ privacy design | 🟡 | ADAPT | LATER | Need privacy-preserving proximity if FOLKOOP adds maps. |
 | 8 | Local density as product KPI | ✅ implicit core | 🟡 pilot principle | KEEP/FORMALIZE | NOW | FOLKOOP should measure useful local coverage, not total signups. |
-| 9 | Neighborhood onboarding/welcome | ✅ | 🟡 Mura onboarding | ADAPT | POST-PILOT | Could introduce local opportunities/community immediately. |
+| 9 | Neighborhood onboarding/welcome | ✅ | 🟡 FOLKOOP guide onboarding | ADAPT | POST-PILOT | Could introduce local opportunities/community immediately. |
 | 10 | Newcomer local orientation | ✅ indirectly | 🟡 City/Center vision | KEEP/EXPAND | POST-PILOT | Strong FOLKOOP use case. |
 
 ---
@@ -177,7 +177,7 @@ over:
 | 26 | Route answer to Group | ✅ | 🟡 Communities | ADAPT | POST-PILOT | Good for intent-to-community routing. |
 | 27 | Summarize years of local conversations | ✅ | — | LATER | LATER | Powerful moat only after scale. |
 | 28 | Explain why/source of recommendation | 🟡 summary/recommendation basis | ✅ SDCF philosophy | KEEP/EXPAND | LATER | FOLKOOP should be more explicit about provenance. |
-| 29 | Ask becomes primary local-search interface | ✅ direction | 🟡 Mura future | ADAPT strategically | LATER | Mura could route intent across people/city/projects, not only content. |
+| 29 | Ask becomes primary local-search interface | ✅ direction | 🟡 FOLKOOP guide future | ADAPT strategically | LATER | FOLKOOP guide could route intent across people/city/projects, not only content. |
 | 30 | AI response when no human replied | ✅ | — | LATER | LATER | Useful but must not fabricate local knowledge. |
 
 ---
@@ -279,7 +279,7 @@ over:
 | 86 | Automated moderation systems | ✅ | — | LATER | LATER | Only with appeals/provenance. |
 | 87 | Three-tier moderation | ✅ | 🟡 | ADAPT | LATER | Community + professional + automation can complement one another. |
 | 88 | Pre-submit Kindness Reminder | ✅ | — | ADAPT | POST-PILOT | High-value friction before conflict. |
-| 89 | AI rewrite suggestion for heated content | ✅ | — | ADAPT carefully | LATER | Mura could help rephrase, but never manipulate viewpoint. |
+| 89 | AI rewrite suggestion for heated content | ✅ | — | ADAPT carefully | LATER | FOLKOOP guide could help rephrase, but never manipulate viewpoint. |
 | 90 | Seasonal/context-specific reminder | ✅ fireworks example | — | ADAPT principle | LATER | Contextual friction can be better than generic moderation. |
 | 91 | Appeals/transparency reporting | ✅ | — | ADAPT | LATER | Important for legitimacy. |
 | 92 | Scam/fraud detection | ✅ | — | LATER | LATER | Needed if marketplace/economic layer expands. |
@@ -303,7 +303,7 @@ over:
 
 ---
 
-# K. Mura / Ask comparison
+# K. FOLKOOP guide / Ask comparison
 
 ## Nextdoor Ask
 
@@ -317,7 +317,7 @@ Current direction:
   - group;
 - answer unanswered local questions from accumulated knowledge.
 
-## Mura
+## FOLKOOP guide
 
 Current FOLKOOP implementation:
 - visual onboarding;
@@ -340,12 +340,12 @@ Future possibility:
 Nextdoor Ask answers:
 > "What does my neighborhood know?"
 
-Future Mura could answer:
+Future FOLKOOP guide could answer:
 > "What is the next useful action for my intent?"
 
 That is a much more action-oriented direction.
 
-| # | Capability | Nextdoor Ask | Mura/FOLKOOP | Decision |
+| # | Capability | Nextdoor Ask | FOLKOOP guide/FOLKOOP | Decision |
 |---|---|---:|---:|---|
 | 103 | Natural-language query | ✅ | — | LATER |
 | 104 | Local knowledge retrieval | ✅ | 🟡 City/data | LATER |
@@ -353,7 +353,7 @@ That is a much more action-oriented direction.
 | 106 | Route to Project/Task/Need/Offer | — | ✅ possible graph | KEEP DIFFERENTIATION |
 | 107 | Route to official civic action | 🟡 public agencies/news | ✅ City architecture | KEEP |
 | 108 | Provenance/evidence explicit | 🟡 | ✅ SDCF direction | KEEP |
-| 109 | Persistent embodied visual guide | — | ✅ Mura | KEEP |
+| 109 | Persistent embodied visual guide | — | ✅ FOLKOOP guide | KEEP |
 | 110 | Optimize answer for next action, not engagement | 🟡 | ✅ intended | KEEP |
 
 ---
@@ -479,7 +479,7 @@ not only:
 
 Future Center + Karrot-inspired Activity/Place can turn the network into real infrastructure.
 
-## 7. Mura
+## 7. FOLKOOP guide
 
 Human interface to cooperation graph, not only AI local search.
 
@@ -541,7 +541,7 @@ Useful aggregate research can become harmful social scoring if surfaced as a nor
 2. **Local coverage indicators**
    - how many relevant people/resources/projects exist nearby.
 
-3. **Ask/Mura routing**
+3. **Ask/FOLKOOP guide routing**
    - natural language -> person/community/City/Project/Need/Offer.
 
 4. **Verified organization profiles**
@@ -701,7 +701,7 @@ Near-term architectural implications:
 4. distinguish trusted source types;
 5. preserve action-first Home;
 6. avoid an ad-driven business model by default;
-7. keep future Mura capable of routing intent across local graph;
+7. keep future FOLKOOP guide capable of routing intent across local graph;
 8. treat local organization/business identity as contextual and verifiable;
 9. do not make popularity a substitute for cooperation fit.
 
