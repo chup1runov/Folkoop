@@ -10,7 +10,7 @@ const license=(await readFile('LICENSE','utf8')).replace(/\s+/g,' ');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const build=await readFile('scripts/build-site.mjs','utf8');
 test('rights: operative notice and package metadata agree',()=>{
- assert(license.includes('Version 1.0 — 23 September 2026'));
+ assert(license.includes('Version 1.1 — 29 September 2026'));
  assert(!license.includes('DRAFT FOR'));
  assert(license.includes('All rights reserved'));
  assert(license.includes('not an open-source or free-software'));
