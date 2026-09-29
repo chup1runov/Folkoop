@@ -81,7 +81,23 @@ token persistence           = memory only
 pilot admission             = invite-only
 ```
 
-Therefore Google pilot readiness is currently **false** regardless of the hosted provider setting.
+The hosted Auth settings probe also confirms:
+
+```text
+hosted Google provider       = false
+hosted email provider        = true
+hosted phone provider        = false
+signup disabled              = false
+application Google flag      = false
+Google pilot ready           = false
+```
+
+The current blockers are therefore exactly:
+
+- `hosted_google_provider_disabled`;
+- `app_google_oauth_flag_disabled`.
+
+The enabled email provider does not remove the documented pilot blocker: the current built-in email delivery path is still not the chosen ordinary-participant route.
 
 The repository now includes:
 
