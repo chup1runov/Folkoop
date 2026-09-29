@@ -357,14 +357,16 @@ If the operator completes the task on behalf of the participant, that is not evi
 
 The public repository contains product definitions and software only.
 
-Private pilot records may contain:
+Real participant personal data must remain inside a reviewed/approved processing
+path. For the current pilot, Supabase is the approved participant-data processor;
+Box is not approved for real participant personal data.
 
-- participant contact details;
-- interview notes;
-- outcome confirmations;
-- safety/moderation notes.
+Do not create a separate participant contact register, interview-note store,
+outcome-note store or incident-note store in Box.
 
-Those records must stay outside the public repository in an access-controlled location.
+Prefer app-native evidence and irreversible aggregate analysis. If a separate
+participant-linked record becomes necessary, review and implement an approved
+storage path before collecting it.
 
 Use participant identifiers/codes in analysis where practical.
 
@@ -421,7 +423,14 @@ The purpose of the pilot is to test cooperation, not software completeness.
 
 ## Technical operator gate
 
-Before inviting ordinary participants, complete `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` with two independent real Auth accounts. The technical gate is not product-market evidence; it only proves that the multi-account cooperation flow behaves correctly.
+Before inviting ordinary participants:
+- complete the versioned Pilot Terms / Privacy Notice acceptance gate in
+  `docs/PILOT_TERMS_ACCEPTANCE.md`;
+- complete `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` with two independent real
+  Auth accounts.
+
+The technical gate is not product-market evidence; it only proves that admission
+and the multi-account cooperation flow behave correctly.
 
 ## Pilot output
 
