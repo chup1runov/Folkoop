@@ -41,6 +41,7 @@ jobs:
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609280001_pilot_invites.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290001_account_lifecycle_trigger.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290002_account_closure_preflight.sql
+          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290003_pilot_terms_acceptance.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-first-pilot.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-activity-chat.sql
           docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-purchase-lifecycle.sql

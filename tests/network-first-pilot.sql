@@ -1,4 +1,5 @@
--- Disposable PostgreSQL checks for FOLKOOP v0.24 invite-only pilot admission.
+-- Disposable PostgreSQL checks for FOLKOOP invite-only admission with
+-- versioned Pilot Terms / Privacy Notice acceptance.
 \set ON_ERROR_STOP on
 begin;
 
@@ -42,31 +43,78 @@ update folkoop_private.pilot_invites
  set expires_at=now()-interval '1 minute'
  where label='expired';
 
-set local role authenticated;
-
--- A consumes one valid invite.
-select set_config('request.jwt.claim.sub','99999999-9999-4999-8999-999999999999',true);
 select fk_boot_test.ok(
- public.fk_claim_pilot_invite('FOLK-A-4J7K-P9Q2'),
- 'first invited user is admitted'
+ to_regprocedure('public.fk_claim_pilot_invite(text)') is null,
+ 'legacy one-argument invite claim no longer exists'
 );
 select fk_boot_test.ok(
- public.fk_claim_pilot_invite(''),
- 'existing pilot can re-enter without presenting a code'
+ to_regprocedure('public.fk_claim_pilot_invite(text,text,boolean,text,boolean)') is not null,
+ 'versioned invite claim is installed'
+);
+
+set local role authenticated;
+
+-- A cannot consume an invite without explicit current policy acceptance.
+select set_config('request.jwt.claim.sub','99999999-9999-4999-8999-999999999999',true);
+select fk_boot_test.ok(
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'FOLK-A-4J7K-P9Q2','2026-09-29-v1',false,'2026-09-29-v1',true
+ )$q$),
+ 'terms acceptance is mandatory'
+);
+select fk_boot_test.ok(
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'FOLK-A-4J7K-P9Q2','stale-terms',true,'2026-09-29-v1',true
+ )$q$),
+ 'stale terms version is denied'
+);
+select fk_boot_test.ok(
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'FOLK-A-4J7K-P9Q2','2026-09-29-v1',true,'2026-09-29-v1',false
+ )$q$),
+ 'privacy acknowledgement is mandatory'
+);
+
+reset role;
+select fk_boot_test.ok(
+ (select uses=0 and enabled from folkoop_private.pilot_invites where label='pilot A'),
+ 'policy denial does not consume the invite'
+);
+set local role authenticated;
+select set_config('request.jwt.claim.sub','99999999-9999-4999-8999-999999999999',true);
+
+-- A accepts both active versions and consumes one valid invite atomically.
+select fk_boot_test.ok(
+ public.fk_claim_pilot_invite(
+  'FOLK-A-4J7K-P9Q2','2026-09-29-v1',true,'2026-09-29-v1',true
+ ),
+ 'first invited user is admitted only with current policy acceptance'
+);
+select fk_boot_test.ok(
+ public.fk_claim_pilot_invite(
+  '','2026-09-29-v1',true,'2026-09-29-v1',true
+ ),
+ 'existing pilot can re-enter without presenting a code but still presents active policy versions'
 );
 
 -- B cannot enter with a wrong/expired code, then consumes its own code.
 select set_config('request.jwt.claim.sub','88888888-8888-4888-8888-888888888888',true);
 select fk_boot_test.ok(
- fk_boot_test.denied($q$select public.fk_claim_pilot_invite('WRONG-CODE-0000')$q$),
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'WRONG-CODE-0000','2026-09-29-v1',true,'2026-09-29-v1',true
+ )$q$),
  'unknown invite is denied'
 );
 select fk_boot_test.ok(
- fk_boot_test.denied($q$select public.fk_claim_pilot_invite('FOLK-X-EXPIRED-01')$q$),
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'FOLK-X-EXPIRED-01','2026-09-29-v1',true,'2026-09-29-v1',true
+ )$q$),
  'expired invite is denied'
 );
 select fk_boot_test.ok(
- public.fk_claim_pilot_invite('FOLK-B-8R3M-X6T1'),
+ public.fk_claim_pilot_invite(
+  'FOLK-B-8R3M-X6T1','2026-09-29-v1',true,'2026-09-29-v1',true
+ ),
  'second invited user is admitted independently'
 );
 
@@ -77,7 +125,9 @@ select fk_boot_test.ok(
  'legacy first-pilot RPC no longer admits new users'
 );
 select fk_boot_test.ok(
- fk_boot_test.denied($q$select public.fk_claim_pilot_invite('FOLK-A-4J7K-P9Q2')$q$),
+ fk_boot_test.denied($q$select public.fk_claim_pilot_invite(
+  'FOLK-A-4J7K-P9Q2','2026-09-29-v1',true,'2026-09-29-v1',true
+ )$q$),
  'consumed one-time invite cannot be reused'
 );
 
@@ -86,6 +136,16 @@ reset role;
 select fk_boot_test.ok(
  (select count(*)=2 from folkoop_private.pilots where enabled),
  'exactly the two invited users are enabled pilots'
+);
+select fk_boot_test.ok(
+ not exists(
+  select 1 from folkoop_private.pilots
+  where terms_version<>'2026-09-29-v1'
+     or privacy_version<>'2026-09-29-v1'
+     or terms_accepted_at is null
+     or privacy_acknowledged_at is null
+ ),
+ 'every admitted pilot has current versioned acceptance evidence'
 );
 select fk_boot_test.ok(
  (select uses=1 and not enabled from folkoop_private.pilot_invites where label='pilot A'),

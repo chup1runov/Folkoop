@@ -82,6 +82,7 @@ async def main():
   await page.goto(BASE+'#/me')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.fill('#netLogin [name=code]','123456')
+  await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
   await page.fill('#netProfile [name=name]','Synthetic Owner')
   await page.check('#netProfile [name=listed]')
