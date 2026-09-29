@@ -54,10 +54,10 @@ async def main():
    errors = []
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE+'?intro=1')
-   await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
+   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
    await page.locator('[data-folkoop-guide-lang]').first.focus()
    await page.keyboard.press('Shift+Tab')
-   if not await page.evaluate("!!document.activeElement.closest('#folkoop-guideLanguageGate')"):
+   if not await page.evaluate("!!document.activeElement.closest('#folkoopGuideLanguageGate')"):
     failures.append(f'{width}: language gate leaks keyboard focus')
    await page.screenshot(path=str(OUT/f'audit-language-{width}.png'))
    await page.click('[data-folkoop-guide-lang="ru"]')
