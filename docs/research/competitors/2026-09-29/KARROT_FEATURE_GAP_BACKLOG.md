@@ -27,10 +27,10 @@ FOLKOOP:
 - `README.md`
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
-- `docs/COOPERATION_V018.md`
+- `docs/history/releases/COOPERATION_V018.md`
 - `docs/PROJECT_HANDOFF.md`
 - `docs/architecture/SDCF_BRIDGE.md`
-- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/HYLO_FEATURE_GAP_BACKLOG.md`
 
 ## One-sentence comparison
 
