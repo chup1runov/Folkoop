@@ -2,6 +2,8 @@
 
 29 September 2026.
 
+Status: **implemented in v0.31.0 candidate; pending CI/live migration verification**.
+
 Purpose: make acceptance of the controlled pilot terms and privacy notice an
 explicit, versioned admission event rather than a passive website disclaimer.
 
@@ -143,11 +145,19 @@ fake blanket consent.
 
 ## Technical gate
 
-Before ordinary participants:
-- implement server-side versioned acceptance;
-- add deterministic SQL authorization/admission tests;
-- add browser tests proving the checkbox cannot be bypassed through the normal
-  UI;
-- verify direct RPC calls without accepted versions fail;
+Implemented in the v0.31.0 candidate:
+- server-side versioned acceptance fields on the private pilot admission row;
+- atomic invite claim + Terms/Privacy evidence;
+- exact active-version checks;
+- old one-argument invite RPC removed;
+- deterministic SQL admission tests;
+- client tests for missing acceptance and server denial;
+- browser test proving normal UI does not send verification before acceptance;
+- version-alignment regression test across server/client/docs.
+
+Still required before ordinary participants:
+- apply and verify the migration on hosted Supabase;
 - run two real developer/test accounts end-to-end;
-- update the participant privacy notice with the actual active Auth provider.
+- rehearse account closure;
+- update/finalize the participant Privacy Notice with the actual active Auth
+  provider.
