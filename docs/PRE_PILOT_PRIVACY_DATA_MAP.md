@@ -9,7 +9,8 @@ a final privacy notice or legal advice.
 Policy choices are intentionally separated from mechanics:
 - `PRE_PILOT_PRIVACY_DECISIONS.md` — working legal-basis, retention and closure defaults;
 - `PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md` — operator rights/breach procedure;
-- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft.
+- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft;
+- `SERVICE_DPA_REVIEW.md` — provider/DPA and legal-basis decision record.
 
 ## Executive finding
 
@@ -186,18 +187,27 @@ local state separately if that layer remains enabled for the pilot.
 
 ## Private Box pilot workspace
 
-Private operational records can include:
-- participant-code to contact-reference mapping;
-- onboarding/withdrawal state;
-- cooperation/outcome log;
-- interview notes;
-- incident/moderation log;
-- plaintext invitation-code register;
-- operator checklist and participant briefing.
+The workspace currently contains templates, checklists and invitation-code
+operational material, but policy now **prohibits populating it with real
+participant personal data** for the first pilot unless a later processor/DPA
+review explicitly changes that decision.
 
-These records are outside the Supabase FK graph. Account deletion in Supabase
-does not delete Box records. GitHub must not contain participant identity
-mapping, plaintext invite codes, interviews or incident records.
+Allowed under the current pilot policy:
+- templates and checklists;
+- synthetic test material;
+- plaintext **unassigned** invitation-code secrets.
+
+Not allowed in Box under the current pilot policy:
+- participant identity/contact mapping;
+- code-to-person mapping;
+- interview notes;
+- outcome notes tied to a participant;
+- incident/moderation notes containing participant data;
+- rights-request content.
+
+This makes Box operationally separate from the participant personal-data
+lifecycle. GitHub must still never contain plaintext invite codes or real
+participant data.
 
 ## Public GitHub
 
@@ -229,7 +239,7 @@ It does not provide a complete inventory. Examples of material omissions include
 - preferred-offer selections made by the user;
 - Auth-provider metadata;
 - private pilot tables;
-- Box pilot records;
+- any separately approved controller-held records outside the application;
 - browser-local state.
 
 The client also uses explicit row limits (commonly 500/1000). The UI must not
@@ -238,7 +248,7 @@ describe this method as a complete GDPR access/export mechanism.
 ## Current retention status
 
 There is no general automated retention/gallring schedule for profile,
-community, messaging, cooperation, activity, moderation or Box pilot records.
+community, messaging, cooperation, activity or moderation records.
 
 Invite rows can have an expiry, but expiry of an invite is not a general account
 retention policy.
@@ -268,7 +278,7 @@ A deliberate closure procedure must decide, table by table, whether to:
 - preserve shared content;
 - transfer/delete owner-controlled shared containers;
 - retain a narrowly justified moderation/incident record;
-- remove or separately retain private pilot/Box records.
+- remove or separately retain private pilot records.
 
 The current FK graph is useful for integrity, but it is not a privacy policy.
 
@@ -284,13 +294,14 @@ The repository now contains working pilot defaults for legal basis, retention,
 account closure, rights handling, participant information and incident response.
 
 Ordinary participant invitations remain blocked until:
-1. the actual controller identity is confirmed;
-2. the actual privacy-contact route is confirmed;
-3. the controller approves the working legal-basis choices;
-4. the DPA/terms, subprocessors and transfer safeguards for the actually used
-   services are checked;
-5. the participant privacy notice is completed with those real details;
-6. the final Auth route and two-account technical gate pass.
+1. the processor/hosting decisions in `SERVICE_DPA_REVIEW.md` remain valid;
+2. the participant privacy notice remains aligned with the actual active Auth
+   provider and services;
+3. pilot terms establish the service relationship used for the Art. 6(1)(b)
+   processing;
+4. the final Auth route and two-account technical gate pass;
+5. account closure is rehearsed with developer/test identities;
+6. ordinary participant invitations are explicitly authorized.
 
 This technical map remains the source of truth for database mechanics. The
 decision documents above are the source of truth for pilot policy.

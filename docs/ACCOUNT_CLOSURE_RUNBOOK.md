@@ -64,7 +64,9 @@ Before any destructive action:
    - delete the container only after reviewing the effect on other participants;
 6. delete the closing participant's user-scoped rows unless a documented
    moderation/legal hold applies;
-7. apply the private Box retention/erasure schedule;
+7. confirm that no participant personal data were stored in Box under the
+   current pilot policy; if a documented exception exists, handle it under that
+   exception;
 8. remove the Auth identity **last**;
 9. re-run integrity checks and record completion without retaining unnecessary
    personal content.
