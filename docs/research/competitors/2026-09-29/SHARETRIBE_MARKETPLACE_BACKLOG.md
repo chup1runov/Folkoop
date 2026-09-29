@@ -29,7 +29,7 @@ FOLKOOP:
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/history/releases/COOPERATION_V018.md`
 - `docs/history/releases/PURCHASE_LIFECYCLE_V020.md`
-- `docs/PROJECT_HANDOFF.md`
+- `docs/history/handoffs/PROJECT_HANDOFF_20260929_PRE_V032.md`
 - `docs/architecture/SDCF_BRIDGE.md`
 - previous competitor deep dives.
 
