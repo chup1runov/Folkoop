@@ -234,3 +234,22 @@ The deep dive distinguishes:
 - FOLKOOP concepts that are not yet implemented;
 - features to keep, adapt, defer or deliberately not copy;
 - activation rules based on the Göteborg core-loop pilot bottleneck.
+
+
+### Karrot
+
+Full operational/feature comparison and evidence-driven adoption backlog:
+
+- `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
+
+The Karrot deep dive focuses on:
+- Places and scheduled Activities;
+- participant slots and physical commitments;
+- contextual chats;
+- custom/scoped roles;
+- trust and permissions;
+- mediation, sanctions and membership review;
+- public activity discovery;
+- post-activity feedback/history;
+- PWA push/self-hosting/open-source infrastructure;
+- which parts complement FOLKOOP Projects, City and future Center rather than replacing them.
