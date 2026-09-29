@@ -11,7 +11,7 @@ test('release stamp has one authoritative package version',()=>{
 });
 test('Compact contains complete short copy for all existing languages',async()=>{
  const ctx=vm.createContext({console});vm.runInContext(await readFile('today.js','utf8'),ctx);
- const t=ctx.SverinavToday;
+ const t=ctx.FolkoopToday;
  assert.deepEqual(Object.keys(t.COMPACT_COPY).sort(),Object.keys(t.COPY).sort());
  for(const values of Object.values(t.COMPACT_COPY)){
   assert.equal(values.length,t.COMPACT_KEYS.length);
