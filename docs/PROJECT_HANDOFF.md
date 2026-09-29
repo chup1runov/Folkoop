@@ -1,6 +1,6 @@
 # FOLKOOP — current handoff
 
-29 September 2026. Current development slice: v0.29.0 authored directional pointing + sit-edge Mura onboarding on top of the existing v0.25 Auth scaffold. Check exact commit CI, hosted migration state and deployment before claiming it is live.
+29 September 2026. Current development slice: v0.32.0 single-name FOLKOOP cleanup. Check exact commit CI, hosted migration state and deployment before claiming it is live.
 
 ## Canonical decisions
 
