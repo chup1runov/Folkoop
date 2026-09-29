@@ -253,3 +253,21 @@ The Karrot deep dive focuses on:
 - post-activity feedback/history;
 - PWA push/self-hosting/open-source infrastructure;
 - which parts complement FOLKOOP Projects, City and future Center rather than replacing them.
+
+
+### Decidim
+
+Full civic/governance comparison and integration-oriented backlog:
+
+- `docs/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
+
+The Decidim deep dive focuses on:
+- participatory processes and phases;
+- proposals, meetings, debates and surveys;
+- voting, participatory budgets and elections;
+- initiatives/signatures;
+- assemblies;
+- accountability/results;
+- authorization/eligibility;
+- APIs and exports;
+- what FOLKOOP City should surface or integrate rather than rebuild.
