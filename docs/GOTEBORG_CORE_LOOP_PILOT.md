@@ -27,7 +27,7 @@ The first core-loop pilot deliberately excludes:
 - political campaigning;
 - algorithmic/AI recommendation claims;
 - mass public onboarding;
-- physical FOLKUNO Center operations;
+- physical FOLKOOP Center operations;
 - large-scale City integrations.
 
 Those may matter later, but they would add noise before the basic cooperation loop is proven.
