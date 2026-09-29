@@ -2,36 +2,30 @@
 
 29 September 2026.
 
-Status: **technical groundwork ready; ordinary-participant Auth is not activated yet.**
+Status: **v0.31 admission/privacy gate live; ordinary-participant Auth is not activated yet.**
 
-This document records the repository + hosted Supabase state needed before the two-real-account Göteborg technical gate. It contains no participant identities, plaintext invite codes, secret keys or OAuth client secrets.
+This document records the current repository + hosted Supabase state before the
+two-real-account Göteborg technical gate. It contains no participant identities,
+plaintext invite codes, secret keys or OAuth client secrets.
 
 ## Hosted project snapshot
 
-Checked against the connected hosted Supabase project `folkoop`:
+Connected Supabase project:
 
 - project ref: `cwvhkdqsrbllsykhccmb`;
 - region: `eu-north-1` (Stockholm);
-- project status: `ACTIVE_HEALTHY`;
-- PostgreSQL: 17.6.1.166;
-- the browser config points to the same project URL;
-- the browser config uses an active modern `sb_publishable_...` key, not a secret/service-role key;
-- a legacy anon key also exists for compatibility, but FOLKOOP does not use it in `network-config.js`.
+- project status: ACTIVE_HEALTHY;
+- PostgreSQL 17;
+- browser config points to the same project;
+- browser uses a publishable key, never a service-role/secret key.
 
 ## Hosted database readiness
 
-The repository contains 12 FOLKOOP migrations and the hosted project reports the corresponding 12 applied migration records through:
+The hosted project now reports **13 FOLKOOP migration records**, through:
 
-- base network;
-- first-pilot bootstrap;
-- RLS/performance;
-- messaging;
-- cooperation;
-- purchase offers/lifecycle;
-- activity/work chat;
-- invite-only admission;
-- account-lifecycle hardening;
-- account-closure preflight.
+`20260929112851 · folkoop_pilot_terms_acceptance`
+
+The v0.31 acceptance migration is live.
 
 Current hosted aggregate state:
 
@@ -47,148 +41,174 @@ Current hosted aggregate state:
 | Usable single-use invite slots | 4 |
 | Remaining invite uses | 4 |
 
-All four invite rows are still enabled, unused, single-use, and stored as SHA-256-shaped hashes in Supabase.
+P01–P04 therefore remain unconsumed.
 
-The private Box pilot workspace was also checked. It contains the four corresponding private invite slots P01–P04 and four plaintext code values. **The codes are intentionally not copied into this repository or this document.**
+## Versioned policy acceptance — LIVE
 
-## RLS / privileged RPC snapshot
+Active versions:
 
-Current hosted structural checks:
+- Pilot Terms: `2026-09-29-v1`;
+- Privacy Notice: `2026-09-29-v1`.
 
-- 24 public `fk_*` tables;
-- RLS enabled on all 24;
-- 74 SECURITY DEFINER functions across `public` + `folkoop_private`;
-- 54 public `fk_*` SECURITY DEFINER RPCs;
-- 0 SECURITY DEFINER functions executable by `anon`;
-- 0 SECURITY DEFINER functions executable by `PUBLIC`;
-- 0 inspected SECURITY DEFINER functions missing `search_path=""`;
-- 8 private SECURITY DEFINER helpers intentionally executable by `authenticated` for RLS.
+Hosted `folkoop_private.pilots` now has:
 
-Supabase's security advisor therefore still emits the expected
-`authenticated_security_definer_function_executable` warning for the 54 public authenticated RPCs. This warning is covered by the explicit privilege contract in `docs/SECURITY_DEFINER_AUDIT.md` and `tests/network-security-definer.sql`; it is not a reason to blindly convert the RPC layer to SECURITY INVOKER.
+- `terms_version`;
+- `terms_accepted_at`;
+- `privacy_version`;
+- `privacy_acknowledged_at`.
 
-The performance advisor currently reports unused indexes. With an empty pilot database this is expected and is **not** a reason to remove indexes before representative workload exists.
+Hosted verification confirms:
+
+- old `fk_claim_pilot_invite(text)` is absent;
+- new
+  `fk_claim_pilot_invite(text,text,boolean,text,boolean)` exists;
+- `authenticated` has EXECUTE;
+- `anon` and `PUBLIC` do not;
+- the function remains SECURITY DEFINER with `search_path=""`;
+- missing/stale policy acceptance was tested in disposable PostgreSQL;
+- the normal browser flow was tested to send no Auth verify request before
+  explicit acceptance;
+- a local policy rejection preserves the OTP only in tab memory, not persistent
+  browser storage.
+
+No hosted user was created merely for this verification.
+
+## Private-schema hardening status
+
+Three private tables currently have RLS disabled:
+
+- `folkoop_private.pilots`;
+- `folkoop_private.write_budgets`;
+- `folkoop_private.pilot_invites`.
+
+Direct table grants to `anon` and `authenticated` are absent.
+
+This is therefore **not evidence of direct browser table access**, but RLS could
+provide additional defense in depth. It is tracked as GitHub issue #68 and must
+not be changed blindly because the current private-table access model is mediated
+by reviewed SECURITY DEFINER functions.
+
+## SECURITY DEFINER advisor status
+
+Supabase Security Advisor reports the expected
+`authenticated_security_definer_function_executable` warning for 54 public
+authenticated RPCs, including the new five-argument invite-claim RPC.
+
+This is an intentional API surface, not 54 automatically independent
+vulnerabilities. The explicit contract remains:
+
+- `PUBLIC`: no EXECUTE;
+- `anon`: no EXECUTE;
+- authenticated execution only on intended RPCs/helpers;
+- empty pinned search path;
+- behavioral authorization tests remain mandatory.
+
+See `docs/SECURITY_DEFINER_AUDIT.md` and
+`tests/network-security-definer.sql`.
+
+Performance Advisor reports unused indexes. With an empty pilot database this is
+not evidence that the indexes are unnecessary; do not remove them before
+representative workload exists.
+
+## Processor/privacy state
+
+Completed:
+
+- controller: Pavel Chuprunov, private individual;
+- privacy contact: Chup1runov@gmail.com;
+- current legal-basis model adopted;
+- Supabase processor/DPA path reviewed;
+- Box excluded from real participant personal-data storage;
+- Pilot Terms EN/SV created;
+- versioned Terms/Privacy acceptance deployed server-side.
+
+Box may retain templates, synthetic material and unassigned invitation-code
+secrets, but it is not an approved participant-PII store for this pilot.
 
 ## Application Auth state
 
-The application currently has:
-
-```text
-network enabled             = true
-Google OAuth UI flag        = false
-callback                    = /Folkoop/auth-callback.html
-token persistence           = memory only
-pilot admission             = invite-only
-```
-
-The hosted Auth settings probe also confirms:
+Current live readiness probe:
 
 ```text
 hosted Google provider       = false
 hosted email provider        = true
-hosted phone provider        = false
 signup disabled              = false
 application Google flag      = false
 Google pilot ready           = false
 ```
 
-The current blockers are therefore exactly:
+Current Auth blockers:
 
 - `hosted_google_provider_disabled`;
 - `app_google_oauth_flag_disabled`.
 
-The enabled email provider does not remove the documented pilot blocker: the current built-in email delivery path is still not the chosen ordinary-participant route.
+The built-in email route is not the chosen ordinary-participant route.
 
-The repository now includes:
+## Google activation inputs
 
-```bash
-npm run auth:preflight
-npm run auth:require-google
-```
+Google OAuth Web client:
 
-`auth:preflight` safely calls the public Supabase `/auth/v1/settings` endpoint with the publishable key and prints only non-secret readiness fields.
+Authorized JavaScript origin:
 
-`auth:require-google` additionally exits non-zero until all three are true:
+`https://chup1runov.github.io`
 
-1. hosted Google provider enabled;
-2. FOLKOOP `googleOAuthEnabled:true`;
-3. Auth signup is not disabled.
+Google redirect URI:
 
-The normal CI source-probe job runs the non-blocking status check. It does not print the publishable key, OAuth client ID or client secret.
+`https://cwvhkdqsrbllsykhccmb.supabase.co/auth/v1/callback`
+
+Supabase allowed Redirect URL for the app:
+
+`https://chup1runov.github.io/Folkoop/auth-callback.html`
+
+Scopes:
+- `openid`;
+- email;
+- profile.
+
+Do not add Drive, Contacts, Calendar or unrelated Google scopes.
 
 ## What the automated probe does not prove
 
-A green `auth:require-google` is necessary but not sufficient for the pilot.
+A green automated Auth readiness probe still does not prove:
 
-It does **not** prove:
+- Google Cloud audience/test-user configuration;
+- exact Google OAuth callback registration;
+- Supabase allowed redirect registration;
+- popup behavior on actual target browsers/devices;
+- P01/P02 admission with two independent identities;
+- cross-account RLS/workspace behavior;
+- account-closure procedure on a real test identity.
 
-- Google Cloud OAuth consent/audience configuration is correct for both test accounts;
-- the exact Supabase callback URI is registered at Google;
-- the FOLKOOP callback is present in Supabase's allowed redirect URLs;
-- popup behavior works on the intended real browsers/devices;
-- P01/P02 admission works with two independent real identities;
-- post-login RLS behavior works across two independent sessions.
-
-Those are closed only by the real two-account runbook.
-
-## Private pilot workspace status
-
-The connected Box workspace exists at the expected pilot location and contains:
-
-- private participant register;
-- outcome log;
-- interview template;
-- incident log;
-- private invite register;
-- operator checklist;
-- participant briefing draft;
-- privacy decision worksheet.
-
-The private operator checklist still marks the two-account/Auth gate as incomplete. No plaintext invite code was moved out of the private invite area during this audit.
-
-## Remaining blockers before the two-account technical run
-
-### External/provider configuration
-
-Still requires the project owner/operator:
-
-1. configure the Google OAuth Web client;
-2. register `https://cwvhkdqsrbllsykhccmb.supabase.co/auth/v1/callback` at Google;
-3. enable/configure Google in Supabase Auth;
-4. add `https://chup1runov.github.io/Folkoop/auth-callback.html` to Supabase allowed redirect URLs;
-5. merge a reviewed config change setting `googleOAuthEnabled:true`;
-6. run `npm run auth:require-google`.
-
-### Human test identities
-
-The technical gate then requires two distinct real test identities. FOLKOOP should not manufacture synthetic Auth users in the hosted project merely to make the count non-zero.
-
-### Privacy/launch gate
-
-Even after the two-account technical test passes, ordinary participant invitations remain blocked by the privacy launch gate. The current private checklist still requires explicit completion/approval of the controller/contact and related pre-pilot privacy decisions.
+Those are closed only by the two-account operator runbook.
 
 ## Two-account go/no-go
 
-The technical run may start only when:
+Before the real technical run:
 
 ```text
-hosted migrations match repository     PASS
-RLS/privilege contract                 PASS
-four private + hosted invite slots      PASS
-Box private workspace                   PASS
-hosted Google provider                  PASS
-application Google OAuth flag           PASS
-Supabase allowed redirect               MANUALLY VERIFIED
-two distinct test identities            AVAILABLE
-npm run auth:require-google              PASS
+hosted migrations through v0.31          PASS
+policy acceptance DB contract            PASS
+policy acceptance browser contract       PASS
+four unused hosted invite slots          PASS
+public-table RLS / RPC test suite         PASS
+private-table direct browser grants      NONE
+Google provider                           BLOCKED
+application Google OAuth flag             BLOCKED
+Supabase allowed redirect                 MANUAL CHECK
+two distinct test identities              NEEDED
 ```
 
-Then execute `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` exactly.
+Then execute `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md`.
 
-## Current decision
+## Remaining gate before ordinary participants
 
-Do not add another Auth system, custom SMTP, passwords, BankID, or paid infrastructure now.
+1. configure Google OAuth provider;
+2. enable the reviewed application flag;
+3. run automated Google readiness check;
+4. execute two-account hosted core loop;
+5. rehearse account closure on developer/test identity;
+6. finalize the Privacy Notice against the active Auth provider;
+7. explicitly authorize ordinary participant invite distribution.
 
-The shortest path remains:
-
-`Google provider setup -> enable reviewed app flag -> automated Auth preflight -> two-real-account runbook`.
+Do not add another Auth system, custom SMTP, passwords, BankID or paid
+infrastructure merely to avoid this gate.
