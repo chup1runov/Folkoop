@@ -10,7 +10,7 @@
     2:['Sveriges riksdag','https://www.riksdagen.se/sv/sa-fungerar-riksdagen/riksdagens-uppgifter/beslutar-om-lagar/'],
     3:['Göteborgs Stad','https://goteborg.se/planochbyggprojekt']
   });
-  const COPY = globalThis.SverinavAboutCopy;
+  const COPY = globalThis.FolkoopAboutCopy;
   if (!COPY) throw new Error('Missing project translations');
   function element(tag, text, className) {
     const n=document.createElement(tag);
@@ -35,7 +35,7 @@
     const intro=root.querySelector('.screen > p.muted');if(intro){intro.textContent=L.intro;intro.lang=locale;}
     if(locale==='ru'){
       const notice=stack.querySelector('.about-card--notice p');
-      if(notice)notice.textContent='Sverinav не является государственным или муниципальным органом и не представляет Göteborgs Stad, Trafikverket или Riksdagen. Приложение помогает подготовиться, но официальное обращение ты отправляешь в сервисе соответствующего органа.';
+      if(notice)notice.textContent='FOLKOOP не является государственным или муниципальным органом и не представляет Göteborgs Stad, Trafikverket или Riksdagen. Приложение помогает подготовиться, но официальное обращение ты отправляешь в сервисе соответствующего органа.';
     }
     const author=element('section',undefined,'about-card project-author');author.id='projectAuthor';author.lang=locale;
     author.append(element('h2',L.by));
@@ -75,7 +75,7 @@
     const notice=stack.querySelector('.about-card--notice');if(notice)notice.after(author,story,faq);else stack.prepend(author,story,faq);
     stack.dataset.projectEnhanced='true';
   }
-  globalThis.SverinavProjectAbout={COPY,AUTHOR,IDEA_YEAR,REPOSITORY_CREATED,CONTACT,BIO_SOURCE,mount};
+  globalThis.FolkoopProjectAbout={COPY,AUTHOR,IDEA_YEAR,REPOSITORY_CREATED,CONTACT,BIO_SOURCE,mount};
   if(typeof document==='undefined')return;
   const root=document.getElementById('view');
   if(root){mount(root);new MutationObserver(()=>mount(root)).observe(root,{childList:true});}
