@@ -35,7 +35,7 @@ Research and old release notes do not silently override current product policy.
 - `SOURCE_REGISTRY.json` — source registry.
 - `architecture/SDCF_BRIDGE.md` — semantic/provenance bridge.
 - `architecture/sdcf-bridge-v0.2.json` — current machine-readable bridge profile.
-- `architecture/sdcf-bridge-v0.1.json` — earlier profile retained for comparison.
+- `history/architecture/sdcf-bridge-v0.1.json` — earlier profile retained for comparison.
 
 ## Pilot and operations
 
