@@ -4,7 +4,7 @@
 
 This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
 
-## Current pilot state — v0.31.0
+## Current pilot state — v0.32.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
@@ -14,7 +14,7 @@ Implemented:
 - language-first onboarding with a physical Mura guide using canonical Mura poses, authored left/right/up/down pointing, real sit-edge body anatomy, spotlight tour and replay from Settings;
 - signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
-- invite-only network admission after Auth verification; first admission now requires explicit versioned Pilot Terms acceptance and Privacy Notice acknowledgement recorded server-side; plaintext invite codes are never stored in the database;
+- invite-only network admission after Auth verification; first admission requires explicit versioned Pilot Terms acceptance and Privacy Notice acknowledgement recorded server-side; the sign-in UI uses progressive disclosure so the first screen stays compact; plaintext invite codes are never stored in the database;
 - Google OAuth browser scaffold is implemented but disabled by configuration until provider credentials and a two-account hosted test are complete;
 - communities and member publications;
 - direct and group messaging with invitations, blocking/reporting and owner moderation;
