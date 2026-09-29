@@ -22,4 +22,4 @@ New deterministic tests cover entry points, language fallback, escaping boundari
 
 The local execution environment blocks HTTP navigation to localhost. Local checks therefore comprised syntax/unit tests and DOM-only Chromium rendering; full HTTP and prior application regressions must pass in GitHub Actions before merge. Neither those tests nor the existing synthetic signed-in Home test proves two-real-account hosted behavior or mobile Safari.
 
-Research provenance and limitations are documented separately in TOKARENKO_REVIEW_STATUS_20260925.md. Private FOLKUNO operating manuals are not copied into this public repository.
+Research provenance and limitations are documented separately in TOKARENKO_REVIEW_STATUS_20260925.md. Private FOLKOOP operating manuals are not copied into this public repository.
