@@ -6,10 +6,10 @@
   const AREAS=Object.freeze({centrum:{name:'Göteborg centrum',lat:57.71,lon:11.97},hisingen:{name:'Hisingen',lat:57.75,lon:11.93},angered:{name:'Angered',lat:57.80,lon:12.05},frolunda:{name:'Frölunda',lat:57.65,lon:11.91}});
   const finite=n=>typeof n==='number' && Number.isFinite(n) && n!==9999;
   function forecast(payload, now=Date.now()) {
-    const reference=SverinavCore.timestamp(payload?.referenceTime);
+    const reference=FolkoopCivicCore.timestamp(payload?.referenceTime);
     if(reference===null || reference>now+300000 || now-reference>6*3600000 || !Array.isArray(payload.timeSeries)) throw new Error('STALE_OR_INVALID_FORECAST');
     const rows=payload.timeSeries.map(row=>({time:row.time,start:row.intervalParametersStartTime,data:row.data})).filter(row=>{
-      const time=SverinavCore.timestamp(row.time);return time!==null && time>=now && time<=now+24*3600000 && row.data && finite(row.data.air_temperature);
+      const time=FolkoopCivicCore.timestamp(row.time);return time!==null && time>=now && time<=now+24*3600000 && row.data && finite(row.data.air_temperature);
     }).sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
     if(!rows.length || Date.parse(rows[0].time)-now>2*3600000) throw new Error('NO_TIMELY_FORECAST');
     return {referenceTime:payload.referenceTime,rows};
@@ -22,8 +22,8 @@
       for(const area of warning.warningAreas){
         if(!Array.isArray(area.affectedAreas) || !area.warningLevel?.code) throw new Error('INVALID_WARNING_AREA');
         if(!area.affectedAreas.some(a=>a.id===14)) continue;
-        const start=area.approximateStart?SverinavCore.timestamp(area.approximateStart):null;
-        const end=area.approximateEnd?SverinavCore.timestamp(area.approximateEnd):null;
+        const start=area.approximateStart?FolkoopCivicCore.timestamp(area.approximateStart):null;
+        const end=area.approximateEnd?FolkoopCivicCore.timestamp(area.approximateEnd):null;
         if((area.approximateStart&&start===null)||(area.approximateEnd&&end===null)) throw new Error('INVALID_WARNING_DATES');
         if(end!==null && end<=now || start!==null && start>now+24*3600000) continue;
         const title=area.eventDescription?.sv || warning.event.sv;
@@ -38,7 +38,7 @@
   async function request(key,url,normalize,ttl,signal,force){
     const cached=memory.get(key);
     if(!force&&cached&&Date.now()-cached.received<ttl) return {...cached.value,payload:normalize(cached.raw)};
-    const result=await SverinavCore.fetchJSON(url,{signal});
+    const result=await FolkoopCivicCore.fetchJSON(url,{signal});
     const value={fetchedAt:result.fetchedAt,payload:normalize(result.payload)};
     memory.set(key,{received:Date.now(),raw:result.payload,value});return value;
   }
@@ -47,5 +47,5 @@
     return request('weather:'+key,`${WEATHER}/lon/${a.lon.toFixed(2)}/lat/${a.lat.toFixed(2)}/data.json`,forecast,300000,signal,force);
   }
   function loadWarnings({signal,force=false}={}) { return request('warnings',WARNINGS,warnings,60000,signal,force); }
-  globalThis.SverinavDaily={AREAS,forecast,warnings,loadForecast,loadWarnings,finite};
+  globalThis.FolkoopDaily={AREAS,forecast,warnings,loadForecast,loadWarnings,finite};
 })();
