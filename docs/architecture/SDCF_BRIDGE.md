@@ -16,6 +16,8 @@ The rule is deliberately asymmetric:
 The current machine-readable companion is `docs/architecture/sdcf-bridge-v0.2.json`.
 The previous v0.1 profile remains in the repository as a historical snapshot.
 
+The referenced SDCF framework is still **v0.6-beta-rc2**, not a final released semantic standard: its independent external SHACL release gate remains open. FOLKOOP therefore treats the bridge as an advisory interoperability contract, not as proof that SDCF itself has completed conformance validation.
+
 ## Why the bridge exists
 
 FOLKOOP's canonical loop is:
