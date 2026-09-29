@@ -16,7 +16,7 @@ async function dataResponse(request){
 async function navigationResponse(request){const cached=await saved(SHELL);if(cached)return cached;try{const r=await fetch(request);if(!r.ok)throw new Error('HTTP');return r;}catch{return new Response('Offline',{status:503,headers:{'content-type':'text/plain; charset=utf-8'}});}}
 async function coreResponse(request){return (await saved(request))||fetch(request);}
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll([...CORE])));});
-self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE&&k.includes(':'+BASE.pathname+':')).map(k=>caches.delete(k)));await self.clients.claim();})());});
+self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE&&(k.startsWith(PREFIX)||/^folkoop-v\d/.test(k))).map(k=>caches.delete(k)));await self.clients.claim();})());});
 self.addEventListener('fetch',event=>{
  const request=event.request,url=new URL(request.url);
  if(request.method!=='GET'||url.origin!==BASE.origin||!url.pathname.startsWith(BASE.pathname))return;
