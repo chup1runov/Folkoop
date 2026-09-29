@@ -18,12 +18,13 @@ filled or verified:
 
 - **Controller identity:** Pavel Chuprunov (private individual)
 - **Privacy contact route:** chup1runov@gmail.com
-- the controller confirms the working legal-basis choices below;
-- the actual processor/service terms and DPA status are checked for the accounts
-  used by the pilot;
-- the participant privacy notice is completed with the controller/contact
-  details;
+- the participant privacy notice remains aligned with the actual services in use;
 - the final Auth route and two-account technical test pass.
+
+The controller adopted the working legal-basis model below for this pilot scope
+on 29 September 2026. Supabase/GitHub service review is recorded in
+`SERVICE_DPA_REVIEW.md`. Box is excluded from real participant personal-data
+storage unless a later DPA review explicitly changes that decision.
 
 Do not infer the controller merely from a repository owner, cloud-account owner
 or project founder name.
@@ -62,8 +63,9 @@ A material scope change requires a new privacy/risk review.
 
 ## Working legal-basis decisions
 
-These are pilot-specific working choices that the controller must confirm before
-ordinary invitations.
+These are the controller's working legal-basis choices for the current pilot
+scope, adopted on 29 September 2026. They must be reassessed if the processing
+purpose or scope materially changes.
 
 | Processing purpose | Minimum data | Working GDPR basis | Pilot rule |
 |---|---|---|---|
@@ -84,7 +86,7 @@ assessment is based on:
 - no automated decision-making with legal/similarly significant effects;
 - no deliberate processing of special-category data;
 - pseudonymous participant codes for analysis where practical;
-- restricted access to private Box records;
+- no real participant personal data stored in Box;
 - short retention periods;
 - an objection/request route;
 - no sale, advertising profile or cross-service tracking.
@@ -107,11 +109,10 @@ pilot, not the future end of FOLKOOP as a project.
 | Project tasks | While active | Delete creator-owned rows; assignments may be cleared/pseudonymised according to the schema; verify no shared object is unintentionally lost |
 | Cooperation activity | Through pilot + 90 days for outcome analysis | Clear/detach actor identity where supported; delete coded event-level data by pilot + 90 days after producing irreversible aggregate statistics |
 | Moderation reports | Until case closed + 180 days | Retain only the minimum needed for safety/accountability; then delete or irreversibly anonymise. Extend only for a documented legal hold/active claim |
-| Participant register/contact mapping in Box | While participant is active + up to 30 days after exit/closure | Delete within 30 days after closure completion |
-| Outcome log in Box | Through pilot + 90 days | Remove direct contact mapping; delete coded row-level log by pilot + 90 days after irreversible aggregation |
-| Optional interview notes in Box | Through pilot + 90 days, unless consent is withdrawn earlier | Delete within 30 days of valid withdrawal/closure unless already irreversibly anonymised |
-| Incident log in Box | Case closed + 180 days | Same rule as moderation evidence; longer only under documented legal hold |
-| Plaintext invite register in Box | Until code used/expired + 30 days | Delete no later than 30 days after use/expiry; never copy to GitHub |
+| Separate participant/contact register outside Supabase | **Not approved for this pilot** | Do not create unless a reviewed processor/storage path is added |
+| Separate outcome/interview notes outside Supabase | **Not approved for this pilot** | Use app-native data / aggregate analysis only unless reviewed storage is added |
+| Separate incident log outside Supabase | **Not approved for this pilot** | Use existing moderation/security records and minimum necessary controller records only |
+| Plaintext unassigned invite-code register in Box | Until code used/expired + 30 days | May contain codes/secrets only; never store participant identity or code-to-person mapping in Box; delete after use/expiry |
 | Hashed invite rows in Supabase | Through pilot, then pilot end + 90 days at most | Delete in pilot close-out unless a specific security investigation requires a short hold |
 | Rights-request handling record | Request closed + 12 months | Keep only minimal accountability record; extend only for a documented dispute/legal hold |
 
@@ -141,7 +142,9 @@ Approved pilot account closure follows this order:
      participants.
 6. Delete the closing participant's user-scoped profile/content/state unless a
    documented moderation/legal hold applies.
-7. Apply the Box retention/erasure rules above.
+7. Confirm that no participant personal data were stored in Box under the pilot
+   policy; if an exception was ever approved, handle it under that documented
+   exception.
 8. Remove the Auth identity **last**.
 9. Re-run the closure inventory / integrity checks and record completion without
    retaining unnecessary personal content.
@@ -167,32 +170,42 @@ package.
 
 ## Services / processors / hosting inventory
 
-### Supabase
+### Supabase — approved for pilot participant data
 
 Use: Auth, PostgreSQL database and Data API.
 
 Live FOLKOOP project region checked 29 September 2026: **eu-north-1
 (Stockholm)**.
 
-Supabase's DPA states that Supabase generally acts as processor/service provider
-for Customer Data, while it may act as controller for its own Usage Data. Region
-selection controls primary project-data location but is not, by itself, proof of
-GDPR compliance.
+Review result:
+- Supabase DPA v1 (1 August 2026) states that it supplements and forms part of
+  the Terms of Service and is effective with the Agreement;
+- for Customer Data, Supabase acts as processor/service provider and Customer as
+  controller/business;
+- the DPA incorporates EU SCCs where required for transfers;
+- region selection controls primary project-data location but does not by itself
+  prove compliance.
 
-Before ordinary invitations:
-- confirm the DPA/terms applicable to the actual Supabase account;
-- record relevant subprocessors/international-transfer safeguards;
-- keep the project in the intended EU region unless a reviewed migration occurs.
+Decision: Supabase is the approved processor path for pilot participant data,
+subject to the current narrow scope and configuration. Keep the project in the
+intended EU region unless a reviewed migration occurs.
 
-### Box
+### Box — excluded from participant personal-data flow
 
-Use: private participant register, outcome/interview/incident records and
-plaintext invitation register.
+The connected Box workspace may remain an operational archive for templates,
+synthetic material and **unassigned** invitation-code secrets.
 
-Before ordinary invitations:
-- confirm the DPA/terms applicable to the actual Box account;
-- verify subprocessors/transfer safeguards;
-- keep access limited to the pilot operator(s) who need it.
+Decision:
+- do not store participant names, email/contact mapping, interview notes,
+  outcome notes, incident notes, rights requests or code-to-person mapping in
+  Box for this pilot;
+- Box's public materials offer a DPA and SCC framework, but execution/applicability
+  of a DPA to this specific connected account has not been proven;
+- therefore Box is not relied on as a processor of real participant personal
+  data for this pilot.
+
+This exclusion removes Box DPA execution from the launch gate. A future decision
+to store participant personal data in Box requires a new review first.
 
 ### GitHub Pages
 
@@ -240,10 +253,10 @@ processing begins.
 
 - [x] Controller identity filled
 - [x] Privacy contact route filled
-- [ ] Controller confirms legal-basis table
-- [ ] Supabase account DPA/terms and transfers checked
-- [ ] Box account DPA/terms and transfers checked
-- [ ] GitHub Pages hosting disclosure confirmed
+- [x] Controller working legal-basis table adopted for current pilot scope
+- [x] Supabase DPA/terms/transfer mechanism checked for pilot use
+- [x] Box excluded from participant personal-data flow unless separately reviewed
+- [x] GitHub Pages hosting disclosure confirmed
 - [ ] Google Auth section updated if provider enabled
 - [ ] Participant privacy notice completed
 - [ ] Rights/incident runbook approved
@@ -273,8 +286,8 @@ processing begins.
   https://supabase.com/legal/customer-resources/data-processing-addendum
 - Supabase Auth sign-out/session semantics:
   https://supabase.com/docs/guides/auth/signout
-- Box trust/GDPR:
-  https://www.box.com/trust
+- Box DPA / European privacy:
+  https://www.box.com/privacyineurope
 - Box subprocessors:
   https://www.box.com/legal/subprocessors
 - GitHub Pages data collection:
