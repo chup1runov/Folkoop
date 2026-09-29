@@ -3,7 +3,7 @@ import asyncio,json,os,shutil
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from playwright.async_api import async_playwright,expect
-BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Sverinav/')
+BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
 ROOT=Path(__file__).resolve().parents[1]
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 passed=[]
@@ -45,7 +45,7 @@ async def main():
   await expect(page.locator('#areaNotice')).to_be_visible()
   await page.select_option('#weatherArea','hisingen')
   await expect(page.locator('#dailyWeather .weather-main')).to_be_visible()
-  assert await page.evaluate("localStorage.getItem('sverinav-weather-area')")=='hisingen'
+  assert await page.evaluate("localStorage.getItem('folkoop-weather-area')")=='hisingen'
   await expect(page.locator('#currentWeatherArea')).to_have_text('Hisingen')
   await page.locator('#areaDetails>summary').click()
   passed.append('Coarse area preference is adjustable with visible privacy notice and without GPS')
@@ -55,7 +55,7 @@ async def main():
   passed.append('Forecast, warning state and journey action fit above bottom navigation at 390x844')
   await page.locator('#serviceDetails>summary').click()
   await expect(page.locator('#serviceDetails')).to_contain_text('Status visas inte här')
-  await expect(page.locator('#serviceDetails')).to_contain_text('Sverinav säljer')
+  await expect(page.locator('#serviceDetails')).to_contain_text('FOLKOOP säljer')
   await page.locator('#serviceDetails>summary').click()
   passed.append('Water and tickets remain clearly labelled external handoffs under More services')
   await page.evaluate('scrollTo(0,0)');await page.screenshot(path=str(OUT/'compact-mobile.png'),full_page=True)
@@ -108,16 +108,16 @@ async def main():
   assert await page.evaluate('testUncertain && testRoute===null')
   passed.append('Ambiguous road match cannot auto-route to one recipient')
   await page.goto(BASE);await page.set_viewport_size({'width':390,'height':844})
-  await page.evaluate("() => { SverinavDaily.loadWarnings=async()=>({fetchedAt:new Date().toISOString(),payload:[{title:'Testdata — kraftigt regn',area:'Testområde',levelLabel:'Gul varning'}]}); }")
+  await page.evaluate("() => { FolkoopDaily.loadWarnings=async()=>({fetchedAt:new Date().toISOString(),payload:[{title:'Testdata — kraftigt regn',area:'Testområde',levelLabel:'Gul varning'}]}); }")
   await page.click('#dailyRefresh');await expect(page.locator('#dailyWarnings .warning-item')).to_be_visible()
   assert await page.locator('#dailyWarnings details').count()==0
   passed.append('Active warning text is visible immediately, never hidden in a disclosure')
   await page.screenshot(path=str(OUT/'compact-warning.png'),full_page=True)
-  await page.evaluate("() => { SverinavDaily.loadWarnings=async()=>{throw new Error('offline')}; }")
+  await page.evaluate("() => { FolkoopDaily.loadWarnings=async()=>{throw new Error('offline')}; }")
   await page.click('#dailyRefresh');await expect(page.locator('#dailyWarnings .source-unavailable')).to_be_visible()
   await expect(page.locator('#dailyWarnings')).not_to_contain_text('Inga meddelanden')
   passed.append('Warning-source failure cannot appear as all-clear or remain hidden')
-  await page.evaluate("() => { SverinavDaily.loadForecast=async()=>{throw new Error('offline')}; }")
+  await page.evaluate("() => { FolkoopDaily.loadForecast=async()=>{throw new Error('offline')}; }")
   await page.click('#dailyRefresh');await expect(page.locator('#dailyWeather .source-unavailable')).to_be_visible()
   passed.append('Weather-source failure is visible even with collapsed weather details')
   await page.add_style_tag(content='p,small,.compact-meta,.compact-row-copy,.compact-summary-hint,.compact-forecast-metrics {font-size:24px!important} .bottom-nav button{font-size:20px!important}')
