@@ -1,4 +1,4 @@
-SVERINAV — RESTRICTED RIGHTS NOTICE AND OFFICIAL-SERVICE PERMISSION
+FOLKOOP — RESTRICTED RIGHTS NOTICE AND OFFICIAL-SERVICE PERMISSION
 Version 1.0 — 23 September 2026
 Copyright (c) 2026 Pavel Chuprunov, to the extent of rights he holds.
 All rights reserved, subject to the express permissions and boundaries below.
@@ -11,10 +11,13 @@ restriction and approval requirement in this notice.
 1. COVERED MATERIAL AND RIGHTS HOLDER
 
 The Rights Holder is Pavel Chuprunov. Permission requests: use the repository's public GitHub contact form. Do not include confidential material in a public issue.
-Covered Material means original Sverinav code, documentation, editorial text,
-guides and visual assets only to the extent that he holds the relevant
-legally enforceable rights. Mere inclusion in this repository establishes
-neither originality nor ownership.
+Covered Material means all original FOLKOOP code, tests, database migrations,
+schemas, documentation, editorial text, guides, translations, visual assets
+and integrated or archived project material in this repository, but only to
+the extent that the Rights Holder holds the relevant legally enforceable
+rights. FOLKOOP is the single project identity for the repository; historical
+internal labels do not create separate licensing silos. Mere inclusion in
+this repository establishes neither originality nor ownership.
 
 This notice claims no exclusive rights in third-party components, official
 or open data, public-domain material, unprotectable ideas or facts, a user's
@@ -23,8 +26,8 @@ continue to govern the material to which they apply.
 
 2. NARROW PERMISSION FOR THE OFFICIAL SERVICE
 
-Residents may access and use https://chup1runov.github.io/Sverinav/ for its
-intended end-user functions without a fee to Sverinav. This permission
+Residents may access and use https://chup1runov.github.io/Folkoop/ for its
+intended end-user functions without a fee to FOLKOOP. This permission
 includes the loading, execution, browser storage and installed-PWA offline
 copies technically necessary for that use. It does not authorise a mirror,
 independent deployment, software distribution or use of the underlying
@@ -55,7 +58,7 @@ permission under applicable law. No additional permission is granted to:
   section 5;
 - remove or falsify applicable authorship, rights, licence or provenance
   notices where doing so requires the Rights Holder's permission;
-- use protected Sverinav branding for another product or falsely imply
+- use protected FOLKOOP branding for another product or falsely imply
   affiliation, endorsement or authorisation.
 
 The same reservation applies to commercial, non-commercial, private,
