@@ -373,5 +373,6 @@
       "outcome data minimisation and retention follow PRE_PILOT_PRIVACY_DECISIONS.md; SDCF does not create a broader retention purpose"
     ],
     "futureRuntimeTrigger": "Only add structured outcome tables after pilot evidence shows that manual confirmation is a real bottleneck or that outcome integrity is required for scale/safety."
-  }
+  },
+  "referenceFrameworkStatus": "release-candidate; SDCF independent external SHACL release gate is not yet satisfied"
 }
