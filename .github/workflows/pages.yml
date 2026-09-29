@@ -47,7 +47,7 @@ jobs:
           import './civic-core.js';
           for(const [file,id,hosts] of [['riksdagen-decisions','riksdagen_open_data',['data.riksdagen.se']],['goteborg-open-plans','goteborg_open_plans',['goteborg.se','www.goteborg.se']]]){
             const p=JSON.parse(await readFile(`data/${file}.json`,'utf8'));
-            SverinavCore.feed(p,id,hosts);
+            FolkoopCivicCore.feed(p,id,hosts);
             console.log(`${id}: ${p.items.length} validated records`);
           }
           JS
