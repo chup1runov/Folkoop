@@ -7,7 +7,7 @@ Changes approved on 23 September 2026: clearer digital civic-project description
 - Author name: Pavel Chuprunov, public repository maintainer.
 - Current public contact routes: the repository's GitHub contact form and Telegram https://t.me/chup1runov . The previously published personal email was retired from the current tree during privacy housekeeping; no private contact from connected accounts is substituted.
 - Idea year **2021** is an explicit statement from the initiator, not an independently documented launch date.
-- Code repository creation **2026-09-21T08:49:32Z** is from GitHub repository metadata, https://api.github.com/repos/chup1runov/Sverinav .
+- Code repository creation **2026-09-21T08:49:32Z** is from GitHub repository metadata, https://api.github.com/repos/chup1runov/Folkoop .
 - Biography is deliberately limited to a sourced civic initiative: the MittSkifte campaign for request-based night stops in Göteborg names Pavel Chuprunov as its creator. It does not establish that the proposal was adopted or that he holds an official post. Source: https://www.mittskifte.org/petitions/infor-tjansten-nattstopp-i-goteborg-for-okad-trygghet-i-kollektivtrafiken .
 
 ## Useful explanations
