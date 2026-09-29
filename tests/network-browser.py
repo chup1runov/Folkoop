@@ -135,9 +135,11 @@ async def main():
   await context.route('**/*',routing)
   page=await context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#/me')
+  await page.screenshot(path=str(OUT/'pilot-login-step1-mobile.png'),full_page=True)
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.click('#netLogin [value=code]')
-  await expect(page.locator('#netStatus')).to_contain_text('Если адрес разрешён')
+  await expect(page.locator('#netStatus')).to_contain_text('одноразовый код отправлен')
+  await page.screenshot(path=str(OUT/'pilot-login-step2-mobile.png'),full_page=True)
   assert state['requests'][0][1]['create_user'] is True
   await page.fill('#netLogin [name=code]','123456')
   await page.fill('#netLogin [name=inviteCode]','FOLK-TEST-INVITE-01')
