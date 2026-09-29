@@ -18,7 +18,7 @@ The existing Node tests remain, plus release-stamp, translation completeness and
 
 At default text size the 390x844 acceptance criterion is that forecast, warning summary and journey action appear above the bottom navigation. Active warnings, long real project names, expanded details and enlarged text may legitimately require scrolling. Do not enforce a one-screen layout by clipping information.
 
-Local browser URL navigation is blocked in the authoring environment. Local DOM-only screenshots support visual inspection and do not count as network/navigation evidence; the GitHub runner provides real /Sverinav/ interaction evidence. Chromium is not physical iPhone/Safari/VoiceOver. A device pass remains necessary before public pilot recruitment.
+Local browser URL navigation is blocked in the authoring environment. Local DOM-only screenshots support visual inspection and do not count as network/navigation evidence; the GitHub runner provides real /Folkoop/ interaction evidence. Chromium is not physical iPhone/Safari/VoiceOver. A device pass remains necessary before public pilot recruitment.
 
 No ticket purchased, authority report submitted or user location requested during development. Private conversations remain outside this repository.
 
