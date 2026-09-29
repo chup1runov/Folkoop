@@ -30,7 +30,7 @@ function ensureActor(){
  actor.id='muraActor';
  actor.className='mura-actor is-home';
  actor.type='button';
- actor.setAttribute('aria-label','Mura · FOLKOOP helper');
+ actor.setAttribute('aria-label','Mura · FOLKOOP');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
  actor.innerHTML='<span class="mura-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
