@@ -4,7 +4,15 @@ from pathlib import Path
 from playwright.async_api import async_playwright,expect
 
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
-OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
+ENGINE=os.getenv('BROWSER_ENGINE','chromium').lower()
+OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(parents=True,exist_ok=True)
+
+async def launch_browser(pw):
+ if ENGINE=='chromium':
+  return await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
+ if ENGINE=='webkit':
+  return await pw.webkit.launch()
+ raise AssertionError(f'Unsupported BROWSER_ENGINE={ENGINE}')
 
 async def local_only_factory(context):
  async def local_only(route):
@@ -137,11 +145,12 @@ async def desktop_flow(browser,passed):
 async def main():
  passed=[]
  async with async_playwright() as pw:
-  browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
+  browser=await launch_browser(pw)
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':['Chromium emulation; not real iOS Safari','Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Mura motion is local CSS/JS using canonical Mura WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Mura motion is local CSS/JS using canonical Mura WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
+ print(f'ENGINE {ENGINE}')
  print('\n'.join('PASS '+x for x in passed))
 
 asyncio.run(main())
