@@ -186,7 +186,11 @@ A result is classified as:
 - **not completed** — intended action did not happen;
 - **unclear** — evidence is inconsistent or unavailable.
 
-The private pilot verification log must not be committed to the public repository.
+These four pilot classifications remain the authoritative product definitions. The SDCF bridge v0.2 encodes the same classification rules and keeps them separate from an **evidence qualifier**. In particular, a confirmed outcome in this pilot means independent confirmation by the owner and at least one other involved participant; it does **not** mean external verification. If a separately traceable external artifact/source exists, it may be recorded as additional external evidence with provenance.
+
+A `done` state, task completion flag, activity-log event or purchase lifecycle state is never sufficient by itself to upgrade an outcome classification.
+
+The private pilot verification log must not be committed to the public repository and remains subject to `PRE_PILOT_PRIVACY_DECISIONS.md` retention/minimisation rules.
 
 ### Step 7 — Repeat
 
