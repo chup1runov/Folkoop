@@ -19,4 +19,4 @@ Do not start a ticket-selling business, general authority-news feed, compulsory 
 
 ## Pilot criteria — targets, not findings
 
-Compare the same tasks in the user's familiar services and Sverinav, alternating test order. Recruit a small group of regular local public-transport users, then allow voluntary use without daily researcher prompts. Record task time, task success, source comprehension and specific useful discoveries. Minimize personal data. A good notification can save an app opening; raw daily opens are not the goal. Complete a real-device iPhone pass first.
+Compare the same tasks in the user's familiar services and FOLKOOP, alternating test order. Recruit a small group of regular local public-transport users, then allow voluntary use without daily researcher prompts. Record task time, task success, source comprehension and specific useful discoveries. Minimize personal data. A good notification can save an app opening; raw daily opens are not the goal. Complete a real-device iPhone pass first.
