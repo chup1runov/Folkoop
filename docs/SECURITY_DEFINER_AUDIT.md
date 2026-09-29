@@ -70,13 +70,31 @@ as a review trigger.
 Supabase remediation reference:
 https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable
 
+## Private-table RLS defense-in-depth
+
+Hosted verification after v0.31 shows RLS is currently disabled on:
+
+- `folkoop_private.pilots`;
+- `folkoop_private.write_budgets`;
+- `folkoop_private.pilot_invites`.
+
+Direct grants to `anon` and `authenticated` are absent, so this is not direct
+browser table exposure. A defense-in-depth RLS review is tracked in GitHub issue
+#68.
+
+Do not enable RLS blindly: explicit policy/ownership semantics and disposable
+regression tests are required so privileged admission/rate-limit/invite behavior
+is preserved.
+
 ## Remaining security gate
 
-This audit does **not** close the full pre-pilot security/privacy gate. Still
-required before ordinary participants:
+This audit does **not** close the full pre-pilot security gate. Still required
+before ordinary participants:
 
-- final controller/privacy-contact and retention decisions;
-- deliberate account-closure/shared-content policy;
+- complete the private-table RLS defense-in-depth review (#68);
 - real Google OAuth setup and two-account browser test;
-- real-device acceptance;
-- abuse/moderation and incident procedure review.
+- account-closure rehearsal with a developer/test identity;
+- real-device acceptance before wider rollout.
+
+Controller/contact, retention, account-closure policy, rights handling and
+incident procedure now have explicit pilot decisions/runbooks.

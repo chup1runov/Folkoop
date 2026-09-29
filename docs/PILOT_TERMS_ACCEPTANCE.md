@@ -2,7 +2,7 @@
 
 29 September 2026.
 
-Status: **implemented in v0.31.0 candidate; pending CI/live migration verification**.
+Status: **LIVE VERIFIED in v0.31.0 on 29 September 2026**.
 
 Purpose: make acceptance of the controlled pilot terms and privacy notice an
 explicit, versioned admission event rather than a passive website disclaimer.
@@ -16,8 +16,10 @@ Pilot Terms:
 
 Privacy Notice:
 - current draft: `docs/PILOT_PRIVACY_NOTICE_DRAFT.md`
-- the notice must receive a stable participant-facing version identifier before
-  ordinary invitations are distributed.
+- version: `2026-09-29-v1`
+- it remains a draft until the final Auth provider is configured and the
+  participant-facing notice is rechecked, but its version identifier is already
+  locked for the current acceptance implementation.
 
 ## Admission rule
 
@@ -61,21 +63,21 @@ The authenticated `auth.uid()` is the participant identity for this evidence.
 Do not store IP address, device fingerprint or extra identity evidence merely to
 prove acceptance.
 
-## Recommended schema shape
+## Hosted schema
 
-Extend `folkoop_private.pilots` with nullable fields during development:
+The hosted `folkoop_private.pilots` table now contains:
 
 - `terms_version text`;
 - `terms_accepted_at timestamptz`;
 - `privacy_version text`;
 - `privacy_acknowledged_at timestamptz`.
 
-Before ordinary participant activation, admission logic should require these
-fields to match the currently accepted pilot versions.
+The hosted admission RPC requires these fields to match the active versions
+before admission succeeds.
 
-Existing developer/test identities may be migrated only through an explicit
-operator/test path. Do not silently invent acceptance timestamps for ordinary
-participants.
+Existing developer/test identities may re-accept the current versions through
+the normal RPC without consuming a new invite. Do not invent acceptance
+timestamps for ordinary participants.
 
 ## Invite-claim contract
 
@@ -145,7 +147,7 @@ fake blanket consent.
 
 ## Technical gate
 
-Implemented in the v0.31.0 candidate:
+Implemented, merged and deployed in v0.31.0:
 - server-side versioned acceptance fields on the private pilot admission row;
 - atomic invite claim + Terms/Privacy evidence;
 - exact active-version checks;
@@ -155,8 +157,17 @@ Implemented in the v0.31.0 candidate:
 - browser test proving normal UI does not send verification before acceptance;
 - version-alignment regression test across server/client/docs.
 
+Hosted verification completed 29 September 2026:
+- migration `folkoop_pilot_terms_acceptance` applied successfully;
+- old one-argument invite RPC absent;
+- five-argument versioned invite RPC present;
+- `authenticated` can execute it; `anon` and `PUBLIC` cannot;
+- `search_path=""` remains pinned;
+- four invite rows remain enabled and unused;
+- no pilot users exist yet, so no acceptance timestamp was fabricated.
+
 Still required before ordinary participants:
-- apply and verify the migration on hosted Supabase;
+- configure/finalize the real Auth provider;
 - run two real developer/test accounts end-to-end;
 - rehearse account closure;
 - update/finalize the participant Privacy Notice with the actual active Auth
