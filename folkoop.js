@@ -4,7 +4,7 @@
 const C=globalThis.FolkoopCore, I=globalThis.FolkoopCopy, $=s=>document.querySelector(s), esc=C.escape;
 let storage;try{storage=localStorage;}catch{/* Memory-only mode. */}
 const store=C.workspace(storage);
-let lang='sv';try{const saved=storage?.getItem('sverinav-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
+let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
 const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
@@ -27,7 +27,7 @@ const onboardingSteps=[
  {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch',pose:'sit-edge'},
  {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point',pose:'point'},
  {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point',pose:'point'},
- {id:'helper',route:'home',target:'#muraActor',motion:'home',pose:'wink'}
+ {id:'helper',route:'home',target:'#folkoopGuideActor',motion:'home',pose:'wink'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -85,7 +85,7 @@ const tutorialCopy={
   welcome:'FOLKOOP is a cooperation network: start with what you need, can offer or want to build, then find people and move toward a real action.',
   quick:'These four shortcuts are the fastest way to begin: ask for help, offer help, buy together or share a resource. They create private drafts until you deliberately publish through the network layer.',
   language:'Change the interface language here. The FOLKOOP interface is translated into all available languages.',
-  helper:'Mura stays in the corner after this tour. She explains the current section and can restart the full introduction. For now she is local and rule-based: no AI request and no personal data is sent anywhere.',
+  helper:'FOLKOOP guide stays in the corner after this tour. She explains the current section and can restart the full introduction. For now she is local and rule-based: no personal data is sent anywhere.',
   me:'Your profile: name, city, skills and what you want others to know. Your city controls which local City tools may be shown.',
   home:'Home is the starting point: current activity, shortcuts and what needs your attention.',
   messages:'Messages contains direct chats, group chats and work chats linked to cooperation.',
@@ -102,7 +102,7 @@ const tutorialCopy={
   welcome:'FOLKOOP — сеть для совместных действий: начинай с того, что тебе нужно, что ты можешь предложить или что хочешь сделать, находи людей и переходи к реальному действию.',
   quick:'Четыре быстрых действия — самый короткий старт: попросить помощь, предложить помощь, купить вместе или поделиться ресурсом. Сначала это личные черновики, пока ты сам не перейдёшь к сетевому действию.',
   language:'Здесь меняется язык интерфейса. Интерфейс FOLKOOP переведён на все доступные языки.',
-  helper:'Mura останется в углу после этой инструкции. Она объясняет текущий раздел и умеет заново запустить полный тур. Сейчас она локальная и работает по правилам: без AI-запросов и без отправки персональных данных.',
+  helper:'FOLKOOP guide останется в углу после этой инструкции. Она объясняет текущий раздел и умеет заново запустить полный тур. Сейчас она локальная и работает по правилам: без отправки персональных данных.',
   me:'Профиль: имя, город, навыки и то, что ты хочешь показать другим. Выбранный город определяет, какие местные инструменты можно показывать.',
   home:'Главная — стартовый экран: текущая активность, быстрые действия и то, что требует внимания.',
   messages:'Сообщения — личные, групповые и рабочие чаты, связанные с кооперацией.',
@@ -119,7 +119,7 @@ const tutorialCopy={
   welcome:'FOLKOOP är ett nätverk för gemensam handling: börja med vad du behöver, kan erbjuda eller vill bygga, hitta människor och gå vidare till verklig handling.',
   quick:'De fyra genvägarna är snabbaste starten: be om hjälp, erbjud hjälp, köp tillsammans eller dela en resurs. De börjar som privata utkast tills du själv går vidare till nätverksdelen.',
   language:'Här byter du gränssnittsspråk. FOLKOOP-gränssnittet är översatt till alla tillgängliga språk.',
-  helper:'Mura stannar i hörnet efter rundturen. Hon förklarar den aktuella delen och kan starta hela introduktionen igen. Just nu är hon lokal och regelbaserad: ingen AI-förfrågan och inga personuppgifter skickas någonstans.',
+  helper:'FOLKOOP guide stannar i hörnet efter rundturen. Hon förklarar den aktuella delen och kan starta hela introduktionen igen. Just nu är hon lokal och regelbaserad: inga personuppgifter skickas någonstans.',
   me:'Profil: namn, stad, färdigheter och det du vill visa andra. Din valda stad styr vilka lokala stadsverktyg som kan visas.',
   home:'Hem är startpunkten: aktivitet, genvägar och sådant som behöver din uppmärksamhet.',
   messages:'Meddelanden innehåller direktchattar, gruppchattar och arbetschattar kopplade till samarbete.',
@@ -134,12 +134,12 @@ const tutorialCopy={
  }
 };
 const tutorialTitles={
- en:{welcome:'Welcome to FOLKOOP',quick:'Four quick ways to start',language:'Language',helper:'Mura · FOLKOOP helper'},
- ru:{welcome:'Добро пожаловать в FOLKOOP',quick:'Четыре быстрых действия',language:'Язык',helper:'Mura · помощник FOLKOOP'},
- sv:{welcome:'Välkommen till FOLKOOP',quick:'Fyra snabba sätt att börja',language:'Språk',helper:'Mura · FOLKOOP-hjälp'}
+ en:{welcome:'Welcome to FOLKOOP',quick:'Four quick ways to start',language:'Language',helper:'FOLKOOP guide · FOLKOOP helper'},
+ ru:{welcome:'Добро пожаловать в FOLKOOP',quick:'Четыре быстрых действия',language:'Язык',helper:'FOLKOOP guide · помощник FOLKOOP'},
+ sv:{welcome:'Välkommen till FOLKOOP',quick:'Fyra snabba sätt att börja',language:'Språk',helper:'FOLKOOP guide · FOLKOOP-hjälp'}
 };
 const helperCopy={
- en:{name:'Mura',label:'FOLKOOP helper',open:'Open Mura',close:'Close',tour:'Show the full introduction again',intro:'I live here to explain what this part of FOLKOOP is for.',tips:{
+ en:{name:'FOLKOOP guide',label:'FOLKOOP helper',open:'Open FOLKOOP guide',close:'Close',tour:'Show the full introduction again',intro:'I live here to explain what this part of FOLKOOP is for.',tips:{
   me:'Fill in only what helps cooperation: a name or nickname, city, skills and a short introduction. Directory visibility remains your choice.',
   home:'Home is the action-first overview. Start from something you need, can offer or want to build instead of scrolling for content.',
   messages:'Messages contains direct, group and cooperation work chats. The current pilot messaging is server-backed but not end-to-end encrypted.',
@@ -152,7 +152,7 @@ const helperCopy={
   settings:'Settings contains language and the button to replay the introduction.',
   about:'About explains the purpose, boundaries and current pilot state of FOLKOOP.'
  }},
- ru:{name:'Mura',label:'помощник FOLKOOP',open:'Открыть Муру',close:'Закрыть',tour:'Показать всю инструкцию ещё раз',intro:'Я живу здесь, чтобы объяснять, зачем нужен текущий раздел FOLKOOP.',tips:{
+ ru:{name:'FOLKOOP guide',label:'помощник FOLKOOP',open:'Открыть помощник FOLKOOP',close:'Закрыть',tour:'Показать всю инструкцию ещё раз',intro:'Я живу здесь, чтобы объяснять, зачем нужен текущий раздел FOLKOOP.',tips:{
   me:'Заполни только то, что помогает кооперации: имя или ник, город, навыки и коротко о себе. Видимость сетевого профиля остаётся твоим выбором.',
   home:'Главная — обзор действий, а не лента. Начни с того, что тебе нужно, что ты можешь предложить или что хочешь сделать.',
   messages:'Сообщения — личные, групповые и рабочие чаты коопераций. В пилоте сообщения уже серверные, но пока не имеют сквозного шифрования.',
@@ -165,7 +165,7 @@ const helperCopy={
   settings:'В Настройках меняется язык и можно заново запустить эту инструкцию.',
   about:'О нас объясняет идею FOLKOOP, границы продукта и текущее состояние пилота.'
  }},
- sv:{name:'Mura',label:'FOLKOOP-hjälp',open:'Öppna Mura',close:'Stäng',tour:'Visa hela introduktionen igen',intro:'Jag finns här för att förklara vad den aktuella delen av FOLKOOP är till för.',tips:{
+ sv:{name:'FOLKOOP guide',label:'FOLKOOP-hjälp',open:'Öppna FOLKOOP guide',close:'Stäng',tour:'Visa hela introduktionen igen',intro:'Jag finns här för att förklara vad den aktuella delen av FOLKOOP är till för.',tips:{
   me:'Fyll bara i sådant som hjälper samarbete: namn eller smeknamn, stad, färdigheter och en kort presentation. Synlighet i nätverkskatalogen är ditt val.',
   home:'Hem är en handlingsöversikt, inte ett oändligt flöde. Börja med något du behöver, kan erbjuda eller vill bygga.',
   messages:'Meddelanden innehåller direkt-, grupp- och arbetschattar. Pilotens meddelanden är serverbaserade men ännu inte end-to-end-krypterade.',
@@ -213,7 +213,7 @@ function ensureHelper(){
 function updateHelper(){
  const shell=ensureHelper(),source=helperSource(),panel=shell.querySelector('#folkoopHelperPanel');
  panel.hidden=!helperOpen;
- globalThis.FolkoopMuraGuide?.setExpanded(helperOpen);
+ globalThis.FolkoopGuide?.setExpanded(helperOpen);
  shell.querySelector('#folkoopHelperTitle').textContent=source.name;
  shell.querySelector('#folkoopHelperLabel').textContent=source.label;
  shell.querySelector('#folkoopHelperClose').textContent=source.close;
@@ -235,7 +235,7 @@ function ensureOnboarding(){
 function onboardingTarget(step){
  const mobileToggle=$('#mobileMenuToggle');
  const mobileMenu=mobileToggle&&getComputedStyle(mobileToggle).display!=='none';
- if(step.id==='helper')globalThis.FolkoopMuraGuide?.home({instant:true,pose:step.pose||'wink'});
+ if(step.id==='helper')globalThis.FolkoopGuide?.home({instant:true,pose:step.pose||'wink'});
  if(step.target.startsWith('#nav')&&mobileMenu)openMenu();
  else if(menuOpen&&!step.target.startsWith('#nav'))closeMenu();
  return document.querySelector(step.target);
@@ -254,7 +254,7 @@ function positionOnboarding(step){
   spot.style.width=Math.min(innerWidth-12,rect.width+pad*2)+'px';
   spot.style.height=Math.min(innerHeight-12,rect.height+pad*2)+'px';
   dialog.querySelector('.onboarding-card').dataset.side=rect.left+rect.width/2<innerWidth/2?'right':'left';
-  if(step.id!=='helper')globalThis.FolkoopMuraGuide?.teleportTo(target,{mode:step.motion||'point',pose:step.pose||null});
+  if(step.id!=='helper')globalThis.FolkoopGuide?.teleportTo(target,{mode:step.motion||'point',pose:step.pose||null});
  });
 }
 function showOnboarding(step=0){
@@ -278,7 +278,7 @@ function finishOnboarding(){
  dialog.querySelector('#onboardingSpotlight').hidden=true;
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(menuOpen)closeMenu();
- globalThis.FolkoopMuraGuide?.home({instant:true});
+ globalThis.FolkoopGuide?.home({instant:true});
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
 }
 function openMenu(){
@@ -327,13 +327,13 @@ function render(focus=false){
  if(onboardingOpen)showOnboarding(onboardingStep);
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
-function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('sverinav-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
+function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
 window.addEventListener('folkoop:language-picked',e=>{
  const value=e.detail?.language;
  if(!C.LANGS.includes(value))return;
- globalThis.FolkoopMuraGuide?.hideLanguageGate();
+ globalThis.FolkoopGuide?.hideLanguageGate();
  changeLanguage(value);
  setTimeout(()=>showOnboarding(0),80);
 });
@@ -393,14 +393,14 @@ $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
 window.addEventListener('resize',()=>{if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
 ensureHelper();
-globalThis.FolkoopMuraGuide?.home({instant:true});
+globalThis.FolkoopGuide?.home({instant:true});
 render();
 function startFullIntroduction(){
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
  helperOpen=false;updateHelper();
- if(globalThis.FolkoopMuraGuide){
-  globalThis.FolkoopMuraGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
+ if(globalThis.FolkoopGuide){
+  globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
 }
 let onboardingDone=false,languageChosen=false;
