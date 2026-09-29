@@ -1,4 +1,4 @@
-"""FOLKOOP v0.27 language-first onboarding and physical Ksyusha presence."""
+"""FOLKOOP v0.29 language-first onboarding with authored directional/sit-edge Mura poses."""
 import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
@@ -18,10 +18,21 @@ async def settled_actor(page):
  # instead of racing a 150ms timer or sampling an unfinished 380ms entrance.
  await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
  await page.wait_for_function("""() => {
-  const actor=document.getElementById('ksyushaActor');
+  const actor=document.getElementById('muraActor');
   return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
    !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
  }""")
+
+
+async def assert_directional_pose(page):
+ pose=await page.locator('#muraActor').get_attribute('data-pose')
+ actor=await page.locator('#muraActor').bounding_box()
+ target=await page.locator('.tutorial-target').bounding_box()
+ assert actor and target
+ dx=(target['x']+target['width']/2)-(actor['x']+actor['width']/2)
+ dy=(target['y']+target['height']/2)-(actor['y']+actor['height']*.42)
+ expected=('point-left' if dx<0 else 'point-right') if abs(dx)>=abs(dy) else ('point-up' if dy<0 else 'point-down')
+ assert pose==expected,(pose,expected,dx,dy)
 
 async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
@@ -29,60 +40,65 @@ async def mobile_flow(browser,passed):
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
 
- await expect(page.locator('#ksyushaLanguageGate')).to_be_visible()
+ await expect(page.locator('#muraLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page.locator('#ksyushaLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
- await expect(page.locator('.ksyusha-language-character img')).to_be_visible()
- assert await page.locator('[data-ksyusha-lang]').count()==11
- passed.append('First contact is Ksyusha plus language selection before the site tour')
+ await expect(page.locator('#muraLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
+ await expect(page.locator('.mura-language-character img')).to_be_visible()
+ assert await page.locator('[data-mura-lang]').count()==11
+ passed.append('First contact is Mura plus language selection before the site tour')
 
- await page.click('[data-ksyusha-lang="ru"]')
- await expect(page.locator('#ksyushaLanguageGate')).to_be_hidden()
+ await page.click('[data-mura-lang="ru"]')
+ await expect(page.locator('#muraLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать в FOLKOOP')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 14')
- await expect(page.locator('#ksyushaActor')).to_be_visible()
+ await expect(page.locator('#muraActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
- passed.append('Chosen language is applied before Ksyusha starts explaining FOLKOOP')
+ passed.append('Chosen language is applied before Mura starts explaining FOLKOOP')
 
  titles=[
   'Добро пожаловать в FOLKOOP','Профиль','Главная','Четыре быстрых действия',
   'Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр',
-  'Настройки','О нас','Ксюша · помощник FOLKOOP'
+  'Настройки','О нас','Mura · помощник FOLKOOP'
  ]
  await settled_actor(page)
- assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-tour')")
- first_box=await page.locator('#ksyushaActor').bounding_box()
+ assert await page.locator('#muraActor').evaluate("el=>el.classList.contains('is-tour')")
+ first_box=await page.locator('#muraActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
-  box=await page.locator('#ksyushaActor').bounding_box()
+  box=await page.locator('#muraActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  if title=='Четыре быстрых действия':
-   assert await page.locator('#ksyushaActor').evaluate("el=>el.classList.contains('is-perched')")
-   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='idea'
-  if title in ('Люди','Сообщества','Город'):
-   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='search'
-  if title=='Ксюша · помощник FOLKOOP':
-   assert await page.locator('#ksyushaActor').get_attribute('data-pose')=='wink'
+  if title in ('Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Город','Настройки','О нас'):
+   await assert_directional_pose(page)
+  if title in ('Четыре быстрых действия','Центр'):
+   assert await page.locator('#muraActor').evaluate("el=>el.classList.contains('is-perched')")
+   assert await page.locator('#muraActor').get_attribute('data-pose')=='sit-edge'
+   target=await page.locator('.tutorial-target').bounding_box()
+   seat=box['y']+box['height']*.44
+   assert target and abs(seat-target['y'])<14,(title,seat,target)
+  if title=='Проекты':
+   assert await page.locator('#muraActor').get_attribute('data-pose')=='idea'
+  if title=='Mura · помощник FOLKOOP':
+   assert await page.locator('#muraActor').get_attribute('data-pose')=='wink'
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)
 
- moved_box=await page.locator('#ksyushaActor').bounding_box()
+ moved_box=await page.locator('#muraActor').bounding_box()
  assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8),(first_box,moved_box)
  await expect(page.locator('[data-onboarding=next]')).to_have_text('Начать пользоваться FOLKOOP')
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('Ksyusha physically relocates through the 14-step tour and can perch on highlighted UI')
+ passed.append('Mura uses real directional pointing poses and sit-edge alignment through the 14-step tour')
 
- await expect(page.locator('#ksyushaActor')).to_be_visible()
- await page.click('#ksyushaActor')
+ await expect(page.locator('#muraActor')).to_be_visible()
+ await page.click('#muraActor')
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
- await expect(page.locator('#folkoopHelperTitle')).to_have_text('Ксюша')
+ await expect(page.locator('#folkoopHelperTitle')).to_have_text('Mura')
  await expect(page.locator('#folkoopHelperPanel')).to_contain_text('Показать всю инструкцию ещё раз')
- passed.append('After onboarding the physical Ksyusha remains as the lightweight contextual helper')
+ passed.append('After onboarding the physical Mura remains as the lightweight contextual helper')
 
  await page.click('[data-helper=close]')
  await page.click('#mobileMenuToggle')
@@ -90,10 +106,10 @@ async def mobile_flow(browser,passed):
  assert labels[:11]==['Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр','Настройки','О нас'],labels
  await page.click('#nav a[href="#/settings"]')
  await page.click('[data-action=tutorial]')
- await expect(page.locator('#ksyushaLanguageGate')).to_be_visible()
+ await expect(page.locator('#muraLanguageGate')).to_be_visible()
  passed.append('Replay from Settings restarts from language, preserving the language-first contract')
  await page.keyboard.press('Escape')
- await page.screenshot(path=str(OUT/'folkoop-v027-language-ksyusha-mobile.png'),full_page=True)
+ await page.screenshot(path=str(OUT/'folkoop-v029-directional-mura-mobile.png'),full_page=True)
  assert errors==[],errors
  await context.close()
 
@@ -102,18 +118,18 @@ async def desktop_flow(browser,passed):
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
- await expect(page.locator('#ksyushaLanguageGate')).to_be_visible()
- card=await page.locator('.ksyusha-language-card').bounding_box()
+ await expect(page.locator('#muraLanguageGate')).to_be_visible()
+ card=await page.locator('.mura-language-card').bounding_box()
  assert card and card['width']>700 and card['height']<900,card
- await page.click('[data-ksyusha-lang="en"]')
+ await page.click('[data-mura-lang="en"]')
  await expect(page.locator('#onboarding')).to_be_visible()
  await page.click('[data-onboarding=next]')
  await settled_actor(page)
- actor=await page.locator('#ksyushaActor').bounding_box()
+ actor=await page.locator('#muraActor').bounding_box()
  assert actor and actor['x']>=0 and actor['x']+actor['width']<=1366 and actor['y']>=0 and actor['y']+actor['height']<=900,actor
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
- passed.append('Desktop language gate, spotlight and animated Ksyusha stay inside the viewport')
+ passed.append('Desktop language gate, spotlight and animated Mura stay inside the viewport')
  await page.click('[data-onboarding=skip]')
  assert errors==[],errors
  await context.close()
@@ -125,7 +141,7 @@ async def main():
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':['Chromium emulation; not real iOS Safari','Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Ksyusha motion is local CSS/JS using canonical Mura Character Pack WebP assets; no AI service is called']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':['Chromium emulation; not real iOS Safari','Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Mura motion is local CSS/JS using canonical Mura WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
 asyncio.run(main())

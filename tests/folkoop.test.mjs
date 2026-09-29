@@ -27,13 +27,15 @@ test('returned snapshots cannot mutate live state',()=>{const w=C.workspace();w.
 test('erase resets profile, drafts and consent without clearing unrelated preferences',()=>{const s=memory(),w=C.workspace(s);s.setItem('sverinav-language','ru');w.profile({name:'Test'});w.add(item);w.remember(true);assert(w.clear());assert.equal(w.get().drafts.length,0);assert.equal(w.get().profile.name,'');assert.equal(w.isPersistent(),false);assert.equal(s.getItem('sverinav-language'),'ru');});
 test('new shell has no third-party network calls or payment simulation',async()=>{const s=await readFile('folkoop.js','utf8');assert(!/\bfetch\(/.test(s));assert(!/WebSocket|sendBeacon/.test(s));assert(s.includes("e.origin!==location.origin"));assert(s.includes("e.source!==frame.contentWindow"));});
 
-test('Ksyusha presence is local-only and ships canonical lightweight assets',async()=>{
- const guide=await readFile('ksyusha-guide.js','utf8');
+test('Mura presence is local-only and uses authored pointing/sit assets',async()=>{
+ const guide=await readFile('mura-guide.js','utf8');
  assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
- for(const asset of ['ksyusha-please.webp','ksyusha-confident.webp','ksyusha-inspect.webp','ksyusha-idea.webp','ksyusha-searching.webp','ksyusha-lean-in.webp','ksyusha-wink.webp'])assert((await readFile(asset)).length>1000,asset);
- assert(!/transparentAsset|getContext\(|toDataURL\(/.test(guide));
- assert(guide.includes('ksyusha-pointer')&&!guide.includes('ksyusha-point-arm'));
+ for(const asset of ['mura-please.webp','mura-confident.webp','mura-idea.webp','mura-wink.webp'])assert((await readFile(asset)).length>1000,asset);
+ for(const asset of ['mura-point-left.png','mura-point-right.png','mura-point-up.png','mura-point-down.png','mura-sit-edge.png'])assert((await readFile(asset)).length>20_000,asset);
+ assert(!/transparentAsset|getContext\(|toDataURL\(|mura-pointer|point-angle|point-length/.test(guide));
+ for(const pose of ['point-left','point-right','point-up','point-down','sit-edge'])assert(guide.includes(pose));
  const shell=await readFile('folkoop.js','utf8');
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
+ assert(shell.includes("pose:'sit-edge'"));
 });

@@ -1,4 +1,4 @@
-# FOLKOOP v0.26 — spotlight onboarding and Ksyusha helper
+# FOLKOOP v0.26 — spotlight onboarding and Mura helper
 
 28 September 2026.
 
@@ -28,7 +28,7 @@ It has 15 steps:
 12. Settings;
 13. language selector;
 14. About;
-15. Ksyusha helper.
+15. Mura helper.
 
 Each step:
 - routes to the relevant section;
@@ -42,9 +42,9 @@ Settings can replay the introduction at any time.
 
 The new key is intentionally `folkoop-onboarding-v2`, so a browser that completed the older v1 introduction can see the redesigned tour once.
 
-## Ksyusha
+## Mura
 
-Ksyusha is the lightweight in-product helper that remains after onboarding.
+Mura is the lightweight in-product helper that remains after onboarding.
 
 Current behavior:
 - floating button in the lower corner;
@@ -60,11 +60,11 @@ It is static, local and rule-based:
 - no added server load;
 - no profile/message data sent to an assistant service;
 - no assistant-specific persistence;
-- no claim that Ksyusha is a human operator.
+- no claim that Mura is a human operator.
 
 This is intentional for the pilot. It lets us measure whether contextual help is useful before adding an AI dependency, cost, privacy surface or hallucination risk.
 
-## Relationship to the earlier Ksyusha/Mura concept
+## Relationship to the earlier Mura concept
 
 The helper keeps the useful part of the earlier companion idea: a recognizable character that feels present and continuous instead of a buried Help menu.
 
@@ -103,7 +103,7 @@ If local storage is blocked, the tour still works for the current page load but 
 
 Do not add an AI backend merely because the character now exists.
 
-Only consider an AI Ksyusha after observing real pilot questions that cannot be handled by:
+Only consider an AI Mura after observing real pilot questions that cannot be handled by:
 - clearer interface copy;
 - the spotlight tour;
 - route-specific static help.

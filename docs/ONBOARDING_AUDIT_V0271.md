@@ -11,8 +11,8 @@ The current introduction is a language gate followed by **14** tour steps, not
 15 tour steps. Eleven language choices exist; detailed guide/helper copy is
 SV/EN/RU, with the existing explicit English fallback for the other locales.
 
-The production bundle contains two character images (`ksyusha-wave.webp` and
-`ksyusha-idle.webp`), not four independent pointing/sitting poses. They are
+The production bundle contains two character images (`mura-wave.webp` and
+`mura-idle.webp`), not four independent pointing/sitting poses. They are
 128 x 139 pixel source images. The guide reuses idle art for point and perch;
 its pointing arm is CSS and perch is a position/transform, not a drawn sitting
 pose. A passing `is-perched` class check does not establish artistic acceptance.
