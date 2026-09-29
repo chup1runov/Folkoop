@@ -141,10 +141,23 @@ async def main():
   assert state['requests'][0][1]['create_user'] is True
   await page.fill('#netLogin [name=code]','123456')
   await page.fill('#netLogin [name=inviteCode]','FOLK-TEST-INVITE-01')
+  verify_before=sum(1 for url,_ in state['requests'] if url.endswith('/verify'))
+  await page.click('#netLogin [value=verify]')
+  await expect(page.locator('#netStatus')).to_contain_text('прими текущие условия')
+  assert sum(1 for url,_ in state['requests'] if url.endswith('/verify'))==verify_before
+  passed.append('Normal UI cannot verify/admit before explicit Pilot Terms and Privacy acknowledgement')
+  await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netProfile')).to_be_visible()
-  assert any(url.endswith('/fk_claim_pilot_invite') and payload=={'p_code':'FOLK-TEST-INVITE-01'} for url,payload in state['requests'])
-  passed.append('OTP verification plus explicit pilot invite admission, not fabricated login')
+  expected_policy={
+   'p_code':'FOLK-TEST-INVITE-01',
+   'p_terms_version':'2026-09-29-v1',
+   'p_accept_terms':True,
+   'p_privacy_version':'2026-09-29-v1',
+   'p_ack_privacy':True
+  }
+  assert any(url.endswith('/fk_claim_pilot_invite') and payload==expected_policy for url,payload in state['requests'])
+  passed.append('OTP verification plus invite admission records versioned policy acceptance')
   await page.fill('#netProfile [name=name]','Synthetic Alice')
   await page.click('#netProfile button')
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере')
