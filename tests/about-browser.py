@@ -2,7 +2,7 @@
 import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
-BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Sverinav/')
+BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 async def main():
  passed=[]
@@ -44,7 +44,7 @@ async def main():
   await page.locator('#projectFaq > details').nth(3).locator('summary').click()
   await expect(page.locator('#projectFaq > details').nth(3).locator('a')).to_have_attribute('href','https://goteborg.se/planochbyggprojekt')
   passed.append('Civic-task plans are not described as shipped; participation and Riksdag answers link to official sources')
-  await page.evaluate('SverinavProjectAbout.mount();SverinavProjectAbout.mount()')
+  await page.evaluate('FolkoopProjectAbout.mount();FolkoopProjectAbout.mount()')
   await expect(page.locator('#projectAuthor')).to_have_count(1)
   await page.fill('#pilotFeedbackTask','Test draft, never send')
   await page.fill('#pilotFeedbackNotes','Local test only')
