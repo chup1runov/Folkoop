@@ -122,7 +122,7 @@ languages.es = {
     "welcome": "FOLKOOP es una red de cooperación: empieza por lo que necesitas, puedes ofrecer o quieres construir; después encuentra personas y avanza hacia una acción real.",
     "quick": "Estos cuatro accesos son la forma más rápida de empezar: pedir ayuda, ofrecer ayuda, comprar juntos o compartir un recurso. Crean borradores privados hasta que decidas publicarlos mediante la capa de red.",
     "language": "Cambia aquí el idioma de la interfaz. Las secciones nuevas de FOLKOOP están traducidas a todos los idiomas disponibles.",
-    "helper": "Mura se queda en una esquina después de este recorrido. Explica la sección actual y puede reiniciar toda la introducción. Por ahora funciona localmente mediante reglas: no envía solicitudes a IA ni datos personales.",
+    "helper": "FOLKOOP guide se queda en una esquina después de este recorrido. Explica la sección actual y puede reiniciar toda la introducción. Por ahora funciona localmente mediante reglas: no envía datos personales.",
     "me": "Tu perfil: nombre, ciudad, capacidades y lo que quieres que sepan otras personas. La ciudad elegida determina qué herramientas locales de Ciudad pueden mostrarse.",
     "home": "Inicio es el punto de partida: actividad actual, accesos rápidos y lo que requiere tu atención.",
     "messages": "Mensajes contiene conversaciones directas, de grupo y de trabajo vinculadas a la cooperación.",
@@ -139,12 +139,12 @@ languages.es = {
     "welcome": "Bienvenido a FOLKOOP",
     "quick": "Cuatro formas rápidas de empezar",
     "language": "Idioma",
-    "helper": "Mura · ayudante de FOLKOOP"
+    "helper": "FOLKOOP guide · ayudante de FOLKOOP"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "ayudante de FOLKOOP",
-    "open": "Abrir Mura",
+    "open": "Abrir FOLKOOP guide",
     "close": "Cerrar",
     "tour": "Mostrar de nuevo toda la introducción",
     "intro": "Estoy aquí para explicar para qué sirve la sección actual de FOLKOOP.",
@@ -1080,7 +1080,7 @@ languages.fi = {
     "welcome": "FOLKOOP on yhteistyöverkko: aloita siitä, mitä tarvitset, voit tarjota tai haluat rakentaa, löydä ihmiset ja etene kohti oikeaa toimintaa.",
     "quick": "Nämä neljä pikatoimintoa ovat nopein tapa aloittaa: pyydä apua, tarjoa apua, ostakaa yhdessä tai jaa resurssi. Ne luovat yksityisiä luonnoksia, kunnes päätät julkaista ne verkossa.",
     "language": "Vaihda käyttöliittymän kieli täällä. FOLKOOPin uudet osiot on käännetty kaikille tarjolla oleville kielille.",
-    "helper": "Mura jää tämän kierroksen jälkeen kulmaan. Hän selittää nykyisen osion ja voi käynnistää koko esittelyn uudelleen. Toistaiseksi hän toimii paikallisesti sääntöjen perusteella: ei tekoälypyyntöjä eikä henkilötietojen lähettämistä.",
+    "helper": "FOLKOOP guide jää tämän kierroksen jälkeen kulmaan. Hän selittää nykyisen osion ja voi käynnistää koko esittelyn uudelleen. Toistaiseksi hän toimii paikallisesti sääntöjen perusteella: ei henkilötietojen lähettämistä.",
     "me": "Profiilisi: nimi, kaupunki, taidot ja se, mitä haluat muiden tietävän. Valittu kaupunki määrää, mitä paikallisia Kaupunki-työkaluja voidaan näyttää.",
     "home": "Koti on lähtöpiste: nykyinen toiminta, pikatoiminnot ja huomiotasi vaativat asiat.",
     "messages": "Viestit sisältää suorat keskustelut, ryhmäkeskustelut ja yhteistyöhön liittyvät työchatit.",
@@ -1097,12 +1097,12 @@ languages.fi = {
     "welcome": "Tervetuloa FOLKOOPiin",
     "quick": "Neljä nopeaa tapaa aloittaa",
     "language": "Kieli",
-    "helper": "Mura · FOLKOOP-apuri"
+    "helper": "FOLKOOP guide · FOLKOOP-apuri"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "FOLKOOP-apuri",
-    "open": "Avaa Mura",
+    "open": "Avaa FOLKOOP guide",
     "close": "Sulje",
     "tour": "Näytä koko esittely uudelleen",
     "intro": "Olen täällä selittämässä, mihin FOLKOOPin nykyistä osiota käytetään.",
@@ -1559,7 +1559,7 @@ languages.bs = {
     "welcome": "FOLKOOP je mreža za saradnju: počni od onoga što ti treba, što možeš ponuditi ili što želiš napraviti, pronađi ljude i kreni prema stvarnoj akciji.",
     "quick": "Ove četiri prečice su najbrži početak: zatraži pomoć, ponudi pomoć, kupite zajedno ili podijeli resurs. Prvo stvaraju privatne skice, dok ih svjesno ne objaviš kroz mrežni sloj.",
     "language": "Ovdje mijenjaš jezik sučelja. Novi dijelovi FOLKOOP-a prevedeni su na sve ponuđene jezike.",
-    "helper": "Mura ostaje u uglu nakon ove ture. Objašnjava trenutni odjeljak i može ponovo pokrenuti cijeli uvod. Za sada radi lokalno po pravilima: bez AI zahtjeva i bez slanja ličnih podataka.",
+    "helper": "FOLKOOP guide ostaje u uglu nakon ove ture. Objašnjava trenutni odjeljak i može ponovo pokrenuti cijeli uvod. Za sada radi lokalno po pravilima: bez slanja ličnih podataka.",
     "me": "Tvoj profil: ime, grad, vještine i ono što želiš da drugi znaju. Izabrani grad određuje koji lokalni gradski alati mogu biti prikazani.",
     "home": "Početna je polazna tačka: trenutna aktivnost, prečice i ono što traži tvoju pažnju.",
     "messages": "Poruke sadrže direktne, grupne i radne razgovore povezane sa saradnjom.",
@@ -1576,10 +1576,10 @@ languages.bs = {
     "welcome": "Dobro došli u FOLKOOP",
     "quick": "Četiri brza načina za početak",
     "language": "Jezik",
-    "helper": "Mura · FOLKOOP pomoćnik"
+    "helper": "FOLKOOP guide · FOLKOOP pomoćnik"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "FOLKOOP pomoćnik",
     "open": "Otvori Muru",
     "close": "Zatvori",
@@ -2038,7 +2038,7 @@ languages.ar = {
     "welcome": "FOLKOOP شبكة للتعاون: ابدأ بما تحتاجه أو تستطيع تقديمه أو تريد بناءه، ثم اعثر على الناس وانتقل نحو فعل حقيقي.",
     "quick": "هذه الاختصارات الأربعة هي أسرع طريقة للبدء: اطلب المساعدة، اعرض المساعدة، اشتروا معًا أو شارك موردًا. تبدأ كمسودات خاصة إلى أن تقرر نشرها عبر طبقة الشبكة.",
     "language": "غيّر لغة الواجهة هنا. أقسام FOLKOOP الجديدة مترجمة إلى جميع اللغات المتاحة.",
-    "helper": "تبقى Mura في الزاوية بعد هذه الجولة. تشرح القسم الحالي ويمكنها إعادة تشغيل المقدمة الكاملة. تعمل حاليًا محليًا وفق قواعد: بلا طلبات ذكاء اصطناعي وبلا إرسال بيانات شخصية.",
+    "helper": "تبقى FOLKOOP guide في الزاوية بعد هذه الجولة. تشرح القسم الحالي ويمكنها إعادة تشغيل المقدمة الكاملة. تعمل حاليًا محليًا وفق قواعد: بلا إرسال بيانات شخصية.",
     "me": "ملفك الشخصي: الاسم والمدينة والمهارات وما تريد أن يعرفه الآخرون عنك. تحدد المدينة المختارة أدوات المدينة المحلية التي يمكن عرضها.",
     "home": "الرئيسية هي نقطة البداية: النشاط الحالي والاختصارات وما يحتاج إلى انتباهك.",
     "messages": "تحتوي الرسائل على محادثات مباشرة وجماعية ومحادثات عمل مرتبطة بالتعاون.",
@@ -2055,12 +2055,12 @@ languages.ar = {
     "welcome": "مرحبًا بك في FOLKOOP",
     "quick": "أربع طرق سريعة للبدء",
     "language": "اللغة",
-    "helper": "Mura · مساعدة FOLKOOP"
+    "helper": "FOLKOOP guide · مساعدة FOLKOOP"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "مساعدة FOLKOOP",
-    "open": "فتح Mura",
+    "open": "فتح FOLKOOP guide",
     "close": "إغلاق",
     "tour": "عرض المقدمة الكاملة مرة أخرى",
     "intro": "أنا هنا لأشرح الغرض من القسم الحالي في FOLKOOP.",
@@ -2517,7 +2517,7 @@ languages.fa = {
     "welcome": "FOLKOOP شبکه‌ای برای همکاری است: از چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی بسازی شروع کن، افراد را پیدا کن و به سمت یک اقدام واقعی برو.",
     "quick": "این چهار میانبر سریع‌ترین راه شروع هستند: کمک بخواه، کمک پیشنهاد بده، با هم خرید کنید یا منبعی را به اشتراک بگذار. تا وقتی عمداً از طریق شبکه منتشرشان نکنی، پیش‌نویس خصوصی می‌مانند.",
     "language": "زبان رابط را اینجا تغییر بده. بخش‌های جدید FOLKOOP به همهٔ زبان‌های موجود ترجمه شده‌اند.",
-    "helper": "Mura پس از این راهنما در گوشه می‌ماند. او بخش فعلی را توضیح می‌دهد و می‌تواند معرفی کامل را دوباره آغاز کند. فعلاً محلی و قانون‌محور است: نه درخواست هوش مصنوعی و نه ارسال دادهٔ شخصی.",
+    "helper": "FOLKOOP guide پس از این راهنما در گوشه می‌ماند. او بخش فعلی را توضیح می‌دهد و می‌تواند معرفی کامل را دوباره آغاز کند. فعلاً محلی و قانون‌محور است: بدون ارسال دادهٔ شخصی.",
     "me": "پروفایل تو: نام، شهر، مهارت‌ها و چیزی که می‌خواهی دیگران بدانند. شهر انتخابی تعیین می‌کند کدام ابزارهای محلی شهر نمایش داده شوند.",
     "home": "خانه نقطهٔ شروع است: فعالیت فعلی، میانبرها و چیزهایی که به توجه تو نیاز دارند.",
     "messages": "پیام‌ها شامل گفت‌وگوهای مستقیم، گروهی و کاریِ مرتبط با همکاری است.",
@@ -2534,12 +2534,12 @@ languages.fa = {
     "welcome": "به FOLKOOP خوش آمدید",
     "quick": "چهار راه سریع برای شروع",
     "language": "زبان",
-    "helper": "Mura · راهنمای FOLKOOP"
+    "helper": "FOLKOOP guide · راهنمای FOLKOOP"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "راهنمای FOLKOOP",
-    "open": "باز کردن Mura",
+    "open": "باز کردن FOLKOOP guide",
     "close": "بستن",
     "tour": "نمایش دوبارهٔ معرفی کامل",
     "intro": "اینجا هستم تا توضیح بدهم این بخش FOLKOOP برای چیست.",
@@ -2996,7 +2996,7 @@ languages.so = {
     "welcome": "FOLKOOP waa shabakad iskaashi: ka bilow waxa aad u baahan tahay, waxa aad bixin karto ama waxa aad rabto inaad dhisto, hel dad oo u gudub fal dhab ah.",
     "quick": "Afartan jid-gaaban waa habka ugu dhaqsaha badan ee lagu bilaabo: codso caawin, bixi caawin, wada iibsada ama wadaag kheyraad. Marka hore waxay noqdaan qabyo gaar ah ilaa aad si ula kac ah ugu daabacdo shabakadda.",
     "language": "Halkan ka beddel luqadda is-dhexgalka. Qaybaha cusub ee FOLKOOP waxaa loo turjumay dhammaan luqadaha la heli karo.",
-    "helper": "Mura waxay geeska joogaysaa marka socdaalkani dhammaado. Waxay sharaxdaa qaybta hadda jirta waxayna dib u bilaabi kartaa hordhaca oo dhan. Hadda waxay ka shaqaysaa qalabka iyadoo xeerar raacaysa: ma jiro codsi AI ah mana jirto xog shaqsiyeed oo la diro.",
+    "helper": "FOLKOOP guide waxay geeska joogaysaa marka socdaalkani dhammaado. Waxay sharaxdaa qaybta hadda jirta waxayna dib u bilaabi kartaa hordhaca oo dhan. Hadda waxay ka shaqaysaa qalabka iyadoo xeerar raacaysa: ma jirto xog shaqsiyeed oo la diro.",
     "me": "Profile-kaaga: magaca, magaalada, xirfadaha iyo waxa aad rabto dadka kale inay ogaadaan. Magaalada la doortay ayaa go’aamisa qalabka maxalliga ah ee Magaalada ee la tusi karo.",
     "home": "Bogga hore waa meesha laga bilaabo: dhaqdhaqaaqa hadda, jid-gaabyada iyo waxa u baahan dareenkaaga.",
     "messages": "Farriimaha waxaa ku jira wada-hadallo toos ah, kooxeed iyo kuwa shaqo ee ku xiran iskaashiga.",
@@ -3013,12 +3013,12 @@ languages.so = {
     "welcome": "Ku soo dhowow FOLKOOP",
     "quick": "Afar hab oo degdeg ah oo lagu bilaabo",
     "language": "Luqad",
-    "helper": "Mura · kaaliyaha FOLKOOP"
+    "helper": "FOLKOOP guide · kaaliyaha FOLKOOP"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "kaaliyaha FOLKOOP",
-    "open": "Fur Mura",
+    "open": "Fur FOLKOOP guide",
     "close": "Xir",
     "tour": "Hordhaca oo dhan mar kale muuji",
     "intro": "Waxaan halkan u joogaa inaan sharaxo waxa qaybtan FOLKOOP loogu talagalay.",
@@ -3475,7 +3475,7 @@ languages.ku = {
     "welcome": "FOLKOOP toreke hevkariyê ye: bi tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî ava bikî dest pê bike, mirov bibîne û ber bi kiryarek rastîn biçû.",
     "quick": "Ev çar kurterê rêya herî zû ya destpêkê ne: alîkarî bixwaze, alîkarî pêşkêş bike, bi hev re bikirin an çavkaniyekê parve bike. Ew pêşnivîsên taybet diafirînin heta ku tu bi dilxwazî wan di torê de weşînî.",
     "language": "Zimanê navrûyê li vir biguherîne. Beşên nû yên FOLKOOP bi hemû zimanên berdest hatine wergerandin.",
-    "helper": "Mura piştî vê gerê li quncikê dimîne. Ew beşa niha rave dike û dikare danasîna tevahî dîsa bide destpêkirin. Niha ew li ser amûrê û li gorî rêzikan dixebite: ne daxwaza AI heye û ne daneya kesane tê şandin.",
+    "helper": "FOLKOOP guide piştî vê gerê li quncikê dimîne. Ew beşa niha rave dike û dikare danasîna tevahî dîsa bide destpêkirin. Niha ew li ser amûrê û li gorî rêzikan dixebite: ne daneya kesane tê şandin.",
     "me": "Profîla te: nav, bajar, şiyan û tiştê ku dixwazî yên din bizanin. Bajarê hilbijartî diyar dike kîjan amûrên herêmî yên Bajar dikarin bên nîşandan.",
     "home": "Destpêk cihê destpêkirinê ye: çalakiya niha, kurterê û tiştên ku bala te dixwazin.",
     "messages": "Peyam axaftinên rasterast, komî û axaftinên karê yên bi hevkariyê ve girêdayî dihewîne.",
@@ -3492,12 +3492,12 @@ languages.ku = {
     "welcome": "Bi xêr hatî FOLKOOP",
     "quick": "Çar rêyên zû yên destpêkê",
     "language": "Ziman",
-    "helper": "Mura · alîkarê FOLKOOP"
+    "helper": "FOLKOOP guide · alîkarê FOLKOOP"
   },
   "helper": {
-    "name": "Mura",
+    "name": "FOLKOOP guide",
     "label": "alîkarê FOLKOOP",
-    "open": "Mura veke",
+    "open": "FOLKOOP guide veke",
     "close": "Bigire",
     "tour": "Danasîna tevahî dîsa nîşan bide",
     "intro": "Ez li vir im da ku rave bikim ev beşa FOLKOOP ji bo çi ye.",
