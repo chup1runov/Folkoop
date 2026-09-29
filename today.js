@@ -36,7 +36,7 @@
   function stop(){controller?.abort();controller=null;clearInterval(timer);timer=null;}
   function render(container,language,helpers){
     stop();
-    const C=SverinavCore,D=SverinavDaily,E=C.escape,I=C.icon;
+    const C=FolkoopCityCore,D=FolkoopCityDaily,E=C.escape,I=C.icon;
     const values=COPY[language]||COPY.en,L=Object.fromEntries(KEYS.map((key,i)=>[key,values[i]]));
     const short=COMPACT_COPY[language]||COMPACT_COPY.en,S=Object.fromEntries(COMPACT_KEYS.map((key,i)=>[key,short[i]]));
     let area=C.storage.get('sverinav-weather-area');if(!Object.hasOwn(D.AREAS,area))area='centrum';
@@ -106,5 +106,5 @@
     // Riksdag belongs in Beslut; no hidden request or repeated document list on Idag.
     update();timer=setInterval(()=>{if(document.visibilityState==='visible'&&w.isConnected)update();},15*60000);
   }
-  globalThis.SverinavToday={render,stop,COPY,KEYS,COMPACT_COPY,COMPACT_KEYS,label:language=>(COPY[language]||COPY.en)[0]};
+  globalThis.FolkoopCityToday={render,stop,COPY,KEYS,COMPACT_COPY,COMPACT_KEYS,label:language=>(COPY[language]||COPY.en)[0]};
 })();
