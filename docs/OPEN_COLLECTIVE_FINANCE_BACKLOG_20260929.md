@@ -267,7 +267,7 @@ Never derive "budget" from pledges, chat messages or project claims without labe
 | 77 | Fund admin chooses allocation process | ✅ | — | ADAPT | LATER | Governance can live in FOLKOOP while money moves externally. |
 | 78 | Privacy flexibility for sensitive grant recipients | ✅ funds support more flexibility | — | LEARN | LATER | Public transparency is not always absolute. |
 | 79 | External decision process + Open Collective payout | ✅ supported pattern | — | INTEGRATE | LATER | Very relevant: FOLKOOP could decide, OC could disburse. |
-| 80 | Spark Fund equivalent | ✅ building blocks | 🟡 FOLKUNO/FOLKOOP concept | INTEGRATE/ADAPT | LATER | Avoid building payout/compliance layer internally. |
+| 80 | Spark Fund equivalent | ✅ building blocks | 🟡 FOLKOOP concept | INTEGRATE/ADAPT | LATER | Avoid building payout/compliance layer internally. |
 
 ---
 
@@ -622,7 +622,7 @@ It cannot infer:
 
 # S. FOLKOOP Spark Fund after Open Collective analysis
 
-The earlier FOLKOOP/FOLKUNO concept included a future microgrant fund.
+The earlier FOLKOOP concept included a future microgrant fund.
 
 Open Collective suggests a safer architecture:
 
