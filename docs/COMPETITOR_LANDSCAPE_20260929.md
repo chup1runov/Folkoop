@@ -83,18 +83,25 @@ Relevant areas:
 Why study it:
 Nextdoor demonstrates how strong local-density effects can emerge when a network is tied to real neighbourhoods.
 
-### 5. Geneva
-Official: https://www.geneva.com/
+### 5. BFF (formerly Geneva)
+Current: https://support.bumblebff.com/
+Historical Geneva: https://www.geneva.com/
+
+Current status:
+Geneva was acquired by Bumble in 2024 and by 2026 its product lineage had been folded into the new BFF app. Current BFF availability is limited to the United States, Canada and Mexico.
 
 Relevant areas:
-- group chat;
-- local group discovery;
+- person discovery;
+- group discovery;
+- low-friction first contact;
+- group chat/forum rooms;
 - events and meetups;
-- audio/video community interaction;
-- real-world social connection.
+- newcomer onboarding;
+- real-world social connection;
+- photo/selfie verification and social safety.
 
 Why study it:
-Geneva is a useful benchmark for People + Communities + offline events, especially for onboarding people into local activity.
+BFF/Geneva is a useful benchmark for People + Communities + offline events, especially the "come alone, discover people, meet offline" problem that matters to FOLKOOP Center.
 
 ### 6. TimeRepublik
 Official: https://timerepublik.com/
@@ -162,14 +169,14 @@ Sharetribe is a benchmark for the economic/resource-exchange side of FOLKOOP, es
 ### Closest to FOLKOOP as a whole
 1. Hylo
 2. Karrot
-3. Nextdoor / Geneva, depending on use case
+3. Nextdoor / BFF (formerly Geneva), depending on use case
 
 ### Closest to specific layers
-- People / community: Hylo, Nextdoor, Geneva
+- People / community: Hylo, Nextdoor, BFF (formerly Geneva)
 - Need / Offer: Hylo, TimeRepublik
 - Projects / collective work: Hylo, Karrot
 - City / civic participation: Decidim, Nextdoor
-- Offline/community action: Karrot, Geneva, Hylo
+- Offline/community action: Karrot, BFF (formerly Geneva), Hylo
 - Governance: Loomio, Decidim, Hylo
 - Collective finance: Open Collective
 - Marketplace/resources: Sharetribe
@@ -201,7 +208,7 @@ If time is limited, study in this order:
 4. Open Collective
 5. Loomio
 6. Nextdoor
-7. Geneva
+7. BFF (formerly Geneva)
 8. TimeRepublik
 9. Sharetribe
 
@@ -325,3 +332,21 @@ The Nextdoor deep dive focuses on:
 - moderation and Kindness Reminders;
 - ad targeting/business-model incentives;
 - what FOLKOOP can learn from local network effects without becoming an engagement/advertising feed.
+
+
+### BFF (formerly Geneva)
+
+Full social-discovery / offline-friendship comparison and adoption backlog:
+
+- `docs/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
+
+The deep dive focuses on:
+- the 2024 Bumble acquisition and 2026 BFF transition;
+- People Discovery and low-friction first contact;
+- Groups, discoverability and member approval;
+- Welcome Rooms and newcomer onboarding;
+- Chat/Forum room architecture;
+- chat-to-meetup conversion;
+- mandatory photo verification and safety/privacy trade-offs;
+- the "come alone" socialization loop relevant to FOLKOOP Center;
+- why social/belonging intent should not be forced into Need/Offer/Project.
