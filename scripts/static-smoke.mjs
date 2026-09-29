@@ -25,5 +25,5 @@ for(const [copy,keys] of [[ctx.FolkoopCityToday.COPY,ctx.FolkoopCityToday.KEYS],
  assert.equal(Object.keys(copy).length,11);
  for(const [lang,values] of Object.entries(copy))assert.equal(values.length,keys.length,`Missing translation: ${lang}`);
 }
-for(const f of ['docs/IDAG_AND_AUDIT.md','docs/COMPACT_V012.md','docs/PILOT_GUIDE.md','.github/ISSUE_TEMPLATE/pilot-feedback.md'])await access(f);
+for(const f of ['docs/IDAG_AND_AUDIT.md','docs/UNIFICATION.md','docs/PRODUCT_CONCEPT.md','docs/ONBOARDING_GUIDE_V029.md','docs/PILOT_GUIDE.md','.github/ISSUE_TEMPLATE/pilot-feedback.md'])await access(f);
 console.log('Static checks passed: linked assets, release version, decoded PNGs, eleven Compact translations and documentation.');
