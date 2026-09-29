@@ -28,7 +28,7 @@ route and use it for:
 
 Required launch field:
 
-**Privacy contact:** `[TO BE CONFIRMED]`
+**Privacy contact:** chup1runov@gmail.com
 
 Do not publish a guessed personal address.
 

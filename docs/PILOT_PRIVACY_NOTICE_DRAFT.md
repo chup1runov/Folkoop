@@ -4,11 +4,12 @@
 
 **NOT READY FOR PARTICIPANT DISTRIBUTION.**
 
-This notice must not be sent to ordinary participants until these fields are
-filled and verified:
+Controller/contact are now identified for the current pilot. This notice is
+still not ready for participant distribution until the remaining service,
+legal-basis and Auth gates are completed.
 
-- **Controller:** `[CONTROLLER TO BE CONFIRMED]`
-- **Privacy contact:** `[PRIVACY CONTACT TO BE CONFIRMED]`
+- **Controller:** Pavel Chuprunov (private individual)
+- **Privacy contact:** chup1runov@gmail.com
 
 This draft applies only to the first small, invite-only Göteborg core-loop pilot.
 
@@ -28,9 +29,9 @@ information.
 
 ## Who is responsible for your data?
 
-Controller: **[CONTROLLER TO BE CONFIRMED]**
+Controller: **Pavel Chuprunov (private individual)**
 
-Privacy/contact route: **[PRIVACY CONTACT TO BE CONFIRMED]**
+Privacy/contact route: **chup1runov@gmail.com**
 
 You can use this contact for access, correction, deletion/account closure,
 restriction, objection, portability where applicable, or privacy/safety
