@@ -1,4 +1,4 @@
-# FOLKOOP v0.27 — language-first onboarding and physical Mura
+# FOLKOOP v0.27 — language-first onboarding and physical FOLKOOP guide
 
 28 September 2026.
 
@@ -6,10 +6,10 @@
 
 The first interaction is language selection, not navigation.
 
-A first-time visitor sees Mura before the product tour:
+A first-time visitor sees FOLKOOP guide before the product tour:
 
 **Hej! · Hi! · Привет!**  
-**Jag heter Mura · I’m Mura · Меня зовут Mura**  
+**Jag heter FOLKOOP guide · I’m FOLKOOP guide · Меня зовут FOLKOOP guide**  
 **Välj språk · Choose language · Выбери язык**
 
 The visitor selects one of the existing eleven FOLKOOP languages. Only then does the site explanation begin.
@@ -22,9 +22,9 @@ The local keys are:
 
 ## Canonical character source
 
-FOLKOOP does not invent a second visual Mura.
+FOLKOOP does not invent a second visual FOLKOOP guide.
 
-The canonical Character Pack remains the Mura Companion character `mura.default` from the user's Mura repository.
+The canonical Character Pack remains the FOLKOOP guide Companion character `folkoop-guide.default` from the user's FOLKOOP guide repository.
 
 Canonical visual identity:
 - long chestnut-brown hair;
@@ -47,7 +47,7 @@ This keeps the visual identity canonical without shipping the heavier full pose 
 
 ## Physical presence
 
-Mura is now a visible full-body character rather than a circular "К" help button.
+FOLKOOP guide is now a visible full-body character rather than a circular "К" help button.
 
 During onboarding she can:
 - teleport out/in with a short puff;
@@ -98,13 +98,13 @@ The guided tour currently explains:
 11. Center;
 12. Settings;
 13. About;
-14. Mura as the persistent helper.
+14. FOLKOOP guide as the persistent helper.
 
 Language is no longer a late tutorial step because it is chosen before the tour.
 
 ## Helper behavior after onboarding
 
-Clicking the physical Mura opens the same contextual helper panel from v0.26:
+Clicking the physical FOLKOOP guide opens the same contextual helper panel from v0.26:
 - explanation of the current route;
 - replay full introduction.
 
@@ -115,19 +115,19 @@ This does **not** yet add:
 - model inference;
 - shared memory;
 - proactive server-side recommendations;
-- Mura desktop continuity inside the browser.
+- FOLKOOP guide desktop continuity inside the browser.
 
-The earlier Mura principle **presence before chat** is preserved: first prove that a visible contextual companion improves orientation before adding AI.
+The earlier FOLKOOP guide principle **presence before chat** is preserved: first prove that a visible contextual companion improves orientation before adding AI.
 
 ## Mobile / desktop rule
 
 Desktop:
-- Mura can stand to either side of the target;
+- FOLKOOP guide can stand to either side of the target;
 - the explanatory card uses the opposite side where practical;
 - perch mode may sit across the top edge of broad controls.
 
 Mobile:
-- Mura scales down;
+- FOLKOOP guide scales down;
 - nav steps can automatically open the mobile drawer;
 - the character and spotlight must remain within the viewport;
 - the explanatory card stays in the lower part of the screen.
@@ -138,18 +138,18 @@ The v0.27 browser contract must verify:
 - language gate appears before onboarding;
 - all eleven language choices are present;
 - selected language applies before the first explanation;
-- Mura is visible in the guided tour;
-- Mura changes position during the tour;
+- FOLKOOP guide is visible in the guided tour;
+- FOLKOOP guide changes position during the tour;
 - perch mode is exercised;
 - full tour can finish and is remembered;
-- physical Mura remains clickable afterward;
+- physical FOLKOOP guide remains clickable afterward;
 - replay from Settings restarts from language;
 - both mobile and desktop layouts stay within viewport;
-- `mura-guide.js` makes no external network calls.
+- `folkoop-guide.js` makes no external network calls.
 
 ## Future
 
-A richer Mura may later use more of the Mura Companion behavior engine.
+A richer FOLKOOP guide may later use more of the FOLKOOP guide Companion behavior engine.
 
 Do not add AI merely to make the character "smarter". First collect real pilot questions and identify which cannot be solved by:
 - clearer interface;

@@ -1,17 +1,17 @@
-# FOLKOOP v0.28 — canonical Mura multi-pose onboarding
+# FOLKOOP v0.28 — canonical FOLKOOP guide multi-pose onboarding
 
 28 September 2026.
 
 ## Source of truth
 
-The character source is the first-party repository `chup1runov/Mura` (repository
+The character source is the first-party repository `chup1runov/FOLKOOP guide` (repository
 id 1374123971), Character Pack manifest schema 4, character
-`mura.default`. The manifest defines a 192×208 canvas and the established
+`folkoop-guide.default`. The manifest defines a 192×208 canvas and the established
 look: long chestnut-brown hair, blue-and-white striped shirt, light-blue cuffed
 jeans and white sneakers.
 
-FOLKOOP does not regenerate Mura. v0.28 extracts seven existing first-party
-WebP states from Mura's embedded Character Pack bundles:
+FOLKOOP does not regenerate FOLKOOP guide. v0.28 extracts seven existing first-party
+WebP states from FOLKOOP guide's embedded Character Pack bundles:
 
 - `please.webp` → first greeting / welcome;
 - `confident.webp` → persistent idle helper;
@@ -21,16 +21,16 @@ WebP states from Mura's embedded Character Pack bundles:
 - `lean-in.webp` → broad-surface/perch placement;
 - `wink.webp` → the final helper introduction.
 
-The deployed names are prefixed with `mura-` to keep their provenance clear.
+The deployed names are prefixed with `folkoop-guide-` to keep their provenance clear.
 
 ## What changed from v0.27.1
 
 v0.27.1 reused a small idle sprite for most states and painted a skin-coloured
 CSS arm toward the target. That visually overclaimed what the art actually did.
 
-v0.28 instead renders the real Mura pose for the semantic step and uses a
+v0.28 instead renders the real FOLKOOP guide pose for the semantic step and uses a
 separate orange directional cue when the target needs disambiguation. The cue is
-not represented as Mura's body. Character placement still prefers a position
+not represented as FOLKOOP guide's body. Character placement still prefers a position
 near the highlighted target, including below it where the raised-finger inspect
 pose reads naturally.
 
@@ -62,13 +62,13 @@ CI must verify:
 
 ## Explicit remaining art task
 
-The current Mura Character Pack does **not** contain authored directional
+The current FOLKOOP guide character pack does **not** contain authored directional
 left/right/up/down pointing poses or an authored seated pose with bent,
-dangling legs. `lean-in.webp` is a real canonical Mura pose, but it must not be
+dangling legs. `lean-in.webp` is a real canonical FOLKOOP guide pose, but it must not be
 described as a literal seated animation.
 
 Therefore v0.28 closes the misleading fake-arm implementation and the runtime
 alpha-cleanup debt, but it does not mark the original “sit on the button with
-dangling legs” request complete. That art should be authored in Mura first,
+dangling legs” request complete. That art should be authored in FOLKOOP guide first,
 visually accepted there, added to the Character Pack manifest, and only then
 consumed by FOLKOOP.

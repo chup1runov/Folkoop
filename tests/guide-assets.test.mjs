@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const assets=[
- 'mura-please.webp','mura-confident.webp','mura-inspect.webp',
- 'mura-idea.webp','mura-searching.webp','mura-lean-in.webp','mura-wink.webp'
+ 'folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-inspect.webp',
+ 'folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp'
 ];
 
 function vp8x(buffer){
@@ -14,7 +14,7 @@ function vp8x(buffer){
  return {flags:buffer[20],width:1+buffer.readUIntLE(24,3),height:1+buffer.readUIntLE(27,3)};
 }
 
-for(const asset of assets)test(`Mura pose ${asset} is canonical 192x208 alpha WebP`,async()=>{
+for(const asset of assets)test(`FOLKOOP guide pose ${asset} is canonical 192x208 alpha WebP`,async()=>{
  const file=await readFile(asset),meta=vp8x(file);
  assert.equal(meta.width,192);
  assert.equal(meta.height,208);
@@ -22,13 +22,13 @@ for(const asset of assets)test(`Mura pose ${asset} is canonical 192x208 alpha We
  assert(file.length>7000&&file.length<20000,'unexpected pose payload size');
 });
 
-const pngAssets=['mura-point-left.png','mura-point-right.png','mura-point-up.png','mura-point-down.png','mura-sit-edge.png'];
+const pngAssets=['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'];
 function pngMeta(buffer){
  assert.equal(buffer.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
  assert.equal(buffer.subarray(12,16).toString('ascii'),'IHDR');
  return {width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),bitDepth:buffer[24],colorType:buffer[25]};
 }
-for(const asset of pngAssets)test(`Mura v0.29 pose ${asset} is canonical 192x208 RGBA PNG`,async()=>{
+for(const asset of pngAssets)test(`FOLKOOP guide v0.29 pose ${asset} is canonical 192x208 RGBA PNG`,async()=>{
  const file=await readFile(asset),meta=pngMeta(file);
  assert.deepEqual(meta,{width:192,height:208,bitDepth:8,colorType:6});
  assert(file.length>20_000&&file.length<50_000,'unexpected pose payload size');

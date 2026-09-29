@@ -82,7 +82,7 @@ jobs:
           python -m playwright install --with-deps webkit
       - name: Build the same static site
         run: node scripts/build-site.mjs
-      - name: WebKit Mura onboarding and geometry gate
+      - name: WebKit FOLKOOP guide onboarding and geometry gate
         run: bash scripts/webkit-smoke.sh
       - name: Retain WebKit QA evidence
         if: always()
