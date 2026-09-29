@@ -289,3 +289,20 @@ The Open Collective deep dive focuses on:
 - expected vs received money;
 - privacy boundaries for financial/tax data;
 - what FOLKOOP Projects should display/orchestrate rather than process themselves.
+
+
+### Loomio
+
+Full governance/decision-making comparison and adoption backlog:
+
+- `docs/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
+
+The Loomio deep dive focuses on:
+- discussion-to-decision workflows;
+- Advice, Sense Check, Consent and Consensus;
+- Choose, Score, Allocate, Rank, Time polls and STV;
+- electorate controls and guest participation;
+- anonymous voting and result-visibility settings;
+- outcome statements and review dates;
+- decision records, portability and auditability;
+- what FOLKOOP should implement lightly vs leave to specialist governance systems.
