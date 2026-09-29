@@ -24,7 +24,7 @@ Därför ska varumärket alltid skrivas som ett ord:
 **FOLKOOP**
 
 Inte:
-- SveriNAV
+- former civic working name
 - Sveri Nav
 - Sverige NAV
 
