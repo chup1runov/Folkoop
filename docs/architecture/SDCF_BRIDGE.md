@@ -84,6 +84,8 @@ An item may inherit acquisition/adapter metadata from its feed envelope. This av
 
 A source record is not the same thing as the claim derived from it.
 
+For the current City runtime, `SverinavCore.feed()` now enforces the feed-level `adapterVersion` together with schema/source/acquisition structure. This is a structural provenance check only: it does not establish that the source is true or that a derived claim is correct.
+
 ### Civic routing
 
 `resolveResponsibility()` produces decision support/routing.
