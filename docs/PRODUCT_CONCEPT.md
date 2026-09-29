@@ -204,7 +204,7 @@ This is the current core of the cooperation engine.
 
 ### City
 
-The civic/opportunity layer inherited from Sverinav.
+FOLKOOP's civic/opportunity layer.
 
 The principle is:
 
@@ -216,7 +216,7 @@ FOLKOOP should not pretend to submit, approve, resolve or verify an official cas
 
 ### Center
 
-The real-world/community layer inherited from FOLKUNO.
+FOLKOOP's real-world/community layer.
 
 A future Center/Node may provide:
 - a place to meet;
@@ -236,7 +236,7 @@ A new network has a cold-start problem.
 
 If few relevant people or opportunities are present, a user can ask for something and receive no useful response.
 
-A physical FOLKUNO/FOLKOOP community layer may help create the first local density:
+A physical FOLKOOP community layer may help create the first local density:
 
 **physical community -> real interactions -> digital cooperation graph -> better matching -> more useful interactions -> stronger local network**
 
