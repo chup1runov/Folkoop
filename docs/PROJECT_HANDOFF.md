@@ -58,6 +58,7 @@ Center preserves the physical/community-space direction from FOLKUNO. No operati
 - `docs/SECURITY_DEFINER_AUDIT.md` — privilege model for authenticated RPCs/private RLS helpers and executable CI contract for SECURITY DEFINER grants/search_path.
 - `docs/ACCOUNT_CLOSURE_RUNBOOK.md` — operator-only preflight before any account closure; shared ownership must be resolved before Auth deletion.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI Mura helper.\n- `docs/ONBOARDING_MURA_V027.md` — historical language-first gate implementation.\n- `docs/ONBOARDING_MURA_V028.md` — historical multi-pose runtime and the art gap it identified.\n- `docs/ONBOARDING_MURA_V029.md` — authored directional pointing/sit-edge integration from Mura Character Pack.
 - `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
+- `docs/PRE_PILOT_AUTH_READINESS.md` — live hosted Supabase/Auth readiness snapshot, safe preflight commands and exact remaining two-account blockers.
 - `network-client.js` — Auth/PostgREST client; memory-only token.
 - `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
 - `network-ui.js` — account, communities, messages, cooperation/project UI.
