@@ -54,6 +54,11 @@ export function validateBridge(bridge) {
 
   const city = bridge?.cityProvenanceContract;
   if (city?.version !== '1.0') errors.push('city provenance contract version must be 1.0');
+  if (city?.status !== 'partially-runtime-enforced') errors.push('city provenance contract must record partial runtime enforcement');
+  if (city?.runtimeEnforcement?.path !== 'civic-core.js' || city?.runtimeEnforcement?.function !== 'feed') errors.push('city runtime enforcement must bind to civic-core.js feed()');
+  for (const key of ['schemaVersion','sourceId','fetchedAt','adapterVersion','items']) {
+    if (!city?.runtimeEnforcement?.enforces?.includes(key)) errors.push(`city runtime enforcement must include ${key}`);
+  }
   for (const key of ['schemaVersion','sourceId','fetchedAt','adapterVersion','items']) {
     if (!city?.feedEnvelope?.required?.includes(key)) errors.push(`city feed envelope must require ${key}`);
   }
@@ -101,6 +106,17 @@ export function validateBridge(bridge) {
 
 export async function validateRepositoryBindings(bridge) {
   const errors = [];
+  const runtime = bridge?.cityProvenanceContract?.runtimeEnforcement;
+  if (runtime?.path) {
+    try {
+      const source = await readFile(new URL('../' + runtime.path, import.meta.url), 'utf8');
+      if (!source.includes('adapterVersion')) errors.push(`${runtime.path} does not enforce adapterVersion`);
+      if (!source.includes('INVALID_FEED')) errors.push(`${runtime.path} does not fail closed on malformed feeds`);
+    } catch {
+      errors.push(`missing City runtime enforcement file: ${runtime.path}`);
+    }
+  }
+
   for (const adapter of bridge?.cityProvenanceContract?.currentAdapters || []) {
     let source;
     try {
