@@ -3,7 +3,7 @@
 ## A. Hål i vägen
 
 1. Användaren anger eller fångar plats.
-2. Sverinav hittar närmaste vägsegment.
+2. FOLKOOP hittar närmaste vägsegment.
 3. NVDB Väghållare avgör ansvar.
 4. Kommunal väg i Göteborg → Göteborgs officiella Felanmälan.
 5. Statlig väg → Trafikverket.
