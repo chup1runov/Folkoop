@@ -76,7 +76,9 @@ async def main():
     await page.set_viewport_size({'width':width,'height':844})
     assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth'),f'{lang}/{width} overflow'
    assert await page.locator('html').get_attribute('dir')==('rtl' if lang in ('ar','fa') else 'ltr')
-  results.append('All eleven navigation languages, RTL, and no horizontal overflow at 320/390/1280px')
+   assert await page.locator('#workspace').get_attribute('lang')==lang
+   await expect(page.locator('#translationNote')).to_be_hidden()
+  results.append('All eleven full-interface languages, RTL, and no horizontal overflow at 320/390/1280px')
   await page.select_option('#language','ru');await page.set_viewport_size({'width':390,'height':844})
   await page.evaluate("location.hash='#/me'")
   page.on('dialog',lambda d:d.accept())
@@ -106,6 +108,6 @@ async def main():
   await expect(op.frame_locator('#cityFrame').locator('#view')).not_to_be_empty()
   results.append('Installed shell and embedded City entry load offline; no fabricated source success')
   await offline.close();await browser.close()
- OUT.joinpath('folkoop-results.json').write_text(json.dumps({'passed':results,'limitations':['Chromium only, not a real iPhone/Safari check','No live backend, users, payments or official submissions','New detailed shell copy currently sv/en/ru; other navigation locales disclose English fallback']},ensure_ascii=False,indent=2))
+ OUT.joinpath('folkoop-results.json').write_text(json.dumps({'passed':results,'limitations':['Chromium only, not a real iPhone/Safari check','No live backend, users, payments or official submissions']},ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in results))
 asyncio.run(main())
