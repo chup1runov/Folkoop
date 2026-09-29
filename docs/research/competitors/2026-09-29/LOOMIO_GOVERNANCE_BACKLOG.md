@@ -30,7 +30,7 @@ FOLKOOP:
 - `README.md`
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
-- `docs/COOPERATION_V018.md`
+- `docs/history/releases/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
 - `docs/architecture/SDCF_BRIDGE.md`
 - competitor deep dives for Hylo, Karrot, Decidim and Open Collective.
