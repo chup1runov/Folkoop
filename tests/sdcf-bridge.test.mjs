@@ -10,6 +10,8 @@ test('SDCF bridge v0.2 is internally consistent and non-runtime', async () => {
   assert.equal(bridge.bridgeVersion, '0.2');
   assert.equal(bridge.runtimeDependency, false);
   assert.equal(bridge.status, 'advisory');
+  assert.match(bridge.referenceFrameworkStatus, /release-candidate/i);
+  assert.match(bridge.referenceFrameworkStatus, /not yet satisfied/i);
   assert.equal(bridge.mappings.length, 10);
   assert.equal(bridge.guards.length, 10);
 });
