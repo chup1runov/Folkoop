@@ -37,24 +37,31 @@ test('settings summary distinguishes hosted provider from application flag',()=>
   );
   assert.equal(report.hosted.googleProviderEnabled,true);
   assert.equal(report.application.googleOAuthEnabled,false);
+  assert.equal(report.hostedGoogleReady,true);
   assert.equal(report.googlePilotReady,false);
   assert.deepEqual(report.blockers,['app_google_oauth_flag_disabled']);
 });
 
 test('Google readiness requires hosted provider, app flag and enabled signup',()=>{
   const enabled={...config,googleOAuthEnabled:true};
-  assert.equal(summarizeAuthSettings(
+  const ready=summarizeAuthSettings(
     {external:{google:true},disable_signup:false},
     enabled
-  ).googlePilotReady,true);
-  assert.equal(summarizeAuthSettings(
+  );
+  assert.equal(ready.hostedGoogleReady,true);
+  assert.equal(ready.googlePilotReady,true);
+  const noProvider=summarizeAuthSettings(
     {external:{google:false},disable_signup:false},
     enabled
-  ).googlePilotReady,false);
-  assert.equal(summarizeAuthSettings(
+  );
+  assert.equal(noProvider.hostedGoogleReady,false);
+  assert.equal(noProvider.googlePilotReady,false);
+  const signupOff=summarizeAuthSettings(
     {external:{google:true},disable_signup:true},
     enabled
-  ).googlePilotReady,false);
+  );
+  assert.equal(signupOff.hostedGoogleReady,false);
+  assert.equal(signupOff.googlePilotReady,false);
 });
 
 test('hosted probe sends only publishable key and rejects malformed responses',async()=>{
