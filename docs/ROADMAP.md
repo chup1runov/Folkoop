@@ -6,7 +6,7 @@
 - [x] privacy-principer
 - [x] första webprototyp
 - [x] integrationskarta Göteborg
-- [x] arbetsnamn Sverinav
+- [x] samlat namn FOLKOOP
 - [x] publikt GitHub-repository
 - [x] GitHub Pages deployment
 - [x] PWA-bas
@@ -27,7 +27,7 @@
 - [x] iPhone Add to Home Screen-guidning
 - [x] automatiska static + desktop/mobile/iPhone-like headless-browser smoke tests
 - [x] source freshness/status för live-data
-- [x] Om Sverinav: oberoende status, privacy, källor och version
+- [x] Om FOLKOOP: oberoende status, privacy, källor och version
 - [x] in-app pilotfeedback via Web Share / clipboard
 - [x] pilotguide + teknisk feedbackmall
 
