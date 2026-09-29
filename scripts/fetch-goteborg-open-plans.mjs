@@ -120,7 +120,7 @@ async function main() {
   const response = await fetchBounded(SOURCE_URL, {
     headers: {
       accept: 'text/html,application/xhtml+xml',
-      'user-agent': 'Sverinav/0.7 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/FOLKOOP)'
     }
   });
 
