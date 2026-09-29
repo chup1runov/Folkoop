@@ -2,6 +2,8 @@
 
 29 September 2026.
 
+Privacy Notice version: **2026-09-29-v1**.
+
 **NOT READY FOR PARTICIPANT DISTRIBUTION.**
 
 Controller/contact are now identified for the current pilot. This notice is
