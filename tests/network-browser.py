@@ -25,6 +25,13 @@ async def wait_request(state,suffix,before,timeout=5):
   if len(matches)>before:return matches[-1]
   await asyncio.sleep(0.05)
  raise AssertionError(f'No {suffix} request after action; recent requests={state["requests"][-12:]}')
+async def wait_request_contains(state,fragment,before,timeout=5):
+ loop=asyncio.get_running_loop();deadline=loop.time()+timeout
+ while loop.time()<deadline:
+  matches=[(url,payload) for url,payload in state['requests'] if fragment in url]
+  if len(matches)>before:return matches[-1]
+  await asyncio.sleep(0.05)
+ raise AssertionError(f'No request containing {fragment} after action; recent requests={state["requests"][-12:]}')
 async def main():
  passed=[]
  async with async_playwright() as pw:
@@ -199,8 +206,15 @@ async def main():
   await expect(page.locator('#networkPanel')).to_contain_text('Готов забрать в субботу')
   assert await page.locator('#workspace').is_visible()
   passed.append('Together creates a shared purchase, quantity commitment and member update while local drafts remain separate')
+  back_reads=sum(1 for url,_ in state['requests'] if '/fk_cooperations?' in url)
   await page.click('[data-coop=back]')
+  await wait_request_contains(state,'/fk_cooperations?',back_reads)
+  await expect(page.locator('#netCoopCreate button.button')).to_be_enabled(timeout=15000)
+  project_reads=sum(1 for url,_ in state['requests'] if '/fk_cooperations?' in url)
   await page.evaluate("location.hash='#/projects'")
+  await wait_request_contains(state,'/fk_cooperations?',project_reads)
+  await expect(page.locator('#netCoopCreate [name=kind]')).to_have_value('project')
+  await expect(page.locator('#netCoopCreate button.button')).to_be_enabled(timeout=15000)
   await page.fill('#netCoopCreate [name=title]','Общая мастерская')
   await page.fill('#netCoopCreate [name=description]','Ищем помещение и команду')
   assert await page.locator('#netCoopCreate [name=kind]').input_value()=='project'
@@ -210,7 +224,7 @@ async def main():
   })""")
   assert project_validity['valid'],project_validity
   project_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_cooperation'))
-  await page.locator('#netCoopCreate').evaluate('(f)=>f.requestSubmit()')
+  await page.click('#netCoopCreate button.button')
   _,project_payload=await wait_request(state,'/fk_create_cooperation',project_creates)
   assert project_payload['p_kind']=='project',project_payload
   await expect(page.locator('#netTaskCreate')).to_be_visible(timeout=15000)
