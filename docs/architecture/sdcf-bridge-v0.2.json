@@ -243,7 +243,7 @@
   "supersedes": "docs/architecture/sdcf-bridge-v0.1.json",
   "cityProvenanceContract": {
     "version": "1.0",
-    "status": "advisory-but-tested",
+    "status": "partially-runtime-enforced",
     "purpose": "Make every normalized civic record traceable to the source acquisition and adapter that produced it.",
     "feedEnvelope": {
       "required": [
@@ -305,7 +305,20 @@
         "expectedAdapterVersion": "riksdagen-decisions-v2",
         "locator": "sourceQuery"
       }
-    ]
+    ],
+    "runtimeEnforcement": {
+      "path": "civic-core.js",
+      "function": "feed",
+      "enforces": [
+        "schemaVersion",
+        "sourceId",
+        "fetchedAt",
+        "adapterVersion",
+        "items",
+        "item sourceUrl host allowlist"
+      ],
+      "note": "This is structural provenance validation. It does not establish source truth, publication time or claim correctness."
+    }
   },
   "outcomeContract": {
     "version": "1.0",
