@@ -84,7 +84,7 @@ An item may inherit acquisition/adapter metadata from its feed envelope. This av
 
 A source record is not the same thing as the claim derived from it.
 
-For the current City runtime, `SverinavCore.feed()` now enforces the feed-level `adapterVersion` together with schema/source/acquisition structure. This is a structural provenance check only: it does not establish that the source is true or that a derived claim is correct.
+For the current City runtime, `FOLKOOPCore.feed()` now enforces the feed-level `adapterVersion` together with schema/source/acquisition structure. This is a structural provenance check only: it does not establish that the source is true or that a derived claim is correct.
 
 ### Civic routing
 
@@ -247,7 +247,7 @@ If City begins to infer consequential routes or submit actions automatically, re
 
 ### Multi-city interoperability
 
-If multiple FOLKOOP/FOLKUNO Nodes need a shared semantic contract, add a versioned adapter/export layer from operational PostgreSQL data to SDCF-compatible RDF/JSON-LD.
+If multiple FOLKOOP Nodes need a shared semantic contract, add a versioned adapter/export layer from operational PostgreSQL data to SDCF-compatible RDF/JSON-LD.
 
 Do not replace the operational relational model merely for ontology purity.
 

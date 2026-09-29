@@ -4,7 +4,7 @@ Only the initial document URL changes; fixture routing, assertions and app code 
 import os,runpy,sys
 from urllib.parse import urlsplit,urlunsplit
 from playwright.async_api import Page
-base=urlsplit(os.getenv('BASE_URL','http://127.0.0.1:4173/Sverinav/'))
+base=urlsplit(os.getenv('BASE_URL','http://127.0.0.1:4173/FOLKOOP/'))
 original=Page.goto
 async def goto_city(self,url,*args,**kwargs):
     parsed=urlsplit(url)

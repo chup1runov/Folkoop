@@ -527,7 +527,7 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
   inset:0;
   transform:translateX(-100%);
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);
-  animation:sverinav-shimmer 1.2s infinite
+  animation:folkoop-shimmer 1.2s infinite
 }
 .loading-line{
   height:11px;
@@ -537,7 +537,7 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
 }
 .loading-line.short{width:42%}
 .loading-line.medium{width:68%}
-@keyframes sverinav-shimmer{100%{transform:translateX(100%)}}
+@keyframes folkoop-shimmer{100%{transform:translateX(100%)}}
 @media(prefers-reduced-motion:reduce){.loading-card::after{animation:none}}
 
 .road-live-actions{display:grid;gap:8px;margin-top:13px}

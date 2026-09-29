@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 const copy=await readFile('about-copy.js','utf8'),script=await readFile('about-project.js','utf8');
 const ctx=vm.createContext({console});vm.runInContext(copy,ctx);vm.runInContext(script,ctx);
-const A=ctx.SverinavProjectAbout;
+const A=ctx.FolkoopProjectAbout;
 test('about: eleven complete localizations with eleven practical answers',()=>{
  assert.deepEqual(Object.keys(A.COPY).sort(),['ar','bs','en','es','fa','fi','ku','ru','so','sv','uk']);
  for(const [lang,L] of Object.entries(A.COPY)){

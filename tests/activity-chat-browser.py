@@ -5,7 +5,7 @@ import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
 
-BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Sverinav/')
+BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/FOLKOOP/')
 API='https://abcdefghijklmnopqrst.supabase.co'
 UID='11111111-1111-4111-8111-111111111111'
 OTHER='22222222-2222-4222-8222-222222222222'

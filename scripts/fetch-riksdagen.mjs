@@ -70,7 +70,7 @@ async function main() {
   const response = await fetchBounded(API_URL, {
     headers: {
       accept: 'application/json',
-      'user-agent': 'Sverinav/0.11 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'FOLKOOP/0.11 (+https://github.com/chup1runov/Folkoop)'
     }
   });
 

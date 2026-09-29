@@ -676,7 +676,7 @@ It can learn:
 
 - **community/network topology from Hylo**;
 - **physical operations from Karrot**;
-- while preserving **intent-first cooperation + City + Projects + Shared Purchase + Mura + SDCF** as its own architecture.
+- while preserving **intent-first cooperation + City + Projects + Shared Purchase + FOLKOOP guide + SDCF** as its own architecture.
 
 ---
 

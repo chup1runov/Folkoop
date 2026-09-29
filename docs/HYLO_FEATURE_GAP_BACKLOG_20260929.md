@@ -174,15 +174,15 @@ The first Göteborg core-loop pilot remains protected. Features that do not unbl
 
 ---
 
-# I. Learning, onboarding and Mura
+# I. Learning, onboarding and FOLKOOP guide
 
 | # | Capability | Hylo | FOLKOOP | Decision | Timing | Why |
 |---|---|---:|---:|---|---|---|
 | 65 | Structured learning/onboarding tracks | ✅ | — | ADAPT | LATER | Excellent fit for Host, safety and steward training after those roles exist. |
 | 66 | Track progress and completion | ✅ | — | LATER | LATER | Useful for operational qualifications, not engagement gamification. |
 | 67 | Gated access after onboarding | 🧪 | 🟡 future Center/safety idea | ADAPT | LATER | Potentially useful for Center equipment or night access. |
-| 68 | Human-facing companion / visual onboarding guide | — | ✅ Mura | KEEP | NOW | Distinct FOLKOOP UI layer; keep it useful rather than decorative. |
-| 69 | AI group assistant | 🧪 | — | LATER | LATER | Mura may eventually become a user-facing cooperation guide, but only after data and consent design mature. |
+| 68 | Human-facing companion / visual onboarding guide | — | ✅ FOLKOOP guide | KEEP | NOW | Distinct FOLKOOP UI layer; keep it useful rather than decorative. |
+| 69 | AI group assistant | 🧪 | — | LATER | LATER | FOLKOOP guide may eventually become a user-facing cooperation guide, but only after data and consent design mature. |
 
 ---
 
@@ -219,7 +219,7 @@ These are current FOLKOOP advantages or defining choices:
 7. SDCF outcome/provenance guardrails;
 8. action-first Home instead of feed-first engagement;
 9. organic vs facilitated pilot-match distinction;
-10. Mura as a human-facing navigation/onboarding layer.
+10. FOLKOOP guide as a human-facing navigation/onboarding layer.
 
 ## Best Hylo ideas to adapt after the core pilot
 

@@ -2,7 +2,7 @@
 import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
-BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Sverinav/')
+BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/FOLKOOP/')
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 async def main():
  results=[]

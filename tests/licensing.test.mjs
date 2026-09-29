@@ -10,7 +10,7 @@ const license=(await readFile('LICENSE','utf8')).replace(/\s+/g,' ');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const build=await readFile('scripts/build-site.mjs','utf8');
 test('rights: operative notice and package metadata agree',()=>{
- assert(license.includes('Version 1.0 — 23 September 2026'));
+ assert(license.includes('Version 1.1 — 29 September 2026'));
  assert(!license.includes('DRAFT FOR'));
  assert(license.includes('All rights reserved'));
  assert(license.includes('not an open-source or free-software'));
@@ -23,14 +23,14 @@ test('rights: GitHub and mandatory-law boundaries override approval',()=>{
  }
 });
 test('rights: resident use and independent rights are preserved',()=>{
- for(const marker of ['without a fee to Sverinav','installed-PWA offline','retain their own rights','third-party','No automatic conversion','prior express written','non-commercial'])assert(license.includes(marker),marker);
+ for(const marker of ['without a fee to FOLKOOP','installed-PWA offline','retain their own rights','third-party','No automatic conversion','prior express written','non-commercial'])assert(license.includes(marker),marker);
 });
 test('rights: built artifact ships exact notices without changing application code',async()=>{
  const m=build.match(/const files=(\[[^;]+\]);/);
  assert(m,'build allowlist');
  const files=JSON.parse(m[1].replaceAll("'",'"'));
  for(const name of ['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md'])assert(files.includes(name));
- const tmp=await mkdtemp(path.join(os.tmpdir(),'sverinav-rights-'));
+ const tmp=await mkdtemp(path.join(os.tmpdir(),'folkoop-rights-'));
  try{
   await mkdir(path.join(tmp,'scripts'));
   await copyFile(path.join(root,'scripts/build-site.mjs'),path.join(tmp,'scripts/build-site.mjs'));

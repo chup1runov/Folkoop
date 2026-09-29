@@ -253,7 +253,7 @@ This suggests FOLKOOP needs a **social-entry mode** in addition to structured Ne
 | 82 | RSVP | ✅ | — | ADAPT | POST-PILOT | Basic. |
 | 83 | Place + time | ✅ | — | ADAPT | POST-PILOT | Same conclusion as Karrot/Decidim. |
 | 84 | Event attendance/check-in support | ✅ geofenced check-in exists in privacy docs | — | LATER | CENTER STAGE | Useful, but location-sensitive. |
-| 85 | Meetup suggestion from conversational intent | historical Geneva/current chat action direction | — | ADAPT | LATER | Strong Mura/chat opportunity. |
+| 85 | Meetup suggestion from conversational intent | historical Geneva/current chat action direction | — | ADAPT | LATER | Strong FOLKOOP guide/chat opportunity. |
 | 86 | Event created without full Project | ✅ | — | ADAPT | POST-PILOT | Important for low-commitment social activity. |
 | 87 | Project task structure around event | — | ✅ | KEEP | POST-PILOT | FOLKOOP can deepen events when work is required. |
 | 88 | Participant slots/roles | — | — future Karrot pattern | ADAPT FROM KARROT | POST-PILOT | Better for volunteer/work events. |
@@ -297,7 +297,7 @@ Trying to force all four into one heavy object would make spontaneous social con
 | 92 | Casual conversation valuable by itself | ✅ | 🟡 | ADAPT in social/community contexts |
 | 93 | Friendship matching | ✅ | — | OPTIONAL social layer |
 | 94 | Action/result required for product success | — | ✅ | KEEP for cooperation metrics |
-| 95 | Belonging can itself be an outcome | ✅ implicit | 🟡 FOLKUNO impact concept | ADAPT measurement |
+| 95 | Belonging can itself be an outcome | ✅ implicit | 🟡 FOLKOOP impact concept | ADAPT measurement |
 | 96 | Come-alone UX | ✅ discovery/group model | 🟡 Center vision | ADAPT strongly |
 
 ## Strategic implication
@@ -473,10 +473,10 @@ FOLKOOP City can connect to:
 BFF helps people arrange meetups in external places.
 FOLKOOP potentially operates a persistent physical third place.
 
-## 5. Mura
+## 5. FOLKOOP guide
 
 BFF uses conventional discovery UI.
-Mura could explicitly welcome a person, explain the environment and route them to people/actions.
+FOLKOOP guide could explicitly welcome a person, explain the environment and route them to people/actions.
 
 ## 6. SDCF
 
@@ -585,7 +585,7 @@ This may be one of the most important additions inspired by BFF/Geneva.
 
 ## User opens FOLKOOP
 
-Mura asks:
+FOLKOOP guide asks:
 
 > Что тебе сейчас ближе?
 

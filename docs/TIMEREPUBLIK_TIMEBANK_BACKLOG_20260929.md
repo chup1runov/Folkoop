@@ -301,7 +301,7 @@ This is strategically much safer.
 
 # E. Credits vs Contribution vs Access — do not mix them
 
-Earlier FOLKOOP/FOLKUNO planning considered a Credits concept.
+Earlier FOLKOOP planning considered a Credits concept.
 
 This analysis suggests three distinct objects must remain separate:
 

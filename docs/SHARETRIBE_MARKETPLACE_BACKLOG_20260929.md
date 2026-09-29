@@ -916,18 +916,18 @@ This prevents premature financial/regulatory scope.
 
 ---
 
-# W. Mura opportunity after Sharetribe
+# W. FOLKOOP guide opportunity after Sharetribe
 
 A marketplace usually asks:
 > What do you want to search for?
 
-Mura could ask:
+FOLKOOP guide could ask:
 > What are you trying to accomplish?
 
 Example:
 > "Мне нужна дрель на субботу."
 
-Mura determines:
+FOLKOOP guide determines:
 - Need?
 - Shared Resource?
 - commercial rental?
@@ -1069,7 +1069,7 @@ A more defensible architecture is:
 - Shared Purchase coordination;
 - City orchestration;
 - Center/physical network;
-- Mura interface;
+- FOLKOOP guide interface;
 - outcome/provenance model via SDCF.
 
 ## FOLKOOP learns/adapts

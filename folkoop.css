@@ -7,76 +7,76 @@
 @media(max-width:720px){.onboarding-card,.onboarding-card[data-side="left"]{left:12px;right:12px;bottom:12px;width:auto;max-height:48vh;padding:18px}.onboarding-card h2{font-size:1.35rem}.onboarding-actions .button{min-height:42px;padding:10px 13px}.folkoop-helper-shell{right:12px;bottom:12px}.folkoop-helper-button{width:50px;height:50px}.folkoop-helper-panel{right:0;bottom:60px;width:min(340px,calc(100vw - 24px))}.onboarding-spotlight{border-radius:13px}}
 
 
-/* v0.29 — authored directional Mura poses + real sit-edge placement */
+/* v0.29 — authored directional FOLKOOP guide poses + real sit-edge placement */
 .language-gate-open{overflow:hidden}
-.mura-language-gate{position:fixed;inset:0;z-index:140;display:grid;place-items:center;padding:24px}
-.mura-language-gate[hidden]{display:none!important}
-.mura-language-backdrop{position:absolute;inset:0;background:linear-gradient(145deg,#f6f3ee 0%,#f8e5dc 58%,#eee4d9 100%)}
-.mura-language-card{position:relative;z-index:1;width:min(920px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:0 28px 100px #0003;display:grid;grid-template-columns:minmax(210px,.75fr) minmax(0,1.4fr);align-items:center;gap:30px;padding:30px}
-.mura-language-character{min-height:330px;display:flex;align-items:flex-end;justify-content:center;background:radial-gradient(circle at 50% 72%,#f8e5dc 0 35%,transparent 36%);border-radius:24px}
-.mura-language-character img{display:block;width:min(240px,88%);height:auto;filter:drop-shadow(0 16px 22px #0002);animation:mura-welcome-bob 3.4s ease-in-out infinite}
-.mura-language-copy h1{font-size:clamp(2rem,4vw,3.25rem);margin-bottom:10px}
-.mura-language-hello{font-weight:700;margin-bottom:5px}
-.mura-language-prompt{color:var(--muted);margin-bottom:20px}
-.mura-language-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.mura-language-choice{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;text-align:start;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;color:var(--ink)}
-.mura-language-choice:hover,.mura-language-choice:focus-visible{background:var(--soft);border-color:#d9a28d}
-.mura-language-choice.is-current{box-shadow:0 0 0 2px #e65a3a33 inset}
-.mura-language-choice strong{font-size:.92rem}.mura-language-choice span{font-size:.68rem;color:var(--muted);letter-spacing:.08em}
-.mura-actor{--mura-w:124px;position:fixed;width:var(--mura-w);height:auto;aspect-ratio:192/208;border:0;background:transparent;padding:0;margin:0;z-index:103;transition:left .32s cubic-bezier(.2,.75,.25,1),top .32s cubic-bezier(.2,.75,.25,1),right .32s,bottom .32s,filter .2s,opacity .2s,transform .2s;filter:drop-shadow(0 10px 14px #0003);overflow:visible;touch-action:manipulation}
-.mura-actor[hidden]{display:none!important}
-.mura-actor:not(:disabled){cursor:pointer}
-.mura-actor:disabled{cursor:default}
-.mura-actor>img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;transition:transform .22s ease}
-.mura-actor.is-home:not(:disabled):hover>img{transform:translateY(-4px) rotate(-1deg)}
-.mura-actor[data-pose="idle"]>img{animation:mura-breathe 3.6s ease-in-out infinite}
-.mura-actor[data-pose^="point-"]>img{animation:mura-point-body 1.3s ease-in-out infinite}
-.mura-actor[data-pose="idea"]>img{animation:mura-idea-body 1.8s ease-in-out infinite}
-.mura-actor[data-pose="sit-edge"]>img{animation:mura-sit-body 2.7s ease-in-out infinite}
-.mura-actor[data-pose="wink"]>img{animation:mura-helper-wink 2.4s ease-in-out infinite}
-.mura-puff{position:absolute;z-index:4;inset:38% auto auto 50%;width:8px;height:8px;pointer-events:none;opacity:0}
-.mura-puff i{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #e5d7cd}
-.mura-puff i:nth-child(1){transform:translate(-24px,-9px)}.mura-puff i:nth-child(2){transform:translate(15px,-17px)}.mura-puff i:nth-child(3){transform:translate(20px,14px)}.mura-puff i:nth-child(4){transform:translate(-15px,18px)}
-.mura-actor.teleport-out{opacity:0;transform:scale(.45) rotate(-8deg);filter:blur(5px) drop-shadow(0 8px 10px #0001)}
-.mura-actor.teleport-out .mura-puff{opacity:1;animation:mura-puff .28s ease-out both}
-.mura-actor.teleport-in{animation:mura-pop .38s cubic-bezier(.15,.9,.25,1.25)}
-.mura-actor.is-tour{pointer-events:none}
-.mura-actor.is-home{z-index:72}
+.folkoop-guide-language-gate{position:fixed;inset:0;z-index:140;display:grid;place-items:center;padding:24px}
+.folkoop-guide-language-gate[hidden]{display:none!important}
+.folkoop-guide-language-backdrop{position:absolute;inset:0;background:linear-gradient(145deg,#f6f3ee 0%,#f8e5dc 58%,#eee4d9 100%)}
+.folkoop-guide-language-card{position:relative;z-index:1;width:min(920px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:0 28px 100px #0003;display:grid;grid-template-columns:minmax(210px,.75fr) minmax(0,1.4fr);align-items:center;gap:30px;padding:30px}
+.folkoop-guide-language-character{min-height:330px;display:flex;align-items:flex-end;justify-content:center;background:radial-gradient(circle at 50% 72%,#f8e5dc 0 35%,transparent 36%);border-radius:24px}
+.folkoop-guide-language-character img{display:block;width:min(240px,88%);height:auto;filter:drop-shadow(0 16px 22px #0002);animation:folkoop-guide-welcome-bob 3.4s ease-in-out infinite}
+.folkoop-guide-language-copy h1{font-size:clamp(2rem,4vw,3.25rem);margin-bottom:10px}
+.folkoop-guide-language-hello{font-weight:700;margin-bottom:5px}
+.folkoop-guide-language-prompt{color:var(--muted);margin-bottom:20px}
+.folkoop-guide-language-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.folkoop-guide-language-choice{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;text-align:start;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;color:var(--ink)}
+.folkoop-guide-language-choice:hover,.folkoop-guide-language-choice:focus-visible{background:var(--soft);border-color:#d9a28d}
+.folkoop-guide-language-choice.is-current{box-shadow:0 0 0 2px #e65a3a33 inset}
+.folkoop-guide-language-choice strong{font-size:.92rem}.folkoop-guide-language-choice span{font-size:.68rem;color:var(--muted);letter-spacing:.08em}
+.folkoop-guide-actor{--folkoop-guide-w:124px;position:fixed;width:var(--folkoop-guide-w);height:auto;aspect-ratio:192/208;border:0;background:transparent;padding:0;margin:0;z-index:103;transition:left .32s cubic-bezier(.2,.75,.25,1),top .32s cubic-bezier(.2,.75,.25,1),right .32s,bottom .32s,filter .2s,opacity .2s,transform .2s;filter:drop-shadow(0 10px 14px #0003);overflow:visible;touch-action:manipulation}
+.folkoop-guide-actor[hidden]{display:none!important}
+.folkoop-guide-actor:not(:disabled){cursor:pointer}
+.folkoop-guide-actor:disabled{cursor:default}
+.folkoop-guide-actor>img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;transition:transform .22s ease}
+.folkoop-guide-actor.is-home:not(:disabled):hover>img{transform:translateY(-4px) rotate(-1deg)}
+.folkoop-guide-actor[data-pose="idle"]>img{animation:folkoop-guide-breathe 3.6s ease-in-out infinite}
+.folkoop-guide-actor[data-pose^="point-"]>img{animation:folkoop-guide-point-body 1.3s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="idea"]>img{animation:folkoop-guide-idea-body 1.8s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="sit-edge"]>img{animation:folkoop-guide-sit-body 2.7s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="wink"]>img{animation:folkoop-guide-helper-wink 2.4s ease-in-out infinite}
+.folkoop-guide-puff{position:absolute;z-index:4;inset:38% auto auto 50%;width:8px;height:8px;pointer-events:none;opacity:0}
+.folkoop-guide-puff i{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #e5d7cd}
+.folkoop-guide-puff i:nth-child(1){transform:translate(-24px,-9px)}.folkoop-guide-puff i:nth-child(2){transform:translate(15px,-17px)}.folkoop-guide-puff i:nth-child(3){transform:translate(20px,14px)}.folkoop-guide-puff i:nth-child(4){transform:translate(-15px,18px)}
+.folkoop-guide-actor.teleport-out{opacity:0;transform:scale(.45) rotate(-8deg);filter:blur(5px) drop-shadow(0 8px 10px #0001)}
+.folkoop-guide-actor.teleport-out .folkoop-guide-puff{opacity:1;animation:folkoop-guide-puff .28s ease-out both}
+.folkoop-guide-actor.teleport-in{animation:folkoop-guide-pop .38s cubic-bezier(.15,.9,.25,1.25)}
+.folkoop-guide-actor.is-tour{pointer-events:none}
+.folkoop-guide-actor.is-home{z-index:72}
 .folkoop-helper-shell{position:fixed;right:18px;bottom:18px;z-index:71;width:0;height:0;pointer-events:none}
 .folkoop-helper-panel{pointer-events:auto;right:0;bottom:112px}
 .onboarding-guide-mark{display:none}
 .onboarding-guide{padding-inline-start:0}
 .onboarding-card{max-width:500px}
 .onboarding[data-no-target="0"] .onboarding-card{backdrop-filter:saturate(1.05)}
-.onboarding .mura-actor{z-index:103}
-@keyframes mura-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.01)}}
-@keyframes mura-point-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-@keyframes mura-idea-body{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015)}}
-@keyframes mura-sit-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
-@keyframes mura-helper-wink{0%,78%,100%{transform:translateY(0)}84%{transform:translateY(-3px)}}
-@keyframes mura-puff{0%{opacity:0;transform:scale(.5)}45%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
-@keyframes mura-pop{0%{opacity:0;transform:scale(.55)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
-@keyframes mura-welcome-bob{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-6px) rotate(-.5deg)}55%{transform:translateY(-6px) rotate(.5deg)}}
+.onboarding .folkoop-guide-actor{z-index:103}
+@keyframes folkoop-guide-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.01)}}
+@keyframes folkoop-guide-point-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes folkoop-guide-idea-body{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015)}}
+@keyframes folkoop-guide-sit-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+@keyframes folkoop-guide-helper-wink{0%,78%,100%{transform:translateY(0)}84%{transform:translateY(-3px)}}
+@keyframes folkoop-guide-puff{0%{opacity:0;transform:scale(.5)}45%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
+@keyframes folkoop-guide-pop{0%{opacity:0;transform:scale(.55)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes folkoop-guide-welcome-bob{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-6px) rotate(-.5deg)}55%{transform:translateY(-6px) rotate(.5deg)}}
 @media(max-width:720px){
- .mura-language-gate{padding:10px}
- .mura-language-card{grid-template-columns:1fr;gap:10px;padding:18px;border-radius:20px;max-height:calc(100vh - 20px)}
- .mura-language-character{min-height:178px;background:radial-gradient(circle at 50% 75%,#f8e5dc 0 32%,transparent 33%)}
- .mura-language-character img{width:125px}
- .mura-language-copy h1{font-size:1.75rem;margin-bottom:6px}
- .mura-language-hello,.mura-language-prompt{font-size:.86rem}
- .mura-language-prompt{margin-bottom:11px}
- .mura-language-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
- .mura-language-choice{padding:9px 10px;min-height:42px}.mura-language-choice strong{font-size:.82rem}
+ .folkoop-guide-language-gate{padding:10px}
+ .folkoop-guide-language-card{grid-template-columns:1fr;gap:10px;padding:18px;border-radius:20px;max-height:calc(100vh - 20px)}
+ .folkoop-guide-language-character{min-height:178px;background:radial-gradient(circle at 50% 75%,#f8e5dc 0 32%,transparent 33%)}
+ .folkoop-guide-language-character img{width:125px}
+ .folkoop-guide-language-copy h1{font-size:1.75rem;margin-bottom:6px}
+ .folkoop-guide-language-hello,.folkoop-guide-language-prompt{font-size:.86rem}
+ .folkoop-guide-language-prompt{margin-bottom:11px}
+ .folkoop-guide-language-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .folkoop-guide-language-choice{padding:9px 10px;min-height:42px}.folkoop-guide-language-choice strong{font-size:.82rem}
  .folkoop-helper-shell{right:10px;bottom:10px}.folkoop-helper-panel{right:0;bottom:98px}
  .onboarding-card{max-height:44vh}
 }
 @media(max-width:380px){
- .mura-language-character{min-height:145px}.mura-language-character img{width:108px}
- .mura-language-choices{grid-template-columns:1fr 1fr}
- .mura-language-choice{min-height:38px;padding:7px 9px}
+ .folkoop-guide-language-character{min-height:145px}.folkoop-guide-language-character img{width:108px}
+ .folkoop-guide-language-choices{grid-template-columns:1fr 1fr}
+ .folkoop-guide-language-choice{min-height:38px;padding:7px 9px}
 }
 @media(prefers-reduced-motion:reduce){
- .mura-language-character img,.mura-actor,.mura-spotlight{animation:none!important;transition:none!important}
- .mura-actor.teleport-out{opacity:1;transform:none;filter:drop-shadow(0 10px 14px #0003)}
- .mura-puff{display:none!important}
+ .folkoop-guide-language-character img,.folkoop-guide-actor,.folkoop-guide-spotlight{animation:none!important;transition:none!important}
+ .folkoop-guide-actor.teleport-out{opacity:1;transform:none;filter:drop-shadow(0 10px 14px #0003)}
+ .folkoop-guide-puff{display:none!important}
 }

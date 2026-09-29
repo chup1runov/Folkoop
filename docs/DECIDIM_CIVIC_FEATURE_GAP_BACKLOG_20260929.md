@@ -754,7 +754,7 @@ legitimate civic/organizational democratic process infrastructure.
 **Intent -> match -> cooperation -> people/resources/city -> action -> outcome -> repeat**
 
 Intended strength:
-a cross-domain cooperation layer that can route into systems such as Decidim while connecting civic information with people, projects, resources, future physical Centers, Mura and evidence-aware outcomes.
+a cross-domain cooperation layer that can route into systems such as Decidim while connecting civic information with people, projects, resources, future physical Centers, FOLKOOP guide and evidence-aware outcomes.
 
 ---
 
@@ -795,7 +795,7 @@ After Hylo + Karrot + Decidim, the clearest decomposition is:
 - Shared Purchase;
 - City across multiple external systems;
 - Center as future network/physical bridge;
-- Mura human interface;
+- FOLKOOP guide human interface;
 - SDCF provenance/outcome integrity.
 
 ---

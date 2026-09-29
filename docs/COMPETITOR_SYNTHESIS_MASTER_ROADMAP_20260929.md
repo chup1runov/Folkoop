@@ -36,7 +36,7 @@ FOLKOOP should own:
 - future Center/physical-network layer;
 - cooperation history;
 - evidence-aware outcome handling;
-- Mura as the human-facing guide across the system.
+- FOLKOOP guide as the human-facing guide across the system.
 
 ## FOLKOOP adapts selected patterns
 
@@ -107,7 +107,7 @@ Examples:
 - I want to participate in something happening nearby.
 - I need a place/resource/provider.
 
-Mura may eventually help classify/rout this intent.
+FOLKOOP guide may eventually help classify/rout this intent.
 
 ## 3.2 Cooperation object
 
@@ -356,7 +356,7 @@ Own when the function is part of the cooperation graph itself:
 - contribution history;
 - next-action routing;
 - City aggregation/navigation;
-- Mura;
+- FOLKOOP guide;
 - outcome/provenance semantics.
 
 ## Native lightweight + specialist escape hatch
@@ -747,21 +747,21 @@ behind internal credits.
 
 ---
 
-## Phase 8 — Mura becomes an orchestration interface
+## Phase 8 — FOLKOOP guide becomes an orchestration interface
 
 **Activation condition: enough structured graph/data exists to make routing useful.**
 
-Mura should not become a generic chatbot first.
+FOLKOOP guide should not become a generic chatbot first.
 
 Desired progression:
 
-### Mura v1
+### FOLKOOP guide v1
 Current:
 - onboarding;
 - pointing;
 - navigation/help.
 
-### Mura v2
+### FOLKOOP guide v2
 Deterministic intent routing:
 - Need;
 - Offer;
@@ -770,7 +770,7 @@ Deterministic intent routing:
 - City;
 - Center/social.
 
-### Mura v3
+### FOLKOOP guide v3
 Graph-aware suggestions:
 - relevant person;
 - community;
@@ -779,7 +779,7 @@ Graph-aware suggestions:
 - civic route;
 - Meetup/Activity.
 
-### Mura v4
+### FOLKOOP guide v4
 AI assistance, only after evidence/safety review:
 - natural-language intent parsing;
 - explainable recommendations;
@@ -856,7 +856,7 @@ This is **not** an instruction to build all items in order. It is a priority sta
 
 ## Later / conditional
 29. AI matching;
-30. natural-language Mura orchestration;
+30. natural-language FOLKOOP guide orchestration;
 31. timebank;
 32. formal elections;
 33. participatory budgeting;

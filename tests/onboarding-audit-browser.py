@@ -25,7 +25,7 @@ GEOMETRY = """() => {
  const box = s => {const e=document.querySelector(s);if(!e)return null;
   const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};};
  const overlap=(a,b)=>a&&b ? Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)) : 0;
- const actor=box('#muraActor'),card=box('.onboarding-card');
+ const actor=box('#folkoopGuideActor'),card=box('.onboarding-card');
  const target=box('.tutorial-target')||actor;
  const contained=r=>r&&card&&r.x>=card.x-.5&&r.y>=card.y-.5&&r.x+r.w<=card.x+card.w+.5&&r.y+r.h<=card.y+card.h+.5;
  const heading=box('#onboardingTitle'),next=box('[data-onboarding="next"]'),back=box('[data-onboarding="back"]'),skip=box('[data-onboarding="skip"]'),copy=box('#onboardingBody');
@@ -35,7 +35,7 @@ GEOMETRY = """() => {
   actorOverlap:overlap(actor,card),targetOverlap:overlap(target,card),
   controlsVisible:[heading,next,back,skip].every(contained)&&!!hit&&button.contains(hit),
   copyHeight:copy?.h||0,copyScrollTop:document.querySelector('#onboardingBody').scrollTop,
-  animation:getComputedStyle(document.querySelector('#muraActor>img')).animationName,
+  animation:getComputedStyle(document.querySelector('#folkoopGuideActor>img')).animationName,
   focusInTour:!!document.activeElement.closest('.onboarding-card'),
   outside:[actor,card].some(r=>!r||r.x<-.5||r.y<-.5||r.x+r.w>innerWidth+.5||r.y+r.h>innerHeight+.5)};
 }"""
@@ -54,13 +54,13 @@ async def main():
    errors = []
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE+'?intro=1')
-   await expect(page.locator('#muraLanguageGate')).to_be_visible()
-   await page.locator('[data-mura-lang]').first.focus()
+   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
+   await page.locator('[data-folkoop-guide-lang]').first.focus()
    await page.keyboard.press('Shift+Tab')
-   if not await page.evaluate("!!document.activeElement.closest('#muraLanguageGate')"):
+   if not await page.evaluate("!!document.activeElement.closest('#folkoopGuideLanguageGate')"):
     failures.append(f'{width}: language gate leaks keyboard focus')
    await page.screenshot(path=str(OUT/f'audit-language-{width}.png'))
-   await page.click('[data-mura-lang="ru"]')
+   await page.click('[data-folkoop-guide-lang="ru"]')
    await expect(page.locator('#onboarding')).to_be_visible()
    await page.wait_for_timeout(220)
    for index in range(14):
@@ -87,12 +87,12 @@ async def main():
    await expect(page.locator('#onboarding')).to_be_hidden()
    await page.emulate_media(reduced_motion='no-preference')
    await page.evaluate("""() => {
-    const guide=FolkoopMuraGuide;
+    const guide=FolkoopGuide;
     guide.teleportTo(document.querySelector('.brand'));
     guide.home({instant:true});
    }""")
    await page.wait_for_timeout(250)
-   opacity = await page.locator('#muraActor').evaluate('e=>Number(getComputedStyle(e).opacity)')
+   opacity = await page.locator('#folkoopGuideActor').evaluate('e=>Number(getComputedStyle(e).opacity)')
    if opacity<.99: failures.append(f'{width}: interrupted teleport leaves helper invisible')
    if errors: failures.extend(f'{width}: page error {e}' for e in errors)
    await context.close()
