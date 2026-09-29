@@ -26,6 +26,7 @@ test('Mura is the sole current character name and filename prefix',async()=>{
  const offenders=[];
  for(const file of await walk('.')){
   const normalized=file.replaceAll('\\','/').toLowerCase();
+  if(normalized.startsWith('archive/mura-standalone/')||normalized.startsWith('docs/history/mura/'))continue;
   for(const word of legacy)if(normalized.includes(word))offenders.push(normalized+': legacy path');
   const ext=path.extname(file).toLowerCase();
   if(ext&&!textExt.has(ext))continue;

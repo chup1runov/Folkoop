@@ -1,0 +1,42 @@
+name: Web Mode E2E
+
+on:
+  pull_request:
+    paths:
+      - "web-preview/**"
+      - "test/web-preview.test.cjs"
+      - "test/web-model-parity.test.cjs"
+      - "package.json"
+      - "playwright.config.cjs"
+      - ".github/workflows/web-e2e.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Unit and parity tests
+        run: npm test
+      - name: Browser E2E
+        run: npm run test:web:e2e
+      - name: Upload browser report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mura-web-e2e-${{ github.sha }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
