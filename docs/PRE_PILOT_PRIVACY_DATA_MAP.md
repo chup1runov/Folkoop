@@ -4,7 +4,12 @@
 
 This is the technical data inventory and account-lifecycle map for the controlled
 Göteborg pilot. It describes the current repository/schema behavior. It is **not**
-a final privacy notice, a lawful-basis decision or legal advice.
+a final privacy notice or legal advice.
+
+Policy choices are intentionally separated from mechanics:
+- `PRE_PILOT_PRIVACY_DECISIONS.md` — working legal-basis, retention and closure defaults;
+- `PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md` — operator rights/breach procedure;
+- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft.
 
 ## Executive finding
 
@@ -273,22 +278,22 @@ per-category transformations, and only removes the Auth identity at the end.
 
 That implementation is intentionally **not** guessed in this documentation PR.
 
-## P0 organisational/privacy decisions still required
+## P0 organisational/privacy gate
 
-Before ordinary participants receive invites, document:
+The repository now contains working pilot defaults for legal basis, retention,
+account closure, rights handling, participant information and incident response.
 
-1. Controller identity and privacy-contact route.
-2. Processing purpose and legal basis per purpose.
-3. Participant-facing privacy information.
-4. Retention/deletion criteria per data class, including Box.
-5. Account closure rules for shared content and owner-controlled containers.
-6. Rights-handling procedure (access/correction/deletion and other applicable
-   requests).
-7. Processor/service inventory for services actually used.
-8. Incident/personal-data-breach procedure.
+Ordinary participant invitations remain blocked until:
+1. the actual controller identity is confirmed;
+2. the actual privacy-contact route is confirmed;
+3. the controller approves the working legal-basis choices;
+4. the DPA/terms, subprocessors and transfer safeguards for the actually used
+   services are checked;
+5. the participant privacy notice is completed with those real details;
+6. the final Auth route and two-account technical gate pass.
 
-These require a dedicated privacy/legal review; this technical map does not
-pretend to decide them.
+This technical map remains the source of truth for database mechanics. The
+decision documents above are the source of truth for pilot policy.
 
 ## Engineering gate
 
