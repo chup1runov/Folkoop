@@ -22,10 +22,10 @@ function refreshBrand(){
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
   while((node=walker.nextNode())){
    if(['SCRIPT','STYLE','TEXTAREA','INPUT'].includes(node.parentElement?.tagName))continue;
-   if(/Sverinav/.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/Sverinav/g,'FOLKOOP');
+   if(/FOLKOOP/.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/FOLKOOP/g,'FOLKOOP');
   }
  }
- document.querySelectorAll('[aria-label]').forEach(el=>{const v=el.getAttribute('aria-label');if(v.includes('Sverinav'))el.setAttribute('aria-label',v.replace(/Sverinav/g,'FOLKOOP'));});
+ document.querySelectorAll('[aria-label]').forEach(el=>{const v=el.getAttribute('aria-label');if(v.includes('FOLKOOP'))el.setAttribute('aria-label',v.replace(/FOLKOOP/g,'FOLKOOP'));});
  const mark=document.querySelector('.brand-lockup img');if(mark&&!mark.src.endsWith('/folkoop-mark.png'))mark.src='./folkoop-mark.png';
  const lang=document.documentElement.lang;
  document.title=(cityNames[lang]||'City')+' · FOLKOOP';
@@ -35,7 +35,7 @@ window.addEventListener('message',e=>{
  if(e.origin!==location.origin||e.source!==parent||e.data?.type!=='folkoop:city')return;
  const v=e.data;
  if(cityNames[v.language]&&v.language!==document.documentElement.lang&&typeof applyLanguage==='function')applyLanguage(v.language);
- if(v.visible===false){globalThis.SverinavToday?.stop();wasHidden=true;}
+ if(v.visible===false){globalThis.FolkoopCityToday?.stop();wasHidden=true;}
  if(v.visible===true&&wasHidden){wasHidden=false;if(typeof render==='function')render(currentScreen,false);}
 });
 new MutationObserver(refreshBrand).observe(document.body,{childList:true,subtree:true});
