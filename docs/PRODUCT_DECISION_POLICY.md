@@ -121,7 +121,7 @@ The lightweight FOLKOOP/SDCF bridge in `docs/architecture/SDCF_BRIDGE.md` applie
 
 Before approving a feature that introduces any of the following:
 
-- structured verified outcomes;
+- structured outcome confirmation or external-evidence handling;
 - algorithmic/AI matching;
 - model-generated recommendations;
 - consequential City inference;
