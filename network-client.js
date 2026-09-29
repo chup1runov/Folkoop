@@ -4,6 +4,22 @@
 'use strict';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const fail=code=>Object.assign(new Error(code),{code});
+const POLICY=Object.freeze({
+ termsVersion:'2026-09-29-v1',
+ privacyVersion:'2026-09-29-v1',
+ termsUrlEn:'https://github.com/chup1runov/Folkoop/blob/main/docs/PILOT_TERMS_EN.md',
+ termsUrlSv:'https://github.com/chup1runov/Folkoop/blob/main/docs/PILOT_TERMS_SV.md',
+ privacyUrl:'https://github.com/chup1runov/Folkoop/blob/main/docs/PILOT_PRIVACY_NOTICE_DRAFT.md'
+});
+function policyAcceptance(value){
+ if(value?.termsAccepted!==true||value?.privacyAcknowledged!==true)throw fail('POLICY_REQUIRED');
+ return {
+  p_terms_version:POLICY.termsVersion,
+  p_accept_terms:true,
+  p_privacy_version:POLICY.privacyVersion,
+  p_ack_privacy:true
+ };
+}
 function configuration(value){
  if(value?.enabled!==true)return null;
  let u,r;try{u=new URL(value.url);r=new URL(value.oauthRedirectUrl||'https://invalid.example/');}catch{throw fail('CONFIG');}
@@ -35,6 +51,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     }
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
+    if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
     throw fail(response.status===429?'RATE_LIMIT':response.status===403?'DENIED':'REQUEST_FAILED');
    }
    if(response.status===204)return null;
@@ -68,25 +85,25 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
-  enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
+  enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   googleOAuthUrl(){
    if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');
    const u=new URL(cfg.url+'/auth/v1/authorize');u.searchParams.set('provider','google');u.searchParams.set('redirect_to',cfg.oauthRedirectUrl);return u.href;
   },
-  async completeOAuth(accessToken,expiresIn,inviteCode=''){
+  async completeOAuth(accessToken,expiresIn,inviteCode='',acceptance){
    if(typeof accessToken!=='string'||accessToken.length<20||accessToken.length>12000)throw fail('INVALID_INPUT');
    const seconds=Number(expiresIn);if(!Number.isFinite(seconds)||seconds<=0||seconds>86400)throw fail('INVALID_INPUT');
-   const invite=text(inviteCode,120),attempt=++authAttempt;
+   const invite=text(inviteCode,120),policy=policyAcceptance(acceptance),attempt=++authAttempt;
    const who=await request('/auth/v1/user',{auth:false,token:accessToken});
    if(attempt!==authAttempt)throw fail('STALE');
    session={id:id(who?.id),token:accessToken,expiresAt:clock()+seconds*1000};
-   try{await rpc('fk_claim_pilot_invite',{p_code:invite});}catch(e){clear();throw e;}
+   try{await rpc('fk_claim_pilot_invite',{p_code:invite,...policy});}catch(e){clear();throw e;}
    notify();return user();
   },
   async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
-  async verify(email,code,inviteCode=''){
+  async verify(email,code,inviteCode='',acceptance){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
-   const invite=text(inviteCode,120);
+   const invite=text(inviteCode,120),policy=policyAcceptance(acceptance);
    const attempt=++authAttempt;
    const result=await request('/auth/v1/verify',{method:'POST',auth:false,body:{email,token:code,type:'email'}});
    if(attempt!==authAttempt)throw fail('STALE');
@@ -95,7 +112,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const who=await request('/auth/v1/user',{auth:false,token:result.access_token});
    if(attempt!==authAttempt)throw fail('STALE');
    session={id:id(who?.id),token:result.access_token,expiresAt:clock()+result.expires_in*1000};
-   try{await rpc('fk_claim_pilot_invite',{p_code:invite});}catch(e){clear();throw e;}
+   try{await rpc('fk_claim_pilot_invite',{p_code:invite,...policy});}catch(e){clear();throw e;}
    notify();return user();
   },
   async logout(){const token=session?.token;clear();if(token)await request('/auth/v1/logout?scope=local',{method:'POST',auth:false,token});},
