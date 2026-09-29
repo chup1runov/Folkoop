@@ -52,20 +52,21 @@ Policy defaults are now defined in `PRE_PILOT_PRIVACY_DECISIONS.md`.
 
 Before any destructive action:
 
-1. stop further pilot access/contact;
-2. revoke or terminate active Auth sessions using a supported Supabase
-   administrative path — deleting the Auth user is not treated as session
-   revocation;
-3. run the read-only inventory above;
-4. resolve every `owned_shared` object:
+1. disable the participant's pilot admission/authorization so the admitted
+   network path stops accepting the user immediately;
+2. globally revoke refresh sessions using a supported Supabase Auth path;
+3. remember that already-issued access JWTs can remain valid until their `exp`,
+   so session revocation is not the immediate authorization boundary;
+4. run the read-only inventory above;
+5. resolve every `owned_shared` object:
    - transfer ownership to a consenting remaining participant when the shared
      object is still needed; or
    - delete the container only after reviewing the effect on other participants;
-5. delete the closing participant's user-scoped rows unless a documented
+6. delete the closing participant's user-scoped rows unless a documented
    moderation/legal hold applies;
-6. apply the private Box retention/erasure schedule;
-7. remove the Auth identity **last**;
-8. re-run integrity checks and record completion without retaining unnecessary
+7. apply the private Box retention/erasure schedule;
+8. remove the Auth identity **last**;
+9. re-run integrity checks and record completion without retaining unnecessary
    personal content.
 
 Self-service raw Auth deletion remains prohibited for the first pilot.
