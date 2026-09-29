@@ -306,3 +306,22 @@ The Loomio deep dive focuses on:
 - outcome statements and review dates;
 - decision records, portability and auditability;
 - what FOLKOOP should implement lightly vs leave to specialist governance systems.
+
+
+### Nextdoor
+
+Full hyperlocal-network comparison and adoption backlog:
+
+- `docs/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
+
+The Nextdoor deep dive focuses on:
+- address/neighborhood verification and local density;
+- feed vs action-first architecture;
+- Ask / AI local knowledge;
+- local business pages, recommendations and Opportunity Alerts;
+- News, Alerts and public-agency content;
+- For Sale & Free;
+- events/groups;
+- moderation and Kindness Reminders;
+- ad targeting/business-model incentives;
+- what FOLKOOP can learn from local network effects without becoming an engagement/advertising feed.
