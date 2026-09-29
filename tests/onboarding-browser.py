@@ -1,4 +1,4 @@
-"""FOLKOOP v0.29 language-first onboarding with authored directional/sit-edge Mura poses."""
+"""FOLKOOP v0.29 language-first onboarding with authored directional/sit-edge FOLKOOP guide poses."""
 import asyncio,json,os,shutil
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
@@ -26,15 +26,15 @@ async def settled_actor(page):
  # instead of racing a 150ms timer or sampling an unfinished 380ms entrance.
  await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
  await page.wait_for_function("""() => {
-  const actor=document.getElementById('muraActor');
+  const actor=document.getElementById('folkoopGuideActor');
   return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
    !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
  }""")
 
 
 async def assert_directional_pose(page):
- pose=await page.locator('#muraActor').get_attribute('data-pose')
- actor=await page.locator('#muraActor').bounding_box()
+ pose=await page.locator('#folkoopGuideActor').get_attribute('data-pose')
+ actor=await page.locator('#folkoopGuideActor').bounding_box()
  target=await page.locator('.tutorial-target').bounding_box()
  assert actor and target
  dx=(target['x']+target['width']/2)-(actor['x']+actor['width']/2)
@@ -48,65 +48,65 @@ async def mobile_flow(browser,passed):
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
 
- await expect(page.locator('#muraLanguageGate')).to_be_visible()
+ await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page.locator('#muraLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
- await expect(page.locator('.mura-language-character img')).to_be_visible()
- assert await page.locator('[data-mura-lang]').count()==11
- passed.append('First contact is Mura plus language selection before the site tour')
+ await expect(page.locator('#folkoop-guideLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
+ await expect(page.locator('.folkoop-guide-language-character img')).to_be_visible()
+ assert await page.locator('[data-folkoop-guide-lang]').count()==11
+ passed.append('First contact is FOLKOOP guide plus language selection before the site tour')
 
- await page.click('[data-mura-lang="ru"]')
- await expect(page.locator('#muraLanguageGate')).to_be_hidden()
+ await page.click('[data-folkoop-guide-lang="ru"]')
+ await expect(page.locator('#folkoop-guideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать в FOLKOOP')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 14')
- await expect(page.locator('#muraActor')).to_be_visible()
+ await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
- passed.append('Chosen language is applied before Mura starts explaining FOLKOOP')
+ passed.append('Chosen language is applied before FOLKOOP guide starts explaining FOLKOOP')
 
  titles=[
   'Добро пожаловать в FOLKOOP','Профиль','Главная','Четыре быстрых действия',
   'Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр',
-  'Настройки','О нас','Mura · помощник FOLKOOP'
+  'Настройки','О нас','FOLKOOP guide · помощник FOLKOOP'
  ]
  await settled_actor(page)
- assert await page.locator('#muraActor').evaluate("el=>el.classList.contains('is-tour')")
- first_box=await page.locator('#muraActor').bounding_box()
+ assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-tour')")
+ first_box=await page.locator('#folkoopGuideActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
-  box=await page.locator('#muraActor').bounding_box()
+  box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   if title in ('Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Город','Настройки','О нас'):
    await assert_directional_pose(page)
   if title in ('Четыре быстрых действия','Центр'):
-   assert await page.locator('#muraActor').evaluate("el=>el.classList.contains('is-perched')")
-   assert await page.locator('#muraActor').get_attribute('data-pose')=='sit-edge'
+   assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-perched')")
+   assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='sit-edge'
    target=await page.locator('.tutorial-target').bounding_box()
    seat=box['y']+box['height']*.44
    assert target and abs(seat-target['y'])<14,(title,seat,target)
   if title=='Проекты':
-   assert await page.locator('#muraActor').get_attribute('data-pose')=='idea'
-  if title=='Mura · помощник FOLKOOP':
-   assert await page.locator('#muraActor').get_attribute('data-pose')=='wink'
+   assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
+  if title=='FOLKOOP guide · помощник FOLKOOP':
+   assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='wink'
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)
 
- moved_box=await page.locator('#muraActor').bounding_box()
+ moved_box=await page.locator('#folkoopGuideActor').bounding_box()
  assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8),(first_box,moved_box)
  await expect(page.locator('[data-onboarding=next]')).to_have_text('Начать пользоваться FOLKOOP')
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('Mura uses real directional pointing poses and sit-edge alignment through the 14-step tour')
+ passed.append('FOLKOOP guide uses real directional pointing poses and sit-edge alignment through the 14-step tour')
 
- await expect(page.locator('#muraActor')).to_be_visible()
- await page.click('#muraActor')
+ await expect(page.locator('#folkoopGuideActor')).to_be_visible()
+ await page.click('#folkoopGuideActor')
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
- await expect(page.locator('#folkoopHelperTitle')).to_have_text('Mura')
+ await expect(page.locator('#folkoopHelperTitle')).to_have_text('FOLKOOP guide')
  await expect(page.locator('#folkoopHelperPanel')).to_contain_text('Показать всю инструкцию ещё раз')
- passed.append('After onboarding the physical Mura remains as the lightweight contextual helper')
+ passed.append('After onboarding the physical FOLKOOP guide remains as the lightweight contextual helper')
 
  await page.click('[data-helper=close]')
  await page.click('#mobileMenuToggle')
@@ -114,10 +114,10 @@ async def mobile_flow(browser,passed):
  assert labels[:11]==['Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр','Настройки','О нас'],labels
  await page.click('#nav a[href="#/settings"]')
  await page.click('[data-action=tutorial]')
- await expect(page.locator('#muraLanguageGate')).to_be_visible()
+ await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
  passed.append('Replay from Settings restarts from language, preserving the language-first contract')
  await page.keyboard.press('Escape')
- await page.screenshot(path=str(OUT/'folkoop-v029-directional-mura-mobile.png'),full_page=True)
+ await page.screenshot(path=str(OUT/'folkoop-v029-directional-folkoop-guide-mobile.png'),full_page=True)
  assert errors==[],errors
  await context.close()
 
@@ -126,18 +126,18 @@ async def desktop_flow(browser,passed):
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
- await expect(page.locator('#muraLanguageGate')).to_be_visible()
- card=await page.locator('.mura-language-card').bounding_box()
+ await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
+ card=await page.locator('.folkoop-guide-language-card').bounding_box()
  assert card and card['width']>700 and card['height']<900,card
- await page.click('[data-mura-lang="en"]')
+ await page.click('[data-folkoop-guide-lang="en"]')
  await expect(page.locator('#onboarding')).to_be_visible()
  await page.click('[data-onboarding=next]')
  await settled_actor(page)
- actor=await page.locator('#muraActor').bounding_box()
+ actor=await page.locator('#folkoopGuideActor').bounding_box()
  assert actor and actor['x']>=0 and actor['x']+actor['width']<=1366 and actor['y']>=0 and actor['y']+actor['height']<=900,actor
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
- passed.append('Desktop language gate, spotlight and animated Mura stay inside the viewport')
+ passed.append('Desktop language gate, spotlight and animated FOLKOOP guide stay inside the viewport')
  await page.click('[data-onboarding=skip]')
  assert errors==[],errors
  await context.close()
@@ -149,7 +149,7 @@ async def main():
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','Mura motion is local CSS/JS using canonical Mura WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','FOLKOOP guide motion is local CSS/JS using canonical FOLKOOP guide WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
  print(f'ENGINE {ENGINE}')
  print('\n'.join('PASS '+x for x in passed))
 
