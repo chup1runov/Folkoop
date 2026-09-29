@@ -721,6 +721,17 @@ const closeLanguageLabels = {
   es:'Cerrar menú de idioma', ru:'Закрыть выбор языка', uk:'Закрити вибір мови'
 };
 
+const mainMenuLabels = {
+  sv:'Huvudmeny', en:'Main menu', ar:'القائمة الرئيسية', so:'Liiska weyn',
+  fa:'منوی اصلی', fi:'Päävalikko', bs:'Glavni meni', ku:'Pêşeka sereke',
+  es:'Menú principal', ru:'Главное меню', uk:'Головне меню'
+};
+const skipLabels = {
+  sv:'Hoppa till innehåll', en:'Skip to content', ar:'الانتقال إلى المحتوى', so:'U gudub nuxurka',
+  fa:'رفتن به محتوا', fi:'Siirry sisältöön', bs:'Idi na sadržaj', ku:'Biçe naverokê',
+  es:'Saltar al contenido', ru:'Перейти к содержанию', uk:'Перейти до вмісту'
+};
+
 const languageCodes = {sv:'SV',en:'EN',ar:'AR',so:'SO',fa:'FA',fi:'FI',bs:'BHS',ku:'KU',es:'ES',ru:'RU',uk:'UK'};
 
 function screenFromHash() {
@@ -741,8 +752,13 @@ function applyLanguage(language) {
   document.getElementById('navReport').textContent = t('navReport');
   document.getElementById('navDecisions').textContent = t('navDecisions');
   document.getElementById('languageSheetTitle').textContent = t('language');
+  document.querySelector('.skip-link').textContent = skipLabels[currentLanguage] || skipLabels.en;
+  languageButton.setAttribute('aria-label', t('language'));
+  document.title = `Sverinav — ${t('tagline')}`;
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.setAttribute('content', t('heroText'));
   aboutButton.setAttribute('aria-label', pmt('aboutLabel'));
-  document.getElementById('bottomNav').setAttribute('aria-label', currentLanguage === 'sv' ? 'Huvudmeny' : 'Navigation');
+  document.getElementById('bottomNav').setAttribute('aria-label', mainMenuLabels[currentLanguage] || mainMenuLabels.en);
   const closeLabel = closeLanguageLabels[currentLanguage] || closeLanguageLabels.en;
   closeLanguageButton.setAttribute('aria-label', closeLabel);
   languageBackdrop.setAttribute('aria-label', closeLabel);

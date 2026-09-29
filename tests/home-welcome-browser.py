@@ -59,7 +59,7 @@ async def main():
         passed.append('Home draft action preserves local-only consent and existing Profile behavior')
         await page.locator('#brandHome').click()
 
-        for language in ('en','sv','ru','uk'):
+        for language in ('sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'):
             await page.select_option('#language', language)
             await expect(panel).to_have_count(1)
             await expect(panel.locator('.card')).to_have_count(4)

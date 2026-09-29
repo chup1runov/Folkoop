@@ -71,7 +71,7 @@ function settingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
 }
 function aboutPage(){
- return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong> · pilot</p><p class="meta">People · cooperation · projects · city · real life.</p></div>`;
+ return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong></p><p class="meta">${esc(t('tagline'))}</p></div>`;
 }
 function cityShell(){
  const city=selectedCity();
@@ -84,7 +84,7 @@ const tutorialCopy={
  en:{
   welcome:'FOLKOOP is a cooperation network: start with what you need, can offer or want to build, then find people and move toward a real action.',
   quick:'These four shortcuts are the fastest way to begin: ask for help, offer help, buy together or share a resource. They create private drafts until you deliberately publish through the network layer.',
-  language:'Change the interface language here. The main shell has full detailed copy in Swedish, English and Russian; other supported languages use an explicit English fallback for newer sections.',
+  language:'Change the interface language here. The FOLKOOP interface is translated into all available languages.',
   helper:'Mura stays in the corner after this tour. She explains the current section and can restart the full introduction. For now she is local and rule-based: no AI request and no personal data is sent anywhere.',
   me:'Your profile: name, city, skills and what you want others to know. Your city controls which local City tools may be shown.',
   home:'Home is the starting point: current activity, shortcuts and what needs your attention.',
@@ -101,7 +101,7 @@ const tutorialCopy={
  ru:{
   welcome:'FOLKOOP — сеть для совместных действий: начинай с того, что тебе нужно, что ты можешь предложить или что хочешь сделать, находи людей и переходи к реальному действию.',
   quick:'Четыре быстрых действия — самый короткий старт: попросить помощь, предложить помощь, купить вместе или поделиться ресурсом. Сначала это личные черновики, пока ты сам не перейдёшь к сетевому действию.',
-  language:'Здесь меняется язык интерфейса. Подробный новый интерфейс полностью переведён на шведский, английский и русский; для остальных поддерживаемых языков новые разделы честно используют английский fallback.',
+  language:'Здесь меняется язык интерфейса. Интерфейс FOLKOOP переведён на все доступные языки.',
   helper:'Mura останется в углу после этой инструкции. Она объясняет текущий раздел и умеет заново запустить полный тур. Сейчас она локальная и работает по правилам: без AI-запросов и без отправки персональных данных.',
   me:'Профиль: имя, город, навыки и то, что ты хочешь показать другим. Выбранный город определяет, какие местные инструменты можно показывать.',
   home:'Главная — стартовый экран: текущая активность, быстрые действия и то, что требует внимания.',
@@ -118,7 +118,7 @@ const tutorialCopy={
  sv:{
   welcome:'FOLKOOP är ett nätverk för gemensam handling: börja med vad du behöver, kan erbjuda eller vill bygga, hitta människor och gå vidare till verklig handling.',
   quick:'De fyra genvägarna är snabbaste starten: be om hjälp, erbjud hjälp, köp tillsammans eller dela en resurs. De börjar som privata utkast tills du själv går vidare till nätverksdelen.',
-  language:'Här byter du gränssnittsspråk. Den detaljerade nya ytan har full text på svenska, engelska och ryska; andra stödda språk visar en tydlig engelsk fallback i nyare delar.',
+  language:'Här byter du gränssnittsspråk. FOLKOOP-gränssnittet är översatt till alla tillgängliga språk.',
   helper:'Mura stannar i hörnet efter rundturen. Hon förklarar den aktuella delen och kan starta hela introduktionen igen. Just nu är hon lokal och regelbaserad: ingen AI-förfrågan och inga personuppgifter skickas någonstans.',
   me:'Profil: namn, stad, färdigheter och det du vill visa andra. Din valda stad styr vilka lokala stadsverktyg som kan visas.',
   home:'Hem är startpunkten: aktivitet, genvägar och sådant som behöver din uppmärksamhet.',
@@ -152,7 +152,7 @@ const helperCopy={
   settings:'Settings contains language and the button to replay the introduction.',
   about:'About explains the purpose, boundaries and current pilot state of FOLKOOP.'
  }},
- ru:{name:'Mura',label:'помощник FOLKOOP',open:'Открыть Ксюшу',close:'Закрыть',tour:'Показать всю инструкцию ещё раз',intro:'Я живу здесь, чтобы объяснять, зачем нужен текущий раздел FOLKOOP.',tips:{
+ ru:{name:'Mura',label:'помощник FOLKOOP',open:'Открыть Муру',close:'Закрыть',tour:'Показать всю инструкцию ещё раз',intro:'Я живу здесь, чтобы объяснять, зачем нужен текущий раздел FOLKOOP.',tips:{
   me:'Заполни только то, что помогает кооперации: имя или ник, город, навыки и коротко о себе. Видимость сетевого профиля остаётся твоим выбором.',
   home:'Главная — обзор действий, а не лента. Начни с того, что тебе нужно, что ты можешь предложить или что хочешь сделать.',
   messages:'Сообщения — личные, групповые и рабочие чаты коопераций. В пилоте сообщения уже серверные, но пока не имеют сквозного шифрования.',
@@ -179,6 +179,13 @@ const helperCopy={
   about:'Om oss förklarar FOLKOOPs syfte, gränser och pilotens nuvarande läge.'
  }}
 };
+const extraCopy=globalThis.FolkoopExtraCopy?.languages||{};
+for(const code of C.LANGS){
+ const x=extraCopy[code];
+ if(x?.tutorial)tutorialCopy[code]=x.tutorial;
+ if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
+ if(x?.helper)helperCopy[code]=x.helper;
+}
 function tutorialSource(){return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
  const titles=tutorialTitles[lang]||tutorialTitles.en;
@@ -294,9 +301,9 @@ function render(focus=false){
  $('#nav').innerHTML=NAV_ORDER.map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''} data-nav="${k}">${icon(k)}<span>${esc(navText(k))}</span></a>`).join('');
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
  $('#messageLink').setAttribute('aria-label',t('messages'));$('#messageLabel').textContent=t('messages');
- $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');
+ $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
- const location=$('#locationLabel');if(location)location.textContent=(selectedCity()?selectedCity()+' · ':'')+'pilot';
+ const location=$('#locationLabel');if(location)location.textContent=selectedCity()||'FOLKOOP';
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
  const partial=!I.FULL.includes(lang);$('#translationNote').hidden=!partial;$('#translationNote').textContent=t('partial');
  const root=$('#workspace');root.lang=partial?'en':lang;root.dir=partial?'ltr':document.documentElement.dir;

@@ -1,10 +1,10 @@
 /* Public shell/feeds only. Never cache Auth, network profiles/posts or coordinates. */
-const VERSION='0.29.0';
+const VERSION='0.30.0';
 const BASE=new URL(self.registration.scope);
 const PREFIX='sverinav:'+BASE.pathname+':';
 const CACHE=PREFIX+VERSION;
 const SHELL=new URL('index.html',BASE).href;
-const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js','folkoop-copy.js','mura-guide.js','mura-guide.css','folkoop.js','folkoop.css','mura-please.webp','mura-confident.webp','mura-idea.webp','mura-wink.webp','mura-point-left.png','mura-point-right.png','mura-point-up.png','mura-point-down.png','mura-sit-edge.png','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js','network-form-focus.js','network-ui.js','home-welcome.js'];
+const CORE_PATHS=['','index.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js','folkoop-i18n-extra.js','folkoop-copy.js','mura-guide.js','mura-guide.css','folkoop.js','folkoop.css','mura-please.webp','mura-confident.webp','mura-idea.webp','mura-wink.webp','mura-point-left.png','mura-point-right.png','mura-point-up.png','mura-point-down.png','mura-sit-edge.png','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js','network-form-focus.js','network-ui.js','home-welcome.js'];
 const CORE=new Set(CORE_PATHS.map(p=>new URL(p,BASE).href));
 const FEEDS=new Set(['data/riksdagen-decisions.json','data/goteborg-open-plans.json'].map(p=>new URL(p,BASE).href));
 async function remember(request,response){try{await (await caches.open(CACHE)).put(request,response.clone());}catch{}return response;}
