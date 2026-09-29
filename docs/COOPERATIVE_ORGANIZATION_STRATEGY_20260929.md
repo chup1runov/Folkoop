@@ -9,8 +9,8 @@ Status: public planning note. This document records product/organization decisio
 FOLKOOP has converged from several earlier directions into one product:
 
 - a social/cooperation network;
-- the former Sverinav civic-navigation work, now represented by **City**;
-- the FOLKUNO physical/community-space direction, now represented by **Center**.
+- the former FOLKOOP civic-navigation work, now represented by **City**;
+- the FOLKOOP physical/community-space direction, now represented by **Center**.
 
 The product thesis is already defined in `docs/PRODUCT_CONCEPT.md`. This note adds the organizational consequence: the product layers should not be confused with legal entities.
 
@@ -30,11 +30,11 @@ Needs, offers, shared resources, shared purchases, projects, teams, tasks and ot
 
 ### City
 
-The civic/opportunity layer inherited from Sverinav. Its role is discovery, navigation and routing toward relevant public, civic and local resources without pretending to be the authority itself.
+The civic/opportunity layer inherited from FOLKOOP. Its role is discovery, navigation and routing toward relevant public, civic and local resources without pretending to be the authority itself.
 
 ### Center
 
-The physical/community layer inherited from FOLKUNO: real-world meeting places, Hosts, events, local onboarding and partner connections. A permanent operating venue is not assumed by the current software pilot.
+The physical/community layer inherited from FOLKOOP: real-world meeting places, Hosts, events, local onboarding and partner connections. A permanent operating venue is not assumed by the current software pilot.
 
 ### Action and outcome
 
@@ -136,8 +136,8 @@ This repository remains the public source of truth for product/code state. Priva
 For now:
 
 1. continue one FOLKOOP product and repository;
-2. preserve City as the Sverinav-derived civic layer;
-3. preserve Center as the FOLKUNO-derived physical/community layer;
+2. preserve City as the FOLKOOP-derived civic layer;
+3. preserve Center as the FOLKOOP-derived physical/community layer;
 4. validate the Göteborg core loop before adding organizational complexity;
 5. use external cooperative/business advice to test legal and governance options;
 6. keep sensitive ownership/IP/compensation working hypotheses outside the public repository;
