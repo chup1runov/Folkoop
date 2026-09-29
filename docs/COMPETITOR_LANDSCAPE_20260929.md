@@ -350,3 +350,21 @@ The deep dive focuses on:
 - mandatory photo verification and safety/privacy trade-offs;
 - the "come alone" socialization loop relevant to FOLKOOP Center;
 - why social/belonging intent should not be forced into Need/Offer/Project.
+
+
+### TimeRepublik
+
+Full timebank / reciprocity / internal-credit comparison and adoption backlog:
+
+- `docs/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
+
+The TimeRepublik deep dive focuses on:
+- Requests and reusable Services;
+- TimeCoins and indirect reciprocity;
+- equal-time valuation;
+- communities with internal timebanks;
+- contribution history vs spendable currency;
+- ratings, disputes and arbitration;
+- why FOLKOOP should separate contribution records, access benefits and transferable credits;
+- when a bounded local timebank experiment might make sense;
+- why transferable FOLKOOP Credits should not return as a core feature without evidence.
