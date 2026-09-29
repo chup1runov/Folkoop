@@ -2,7 +2,7 @@
 
 The owner has selected the restrictive model while expressly retaining public GitHub hosting and all rights required by the applicable GitHub agreement. Root `LICENSE` version 1.0 is the operative notice once merged into the default branch; `LICENSING.md` explains the permission process.
 
-The adjacent `RESTRICTED_TERMS_DRAFT.en.md` is retained as a historical draft only. It is not an alternative licence. Its former public/private choice is resolved in favour of PUBLIC hosting. Its proposals for legal/provenance review remain recommended before commercial reliance and are not claims of completed certification.
+The adjacent `HISTORICAL_RESTRICTED_TERMS_DRAFT.en.md` is retained as a historical draft only. It is not an alternative licence. Its former public/private choice is resolved in favour of PUBLIC hosting. Its proposals for legal/provenance review remain recommended before commercial reliance and are not claims of completed certification.
 
 ## Adopted scope
 
