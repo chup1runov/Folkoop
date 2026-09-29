@@ -16,7 +16,7 @@ async function capabilities() {
   const response = await fetchWithRetry(url, {
     headers: {
       origin: ORIGIN,
-      'user-agent': 'Sverinav-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'FOLKOOP-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Folkoop)'
     }
   });
 
@@ -57,7 +57,7 @@ async function assertGothenburgMunicipalRoad() {
     headers: {
       accept: 'application/json',
       origin: ORIGIN,
-      'user-agent': 'Sverinav-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Sverinav)'
+      'user-agent': 'FOLKOOP-NVDB-Contract-Test/0.5 (+https://github.com/chup1runov/Folkoop)'
     }
   });
 
