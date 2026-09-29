@@ -1,18 +1,18 @@
-/* Lightweight local Mura presence for FOLKOOP. No network/API calls. */
+/* Lightweight local FOLKOOP guide presence for FOLKOOP. No network/API calls. */
 (() => {
 'use strict';
 const ASSETS=Object.freeze({
- welcome:'./mura-please.webp',
- idle:'./mura-confident.webp',
- idea:'./mura-idea.webp',
- wink:'./mura-wink.webp',
- 'point-left':'./mura-point-left.png',
- 'point-right':'./mura-point-right.png',
- 'point-up':'./mura-point-up.png',
- 'point-down':'./mura-point-down.png',
- 'sit-edge':'./mura-sit-edge.png'
+ welcome:'./folkoop-guide-please.webp',
+ idle:'./folkoop-guide-confident.webp',
+ idea:'./folkoop-guide-idea.webp',
+ wink:'./folkoop-guide-wink.webp',
+ 'point-left':'./folkoop-guide-point-left.png',
+ 'point-right':'./folkoop-guide-point-right.png',
+ 'point-up':'./folkoop-guide-point-up.png',
+ 'point-down':'./folkoop-guide-point-down.png',
+ 'sit-edge':'./folkoop-guide-sit-edge.png'
 });
-// v0.29 consumes the exact 192x208 RGBA pose assets accepted into Mura main.
+// v0.29 consumes the exact 192x208 RGBA pose assets accepted into the pre-unification guide asset baseline.
 // Pointing is body artwork, not a DOM/CSS arm.
 const artState=new WeakMap();
 function setArt(el,src){
@@ -27,13 +27,13 @@ let actor=null,img=null,currentTarget=null,currentMode='home',currentPose=null,t
 function ensureActor(){
  if(actor)return actor;
  actor=document.createElement('button');
- actor.id='muraActor';
- actor.className='mura-actor is-home';
+ actor.id='folkoopGuideActor';
+ actor.className='folkoop-guide-actor is-home';
  actor.type='button';
- actor.setAttribute('aria-label','Mura · FOLKOOP');
+ actor.setAttribute('aria-label','FOLKOOP guide');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
- actor.innerHTML='<span class="mura-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
+ actor.innerHTML='<span class="folkoop-guide-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
  document.body.append(actor);
  img=actor.querySelector('img');setArt(img,ASSETS.idle);
  actor.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('folkoop:helper-toggle')));
@@ -155,7 +155,7 @@ function layoutTour(target){
 }
 function applyPosition(target,mode='point',poseName=null){
  ensureActor();currentTarget=target||null;currentMode=mode;currentPose=poseName;
- const {w,h}=dims();actor.style.setProperty('--mura-w',w+'px');
+ const {w,h}=dims();actor.style.setProperty('--folkoop-guide-w',w+'px');
  actor.classList.toggle('is-perched',mode==='perch');
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
@@ -225,29 +225,29 @@ function setExpanded(value){
 }
 
 function ensureLanguageGate(){
- let gate=document.getElementById('muraLanguageGate');
+ let gate=document.getElementById('folkoopGuideLanguageGate');
  if(gate)return gate;
  gate=document.createElement('section');
- gate.id='muraLanguageGate';
- gate.className='mura-language-gate';
+ gate.id='folkoopGuideLanguageGate';
+ gate.className='folkoop-guide-language-gate';
  gate.hidden=true;
  gate.setAttribute('role','dialog');
  gate.setAttribute('aria-modal','true');
- gate.setAttribute('aria-labelledby','muraLanguageTitle');
- gate.innerHTML='<div class="mura-language-backdrop"></div><div class="mura-language-card"><div class="mura-language-character"><img alt="" width="192" height="208"></div><div class="mura-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="muraLanguageTitle">Hej! · Hi! · Привет!</h1><p class="mura-language-hello">Jag heter Mura · I’m Mura · Меня зовут Mura</p><p class="mura-language-prompt">Välj språk · Choose language · Выбери язык</p><div id="muraLanguageChoices" class="mura-language-choices"></div></div></div>';
+ gate.setAttribute('aria-labelledby','folkoopGuideLanguageTitle');
+ gate.innerHTML='<div class="folkoop-guide-language-backdrop"></div><div class="folkoop-guide-language-card"><div class="folkoop-guide-language-character"><img alt="" width="192" height="208"></div><div class="folkoop-guide-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="folkoopGuideLanguageTitle">Hej! · Hi! · Привет!</h1><p class="folkoop-guide-language-hello">Din FOLKOOP-guide · Your FOLKOOP guide · Помощник FOLKOOP</p><p class="folkoop-guide-language-prompt">Välj språk · Choose language · Выбери язык</p><div id="folkoopGuideLanguageChoices" class="folkoop-guide-language-choices"></div></div></div>';
  document.body.append(gate);
- setArt(gate.querySelector('.mura-language-character img'),ASSETS.welcome);
+ setArt(gate.querySelector('.folkoop-guide-language-character img'),ASSETS.welcome);
  gate.addEventListener('click',e=>{
-  const b=e.target.closest('[data-mura-lang]');
+  const b=e.target.closest('[data-folkoop-guide-lang]');
   if(!b)return;
-  const language=b.dataset.muraLang;
+  const language=b.dataset.folkoopGuideLang;
   window.dispatchEvent(new CustomEvent('folkoop:language-picked',{detail:{language}}));
  });
  return gate;
 }
 function showLanguageGate(langs,names,current){
- const gate=ensureLanguageGate(),choices=gate.querySelector('#muraLanguageChoices');
- choices.innerHTML=langs.map(code=>'<button type="button" class="mura-language-choice'+(code===current?' is-current':'')+'" data-mura-lang="'+code+'"><strong>'+String(names[code]||code).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ const gate=ensureLanguageGate(),choices=gate.querySelector('#folkoopGuideLanguageChoices');
+ choices.innerHTML=langs.map(code=>'<button type="button" class="folkoop-guide-language-choice'+(code===current?' is-current':'')+'" data-folkoop-guide-lang="'+code+'"><strong>'+String(names[code]||code).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
  gate.hidden=false;document.body.classList.add('language-gate-open');welcome();openModal(gate);
  requestAnimationFrame(()=>choices.querySelector('.is-current,button')?.focus());
 }
@@ -265,5 +265,5 @@ window.addEventListener('scroll',()=>{
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);
-globalThis.FolkoopMuraGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,setExpanded});
+globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,setExpanded});
 })();

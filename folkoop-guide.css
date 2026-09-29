@@ -11,8 +11,8 @@
 .guide-tour-open #onboardingBody{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin:0;padding:2px 3px 2px 1px}
 .guide-tour-open #onboardingBody:focus-visible{outline:2px solid #176a99;outline-offset:-2px}
 .guide-tour-open .onboarding-actions{margin-top:12px}
-.mura-language-card{overscroll-behavior:contain;max-height:calc(100dvh - 48px)}
-@media(max-width:720px){.mura-language-card{max-height:calc(100dvh - 20px)}}
+.folkoop-guide-language-card{overscroll-behavior:contain;max-height:calc(100dvh - 48px)}
+@media(max-width:720px){.folkoop-guide-language-card{max-height:calc(100dvh - 20px)}}
 @media(max-height:620px){
  .guide-tour-open .onboarding-card{padding:10px 12px}
  .guide-tour-open .onboarding-guide{display:none}
@@ -22,5 +22,5 @@
  .guide-tour-open .onboarding-actions .button{min-height:42px;padding:8px 12px}
 }
 @media(prefers-reduced-motion:reduce){
- .mura-actor,.mura-actor>img,.mura-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
+ .folkoop-guide-actor,.folkoop-guide-actor>img,.folkoop-guide-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
 }
