@@ -194,7 +194,7 @@ with:
 - projects as structured cooperation objects;
 - City as the civic/opportunity layer;
 - Center as the physical/community layer;
-- Mura as a human-facing guide/interface layer;
+- FOLKOOP guide as a human-facing guide/interface layer;
 - SDCF as a non-runtime semantic/provenance/outcome-integrity bridge.
 
 This remains a hypothesis to validate, not a claim that no other product in the world overlaps with the same combination.
