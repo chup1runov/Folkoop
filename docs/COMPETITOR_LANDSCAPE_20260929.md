@@ -368,3 +368,21 @@ The TimeRepublik deep dive focuses on:
 - why FOLKOOP should separate contribution records, access benefits and transferable credits;
 - when a bounded local timebank experiment might make sense;
 - why transferable FOLKOOP Credits should not return as a core feature without evidence.
+
+
+### Sharetribe
+
+Full marketplace / booking / transaction-engine comparison and adoption backlog:
+
+- `docs/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
+
+The Sharetribe deep dive focuses on:
+- Listing Types and type-specific fields;
+- keyword/location search and filters;
+- availability, bookings and capacity;
+- versioned transaction processes;
+- quotes / price negotiation;
+- payments, payouts, refunds and commissions;
+- reviews and marketplace operator tools;
+- Shared Resource and Shared Purchase boundaries;
+- what FOLKOOP should implement natively vs integrate with specialist marketplace/payment infrastructure.
