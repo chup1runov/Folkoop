@@ -99,6 +99,7 @@ async def scenario(browser, kind, partial):
             await page.goto(BASE+'#/me')
 
         await page.fill('#netLogin [name=email]', 'synthetic@example.test')
+        await page.click('#netLogin [value=code]')
         await page.fill('#netLogin [name=code]', '123456')
         await page.fill('#netLogin [name=inviteCode]', 'FOLK-TEST-INVITE-01')
         await page.check('#netLogin [name=policyAccepted]')
