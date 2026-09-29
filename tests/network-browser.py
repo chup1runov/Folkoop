@@ -145,7 +145,8 @@ async def main():
   await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netStatus')).to_contain_text('прими текущие условия')
   assert sum(1 for url,_ in state['requests'] if url.endswith('/verify'))==verify_before
-  passed.append('Normal UI cannot verify/admit before explicit Pilot Terms and Privacy acknowledgement')
+  await expect(page.locator('#netLogin [name=code]')).to_have_value('123456')
+  passed.append('Normal UI blocks admission before policy acceptance and preserves the OTP only in tab memory')
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netProfile')).to_be_visible()
