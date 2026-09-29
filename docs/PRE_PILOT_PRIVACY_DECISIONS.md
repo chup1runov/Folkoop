@@ -16,8 +16,8 @@ The engineering defaults below may be implemented now.
 Ordinary participant invitations remain blocked until all of the following are
 filled or verified:
 
-- **Controller identity:** `[TO BE CONFIRMED]`
-- **Privacy contact route:** `[TO BE CONFIRMED]`
+- **Controller identity:** Pavel Chuprunov (private individual)
+- **Privacy contact route:** chup1runov@gmail.com
 - the controller confirms the working legal-basis choices below;
 - the actual processor/service terms and DPA status are checked for the accounts
   used by the pilot;
@@ -238,8 +238,8 @@ processing begins.
 
 ## Final pre-pilot gate
 
-- [ ] Controller identity filled
-- [ ] Privacy contact route filled
+- [x] Controller identity filled
+- [x] Privacy contact route filled
 - [ ] Controller confirms legal-basis table
 - [ ] Supabase account DPA/terms and transfers checked
 - [ ] Box account DPA/terms and transfers checked
