@@ -4,11 +4,11 @@
 
 ## Canonical decisions
 
-Continue `chup1runov/Folkoop` as one FOLKOOP product. The repository was renamed from Sverinav without starting a second product or rewriting history. User-facing navigation order: Profile, Home, Messages, People, Communities, Together, Projects, City, Center, Settings, About.
+FOLKOOP is the only current product identity in `chup1runov/Folkoop`. City, Center, social, cooperation and project functions are all parts of FOLKOOP, not separate products. User-facing navigation order: Profile, Home, Messages, People, Communities, Together, Projects, City, Center, Settings, About.
 
 Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. `docs/PRODUCT_CONCEPT.md` is the canonical product thesis: Intent -> Match -> Commit -> Coordinate -> Act -> Outcome, with useful real-world outcomes prioritized over feed engagement. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
 
-The former civic baseline is preserved by the archival tag `archive/sverinav-v0.14-before-folkoop`. The blocked Göteborg air-quality experiment is preserved separately by `archive/experiment-goteborg-air-quality-v0.6`.
+The pre-FOLKOOP civic baseline and blocked source experiments remain preserved in Git history/archival refs for provenance; archival labels are not current product names.
 
 ## Actual state
 
@@ -42,11 +42,11 @@ Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket
 
 ### City
 
-Former Sverinav civic behavior remains inside City: official-source navigation, report preparation, Gothenburg plans, Riksdag metadata, weather/warnings and source/error states. City does not require a network account and does not automatically submit official reports.
+FOLKOOP City provides: official-source navigation, report preparation, Gothenburg plans, Riksdag metadata, weather/warnings and source/error states. City does not require a network account and does not automatically submit official reports.
 
 ### Center
 
-Center preserves the physical/community-space direction from FOLKUNO. No operational venue, equipment inventory or confirmed program should be fabricated.
+FOLKOOP Center represents the physical/community-space direction. No operational venue, equipment inventory or confirmed program should be fabricated.
 
 ## Key files
 
