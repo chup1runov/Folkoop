@@ -11,8 +11,16 @@ from pathlib import Path
 from playwright.async_api import async_playwright, expect
 
 BASE = os.getenv('BASE_URL', 'http://127.0.0.1:4173/Folkoop/')
+ENGINE = os.getenv('BROWSER_ENGINE', 'chromium').lower()
 OUT = Path(os.getenv('QA_OUTPUT', 'qa-output'))
-OUT.mkdir(exist_ok=True)
+OUT.mkdir(parents=True, exist_ok=True)
+
+async def launch_browser(pw):
+ if ENGINE=='chromium':
+  return await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'), args=['--no-sandbox'])
+ if ENGINE=='webkit':
+  return await pw.webkit.launch()
+ raise AssertionError(f'Unsupported BROWSER_ENGINE={ENGINE}')
 GEOMETRY = """() => {
  const box = s => {const e=document.querySelector(s);if(!e)return null;
   const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};};
@@ -35,7 +43,7 @@ GEOMETRY = """() => {
 async def main():
  failures, records, passed = [], [], []
  async with async_playwright() as pw:
-  browser = await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'), args=['--no-sandbox'])
+  browser = await launch_browser(pw)
   for width,height in [(390,844),(1366,900),(320,568),(844,390)]:
    context = await browser.new_context(viewport={'width':width,'height':height}, locale='ru-RU', service_workers='block', reduced_motion='reduce')
    async def local_only(route):
@@ -91,8 +99,9 @@ async def main():
   await browser.close()
  if not failures:
   passed=['Keyboard focus stays in the language gate and tour', 'Reduced motion disables character animation', 'All 14 targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
- result={'passed':passed,'failures':failures,'geometry':records,'limits':['Chromium emulation only; real iOS Safari and physical devices not tested','No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
+ result={'passed':passed,'failures':failures,'geometry':records,'limits':[('WebKit engine on Linux; real iOS Safari and physical devices not tested' if ENGINE=='webkit' else 'Chromium emulation only; real iOS Safari and physical devices not tested'),'No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+ print('ENGINE '+ENGINE)
  for item in passed: print('PASS '+item)
  assert not failures, '\n'.join(failures)
 
