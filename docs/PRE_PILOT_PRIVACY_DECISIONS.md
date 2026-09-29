@@ -17,7 +17,7 @@ Ordinary participant invitations remain blocked until all of the following are
 filled or verified:
 
 - **Controller identity:** Pavel Chuprunov (private individual)
-- **Privacy contact route:** chup1runov@gmail.com
+- **Privacy contact route:** Chup1runov@gmail.com
 - the participant privacy notice remains aligned with the actual services in use;
 - the final Auth route and two-account technical test pass.
 
