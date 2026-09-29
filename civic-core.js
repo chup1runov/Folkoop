@@ -47,7 +47,7 @@
       const r=await fetch(url,{headers:{accept:'application/json'},cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal});
       if(!r.ok) throw new Error('SOURCE_HTTP_'+r.status);
       if(!/\bjson\b/i.test(r.headers.get('content-type')||'')) throw new Error('SOURCE_NOT_JSON');
-      return {payload:await r.json(),cached:r.headers.get('x-sverinav-cache')==='fallback',fetchedAt:new Date().toISOString()};
+      return {payload:await r.json(),cached:r.headers.get('x-folkoop-cache')==='fallback',fetchedAt:new Date().toISOString()};
     } finally {clearTimeout(timer);signal?.removeEventListener('abort',abort);}
   }
   function feed(payload, sourceId, hosts) {
@@ -57,5 +57,5 @@
     if(payload.items.some(i=>!i || typeof i.title!=='string' || !i.title.trim() || !officialUrl(i.sourceUrl,hosts))) throw new Error('INVALID_ITEM');
     return payload;
   }
-  globalThis.SverinavCore={icon,escape,timestamp,dateOnly,stockholmDay,officialUrl,storage,fetchJSON,feed};
+  globalThis.FolkoopCityCore={icon,escape,timestamp,dateOnly,stockholmDay,officialUrl,storage,fetchJSON,feed};
 })();
