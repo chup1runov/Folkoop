@@ -45,7 +45,7 @@ Use standard GitHub-hosted runners for this public repository. Do not switch to 
 2. Re-check cost and free quota before any future resource creation.
 3. Keep pilot admission invite-only and resolve a genuinely free broader authentication route before admitting ordinary users. Invite codes do not replace Auth verification.
 4. Apply only reviewed FOLKOOP migrations to the dedicated backend. Never apply disposable CI fixtures to a hosted project.
-5. Complete the privacy, moderation, allowlist and real two-account checks in [NETWORK_V016.md](NETWORK_V016.md). Free pricing does not waive those gates.
+5. Complete the privacy, moderation, allowlist and real two-account checks in [NETWORK_V016.md](history/releases/NETWORK_V016.md). Free pricing does not waive those gates.
 6. Only after those checks enable the network configuration and advance the app/service-worker release. Do not expose private keys or upload local drafts implicitly.
 7. Track actual usage against the free quotas. If service is restricted, report the restriction rather than pretending requests succeeded or automatically upgrading.
 
