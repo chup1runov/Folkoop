@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {decodeEntities,parsePlans} from '../scripts/fetch-goteborg-open-plans.mjs';
 const ctx=vm.createContext({console,URL,Date,Intl,setTimeout,clearTimeout,AbortController,Headers,Response,fetch,localStorage:{getItem(){throw new Error('disabled');},setItem(){throw new Error('disabled');}}});
 for(const file of ['civic-core.js','daily-data.js','goteborg-plans.js'])vm.runInContext(await readFile(new URL('../'+file,import.meta.url),'utf8'),ctx);
-const C=ctx.SverinavCore,D=ctx.SverinavDaily;
+const C=ctx.FolkoopCivicCore,D=ctx.FolkoopDaily;
 const now=Date.parse('2026-09-23T10:15:00Z');
 const forecast={referenceTime:'2026-09-23T10:00:00Z',timeSeries:[{time:'2026-09-23T11:00:00Z',data:{air_temperature:13,wind_speed:4,probability_of_precipitation:30}}]};
 const warning=(id=14,extra={})=>[{event:{sv:'Test warning'},warningAreas:[{id:1,affectedAreas:[{id}],warningLevel:{code:'YELLOW'},areaName:{sv:'TEST'},...extra}]}];
