@@ -1,4 +1,4 @@
-# Brand clearance — Sverinav
+# Brand clearance — FOLKOOP
 
 Status: **provisional brand / arbetsnamn**
 
@@ -21,7 +21,7 @@ Det finns:
 
 Därför ska varumärket alltid skrivas som ett ord:
 
-**Sverinav**
+**FOLKOOP**
 
 Inte:
 - SveriNAV
@@ -35,14 +35,14 @@ Gör full manuell clearance:
 2. EUIPO / TMview
 3. WIPO Global Brand Database
 4. Bolagsverket / verksamt
-5. Internetstiftelsen för sverinav.se
+5. Internetstiftelsen för folkoop.se
 6. .com / .app / .org
 7. GitHub/social handles
 8. professionell förväxlingsbedömning vid behov
 
 ## Arbetspositionering
 
-**Sverinav**  
+**FOLKOOP**  
 *Samhället. Enklare.*
 
 Längre beskrivning:
