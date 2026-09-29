@@ -46,22 +46,38 @@ belonging to other participants.
 Pilot invite rows are intentionally not claimant-linked, so the inventory
 reports claimant-linked invites as zero.
 
-## Current stop condition
+## Approved pilot decision path
 
-If any `owned_shared` count is non-zero, account closure stops until an
-explicit policy decision is made for each owned object: transfer ownership,
-delete the shared container with an understood effect on other participants, or
-another reviewed transformation.
+Policy defaults are now defined in `PRE_PILOT_PRIVACY_DECISIONS.md`.
 
-Do not invent the choice inside SQL.
+Before any destructive action:
 
-## Final deletion
+1. stop further pilot access/contact;
+2. revoke or terminate active Auth sessions using a supported Supabase
+   administrative path — deleting the Auth user is not treated as session
+   revocation;
+3. run the read-only inventory above;
+4. resolve every `owned_shared` object:
+   - transfer ownership to a consenting remaining participant when the shared
+     object is still needed; or
+   - delete the container only after reviewing the effect on other participants;
+5. delete the closing participant's user-scoped rows unless a documented
+   moderation/legal hold applies;
+6. apply the private Box retention/erasure schedule;
+7. remove the Auth identity **last**;
+8. re-run integrity checks and record completion without retaining unnecessary
+   personal content.
 
-A final deletion procedure is intentionally not implemented yet. It depends on
-the unresolved controller/retention/shared-content/moderation decisions in
-`PRE_PILOT_PRIVACY_DATA_MAP.md`.
+Self-service raw Auth deletion remains prohibited for the first pilot.
 
-The current raw FK cascade remains a technical mechanism, not a privacy policy.
+## Remaining organisational gate
+
+The technical/policy path is defined, but ordinary participant closure is not
+launch-ready until the real controller identity and privacy-contact route are
+filled and the working legal-basis/service-provider checks in
+`PRE_PILOT_PRIVACY_DECISIONS.md` are approved.
+
+The current FK cascade remains an integrity mechanism, not a privacy policy.
 
 ## Evidence
 
@@ -72,3 +88,10 @@ objects and verifies:
 - current cascade / SET NULL behavior remains exactly documented;
 - Auth-driven cooperation removal records nullable system activity instead of
   failing the transaction.
+
+## Related privacy documents
+
+- `PRE_PILOT_PRIVACY_DATA_MAP.md` — current schema/mechanics.
+- `PRE_PILOT_PRIVACY_DECISIONS.md` — pilot legal-basis, retention and closure defaults.
+- `PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md` — rights and breach procedure.
+- `PILOT_PRIVACY_NOTICE_DRAFT.md` — participant-facing notice draft.
