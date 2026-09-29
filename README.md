@@ -2,7 +2,7 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-This repository has now been renamed to `chup1runov/Folkoop`. It remains the same product/history; the former Sverinav civic code survives inside City and the pre-FOLKOOP baseline remains archived.
+This repository is the canonical FOLKOOP codebase. City and Center are FOLKOOP layers, not separate products. Pre-FOLKOOP technical baselines remain archived for provenance.
 
 ## Current pilot state — v0.31.0
 
@@ -40,11 +40,11 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/architecture/SDCF_BRIDGE.md` for the non-runtime semantic/outcome-integrity bridge, then `docs/PROJECT_HANDOFF.md` for current implementation state. `docs/FOLKOOP_MIGRATION.md` records the Sverinav/FOLKUNO integration history, and `docs/TOKARENKO_KOOPSET_RESEARCH.md` separates source-supported KООПСЕТЬ ideas from FOLKOOP design choices. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
+Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/architecture/SDCF_BRIDGE.md` for the non-runtime semantic/outcome-integrity bridge, then `docs/PROJECT_HANDOFF.md` for current implementation state. `docs/FOLKOOP_INTEGRATION_HISTORY.md` records the pre-FOLKOOP integration history, and `docs/TOKARENKO_KOOPSET_RESEARCH.md` separates source-supported KООПСЕТЬ ideas from FOLKOOP design choices. The v0.23 Home rationale and boundaries are in `docs/HOME_V023.md`. Historic civic requirements remain requirements unless an explicit later decision supersedes them.
 
 ## Identity and rights
 
-Initiator: Pavel Chuprunov, @chup1runov. The owner approved continuing the existing repository as FOLKOOP and reusing the FOLKUNO graphic mark. The mark is cropped from the supplied master identity board; it is not a newly invented logo or a claimed vector master. FOLKOOP remains a working brand; no legal clearance is asserted.
+Initiator: Pavel Chuprunov, @chup1runov. The owner approved continuing the existing repository as FOLKOOP and reusing the owner-supplied master graphic mark. The mark is cropped from the supplied master identity board; it is not a newly invented logo or a claimed vector master. FOLKOOP remains a working brand; no legal clearance is asserted.
 
 **Proprietary — all rights reserved subject to LICENSE.** Existing GitHub grants, mandatory exceptions, prior permissions and third-party rights remain unchanged. Free resident use does not grant unrestricted code reuse. Read `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md`.
 
