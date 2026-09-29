@@ -11,7 +11,7 @@ for(const code of Object.keys(extra))if(extra[code]?.auth)copyByLanguage[code]=e
 const supported=['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'];
 let lang='en';
 try{
- const saved=localStorage.getItem('sverinav-language');
+ const saved=localStorage.getItem('folkoop-language');
  const browser=(navigator.language||'en').split('-')[0];
  lang=supported.includes(saved)?saved:(supported.includes(browser)?browser:'en');
 }catch{}
