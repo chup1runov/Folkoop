@@ -81,6 +81,7 @@ async def main():
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#/me')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
+  await page.click('#netLogin [value=code]')
   await page.fill('#netLogin [name=code]','123456')
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
