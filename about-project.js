@@ -4,8 +4,7 @@
   const AUTHOR = Object.freeze({name:'Pavel Chuprunov',handle:'chup1runov'});
   const IDEA_YEAR = 2021;
   const REPOSITORY_CREATED = '2026-09-21';
-  const CONTACT = Object.freeze({github:'https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml',telegram:'https://t.me/chup1runov'});
-  const BIO_SOURCE = 'https://www.mittskifte.org/petitions/infor-tjansten-nattstopp-i-goteborg-for-okad-trygghet-i-kollektivtrafiken';
+  const CONTACT = Object.freeze({github:'https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml'});
   const FAQ_SOURCES = Object.freeze({
     2:['Sveriges riksdag','https://www.riksdagen.se/sv/sa-fungerar-riksdagen/riksdagens-uppgifter/beslutar-om-lagar/'],
     3:['Göteborgs Stad','https://goteborg.se/planochbyggprojekt']
@@ -41,13 +40,10 @@
     author.append(element('h2',L.by));
     const name=element('strong',AUTHOR.name,'project-author-name');name.dir='ltr';
     author.append(name,element('p',L.role+' · @'+AUTHOR.handle));
-    const bio=element('p',L.bio,'project-bio');bio.id='projectBio';
-    author.append(bio,link('MittSkifte ↗',BIO_SOURCE,'project-history-link'));
     const contacts=element('div',undefined,'project-contact-actions');
     const github=link('GitHub · Contact the project ↗',CONTACT.github,'project-contact-button');github.id='contactAuthor';github.dir='ltr';
-    const telegram=link('Telegram · @chup1runov ↗',CONTACT.telegram,'project-contact-button secondary');telegram.id='contactTelegram';telegram.dir='ltr';
-    for(const a of [github,telegram])a.setAttribute('aria-describedby','projectContactNote');
-    contacts.append(github,telegram);
+    github.setAttribute('aria-describedby','projectContactNote');
+    contacts.append(github);
     const note=element('p',L.contactNote,'project-contact-note');note.id='projectContactNote';
     author.append(contacts,note);
     const story=element('section',undefined,'about-card project-story');story.lang=locale;
@@ -75,7 +71,7 @@
     const notice=stack.querySelector('.about-card--notice');if(notice)notice.after(author,story,faq);else stack.prepend(author,story,faq);
     stack.dataset.projectEnhanced='true';
   }
-  globalThis.SverinavProjectAbout={COPY,AUTHOR,IDEA_YEAR,REPOSITORY_CREATED,CONTACT,BIO_SOURCE,mount};
+  globalThis.SverinavProjectAbout={COPY,AUTHOR,IDEA_YEAR,REPOSITORY_CREATED,CONTACT,mount};
   if(typeof document==='undefined')return;
   const root=document.getElementById('view');
   if(root){mount(root);new MutationObserver(()=>mount(root)).observe(root,{childList:true});}
