@@ -48,15 +48,15 @@ async def mobile_flow(browser,passed):
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
 
- await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
+ await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page.locator('#folkoop-guideLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
+ await expect(page.locator('#folkoopGuideLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
  await expect(page.locator('.folkoop-guide-language-character img')).to_be_visible()
  assert await page.locator('[data-folkoop-guide-lang]').count()==11
  passed.append('First contact is FOLKOOP guide plus language selection before the site tour')
 
  await page.click('[data-folkoop-guide-lang="ru"]')
- await expect(page.locator('#folkoop-guideLanguageGate')).to_be_hidden()
+ await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать в FOLKOOP')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 14')
@@ -114,7 +114,7 @@ async def mobile_flow(browser,passed):
  assert labels[:11]==['Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр','Настройки','О нас'],labels
  await page.click('#nav a[href="#/settings"]')
  await page.click('[data-action=tutorial]')
- await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
+ await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  passed.append('Replay from Settings restarts from language, preserving the language-first contract')
  await page.keyboard.press('Escape')
  await page.screenshot(path=str(OUT/'folkoop-v029-directional-folkoop-guide-mobile.png'),full_page=True)
@@ -126,7 +126,7 @@ async def desktop_flow(browser,passed):
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
- await expect(page.locator('#folkoop-guideLanguageGate')).to_be_visible()
+ await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  card=await page.locator('.folkoop-guide-language-card').bounding_box()
  assert card and card['width']>700 and card['height']<900,card
  await page.click('[data-folkoop-guide-lang="en"]')
