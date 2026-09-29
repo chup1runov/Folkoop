@@ -20,6 +20,7 @@ export function validateBridge(bridge) {
   if (bridge?.schemaVersion !== 2) errors.push('schemaVersion must be 2');
   if (bridge?.bridgeVersion !== '0.2') errors.push('bridgeVersion must be 0.2');
   if (bridge?.supersedes !== 'docs/architecture/sdcf-bridge-v0.1.json') errors.push('v0.2 must identify the v0.1 bridge it supersedes');
+  if (!/release-candidate/i.test(bridge?.referenceFrameworkStatus || '') || !/not yet satisfied/i.test(bridge?.referenceFrameworkStatus || '')) errors.push('referenced SDCF status must preserve the open external SHACL release gate');
   if (bridge?.runtimeDependency !== false) errors.push('runtimeDependency must remain false for the Göteborg pilot');
   if (bridge?.status !== 'advisory') errors.push('status must remain advisory before a separately approved runtime integration');
 
