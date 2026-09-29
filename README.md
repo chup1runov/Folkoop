@@ -4,7 +4,7 @@
 
 This repository is the canonical FOLKOOP codebase. City and Center are FOLKOOP layers, not separate products. Pre-FOLKOOP technical baselines remain archived for provenance.
 
-## Current pilot state — v0.31.0
+## Current pilot state — v0.32.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
