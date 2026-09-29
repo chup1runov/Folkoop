@@ -1,6 +1,6 @@
 # Security
 
-Sverinav är i tidig prototypfas och ska inte hantera känsliga personuppgifter eller autentiserade myndighetsärenden ännu.
+FOLKOOP är i tidig prototypfas och ska inte hantera känsliga personuppgifter eller autentiserade myndighetsärenden ännu.
 
 ## Rapportera en sårbarhet
 
