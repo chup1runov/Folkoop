@@ -7,7 +7,9 @@
  "scripts": {
   "build": "node scripts/build-site.mjs",
   "start": "node scripts/build-site.mjs && serve -s _site -l ${PORT:-3000}",
-  "test": "node --test tests/*.test.mjs"
+  "test": "node --test tests/*.test.mjs",
+  "auth:preflight": "node scripts/probe-auth-readiness.mjs",
+  "auth:require-google": "node scripts/probe-auth-readiness.mjs --require-google-ready"
  },
  "dependencies": {
   "serve": "^14.2.4"
