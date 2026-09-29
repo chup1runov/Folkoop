@@ -217,3 +217,20 @@ For each competitor, record:
 - open-source/licensing status;
 - strongest feature FOLKOOP should learn from;
 - feature/strategy FOLKOOP should avoid copying blindly.
+
+
+## Deep dives
+
+### Hylo
+
+Full function-by-function comparison and evidence-driven adoption backlog:
+
+- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+
+The deep dive distinguishes:
+- current Hylo features;
+- Hylo announced/coming-soon features;
+- current FOLKOOP implementation;
+- FOLKOOP concepts that are not yet implemented;
+- features to keep, adapt, defer or deliberately not copy;
+- activation rules based on the Göteborg core-loop pilot bottleneck.
