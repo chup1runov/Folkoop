@@ -9,7 +9,7 @@ Extends the existing `#om` screen. No fifth tab, new account, payment, transport
 - Purpose follows the existing project handoff: start from a person's need and lead to the official source or service, without requiring them to know the right authority first.
 - No private biography, personal email, home address, credentials, membership history or conversation archive is published.
 
-Sources: repository metadata at https://api.github.com/repos/chup1runov/Sverinav ; public commit https://github.com/chup1runov/Sverinav/commit/43aebe022a4578c025a9f949dc9540d4d860ed33 ; `docs/PROJECT_HANDOFF.md`.
+Sources: repository metadata at https://api.github.com/repos/chup1runov/FOLKOOP ; public commit https://github.com/chup1runov/Folkoop/commit/43aebe022a4578c025a9f949dc9540d4d860ed33 ; `docs/PROJECT_HANDOFF.md`.
 
 ## Compact information design
 
