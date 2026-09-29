@@ -19,10 +19,13 @@ function execute(hash,{opener=true,closed=false}={}){
     opener:openerObject,
     close(){didClose=true;}
   };
+  const document={documentElement:{lang:'',dir:''},title:'',getElementById(id){assert.equal(id,'oauthStatus');return status;}};
   const context=vm.createContext({
     URLSearchParams,
     globalThis:{},
-    document:{getElementById(id){assert.equal(id,'oauthStatus');return status;}},
+    document,
+    localStorage:{getItem(){return null;}},
+    navigator:{language:'en-US'},
     location:{
       hash,
       pathname:'/Folkoop/auth-callback.html',
