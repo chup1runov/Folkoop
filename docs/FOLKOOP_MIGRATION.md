@@ -1,32 +1,33 @@
-# FOLKOOP migration ledger — v0.15.0
+# FOLKOOP integration ledger — v0.32
 
-Baseline: `09e29aad3cad3b9d3ee4403881e02ac4b9022073` (Sverinav v0.14.0).
-Snapshot tag: `archive/sverinav-v0.14-before-folkoop`.
-One repository and one developing product. Repository slug and Pages address are unchanged in this slice.
+FOLKOOP is the single current product identity. Earlier codebases, concepts and visual work were integrated into FOLKOOP without rewriting Git history. Current UI, active code, tests and operational documentation must use only the FOLKOOP name.
 
-| Requirement | Destination | Current delivery |
+Exact historical snapshots may retain original wording only inside `archive/`, `docs/history/` or `docs/proposals/` for provenance, audit and rights tracing. Those names are not current products, sub-brands or user-facing modules.
+
+| Integrated capability | Current FOLKOOP destination | Current delivery |
 | --- | --- | --- |
-| People, profiles, communities, chat and feed | People / My page / Messages | Local profile implemented; multi-user functions pending, clearly labelled |
-| I need / I can, mutual help, group buying, resources | Together | Private drafts; no public listing, order, delivery or payment claims |
-| Ideas, teams, roles, tasks and results | Projects | Local project drafts, filter and own completion note; shared team state pending |
-| Existing civic navigation and official sources | City | Preserved service code; same-origin presentation adapter; no compulsory account |
-| In-person spaces, host, equipment, learning, events | Center | Concept and private event ideas; no fabricated operational venue |
-| Personal profile, skills and own activity | My page | Edit, optional persistence, export and delete; not authentication |
-| FOLKUNO human/community concept | Across People / Together / Projects / City / Center | Public purpose preserved; private operating manuals not published |
-| FOLKUNO master graphic mark | FOLKOOP brand | Raster crop from owner-supplied master identity board, with FOLKOOP wordmark |
-| Eleven languages and RTL | City + shared navigation | Retained; detailed new copy sv/en/ru, other fallback explicitly disclosed |
-| History and rights | Repository + archival tag | No history rewrite, force push, licensing change or new repository |
+| Civic navigation and official sources | City | Preserved official-source behavior; no compulsory account |
+| Human/community cooperation concept | People / Together / Projects / City / Center | Public purpose integrated into FOLKOOP |
+| Graphic identity source material | FOLKOOP brand | Owner-supplied master identity board adapted to the FOLKOOP wordmark |
+| Guide/character interaction work | FOLKOOP guide | Unnamed guide, authored poses, onboarding and contextual help |
+| Cooperative-network research | Product architecture | Source-supported ideas separated from FOLKOOP design decisions |
+| Eleven languages and RTL | Shared navigation + City | Retained; detailed newer network copy may still use explicit fallback |
+| History and rights | Repository + historical archives | No history rewrite; current licensing applies according to LICENSE and third-party boundaries |
+
+## Naming rule
+
+Active product code and documentation must not reintroduce retired internal project names. A deterministic test scans active text and paths. External organisations, people and source projects may still be named when accurate attribution requires it.
 
 ## Deliberate limitations
 
-No pretended message delivery, savings guarantees, invented users, invented city case statuses, political scoring, public contact details copied from private materials, or real checkout. Completion is the user's own mark, not independent verification.
+No pretended message delivery, savings guarantees, invented users, invented city case statuses, political scoring, public contact details copied from private materials, or fake checkout. Completion is the user's own mark unless an external system independently confirms an outcome.
 
-The original civic source remains readable and regression-tested. A temporary extra source fixture is preferable to a destructive rewrite; it should be consolidated only when equivalent assertions run against the extracted City module. Backend security cannot be replaced by browser-only profiles or an iframe.
+Backend security cannot be replaced by browser-only profiles. Local drafts and network objects remain distinct.
 
-## Rollback
+## Rollback and history
 
-The archival tag points to the exact baseline. Revert the migration commit(s) through the normal Git workflow; do not reset/force-push shared history. Confirm the reverted service-worker version is advanced for a rollback release, so installed clients can receive it without forced activation or cache collisions.
+Use normal Git reverts; do not reset or force-push shared history. Historical tags and archived snapshots may preserve the terminology that existed when they were created. Current releases must continue to use FOLKOOP.
 
 ## Brand provenance
 
-The project owner explicitly instructed reuse of the FOLKUNO logo. `folkoop-mark.png` is a cropped, resized raster from the supplied “Interwoven Knot” master identity board, not a redesigned sign. The large private presentation, associated archive and internal know-how are not included. Name clearance remains unresolved; this commit is not a legal opinion.
+The current FOLKOOP mark derives from an owner-supplied master identity board and is maintained as FOLKOOP identity material. Private presentations and internal know-how are not published merely because the code repository is public. Name clearance remains a separate legal matter.
