@@ -271,3 +271,21 @@ The Decidim deep dive focuses on:
 - authorization/eligibility;
 - APIs and exports;
 - what FOLKOOP City should surface or integrate rather than rebuild.
+
+
+### Open Collective
+
+Full collective-finance/fiscal-hosting comparison and integration-oriented backlog:
+
+- `docs/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
+
+The Open Collective deep dive focuses on:
+- Collectives vs Organizations/Fiscal Hosts;
+- donations, sponsorships and grants;
+- expenses, reimbursements and invoices;
+- fiscal-host approvals/compliance;
+- ledger and financial source-of-truth;
+- Funds/Grants and Spark Fund implications;
+- expected vs received money;
+- privacy boundaries for financial/tax data;
+- what FOLKOOP Projects should display/orchestrate rather than process themselves.
