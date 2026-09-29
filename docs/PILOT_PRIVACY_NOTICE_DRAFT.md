@@ -182,7 +182,9 @@ other people, FOLKOOP uses an operator-reviewed closure procedure for this first
 pilot.
 
 In general:
-1. access is stopped and active sessions are revoked/terminated;
+1. pilot admission is disabled first; refresh sessions are then revoked. An
+   already-issued access token may remain technically valid until its expiry, so
+   FOLKOOP does not rely on logout alone to stop admitted access;
 2. the operator inventories your FOLKOOP data;
 3. shared objects you own are transferred to a consenting remaining participant
    when still needed, or deleted after their effect on others is reviewed;
