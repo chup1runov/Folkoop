@@ -6,7 +6,10 @@
 
 **Application scaffold prepared; Google provider still not enabled.**
 
-FOLKOOP v0.24 already has hosted invite-only admission. The remaining pilot blocker is a genuinely usable Auth route for ordinary invited participants.
+FOLKOOP already has hosted invite-only admission. Before ordinary participants,
+two coupled gates remain: a genuinely usable Auth route and versioned
+server-side acceptance of the Pilot Terms / Privacy Notice before first
+admission. See `docs/PILOT_TERMS_ACCEPTANCE.md`.
 
 Google OAuth is the preferred first candidate because it:
 - avoids reliance on Supabase's restricted built-in SMTP;
@@ -146,13 +149,17 @@ Use two distinct test Google accounts.
 
 For account A:
 - complete Google sign-in;
-- consume invite P01;
+- review and explicitly accept Pilot Terms version `2026-09-29-v1` and the
+  active Privacy Notice version;
+- consume invite P01 atomically with recorded acceptance;
 - create a listed pilot profile;
 - create one `Need`.
 
 For account B:
 - complete Google sign-in;
-- consume invite P02;
+- review and explicitly accept the same active Pilot Terms / Privacy Notice
+  versions;
+- consume invite P02 atomically with recorded acceptance;
 - discover A's Need;
 - join it;
 - use linked work chat;
@@ -166,7 +173,8 @@ Then:
 - sign them back in without reusing invite codes;
 - confirm existing-pilot re-entry succeeds.
 
-Only after this works should invite codes be sent to the first non-developer pilot participants.
+Only after this works, including server-side acceptance evidence, should invite
+codes be sent to the first non-developer pilot participants.
 
 ## Privacy
 
