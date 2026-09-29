@@ -120,8 +120,15 @@ The repository now includes a safe hosted readiness probe:
 
 ```bash
 npm run auth:preflight
+npm run auth:require-provider
 npm run auth:require-google
 ```
+
+Use `auth:require-provider` **after** Google is configured in hosted Supabase but
+**before** flipping the production UI flag. It requires the hosted Google
+provider plus enabled signup while deliberately ignoring the still-disabled app
+flag. After that passes, enable `googleOAuthEnabled:true` in a reviewed change
+and require `auth:require-google` to pass.
 
 The probe reads the public `network-config.js`, calls the hosted Supabase
 `/auth/v1/settings` endpoint with the publishable key, and prints only
