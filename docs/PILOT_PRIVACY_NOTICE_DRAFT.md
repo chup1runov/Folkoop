@@ -5,11 +5,11 @@
 **NOT READY FOR PARTICIPANT DISTRIBUTION.**
 
 Controller/contact are now identified for the current pilot. This notice is
-still not ready for participant distribution until the remaining service,
-legal-basis and Auth gates are completed.
+still not ready for participant distribution until the remaining Auth and
+final pilot-release gates are completed.
 
 - **Controller:** Pavel Chuprunov (private individual)
-- **Privacy contact:** chup1runov@gmail.com
+- **Privacy contact:** Chup1runov@gmail.com
 
 This draft applies only to the first small, invite-only Göteborg core-loop pilot.
 
@@ -31,7 +31,7 @@ information.
 
 Controller: **Pavel Chuprunov (private individual)**
 
-Privacy/contact route: **chup1runov@gmail.com**
+Privacy/contact route: **Chup1runov@gmail.com**
 
 You can use this contact for access, correction, deletion/account closure,
 restriction, objection, portability where applicable, or privacy/safety
@@ -80,7 +80,7 @@ practical.
 
 ## Why do we process it?
 
-Working bases for this pilot, subject to final controller confirmation:
+Working legal bases adopted by the controller for this pilot scope:
 
 - **service/account, profile, cooperation and messaging:** GDPR Art. 6(1)(b)
   where processing is objectively necessary to provide the pilot service you
@@ -93,8 +93,8 @@ Working bases for this pilot, subject to final controller confirmation:
 - **records needed to handle GDPR rights/breaches:** GDPR Art. 6(1)(c) where
   processing is necessary for a legal obligation.
 
-If the final controller review requires a different basis for a purpose, this
-notice must be updated before launch.
+If the purpose or scope materially changes, the legal-basis assessment and this
+notice must be reviewed before that new processing begins.
 
 ## What is optional?
 
@@ -120,8 +120,11 @@ Region choice describes the primary project-data location; provider contractual
 terms, subprocessors and transfer safeguards must also be considered.
 
 ### Box
-Private operational records such as participant-code mapping, outcome/interview
-notes and incident records are stored in a restricted Box pilot workspace.
+Box is **not** used to store real participant personal data for this pilot.
+The connected private workspace may contain templates, synthetic material and
+unassigned invitation-code secrets only. Participant identity/contact mapping,
+interview notes, outcome notes, incident notes and rights-request content must
+not be stored there under the current policy.
 
 ### GitHub Pages
 The public FOLKOOP frontend is hosted using GitHub Pages. GitHub documents that
@@ -191,7 +194,8 @@ In general:
    when still needed, or deleted after their effect on others is reviewed;
 4. your user-scoped profile/content/state are deleted unless a narrow,
    documented legal/safety hold applies;
-5. private Box records are handled under the retention rules above;
+5. the operator confirms that no participant personal data were stored in Box
+   under the pilot policy;
 6. the Auth identity is removed last.
 
 This is designed to avoid a blind database cascade that could delete other
@@ -230,9 +234,10 @@ the high-risk threshold applies.
 Some service providers may use subprocessors or process limited service/security
 data outside Sweden/EEA under their applicable transfer safeguards.
 
-Before this draft is approved, the operator must verify and document the terms,
-DPA/subprocessors and transfer safeguards for the actual Supabase, Box, GitHub
-and (if enabled) Google services used by the pilot.
+Supabase's DPA/transfer mechanism has been reviewed for the current pilot use.
+Box is excluded from the participant personal-data flow. GitHub Pages provider
+logging is disclosed above. Google must be reviewed and this notice updated if
+Google sign-in is enabled.
 
 ## Changes
 
