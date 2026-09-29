@@ -114,6 +114,32 @@ v0.25 implements the following pieces but keeps them disabled in production unti
 
 No provider token is needed by FOLKOOP. Do not request or retain Google API access beyond identity.
 
+## Automated hosted preflight
+
+The repository now includes a safe hosted readiness probe:
+
+```bash
+npm run auth:preflight
+npm run auth:require-google
+```
+
+The probe reads the public `network-config.js`, calls the hosted Supabase
+`/auth/v1/settings` endpoint with the publishable key, and prints only
+non-secret readiness fields.
+
+`auth:preflight` is informational. `auth:require-google` exits non-zero until:
+
+- the hosted Supabase Google provider is enabled;
+- production `googleOAuthEnabled` is true;
+- Auth signup is not disabled.
+
+This does **not** replace the provider/redirect setup below or the real
+two-account browser test. The hosted settings endpoint cannot prove that the
+exact Google callback/allowed redirect configuration is correct.
+
+Current live database/Auth readiness details are tracked in
+`docs/PRE_PILOT_AUTH_READINESS.md`.
+
 ## Verification before giving an invite to a real participant
 
 Use two distinct test Google accounts.
