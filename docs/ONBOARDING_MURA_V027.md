@@ -1,4 +1,4 @@
-# FOLKOOP v0.27 — language-first onboarding and physical Ksyusha
+# FOLKOOP v0.27 — language-first onboarding and physical Mura
 
 28 September 2026.
 
@@ -6,10 +6,10 @@
 
 The first interaction is language selection, not navigation.
 
-A first-time visitor sees Ksyusha before the product tour:
+A first-time visitor sees Mura before the product tour:
 
 **Hej! · Hi! · Привет!**  
-**Jag heter Ksyusha · I’m Ksyusha · Меня зовут Ксюша**  
+**Jag heter Mura · I’m Mura · Меня зовут Mura**  
 **Välj språk · Choose language · Выбери язык**
 
 The visitor selects one of the existing eleven FOLKOOP languages. Only then does the site explanation begin.
@@ -22,9 +22,9 @@ The local keys are:
 
 ## Canonical character source
 
-FOLKOOP does not invent a second visual Ksyusha.
+FOLKOOP does not invent a second visual Mura.
 
-The canonical Character Pack remains the Mura Companion character `ksyusha.default` from the user's Mura repository.
+The canonical Character Pack remains the Mura Companion character `mura.default` from the user's Mura repository.
 
 Canonical visual identity:
 - long chestnut-brown hair;
@@ -47,7 +47,7 @@ This keeps the visual identity canonical without shipping the heavier full pose 
 
 ## Physical presence
 
-Ksyusha is now a visible full-body character rather than a circular "К" help button.
+Mura is now a visible full-body character rather than a circular "К" help button.
 
 During onboarding she can:
 - teleport out/in with a short puff;
@@ -98,13 +98,13 @@ The guided tour currently explains:
 11. Center;
 12. Settings;
 13. About;
-14. Ksyusha as the persistent helper.
+14. Mura as the persistent helper.
 
 Language is no longer a late tutorial step because it is chosen before the tour.
 
 ## Helper behavior after onboarding
 
-Clicking the physical Ksyusha opens the same contextual helper panel from v0.26:
+Clicking the physical Mura opens the same contextual helper panel from v0.26:
 - explanation of the current route;
 - replay full introduction.
 
@@ -122,12 +122,12 @@ The earlier Mura principle **presence before chat** is preserved: first prove th
 ## Mobile / desktop rule
 
 Desktop:
-- Ksyusha can stand to either side of the target;
+- Mura can stand to either side of the target;
 - the explanatory card uses the opposite side where practical;
 - perch mode may sit across the top edge of broad controls.
 
 Mobile:
-- Ksyusha scales down;
+- Mura scales down;
 - nav steps can automatically open the mobile drawer;
 - the character and spotlight must remain within the viewport;
 - the explanatory card stays in the lower part of the screen.
@@ -138,18 +138,18 @@ The v0.27 browser contract must verify:
 - language gate appears before onboarding;
 - all eleven language choices are present;
 - selected language applies before the first explanation;
-- Ksyusha is visible in the guided tour;
-- Ksyusha changes position during the tour;
+- Mura is visible in the guided tour;
+- Mura changes position during the tour;
 - perch mode is exercised;
 - full tour can finish and is remembered;
-- physical Ksyusha remains clickable afterward;
+- physical Mura remains clickable afterward;
 - replay from Settings restarts from language;
 - both mobile and desktop layouts stay within viewport;
-- `ksyusha-guide.js` makes no external network calls.
+- `mura-guide.js` makes no external network calls.
 
 ## Future
 
-A richer Ksyusha may later use more of the Mura Companion behavior engine.
+A richer Mura may later use more of the Mura Companion behavior engine.
 
 Do not add AI merely to make the character "smarter". First collect real pilot questions and identify which cannot be solved by:
 - clearer interface;

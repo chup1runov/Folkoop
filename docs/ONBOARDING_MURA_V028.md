@@ -6,11 +6,11 @@
 
 The character source is the first-party repository `chup1runov/Mura` (repository
 id 1374123971), Character Pack manifest schema 4, character
-`ksyusha.default`. The manifest defines a 192×208 canvas and the established
+`mura.default`. The manifest defines a 192×208 canvas and the established
 look: long chestnut-brown hair, blue-and-white striped shirt, light-blue cuffed
 jeans and white sneakers.
 
-FOLKOOP does not regenerate Ksyusha. v0.28 extracts seven existing first-party
+FOLKOOP does not regenerate Mura. v0.28 extracts seven existing first-party
 WebP states from Mura's embedded Character Pack bundles:
 
 - `please.webp` → first greeting / welcome;
@@ -21,7 +21,7 @@ WebP states from Mura's embedded Character Pack bundles:
 - `lean-in.webp` → broad-surface/perch placement;
 - `wink.webp` → the final helper introduction.
 
-The deployed names are prefixed with `ksyusha-` to keep their provenance clear.
+The deployed names are prefixed with `mura-` to keep their provenance clear.
 
 ## What changed from v0.27.1
 
@@ -30,7 +30,7 @@ CSS arm toward the target. That visually overclaimed what the art actually did.
 
 v0.28 instead renders the real Mura pose for the semantic step and uses a
 separate orange directional cue when the target needs disambiguation. The cue is
-not represented as Ksyusha's body. Character placement still prefers a position
+not represented as Mura's body. Character placement still prefers a position
 near the highlighted target, including below it where the raised-finger inspect
 pose reads naturally.
 
