@@ -1,6 +1,6 @@
 ---
 name: Pilot feedback / bug
-about: Report a problem found while testing Sverinav
+about: Report a problem found while testing FOLKOOP
 title: "[Pilot] "
 labels: []
 assignees: []
@@ -18,9 +18,9 @@ assignees: []
 
 <!-- Example: iPhone / Safari / installed web app. Do not include precise location. -->
 
-## Sverinav version
+## FOLKOOP version
 
-<!-- Shown under Om Sverinav -->
+<!-- Shown under Om FOLKOOP -->
 
 ## Screenshot
 
