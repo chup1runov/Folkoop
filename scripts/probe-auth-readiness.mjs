@@ -67,6 +67,7 @@ export function summarizeAuthSettings(settings,config){
       networkEnabled:config.enabled,
       googleOAuthEnabled:config.googleOAuthEnabled
     },
+    hostedGoogleReady:googleProviderEnabled&&!signupDisabled,
     googlePilotReady:googleProviderEnabled&&config.googleOAuthEnabled&&!signupDisabled,
     blockers
   });
@@ -94,6 +95,7 @@ export function safePrintableReport(report){
     oauthRedirectUrl:report.oauthRedirectUrl,
     hosted:report.hosted,
     application:report.application,
+    hostedGoogleReady:report.hostedGoogleReady,
     googlePilotReady:report.googlePilotReady,
     blockers:[...report.blockers]
   };
@@ -103,6 +105,9 @@ async function main(){
   const config=await loadPublicNetworkConfig();
   const report=await probeHostedAuth(config);
   console.log(JSON.stringify(safePrintableReport(report),null,2));
+  if(process.argv.includes('--require-hosted-google')&&!report.hostedGoogleReady){
+    process.exitCode=2;
+  }
   if(process.argv.includes('--require-google-ready')&&!report.googlePilotReady){
     process.exitCode=2;
   }
