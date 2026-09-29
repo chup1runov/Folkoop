@@ -28,7 +28,7 @@ FOLKOOP:
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/history/releases/COOPERATION_V018.md`
-- `docs/PROJECT_HANDOFF.md`
+- `docs/history/handoffs/PROJECT_HANDOFF_20260929_PRE_V032.md`
 - `docs/architecture/SDCF_BRIDGE.md`
 - `docs/research/competitors/2026-09-29/HYLO_FEATURE_GAP_BACKLOG.md`
 
