@@ -827,7 +827,7 @@ Use:
 - external Loomio/Decidim for complex/formal cases.
 
 ### Human interface
-Mura.
+FOLKOOP guide.
 
 ### Semantic/evidence layer
 SDCF.
