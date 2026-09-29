@@ -1,4 +1,4 @@
-# Contributing to Sverinav
+# Contributing to FOLKOOP
 
 Tack för att du vill bidra.
 
@@ -12,7 +12,7 @@ Projektägaren godkänner införlivande och nya användningstillstånd. Ingen ge
 
 ## Grundprinciper
 
-Bidrag ska stödja Sverinavs mål: ett enkelt, neutralt och källspårbart gränssnitt till det offentliga Sverige.
+Bidrag ska stödja FOLKOOPs mål: ett enkelt, neutralt och källspårbart gränssnitt till det offentliga Sverige.
 
 - Använd officiella eller tydligt dokumenterade källor för samhällsfakta.
 - Behåll länken till originalkällan.
