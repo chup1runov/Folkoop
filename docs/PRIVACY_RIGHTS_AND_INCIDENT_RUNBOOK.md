@@ -28,7 +28,7 @@ route and use it for:
 
 Required launch field:
 
-**Privacy contact:** chup1runov@gmail.com
+**Privacy contact:** Chup1runov@gmail.com
 
 Do not publish a guessed personal address.
 
@@ -86,9 +86,12 @@ Search, as applicable:
 1. Supabase Auth identity/provider metadata available to the operator;
 2. public FOLKOOP tables identified in `PRE_PILOT_PRIVACY_DATA_MAP.md`;
 3. private pilot/admission/rate-limit tables;
-4. Box participant register;
-5. Box outcome/interview/incident records;
-6. any active provider-specific record that the FOLKOOP operator controls.
+4. any approved controller-held record outside the application, if such a
+   record was created under a later reviewed storage decision;
+5. any active provider-specific record that the FOLKOOP operator controls.
+
+Under the current pilot policy, Box is not an approved store for participant
+personal data and normally has no participant record to search.
 
 Provide:
 - a copy of personal data in scope;
@@ -213,7 +216,8 @@ The incident log itself must not become a permanent behavioural dossier.
 
 ## 14. Processor/provider incidents
 
-If Supabase, Box, GitHub or Google (if enabled) reports an incident:
+If Supabase, GitHub or Google (if enabled) reports an incident, or if Box
+reports an incident affecting operational secrets/templates:
 - determine whether participant data used by this pilot are affected;
 - preserve the provider notice/incident reference privately;
 - apply the same risk/notification assessment;
