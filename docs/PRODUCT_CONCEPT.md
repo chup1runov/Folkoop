@@ -458,13 +458,13 @@ FOLKOOP uses a lightweight architectural bridge to the separate SDCF systems-rea
 The bridge is defined in:
 
 - `docs/architecture/SDCF_BRIDGE.md`
-- `docs/architecture/sdcf-bridge-v0.1.json`
+- `docs/architecture/sdcf-bridge-v0.2.json`
 
 For the current Göteborg pilot this is **not a production RDF/OWL/SHACL dependency**. It is a semantic guardrail for places where FOLKOOP could otherwise overstate what its data proves.
 
 In particular:
 
-- a database/UI `done` state is not automatically a confirmed real-world outcome;
+- a database/UI `done` state is not automatically a confirmed real-world outcome; outcome classification remains separate from the strength/source of evidence;
 - an activity-log event records product provenance, not proof of an external effect;
 - a City source and a claim inferred from that source remain distinct;
 - a FOLKOOP routing recommendation is not an authority decision;
