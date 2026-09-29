@@ -100,7 +100,7 @@
   }
 
   function isCurrentlyValid(properties) {
-    const today=Number(SverinavCore.stockholmDay().replaceAll('-',''));
+    const today=Number(FolkoopCivicCore.stockholmDay().replaceAll('-',''));
     const from=properties?.VALID_FROM, to=properties?.VALID_TO;
     if (from != null && from !== '' && (!Number.isFinite(Number(from)) || Number(from)>today)) return false;
     if (to != null && to !== '' && (!Number.isFinite(Number(to)) || Number(to)<today)) return false;
@@ -225,7 +225,7 @@
     };
   }
 
-  window.SverinavNVDB = {
+  window.FolkoopNVDB = {
     resolveRoadHolder,
     sourceUrl: SOURCE_URL,
     mapUrl: MAP_URL
