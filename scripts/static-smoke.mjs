@@ -21,7 +21,7 @@ for(const size of [180,192,512]){
  assert(inflateSync(Buffer.concat(data)).length>size*size,'PNG image stream invalid');
 }
 const ctx=vm.createContext({console});vm.runInContext(await read('today.js'),ctx);
-for(const [copy,keys] of [[ctx.SverinavToday.COPY,ctx.SverinavToday.KEYS],[ctx.SverinavToday.COMPACT_COPY,ctx.SverinavToday.COMPACT_KEYS]]){
+for(const [copy,keys] of [[ctx.FolkoopCityToday.COPY,ctx.FolkoopCityToday.KEYS],[ctx.FolkoopCityToday.COMPACT_COPY,ctx.FolkoopCityToday.COMPACT_KEYS]]){
  assert.equal(Object.keys(copy).length,11);
  for(const [lang,values] of Object.entries(copy))assert.equal(values.length,keys.length,`Missing translation: ${lang}`);
 }
