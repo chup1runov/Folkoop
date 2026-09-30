@@ -1,4 +1,4 @@
-"""FOLKOOP v0.35 first-entry + read-only guest preview browser contract.
+"""FOLKOOP v0.37 first-entry + read-only guest preview browser contract.
 No live accounts and no external API requests.
 """
 import asyncio,json,os,shutil
@@ -31,7 +31,7 @@ async def main():
   await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь войти?')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
   await expect(page.locator('[data-entry="guest"]')).to_have_text('Посмотреть как гость')
-  await page.screenshot(path=str(OUT/'folkoop-v035-entry-choice-mobile.png'),full_page=True)
+  await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
   passed.append('First visit is language -> account choice, not language -> long tutorial/form')
 
   await page.click('[data-entry="guest"]')
@@ -72,8 +72,19 @@ async def main():
    else:
     await page.click(f'#mobilePrimaryNav [data-mobile-nav="{route_name}"]')
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
-   await expect(page.locator('#demoBanner')).to_be_visible()
+   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="center"]')).to_be_visible()
+  await page.click('#mobileContextDock [data-mobile-subnav="center"]')
+  await expect(page.locator('#workspace')).to_contain_text('Центр')
+  passed.append('City opens a compact second row with Center inside the local context')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="settings"]')).to_be_visible()
+  await expect(page.locator('#mobileContextDock [data-mobile-action="language"]')).to_be_visible()
+  passed.append('Profile opens a second row for profile settings, About and language')
+
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
