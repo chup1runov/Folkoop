@@ -109,4 +109,4 @@ Viktiga semantiska gränser:
   sannolikhet utan en faktiskt definierad kalibreringsmetod.
 
 Den maskinläsbara kontraktsversionen finns i
-`docs/architecture/sdcf-bridge-v0.2.json`.
+`docs/architecture/outcome-integrity-v1.json`.

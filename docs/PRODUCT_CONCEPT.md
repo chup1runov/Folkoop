@@ -201,7 +201,7 @@ Examples:
 
 None automatically proves a real-world outcome beyond what its evidence supports.
 
-The SDCF bridge remains the semantic guardrail for this boundary.
+The FOLKOOP Outcome & Provenance Integrity contract remains the semantic guardrail for this boundary.
 
 ## Repeat
 
