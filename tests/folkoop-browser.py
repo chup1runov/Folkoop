@@ -68,7 +68,7 @@ async def main():
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
   await page.evaluate("location.hash='#/center'")
-  await expect(page.locator('#workspace')).to_contain_text('no open venue')
+  await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP Center is open yet')
   await page.click('#messageLink');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
   results.append('No fictitious venue, members, payments or message delivery')
   for lang in ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']:

@@ -8,7 +8,7 @@
 .guide-tour-open #onboardingProgress{margin:0}
 .guide-tour-open .onboarding-guide{margin:4px 0}
 .guide-tour-open .onboarding-card h2{margin:6px 0 8px}
-.guide-tour-open #onboardingBody{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin:0;padding:2px 3px 2px 1px}
+.guide-tour-open #onboardingBody{flex:1 1 auto;min-height:2.4em;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin:0;padding:2px 3px 2px 1px}
 .guide-tour-open #onboardingBody:focus-visible{outline:2px solid #176a99;outline-offset:-2px}
 .guide-tour-open .onboarding-actions{margin-top:12px}
 .folkoop-guide-language-card{overscroll-behavior:contain;max-height:calc(100dvh - 48px)}

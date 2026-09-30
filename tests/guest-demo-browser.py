@@ -36,10 +36,15 @@ async def main():
 
   await page.click('[data-entry="guest"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingTitle')).to_have_text('Принеси реальную потребность, навык, ресурс или идею')
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Guest first session receives the short value-first product tour')
+  await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
   await expect(page.locator('#demoBanner')).to_contain_text('Гостевой обзор')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
-  await expect(page.locator('#networkPanel')).to_contain_text('Dry firewood together')
+  await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
@@ -52,7 +57,7 @@ async def main():
   await expect(page.locator('#demoBanner')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
-  for route_name,expected in [('communities','Olofstorp neighbours'),('messages','Repair café'),('together','Dry firewood together')]:
+  for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Ремонтное кафе'),('together','Купить сухие дрова вместе')]:
    await page.click('#mobileMenuToggle')
    await page.click(f'#nav a[href="#/{route_name}"]')
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
@@ -61,9 +66,9 @@ async def main():
 
   await page.click('#mobileMenuToggle')
   await page.click('#nav a[href="#/projects"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Neighbourhood repair café')
+  await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
   await page.click('[data-coop="open"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Confirm the room')
+  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить помещение')
   assert await page.locator('#networkPanel form:visible').count()==0
   assert await page.locator('#workspace').is_hidden()
   assert await page.locator('[data-coop="delete"]:visible').count()==0

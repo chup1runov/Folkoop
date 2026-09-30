@@ -156,9 +156,11 @@ async def scenario(browser, kind, partial):
     except Exception as error:
         result.update(error=str(error), page_errors=errors, writes=state['writes'])
         if not page.is_closed():
-            result['status'] = await page.locator('#netStatus').text_content()
-            result['fields'] = await page.locator('#netCoopCreate').evaluate_all(
-                '(forms)=>forms.flatMap(f=>[...f.elements].filter(e=>e.name).map(e=>({name:e.name,value:e.value,valid:e.validity.valid})))')
+            status = page.locator('#netStatus')
+            form = page.locator('#netCoopCreate')
+            result['status'] = await status.text_content() if await status.count() else None
+            result['fields'] = await form.evaluate_all(
+                '(forms)=>forms.flatMap(f=>[...f.elements].filter(e=>e.name).map(e=>({name:e.name,value:e.value,valid:e.validity.valid})))') if await form.count() else []
     finally:
         release.set()
         await context.close()

@@ -7,7 +7,7 @@ const store=C.workspace(storage);
 let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
-const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
+const NAV_ORDER=['home','together','projects','messages','people','communities','city','center','me','settings','about'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -16,19 +16,13 @@ const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!==
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
- {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point',pose:'point'},
  {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
- {id:'quick',route:'home',target:'.quick-grid',motion:'perch',pose:'sit-edge'},
- {id:'messages',route:'messages',target:'#nav a[href="#/messages"]',motion:'point',pose:'point'},
- {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point',pose:'point'},
- {id:'communities',route:'communities',target:'#nav a[href="#/communities"]',motion:'point',pose:'point'},
  {id:'together',route:'together',target:'#nav a[href="#/together"]',motion:'point',pose:'point'},
  {id:'projects',route:'projects',target:'#nav a[href="#/projects"]',motion:'point',pose:'idea'},
+ {id:'people',route:'people',target:'#nav a[href="#/people"]',motion:'point',pose:'point'},
  {id:'city',route:'city',target:'#nav a[href="#/city"]',motion:'point',pose:'point'},
  {id:'center',route:'center',target:'#nav a[href="#/center"]',motion:'perch',pose:'sit-edge'},
- {id:'settings',route:'settings',target:'#nav a[href="#/settings"]',motion:'point',pose:'point'},
- {id:'about',route:'about',target:'#nav a[href="#/about"]',motion:'point',pose:'point'},
- {id:'helper',route:'home',target:'#folkoopGuideActor',motion:'home',pose:'wink'}
+ {id:'quick',route:'home',target:'.quick-grid',motion:'perch',pose:'sit-edge'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -83,61 +77,40 @@ function cityShell(){
 
 const tutorialCopy={
  en:{
-  welcome:'FOLKOOP is a cooperation network: start with what you need, can offer or want to build, then find people and move toward a real action.',
-  quick:'These four shortcuts are the fastest way to begin: ask for help, offer help, buy together or share a resource. They create private drafts until you deliberately publish through the network layer.',
-  language:'Change the interface language here. The FOLKOOP interface is translated into all available languages.',
-  helper:'FOLKOOP guide stays in the corner after this tour. She explains the current section and can restart the full introduction. For now she is local and rule-based: no AI request and no personal data is sent anywhere.',
-  me:'Your profile: name, city, skills and what you want others to know. Your city controls which local City tools may be shown.',
-  home:'Home is the starting point: current activity, shortcuts and what needs your attention.',
-  messages:'Messages contains direct chats, group chats and work chats linked to cooperation.',
-  people:'People is the directory of pilot participants who chose to be discoverable.',
-  communities:'Communities are longer-lived groups with members and publications.',
-  together:'Together is for needs, offers, shared resources and joint purchases.',
-  projects:'Projects is for teams, tasks, roles, progress and a linked work chat.',
-  city:'City connects the app to local civic information for the city you selected in Profile. The current local pilot is Göteborg.',
-  center:'Center is the physical/offline layer: meetings, learning, equipment and human help.',
-  settings:'Settings contains language, app preferences and this introduction.',
-  about:'About explains what FOLKOOP is, what it is trying to do and the limits of the current pilot.'
+  welcome:'Bring one real thing: something you need, a skill you can offer, a resource you can share or an idea you want to build. FOLKOOP helps you find people and resources and turn that into a concrete next step — not just another post or like.',
+  home:'Home tells you what matters today: a message, task, confirmation or project step. Handle the useful thing first, then leave when you are caught up.',
+  together:'Need help? Can help? Have something to share? Want to buy together? Together is where everyday needs become cooperation so people do not have to solve or buy everything alone.',
+  projects:'Have an idea? Turn it into a team: people, roles, tasks, updates and a work chat around one real goal.',
+  people:'Find people by what they can do and communities by what they care about. The goal is not followers — it is finding people you can actually do something with.',
+  city:'City brings connected official local sources and routes into one place. You should not need to know which authority or website to search before you can take the next step.',
+  center:'Center is the long-term physical FOLKOOP layer: a place in the city to meet people, get human help, learn, work on projects and share tools. No FOLKOOP Center is open yet; the next ambition is a suitable or partner space, then more city nodes if the model proves useful.',
+  quick:'Do not learn everything first. Start with one real thing now: ask for help, offer help, buy together or share a resource. A real project can start from one small next step.'
  },
  ru:{
-  welcome:'FOLKOOP — сеть для совместных действий: начинай с того, что тебе нужно, что ты можешь предложить или что хочешь сделать, находи людей и переходи к реальному действию.',
-  quick:'Четыре быстрых действия — самый короткий старт: попросить помощь, предложить помощь, купить вместе или поделиться ресурсом. Сначала это личные черновики, пока ты сам не перейдёшь к сетевому действию.',
-  language:'Здесь меняется язык интерфейса. Интерфейс FOLKOOP переведён на все доступные языки.',
-  helper:'FOLKOOP guide останется в углу после этой инструкции. Она объясняет текущий раздел и умеет заново запустить полный тур. Сейчас она локальная и работает по правилам: без AI-запросов и без отправки персональных данных.',
-  me:'Профиль: имя, город, навыки и то, что ты хочешь показать другим. Выбранный город определяет, какие местные инструменты можно показывать.',
-  home:'Главная — стартовый экран: текущая активность, быстрые действия и то, что требует внимания.',
-  messages:'Сообщения — личные, групповые и рабочие чаты, связанные с кооперацией.',
-  people:'Люди — каталог участников пилота, которые сами включили видимость профиля.',
-  communities:'Сообщества — постоянные группы с участниками и публикациями.',
-  together:'Вместе — потребности, предложения, общие ресурсы и совместные закупки.',
-  projects:'Проекты — команды, задачи, роли, прогресс и связанный рабочий чат.',
-  city:'Город — местные гражданские инструменты для города, который указан в Профиле. Сейчас локальный пилот подключён к Göteborg.',
-  center:'Центр — физический слой: встречи, обучение, оборудование и помощь людей в реальном мире.',
-  settings:'Настройки — язык, параметры приложения и возможность заново пройти эту инструкцию.',
-  about:'О нас — что такое FOLKOOP, зачем он создаётся и какие ограничения есть у текущего пилота.'
+  welcome:'Принеси сюда что-то реальное: то, что тебе нужно, что ты умеешь, чем готов поделиться или что хочешь создать. FOLKOOP помогает найти людей и ресурсы и превратить это в конкретный следующий шаг — не просто в ещё один пост или лайк.',
+  home:'Главная показывает, что важно сегодня: сообщение, задача, подтверждение или шаг проекта. Сначала сделай полезное — а когда всё просмотрено, приложение можно спокойно закрыть.',
+  together:'Нужна помощь? Можешь помочь? Есть вещь или ресурс? Хочешь купить вместе? Здесь обычные потребности превращаются в кооперацию, чтобы не решать и не покупать всё в одиночку.',
+  projects:'Есть идея? Преврати её в команду: люди, роли, задачи, обновления и рабочий чат вокруг одной реальной цели.',
+  people:'Ищи людей по тому, что они умеют, а сообщества — по тому, что вам важно. Цель не в подписчиках, а в людях, с которыми реально можно что-то сделать.',
+  city:'Город собирает подключённые официальные источники и маршруты в одном месте. Не нужно заранее знать, какой сайт или ведомство искать, чтобы понять следующий шаг.',
+  center:'Центр — будущая физическая часть FOLKOOP: место в городе, где можно познакомиться, получить человеческую помощь, учиться, работать над проектами и делиться инструментами. Открытого Центра пока нет; следующий ориентир — подходящее или партнёрское помещение, а если модель сработает — такие узлы в крупных городах.',
+  quick:'Не изучай всё заранее. Начни с одной реальной вещи: попроси помощь, предложи помощь, купи вместе или поделись ресурсом. Большой проект тоже начинается с одного небольшого шага.'
  },
  sv:{
-  welcome:'FOLKOOP är ett nätverk för gemensam handling: börja med vad du behöver, kan erbjuda eller vill bygga, hitta människor och gå vidare till verklig handling.',
-  quick:'De fyra genvägarna är snabbaste starten: be om hjälp, erbjud hjälp, köp tillsammans eller dela en resurs. De börjar som privata utkast tills du själv går vidare till nätverksdelen.',
-  language:'Här byter du gränssnittsspråk. FOLKOOP-gränssnittet är översatt till alla tillgängliga språk.',
-  helper:'FOLKOOP guide stannar i hörnet efter rundturen. Hon förklarar den aktuella delen och kan starta hela introduktionen igen. Just nu är hon lokal och regelbaserad: ingen AI-förfrågan och inga personuppgifter skickas någonstans.',
-  me:'Profil: namn, stad, färdigheter och det du vill visa andra. Din valda stad styr vilka lokala stadsverktyg som kan visas.',
-  home:'Hem är startpunkten: aktivitet, genvägar och sådant som behöver din uppmärksamhet.',
-  messages:'Meddelanden innehåller direktchattar, gruppchattar och arbetschattar kopplade till samarbete.',
-  people:'Människor är katalogen över pilotdeltagare som själva valt att vara synliga.',
-  communities:'Gemenskaper är mer långvariga grupper med medlemmar och publikationer.',
-  together:'Tillsammans är för behov, erbjudanden, delade resurser och gemensamma köp.',
-  projects:'Projekt är för team, uppgifter, roller, framsteg och en kopplad arbetschatt.',
-  city:'Stad kopplar appen till lokal samhällsinformation för staden du valt i Profil. Den lokala piloten är nu Göteborg.',
-  center:'Center är det fysiska lagret: möten, lärande, utrustning och mänsklig hjälp.',
-  settings:'Inställningar innehåller språk, appval och möjlighet att visa introduktionen igen.',
-  about:'Om oss förklarar vad FOLKOOP är, vad projektet försöker göra och pilotens nuvarande begränsningar.'
+  welcome:'Ta med något verkligt: något du behöver, en färdighet du kan erbjuda, en resurs du kan dela eller en idé du vill bygga. FOLKOOP hjälper dig hitta människor och resurser och göra det till ett konkret nästa steg — inte bara ännu ett inlägg eller en like.',
+  home:'Hem visar vad som är viktigt idag: ett meddelande, en uppgift, en bekräftelse eller nästa projektsteg. Gör det användbara först och lämna appen när du är ikapp.',
+  together:'Behöver du hjälp? Kan du hjälpa? Har du något att dela? Vill du köpa tillsammans? Här blir vardagsbehov till samarbete så att människor inte behöver lösa eller köpa allt själva.',
+  projects:'Har du en idé? Gör den till ett team: människor, roller, uppgifter, uppdateringar och en arbetschatt kring ett verkligt mål.',
+  people:'Hitta människor efter vad de kan och gemenskaper efter vad ni bryr er om. Målet är inte följare utan människor du faktiskt kan göra något tillsammans med.',
+  city:'Stad samlar anslutna officiella lokala källor och vägar på ett ställe. Du ska inte behöva veta vilken myndighet eller webbplats du måste leta efter innan du kan ta nästa steg.',
+  center:'Center är FOLKOOPs framtida fysiska lager: en plats i staden för att möta människor, få mänsklig hjälp, lära sig, arbeta med projekt och dela verktyg. Inget FOLKOOP Center är öppet ännu; nästa ambition är en lämplig eller partnerlokal och senare fler stadsnoder om modellen visar sig fungera.',
+  quick:'Lär dig inte allt först. Börja med en verklig sak nu: be om hjälp, erbjud hjälp, köp tillsammans eller dela en resurs. Ett stort projekt kan börja med ett enda litet nästa steg.'
  }
 };
 const tutorialTitles={
- en:{welcome:'Welcome to FOLKOOP',quick:'Four quick ways to start',language:'Language',helper:'FOLKOOP guide helper'},
- ru:{welcome:'Добро пожаловать в FOLKOOP',quick:'Четыре быстрых действия',language:'Язык',helper:'FOLKOOP guide · помощник FOLKOOP'},
- sv:{welcome:'Välkommen till FOLKOOP',quick:'Fyra snabba sätt att börja',language:'Språk',helper:'FOLKOOP guide-hjälp'}
+ en:{welcome:'Bring a real need, skill, resource or idea',home:'What matters today',together:'Do not do everything alone',projects:'Turn an idea into a team',people:'Find your people',city:'Your city, one route',center:'From online network to a real place',quick:'Start with one real thing'},
+ ru:{welcome:'Принеси реальную потребность, навык, ресурс или идею',home:'Что важно сегодня',together:'Не делай всё в одиночку',projects:'Преврати идею в команду',people:'Найди своих людей',city:'Твой город — один понятный маршрут',center:'От онлайн-сети к реальному месту',quick:'Начни с одной реальной вещи'},
+ sv:{welcome:'Ta med ett verkligt behov, en färdighet, resurs eller idé',home:'Det som är viktigt idag',together:'Gör inte allt ensam',projects:'Gör en idé till ett team',people:'Hitta dina människor',city:'Din stad — en begriplig väg',center:'Från nätverk till en verklig plats',quick:'Börja med en verklig sak'}
 };
 const entryCopy={
  en:{title:'How do you want to enter?',body:'Sign in to participate, or explore the whole product in read-only guest mode.',email:'Continue with email',guest:'Explore as guest',guestNote:'Guest mode uses sample data. You can browse every main area, but creating, joining, sending and changing data requires a full account.',back:'Back to language'},
@@ -179,10 +152,10 @@ function hideEntryGate(){
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
 function setEntryMode(mode){
- try{sessionStorage.setItem(ENTRY_KEY,mode);storage?.setItem(ONBOARDING_KEY,'done');}catch{}
+ try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
  hideEntryGate();
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest'}}));
- if(mode==='guest'){location.hash='#/home';}
+ if(mode==='guest'){location.hash='#/home';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},220);}
  else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
@@ -327,6 +300,7 @@ function finishOnboarding(){
  if(menuOpen)closeMenu();
  globalThis.FolkoopGuide?.home({instant:true});
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
+ onboardingDone=true;
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
@@ -386,6 +360,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  else setTimeout(()=>showOnboarding(0),80);
 });
 window.addEventListener('folkoop:open-entry',()=>showEntryGate());
+window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),120);});
 window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();

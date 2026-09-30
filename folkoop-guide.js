@@ -45,9 +45,9 @@ function pose(name){
  setArt(img,ASSETS[name]||ASSETS.idle);
  actor.dataset.pose=name;
 }
-function dims(){
- const short=innerHeight<520,mobile=innerWidth<720;
- const w=short?82:mobile?96:124;
+function dims(mode='home'){
+ const short=innerHeight<520,mobile=innerWidth<720,tour=mode!=='home';
+ const w=tour?(short?82:mobile?96:124):(short?56:mobile?64:78);
  return {w,h:w*(208/192)};
 }
 function pointPose(targetRect,actorRect){
@@ -133,7 +133,7 @@ function layoutTour(target){
  let r=target.getBoundingClientRect();
  const left=r.left+r.width/2>=innerWidth/2;
  card.style.width=(mobile?innerWidth-24:Math.min(500,innerWidth-48))+'px';
- card.style.maxHeight=Math.floor((mobile||short)?innerHeight*.44:Math.min(innerHeight*.72,620))+'px';
+ card.style.maxHeight=Math.floor(short&&!mobile?Math.min(innerHeight-24,260):(mobile?innerHeight*.44:Math.min(innerHeight*.72,620)))+'px';
  card.style.left=left||mobile?gap+'px':'auto';
  card.style.right=left&&!mobile?'auto':gap+'px';
  card.style.top=helper&&mobile?gap+'px':'auto';
@@ -155,7 +155,7 @@ function layoutTour(target){
 }
 function applyPosition(target,mode='point',poseName=null){
  ensureActor();currentTarget=target||null;currentMode=mode;currentPose=poseName;
- const {w,h}=dims();actor.style.setProperty('--folkoop-guide-w',w+'px');
+ const {w,h}=dims(mode);actor.style.setProperty('--folkoop-guide-w',w+'px');
  actor.classList.toggle('is-perched',mode==='perch');
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
@@ -167,7 +167,7 @@ function applyPosition(target,mode='point',poseName=null){
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
  const candidates=mode==='perch'
-  ?[[seatX,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
+  ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
   :[[r.left+r.width/2-w/2,r.bottom+12],[r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[12,12],[innerWidth-w-12,12]];
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);

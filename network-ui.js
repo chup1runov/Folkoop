@@ -58,6 +58,92 @@ const DEMO_UID='00000000-0000-4000-8000-000000000001';
 try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
 const route=()=>FolkoopCore.route(location.hash);
 const currentUser=()=>guestDemo?{id:DEMO_UID}:api?.user?.();
+const demoLocaleCopy={
+ ru:{
+  'Alex · Demo':'Alex · Демо',
+  'Repair · coordination':'Ремонт · координация',
+  'Guest preview profile. Sample data only.':'Гостевой демонстрационный профиль. Только пример данных.',
+  'Carpentry · reuse':'Столярные работы · повторное использование',
+  'Interested in neighbourhood repair and shared tools.':'Интересуется ремонтом по соседству и общими инструментами.',
+  'Logistics · Swedish/Arabic':'Логистика · шведский/арабский',
+  'Can help with delivery planning and language exchange.':'Может помочь с доставкой и языковым обменом.',
+  'Design · facilitation':'Дизайн · организация групп',
+  'Runs small community workshops.':'Организует небольшие общественные мастерские.',
+  'Olofstorp neighbours':'Соседи Olofstorp',
+  'Sample local community for shared help and practical coordination.':'Демонстрационное местное сообщество для взаимопомощи и совместных дел.',
+  'Göteborg language exchange':'Языковой обмен Göteborg',
+  'Sample group for informal language practice and meetups.':'Демонстрационная группа для языковой практики и встреч.',
+  'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
+  'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
+  'Neighbourhood repair café':'Ремонтное кафе по соседству',
+  'Organize a small repair afternoon with tools, tasks and a work chat.':'Организовать небольшую встречу по ремонту с инструментами, задачами и рабочим чатом.',
+  'Dry firewood together':'Купить сухие дрова вместе',
+  'Combine a small group order and coordinate pickup.':'Объединить небольшой групповой заказ и договориться о получении.',
+  'Borrow a drill for one evening':'Одолжить дрель на вечер',
+  'Need a normal drill for two wall plugs.':'Нужна обычная дрель для двух креплений.',
+  'I can review a CV':'Могу проверить резюме',
+  'Can give one round of feedback in Swedish or English.':'Могу дать один раунд обратной связи на шведском или английском.',
+  'Shared cargo bike':'Общий грузовой велосипед',
+  'Available for short local borrowing by arrangement.':'Можно ненадолго взять поблизости по договорённости.',
+  'Repair café · work chat':'Ремонтное кафе · рабочий чат',
+  'I can bring hand tools and a folding table.':'Я могу принести ручные инструменты и складной стол.',
+  'I made a simple sign for the entrance. We still need someone for coffee.':'Я подготовила простую табличку для входа. Ещё нужен кто-то для кофе.',
+  'I can help collect the firewood if the pickup is after 17:00.':'Могу помочь забрать дрова, если получение будет после 17:00.',
+  'Confirm the room':'Подтвердить помещение',
+  'Ask whether the community room is free on Saturday 13:00–16:00.':'Уточнить, свободно ли общественное помещение в субботу с 13:00 до 16:00.',
+  'Prepare a small sign':'Подготовить небольшую табличку',
+  'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
+  'Can collect after work':'Могу забрать после работы',
+  'Need delivery help':'Нужна помощь с доставкой',
+  'Sample supplier offer for the demo.':'Демонстрационное предложение поставщика.',
+  'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
+  'Entrance sign ready':'Табличка для входа готова',
+  'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
+ },
+ sv:{
+  'Alex · Demo':'Alex · Demo',
+  'Repair · coordination':'Reparation · samordning',
+  'Guest preview profile. Sample data only.':'Gästprofil för demo. Endast exempeldata.',
+  'Carpentry · reuse':'Snickeri · återbruk',
+  'Interested in neighbourhood repair and shared tools.':'Intresserad av lokal reparation och delade verktyg.',
+  'Logistics · Swedish/Arabic':'Logistik · svenska/arabiska',
+  'Can help with delivery planning and language exchange.':'Kan hjälpa med leveransplanering och språkutbyte.',
+  'Design · facilitation':'Design · facilitering',
+  'Runs small community workshops.':'Ordnar små lokala workshops.',
+  'Olofstorp neighbours':'Grannar i Olofstorp',
+  'Sample local community for shared help and practical coordination.':'Exempel på lokal gemenskap för hjälp och praktisk samordning.',
+  'Göteborg language exchange':'Språkutbyte Göteborg',
+  'Sample group for informal language practice and meetups.':'Exempelgrupp för informell språkträning och träffar.',
+  'Repair café this Saturday — bring one small item and we will try to fix it together.':'Reparationscafé på lördag — ta med en liten sak så försöker vi laga den tillsammans.',
+  'Looking for two people for a Swedish–Russian conversation table next week.':'Söker två personer till ett svensk-ryskt samtalsbord nästa vecka.',
+  'Neighbourhood repair café':'Lokalt reparationscafé',
+  'Organize a small repair afternoon with tools, tasks and a work chat.':'Ordna en liten reparationseftermiddag med verktyg, uppgifter och arbetschatt.',
+  'Dry firewood together':'Köp torr ved tillsammans',
+  'Combine a small group order and coordinate pickup.':'Samla en mindre gruppbeställning och samordna hämtning.',
+  'Borrow a drill for one evening':'Låna en borrmaskin en kväll',
+  'Need a normal drill for two wall plugs.':'Behöver en vanlig borrmaskin för två fästen.',
+  'I can review a CV':'Jag kan granska ett CV',
+  'Can give one round of feedback in Swedish or English.':'Kan ge en omgång återkoppling på svenska eller engelska.',
+  'Shared cargo bike':'Delad lastcykel',
+  'Available for short local borrowing by arrangement.':'Kan lånas kort lokalt efter överenskommelse.',
+  'Repair café · work chat':'Reparationscafé · arbetschatt',
+  'I can bring hand tools and a folding table.':'Jag kan ta med handverktyg och ett fällbord.',
+  'I made a simple sign for the entrance. We still need someone for coffee.':'Jag gjorde en enkel skylt till entrén. Vi behöver fortfarande någon som ordnar kaffe.',
+  'I can help collect the firewood if the pickup is after 17:00.':'Jag kan hjälpa till att hämta veden om det blir efter 17:00.',
+  'Confirm the room':'Bekräfta lokalen',
+  'Ask whether the community room is free on Saturday 13:00–16:00.':'Fråga om lokalen är ledig på lördag 13:00–16:00.',
+  'Prepare a small sign':'Gör en liten skylt',
+  'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
+  'Can collect after work':'Kan hämta efter jobbet',
+  'Need delivery help':'Behöver hjälp med leverans',
+  'Sample supplier offer for the demo.':'Exempel på leverantörserbjudande.',
+  'todo · Confirm the room':'Att göra · Bekräfta lokalen',
+  'Entrance sign ready':'Entréskylten är klar',
+  'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.'
+ }
+};
+const demoText=value=>demoLocaleCopy[lang()]?.[value]||value;
+
 function demoSnapshot(){
  const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004';
  const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102';
@@ -65,25 +151,25 @@ function demoSnapshot(){
  const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Alex · Demo',skills:'Repair · coordination',about:'Guest preview profile. Sample data only.',listed:true},
-  {id:A,name:'Anna',skills:'Carpentry · reuse',about:'Interested in neighbourhood repair and shared tools.',listed:true},
-  {id:B,name:'Omar',skills:'Logistics · Swedish/Arabic',about:'Can help with delivery planning and language exchange.',listed:true},
-  {id:C,name:'Linnea',skills:'Design · facilitation',about:'Runs small community workshops.',listed:true}
+  {id:DEMO_UID,name:demoText('Alex · Demo'),skills:demoText('Repair · coordination'),about:demoText('Guest preview profile. Sample data only.'),listed:true},
+  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),listed:true},
+  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),listed:true},
+  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),listed:true}
  ];
  const groups=[
-  {id:G,owner_id:A,name:'Olofstorp neighbours',description:'Sample local community for shared help and practical coordination.'},
-  {id:G2,owner_id:C,name:'Göteborg language exchange',description:'Sample group for informal language practice and meetups.'}
+  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Sample local community for shared help and practical coordination.')},
+  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')}
  ];
  const allPosts=[
-  {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:'Repair café this Saturday — bring one small item and we will try to fix it together.',created_at:'2026-09-30T07:30:00Z'},
-  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:'Looking for two people for a Swedish–Russian conversation table next week.',created_at:'2026-09-29T18:20:00Z'}
+  {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:demoText('Repair café this Saturday — bring one small item and we will try to fix it together.'),created_at:'2026-09-30T07:30:00Z'},
+  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'}
  ];
  const cooperations=[
-  {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:'Neighbourhood repair café',description:'Organize a small repair afternoon with tools, tasks and a work chat.',location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
-  {id:PURCHASE,owner_id:A,kind:'purchase',title:'Dry firewood together',description:'Combine a small group order and coordinate pickup.',location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
-  {id:NEED,owner_id:B,kind:'need',title:'Borrow a drill for one evening',description:'Need a normal drill for two wall plugs.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
-  {id:OFFER,owner_id:C,kind:'offer',title:'I can review a CV',description:'Can give one round of feedback in Swedish or English.',location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
-  {id:RESOURCE,owner_id:A,kind:'resource',title:'Shared cargo bike',description:'Available for short local borrowing by arrangement.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
+  {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:demoText('Neighbourhood repair café'),description:demoText('Organize a small repair afternoon with tools, tasks and a work chat.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
+  {id:PURCHASE,owner_id:A,kind:'purchase',title:demoText('Dry firewood together'),description:demoText('Combine a small group order and coordinate pickup.'),location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
+  {id:NEED,owner_id:B,kind:'need',title:demoText('Borrow a drill for one evening'),description:demoText('Need a normal drill for two wall plugs.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
+  {id:OFFER,owner_id:C,kind:'offer',title:demoText('I can review a CV'),description:demoText('Can give one round of feedback in Swedish or English.'),location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
+  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
  ];
  const coopMembers=[
   {cooperation_id:PROJECT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z'},
@@ -94,7 +180,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
  ];
  const chats=[
-  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:'Repair café · work chat',created_at:'2026-09-28T10:00:00Z'},
+  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Repair café · work chat'),created_at:'2026-09-28T10:00:00Z'},
   {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
  ];
  const chatMembers=[
@@ -105,31 +191,31 @@ function demoSnapshot(){
   {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'}
  ];
  const allMessages=[
-  {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:'I can bring hand tools and a folding table.',created_at:'2026-09-30T07:20:00Z'},
-  {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:'I made a simple sign for the entrance. We still need someone for coffee.',created_at:'2026-09-30T07:45:00Z'},
-  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:'I can help collect the firewood if the pickup is after 17:00.',created_at:'2026-09-29T14:12:00Z'}
+  {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:demoText('I can bring hand tools and a folding table.'),created_at:'2026-09-30T07:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:demoText('I made a simple sign for the entrance. We still need someone for coffee.'),created_at:'2026-09-30T07:45:00Z'},
+  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'}
  ];
  const tasks=[
-  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:'Confirm the room',details:'Ask whether the community room is free on Saturday 13:00–16:00.',status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
-  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:'Prepare a small sign',details:'Simple A4 entrance sign.',status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
+  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the room'),details:demoText('Ask whether the community room is free on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
  ];
  const commitments=[
-  {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:'Can collect after work'},
+  {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:demoText('Can collect after work')},
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
-  {cooperation_id:PURCHASE,user_id:B,quantity:2,note:'Need delivery help'}
+  {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:'Sample supplier offer for the demo.'}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Sample supplier offer for the demo.')}];
  const activity=[
-  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:'Neighbourhood repair café',unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:'todo · Confirm the room'},
-  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:'Dry firewood together',unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
+  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Neighbourhood repair café'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the room')},
+  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
  ];
  const coopActivity=[
-  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:'todo · Confirm the room',created_at:'2026-09-30T08:30:00Z'},
-  {cooperation_id:PROJECT,event_type:'update_added',actor_id:C,label:'Entrance sign ready',created_at:'2026-09-29T18:00:00Z'},
+  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the room'),created_at:'2026-09-30T08:30:00Z'},
+  {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:demoText('Entrance sign ready'),created_at:'2026-09-29T18:00:00Z'},
   {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
  ];
  const updates=[
-  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:'Entrance sign is ready. I will bring tape and markers.',created_at:'2026-09-29T18:00:00Z'}
+  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:demoText('Entrance sign is ready. I will bring tape and markers.'),created_at:'2026-09-29T18:00:00Z'}
  ];
  const base={
   profile:profiles[0],directory:profiles,chatProfiles:profiles,groups,memberships:[{community_id:G,user_id:DEMO_UID,banned:false},{community_id:G2,user_id:DEMO_UID,banned:false}],blocks:[],
@@ -177,6 +263,13 @@ function localDateTime(value){
  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
 }
 
+function formatWhen(value){
+ if(!value)return '';
+ const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
+ try{return new Intl.DateTimeFormat(lang(),{dateStyle:'medium',timeStyle:'short'}).format(d);}
+ catch{return d.toISOString().slice(0,16).replace('T',' ');}
+}
+
 const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
 const obtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ot(key))}</button>`;
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
@@ -207,7 +300,7 @@ function syncBadges(){
 }
 function renderActivityNotifications(u){
  const rows=data.activityInbox.filter(x=>x.last_activity_at).slice(0,12);
- return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),actor=x.last_actor_id===u.id?mt('you'):(coopProfile(x.last_actor_id)?.name||ct('noProfile'));let label=x.last_label||'';if(x.last_event_type==='purchase_stage')label=lt(label);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(actor+' '+at(x.last_event_type||'activity')+(label?' · '+label:''))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+ return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(line)} · ${esc(formatWhen(x.last_activity_at))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
 }
 
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
@@ -224,7 +317,7 @@ function renderHome(u){
  const assigned=data.assignedTasks.filter(x=>x.status!=='done').map(x=>({...x,coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.coop);
  const unreadActivity=data.activityInbox.filter(x=>Number(x.unread_count||0)>0);
  const attention=[];
- pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+new Date(x.process.confirmation_deadline).toLocaleString():'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
+ pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+formatWhen(x.process.confirmation_deadline):'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
  assigned.slice(0,5).forEach(x=>attention.push({type:'task',title:x.title,meta:x.coop.title+' · '+ct(x.status),coop:x.coop}));
  if(unreadMessages)attention.push({type:'messages',title:ht('messages')+' · '+unreadMessages,meta:'',route:'messages'});
  if(invites)attention.push({type:'invitations',title:ht('invitations')+' · '+invites,meta:'',route:'messages'});
@@ -258,12 +351,11 @@ function renderHome(u){
  const feedCard=item=>{
   if(item.kind==='post'){
    const author=profileFor(item.post.author_id)?.name||t('by');
-   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(item.post.created_at||'')}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(formatWhen(item.post.created_at))}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
   }
   const e=item.event,coop=item.coop;
-  const actor=e.last_actor_id===u.id?mt('you'):(coopProfile(e.last_actor_id)?.name||ct('noProfile'));
-  let label=e.last_label||'';if(e.last_event_type==='purchase_stage')label=lt(label);
-  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(actor+' '+at(e.last_event_type||'activity')+(label?' · '+label:''))}</p><p class="meta">${esc(e.last_activity_at||'')}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+  const line=activityLabel({actor_id:e.last_actor_id,event_type:e.last_event_type,label:e.last_label},u);
+  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(line)}</p><p class="meta">${esc(formatWhen(e.last_activity_at))}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
  };
 
  const primary=attention[0]||(active[0]?{type:'activity',title:active[0].title,meta:statusLabel(active[0].status),coop:active[0]}:null);
@@ -300,7 +392,7 @@ function renderMessages(u){
    const candidates=discoverable.filter(p=>!existing.has(p.id));
    html+=`<form id="netChatInvite" class="editor card"><label>${esc(mt('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(p=>`<option value="${esc(p.id)}"${p.id===inviteTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('invite'))}</button></form>`;
   }
-  html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(m.created_at||'')}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
+  html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(formatWhen(m.created_at))}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
   html+=`<form id="netMessage" class="editor card"><label>${esc(mt('message'))}<textarea name="body" maxlength="4000" rows="3" required>${esc(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${esc(mt('sendMessage'))}</button></form>`;
   if(!linked&&chat.kind==='group')html+=`<div class="actions">${chat.owner_id===u.id?btn('deleteChat','deleteChat',chat.id):btn('leaveChat','leaveChat',chat.id)}</div>`;
   return html;
@@ -324,11 +416,11 @@ function renderPurchaseLifecycle(u,coop,owner){
  const confirmedTotal=confirmed.reduce((a,x)=>a+Number(x.quantity||0),0);
  const profileName=id=>id===u.id?mt('you'):(coopProfile(id)?.name||ct('noProfile'));
  let html=`<section class="card"><div class="row"><h3>${esc(lt('lifecycle'))}</h3><span class="badge">${esc(lt(stage))}</span></div><p class="meta">${esc(lt('selfReported'))}</p>`;
- if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(new Date(process.confirmation_deadline).toLocaleString())}</p>`;
+ if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(formatWhen(process.confirmation_deadline))}</p>`;
  if(process.external_order_reference)html+=`<p><strong>${esc(lt('externalReference'))}:</strong> ${esc(process.external_order_reference)}</p>`;
- if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(new Date(process.expected_delivery_at).toLocaleString())}</p>`;
+ if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(formatWhen(process.expected_delivery_at))}</p>`;
  if(process.pickup_place)html+=`<p><strong>${esc(lt('pickupPlace'))}:</strong> ${esc(process.pickup_place)}</p>`;
- if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(new Date(process.pickup_start).toLocaleString())}${process.pickup_end?' – '+esc(new Date(process.pickup_end).toLocaleString()):''}</p>`;
+ if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(formatWhen(process.pickup_start))}${process.pickup_end?' – '+esc(formatWhen(process.pickup_end)):''}</p>`;
  if(process.delivery_note)html+=`<p style="white-space:pre-wrap">${esc(process.delivery_note)}</p>`;
  if(process.result_note)html+=`<p style="white-space:pre-wrap"><strong>${esc(lt('resultNote'))}:</strong> ${esc(process.result_note)}</p>`;
  html+='</section>';
@@ -427,7 +519,7 @@ function renderCooperation(u,r){
    html+=`<aside class="notice"><p>${esc(ct('memberOnly'))}</p></aside>`;
    return html;
   }
-  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(e.created_at||'')}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(formatWhen(e.created_at))}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
   html+=`<h3>${esc(ct('members'))}</h3><div class="draft-grid">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="card"><div class="row"><strong>${esc(name)}</strong>${remove}</div><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></article>`;}).join('')}</div>`;
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
@@ -437,7 +529,7 @@ function renderCooperation(u,r){
   if(coop.kind==='project'){
    html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${data.projectTasks.map(task=>{const p=coopProfile(task.assignee_id);const canManage=owner||task.creator_id===u.id;return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details)}</p><p class="meta">${esc(ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</p><form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>${canManage?`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const mp=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(mp?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const p=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button">${esc(ct('saveTask'))}</button></form>`;
   }
-  html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="card"><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p style="white-space:pre-wrap">${esc(x.body)}</p><p class="meta">${esc(x.created_at||'')}</p>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
+  html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="card"><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p style="white-space:pre-wrap">${esc(x.body)}</p><p class="meta">${esc(formatWhen(x.created_at))}</p>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
   return html;
  }
  const kind=projectMode?'project':coopDraft.kind;
@@ -655,7 +747,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;

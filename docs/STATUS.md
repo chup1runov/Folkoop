@@ -1,7 +1,7 @@
 # FOLKOOP current status
 
 Date: 2026-09-30  
-Release line: **v0.35.0**  
+Release line: **v0.36.0**  
 Repository: `chup1runov/Folkoop`  
 Current main at start of this documentation cleanup: `403faea65e28e16982998a53f518cfd26b0e59b1`
 
@@ -19,8 +19,8 @@ The first human pilot is still centered on:
 
 ## Current implemented line
 
-The current v0.35 application includes:
-- language-first entry and read-only Guest preview;
+The current v0.36 application includes:
+- language-first entry, read-only Guest preview and an 8-step value-first first-session tour;
 - local/private drafts kept separate from network objects;
 - Supabase-backed pilot profiles, communities, messaging and cooperation objects;
 - Need, Offer, Resource, Shared Purchase and Project;
@@ -28,7 +28,7 @@ The current v0.35 application includes:
 - purchase commitments, supplier offers and pilot lifecycle coordination;
 - blocking/reporting and database-side authorization;
 - invite-gated first admission with versioned Pilot Terms / Privacy acknowledgement;
-- FOLKOOP guide onboarding;
+- FOLKOOP guide onboarding with compact normal browsing presence and tested mobile/landscape geometry;
 - Göteborg City civic/source layer;
 - action-first signed-in Home with a finite Daily Value Loop.
 
@@ -52,7 +52,7 @@ Current launch sequence remains:
 7. finalize the participant privacy notice for the actually active Auth route;
 8. explicitly authorize controlled pilot invitations.
 
-At the start of this cleanup, PR #84 contains the current operator-runbook/closure-gate refresh and should be reviewed on its own merits; this documentation-taxonomy change does not modify that runtime/launch procedure.
+Operator-runbook/account-closure launch-gate hardening was merged through PR #84. The remaining gate is operational execution with real provider/test identities, not additional product breadth.
 
 ## Engineering direction
 

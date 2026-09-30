@@ -2,7 +2,7 @@
 
 30 September 2026.
 
-Current public application version: **v0.35.0**.  
+Current public application version: **v0.36.0**.  
 Current product phase: **pre-pilot execution**.  
 Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
@@ -14,7 +14,7 @@ FOLKOOP is one product and one current brand.
 
 User-facing navigation remains:
 
-**Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**
+**Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**
 
 Canonical product thesis:
 
@@ -35,13 +35,14 @@ Earlier standalone component identities are historical only. Current modules suc
 
 ## Current interface state
 
-v0.35 includes the current guest/read-only presentation work:
+v0.36 includes the current guest/read-only presentation and first-session work:
 - language-first entry;
-- compact guest overview;
+- an 8-step value-first tour that is completed only after the tour itself finishes;
+- compact guest overview with localized sample content and participant-facing date/event formatting;
 - reduced mutation clutter before sign-in;
 - progressive pilot sign-in;
 - local/private workspace remains explicitly separate from the network account;
-- the FOLKOOP guide remains deterministic/non-AI;
+- the FOLKOOP guide remains deterministic/non-AI and uses a smaller normal-browsing footprint while preserving authored tour poses;
 - signed-in Home remains action-first rather than infinite-feed-first.
 
 The participant-facing interface follows the persistent requirement in `PRODUCT_DECISION_POLICY.md`:
