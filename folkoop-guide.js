@@ -159,7 +159,18 @@ function layoutTour(target){
   if(bottom>top&&r.height<=bottom-top&&(r.top<top||r.bottom>bottom)){
    const delta=r.top+r.height/2-(top+bottom)/2;
    if(sidebar)sidebar.scrollTop+=delta;
-   else window.scrollBy({top:delta,behavior:'instant'});
+   else{
+    // WebKit can refuse page scrolling toward an element inside an inert
+    // subtree. Restore each element's pre-modal inert value only for the
+    // synchronous scroll, then reinstate the modal barrier immediately.
+    const suspended=[];
+    for(const [el,value] of inertBefore){
+     if(el.isConnected&&el.inert){el.inert=value;suspended.push(el);}
+    }
+    window.scrollBy(0,delta);
+    for(const el of suspended)if(el.isConnected)el.inert=true;
+   }
+   r=target.getBoundingClientRect();
   }
  }
  updateSpotlight(target);
