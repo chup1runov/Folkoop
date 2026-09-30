@@ -32,7 +32,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - competitor deep dives for Hylo, Karrot, Decidim and Open Collective.
 
 ---
@@ -259,19 +259,19 @@ That is a major design lesson from Loomio.
 |---|---|---:|---:|---|---|---|
 | 61 | Poll/proposal closing time | ✅ | — | ADAPT | LATER | Gives decisions a clear window. |
 | 62 | Closing-soon reminder | ✅ | — | ADAPT | LATER | Helps participation. |
-| 63 | Outcome statement after close | ✅ | 🟡 SDCF outcome concept but not governance decision object | ADAPT | POST-PILOT | Major pattern: result needs interpretation and next step. |
+| 63 | Outcome statement after close | ✅ | 🟡 FOLKOOP outcome integrity outcome concept but not governance decision object | ADAPT | POST-PILOT | Major pattern: result needs interpretation and next step. |
 | 64 | State who is responsible next | ✅ process guidance | 🟡 task assignees | ADAPT | POST-PILOT | Decision should generate accountable action. |
 | 65 | Review date | ✅ | — | ADAPT | LATER | Excellent for "safe-to-try" decisions. |
 | 66 | Failed proposal still records learning | ✅ | — | ADAPT | LATER | Failure should remain organizational knowledge. |
 | 67 | Decision history linked to reasons/votes | ✅ | — | ADAPT | LATER | Strong governance memory. |
 | 68 | Outcome automatically equals real-world result | — | — | KEEP SEPARATE | NOW | Governance decision != completed external outcome. |
 
-## SDCF relationship
+## FOLKOOP outcome integrity relationship
 
 Loomio's **Outcome** means:
 > What did this poll/decision mean, and what happens next?
 
-FOLKOOP/SDCF **Outcome** means:
+FOLKOOP outcome integrity **Outcome** means:
 > What real-world useful effect actually happened, and what evidence supports that classification?
 
 These concepts must not be conflated.
@@ -492,7 +492,7 @@ FOLKOOP connects governance to:
 
 A decision Outcome is not automatically a real-world Outcome.
 
-Keep the SDCF distinction.
+Keep the FOLKOOP outcome integrity distinction.
 
 ## 5. Intent-first discovery
 
@@ -634,7 +634,7 @@ This should remain separate from:
 
 ## RealWorldOutcome
 
-which uses SDCF evidence semantics.
+which uses FOLKOOP outcome integrity evidence semantics.
 
 ---
 
@@ -694,7 +694,7 @@ Separately measure:
 - neighbor complaints;
 - actual value.
 
-This is precisely where Loomio governance + Karrot operations + FOLKOOP Projects + SDCF outcome integrity complement one another.
+This is precisely where Loomio governance + Karrot operations + FOLKOOP Projects + FOLKOOP outcome integrity outcome integrity complement one another.
 
 ---
 
@@ -830,7 +830,7 @@ Use:
 FOLKOOP guide.
 
 ### Semantic/evidence layer
-SDCF.
+FOLKOOP outcome integrity.
 
 ---
 

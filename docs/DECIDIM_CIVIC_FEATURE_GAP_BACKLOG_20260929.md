@@ -31,7 +31,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
 - `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
 
@@ -169,7 +169,7 @@ and hand off to the authoritative platform where appropriate.
 | 2 | Search across civic content | ✅ | 🟡 | ADAPT | POST-PILOT | Valuable when City has enough indexed material. |
 | 3 | Filter by scope/category/process | ✅ | 🟡 | ADAPT | POST-PILOT | Useful for neighborhood/topic relevance. |
 | 4 | Geolocated civic content | ✅ proposals/meetings | 🟡 | ADAPT | LATER | Useful in City map if source data supports it. |
-| 5 | Official source clearly separated from platform inference | 🟡 | ✅ SDCF/City | KEEP | NOW | Stronger explicit FOLKOOP semantic boundary. |
+| 5 | Official source clearly separated from platform inference | 🟡 | ✅ FOLKOOP outcome integrity/City | KEEP | NOW | Stronger explicit FOLKOOP semantic boundary. |
 | 6 | Route user to authoritative action | ✅ within own instance | ✅ external routing | KEEP | NOW | Core City value when authority system is elsewhere. |
 | 7 | Aggregate multiple city/public systems in one interface | — | 🟡 intended | KEEP | LATER | Distinct FOLKOOP role: navigator across systems. |
 | 8 | Claim to be authority when not integrated | — | explicitly forbidden | KEEP | NOW | Preserve strict boundary. |
@@ -229,7 +229,7 @@ and hand off to the authoritative platform where appropriate.
 | 41 | Calendar/map view | ✅ | — / partial City | ADAPT | LATER | Good discovery view. |
 | 42 | Calendar export | ✅ | — | LATER | POST-PILOT | Convenience once events exist. |
 | 43 | Meeting polls | ⚠️ deprecated in 0.32 | — | DO NOT COPY | — | Decidim itself is removing this path. |
-| 44 | Close meeting with report | ✅ | — | ADAPT | POST-PILOT | Good operational closure; combine with SDCF outcome semantics. |
+| 44 | Close meeting with report | ✅ | — | ADAPT | POST-PILOT | Good operational closure; combine with FOLKOOP outcome integrity outcome semantics. |
 
 ---
 
@@ -295,7 +295,7 @@ and hand off to the authoritative platform where appropriate.
 
 ---
 
-# I. Accountability: highly relevant to SDCF
+# I. Accountability: highly relevant to FOLKOOP outcome integrity
 
 | # | Capability | Decidim | FOLKOOP | Decision | Timing | Reason |
 |---|---|---:|---:|---|---|---|
@@ -306,15 +306,15 @@ and hand off to the authoritative platform where appropriate.
 | 83 | Milestones | ✅ | — | ADAPT | LATER | Useful for long projects. |
 | 84 | History of result changes | ✅ | ✅ activity journal principle | KEEP/EXPAND | POST-PILOT | Strong accountability. |
 | 85 | Import/export result data | ✅ | — | LATER | LATER | Useful for B2G integrations. |
-| 86 | Treat admin progress as independent proof of social outcome | 🟡 no such claim required | explicitly no | KEEP SDCF | NOW | FOLKOOP must keep state/evidence separate. |
-| 87 | Evidence qualifier for outcome | — | ✅ SDCF contract | KEEP | NOW | Distinct FOLKOOP strength. |
+| 86 | Treat admin progress as independent proof of social outcome | 🟡 no such claim required | explicitly no | KEEP FOLKOOP outcome integrity | NOW | FOLKOOP must keep state/evidence separate. |
+| 87 | Evidence qualifier for outcome | — | ✅ FOLKOOP outcome integrity contract | KEEP | NOW | Distinct FOLKOOP strength. |
 | 88 | Source != claim | — | ✅ | KEEP | NOW | Critical for City/public data. |
 
 ## Key lesson
 
 Decidim has the better **institutional accountability UI**.
 
-FOLKOOP/SDCF has the more explicit **epistemic boundary**:
+FOLKOOP outcome integrity has the more explicit **epistemic boundary**:
 
 **recorded status != independently evidenced real-world effect.**
 
@@ -501,7 +501,7 @@ Decidim Accountability tracks implementation but is not a general team-workspace
 
 ## 5. Outcome evidence semantics
 
-Keep SDCF's:
+Keep FOLKOOP outcome integrity's:
 - source != claim;
 - state != evidence;
 - routing recommendation != authority decision;
@@ -674,7 +674,7 @@ User intent:
 
 10. City retrieves/displays source-labelled status.
 11. Related FOLKOOP project can coordinate real-world activity.
-12. SDCF keeps official status distinct from FOLKOOP's own outcome claims.
+12. FOLKOOP outcome integrity keeps official status distinct from FOLKOOP's own outcome claims.
 
 This is complementarity, not duplication.
 
@@ -796,7 +796,7 @@ After Hylo + Karrot + Decidim, the clearest decomposition is:
 - City across multiple external systems;
 - Center as future network/physical bridge;
 - FOLKOOP guide human interface;
-- SDCF provenance/outcome integrity.
+- FOLKOOP outcome integrity provenance/outcome integrity.
 
 ---
 

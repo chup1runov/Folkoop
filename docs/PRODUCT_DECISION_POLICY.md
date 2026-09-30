@@ -115,9 +115,9 @@ Examples:
 
 Measurement definitions in the active pilot document prevail.
 
-## SDCF semantic-integrity gate
+## FOLKOOP outcome-integrity gate
 
-The lightweight FOLKOOP/SDCF bridge in `docs/architecture/SDCF_BRIDGE.md` applies when a proposed feature introduces a stronger epistemic or decision claim than the current pilot records.
+The lightweight FOLKOOP integrity contract in `docs/architecture/OUTCOME_INTEGRITY.md` applies when a proposed feature introduces a stronger epistemic or decision claim than the current pilot records.
 
 Before approving a feature that introduces any of the following:
 

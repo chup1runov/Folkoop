@@ -1,135 +1,135 @@
 {
-  "schemaVersion": 2,
-  "bridgeVersion": "0.2",
-  "referenceFramework": "SDCF v0.6-beta-rc2",
+  "schemaVersion": 1,
+  "profileVersion": "1.0",
+  "profileId": "folkoop-outcome-provenance-integrity",
   "status": "advisory",
   "runtimeDependency": false,
   "productPriority": "Göteborg core-loop first. Feature breadth later.",
-  "purpose": "Keep FOLKOOP cooperation, outcome and civic-routing semantics compatible with SDCF type-safety while adding explicit City provenance and pilot outcome contracts, without adding RDF/OWL/SHACL to the production runtime.",
+  "purpose": "Keep FOLKOOP cooperation, outcome, provenance and civic-routing semantics internally consistent without adding a heavy semantic runtime before evidence justifies it.",
   "mappings": [
     {
       "id": "M01",
       "folkoop": "fk_cooperations",
       "meaning": "Intent-bearing cooperation workspace and lifecycle context.",
-      "sdcf": [
+      "mapping": "contextual",
+      "note": "A cooperation row is not identical to any single integrity role; its kind, description and lifecycle determine which integrity roles are relevant.",
+      "integrityRoles": [
         "SystemScope",
         "Objective",
         "Plan"
-      ],
-      "mapping": "contextual",
-      "note": "A cooperation row is not identical to any single SDCF class; its kind, description and lifecycle determine which SDCF roles are relevant."
+      ]
     },
     {
       "id": "M02",
       "folkoop": "fk_cooperation_members",
       "meaning": "People participating in a cooperation with owner/member roles.",
-      "sdcf": [
-        "Agent"
-      ],
       "mapping": "direct-role",
       "note": "Membership is contextual participation, not a permanent property of the person.",
       "semanticRoles": [
         "contextual participant role"
+      ],
+      "integrityRoles": [
+        "Agent"
       ]
     },
     {
       "id": "M03",
       "folkoop": "fk_project_tasks",
       "meaning": "Planned work and task execution state.",
-      "sdcf": [
+      "mapping": "contextual",
+      "note": "todo/doing describe planned or ongoing work. done is a claim about task completion, not independent proof of a real-world outcome.",
+      "integrityRoles": [
         "Plan",
         "Action",
         "Claim"
-      ],
-      "mapping": "contextual",
-      "note": "todo/doing describe planned or ongoing work. done is a claim about task completion, not independent proof of a real-world outcome."
+      ]
     },
     {
       "id": "M04",
       "folkoop": "fk_purchase_offers",
       "meaning": "Supplier alternatives for a shared purchase.",
-      "sdcf": [
-        "InformationItem"
-      ],
       "mapping": "direct-role",
       "note": "Offer data remains provider-supplied unless independently verified.",
       "semanticRoles": [
         "alternative considered by a Decision"
+      ],
+      "integrityRoles": [
+        "InformationItem"
       ]
     },
     {
       "id": "M05",
       "folkoop": "fk_purchase_offer_choice",
       "meaning": "Recorded selection of one purchase alternative.",
-      "sdcf": [
-        "Decision"
-      ],
       "mapping": "direct-role",
-      "note": "The selected offer must remain traceable to the alternatives actually considered."
+      "note": "The selected offer must remain traceable to the alternatives actually considered.",
+      "integrityRoles": [
+        "Decision"
+      ]
     },
     {
       "id": "M06",
       "folkoop": "fk_purchase_process",
       "meaning": "Shared-purchase process state machine.",
-      "sdcf": [
+      "mapping": "direct-role",
+      "note": "ordered/delivered/done are coordination states and may be self-reported; they are not automatically externally verified outcomes.",
+      "integrityRoles": [
         "Process",
         "State"
-      ],
-      "mapping": "direct-role",
-      "note": "ordered/delivered/done are coordination states and may be self-reported; they are not automatically externally verified outcomes."
+      ]
     },
     {
       "id": "M07",
       "folkoop": "fk_cooperation_activity",
       "meaning": "Server-recorded cooperation activity journal.",
-      "sdcf": [
-        "Process"
-      ],
       "mapping": "direct-role",
       "note": "An activity record establishes that FOLKOOP recorded an event; it is not by itself evidence that the corresponding real-world effect occurred.",
       "semanticRoles": [
         "PROV-O provenance activity"
+      ],
+      "integrityRoles": [
+        "Process"
       ]
     },
     {
       "id": "M08",
       "folkoop": "CivicItem sourceId/sourceUrl/fetchedAt/sourceUpdatedAt/confidence",
       "meaning": "Source and freshness metadata for civic information.",
-      "sdcf": [
-        "InformationItem"
-      ],
       "mapping": "contextual",
       "note": "Source metadata can support a claim, but the source record and the claim remain separate.",
       "semanticRoles": [
         "PROV-O provenance entity",
         "evidence relative to a Claim"
+      ],
+      "integrityRoles": [
+        "InformationItem"
       ]
     },
     {
       "id": "M09",
       "folkoop": "resolveResponsibility()",
       "meaning": "Rule-based civic routing recommendation.",
-      "sdcf": [
-        "Claim"
-      ],
       "mapping": "contextual",
       "note": "A resolver result is a routing recommendation backed by a source identifier; it is not the authority's own legal decision.",
       "semanticRoles": [
         "decision support / routing recommendation"
+      ],
+      "integrityRoles": [
+        "Claim"
       ]
     },
     {
       "id": "M10",
       "folkoop": "future match/recommendation",
       "meaning": "Possible future algorithmic recommendation of a person, resource or opportunity.",
-      "sdcf": [
-        "Prediction",
-        "Model"
-      ],
       "mapping": "future",
-      "note": "No current pilot capability is upgraded to an SDCF prediction merely by this bridge.",
+      "note": "No current pilot capability is upgraded to an evidenced prediction merely by this bridge.",
       "semanticRoles": [
         "decision support"
+      ],
+      "integrityRoles": [
+        "Prediction",
+        "Model"
       ]
     }
   ],
@@ -176,13 +176,13 @@
     },
     {
       "id": "G09",
-      "name": "ontology_is_not_user_interface",
-      "rule": "SDCF terminology must not become a user-facing requirement for ordinary FOLKOOP participants."
+      "name": "integrity_model_is_not_user_interface",
+      "rule": "Integrity-model terminology must not become a user-facing requirement for ordinary FOLKOOP participants."
     },
     {
       "id": "G10",
       "name": "no_runtime_semantic_stack_before_evidence",
-      "rule": "The Göteborg pilot must not be delayed by adding RDF, OWL, SHACL or an SDCF graph database to the production runtime without a demonstrated product or safety need."
+      "rule": "The Göteborg pilot must not be delayed by adding RDF, OWL, SHACL or a separate semantic graph database to the production runtime without a demonstrated product or safety need."
     }
   ],
   "futureTriggers": [
@@ -240,7 +240,6 @@
       "preferredImplementation": "versioned adapter/export layer rather than replacing the operational PostgreSQL model"
     }
   ],
-  "supersedes": "docs/architecture/sdcf-bridge-v0.1.json",
   "cityProvenanceContract": {
     "version": "1.0",
     "status": "partially-runtime-enforced",
@@ -383,9 +382,8 @@
       "conflicting participant accounts default to unclear until resolved",
       "organic and facilitated match provenance remains separate from outcome classification",
       "public repository records must not contain participant identity-to-code mappings, private interview notes or private outcome confirmations",
-      "outcome data minimisation and retention follow PRE_PILOT_PRIVACY_DECISIONS.md; SDCF does not create a broader retention purpose"
+      "outcome data minimisation and retention follow PRE_PILOT_PRIVACY_DECISIONS.md; the integrity profile does not create a broader retention purpose"
     ],
     "futureRuntimeTrigger": "Only add structured outcome tables after pilot evidence shows that manual confirmation is a real bottleneck or that outcome integrity is required for scale/safety."
-  },
-  "referenceFrameworkStatus": "release-candidate; SDCF independent external SHACL release gate is not yet satisfied"
+  }
 }
