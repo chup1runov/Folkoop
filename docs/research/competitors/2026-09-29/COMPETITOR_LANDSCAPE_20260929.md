@@ -232,7 +232,7 @@ For each competitor, record:
 
 Full function-by-function comparison and evidence-driven adoption backlog:
 
-- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
 
 The deep dive distinguishes:
 - current Hylo features;
@@ -247,7 +247,7 @@ The deep dive distinguishes:
 
 Full operational/feature comparison and evidence-driven adoption backlog:
 
-- `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
 
 The Karrot deep dive focuses on:
 - Places and scheduled Activities;
@@ -266,7 +266,7 @@ The Karrot deep dive focuses on:
 
 Full civic/governance comparison and integration-oriented backlog:
 
-- `docs/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
 
 The Decidim deep dive focuses on:
 - participatory processes and phases;
@@ -284,7 +284,7 @@ The Decidim deep dive focuses on:
 
 Full collective-finance/fiscal-hosting comparison and integration-oriented backlog:
 
-- `docs/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
 
 The Open Collective deep dive focuses on:
 - Collectives vs Organizations/Fiscal Hosts;
@@ -302,7 +302,7 @@ The Open Collective deep dive focuses on:
 
 Full governance/decision-making comparison and adoption backlog:
 
-- `docs/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
 
 The Loomio deep dive focuses on:
 - discussion-to-decision workflows;
@@ -319,7 +319,7 @@ The Loomio deep dive focuses on:
 
 Full hyperlocal-network comparison and adoption backlog:
 
-- `docs/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
 
 The Nextdoor deep dive focuses on:
 - address/neighborhood verification and local density;
@@ -338,7 +338,7 @@ The Nextdoor deep dive focuses on:
 
 Full social-discovery / offline-friendship comparison and adoption backlog:
 
-- `docs/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
 
 The deep dive focuses on:
 - the 2024 Bumble acquisition and 2026 BFF transition;
@@ -356,7 +356,7 @@ The deep dive focuses on:
 
 Full timebank / reciprocity / internal-credit comparison and adoption backlog:
 
-- `docs/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
 
 The TimeRepublik deep dive focuses on:
 - Requests and reusable Services;
@@ -374,7 +374,7 @@ The TimeRepublik deep dive focuses on:
 
 Full marketplace / booking / transaction-engine comparison and adoption backlog:
 
-- `docs/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
 
 The Sharetribe deep dive focuses on:
 - Listing Types and type-specific fields;
@@ -392,7 +392,7 @@ The Sharetribe deep dive focuses on:
 
 The nine deep dives are synthesized into one product-architecture and sequencing document:
 
-- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+- `docs/research/competitors/2026-09-29/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
 
 It defines:
 - what FOLKOOP should own natively;
