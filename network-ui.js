@@ -448,7 +448,9 @@ function renderCooperation(u,r){
 function render(){
  const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
  document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo));
- document.getElementById('workspace').hidden=!!((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest)));
+ document.body.classList.toggle('guest-preview-open',!!(guestDemo&&relevant));
+ const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
+ document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
@@ -497,6 +499,8 @@ function render(){
  if(guestDemo){
   host.querySelectorAll('form').forEach(form=>{form.hidden=true;form.setAttribute('aria-hidden','true');});
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.disabled=false;b.removeAttribute('aria-disabled');});
+  const keep='[data-demo],[data-home="openCoop"],[data-home="openCommunity"],[data-home="createCoop"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="refresh"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.closest('.demo-banner'))b.hidden=true;});
  }
  host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
  syncBadges();
