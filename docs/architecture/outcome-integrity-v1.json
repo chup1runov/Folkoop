@@ -293,13 +293,13 @@
     ],
     "currentAdapters": [
       {
-        "path": "scripts/fetch-goteborg-open-plans.mjs",
+        "path": "scripts/sources/fetch-goteborg-open-plans.mjs",
         "sourceId": "goteborg_open_plans",
         "expectedAdapterVersion": "goteborg-open-plans-v1",
         "locator": "sourceUrl"
       },
       {
-        "path": "scripts/fetch-riksdagen.mjs",
+        "path": "scripts/sources/fetch-riksdagen.mjs",
         "sourceId": "riksdagen_open_data",
         "expectedAdapterVersion": "riksdagen-decisions-v2",
         "locator": "sourceQuery"
