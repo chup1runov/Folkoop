@@ -59,15 +59,20 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать в FOLKOOP')
- await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 14')
+ await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
  passed.append('Chosen language is applied before FOLKOOP guide starts explaining FOLKOOP')
 
  titles=[
-  'Добро пожаловать в FOLKOOP','Профиль','Главная','Четыре быстрых действия',
-  'Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр',
-  'Настройки','О нас','FOLKOOP guide · помощник FOLKOOP'
+  'Принеси реальную потребность, навык, ресурс или идею',
+  'Что важно сегодня',
+  'Не делай всё в одиночку',
+  'Преврати идею в команду',
+  'Найди своих людей',
+  'Твой город — один понятный маршрут',
+  'От онлайн-сети к реальному месту',
+  'Начни с одной реальной вещи'
  ]
  await settled_actor(page)
  assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-tour')")
@@ -77,19 +82,17 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  if title in ('Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Город','Настройки','О нас'):
+  if title in ('Что важно сегодня','Не делай всё в одиночку','Найди своих людей','Твой город — один понятный маршрут'):
    await assert_directional_pose(page)
-  if title in ('Четыре быстрых действия','Центр'):
+  if title in ('От онлайн-сети к реальному месту','Начни с одной реальной вещи'):
    assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-perched')")
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='sit-edge'
    target=await page.locator('.tutorial-target').bounding_box()
    seat=box['y']+box['height']*.44
    assert target and abs(seat-target['y'])<14,(title,seat,target)
-  if title=='Проекты':
+  if title=='Преврати идею в команду':
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
-  if title=='FOLKOOP guide · помощник FOLKOOP':
-   assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='wink'
-  if idx<len(titles)-1:
+    if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)
 
@@ -99,7 +102,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('FOLKOOP guide uses real directional pointing poses and sit-edge alignment through the 14-step tour')
+ passed.append('FOLKOOP guide uses real directional/idea/sit-edge poses through the 8-step value-first tour')
 
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
