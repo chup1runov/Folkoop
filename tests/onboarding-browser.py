@@ -58,7 +58,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
- await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать в FOLKOOP')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Принеси реальную потребность, навык, ресурс или идею')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
@@ -92,7 +92,7 @@ async def mobile_flow(browser,passed):
    assert target and abs(seat-target['y'])<14,(title,seat,target)
   if title=='Преврати идею в команду':
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
-    if idx<len(titles)-1:
+  if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)
 
@@ -114,7 +114,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-helper=close]')
  await page.click('#mobileMenuToggle')
  labels=await page.locator('#nav a span').all_text_contents()
- assert labels[:11]==['Профиль','Главная','Сообщения','Люди','Сообщества','Вместе','Проекты','Город','Центр','Настройки','О нас'],labels
+ assert labels[:11]==['Главная','Вместе','Проекты','Сообщения','Люди','Сообщества','Город','Центр','Профиль','Настройки','О нас'],labels
  await page.click('#nav a[href="#/settings"]')
  await page.click('[data-action=tutorial]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
@@ -152,7 +152,7 @@ async def main():
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Detailed tour/helper copy remains SV/EN/RU with existing fallback for other shell locales','FOLKOOP guide motion is local CSS/JS using canonical FOLKOOP guide WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Value tour copy is localized across all supported shell languages; native-language review remains desirable','FOLKOOP guide motion is local CSS/JS using canonical FOLKOOP guide WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
  print(f'ENGINE {ENGINE}')
  print('\n'.join('PASS '+x for x in passed))
 
