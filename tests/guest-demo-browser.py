@@ -51,6 +51,13 @@ async def main():
   await expect(page.locator('#demoBanner')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
+  for route_name,expected in [('communities','Olofstorp neighbours'),('messages','Repair café'),('together','Dry firewood together')]:
+   await page.click('#mobileMenuToggle')
+   await page.click(f'#nav a[href="#/{route_name}"]')
+   await expect(page.locator('#networkPanel')).to_contain_text(expected)
+   await expect(page.locator('#demoBanner')).to_be_visible()
+  passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
+
   await page.click('#mobileMenuToggle')
   await page.click('#nav a[href="#/projects"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Neighbourhood repair café')
