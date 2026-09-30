@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {releaseVersion} from '../scripts/release-version.mjs';
+import {releaseVersion} from '../scripts/build/release-version.mjs';
 test('release stamp has one authoritative package version',()=>{
  assert.equal(releaseVersion("const APP_VERSION = '0.11.0';",'0.12.0'),"const APP_VERSION = '0.12.0';");
  assert.throws(()=>releaseVersion('no marker','0.12.0'));
@@ -20,7 +20,7 @@ test('Compact contains complete short copy for all existing languages',async()=>
 });
 test('built City retains compact assets while FOLKOOP owns the root',async()=>{
  const {execFileSync}=await import('node:child_process');
- execFileSync(process.execPath,['scripts/build-site.mjs']);
+ execFileSync(process.execPath,['scripts/build/build-site.mjs']);
  const pkg=JSON.parse(await readFile('package.json','utf8'));
  const built=await readFile('_site/app.js','utf8');
  assert.equal(built.match(/const APP_VERSION = '([^']+)'/)[1],pkg.version);
