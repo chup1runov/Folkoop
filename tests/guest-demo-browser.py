@@ -42,30 +42,40 @@ async def main():
   passed.append('Guest first session receives the short value-first product tour')
   await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
-  await expect(page.locator('#demoBanner')).to_contain_text('Гостевой обзор')
+  await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Guest sees the real Home renderer with local sample data and makes no Supabase request')
+  assert await page.locator('#mobilePrimaryNav a').count()==6
+  await page.click('#mobileContextDock [data-mobile-action="demo"]')
+  await expect(page.locator('.mobile-demo-popover')).to_be_visible()
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('демонстрационные данные')
+  await page.click('#mobileContextDock [data-mobile-action="demo"]')
+  passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
 
-  await page.click('#mobileMenuToggle')
-  await page.click('#nav a[href="#/people"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
-  await expect(page.locator('#demoBanner')).to_be_visible()
+  await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
   for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Ремонтное кафе'),('together','Купить сухие дрова вместе')]:
-   await page.click('#mobileMenuToggle')
-   await page.click(f'#nav a[href="#/{route_name}"]')
+   if route_name=='together':
+    await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+   elif route_name in ('communities',):
+    await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+    await page.click(f'#mobileContextDock [data-mobile-subnav="{route_name}"]')
+   else:
+    await page.click(f'#mobilePrimaryNav [data-mobile-nav="{route_name}"]')
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
    await expect(page.locator('#demoBanner')).to_be_visible()
   passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
 
-  await page.click('#mobileMenuToggle')
-  await page.click('#nav a[href="#/projects"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
   await page.click('[data-coop="open"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить помещение')
@@ -76,8 +86,7 @@ async def main():
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-project-mobile.png'),full_page=True)
   passed.append('Guest project view shows process/state without duplicate local workspace or mutation clutter')
 
-  await page.click('#mobileMenuToggle')
-  await page.click('#nav a[href="#/home"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
   await expect(page.locator('#entryGateNote')).to_contain_text('создавать')
