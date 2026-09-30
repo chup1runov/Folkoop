@@ -1,4 +1,4 @@
-"""FOLKOOP v0.37 first-entry + read-only guest preview browser contract.
+"""FOLKOOP v0.38 first-entry + read-only guest preview browser contract.
 No live accounts and no external API requests.
 """
 import asyncio,json,os,shutil
@@ -90,6 +90,18 @@ async def main():
   await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
   await page.click('[data-coop="open"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить помещение')
+  await expect(page.locator('.coop-summary-stats')).to_be_visible()
+  tasks=page.locator('[data-coop-section="tasks"]')
+  members=page.locator('[data-coop-section="members"]')
+  activity=page.locator('[data-coop-section="activity"]')
+  assert await tasks.get_attribute('open') is None
+  assert await members.get_attribute('open') is None
+  assert await activity.get_attribute('open') is None
+  await tasks.locator('summary').click()
+  await expect(tasks).to_contain_text('Подтвердить помещение')
+  await members.locator('summary').click()
+  await expect(members).to_contain_text('Anna')
+  passed.append('Project starts with summary/next step and keeps tasks, participants and activity collapsible')
   assert await page.locator('#networkPanel form:visible').count()==0
   assert await page.locator('#workspace').is_hidden()
   assert await page.locator('[data-coop="delete"]:visible').count()==0
