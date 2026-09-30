@@ -4,7 +4,7 @@
 
 ## Current pilot state — v0.36.0
 
-Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
+Navigation: **Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
 - first-session **value tour**: 8 benefit-led steps instead of a 14-step module tour; guest first entry no longer marks onboarding complete before the tour is shown;
