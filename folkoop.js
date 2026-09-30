@@ -7,7 +7,7 @@ const store=C.workspace(storage);
 let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
-const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
+const NAV_ORDER=['home','together','projects','messages','people','communities','city','center','me','settings','about'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
