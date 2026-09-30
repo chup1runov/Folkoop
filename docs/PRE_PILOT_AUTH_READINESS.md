@@ -92,8 +92,8 @@ The explicit contract remains:
 
 See:
 - `docs/SECURITY_DEFINER_AUDIT.md`;
-- `tests/network-security-definer.sql`;
-- `tests/network-private-rls.sql`.
+- `supabase/tests/network-security-definer.sql`;
+- `supabase/tests/network-private-rls.sql`.
 
 Do not silence the advisor by blindly changing the RPC layer to SECURITY INVOKER or revoking the intended authenticated API.
 

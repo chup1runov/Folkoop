@@ -45,7 +45,7 @@ The RLS-policy inventory confirms those helpers are used by current policies.
 
 ## CI SECURITY DEFINER contract
 
-`tests/network-security-definer.sql` fails if:
+`supabase/tests/network-security-definer.sql` fails if:
 
 1. a FOLKOOP SECURITY DEFINER function lacks the empty search path;
 2. PUBLIC or anon can execute one;
@@ -86,7 +86,7 @@ Hosted verification:
 
 The associated regression test is:
 
-`tests/network-private-rls.sql`
+`supabase/tests/network-private-rls.sql`
 
 The normal invite/admission suite runs after the migration, so CI also proves that:
 - first admission;
