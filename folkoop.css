@@ -83,3 +83,14 @@
  .folkoop-guide-actor.teleport-out{opacity:1;transform:none;filter:drop-shadow(0 10px 14px #0003)}
  .folkoop-guide-puff{display:none!important}
 }
+
+#onboardingBody{min-height:2.4em}
+@media(max-height:480px){
+ .onboarding-card{padding:12px 16px}
+ .onboarding-card .eyebrow{margin-bottom:6px}
+ .onboarding-guide{margin:0 0 5px}
+ .onboarding-card h2{font-size:1.15rem;margin:3px 0 6px}
+ .onboarding-card p{line-height:1.4;margin-bottom:6px}
+ .onboarding-actions{margin-top:8px}
+ .onboarding-actions .button{min-height:40px;padding:7px 10px}
+}
