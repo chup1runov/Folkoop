@@ -58,6 +58,92 @@ const DEMO_UID='00000000-0000-4000-8000-000000000001';
 try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
 const route=()=>FolkoopCore.route(location.hash);
 const currentUser=()=>guestDemo?{id:DEMO_UID}:api?.user?.();
+const demoLocaleCopy={
+ ru:{
+  'Alex · Demo':'Alex · Демо',
+  'Repair · coordination':'Ремонт · координация',
+  'Guest preview profile. Sample data only.':'Гостевой демонстрационный профиль. Только пример данных.',
+  'Carpentry · reuse':'Столярные работы · повторное использование',
+  'Interested in neighbourhood repair and shared tools.':'Интересуется ремонтом по соседству и общими инструментами.',
+  'Logistics · Swedish/Arabic':'Логистика · шведский/арабский',
+  'Can help with delivery planning and language exchange.':'Может помочь с доставкой и языковым обменом.',
+  'Design · facilitation':'Дизайн · организация групп',
+  'Runs small community workshops.':'Организует небольшие общественные мастерские.',
+  'Olofstorp neighbours':'Соседи Olofstorp',
+  'Sample local community for shared help and practical coordination.':'Демонстрационное местное сообщество для взаимопомощи и совместных дел.',
+  'Göteborg language exchange':'Языковой обмен Göteborg',
+  'Sample group for informal language practice and meetups.':'Демонстрационная группа для языковой практики и встреч.',
+  'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
+  'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
+  'Neighbourhood repair café':'Ремонтное кафе по соседству',
+  'Organize a small repair afternoon with tools, tasks and a work chat.':'Организовать небольшую встречу по ремонту с инструментами, задачами и рабочим чатом.',
+  'Dry firewood together':'Купить сухие дрова вместе',
+  'Combine a small group order and coordinate pickup.':'Объединить небольшой групповой заказ и договориться о получении.',
+  'Borrow a drill for one evening':'Одолжить дрель на вечер',
+  'Need a normal drill for two wall plugs.':'Нужна обычная дрель для двух креплений.',
+  'I can review a CV':'Могу проверить резюме',
+  'Can give one round of feedback in Swedish or English.':'Могу дать один раунд обратной связи на шведском или английском.',
+  'Shared cargo bike':'Общий грузовой велосипед',
+  'Available for short local borrowing by arrangement.':'Можно ненадолго взять поблизости по договорённости.',
+  'Repair café · work chat':'Ремонтное кафе · рабочий чат',
+  'I can bring hand tools and a folding table.':'Я могу принести ручные инструменты и складной стол.',
+  'I made a simple sign for the entrance. We still need someone for coffee.':'Я подготовила простую табличку для входа. Ещё нужен кто-то для кофе.',
+  'I can help collect the firewood if the pickup is after 17:00.':'Могу помочь забрать дрова, если получение будет после 17:00.',
+  'Confirm the room':'Подтвердить помещение',
+  'Ask whether the community room is free on Saturday 13:00–16:00.':'Уточнить, свободно ли общественное помещение в субботу с 13:00 до 16:00.',
+  'Prepare a small sign':'Подготовить небольшую табличку',
+  'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
+  'Can collect after work':'Могу забрать после работы',
+  'Need delivery help':'Нужна помощь с доставкой',
+  'Sample supplier offer for the demo.':'Демонстрационное предложение поставщика.',
+  'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
+  'Entrance sign ready':'Табличка для входа готова',
+  'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
+ },
+ sv:{
+  'Alex · Demo':'Alex · Demo',
+  'Repair · coordination':'Reparation · samordning',
+  'Guest preview profile. Sample data only.':'Gästprofil för demo. Endast exempeldata.',
+  'Carpentry · reuse':'Snickeri · återbruk',
+  'Interested in neighbourhood repair and shared tools.':'Intresserad av lokal reparation och delade verktyg.',
+  'Logistics · Swedish/Arabic':'Logistik · svenska/arabiska',
+  'Can help with delivery planning and language exchange.':'Kan hjälpa med leveransplanering och språkutbyte.',
+  'Design · facilitation':'Design · facilitering',
+  'Runs small community workshops.':'Ordnar små lokala workshops.',
+  'Olofstorp neighbours':'Grannar i Olofstorp',
+  'Sample local community for shared help and practical coordination.':'Exempel på lokal gemenskap för hjälp och praktisk samordning.',
+  'Göteborg language exchange':'Språkutbyte Göteborg',
+  'Sample group for informal language practice and meetups.':'Exempelgrupp för informell språkträning och träffar.',
+  'Repair café this Saturday — bring one small item and we will try to fix it together.':'Reparationscafé på lördag — ta med en liten sak så försöker vi laga den tillsammans.',
+  'Looking for two people for a Swedish–Russian conversation table next week.':'Söker två personer till ett svensk-ryskt samtalsbord nästa vecka.',
+  'Neighbourhood repair café':'Lokalt reparationscafé',
+  'Organize a small repair afternoon with tools, tasks and a work chat.':'Ordna en liten reparationseftermiddag med verktyg, uppgifter och arbetschatt.',
+  'Dry firewood together':'Köp torr ved tillsammans',
+  'Combine a small group order and coordinate pickup.':'Samla en mindre gruppbeställning och samordna hämtning.',
+  'Borrow a drill for one evening':'Låna en borrmaskin en kväll',
+  'Need a normal drill for two wall plugs.':'Behöver en vanlig borrmaskin för två fästen.',
+  'I can review a CV':'Jag kan granska ett CV',
+  'Can give one round of feedback in Swedish or English.':'Kan ge en omgång återkoppling på svenska eller engelska.',
+  'Shared cargo bike':'Delad lastcykel',
+  'Available for short local borrowing by arrangement.':'Kan lånas kort lokalt efter överenskommelse.',
+  'Repair café · work chat':'Reparationscafé · arbetschatt',
+  'I can bring hand tools and a folding table.':'Jag kan ta med handverktyg och ett fällbord.',
+  'I made a simple sign for the entrance. We still need someone for coffee.':'Jag gjorde en enkel skylt till entrén. Vi behöver fortfarande någon som ordnar kaffe.',
+  'I can help collect the firewood if the pickup is after 17:00.':'Jag kan hjälpa till att hämta veden om det blir efter 17:00.',
+  'Confirm the room':'Bekräfta lokalen',
+  'Ask whether the community room is free on Saturday 13:00–16:00.':'Fråga om lokalen är ledig på lördag 13:00–16:00.',
+  'Prepare a small sign':'Gör en liten skylt',
+  'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
+  'Can collect after work':'Kan hämta efter jobbet',
+  'Need delivery help':'Behöver hjälp med leverans',
+  'Sample supplier offer for the demo.':'Exempel på leverantörserbjudande.',
+  'todo · Confirm the room':'Att göra · Bekräfta lokalen',
+  'Entrance sign ready':'Entréskylten är klar',
+  'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.'
+ }
+};
+const demoText=value=>demoLocaleCopy[lang()]?.[value]||value;
+
 function demoSnapshot(){
  const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004';
  const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102';
@@ -65,25 +151,25 @@ function demoSnapshot(){
  const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Alex · Demo',skills:'Repair · coordination',about:'Guest preview profile. Sample data only.',listed:true},
-  {id:A,name:'Anna',skills:'Carpentry · reuse',about:'Interested in neighbourhood repair and shared tools.',listed:true},
-  {id:B,name:'Omar',skills:'Logistics · Swedish/Arabic',about:'Can help with delivery planning and language exchange.',listed:true},
-  {id:C,name:'Linnea',skills:'Design · facilitation',about:'Runs small community workshops.',listed:true}
+  {id:DEMO_UID,name:demoText('Alex · Demo'),skills:demoText('Repair · coordination'),about:demoText('Guest preview profile. Sample data only.'),listed:true},
+  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),listed:true},
+  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),listed:true},
+  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),listed:true}
  ];
  const groups=[
-  {id:G,owner_id:A,name:'Olofstorp neighbours',description:'Sample local community for shared help and practical coordination.'},
-  {id:G2,owner_id:C,name:'Göteborg language exchange',description:'Sample group for informal language practice and meetups.'}
+  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Sample local community for shared help and practical coordination.')},
+  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')}
  ];
  const allPosts=[
-  {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:'Repair café this Saturday — bring one small item and we will try to fix it together.',created_at:'2026-09-30T07:30:00Z'},
-  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:'Looking for two people for a Swedish–Russian conversation table next week.',created_at:'2026-09-29T18:20:00Z'}
+  {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:demoText('Repair café this Saturday — bring one small item and we will try to fix it together.'),created_at:'2026-09-30T07:30:00Z'},
+  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'}
  ];
  const cooperations=[
-  {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:'Neighbourhood repair café',description:'Organize a small repair afternoon with tools, tasks and a work chat.',location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
-  {id:PURCHASE,owner_id:A,kind:'purchase',title:'Dry firewood together',description:'Combine a small group order and coordinate pickup.',location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
-  {id:NEED,owner_id:B,kind:'need',title:'Borrow a drill for one evening',description:'Need a normal drill for two wall plugs.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
-  {id:OFFER,owner_id:C,kind:'offer',title:'I can review a CV',description:'Can give one round of feedback in Swedish or English.',location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
-  {id:RESOURCE,owner_id:A,kind:'resource',title:'Shared cargo bike',description:'Available for short local borrowing by arrangement.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
+  {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:demoText('Neighbourhood repair café'),description:demoText('Organize a small repair afternoon with tools, tasks and a work chat.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
+  {id:PURCHASE,owner_id:A,kind:'purchase',title:demoText('Dry firewood together'),description:demoText('Combine a small group order and coordinate pickup.'),location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
+  {id:NEED,owner_id:B,kind:'need',title:demoText('Borrow a drill for one evening'),description:demoText('Need a normal drill for two wall plugs.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
+  {id:OFFER,owner_id:C,kind:'offer',title:demoText('I can review a CV'),description:demoText('Can give one round of feedback in Swedish or English.'),location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
+  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
  ];
  const coopMembers=[
   {cooperation_id:PROJECT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z'},
@@ -94,7 +180,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
  ];
  const chats=[
-  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:'Repair café · work chat',created_at:'2026-09-28T10:00:00Z'},
+  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Repair café · work chat'),created_at:'2026-09-28T10:00:00Z'},
   {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
  ];
  const chatMembers=[
@@ -105,31 +191,31 @@ function demoSnapshot(){
   {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'}
  ];
  const allMessages=[
-  {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:'I can bring hand tools and a folding table.',created_at:'2026-09-30T07:20:00Z'},
-  {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:'I made a simple sign for the entrance. We still need someone for coffee.',created_at:'2026-09-30T07:45:00Z'},
-  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:'I can help collect the firewood if the pickup is after 17:00.',created_at:'2026-09-29T14:12:00Z'}
+  {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:demoText('I can bring hand tools and a folding table.'),created_at:'2026-09-30T07:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:demoText('I made a simple sign for the entrance. We still need someone for coffee.'),created_at:'2026-09-30T07:45:00Z'},
+  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'}
  ];
  const tasks=[
-  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:'Confirm the room',details:'Ask whether the community room is free on Saturday 13:00–16:00.',status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
-  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:'Prepare a small sign',details:'Simple A4 entrance sign.',status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
+  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the room'),details:demoText('Ask whether the community room is free on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
  ];
  const commitments=[
-  {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:'Can collect after work'},
+  {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:demoText('Can collect after work')},
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
-  {cooperation_id:PURCHASE,user_id:B,quantity:2,note:'Need delivery help'}
+  {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:'Sample supplier offer for the demo.'}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Sample supplier offer for the demo.')}];
  const activity=[
-  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:'Neighbourhood repair café',unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:'todo · Confirm the room'},
-  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:'Dry firewood together',unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
+  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Neighbourhood repair café'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the room')},
+  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
  ];
  const coopActivity=[
-  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:'todo · Confirm the room',created_at:'2026-09-30T08:30:00Z'},
-  {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:'Entrance sign ready',created_at:'2026-09-29T18:00:00Z'},
+  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the room'),created_at:'2026-09-30T08:30:00Z'},
+  {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:demoText('Entrance sign ready'),created_at:'2026-09-29T18:00:00Z'},
   {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
  ];
  const updates=[
-  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:'Entrance sign is ready. I will bring tape and markers.',created_at:'2026-09-29T18:00:00Z'}
+  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:demoText('Entrance sign is ready. I will bring tape and markers.'),created_at:'2026-09-29T18:00:00Z'}
  ];
  const base={
   profile:profiles[0],directory:profiles,chatProfiles:profiles,groups,memberships:[{community_id:G,user_id:DEMO_UID,banned:false},{community_id:G2,user_id:DEMO_UID,banned:false}],blocks:[],
