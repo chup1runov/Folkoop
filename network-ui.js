@@ -125,7 +125,7 @@ function demoSnapshot(){
  ];
  const coopActivity=[
   {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:'todo · Confirm the room',created_at:'2026-09-30T08:30:00Z'},
-  {cooperation_id:PROJECT,event_type:'update_added',actor_id:C,label:'Entrance sign ready',created_at:'2026-09-29T18:00:00Z'},
+  {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:'Entrance sign ready',created_at:'2026-09-29T18:00:00Z'},
   {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
  ];
  const updates=[
@@ -177,6 +177,13 @@ function localDateTime(value){
  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
 }
 
+function formatWhen(value){
+ if(!value)return '';
+ const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
+ try{return new Intl.DateTimeFormat(lang(),{dateStyle:'medium',timeStyle:'short'}).format(d);}
+ catch{return d.toISOString().slice(0,16).replace('T',' ');}
+}
+
 const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
 const obtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ot(key))}</button>`;
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
@@ -207,7 +214,7 @@ function syncBadges(){
 }
 function renderActivityNotifications(u){
  const rows=data.activityInbox.filter(x=>x.last_activity_at).slice(0,12);
- return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),actor=x.last_actor_id===u.id?mt('you'):(coopProfile(x.last_actor_id)?.name||ct('noProfile'));let label=x.last_label||'';if(x.last_event_type==='purchase_stage')label=lt(label);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(actor+' '+at(x.last_event_type||'activity')+(label?' · '+label:''))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+ return `<section class="network-activity"><div class="row"><h3>${esc(at('notifications'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="draft-grid">${rows.map(x=>{const n=Number(x.unread_count||0),line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card"><div class="row"><span class="badge">${esc(kindLabel(x.cooperation_kind))}</span>${n?`<span class="net-count">${esc(String(n))}</span>`:''}</div><h3>${esc(x.cooperation_title)}</h3><p class="meta">${esc(line)} · ${esc(formatWhen(x.last_activity_at))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
 }
 
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
@@ -224,7 +231,7 @@ function renderHome(u){
  const assigned=data.assignedTasks.filter(x=>x.status!=='done').map(x=>({...x,coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.coop);
  const unreadActivity=data.activityInbox.filter(x=>Number(x.unread_count||0)>0);
  const attention=[];
- pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+new Date(x.process.confirmation_deadline).toLocaleString():'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
+ pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+formatWhen(x.process.confirmation_deadline):'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
  assigned.slice(0,5).forEach(x=>attention.push({type:'task',title:x.title,meta:x.coop.title+' · '+ct(x.status),coop:x.coop}));
  if(unreadMessages)attention.push({type:'messages',title:ht('messages')+' · '+unreadMessages,meta:'',route:'messages'});
  if(invites)attention.push({type:'invitations',title:ht('invitations')+' · '+invites,meta:'',route:'messages'});
@@ -258,12 +265,11 @@ function renderHome(u){
  const feedCard=item=>{
   if(item.kind==='post'){
    const author=profileFor(item.post.author_id)?.name||t('by');
-   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(item.post.created_at||'')}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(formatWhen(item.post.created_at))}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
   }
   const e=item.event,coop=item.coop;
-  const actor=e.last_actor_id===u.id?mt('you'):(coopProfile(e.last_actor_id)?.name||ct('noProfile'));
-  let label=e.last_label||'';if(e.last_event_type==='purchase_stage')label=lt(label);
-  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(actor+' '+at(e.last_event_type||'activity')+(label?' · '+label:''))}</p><p class="meta">${esc(e.last_activity_at||'')}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
+  const line=activityLabel({actor_id:e.last_actor_id,event_type:e.last_event_type,label:e.last_label},u);
+  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(line)}</p><p class="meta">${esc(formatWhen(e.last_activity_at))}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
  };
 
  const primary=attention[0]||(active[0]?{type:'activity',title:active[0].title,meta:statusLabel(active[0].status),coop:active[0]}:null);
@@ -300,7 +306,7 @@ function renderMessages(u){
    const candidates=discoverable.filter(p=>!existing.has(p.id));
    html+=`<form id="netChatInvite" class="editor card"><label>${esc(mt('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(p=>`<option value="${esc(p.id)}"${p.id===inviteTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('invite'))}</button></form>`;
   }
-  html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(m.created_at||'')}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
+  html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(formatWhen(m.created_at))}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
   html+=`<form id="netMessage" class="editor card"><label>${esc(mt('message'))}<textarea name="body" maxlength="4000" rows="3" required>${esc(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${esc(mt('sendMessage'))}</button></form>`;
   if(!linked&&chat.kind==='group')html+=`<div class="actions">${chat.owner_id===u.id?btn('deleteChat','deleteChat',chat.id):btn('leaveChat','leaveChat',chat.id)}</div>`;
   return html;
@@ -324,11 +330,11 @@ function renderPurchaseLifecycle(u,coop,owner){
  const confirmedTotal=confirmed.reduce((a,x)=>a+Number(x.quantity||0),0);
  const profileName=id=>id===u.id?mt('you'):(coopProfile(id)?.name||ct('noProfile'));
  let html=`<section class="card"><div class="row"><h3>${esc(lt('lifecycle'))}</h3><span class="badge">${esc(lt(stage))}</span></div><p class="meta">${esc(lt('selfReported'))}</p>`;
- if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(new Date(process.confirmation_deadline).toLocaleString())}</p>`;
+ if(process.confirmation_deadline)html+=`<p><strong>${esc(lt('confirmationDeadline'))}:</strong> ${esc(formatWhen(process.confirmation_deadline))}</p>`;
  if(process.external_order_reference)html+=`<p><strong>${esc(lt('externalReference'))}:</strong> ${esc(process.external_order_reference)}</p>`;
- if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(new Date(process.expected_delivery_at).toLocaleString())}</p>`;
+ if(process.expected_delivery_at)html+=`<p><strong>${esc(lt('expectedDelivery'))}:</strong> ${esc(formatWhen(process.expected_delivery_at))}</p>`;
  if(process.pickup_place)html+=`<p><strong>${esc(lt('pickupPlace'))}:</strong> ${esc(process.pickup_place)}</p>`;
- if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(new Date(process.pickup_start).toLocaleString())}${process.pickup_end?' – '+esc(new Date(process.pickup_end).toLocaleString()):''}</p>`;
+ if(process.pickup_start)html+=`<p><strong>${esc(lt('pickupStart'))}:</strong> ${esc(formatWhen(process.pickup_start))}${process.pickup_end?' – '+esc(formatWhen(process.pickup_end)):''}</p>`;
  if(process.delivery_note)html+=`<p style="white-space:pre-wrap">${esc(process.delivery_note)}</p>`;
  if(process.result_note)html+=`<p style="white-space:pre-wrap"><strong>${esc(lt('resultNote'))}:</strong> ${esc(process.result_note)}</p>`;
  html+='</section>';
@@ -427,7 +433,7 @@ function renderCooperation(u,r){
    html+=`<aside class="notice"><p>${esc(ct('memberOnly'))}</p></aside>`;
    return html;
   }
-  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(e.created_at||'')}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+  html+=`<section class="network-activity"><div class="row"><h3>${esc(at('activity'))}</h3><span class="meta">${esc(at('recentActivity'))}</span></div><div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(formatWhen(e.created_at))}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
   html+=`<h3>${esc(ct('members'))}</h3><div class="draft-grid">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="card"><div class="row"><strong>${esc(name)}</strong>${remove}</div><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></article>`;}).join('')}</div>`;
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
@@ -437,7 +443,7 @@ function renderCooperation(u,r){
   if(coop.kind==='project'){
    html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${data.projectTasks.map(task=>{const p=coopProfile(task.assignee_id);const canManage=owner||task.creator_id===u.id;return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details)}</p><p class="meta">${esc(ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</p><form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>${canManage?`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const mp=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(mp?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const p=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button">${esc(ct('saveTask'))}</button></form>`;
   }
-  html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="card"><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p style="white-space:pre-wrap">${esc(x.body)}</p><p class="meta">${esc(x.created_at||'')}</p>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
+  html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="card"><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><p style="white-space:pre-wrap">${esc(x.body)}</p><p class="meta">${esc(formatWhen(x.created_at))}</p>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
   return html;
  }
  const kind=projectMode?'project':coopDraft.kind;
