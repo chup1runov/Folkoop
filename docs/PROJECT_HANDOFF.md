@@ -6,7 +6,7 @@
 
 Current public application version: **v0.36.0**.  
 Current product phase: **pre-pilot execution**.  
-Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
+Current priority: **finish the already-started mobile/summary UX close-out (#101, then a clean current-main v0.38), then activate the real participant Auth path, run the two-account gate, rehearse account closure, and authorize the controlled Göteborg pilot.**
 
 Do not resume feature expansion before that evidence gate unless a safety/privacy defect blocks the pilot.
 
@@ -36,6 +36,13 @@ See:
 Earlier standalone component identities are historical only. Current modules such as City, Center and the FOLKOOP guide are parts of FOLKOOP, not separate products.
 
 ## Current interface state
+
+Delete-ready chat snapshot:
+- v0.36 is deployed and confirmed green on current main;
+- PR #101 is the canonical current mobile-navigation PR; network authorization is green, while application CI currently fails on two known UI-test/guide-geometry regressions documented in `docs/CHAT_HANDOFF_20260930.md`;
+- old PR #97 is superseded/closed;
+- old PR #98 is closed/unmerged; branch `ux/summary-first-details-v038` is preserved only as source material for a clean post-#101 v0.38 rebuild.
+
 
 v0.36 includes the current guest/read-only presentation and first-session work:
 - language-first entry;
