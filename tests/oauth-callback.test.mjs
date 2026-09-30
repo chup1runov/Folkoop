@@ -23,3 +23,15 @@ test('OAuth callback parser rejects malformed or excessive token data',()=>{
   assert.equal(P.parse(hash).ok,false);
  }
 });
+
+
+test('OAuth callback document has restrictive token-handling headers/meta',async()=>{
+ const html=await readFile('auth-callback.html','utf8');
+ assert.match(html,/name="referrer" content="no-referrer"/);
+ assert.match(html,/name="robots" content="noindex,nofollow"/);
+ assert.match(html,/http-equiv="Content-Security-Policy"/);
+ assert.match(html,/default-src 'none'/);
+ assert.match(html,/script-src 'self'/);
+ assert.match(html,/base-uri 'none'/);
+ assert(!/https?:\/\/[^"' ]+\.js/i.test(html));
+});
