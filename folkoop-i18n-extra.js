@@ -3860,6 +3860,18 @@ const homeDailyCopy={
 };
 for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
 
+const guestDemoCopy={
+ es:{demoBadge:'DEMO',demoText:'Vista de invitado · solo datos de ejemplo · nada se envía al servidor.',demoCta:'Inicia sesión para participar',demoLocked:'Inicia sesión para crear, unirte, enviar o cambiar datos.',demoExit:'Salir del demo'},
+ uk:{demoBadge:'ДЕМО',demoText:'Гостьовий огляд · лише демонстраційні дані · нічого не надсилається на сервер.',demoCta:'Увійти, щоб брати участь',demoLocked:'Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.',demoExit:'Вийти з демо'},
+ fi:{demoBadge:'DEMO',demoText:'Vierasesikatselu · vain esimerkkitietoja · mitään ei lähetetä palvelimelle.',demoCta:'Kirjaudu osallistuaksesi',demoLocked:'Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.',demoExit:'Poistu demosta'},
+ bs:{demoBadge:'DEMO',demoText:'Gostujući pregled · samo primjerni podaci · ništa se ne šalje serveru.',demoCta:'Prijavi se za učešće',demoLocked:'Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.',demoExit:'Izađi iz demoa'},
+ ar:{demoBadge:'تجريبي',demoText:'عرض ضيف · بيانات نموذجية فقط · لا يتم إرسال شيء إلى الخادم.',demoCta:'سجّل الدخول للمشاركة',demoLocked:'سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.',demoExit:'الخروج من العرض'},
+ fa:{demoBadge:'دمو',demoText:'نمایش مهمان · فقط داده‌های نمونه · چیزی به سرور ارسال نمی‌شود.',demoCta:'برای مشارکت وارد شوید',demoLocked:'برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.',demoExit:'خروج از دمو'},
+ so:{demoBadge:'DEMO',demoText:'Muuqaal marti · xog tusaale ah oo keliya · waxba looma diro server-ka.',demoCta:'Soo gal si aad uga qaybqaadato',demoLocked:'Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.',demoExit:'Ka bax demada'},
+ ku:{demoBadge:'DEMO',demoText:'Dîtina mêvan · tenê daneyên mînak · tiştek ji serverê re nayê şandin.',demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
+};
+for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
+
 // LANG_BLOCKS
 globalThis.FolkoopExtraCopy = Object.freeze({languages});
 })();
