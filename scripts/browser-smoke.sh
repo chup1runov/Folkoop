@@ -13,6 +13,7 @@ export BASE_URL=http://127.0.0.1:4173/Folkoop/
 python3 tests/city-regression.py tests/browser.py
 python3 tests/city-regression.py tests/about-browser.py
 python3 tests/folkoop-browser.py
+python3 tests/guest-demo-browser.py
 python3 tests/network-form-focus-browser.py
 python3 tests/network-browser.py
 python3 tests/marketplace-browser.py
