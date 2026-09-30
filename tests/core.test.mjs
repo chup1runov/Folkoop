@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {decodeEntities,parsePlans} from '../scripts/fetch-goteborg-open-plans.mjs';
+import {decodeEntities,parsePlans} from '../scripts/sources/fetch-goteborg-open-plans.mjs';
 const ctx=vm.createContext({console,URL,Date,Intl,setTimeout,clearTimeout,AbortController,Headers,Response,fetch,localStorage:{getItem(){throw new Error('disabled');},setItem(){throw new Error('disabled');}}});
 for(const file of ['civic-core.js','daily-data.js','goteborg-plans.js'])vm.runInContext(await readFile(new URL('../'+file,import.meta.url),'utf8'),ctx);
 const C=ctx.FolkoopCityCore,D=ctx.FolkoopCityDaily;

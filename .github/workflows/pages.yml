@@ -26,7 +26,8 @@ jobs:
           python-version: '3.12'
       - name: Syntax, versions, assets and deterministic regression tests
         run: |
-          for file in *.js scripts/*.mjs; do node --check "$file"; done
+          for file in *.js; do node --check "$file"; done
+          find scripts -type f -name '*.mjs' -print0 | xargs -0 -r -n1 node --check
           python -m py_compile tests/browser.py
           node scripts/static-smoke.mjs
           node --test tests/*.test.mjs
@@ -39,9 +40,9 @@ jobs:
       - name: Browser interactions at actual project subpath
         run: bash scripts/browser-smoke.sh
       - name: Fetch Riksdagen once
-        run: node scripts/fetch-riksdagen.mjs
+        run: node scripts/sources/fetch-riksdagen.mjs
       - name: Fetch Gothenburg consultations once
-        run: node scripts/fetch-goteborg-open-plans.mjs
+        run: node scripts/sources/fetch-goteborg-open-plans.mjs
       - name: Validate normalized live feeds
         run: |
           node --input-type=module <<'JS'
@@ -105,13 +106,13 @@ jobs:
         with:
           node-version: '22'
       - name: Check direct SMHI browser contracts
-        run: node scripts/probe-daily.mjs
+        run: node scripts/sources/probe-daily.mjs
       - name: Check live road-holder service
         if: always()
-        run: node scripts/probe-netinfo.mjs
+        run: node scripts/sources/probe-netinfo.mjs
       - name: Check official report handoffs
         if: always()
-        run: node scripts/probe-report-routes.mjs
+        run: node scripts/sources/probe-report-routes.mjs
       - name: Check hosted Supabase Auth readiness
         if: always()
         run: node scripts/probe-auth-readiness.mjs
