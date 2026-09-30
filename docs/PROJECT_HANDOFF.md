@@ -1,5 +1,7 @@
 # FOLKOOP — current handoff
 
+> Chat-continuity snapshot: see `docs/CHAT_HANDOFF_20260930.md` for the 30 September UX/product decisions, completed releases, open PR stack, cooperation-value research conclusions and exact continuation order.
+
 30 September 2026.
 
 Current public application version: **v0.36.0**.  
