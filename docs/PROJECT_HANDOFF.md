@@ -1,100 +1,274 @@
 # FOLKOOP — current handoff
 
-29 September 2026. Current development slice: v0.29.0 authored directional pointing + sit-edge FOLKOOP guide onboarding on top of the existing v0.25 Auth scaffold. Check exact commit CI, hosted migration state and deployment before claiming it is live.
+30 September 2026.
 
-## Canonical decisions
+Current public application version: **v0.35.0**.  
+Current product phase: **pre-pilot execution**.  
+Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
-Continue `chup1runov/Folkoop` as one FOLKOOP product. The repository was renamed from FOLKOOP without starting a second product or rewriting history. User-facing navigation order: Profile, Home, Messages, People, Communities, Together, Projects, City, Center, Settings, About.
+Do not resume feature expansion before that evidence gate unless a safety/privacy defect blocks the pilot.
 
-Cooperation is broad: mutual help, skills, shared resources, professional/project collaboration, shared purchases, neighborhood needs and real-world meetings. It is not only shopping. `docs/PRODUCT_CONCEPT.md` is the canonical product thesis: Intent -> Match -> Commit -> Coordinate -> Act -> Outcome, with useful real-world outcomes prioritized over feed engagement. Do not add political profiling or rewards for opinions. Keep the zero-cost infrastructure rule in `docs/FREE_ONLY.md`.
+## Canonical product decisions
 
-Earlier standalone components are preserved by Git history and archival commit objects; they are no longer current product identities.\n\n## Actual state
+FOLKOOP is one product and one current brand.
 
-### Local/private layer
+User-facing navigation remains:
 
-The original FOLKOOP shell still provides optional browser-local profile data and private drafts for needs, offers, purchases, resources, projects and events. Local drafts are never uploaded automatically and are distinct from server network objects.
+**Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**
 
-### Network/account layer
+Canonical product thesis:
 
-A dedicated Supabase Free project named `folkoop` is active. Browser configuration contains only the public project URL and publishable key. Auth tokens live in memory only.
+**Intent -> Match -> Commit -> Coordinate -> Act -> Outcome -> Repeat**
 
-Network capabilities now include:
-- optional server profile and opt-in discovery;
-- communities, membership and shared publications;
+The canonical concept is now `docs/PRODUCT_CONCEPT.md` v2.0. It incorporates the nine competitor deep dives while explicitly preserving the current Göteborg-first feature gate.
+
+Permanent product rule:
+
+**Göteborg core-loop first. Feature breadth later.**
+
+See:
+- `docs/PRODUCT_DECISION_POLICY.md`
+- `docs/GOTEBORG_CORE_LOOP_PILOT.md`
+- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+
+Earlier standalone component identities are historical only. Current modules such as City, Center and the FOLKOOP guide are parts of FOLKOOP, not separate products.
+
+## Current interface state
+
+v0.35 includes the current guest/read-only presentation work:
+- language-first entry;
+- compact guest overview;
+- reduced mutation clutter before sign-in;
+- progressive pilot sign-in;
+- local/private workspace remains explicitly separate from the network account;
+- the FOLKOOP guide remains deterministic/non-AI;
+- signed-in Home remains action-first rather than infinite-feed-first.
+
+The participant-facing interface follows the persistent requirement in `PRODUCT_DECISION_POLICY.md`:
+
+**compact, calm, friendly**
+
+without hiding required privacy, safety or legal information.
+
+## Network/backend state
+
+Dedicated Supabase Free project:
+
+- project ref: `cwvhkdqsrbllsykhccmb`
+- region: `eu-north-1` (Stockholm)
+- PostgreSQL 17
+- browser uses a publishable key only
+- Auth/session tokens are not persisted by FOLKOOP application code
+
+Current server-backed capabilities include:
+- optional network profile and opt-in discovery;
+- Communities and member publications;
+- direct/group messaging;
 - blocking/reporting and owner moderation;
-- direct and group messaging with invitations, manual refresh and per-member read markers;
-- automatic work chat linked to each cooperation object, with chat membership synchronized from cooperation membership;
-- unified cooperation objects for need / offer / purchase / resource / project;
-- cooperation participants and member updates;
-- server activity journal, My-page activity summaries and separate unread counters for cooperation activity and chat messages;
-- shared-purchase target quantity and per-member quantity commitments;
-- structured supplier offers for shared purchases, including price/quantity/delivery terms and owner preferred-offer selection;
-- shared-purchase lifecycle with final quantity confirmation, frozen terms, self-reported external order/delivery, pickup plan, collection marks and explicit completion/cancellation;
-- project tasks, assignment and task status.
+- linked work chat for each cooperation;
+- cooperation objects: Need / Offer / Shared Purchase / Resource / Project;
+- participants and member updates;
+- Project tasks, assignees and task status;
+- Shared Purchase quantity commitments;
+- structured supplier offers;
+- Shared Purchase confirmation/order/delivery/pickup/completion coordination;
+- activity journal and unread summaries.
 
-All network writes go through RPCs which derive the actor from `auth.uid()`. Exposed tables use RLS. Browser roles get SELECT only where policies allow it.
+All browser writes go through reviewed RPCs deriving the actor from `auth.uid()`. Public application tables use RLS. Browser roles do not receive direct write grants to application tables.
 
-General public onboarding is not ready. v0.25 adds a fail-closed Google OAuth popup/callback scaffold, but production config keeps `googleOAuthEnabled:false` until external Google/Supabase provider setup and two-account verification are complete. v0.24 invite-code admission is now applied on the hosted project; only SHA-256 hashes are stored privately, and four unused one-time pilot slots P01–P04 are seeded. A post-migration hosted transaction smoke passed 21/21 checks and rolled back cleanly. The remaining blocker is ordinary participant Auth: the built-in email path is still restricted to project-team addresses. Do not describe this as an open public network until a genuinely free broader authentication route is configured and tested.
+## Pre-pilot security hardening — current
 
-Messaging is not end-to-end encrypted and has no push, files, calls or WebSocket realtime in this slice. Shared-purchase quantities are coordination values only: no checkout, payment, escrow, vendor settlement or delivery guarantee is implemented.
+### OAuth callback / public artifact hardening
 
-### City
+Merged PR #80, commit:
 
-Former FOLKOOP civic behavior remains inside City: official-source navigation, report preparation, Gothenburg plans, Riksdag metadata, weather/warnings and source/error states. City does not require a network account and does not automatically submit official reports.
+`edad9ccdd282899531490b231e4bc01c2229330e`
 
-### Center
+It added:
+- restrictive CSP on the OAuth callback;
+- runtime callback regression tests;
+- fragment cleanup / same-origin opener / no refresh-token-forwarding tests;
+- two-stage Google readiness probes:
+  - `npm run auth:require-provider`
+  - `npm run auth:require-google`;
+- built-artifact closure audit;
+- public-artifact secret-pattern audit;
+- audit before browser tests and again on the final production artifact.
 
-Center preserves the physical/community-space direction from FOLKOOP. No operational venue, equipment inventory or confirmed program should be fabricated.
+Both PR workflows passed before merge.
 
-## Key files
+### Private-table RLS defense in depth
 
-- `docs/PRODUCT_CONCEPT.md` — canonical product thesis, cooperation graph, outcome metrics and cold-start strategy.
-- `docs/PRODUCT_DECISION_POLICY.md` — persistent feature gate: improve a measured core-loop bottleneck or defer by default.
-- `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first falsifiable Göteborg pilot: need/offer -> match -> coordination -> confirmed outcome -> repeat.
-- `docs/architecture/OUTCOME_INTEGRITY.md` + `outcome-integrity-v1.json` — FOLKOOP's non-runtime outcome/provenance integrity contract; City provenance and pilot outcome rules without adding a heavy semantic runtime.
-- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — exact two-real-account technical gate before ordinary invitations.\n- `docs/PRE_PILOT_PRIVACY_DATA_MAP.md` — current technical data map; distinguishes narrow profile deletion from broad/destructive Auth-user cascades and blocks ordinary-participant closure until policy is decided.
-- `docs/SECURITY_DEFINER_AUDIT.md` — privilege model for authenticated RPCs/private RLS helpers and executable CI contract for SECURITY DEFINER grants/search_path.
-- `docs/ACCOUNT_CLOSURE_RUNBOOK.md` — operator-only preflight before any account closure; shared ownership must be resolved before Auth deletion.\n- `docs/ONBOARDING_HELPER_V026.md` — first-run spotlight tour and local, non-AI FOLKOOP guide helper.\n- `docs/ONBOARDING_GUIDE_V027.md` — historical language-first gate implementation.\n- `docs/ONBOARDING_GUIDE_V028.md` — historical multi-pose runtime and the art gap it identified.\n- `docs/ONBOARDING_GUIDE_V029.md` — authored directional pointing/sit-edge integration from FOLKOOP guide Character Pack.
-- `docs/AUTH_GOOGLE_PILOT.md` — preferred free participant-Auth activation path and external setup gate.
-- `docs/PRE_PILOT_AUTH_READINESS.md` — live hosted Supabase/Auth readiness snapshot, safe preflight commands and exact remaining two-account blockers.
-- `network-client.js` — Auth/PostgREST client; memory-only token.
-- `auth-callback.html` + `auth-callback-core.js` + `auth-callback.js` — same-origin OAuth popup return path; no persistent token storage.
-- `network-ui.js` — account, communities, messages, cooperation/project UI.
-- `supabase/migrations/202609250001_network.sql` — base network/RLS.
-- `202609250002_first_pilot.sql` — historical one-user pilot bootstrap contract.
-- `202609280001_pilot_invites.sql` — v0.24 invite-only admission; existing pilots re-enter idempotently and new users require an operator-created code.
-- `202609250003_rls_performance.sql` — RLS/index tuning.
-- `202609250004_messaging.sql` + `005_messaging_indexes.sql` — messaging.
-- `202609250006_cooperation.sql` — unified cooperation engine.
-- `202609250007_purchase_offers.sql` — supplier offer comparison for joint purchases.
-- `202609250008_purchase_lifecycle.sql` — confirmation, external-order, delivery, pickup and completion state machine.
-- `202609250009_activity_chat.sql` — linked work chats, activity journal and unread summaries.
-- `docs/NETWORK_V016.md`, `MESSAGING_V017.md`, `COOPERATION_V018.md`, `MARKETPLACE_V019.md`, `PURCHASE_LIFECYCLE_V020.md`, `ACTIVITY_CHAT_V021.md`, `NAVIGATION_ONBOARDING_V022.md` — slice-specific constraints.
-- `docs/TOKARENKO_KOOPSET_RESEARCH.md` — source review of the KООПСЕТЬ concept and the parts intentionally adapted into FOLKOOP.
+Merged PR #81, commit:
 
-## Verification
+`b1ecbf10ef4be953a3c011af139a62522cd7816d`
 
-Before merging any network change require BOTH:
-1. existing application/browser validation;
-2. `.github/workflows/network.yml` PostgreSQL authorization tests.
+Hosted migration applied:
 
-The PostgreSQL CI uses disposable synthetic Auth claims; it is not proof of hosted email delivery or real-device behavior. Browser tests use synthetic Supabase responses; they are not a real multi-account hosted test.
+`20260930060734 · folkoop_private_table_rls`
 
-Hosted migrations must be applied only after the exact PR passes both suites. Never apply CI fixture SQL to the hosted project.
+RLS is now enabled on:
+- `folkoop_private.pilots`;
+- `folkoop_private.write_budgets`;
+- `folkoop_private.pilot_invites`.
 
-## Next engineering priorities
+Hosted verification confirms:
+- RLS enabled on all three;
+- FORCE RLS disabled;
+- PUBLIC / anon / authenticated have no direct SELECT/INSERT/UPDATE/DELETE privileges;
+- no browser-role policies expose these tables;
+- four invite rows remain;
+- no pilot user was created by the migration.
 
-Product priority is now the Göteborg core-loop pilot rather than adding breadth.
+GitHub issue #68 is closed.
 
-Before that pilot:
-- keep the 21/21 post-v0.24 hosted transaction smoke as the current database/RLS/admission baseline;
-- resolve the P0 privacy/account-lifecycle decisions before ordinary participants; `Delete profile` is not account deletion and raw Auth deletion is not an approved closure path;
-- configure and verify the Google OAuth pilot route before distributing any plaintext invite codes;
-- fix only defects that block the core loop or safety;
-- prepare private pilot outcome logging outside the public repository.
+Supabase now reports an informational `rls_enabled_no_policy` notice on these private tables. That is intentional: they are not a direct client-table surface; access remains through reviewed SECURITY DEFINER functions.
 
-Do **not** delay the core-loop pilot for pagination, AI matching, payments, ratings, advanced marketplace work or new Center/City breadth unless a blocking dependency is demonstrated.
+The existing `authenticated_security_definer_function_executable` warnings remain expected for the intentional authenticated RPC surface and are covered by `docs/SECURITY_DEFINER_AUDIT.md` plus CI.
 
-After evidence, use the observed bottleneck to choose the next engineering slice.
+## Hosted pilot state
 
-Do not silently enable paid plans, paid SMTP, paid push, paid storage or payment-processing services.
+Current hosted aggregate state after the RLS migration:
+
+| Check | Result |
+|---|---:|
+| Auth users | 0 |
+| Auth sessions | 0 |
+| Enabled pilot users | 0 |
+| Profiles | 0 |
+| Cooperations | 0 |
+| Pilot invite rows | 4 |
+| Usable invite slots | 4 |
+| Remaining invite uses | 4 |
+
+P01–P04 remain unconsumed.
+
+Active policy versions:
+- Pilot Terms: `2026-09-29-v1`
+- Privacy Notice: `2026-09-29-v1`
+
+Versioned acceptance is already enforced server-side during first admission.
+
+## Auth state
+
+Google OAuth remains intentionally disabled until the external provider is configured and verified.
+
+Repository/application state:
+- Google popup/callback implementation exists;
+- callback hardening is tested;
+- production `googleOAuthEnabled` remains false;
+- built-in email OTP is not the chosen ordinary-participant route.
+
+External setup values are documented in `docs/AUTH_GOOGLE_PILOT.md`.
+
+Activation order is intentionally two-stage:
+
+1. configure Google provider in Google + Supabase;
+2. run `npm run auth:require-provider`;
+3. only after that succeeds, enable `googleOAuthEnabled:true` in a reviewed code change;
+4. require `npm run auth:require-google` to pass;
+5. deploy;
+6. execute the two-account operator runbook.
+
+Do not enable the app flag before the hosted provider gate passes.
+
+## Privacy/account lifecycle state
+
+The narrow controlled-pilot privacy decisions are documented and no longer an abstract blocker.
+
+Completed:
+- controller identified;
+- privacy contact defined;
+- legal-basis working model recorded;
+- retention schedule recorded;
+- Supabase processor path reviewed;
+- Box excluded from participant PII;
+- versioned Terms/Privacy acceptance deployed;
+- rights/incident procedure documented;
+- account-closure sequence documented;
+- destructive self-service Auth deletion prohibited for the first pilot.
+
+Important:
+- `Delete profile` is not account closure;
+- account closure disables admission first;
+- refresh sessions are revoked;
+- shared ownership is reviewed/transferred or deleted deliberately;
+- user-scoped data are handled according to policy;
+- Auth identity is removed last.
+
+The closure procedure still needs one rehearsal with a developer/test identity after real Auth is active.
+
+## City
+
+City remains the source-first civic/navigation layer.
+
+It can:
+- expose official sources;
+- prepare routing/handoffs;
+- show Göteborg civic material and public information.
+
+It must not claim to be the authority or claim an official submission/result unless an integration genuinely provides it.
+
+## Center
+
+Center remains a future physical/community layer.
+
+No operating venue, inventory, programme or access system should be fabricated.
+
+The competitor roadmap contains later concepts such as Place, Meetup, Activity and resource booking. None is a current pre-pilot implementation requirement.
+
+## Key documents
+
+Start with:
+- `docs/PRODUCT_CONCEPT.md` — canonical Product Concept v2.0;
+- `docs/PRODUCT_DECISION_POLICY.md` — permanent feature gate;
+- `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first real product test;
+- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md` — post-pilot architecture/branching roadmap;
+- `docs/PRE_PILOT_AUTH_READINESS.md` — exact remaining Auth gate;
+- `docs/AUTH_GOOGLE_PILOT.md` — Google setup;
+- `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — two-account technical run;
+- `docs/PRE_PILOT_PRIVACY_DECISIONS.md` — pilot privacy defaults;
+- `docs/ACCOUNT_CLOSURE_RUNBOOK.md` — closure procedure;
+- `docs/SECURITY_DEFINER_AUDIT.md` — current privilege/RLS contract;
+- `docs/architecture/OUTCOME_INTEGRITY.md` — outcome/provenance integrity.
+
+## Verification rule
+
+For network/database changes require both:
+1. application/browser validation;
+2. `.github/workflows/network.yml` authorization/database tests.
+
+Hosted migrations are applied only after the exact PR passes both suites.
+
+Synthetic CI/browser users are not evidence that real OAuth/provider/device behavior works.
+
+## Exact remaining pre-pilot sequence
+
+1. Configure the Google OAuth Web client and Supabase Google provider.
+2. Confirm the Supabase allowed redirect URL.
+3. Run hosted-provider readiness: `npm run auth:require-provider`.
+4. Enable `googleOAuthEnabled:true` in a reviewed PR.
+5. Require full readiness: `npm run auth:require-google`.
+6. Deploy.
+7. Execute `GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` with two independent real Google identities and P01/P02.
+8. Rehearse full account closure on one developer/test identity.
+9. Finalize the participant Privacy Notice against the actually active Google Auth route.
+10. Explicitly authorize invitation distribution.
+11. Run the controlled Göteborg Need/Offer pilot.
+
+## What not to do now
+
+Do not delay this gate for:
+- AI matching;
+- recommendation engines;
+- payments;
+- ratings;
+- Credits/timebank;
+- advanced marketplace work;
+- formal governance;
+- Place/Activity/Center management;
+- large City expansion;
+- native apps;
+- broad public onboarding.
+
+The next major product slice after the human pilot must be selected from the measured bottleneck, not from the competitor feature backlog.

@@ -1,31 +1,29 @@
 # FOLKOOP pre-pilot Auth readiness audit
 
-29 September 2026.
+30 September 2026.
 
-Status: **v0.31 admission/privacy gate live; ordinary-participant Auth is not activated yet.**
+Status: **database/admission/privacy/security hardening is live; ordinary-participant Auth is not activated yet.**
 
-This document records the current repository + hosted Supabase state before the
-two-real-account Göteborg technical gate. It contains no participant identities,
-plaintext invite codes, secret keys or OAuth client secrets.
+This document records the current repository + hosted Supabase state immediately before the external Google-provider setup and two-real-account Göteborg technical gate.
+
+It contains no participant identities, plaintext invite codes, secret keys or OAuth client secrets.
 
 ## Hosted project snapshot
 
 Connected Supabase project:
-
 - project ref: `cwvhkdqsrbllsykhccmb`;
 - region: `eu-north-1` (Stockholm);
-- project status: ACTIVE_HEALTHY;
 - PostgreSQL 17;
-- browser config points to the same project;
-- browser uses a publishable key, never a service-role/secret key.
+- browser config points to this project;
+- browser uses a publishable key only.
 
-## Hosted database readiness
+## Hosted migration state
 
-The hosted project now reports **13 FOLKOOP migration records**, through:
+The hosted project now reports **14 FOLKOOP migrations**, through:
 
-`20260929112851 · folkoop_pilot_terms_acceptance`
+`20260930060734 · folkoop_private_table_rls`
 
-The v0.31 acceptance migration is live.
+The latest migration enables RLS defense in depth on the private admission/rate-limit/invite tables.
 
 Current hosted aggregate state:
 
@@ -36,98 +34,117 @@ Current hosted aggregate state:
 | Enabled pilot users | 0 |
 | Profiles | 0 |
 | Cooperations | 0 |
-| Conversation memberships | 0 |
 | Pilot invite rows | 4 |
 | Usable single-use invite slots | 4 |
 | Remaining invite uses | 4 |
 
-P01–P04 therefore remain unconsumed.
+P01–P04 remain unconsumed.
 
 ## Versioned policy acceptance — LIVE
 
 Active versions:
-
 - Pilot Terms: `2026-09-29-v1`;
 - Privacy Notice: `2026-09-29-v1`.
 
-Hosted `folkoop_private.pilots` now has:
-
+Hosted admission stores:
 - `terms_version`;
 - `terms_accepted_at`;
 - `privacy_version`;
 - `privacy_acknowledged_at`.
 
-Hosted verification confirms:
+The current five-argument invite-claim RPC enforces the active versions before first admission.
 
-- old `fk_claim_pilot_invite(text)` is absent;
-- new
-  `fk_claim_pilot_invite(text,text,boolean,text,boolean)` exists;
-- `authenticated` has EXECUTE;
-- `anon` and `PUBLIC` do not;
-- the function remains SECURITY DEFINER with `search_path=""`;
-- missing/stale policy acceptance was tested in disposable PostgreSQL;
-- the normal browser flow was tested to send no Auth verify request before
-  explicit acceptance;
-- a local policy rejection preserves the OTP only in tab memory, not persistent
-  browser storage.
+Existing admitted users can re-enter without reusing a code while still passing the current admission/policy contract.
 
-No hosted user was created merely for this verification.
+No hosted user has been created during readiness/security verification.
 
-## Private-schema hardening status
+## Private-schema RLS — LIVE
 
-Three private tables currently have RLS disabled:
-
+RLS is enabled on:
 - `folkoop_private.pilots`;
 - `folkoop_private.write_budgets`;
 - `folkoop_private.pilot_invites`.
 
-Direct table grants to `anon` and `authenticated` are absent.
+Hosted verification after PR #81 confirms:
+- all three have `relrowsecurity=true`;
+- all three have `relforcerowsecurity=false`;
+- PUBLIC / anon / authenticated have no direct DML privileges;
+- no browser-role RLS policies exist.
 
-This is therefore **not evidence of direct browser table access**, but RLS could
-provide additional defense in depth. It is tracked as GitHub issue #68 and must
-not be changed blindly because the current private-table access model is mediated
-by reviewed SECURITY DEFINER functions.
+This is intentional.
+
+These tables are not a direct client Data API surface. They remain reachable only through the reviewed SECURITY DEFINER architecture. FORCE RLS is deliberately not enabled because the owner-executed SECURITY DEFINER functions need to access the tables.
+
+The former RLS-disabled security advisory is gone.
+
+Supabase now reports `rls_enabled_no_policy` as INFO for these three private tables. That is expected for this access model.
 
 ## SECURITY DEFINER advisor status
 
-Supabase Security Advisor reports the expected
-`authenticated_security_definer_function_executable` warning for 54 public
-authenticated RPCs, including the new five-argument invite-claim RPC.
+Supabase still reports `authenticated_security_definer_function_executable` warnings for 54 intentional public authenticated RPCs.
 
-This is an intentional API surface, not 54 automatically independent
-vulnerabilities. The explicit contract remains:
-
-- `PUBLIC`: no EXECUTE;
-- `anon`: no EXECUTE;
-- authenticated execution only on intended RPCs/helpers;
-- empty pinned search path;
+The explicit contract remains:
+- PUBLIC: no EXECUTE;
+- anon: no EXECUTE;
+- authenticated execution only on intended public RPCs and eight reviewed private RLS helpers;
+- every inspected SECURITY DEFINER function pins `search_path=""`;
 - behavioral authorization tests remain mandatory.
 
-See `docs/SECURITY_DEFINER_AUDIT.md` and
-`tests/network-security-definer.sql`.
+See:
+- `docs/SECURITY_DEFINER_AUDIT.md`;
+- `tests/network-security-definer.sql`;
+- `tests/network-private-rls.sql`.
 
-Performance Advisor reports unused indexes. With an empty pilot database this is
-not evidence that the indexes are unnecessary; do not remove them before
-representative workload exists.
+Do not silence the advisor by blindly changing the RPC layer to SECURITY INVOKER or revoking the intended authenticated API.
+
+## OAuth/public-artifact hardening — LIVE IN REPOSITORY
+
+PR #80 added:
+- restrictive OAuth callback CSP;
+- runtime OAuth callback tests;
+- same-origin opener checks;
+- no refresh-token forwarding;
+- public built-artifact secret-pattern audit;
+- local asset/service-worker closure audit;
+- two-stage Google readiness state.
+
+New commands:
+
+```bash
+npm run auth:preflight
+npm run auth:require-provider
+npm run auth:require-google
+npm run audit:built-assets
+```
+
+Meaning:
+- `auth:preflight` — informational;
+- `auth:require-provider` — requires hosted Google provider + signup enabled, but deliberately ignores the still-disabled application flag;
+- `auth:require-google` — requires both hosted provider and application flag.
+
+This sequencing prevents enabling the participant-facing Google button before the hosted provider exists.
 
 ## Processor/privacy state
 
 Completed:
-
 - controller: Pavel Chuprunov, private individual;
 - privacy contact: Chup1runov@gmail.com;
-- current legal-basis model adopted;
+- working legal-basis model adopted for the controlled pilot;
 - Supabase processor/DPA path reviewed;
 - Box excluded from real participant personal-data storage;
 - Pilot Terms EN/SV created;
-- versioned Terms/Privacy acceptance deployed server-side.
+- versioned Terms/Privacy acceptance deployed;
+- retention schedule defined;
+- rights/incident runbook defined;
+- account-closure path defined.
 
-Box may retain templates, synthetic material and unassigned invitation-code
-secrets, but it is not an approved participant-PII store for this pilot.
+The remaining privacy task is to finalize the participant-facing notice against the **actually active** Google Auth provider after setup.
 
-## Application Auth state
+## Current Auth state
 
-Current live readiness probe:
+No Google/Supabase provider configuration has been changed as part of the database/security work.
+
+The last verified live Auth readiness baseline remains:
 
 ```text
 hosted Google provider       = false
@@ -137,12 +154,15 @@ application Google flag      = false
 Google pilot ready           = false
 ```
 
-Current Auth blockers:
-
+Current expected blockers:
 - `hosted_google_provider_disabled`;
 - `app_google_oauth_flag_disabled`.
 
-The built-in email route is not the chosen ordinary-participant route.
+Before relying on this snapshot after any provider-side change, rerun:
+
+```bash
+npm run auth:preflight
+```
 
 ## Google activation inputs
 
@@ -156,7 +176,7 @@ Google redirect URI:
 
 `https://cwvhkdqsrbllsykhccmb.supabase.co/auth/v1/callback`
 
-Supabase allowed Redirect URL for the app:
+Supabase allowed Redirect URL for FOLKOOP:
 
 `https://chup1runov.github.io/Folkoop/auth-callback.html`
 
@@ -165,50 +185,56 @@ Scopes:
 - email;
 - profile.
 
-Do not add Drive, Contacts, Calendar or unrelated Google scopes.
+Do not add Drive, Contacts, Calendar or unrelated scopes.
 
-## What the automated probe does not prove
-
-A green automated Auth readiness probe still does not prove:
-
-- Google Cloud audience/test-user configuration;
-- exact Google OAuth callback registration;
-- Supabase allowed redirect registration;
-- popup behavior on actual target browsers/devices;
-- P01/P02 admission with two independent identities;
-- cross-account RLS/workspace behavior;
-- account-closure procedure on a real test identity.
-
-Those are closed only by the two-account operator runbook.
+Never put the Google Client Secret in GitHub, browser JavaScript, chat, screenshots or public project files. Store it only in the provider configuration.
 
 ## Two-account go/no-go
 
-Before the real technical run:
+Current gate:
 
 ```text
-hosted migrations through v0.31          PASS
-policy acceptance DB contract            PASS
-policy acceptance browser contract       PASS
-four unused hosted invite slots          PASS
-public-table RLS / RPC test suite         PASS
-private-table direct browser grants      NONE
-Google provider                           BLOCKED
-application Google OAuth flag             BLOCKED
-Supabase allowed redirect                 MANUAL CHECK
-two distinct test identities              NEEDED
+hosted migrations through private-table RLS     PASS
+policy acceptance DB contract                   PASS
+policy acceptance browser contract              PASS
+four unused hosted invite slots                 PASS
+public-table RLS / RPC CI                       PASS
+private-table RLS defense in depth              PASS
+private-table direct browser DML grants         NONE
+OAuth callback CSP/runtime regression           PASS
+built public artifact secret/asset audit        PASS
+Google provider                                 BLOCKED / not configured
+application Google OAuth flag                   BLOCKED / intentionally false
+Supabase allowed redirect                       MANUAL PROVIDER CHECK
+two distinct test Google identities             NEEDED
+account-closure rehearsal                       NEEDED after real Auth
 ```
 
-Then execute `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md`.
+## What automated readiness cannot prove
+
+Even after both readiness commands turn green, automated probes do not prove:
+- Google consent-screen/test-user configuration;
+- exact Google callback registration;
+- Supabase allowed redirect registration;
+- popup/browser behavior on target devices;
+- P01/P02 consumption with two independent identities;
+- cross-account RLS/work-chat behavior;
+- account closure against a real test identity.
+
+Those are closed only by `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md`.
 
 ## Remaining gate before ordinary participants
 
-1. configure Google OAuth provider;
-2. enable the reviewed application flag;
-3. run automated Google readiness check;
-4. execute two-account hosted core loop;
-5. rehearse account closure on developer/test identity;
-6. finalize the Privacy Notice against the active Auth provider;
-7. explicitly authorize ordinary participant invite distribution.
+1. Configure Google Auth Platform Web OAuth client.
+2. Enable Google provider in hosted Supabase with Client ID + Client Secret.
+3. Confirm the FOLKOOP callback in Supabase Redirect URLs.
+4. Run `npm run auth:require-provider`.
+5. Enable `googleOAuthEnabled:true` in a reviewed code change.
+6. Run/require `npm run auth:require-google`.
+7. Deploy.
+8. Execute the two-account hosted core loop with P01/P02.
+9. Rehearse account closure on a developer/test identity.
+10. Finalize the participant Privacy Notice for the active Auth provider.
+11. Explicitly authorize ordinary participant invite distribution.
 
-Do not add another Auth system, custom SMTP, passwords, BankID or paid
-infrastructure merely to avoid this gate.
+Do not add another Auth system, custom SMTP, passwords, BankID or paid infrastructure merely to avoid this gate.

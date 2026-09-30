@@ -1,33 +1,37 @@
-# FOLKOOP SECURITY DEFINER audit
+# FOLKOOP SECURITY DEFINER and private-RLS audit
 
-29 September 2026.
+30 September 2026.
 
-## Why this exists
+## Purpose
 
-After the account-lifecycle migration, the Supabase database advisor reports
-`authenticated_security_definer_function_executable` warnings for the public
-FOLKOOP RPC surface. The warning is useful, but one warning per RPC does not mean
-one independent vulnerability per function.
+FOLKOOP deliberately uses a narrow SECURITY DEFINER RPC architecture for browser writes and private authorization helpers.
 
-FOLKOOP deliberately uses SECURITY DEFINER for a narrow server-side RPC layer:
-browser roles do not receive direct write grants to application tables, and RPCs
-derive the acting identity from `auth.uid()` / the private actor helpers.
+This document records the concrete privilege/RLS contract rather than treating every database-linter warning as either a vulnerability or something to suppress.
 
-This document records the concrete privilege review rather than suppressing or
-blindly "fixing" the advisor.
+## Architecture
 
-## Hosted audit result
+Browser clients:
+- use a publishable Supabase key;
+- authenticate as normal Auth users;
+- do not receive direct write grants to application tables;
+- call an explicit authenticated RPC surface.
 
-On the hosted `folkoop` project:
+RPCs:
+- derive the actor from `auth.uid()` / reviewed private helpers;
+- pin `search_path=""`;
+- use schema-qualified object names;
+- apply domain-specific authorization;
+- are covered by disposable PostgreSQL behavioral tests.
 
-- every inspected SECURITY DEFINER function in `public` and
-  `folkoop_private` pins `search_path=""`;
-- none is executable by `PUBLIC`;
-- none is executable by `anon`;
-- public `fk_*` RPCs are executable by `authenticated`, intentionally;
-- private trigger/activity helpers are not executable by `authenticated`;
-- exactly eight private helpers are executable by `authenticated`, because
-  current RLS policies invoke them:
+## Hosted SECURITY DEFINER audit
+
+On the hosted project:
+- every inspected FOLKOOP SECURITY DEFINER function in `public` and `folkoop_private` pins `search_path=""`;
+- none is executable by PUBLIC;
+- none is executable by anon;
+- intended public `fk_*` RPCs are executable by authenticated;
+- private trigger/activity helpers are not client-callable;
+- exactly eight reviewed private helpers are authenticated-callable because current RLS policies invoke them:
   - `is_pilot`
   - `chat_member`
   - `coop_member`
@@ -37,64 +41,120 @@ On the hosted `folkoop` project:
   - `shares_cooperation`
   - `selected_purchase_provider`
 
-The RLS-policy inventory confirms these helpers are referenced by policies on
-profiles, communities/posts, conversations/messages, cooperations/activity,
-project tasks and purchase tables.
+The RLS-policy inventory confirms those helpers are used by current policies.
 
-## CI contract
+## CI SECURITY DEFINER contract
 
-`tests/network-security-definer.sql` runs after all migrations in disposable
-PostgreSQL and fails if:
+`tests/network-security-definer.sql` fails if:
 
 1. a FOLKOOP SECURITY DEFINER function lacks the empty search path;
-2. `PUBLIC` or `anon` can execute one;
+2. PUBLIC or anon can execute one;
 3. a public `fk_*` RPC accidentally loses authenticated execution;
-4. a non-whitelisted private SECURITY DEFINER helper becomes executable by
-   authenticated;
-5. any required RLS helper loses its explicit execution privilege.
+4. a non-whitelisted private helper becomes executable by authenticated;
+5. a required private RLS helper loses its explicit execution privilege.
 
-This is a privilege-contract test, not proof that every RPC's business
-authorization logic is correct. Existing RLS/RPC behavioral suites remain
-mandatory for that.
+This is a privilege-contract test.
 
-## Advisor interpretation
+It does not replace the business-authorization tests for each RPC.
 
-The Supabase advisor warning remains expected for the intentionally exposed
-authenticated SECURITY DEFINER RPCs. It should not be silenced by changing all
-functions to SECURITY INVOKER or revoking authenticated execution: that would
-change the server-side authorization architecture and break the current API.
+## Private-table RLS defense in depth — COMPLETE
 
-Instead, treat any future change in the CI contract or any new advisor category
-as a review trigger.
+Issue #68 was resolved by PR #81.
 
-Supabase remediation reference:
-https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable
+Repository migration:
 
-## Private-table RLS defense-in-depth
+`supabase/migrations/202609300001_private_table_rls.sql`
 
-Hosted verification after v0.31 shows RLS is currently disabled on:
+Hosted migration:
 
+`20260930060734 · folkoop_private_table_rls`
+
+RLS is enabled on:
 - `folkoop_private.pilots`;
 - `folkoop_private.write_budgets`;
 - `folkoop_private.pilot_invites`.
 
-Direct grants to `anon` and `authenticated` are absent, so this is not direct
-browser table exposure. A defense-in-depth RLS review is tracked in GitHub issue
-#68.
+The access model is deliberately:
 
-Do not enable RLS blindly: explicit policy/ownership semantics and disposable
-regression tests are required so privileged admission/rate-limit/invite behavior
-is preserved.
+**RLS enabled + no browser policies + no browser DML grants + owner/bypass-RLS SECURITY DEFINER access**
 
-## Remaining security gate
+Hosted verification:
+- `relrowsecurity=true` on all three;
+- `relforcerowsecurity=false` on all three;
+- PUBLIC/anon/authenticated have no direct SELECT/INSERT/UPDATE/DELETE privilege;
+- no browser-role RLS policy exposes these tables.
 
-This audit does **not** close the full pre-pilot security gate. Still required
-before ordinary participants:
+The associated regression test is:
 
-- complete the private-table RLS defense-in-depth review (#68);
-- real Google OAuth setup and two-account browser test;
+`tests/network-private-rls.sql`
+
+The normal invite/admission suite runs after the migration, so CI also proves that:
+- first admission;
+- versioned policy acceptance;
+- invite consumption;
+- admitted-user re-entry;
+- private write-budget path
+
+continue to function through the SECURITY DEFINER layer.
+
+## Why there are no policies on the three private tables
+
+These tables are not intended to be queried directly by browser roles.
+
+Creating a permissive authenticated policy would weaken the architecture.
+
+With RLS enabled and no client policies:
+- a normal role with table privileges would still see no rows;
+- current browser roles additionally have no direct table privileges;
+- reviewed SECURITY DEFINER functions execute as their owner and retain access because FORCE RLS is not enabled.
+
+Supabase's current guidance documents that SECURITY DEFINER functions execute with creator privileges and can bypass RLS when the owner has the required bypass capability.
+
+## Current advisor interpretation
+
+After the hosted RLS migration:
+
+### INFO: `rls_enabled_no_policy`
+
+Supabase reports this on the three private tables.
+
+This is expected and intentional for the model above.
+
+It should trigger review only if:
+- a direct browser table grant is later added;
+- a client policy is added;
+- the schema becomes a direct Data API surface;
+- function ownership/bypass behavior changes.
+
+### WARN: `authenticated_security_definer_function_executable`
+
+Supabase reports this for the intentional authenticated public RPC surface.
+
+Do not automatically:
+- revoke authenticated EXECUTE;
+- change everything to SECURITY INVOKER;
+- expose private tables directly
+
+just to eliminate the warning.
+
+Any new SECURITY DEFINER RPC is a review trigger and must satisfy the CI contract plus behavioral authorization tests.
+
+Supabase remediation/reference:
+https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable
+
+RLS reference:
+https://supabase.com/docs/guides/database/postgres/row-level-security
+
+## Remaining pre-pilot security work
+
+The private-table RLS issue is closed.
+
+Remaining pre-pilot security/identity gates are now:
+- real Google OAuth provider setup;
+- two-account browser test;
 - account-closure rehearsal with a developer/test identity;
-- real-device acceptance before wider rollout.
+- real-device acceptance before wider participant rollout.
 
-Controller/contact, retention, account-closure policy, rights handling and
-incident procedure now have explicit pilot decisions/runbooks.
+Privacy/controller/retention/rights/incident decisions are documented separately.
+
+No broader public launch should be inferred from the completion of this database hardening.
