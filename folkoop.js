@@ -360,7 +360,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  else setTimeout(()=>showOnboarding(0),80);
 });
 window.addEventListener('folkoop:open-entry',()=>showEntryGate());
-window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone)setTimeout(()=>showOnboarding(0),120);});
+window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),120);});
 window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
