@@ -304,7 +304,10 @@ function positionOnboarding(step){
   const safeBottom=innerHeight-dockReserve;
   if(r.top<safeTop||r.bottom>safeBottom){
    const desired=(safeTop+safeBottom)/2;
+   const locked=document.body.classList.contains('guide-tour-open');
+   if(locked)document.body.classList.remove('guide-tour-open');
    window.scrollBy(0,r.top+r.height/2-desired);
+   if(locked)document.body.classList.add('guide-tour-open');
   }
  }
  requestAnimationFrame(()=>{
