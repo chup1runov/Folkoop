@@ -116,7 +116,7 @@ Verify:
 
 B sends one work-chat message.
 
-A sends or reads one cooperation update.
+A adds one cooperation update.
 
 Verify:
 - A sees B's message;
