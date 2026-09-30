@@ -278,11 +278,13 @@ function ensureOnboarding(){
  return dialog;
 }
 function onboardingTarget(step){
- const mobileToggle=$('#mobileMenuToggle');
- const mobileMenu=mobileToggle&&getComputedStyle(mobileToggle).display!=='none';
+ const mobile=$('#mobilePrimaryNav')&&getComputedStyle($('#mobilePrimaryNav')).display!=='none';
  if(step.id==='helper')globalThis.FolkoopGuide?.home({instant:true,pose:step.pose||'wink'});
- if(step.target.startsWith('#nav')&&mobileMenu)openMenu();
- else if(menuOpen&&!step.target.startsWith('#nav'))closeMenu();
+ if(mobile&&step.target.startsWith('#nav')){
+  const primary=mobilePrimaryFor(step.route);
+  return document.querySelector(step.route===primary?'#mobilePrimaryNav [data-mobile-nav="'+primary+'"]':'#mobileContextDock [data-mobile-subnav="'+step.route+'"]');
+ }
+ if(menuOpen)closeMenu();
  return document.querySelector(step.target);
 }
 function positionOnboarding(step){
@@ -345,6 +347,7 @@ function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',langu
 function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML=NAV_ORDER.map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''} data-nav="${k}">${icon(k)}<span>${esc(navText(k))}</span></a>`).join('');
+ renderMobileChrome();
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
  $('#messageLink').setAttribute('aria-label',t('messages'));$('#messageLabel').textContent=t('messages');
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
@@ -390,8 +393,15 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
+ const mobileAction=e.target.closest('[data-mobile-action]');
+ if(mobileAction){
+  const action=mobileAction.dataset.mobileAction;
+  if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
+  if(action==='signin'){closeMobileDemo();showEntryGate();return;}
+  if(action==='language'){closeMobileDemo();firstVisitFlow=false;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+ }
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
