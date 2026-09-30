@@ -100,6 +100,33 @@ Preferred value is:
 
 **useful real-world cooperation reaching a truthful outcome.**
 
+## Interface principle — compact, calm, friendly
+
+The participant-facing interface must default to:
+
+**beautiful enough to trust, compact enough to understand, minimal enough to act, friendly enough to continue.**
+
+This is a persistent product requirement, not a one-off styling preference.
+
+Apply these rules:
+
+- one clear primary action per step whenever possible;
+- progressive disclosure instead of showing every required field at once;
+- mobile-first readability with no horizontal overflow;
+- plain human language before technical/legal terminology;
+- privacy, safety and legal information must remain directly available and truthful,
+  but should use calm secondary hierarchy rather than dominate the main task;
+- never pre-select consent/acceptance controls;
+- distinguish network/server actions from local-device/private work;
+- avoid visual density that makes a small pilot feel like an institutional form;
+- do not remove required information merely to make a screen look cleaner;
+- the FOLKOOP guide and decorative elements must never cover controls, legal text
+  or status messages.
+
+When compactness conflicts with safety, privacy, accessibility or informed choice,
+the required information stays; solve the conflict with hierarchy, sequencing and
+spacing rather than omission.
+
 ## Outcome integrity
 
 Product metrics must not convert internal UI events into stronger claims than the evidence supports.
