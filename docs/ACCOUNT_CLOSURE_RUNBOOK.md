@@ -98,7 +98,7 @@ The current FK cascade remains an integrity mechanism, not a privacy policy.
 
 ## Evidence
 
-`tests/network-account-lifecycle.sql` creates two synthetic users with shared
+`supabase/tests/network-account-lifecycle.sql` creates two synthetic users with shared
 objects and verifies:
 - the preflight detects the destructive ownership roots;
 - authenticated participants cannot execute the private preflight;
