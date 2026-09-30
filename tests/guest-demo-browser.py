@@ -56,10 +56,9 @@ async def main():
   await expect(page.locator('#networkPanel')).to_contain_text('Neighbourhood repair café')
   await page.click('[data-coop="open"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Confirm the room')
-  assert await page.locator('#networkPanel form input:disabled').count()>0
-  assert await page.locator('#networkPanel form button:disabled').count()>0
+  assert await page.locator('#networkPanel form:visible').count()==0
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-project-mobile.png'),full_page=True)
-  passed.append('Guest can inspect project/workflow detail while all process forms are read-only')
+  passed.append('Guest can inspect project/workflow detail while mutation forms stay out of the overview')
 
   await page.click('#mobileMenuToggle')
   await page.click('#nav a[href="#/home"]')
