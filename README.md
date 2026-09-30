@@ -35,7 +35,7 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 ## Build and test
 
-`node scripts/build-site.mjs` creates `_site`. The built root comes from `folkoop.html`; City comes from `city-source.html` plus a thin integration adapter. `index.html` is retained as a frozen legacy regression fixture during this reversible migration, not as the new production entry point.
+`node scripts/build/build-site.mjs` creates `_site`. The built root comes from `folkoop.html`; City comes from `city-source.html` plus a thin integration adapter. `index.html` is retained as a frozen legacy regression fixture during this reversible migration, not as the new production entry point.
 
 `npm test` runs deterministic tests. `bash scripts/ci/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 

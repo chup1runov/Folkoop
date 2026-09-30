@@ -27,7 +27,7 @@ Current runtime:
 - progressive-web-app manifest and service worker;
 - mobile-first browser UI;
 - GitHub Pages deployment;
-- explicit production allowlist in `scripts/build-site.mjs`.
+- explicit production allowlist in `scripts/build/build-site.mjs`.
 
 The build creates `_site/` and deliberately excludes database migrations, tests and non-public repository material.
 

@@ -8,7 +8,7 @@ import {spawnSync} from 'node:child_process';
 const root=process.cwd();
 const license=(await readFile('LICENSE','utf8')).replace(/\s+/g,' ');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
-const build=await readFile('scripts/build-site.mjs','utf8');
+const build=await readFile('scripts/build/build-site.mjs','utf8');
 const licensing=(await readFile('LICENSING.md','utf8')).replace(/\s+/g,' ');
 test('rights: operative notice and package metadata agree',()=>{
  assert(license.includes('Version 1.1 — 29 September 2026'));
@@ -36,12 +36,12 @@ test('rights: built artifact ships exact notices without changing application co
  for(const name of ['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md'])assert(files.includes(name));
  const tmp=await mkdtemp(path.join(os.tmpdir(),'folkoop-rights-'));
  try{
-  await mkdir(path.join(tmp,'scripts'));
-  await copyFile(path.join(root,'scripts/build-site.mjs'),path.join(tmp,'scripts/build-site.mjs'));
-  await copyFile(path.join(root,'scripts/release-version.mjs'),path.join(tmp,'scripts/release-version.mjs'));
+  await mkdir(path.join(tmp,'scripts','build'),{recursive:true});
+  await copyFile(path.join(root,'scripts/build/build-site.mjs'),path.join(tmp,'scripts/build/build-site.mjs'));
+  await copyFile(path.join(root,'scripts/build/release-version.mjs'),path.join(tmp,'scripts/build/release-version.mjs'));
   await writeFile(path.join(tmp,'package.json'),JSON.stringify(pkg));
   for(const name of files)await copyFile(path.join(root,name),path.join(tmp,name));
-  const run=spawnSync(process.execPath,['scripts/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
+  const run=spawnSync(process.execPath,['scripts/build/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
   assert.equal(run.status,0,run.stderr);
   for(const name of files){
    if(name==='app.js')continue;

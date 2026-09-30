@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 const PUBLISHABLE=/^sb_publishable_[A-Za-z0-9_-]{10,200}$/;
 
 export async function loadPublicNetworkConfig(
-  url=new URL('../network-config.js',import.meta.url)
+  url=new URL('../../network-config.js',import.meta.url)
 ){
   const code=await readFile(url,'utf8');
   const context=vm.createContext({globalThis:{}});
