@@ -45,9 +45,9 @@ function pose(name){
  setArt(img,ASSETS[name]||ASSETS.idle);
  actor.dataset.pose=name;
 }
-function dims(){
- const short=innerHeight<520,mobile=innerWidth<720;
- const w=short?82:mobile?96:124;
+function dims(mode='home'){
+ const short=innerHeight<520,mobile=innerWidth<720,tour=mode!=='home';
+ const w=tour?(short?82:mobile?96:124):(short?56:mobile?64:78);
  return {w,h:w*(208/192)};
 }
 function pointPose(targetRect,actorRect){
@@ -155,7 +155,7 @@ function layoutTour(target){
 }
 function applyPosition(target,mode='point',poseName=null){
  ensureActor();currentTarget=target||null;currentMode=mode;currentPose=poseName;
- const {w,h}=dims();actor.style.setProperty('--folkoop-guide-w',w+'px');
+ const {w,h}=dims(mode);actor.style.setProperty('--folkoop-guide-w',w+'px');
  actor.classList.toggle('is-perched',mode==='perch');
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
