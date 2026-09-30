@@ -292,7 +292,21 @@ function positionOnboarding(step){
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
  if(step.id!=='helper')target.classList.add('tutorial-target');
- if(step.id!=='helper')target.scrollIntoView({block:'center',inline:'nearest',behavior:'auto'});
+ if(step.id!=='helper'){
+  // WebKit may ignore scrollIntoView() for a target inside content that is
+  // currently inert because the modal tour owns focus. Move the document
+  // explicitly so every highlighted target is actually visible before guide
+  // geometry is calculated.
+  const r=target.getBoundingClientRect();
+  const mobile=innerWidth<=760;
+  const dockReserve=mobile?(document.body.classList.contains('mobile-context-visible')?126:76):24;
+  const safeTop=mobile?72:24;
+  const safeBottom=innerHeight-dockReserve;
+  if(r.top<safeTop||r.bottom>safeBottom){
+   const desired=(safeTop+safeBottom)/2;
+   window.scrollBy(0,r.top+r.height/2-desired);
+  }
+ }
  requestAnimationFrame(()=>{
   const rect=target.getBoundingClientRect(),pad=7;
   spot.hidden=false;dialog.dataset.noTarget='0';
