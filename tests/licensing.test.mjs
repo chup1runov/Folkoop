@@ -9,6 +9,7 @@ const root=process.cwd();
 const license=(await readFile('LICENSE','utf8')).replace(/\s+/g,' ');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const build=await readFile('scripts/build-site.mjs','utf8');
+const licensing=(await readFile('LICENSING.md','utf8')).replace(/\s+/g,' ');
 test('rights: operative notice and package metadata agree',()=>{
  assert(license.includes('Version 1.1 — 29 September 2026'));
  assert(!license.includes('DRAFT FOR'));
@@ -16,6 +17,9 @@ test('rights: operative notice and package metadata agree',()=>{
  assert(license.includes('not an open-source or free-software'));
  assert.equal(pkg.license,'SEE LICENSE IN LICENSE');
  assert.equal(pkg.private,true);
+ assert(licensing.includes('Rights notice v1.1, 29 September 2026'));
+ assert(licensing.includes('parts of one project identity'));
+ assert(licensing.includes('do not create separate licences'));
 });
 test('rights: GitHub and mandatory-law boundaries override approval',()=>{
  for(const marker of ['boundaries in section 5 prevail','Nothing in this notice withdraws','conditions on owner approval','including authorised forking','GitHub permissions and statutory rights do','does not rewrite Git history']){

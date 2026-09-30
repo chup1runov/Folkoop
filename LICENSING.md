@@ -1,8 +1,8 @@
 # Licensing and written permissions
 
-Current model: **proprietary; all rights reserved subject to LICENSE**. Rights notice v1.0, 23 September 2026. The repository remains public; the official hosted service remains free for residents. This is not an open-source licence or a request to make the repository private.
+Current model: **proprietary; all rights reserved subject to LICENSE**. Rights notice v1.1, 29 September 2026. The repository remains public; the official hosted service remains free for residents. This is not an open-source licence or a request to make the repository private.
 
-The operative document is the root [LICENSE](LICENSE). The older proposal under `docs/proposals/RESTRICTED_TERMS_DRAFT.en.md` is historical and not an alternative licence. Earlier release notes describing licensing as undecided describe those earlier releases, not the present policy.
+The operative document is the root [LICENSE](LICENSE). All current FOLKOOP modules and integrated components are parts of one project identity and are governed by this single rights policy to the extent the Rights Holder actually holds the relevant rights; internal module names do not create separate licences. The older proposal under `docs/proposals/RESTRICTED_TERMS_DRAFT.en.md` is historical and not an alternative licence. Earlier release notes describing licensing as undecided describe those earlier releases, not the present policy.
 
 ## Rule
 
