@@ -5,13 +5,13 @@
   "license": "SEE LICENSE IN LICENSE",
   "description": "FOLKOOP — people, cooperation, projects, city and center.",
   "scripts": {
-    "build": "node scripts/build-site.mjs",
-    "start": "node scripts/build-site.mjs && serve -s _site -l ${PORT:-3000}",
+    "build": "node scripts/build/build-site.mjs",
+    "start": "node scripts/build/build-site.mjs && serve -s _site -l ${PORT:-3000}",
     "test": "node --test tests/*.test.mjs",
-    "auth:preflight": "node scripts/probe-auth-readiness.mjs",
-    "auth:require-google": "node scripts/probe-auth-readiness.mjs --require-google-ready",
-    "auth:require-provider": "node scripts/probe-auth-readiness.mjs --require-hosted-google",
-    "audit:built-assets": "node scripts/audit-built-assets.mjs"
+    "auth:preflight": "node scripts/auth/probe-auth-readiness.mjs",
+    "auth:require-google": "node scripts/auth/probe-auth-readiness.mjs --require-google-ready",
+    "auth:require-provider": "node scripts/auth/probe-auth-readiness.mjs --require-hosted-google",
+    "audit:built-assets": "node scripts/ci/audit-built-assets.mjs"
   },
   "dependencies": {
     "serve": "^14.2.4"

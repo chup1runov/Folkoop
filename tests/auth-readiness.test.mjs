@@ -5,7 +5,7 @@ import {
   summarizeAuthSettings,
   probeHostedAuth,
   safePrintableReport
-} from '../scripts/probe-auth-readiness.mjs';
+} from '../scripts/auth/probe-auth-readiness.mjs';
 
 const config={
   enabled:true,

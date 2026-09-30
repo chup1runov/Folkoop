@@ -2,7 +2,7 @@ import {readFile,access} from 'node:fs/promises';
 import {inflateSync} from 'node:zlib';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import {releaseVersion} from '../release-version.mjs';
+import {releaseVersion} from '../build/release-version.mjs';
 const read=f=>readFile(f,'utf8');
 const html=await read('index.html'),app=await read('app.js'),sw=await read('sw.js');
 const manifest=JSON.parse(await read('manifest.webmanifest')),pkg=JSON.parse(await read('package.json'));
