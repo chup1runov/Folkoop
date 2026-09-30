@@ -131,3 +131,33 @@
  .folkoop-helper-panel{bottom:72px}
  .guest-preview-open .folkoop-guide-actor.is-home{opacity:.96}
 }
+
+/* v0.38 — summary-first cooperation/workspace */
+.coop-summary{margin-top:14px}.coop-summary-description{max-width:760px}
+.coop-summary-stats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 2px}
+.coop-summary-stats>span{display:grid;gap:1px;min-width:86px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#faf8f4}
+.coop-summary-stats strong{font-size:1rem;line-height:1.2}.coop-summary-stats small{font-size:.68rem;color:var(--muted)}
+.coop-next-step{margin:12px 0 16px;padding:15px 16px;border:1px solid #e8c9bb;border-radius:14px;background:var(--soft)}
+.coop-next-step .eyebrow{display:block;margin:0 0 5px;font-size:.62rem}.coop-next-step strong{display:block;font-size:1rem}.coop-next-step p{margin:5px 0 0;color:var(--muted);font-size:.86rem}
+.coop-disclosure{margin:10px 0;border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden}
+.coop-disclosure>summary{display:flex;align-items:center;gap:9px;min-height:48px;padding:11px 14px;cursor:pointer;font-weight:700;list-style:none}
+.coop-disclosure>summary::-webkit-details-marker{display:none}.coop-disclosure>summary::after{content:'›';margin-inline-start:auto;font-size:1.35rem;color:var(--muted);transform:rotate(90deg);transition:transform .16s ease}
+.coop-disclosure[open]>summary::after{transform:rotate(-90deg)}
+.coop-section-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;border-radius:999px;background:var(--paper);color:var(--muted);font-size:.7rem;font-weight:700}
+.coop-disclosure-body{padding:0 14px 14px;border-top:1px solid var(--line)}
+.coop-disclosure-body>.editor{max-width:none;margin:14px 0 0}.coop-disclosure-body>.notice{margin-top:14px}
+.coop-compact-list{display:flex;flex-direction:column}.coop-compact-row,.coop-task-row{padding:12px 2px;border-bottom:1px solid var(--line)}
+.coop-compact-row:last-child,.coop-task-row:last-child{border-bottom:0}.coop-compact-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.coop-compact-row>div{display:grid;gap:2px;min-width:0}.coop-compact-row .meta{font-size:.78rem}
+.coop-task-main{display:flex;flex-wrap:wrap;align-items:center;gap:7px}.coop-task-main strong{font-size:.92rem}.coop-task-main .meta{width:100%;font-size:.76rem}
+.coop-task-row>p{margin:6px 0;color:var(--muted);font-size:.84rem}
+.coop-task-row form{margin:10px 0 0}.coop-task-row form label{margin:8px 0}
+.coop-disclosure .activity-list{margin-top:14px;border-radius:11px}
+@media(max-width:760px){
+ .coop-summary{padding:17px}.coop-summary h2{font-size:1.25rem;margin-bottom:8px}.coop-summary-description{font-size:.86rem}
+ .coop-summary-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:12px}
+ .coop-summary-stats>span{min-width:0;padding:8px}.coop-summary-stats strong{font-size:.9rem}.coop-summary-stats small{font-size:.61rem}
+ .coop-next-step{padding:12px 13px}.coop-disclosure{margin:8px 0}.coop-disclosure>summary{min-height:46px;padding:9px 12px;font-size:.88rem}
+ .coop-disclosure-body{padding:0 11px 11px}.coop-compact-row,.coop-task-row{padding:10px 1px}
+}
+@media(prefers-reduced-motion:reduce){.coop-disclosure>summary::after{transition:none}}
