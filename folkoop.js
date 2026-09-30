@@ -13,7 +13,7 @@ const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
  {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
@@ -384,6 +384,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  if(!C.LANGS.includes(value))return;
  globalThis.FolkoopGuide?.hideLanguageGate();
  changeLanguage(value);
+ if(languageOnlyFlow){languageOnlyFlow=false;return;}
  if(firstVisitFlow){firstVisitFlow=false;setTimeout(showEntryGate,80);}
  else setTimeout(()=>showOnboarding(0),80);
 });
@@ -400,14 +401,14 @@ document.addEventListener('click',e=>{
   const action=mobileAction.dataset.mobileAction;
   if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
   if(action==='signin'){closeMobileDemo();showEntryGate();return;}
-  if(action==='language'){closeMobileDemo();firstVisitFlow=false;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+  if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
   if(action==='guest'){setEntryMode('guest');return;}
   if(action==='email'){setEntryMode('account');return;}
-  if(action==='language'){hideEntryGate();firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+  if(action==='language'){hideEntryGate();languageOnlyFlow=false;firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
  const helper=e.target.closest('[data-helper]');
  if(helper){
@@ -464,13 +465,13 @@ render();
 function startFullIntroduction(){
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
- helperOpen=false;updateHelper();firstVisitFlow=false;
+ helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
  if(globalThis.FolkoopGuide){
   globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
 }
 function startFirstVisit(){
- onboardingOpen=false;helperOpen=false;updateHelper();firstVisitFlow=true;
+ onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=true;
  if(globalThis.FolkoopGuide)globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  else showEntryGate();
 }

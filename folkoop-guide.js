@@ -136,8 +136,19 @@ function layoutTour(target){
  card.style.maxHeight=Math.floor(short&&!mobile?Math.min(innerHeight-24,260):(mobile?innerHeight*.44:Math.min(innerHeight*.72,620)))+'px';
  card.style.left=left||mobile?gap+'px':'auto';
  card.style.right=left&&!mobile?'auto':gap+'px';
- card.style.top=helper&&mobile?gap+'px':'auto';
- card.style.bottom=helper&&mobile?'auto':gap+'px';
+ // On mobile the primary/context navigation lives at the bottom of the viewport.
+ // Put the explanation on the opposite vertical side of the highlighted target
+ // instead of always pinning it to the bottom and covering the very control
+ // being explained.
+ if(mobile){
+  const targetLow=r.top+r.height/2>innerHeight/2;
+  const cardAtTop=helper||targetLow;
+  card.style.top=cardAtTop?gap+'px':'auto';
+  card.style.bottom=cardAtTop?'auto':gap+'px';
+ }else{
+  card.style.top='auto';
+  card.style.bottom=gap+'px';
+ }
  const c=card.getBoundingClientRect();
  document.body.style.setProperty('--guide-card-height',Math.ceil(c.height)+'px');
  if(!helper){
