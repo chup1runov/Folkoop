@@ -1,6 +1,6 @@
 # FOLKOOP Göteborg Pilot Operator Runbook v1.0
 
-28 September 2026.
+30 September 2026.
 
 This runbook is the operational checklist for the first real two-person / two-account FOLKOOP pilot verification.
 
@@ -16,7 +16,7 @@ Do not start the real-account test until all of the following are true:
 - participant Auth is configured and tested;
 - `npm run auth:require-google` passes when Google OAuth is the selected route;
 - two unused pilot invite codes are available privately;
-- the private Box pilot workspace is accessible;
+- the current privacy policy is followed: no participant identity/contact mapping is stored in Box;
 - no paid service has been enabled;
 - the two test participants are adults and understand this is a controlled pilot.
 
@@ -24,14 +24,21 @@ If Google OAuth is used, complete `docs/AUTH_GOOGLE_PILOT.md` first.
 
 ## 1. Private records before login
 
-In the private Box pilot workspace:
+Do **not** create a participant/contact register in Box. The current pilot privacy
+decision excludes Box from real participant PII.
 
-1. allocate participant codes, for example `T01` and `T02`;
-2. assign one unused invite slot to each participant code;
-3. record the date/time the code is issued;
-4. do not copy the plaintext code into GitHub, issues or public chat.
+For the two-account developer gate:
 
-The public repository should contain no identity-to-code mapping.
+1. use the private operator-held test identities directly; do not record their
+   email/name in GitHub or Box;
+2. select two unused invite slots, P01 and P02;
+3. keep the plaintext invitation codes only in the already approved secret
+   location for unassigned/operator-held invite codes;
+4. record only non-identifying technical evidence in the public repository;
+5. do not create an identity-to-code mapping in public files or Box.
+
+The hosted admission database remains the authoritative record that an invite
+was consumed.
 
 ## 2. Account A — first admission
 
@@ -60,14 +67,24 @@ Operator verifies that both accounts exist as separate pilot actors.
 
 ## 4. Need creation
 
-Account A creates one genuine, low-risk `Need`.
+Account A creates one low-risk technical `Need`.
 
-For the technical verification it may be a clearly labelled test cooperation, but it must not be counted later as pilot product evidence.
+Use a title beginning exactly with:
 
-Record:
+`TECH-GATE:`
+
+For example:
+
+`TECH-GATE: two-account cooperation test`
+
+This object is technical evidence only and must never be counted as genuine
+pilot product evidence.
+
+Record only:
 - cooperation ID;
-- creation time;
-- owner participant code.
+- creation time.
+
+Do not record the Google identity/email in the public repository.
 
 Expected:
 - A becomes owner/member;
@@ -99,7 +116,7 @@ Verify:
 
 B sends one work-chat message.
 
-A sends or reads one cooperation update.
+A adds one cooperation update.
 
 Verify:
 - A sees B's message;
@@ -149,7 +166,20 @@ Expected:
 
 This is an important distinction between identity authentication and first-time FOLKOOP admission.
 
-## 12. Cleanup decision
+## 12. Server-side post-test audit
+
+Before cleanup, run the read-only operator audit in:
+
+`docs/TWO_ACCOUNT_HOSTED_AUDIT.sql`
+
+The audit is designed for the clean pre-pilot database and the `TECH-GATE:`
+object created above. It checks aggregate/server state without requiring a
+participant identity mapping in GitHub.
+
+Do not treat a green audit as proof of a real-world outcome. It proves only that
+the technical admission/cooperation state matches the runbook.
+
+## 13. Cleanup decision
 
 For developer-only test accounts, decide explicitly whether to retain or remove test data.
 
@@ -161,7 +191,7 @@ If removing developer-only test data:
 
 Do not manually edit protected tables merely to make the UI look clean.
 
-## 13. Pass criteria
+## 14. Pass criteria
 
 The real two-account technical gate passes only when all are confirmed:
 
@@ -178,14 +208,33 @@ The real two-account technical gate passes only when all are confirmed:
 
 A failure in any one item remains a blocker for distributing invites to ordinary pilot participants.
 
-## 14. After technical pass
+## 15. Account-closure rehearsal
 
-Only after this runbook passes:
+After the technical pass, rehearse `docs/ACCOUNT_CLOSURE_RUNBOOK.md` on one
+developer/test identity, preferably the account that has already left the
+technical cooperation and owns no shared object.
 
-1. update the private pilot status;
-2. mark the Auth path as technically verified;
-3. recruit the first small human pilot cohort;
-4. use the measurement rules in `docs/GOTEBORG_CORE_LOOP_PILOT.md`;
-5. distinguish technical test objects from genuine participant intents.
+The closure rehearsal is part of the launch gate, not an optional cleanup step.
+
+Verify:
+- pilot admission is disabled before destructive cleanup;
+- refresh sessions are revoked;
+- the closure inventory shows no unresolved shared ownership;
+- user-scoped data are removed according to policy;
+- Auth identity is removed last;
+- integrity checks pass after closure.
+
+## 16. After technical + closure pass
+
+Only after both the two-account technical gate and the account-closure rehearsal
+pass:
+
+1. record that the Auth path is technically verified;
+2. finalize the participant Privacy Notice against the actually active Google
+   Auth route;
+3. explicitly authorize ordinary invite distribution;
+4. recruit the first small human pilot cohort;
+5. use the measurement rules in `docs/GOTEBORG_CORE_LOOP_PILOT.md`;
+6. distinguish technical test objects from genuine participant intents.
 
 Do not expand feature scope merely because the technical gate passed.

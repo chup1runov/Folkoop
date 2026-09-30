@@ -14,11 +14,8 @@ run_sql() {
   psql_ci < "$file"
 }
 
-# Bootstrap only the PostgreSQL/Supabase role primitives needed by the migrations.
 run_sql supabase/tests/network-bootstrap.sql
 
-# Migration filenames are timestamp-prefixed. C-locale glob ordering is therefore
-# the migration order, and every newly committed migration automatically enters CI.
 shopt -s nullglob
 migrations=(supabase/migrations/*.sql)
 if (("${#migrations[@]}" == 0)); then
@@ -29,7 +26,6 @@ for file in "${migrations[@]}"; do
   run_sql "$file"
 done
 
-# Every network SQL test is automatically executed. Bootstrap is setup, not a test.
 db_tests=(supabase/tests/network-*.sql)
 for file in "${db_tests[@]}"; do
   [[ "$file" == "supabase/tests/network-bootstrap.sql" ]] && continue
