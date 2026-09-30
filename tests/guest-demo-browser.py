@@ -36,6 +36,11 @@ async def main():
 
   await page.click('[data-entry="guest"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingTitle')).to_have_text('Принеси реальную потребность, навык, ресурс или идею')
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Guest first session receives the short value-first product tour')
+  await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
   await expect(page.locator('#demoBanner')).to_contain_text('Гостевой обзор')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
