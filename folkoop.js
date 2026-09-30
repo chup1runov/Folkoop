@@ -34,6 +34,31 @@ const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>store.get().profile.city||'';
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
+const MOBILE_PRIMARY=['home','together','projects','city','messages','me'];
+const MOBILE_CONTEXT={
+ together:['together','people','communities'],
+ city:['city','center'],
+ me:['me','settings','about']
+};
+const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
+const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
+function renderMobileChrome(){
+ const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
+ const active=mobilePrimaryFor(current);
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
+ const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
+ const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
+ const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>DEMO</span></button>':'';
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>DEMO</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
+ dock.innerHTML=demo+items+language+popover;
+ dock.hidden=!(guest||context.length);
+ document.body.classList.toggle('mobile-context-visible',!dock.hidden);
+}
+function closeMobileDemo(){
+ const dock=$('#mobileContextDock'),pop=dock?.querySelector('.mobile-demo-popover'),button=dock?.querySelector('[data-mobile-action="demo"]');
+ if(pop)pop.hidden=true;if(button)button.setAttribute('aria-expanded','false');
+}
 
 const a=(route,label,cls='button')=>`<a class="${cls}" href="#/${route}">${esc(t(label))}${icon('arrow')}</a>`;
 const button=(kind,key,cls='button')=>`<button class="${cls}" type="button" data-create="${kind}">${esc(t(key))}${icon('plus')}</button>`;
