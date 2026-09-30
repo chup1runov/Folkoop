@@ -133,7 +133,7 @@ function layoutTour(target){
  let r=target.getBoundingClientRect();
  const left=r.left+r.width/2>=innerWidth/2;
  card.style.width=(mobile?innerWidth-24:Math.min(500,innerWidth-48))+'px';
- card.style.maxHeight=Math.floor((mobile||short)?innerHeight*.44:Math.min(innerHeight*.72,620))+'px';
+ card.style.maxHeight=Math.floor(short&&!mobile?Math.min(innerHeight-24,260):(mobile?innerHeight*.44:Math.min(innerHeight*.72,620)))+'px';
  card.style.left=left||mobile?gap+'px':'auto';
  card.style.right=left&&!mobile?'auto':gap+'px';
  card.style.top=helper&&mobile?gap+'px':'auto';
