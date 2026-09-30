@@ -2,7 +2,7 @@ import {readFile,access} from 'node:fs/promises';
 import {inflateSync} from 'node:zlib';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import {releaseVersion} from './release-version.mjs';
+import {releaseVersion} from '../release-version.mjs';
 const read=f=>readFile(f,'utf8');
 const html=await read('index.html'),app=await read('app.js'),sw=await read('sw.js');
 const manifest=JSON.parse(await read('manifest.webmanifest')),pkg=JSON.parse(await read('package.json'));
@@ -25,5 +25,5 @@ for(const [copy,keys] of [[ctx.FolkoopCityToday.COPY,ctx.FolkoopCityToday.KEYS],
  assert.equal(Object.keys(copy).length,11);
  for(const [lang,values] of Object.entries(copy))assert.equal(values.length,keys.length,`Missing translation: ${lang}`);
 }
-for(const f of ['docs/IDAG_AND_AUDIT.md','docs/UNIFICATION.md','docs/PRODUCT_CONCEPT.md','docs/ONBOARDING_GUIDE_V029.md','docs/PILOT_GUIDE.md','.github/ISSUE_TEMPLATE/pilot-feedback.md'])await access(f);
+for(const f of ['docs/IDAG_AND_AUDIT.md','docs/UNIFICATION.md','docs/PRODUCT_CONCEPT.md','docs/history/releases/ONBOARDING_GUIDE_V029.md','docs/PILOT_GUIDE.md','.github/ISSUE_TEMPLATE/pilot-feedback.md'])await access(f);
 console.log('Static checks passed: linked assets, release version, decoded PNGs, eleven Compact translations and documentation.');

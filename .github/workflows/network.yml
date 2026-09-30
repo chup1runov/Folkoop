@@ -23,33 +23,7 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v6
-      - name: Apply migration and test roles in disposable PostgreSQL
+      - name: Apply migrations and run database authorization tests
         env:
           DB_CONTAINER: ${{ job.services.postgres.id }}
-        run: |
-          set -euo pipefail
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-bootstrap.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250001_network.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250002_first_pilot.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250003_rls_performance.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250004_messaging.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250005_messaging_indexes.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250006_cooperation.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250007_purchase_offers.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250008_purchase_lifecycle.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609250009_activity_chat.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609280001_pilot_invites.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290001_account_lifecycle_trigger.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290002_account_closure_preflight.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609290003_pilot_terms_acceptance.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < supabase/migrations/202609300001_private_table_rls.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-private-rls.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-first-pilot.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-activity-chat.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-purchase-lifecycle.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-purchase-offers.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-cooperation.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-messaging.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-rls.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-account-lifecycle.sql
-          docker exec -i "$DB_CONTAINER" psql -U postgres -d folkoop_test -v ON_ERROR_STOP=1 < tests/network-security-definer.sql
+        run: bash scripts/ci/test-database.sh

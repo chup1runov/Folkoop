@@ -6,14 +6,15 @@ const TERMS='2026-09-29-v1';
 const PRIVACY='2026-09-29-v1';
 
 test('pilot policy versions stay aligned across server, client and participant docs',async()=>{
- const [client,migration,termsEn,termsSv,privacy,ui,workflow]=await Promise.all([
+ const [client,migration,termsEn,termsSv,privacy,ui,workflow,dbRunner]=await Promise.all([
   readFile('network-client.js','utf8'),
   readFile('supabase/migrations/202609290003_pilot_terms_acceptance.sql','utf8'),
   readFile('docs/PILOT_TERMS_EN.md','utf8'),
   readFile('docs/PILOT_TERMS_SV.md','utf8'),
   readFile('docs/PILOT_PRIVACY_NOTICE_DRAFT.md','utf8'),
   readFile('network-ui.js','utf8'),
-  readFile('.github/workflows/network.yml','utf8')
+  readFile('.github/workflows/network.yml','utf8'),
+  readFile('scripts/ci/test-database.sh','utf8')
  ]);
  assert(client.includes(`termsVersion:'${TERMS}'`));
  assert(client.includes(`privacyVersion:'${PRIVACY}'`));
@@ -25,7 +26,10 @@ test('pilot policy versions stay aligned across server, client and participant d
  assert(ui.includes('name="policyAccepted"'));
  assert(ui.includes("termsAccepted:policyAccepted"));
  assert(ui.includes("privacyAcknowledged:policyAccepted"));
- assert(workflow.includes('202609290003_pilot_terms_acceptance.sql'));
+ assert(workflow.includes('bash scripts/ci/test-database.sh'));
+ assert(dbRunner.includes('migrations=(supabase/migrations/*.sql)'));
+ assert(dbRunner.includes('for file in "${migrations[@]}"'));
+ assert(dbRunner.includes('supabase/tests/network-bootstrap.sql'));
 });
 
 test('legacy one-argument invite claim is explicitly removed by the acceptance migration',async()=>{

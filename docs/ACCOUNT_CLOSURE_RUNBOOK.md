@@ -68,23 +68,37 @@ Before any destructive action:
    current pilot policy; if a documented exception exists, handle it under that
    exception;
 8. remove the Auth identity **last**;
-9. re-run integrity checks and record completion without retaining unnecessary
-   personal content.
+9. re-run the inventory/integrity checks and confirm:
+   - no enabled pilot admission remains for the closed identity;
+   - no profile remains;
+   - no unresolved owned shared object remains;
+   - SET NULL/pseudonymising behavior matches the documented schema;
+10. record only the minimum non-identifying completion evidence required for
+    accountability.
 
 Self-service raw Auth deletion remains prohibited for the first pilot.
 
-## Remaining organisational gate
+## Current pre-pilot status
 
-The technical/policy path is defined, but ordinary participant closure is not
-launch-ready until the real controller identity and privacy-contact route are
-filled and the working legal-basis/service-provider checks in
-`PRE_PILOT_PRIVACY_DECISIONS.md` are approved.
+The organisational/privacy prerequisites named in the earlier version of this
+runbook are now documented:
+
+- controller identity is defined;
+- privacy contact is defined;
+- the working legal-basis model is recorded;
+- Supabase is the approved participant-data processor path for the narrow pilot;
+- Box is excluded from participant PII;
+- retention and rights handling are documented.
+
+The remaining launch gate for account closure is **operational verification**:
+run this procedure once against a developer/test identity after real Google Auth
+is active.
 
 The current FK cascade remains an integrity mechanism, not a privacy policy.
 
 ## Evidence
 
-`tests/network-account-lifecycle.sql` creates two synthetic users with shared
+`supabase/tests/network-account-lifecycle.sql` creates two synthetic users with shared
 objects and verifies:
 - the preflight detects the destructive ownership roots;
 - authenticated participants cannot execute the private preflight;

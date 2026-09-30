@@ -21,7 +21,7 @@ The active implementation gate is defined by:
 
 The post-pilot sequencing reference is:
 
-- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+- `docs/research/competitors/2026-09-29/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
 
 ---
 
@@ -1148,16 +1148,16 @@ It must be earned through real repeated cooperation and truthful outcomes.
 
 This v2 concept incorporates lessons recorded in:
 
-- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
-- `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
-- `docs/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
-- `docs/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
-- `docs/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
-- `docs/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
-- `docs/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
-- `docs/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
-- `docs/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
-- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+- `docs/research/competitors/2026-09-29/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
 
 These are benchmark/research documents.
 

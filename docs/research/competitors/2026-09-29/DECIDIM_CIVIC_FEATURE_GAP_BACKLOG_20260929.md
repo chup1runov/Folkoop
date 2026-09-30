@@ -29,11 +29,11 @@ FOLKOOP:
 - `README.md`
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
-- `docs/COOPERATION_V018.md`
+- `docs/history/releases/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
 - `docs/architecture/OUTCOME_INTEGRITY.md`
-- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
-- `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/research/competitors/2026-09-29/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
 
 ## Current Decidim release context
 

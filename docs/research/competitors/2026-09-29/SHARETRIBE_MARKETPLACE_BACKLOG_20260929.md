@@ -27,8 +27,8 @@ Sharetribe:
 FOLKOOP:
 - `README.md`
 - `docs/PRODUCT_CONCEPT.md`
-- `docs/COOPERATION_V018.md`
-- `docs/PURCHASE_LIFECYCLE_V020.md`
+- `docs/history/releases/COOPERATION_V018.md`
+- `docs/history/releases/PURCHASE_LIFECYCLE_V020.md`
 - `docs/PROJECT_HANDOFF.md`
 - `docs/architecture/OUTCOME_INTEGRITY.md`
 - previous competitor deep dives.
