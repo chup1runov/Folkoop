@@ -160,7 +160,7 @@ function applyPosition(target,mode='point',poseName=null){
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
  if(mode==='home'||!target){
-  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';actor.style.bottom=innerWidth<720?'10px':'18px';
+  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';const mobileBottom=document.body.classList.contains('mobile-context-visible')?'118px':'72px';actor.style.bottom=innerWidth<720?mobileBottom:'18px';
   pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
  }
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
