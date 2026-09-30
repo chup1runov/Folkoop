@@ -31,6 +31,7 @@ async def main():
   await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь войти?')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
   await expect(page.locator('[data-entry="guest"]')).to_have_text('Посмотреть как гость')
+  await page.screenshot(path=str(OUT/'folkoop-v035-entry-choice-mobile.png'),full_page=True)
   passed.append('First visit is language -> account choice, not language -> long tutorial/form')
 
   await page.click('[data-entry="guest"]')
@@ -64,8 +65,11 @@ async def main():
   await page.click('[data-coop="open"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Confirm the room')
   assert await page.locator('#networkPanel form:visible').count()==0
+  assert await page.locator('#workspace').is_hidden()
+  assert await page.locator('[data-coop="delete"]:visible').count()==0
+  assert await page.locator('[data-coop="deleteTask"]:visible').count()==0
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-project-mobile.png'),full_page=True)
-  passed.append('Guest can inspect project/workflow detail while mutation forms stay out of the overview')
+  passed.append('Guest project view shows process/state without duplicate local workspace or mutation clutter')
 
   await page.click('#mobileMenuToggle')
   await page.click('#nav a[href="#/home"]')
