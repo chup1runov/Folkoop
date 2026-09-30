@@ -167,7 +167,7 @@ function applyPosition(target,mode='point',poseName=null){
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
  const candidates=mode==='perch'
-  ?[[seatX,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
+  ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
   :[[r.left+r.width/2-w/2,r.bottom+12],[r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[12,12],[innerWidth-w-12,12]];
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);
