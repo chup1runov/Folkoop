@@ -124,3 +124,10 @@
  .mobile-demo-popover .button{width:100%}
  .menu-open::after{display:none!important}
 }
+
+@media(max-width:760px){
+ .folkoop-helper-shell{right:10px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:88}
+ .mobile-context-visible .folkoop-helper-shell{bottom:calc(118px + env(safe-area-inset-bottom))}
+ .folkoop-helper-panel{bottom:72px}
+ .guest-preview-open .folkoop-guide-actor.is-home{opacity:.96}
+}
