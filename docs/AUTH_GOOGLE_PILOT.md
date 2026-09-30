@@ -19,7 +19,7 @@ Google OAuth is the preferred first candidate because it:
 
 This choice is for the controlled Göteborg pilot, not a permanent requirement that every future FOLKOOP user have a Google account.
 
-v0.25 prepares a fail-closed popup/callback flow behind `googleOAuthEnabled:false`. No Google button appears until the provider is configured and the flag is deliberately enabled. The callback does not use localStorage/sessionStorage: it clears the fragment and passes the short-lived Supabase access token only to the same-origin opener tab via `postMessage`; FOLKOOP then verifies `/auth/v1/user` and applies the normal invite gate.
+v0.25 prepared a fail-closed popup/callback flow behind `googleOAuthEnabled:false`. No Google button appears until the provider is configured and the flag is deliberately enabled. The callback may read the existing non-sensitive UI language preference from localStorage, but it does not persist Auth/session/provider tokens there or in sessionStorage. It clears the fragment and passes the short-lived Supabase access token only to the same-origin opener tab via `postMessage`; FOLKOOP then verifies `/auth/v1/user` and applies the normal invite gate.
 
 ## Current public endpoints
 
@@ -123,8 +123,15 @@ The repository now includes a safe hosted readiness probe:
 
 ```bash
 npm run auth:preflight
+npm run auth:require-provider
 npm run auth:require-google
 ```
+
+Use `auth:require-provider` after Google is configured in hosted Supabase but
+before flipping the production UI flag. It requires the hosted Google provider
+plus enabled signup while deliberately ignoring the still-disabled app flag.
+After that passes, enable `googleOAuthEnabled:true` in a reviewed change and
+require `auth:require-google` to pass.
 
 The probe reads the public `network-config.js`, calls the hosted Supabase
 `/auth/v1/settings` endpoint with the publishable key, and prints only
