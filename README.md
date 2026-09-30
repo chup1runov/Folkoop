@@ -2,11 +2,12 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-## Current pilot state — v0.35.0
+## Current pilot state — v0.36.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
+- first-session **value tour**: 8 benefit-led steps instead of a 14-step module tour; guest first entry no longer marks onboarding complete before the tour is shown;
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
 - language-first onboarding with the FOLKOOP guide, authored left/right/up/down pointing poses, sit-edge body artwork, spotlight tour and replay from Settings;
