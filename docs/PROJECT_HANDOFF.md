@@ -4,7 +4,7 @@
 
 30 September 2026.
 
-Current public application version: **v0.36.0**.  
+Current public application version: **v0.37.0**.  
 Current product phase: **pre-pilot execution**.  
 Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
@@ -37,10 +37,11 @@ Earlier standalone component identities are historical only. Current modules suc
 
 ## Current interface state
 
-v0.36 includes the current guest/read-only presentation and first-session work:
+v0.37 includes the current guest/read-only presentation, first-session work and mobile navigation shell:
 - language-first entry;
+- mobile bottom navigation for Home / Together / Projects / City / Messages / Profile, with contextual secondary navigation for People/Communities, Center and Profile utilities;
 - an 8-step value-first tour that is completed only after the tour itself finishes;
-- compact guest overview with localized sample content and participant-facing date/event formatting;
+- compact guest overview with localized sample content, participant-facing date/event formatting and an expandable bottom DEMO disclosure instead of a large per-page banner;
 - reduced mutation clutter before sign-in;
 - progressive pilot sign-in;
 - local/private workspace remains explicitly separate from the network account;
