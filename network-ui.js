@@ -33,9 +33,9 @@ const activityCopy={
  sv:{activity:'Aktivitet',notifications:'Aktivitetsnotiser',workChat:'Arbetschatt',linkedChat:'Kopplad till detta samarbete',managedChat:'Chattmedlemskapet styrs av samarbetets deltagare.',unread:'oläst',noActivity:'Ingen aktivitet ännu.',recentActivity:'Senaste aktivitet',created:'skapade samarbetet',member_joined:'gick med',member_left:'lämnade',cooperation_status:'ändrade status',update_posted:'lade till en uppdatering',task_created:'skapade en uppgift',task_updated:'ändrade en uppgift',task_deleted:'raderade en uppgift',purchase_stage:'ändrade köpsteget',offer_changed:'ändrade ett leverantörserbjudande',confirmation_changed:'ändrade köpbekräftelsen',collection_changed:'ändrade hämtningsstatus',openActivity:'Öppna',messagesUnread:'Olästa meddelanden'}
 };
 const homeCopy={
- en:{title:'Home',subtitle:'One information field for what changed, what needs your action and what can be done together.',attention:'Needs your attention',nothingUrgent:'Nothing urgent right now.',messages:'Unread messages',invitations:'Chat invitations',task:'Task assigned to you',confirmation:'Confirm your purchase quantity',activity:'Unread cooperation activity',deadline:'Deadline',open:'Open',feed:'What is happening',communityPost:'Community publication',quick:'Do something together',need:'I need something',offer:'I can help',purchase:'Buy together',project:'Start a project',community:'Create a community',city:'Open my city',myWork:'My active cooperation',noFeed:'No shared activity yet. Start with a real need or project.',from:'from',assigned:'Assigned',pending:'Pending',why:'Home is intentionally action-first, not an endless engagement feed.',daily:'Today',nextStep:'One useful next step',caughtUp:'You’re caught up. Nothing needs your attention right now.',feedEnd:'You’re caught up · this feed ends here.'},
- ru:{title:'Главная',subtitle:'Единое информационное поле: что изменилось, что требует твоего действия и что можно сделать вместе.',attention:'Требует внимания',nothingUrgent:'Сейчас ничего срочного.',messages:'Непрочитанные сообщения',invitations:'Приглашения в чаты',task:'Задача назначена тебе',confirmation:'Подтверди количество в закупке',activity:'Непрочитанная активность',deadline:'Срок',open:'Открыть',feed:'Что происходит',communityPost:'Публикация сообщества',quick:'Сделать вместе',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',project:'Создать проект',community:'Создать сообщество',city:'Открыть мой город',myWork:'Мои активные дела',noFeed:'Общей активности пока нет. Начни с реальной потребности или проекта.',from:'от',assigned:'Назначено',pending:'Ожидается',why:'Главная специально построена вокруг действий, а не бесконечной ленты ради вовлечения.',daily:'Сегодня',nextStep:'Один полезный следующий шаг',caughtUp:'Всё просмотрено. Сейчас ничего не требует твоего внимания.',feedEnd:'Всё просмотрено · лента заканчивается здесь.'},
- sv:{title:'Hem',subtitle:'Ett gemensamt informationsfält för vad som ändrats, vad som kräver din handling och vad som kan göras tillsammans.',attention:'Behöver din uppmärksamhet',nothingUrgent:'Inget brådskande just nu.',messages:'Olästa meddelanden',invitations:'Chattinbjudningar',task:'Uppgift tilldelad dig',confirmation:'Bekräfta din köpvolym',activity:'Oläst samarbetsaktivitet',deadline:'Sista tid',open:'Öppna',feed:'Vad händer',communityPost:'Publikation i gemenskap',quick:'Gör något tillsammans',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',project:'Starta projekt',community:'Skapa gemenskap',city:'Öppna min stad',myWork:'Mina aktiva samarbeten',noFeed:'Ingen gemensam aktivitet ännu. Börja med ett verkligt behov eller projekt.',from:'från',assigned:'Tilldelad',pending:'Väntar',why:'Hem är medvetet handlingsorienterat, inte en oändlig engagemangsfeed.',daily:'Idag',nextStep:'Ett användbart nästa steg',caughtUp:'Du är ikapp. Inget behöver din uppmärksamhet just nu.',feedEnd:'Du är ikapp · flödet slutar här.'}
+ en:{title:'Home',subtitle:'One information field for what changed, what needs your action and what can be done together.',attention:'Needs your attention',nothingUrgent:'Nothing urgent right now.',messages:'Unread messages',invitations:'Chat invitations',task:'Task assigned to you',confirmation:'Confirm your purchase quantity',activity:'Unread cooperation activity',deadline:'Deadline',open:'Open',feed:'What is happening',communityPost:'Community publication',quick:'Do something together',need:'I need something',offer:'I can help',purchase:'Buy together',project:'Start a project',community:'Create a community',city:'Open my city',myWork:'My active cooperation',noFeed:'No shared activity yet. Start with a real need or project.',from:'from',assigned:'Assigned',pending:'Pending',why:'Home is intentionally action-first, not an endless engagement feed.',daily:'Today',nextStep:'One useful next step',caughtUp:'You’re caught up. Nothing needs your attention right now.',feedEnd:'You’re caught up · this feed ends here.',demoBadge:'DEMO',demoText:'Guest preview · sample data only · nothing here is sent to the server.',demoCta:'Sign in to participate',demoLocked:'Sign in to create, join, send or change anything.',demoExit:'Leave demo'},
+ ru:{title:'Главная',subtitle:'Единое информационное поле: что изменилось, что требует твоего действия и что можно сделать вместе.',attention:'Требует внимания',nothingUrgent:'Сейчас ничего срочного.',messages:'Непрочитанные сообщения',invitations:'Приглашения в чаты',task:'Задача назначена тебе',confirmation:'Подтверди количество в закупке',activity:'Непрочитанная активность',deadline:'Срок',open:'Открыть',feed:'Что происходит',communityPost:'Публикация сообщества',quick:'Сделать вместе',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',project:'Создать проект',community:'Создать сообщество',city:'Открыть мой город',myWork:'Мои активные дела',noFeed:'Общей активности пока нет. Начни с реальной потребности или проекта.',from:'от',assigned:'Назначено',pending:'Ожидается',why:'Главная специально построена вокруг действий, а не бесконечной ленты ради вовлечения.',daily:'Сегодня',nextStep:'Один полезный следующий шаг',caughtUp:'Всё просмотрено. Сейчас ничего не требует твоего внимания.',feedEnd:'Всё просмотрено · лента заканчивается здесь.',demoBadge:'ДЕМО',demoText:'Гостевой обзор · только пример данных · ничего не отправляется на сервер.',demoCta:'Войти, чтобы участвовать',demoLocked:'Войди в аккаунт, чтобы создавать, вступать, отправлять и менять данные.',demoExit:'Выйти из демо'},
+ sv:{title:'Hem',subtitle:'Ett gemensamt informationsfält för vad som ändrats, vad som kräver din handling och vad som kan göras tillsammans.',attention:'Behöver din uppmärksamhet',nothingUrgent:'Inget brådskande just nu.',messages:'Olästa meddelanden',invitations:'Chattinbjudningar',task:'Uppgift tilldelad dig',confirmation:'Bekräfta din köpvolym',activity:'Oläst samarbetsaktivitet',deadline:'Sista tid',open:'Öppna',feed:'Vad händer',communityPost:'Publikation i gemenskap',quick:'Gör något tillsammans',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',project:'Starta projekt',community:'Skapa gemenskap',city:'Öppna min stad',myWork:'Mina aktiva samarbeten',noFeed:'Ingen gemensam aktivitet ännu. Börja med ett verkligt behov eller projekt.',from:'från',assigned:'Tilldelad',pending:'Väntar',why:'Hem är medvetet handlingsorienterat, inte en oändlig engagemangsfeed.',daily:'Idag',nextStep:'Ett användbart nästa steg',caughtUp:'Du är ikapp. Inget behöver din uppmärksamhet just nu.',feedEnd:'Du är ikapp · flödet slutar här.',demoBadge:'DEMO',demoText:'Gästvisning · endast exempeldata · inget här skickas till servern.',demoCta:'Logga in för att delta',demoLocked:'Logga in för att skapa, gå med, skicka eller ändra något.',demoExit:'Lämna demo'}
 };
 const baseCopy={sv,en,ru};
 const extraCopy=globalThis.FolkoopExtraCopy?.languages||{};
@@ -52,9 +52,113 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const t=k=>baseCopy[lang()]?.[k]||en[k]||k;
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 let internalHash='';
+const DEMO_UID='00000000-0000-4000-8000-000000000001';
+try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
 const route=()=>FolkoopCore.route(location.hash);
+const currentUser=()=>guestDemo?{id:DEMO_UID}:api?.user?.();
+function demoSnapshot(){
+ const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004';
+ const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102';
+ const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202';
+ const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
+ const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
+ const profiles=[
+  {id:DEMO_UID,name:'Alex · Demo',skills:'Repair · coordination',about:'Guest preview profile. Sample data only.',listed:true},
+  {id:A,name:'Anna',skills:'Carpentry · reuse',about:'Interested in neighbourhood repair and shared tools.',listed:true},
+  {id:B,name:'Omar',skills:'Logistics · Swedish/Arabic',about:'Can help with delivery planning and language exchange.',listed:true},
+  {id:C,name:'Linnea',skills:'Design · facilitation',about:'Runs small community workshops.',listed:true}
+ ];
+ const groups=[
+  {id:G,owner_id:A,name:'Olofstorp neighbours',description:'Sample local community for shared help and practical coordination.'},
+  {id:G2,owner_id:C,name:'Göteborg language exchange',description:'Sample group for informal language practice and meetups.'}
+ ];
+ const allPosts=[
+  {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:'Repair café this Saturday — bring one small item and we will try to fix it together.',created_at:'2026-09-30T07:30:00Z'},
+  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:'Looking for two people for a Swedish–Russian conversation table next week.',created_at:'2026-09-29T18:20:00Z'}
+ ];
+ const cooperations=[
+  {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:'Neighbourhood repair café',description:'Organize a small repair afternoon with tools, tasks and a work chat.',location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
+  {id:PURCHASE,owner_id:A,kind:'purchase',title:'Dry firewood together',description:'Combine a small group order and coordinate pickup.',location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
+  {id:NEED,owner_id:B,kind:'need',title:'Borrow a drill for one evening',description:'Need a normal drill for two wall plugs.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
+  {id:OFFER,owner_id:C,kind:'offer',title:'I can review a CV',description:'Can give one round of feedback in Swedish or English.',location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
+  {id:RESOURCE,owner_id:A,kind:'resource',title:'Shared cargo bike',description:'Available for short local borrowing by arrangement.',location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
+ ];
+ const coopMembers=[
+  {cooperation_id:PROJECT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z'},
+  {cooperation_id:PROJECT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z'},
+  {cooperation_id:PROJECT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z'},
+  {cooperation_id:PURCHASE,user_id:A,role:'owner',joined_at:'2026-09-27T09:00:00Z'},
+  {cooperation_id:PURCHASE,user_id:DEMO_UID,role:'member',joined_at:'2026-09-27T10:00:00Z'},
+  {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
+ ];
+ const chats=[
+  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:'Repair café · work chat',created_at:'2026-09-28T10:00:00Z'},
+  {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
+ ];
+ const chatMembers=[
+  {conversation_id:CHAT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z',last_read_at:'2026-09-30T07:00:00Z'},
+  {conversation_id:CHAT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z',last_read_at:'2026-09-30T07:20:00Z'},
+  {conversation_id:CHAT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z',last_read_at:'2026-09-30T07:10:00Z'},
+  {conversation_id:DIRECT,user_id:DEMO_UID,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'},
+  {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'}
+ ];
+ const allMessages=[
+  {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:'I can bring hand tools and a folding table.',created_at:'2026-09-30T07:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:'I made a simple sign for the entrance. We still need someone for coffee.',created_at:'2026-09-30T07:45:00Z'},
+  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:'I can help collect the firewood if the pickup is after 17:00.',created_at:'2026-09-29T14:12:00Z'}
+ ];
+ const tasks=[
+  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:'Confirm the room',details:'Ask whether the community room is free on Saturday 13:00–16:00.',status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:'Prepare a small sign',details:'Simple A4 entrance sign.',status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
+ ];
+ const commitments=[
+  {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:'Can collect after work'},
+  {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
+  {cooperation_id:PURCHASE,user_id:B,quantity:2,note:'Need delivery help'}
+ ];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:'Sample supplier offer for the demo.'}];
+ const activity=[
+  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:'Neighbourhood repair café',unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:'todo · Confirm the room'},
+  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:'Dry firewood together',unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
+ ];
+ const coopActivity=[
+  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:'todo · Confirm the room',created_at:'2026-09-30T08:30:00Z'},
+  {cooperation_id:PROJECT,event_type:'update_added',actor_id:C,label:'Entrance sign ready',created_at:'2026-09-29T18:00:00Z'},
+  {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
+ ];
+ const updates=[
+  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:'Entrance sign is ready. I will bring tape and markers.',created_at:'2026-09-29T18:00:00Z'}
+ ];
+ const base={
+  profile:profiles[0],directory:profiles,chatProfiles:profiles,groups,memberships:[{community_id:G,user_id:DEMO_UID,banned:false},{community_id:G2,user_id:DEMO_UID,banned:false}],blocks:[],
+  chats,chatMembers,chatInvites:[],chatInbox:[{conversation_id:CHAT,unread_count:2,last_message_at:'2026-09-30T07:45:00Z',linked_cooperation_id:PROJECT},{conversation_id:DIRECT,unread_count:1,last_message_at:'2026-09-29T14:12:00Z',linked_cooperation_id:null}],
+  cooperations,coopMembers,coopChats:[{cooperation_id:PROJECT,conversation_id:CHAT,created_at:'2026-09-28T10:00:00Z'}],activityInbox:activity,
+  homePosts:allPosts,assignedTasks:tasks.filter(x=>x.assignee_id===DEMO_UID&&x.status!=='done'),
+  myConfirmations:[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'}],
+  allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:'2026-10-01T18:00:00Z',external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
+ };
+ const chosen=selectedCoop;
+ return {...base,
+  posts:allPosts.filter(x=>!selected||x.community_id===selected),
+  chatMessages:allMessages.filter(x=>!selectedChat||x.conversation_id===selectedChat),
+  coopUpdates:updates.filter(x=>!chosen||x.cooperation_id===chosen),
+  projectTasks:tasks.filter(x=>!chosen||x.cooperation_id===chosen),
+  commitments:commitments.filter(x=>!chosen||x.cooperation_id===chosen),
+  purchaseOffers:chosen===PURCHASE?purchaseOffers:[],
+  purchaseChoice:chosen===PURCHASE?[{cooperation_id:PURCHASE,offer_id:POFFER,selected_by:A,selected_at:'2026-09-30T07:50:00Z'}]:[],
+  purchaseProcess:chosen===PURCHASE?[base.allProcesses[0]]:[],
+  purchaseConfirmations:chosen===PURCHASE?[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'},{cooperation_id:PURCHASE,user_id:A,quantity:4,decision:'confirmed',note:'',decided_at:'2026-09-30T08:05:00Z',collected_at:null,collected_note:'',updated_at:'2026-09-30T08:05:00Z'}]:[],
+  coopActivity:coopActivity.filter(x=>!chosen||x.cooperation_id===chosen)
+ };
+}
+function guestRequireAccount(){
+ notice=ht('demoLocked');
+ window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action'}}));
+ render();
+}
+
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
@@ -93,7 +197,7 @@ function setCountBadge(el,count){
  if(n>0){const b=document.createElement('span');b.className='net-count';b.textContent=n>99?'99+':String(n);b.setAttribute('aria-label',n+' '+at('unread'));el.append(b);}
 }
 function syncBadges(){
- const u=api?.user?.();
+ const u=currentUser();
  const messageCount=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0)+data.chatInvites.filter(x=>x.user_id===u?.id).length;
  const togetherCount=data.activityInbox.filter(x=>x.cooperation_kind!=='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
  const projectCount=data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
@@ -342,13 +446,15 @@ function renderCooperation(u,r){
 }
 
 function render(){
- const r=route(),hasUser=!!api?.user(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
- document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser));
- document.getElementById('workspace').hidden=!!(api?.enabled&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&!hasUser&&!showLocalGuest)));
+ const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
+ document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo));
+ document.body.classList.toggle('guest-preview-open',!!(guestDemo&&relevant));
+ const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
+ document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
  if(!relevant)return;host.lang=lang();host.dir='ltr';
- if(!api?.enabled){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
- let html='';const u=api.user();
+ if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
+ let html='';const u=currentUser();
  if(!u){
   const termsUrl=lang()==='sv'?api.policy.termsUrlSv:api.policy.termsUrlEn;
   const policyBlock=`<div class="pilot-policy"><label class="checkbox policy-consent"><input type="checkbox" name="policyAccepted"${policyAccepted?' checked':''}><span>${esc(t('policyAccept'))}</span></label><p class="pilot-policy-links"><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(termsUrl)}">${esc(t('termsLink'))}</a><span aria-hidden="true">·</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(api.policy.privacyUrl)}">${esc(t('privacyLink'))}</a><span class="policy-version">v1 · 29.09.2026</span></p></div>`;
@@ -367,7 +473,11 @@ function render(){
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
   const p=profileDraft||data.profile;
-  html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}${renderActivityNotifications(u)}<h3>${esc(t('localTitle'))}</h3>`;
+  if(guestDemo){
+   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${esc(ht('demoBadge'))}</span><h2>${esc(p.name||'')}</h2><p><strong>${esc(t('skills'))}:</strong> ${esc(p.skills||'')}</p><p>${esc(p.about||'')}</p><p class="meta">${esc(t('listed'))}</p></article><div class="actions"><button class="button" type="button" data-demo="register">${esc(ht('demoCta'))}</button></div>${renderActivityNotifications(u)}`;
+  }else{
+   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}${renderActivityNotifications(u)}<h3>${esc(t('localTitle'))}</h3>`;
+  }
  }else if(r==='people'){
   html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
@@ -380,12 +490,24 @@ function render(){
    html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div>`;
   }
  }
+ if(guestDemo){
+  const banner=`<aside class="demo-banner" id="demoBanner"><div><span class="badge">${esc(ht('demoBadge'))}</span><span class="demo-banner-text">${esc(ht('demoText'))}</span></div><button class="button secondary compact" type="button" data-demo="register">${esc(ht('demoCta'))}</button></aside>`;
+  html=banner+html;
+ }
  host.innerHTML=html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
- host.querySelectorAll('button').forEach(b=>b.disabled=busy);
+ host.classList.toggle('guest-demo',guestDemo);
+ if(guestDemo){
+  host.querySelectorAll('form').forEach(form=>{form.hidden=true;form.setAttribute('aria-hidden','true');});
+  host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.disabled=false;b.removeAttribute('aria-disabled');});
+  const keep='[data-demo],[data-home="openCoop"],[data-home="openCommunity"],[data-home="createCoop"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="refresh"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.closest('.demo-banner'))b.hidden=true;});
+ }
+ host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
  syncBadges();
 }
 async function load(){
- const v=version,u=api.user();if(!u)return;
+ const v=version,u=currentUser();if(!u)return;
+ if(guestDemo){data=demoSnapshot();return;}
  const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox,homePosts,assignedTasks,myConfirmations,allProcesses]=await Promise.all([
   api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox(),api.homePosts(),api.assignedTasks(),api.myPurchaseConfirmations(),api.purchaseProcesses()
  ]);
@@ -442,7 +564,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netPurchaseOffer')offerDraft={cooperationId:selectedCoop,unitPrice:v.unitPrice||'',currency:(v.currency||'').toUpperCase(),minQuantity:v.minQuantity||'',availableQuantity:v.availableQuantity||'',deliveryMode:v.deliveryMode||'pickup',deliveryFee:v.deliveryFee||'0',leadTimeDays:v.leadTimeDays||'0',validUntil:v.validUntil||'',note:v.note||''};
  if(f.id?.startsWith('netPurchase')&&f.id!=='netPurchaseOffer')lifecycleDrafts[f.id]=v;
 });
-host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
+host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequireAccount();return;}const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
   if(f.id==='netLogin'){email=values.email;otpCode=values.code||'';pilotInvite=values.inviteCode||'';if(op==='code'){await api.requestCode(email);codeRequested=true;notice=t('sent');return;}await api.verify(email,otpCode,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});email='';otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;await load();notice='';return;}
   if(f.id==='netDirect'){selectedChat=await api.startDirect(values.other);directTarget='';}
@@ -471,18 +593,18 @@ host.addEventListener('submit',e=>{e.preventDefault();const f=e.target,values=Ob
   await load();notice=t('saved');
  });
 });
-host.addEventListener('click',e=>{const ab=e.target.closest('[data-auth]');if(ab){run(async()=>{
+host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-banner'}}));return;}const ab=e.target.closest('[data-auth]');if(ab){run(async()=>{
   if(ab.dataset.auth!=='google'||!api.googleOAuthEnabled)return;
   if(!policyAccepted)throw Object.assign(new Error('POLICY_REQUIRED'),{code:'POLICY_REQUIRED'});
   const popup=window.open(api.googleOAuthUrl(),'folkoop-google-auth','popup,width=520,height=700');
   if(!popup){notice=t('popupBlocked');return;}
   oauthPopup=popup;notice=t('oauthWaiting');
- });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;run(async()=>{
+ });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
   if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
- });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;run(async()=>{
+ });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
   if(a==='join')await api.joinCooperation(id);
@@ -502,9 +624,10 @@ host.addEventListener('click',e=>{const ab=e.target.closest('[data-auth]');if(ab
   if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='openNotify'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
- });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;
+ });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;const guestAllowedNet=new Set(['back','open','backChats','openChat','refresh','logout']);if(guestDemo&&!guestAllowedNet.has(a)){guestRequireAccount();return;}
  run(async()=>{
   if(a==='localGuest'){showLocalGuest=true;render();return;}
+  if(a==='logout'&&guestDemo){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-exit'}}));notice='';return;}
   if(a==='logout'){await api.logout();notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
   if(a==='backChats')selectedChat=null;if(a==='openChat')selectedChat=id;
@@ -532,14 +655,20 @@ host.addEventListener('click',e=>{const ab=e.target.closest('[data-auth]');if(ab
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
-window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(api?.user())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('folkoop:guest-demo',e=>{
+ guestDemo=e.detail?.enabled!==false;
+ try{if(guestDemo)sessionStorage.setItem('folkoop-entry-mode-v1','guest');else if(sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');}catch{}
+ version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
+ if(guestDemo){load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else render();
+});
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-render();
+if(guestDemo)load().then(render).catch(render);else render();
 })();
