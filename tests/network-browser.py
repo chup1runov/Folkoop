@@ -211,7 +211,7 @@ async def main():
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   passed.append('Network controls reflow at 320,390,1280px')
   await page.set_viewport_size({'width':390,'height':844})
-  await page.evaluate("window.dispatchEvent(new CustomEvent('folkoop:language-picked',{detail:{language:'ru'}}))")
+  await page.locator('#language').evaluate("(el)=>{el.value='ru';el.dispatchEvent(new Event('change',{bubbles:true}))}")
   await page.evaluate("location.hash='#/together'")
   await expect(page.locator('#networkPanel')).to_contain_text('Кооперация')
   await page.select_option('#netCoopCreate [name=kind]','purchase')
