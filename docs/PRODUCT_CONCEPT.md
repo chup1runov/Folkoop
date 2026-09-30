@@ -1,59 +1,118 @@
-# FOLKOOP Product Concept v1.0
+# FOLKOOP Product Concept v2.0
 
-28 September 2026.
+30 September 2026.
 
-## One-sentence definition
+## Status and authority
 
-**FOLKOOP is a cooperation network that turns "I need / I can / I want to do" into people, resources and a concrete next action.**
+This is the canonical public product concept for FOLKOOP.
 
-It combines a social network, cooperation workspace, civic navigator and real-world community layer. The product is not designed primarily to maximize content consumption. Its intended value is to help useful cooperation happen in real life.
+It incorporates the product lessons from the nine competitor deep dives completed on 29 September 2026 while preserving the existing pilot discipline.
 
-## The problem
+It does **not** authorize immediate implementation of the future architecture described here.
 
-People already have many digital tools, but useful action is fragmented across them.
+Until real pilot evidence exists, the governing rule remains:
 
-A person may have:
-- people in WhatsApp, Telegram, Facebook, Discord or other networks;
-- professional contacts elsewhere;
-- local groups in another place;
-- city services on municipal and national websites;
-- events and learning opportunities on separate platforms;
-- tools, rooms, vehicles or other resources that are invisible to people who could use them;
-- an idea for a project but no team;
-- a concrete need but no clear route to the right person, organization or official service.
+**Göteborg core-loop first. Feature breadth later.**
 
-The problem is therefore not only lack of information.
+The active implementation gate is defined by:
 
-It is the gap between:
+- `docs/PRODUCT_DECISION_POLICY.md`
+- `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 
-**intent -> relevant people/resources -> coordination -> action -> outcome.**
+The post-pilot sequencing reference is:
 
-FOLKOOP is designed around closing that gap.
+- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
 
-## Core product loop
+---
 
-The canonical FOLKOOP loop is:
+# 1. One-sentence definition
 
-**Intent -> Match -> Commit -> Coordinate -> Act -> Outcome -> Trust/history -> New intent**
+**FOLKOOP is a cooperation network that turns "I need / I can / I want to do" into the right people, resources, services and a concrete next action.**
 
-### 1. Intent
+The product is designed to help useful cooperation happen in real life.
 
-A person starts with something concrete:
+It is not designed primarily to maximize content consumption, advertising inventory or time spent in the interface.
 
-- I need something.
-- I can help with something.
-- I can share a resource.
-- I want to buy together.
+---
+
+# 2. The product thesis
+
+People already have many digital tools.
+
+The problem is not simply that information is missing.
+
+The deeper problem is that useful action is fragmented across:
+
+- people and contacts;
+- local communities;
+- messaging apps;
+- projects;
+- physical resources;
+- local businesses and organizations;
+- public services;
+- civic processes;
+- events;
+- financial systems;
+- physical places.
+
+A person may know what they want, but not:
+
+- who can help;
+- which resource exists nearby;
+- which community is relevant;
+- which project needs their skill;
+- which organization is responsible;
+- which city process is authoritative;
+- which physical place is appropriate;
+- which next step turns information into action.
+
+FOLKOOP is intended to close that gap.
+
+The central product question is:
+
+> **What are you trying to do, and what is the next useful step?**
+
+---
+
+# 3. Canonical cooperation loop
+
+The canonical FOLKOOP loop remains:
+
+**Intent -> Match -> Commit -> Coordinate -> Act -> Outcome -> Repeat**
+
+## Intent
+
+A person starts from a real situation, not from knowledge of the application's architecture.
+
+Examples:
+
+- I need help.
+- I can help.
+- I have a resource.
+- I want to share or borrow something.
+- I want to buy something together with others.
 - I want to start or join a project.
-- I want to find people around an interest or place.
-- I need to understand or use a city/public service.
-- I want to find an opportunity in my city.
+- I want to meet people.
+- I want to understand what is happening around me.
+- I need a city/public service.
+- I want to participate in an opportunity or civic process.
 
-The starting point is the user's situation, not the application's internal category structure.
+The user should not need to know whether the eventual route is:
 
-### 2. Match
+- a Need;
+- an Offer;
+- a Resource;
+- a Project;
+- a Meetup;
+- a City route;
+- a community;
+- an external specialist service.
 
-The system should help connect the intent to relevant:
+FOLKOOP should make that routing understandable.
+
+## Match
+
+FOLKOOP should connect the intent to relevant:
 
 - people;
 - skills;
@@ -61,471 +120,1045 @@ The system should help connect the intent to relevant:
 - resources;
 - communities;
 - projects;
-- suppliers;
-- events;
+- places;
+- activities;
 - organizations;
+- suppliers;
+- city opportunities;
 - public services;
-- city opportunities.
+- external specialist systems.
 
-Matching may be rule-based, search-based, community-driven or eventually algorithmic. It must not be presented as intelligent or effective until its real performance has been tested.
+Matching may be:
 
-### 3. Commit
+- search-based;
+- rule-based;
+- community-driven;
+- operator-facilitated;
+- eventually algorithmic.
 
-People explicitly agree to participate.
+Algorithmic or AI matching must not be presented as effective until real performance is demonstrated.
+
+## Commit
+
+A useful interaction becomes stronger when someone explicitly agrees to participate.
 
 Examples:
-- join a project;
-- commit a quantity to a shared purchase;
+
+- join a Need;
+- accept an Offer;
+- join a Project;
 - accept a task;
-- offer a resource;
-- accept a collaboration invitation.
+- commit a quantity to a Shared Purchase;
+- reserve a Resource;
+- sign up to an Activity.
 
-A view, like or message is not treated as equivalent to commitment.
+A view, like, reaction or message is not treated as equivalent to commitment.
 
-### 4. Coordinate
+## Coordinate
 
-FOLKOOP provides the working layer needed to move from agreement to action:
+The working layer may include:
 
-- work chat;
+- linked work chat;
 - participants;
 - tasks;
+- assignees;
+- updates;
 - quantities;
 - supplier offers;
-- updates;
-- deadlines;
+- time/place;
+- availability;
+- reminders;
 - activity history.
 
-### 5. Act
+Coordination exists to move the group toward action, not to create activity for its own sake.
 
-The useful event normally happens outside the interface:
+## Act
+
+The useful event normally occurs partly or entirely outside the interface.
+
+Examples:
 
 - people meet;
-- someone helps another person;
-- a project task is done;
-- a shared resource is used;
+- help is provided;
+- a tool is used;
+- a Project task is performed;
+- a workshop happens;
 - an external order is placed;
-- a city service is used;
-- a resident submits an official comment;
-- a team builds something.
+- a resident uses an official service;
+- a participant submits an official response through the authoritative route.
 
-### 6. Outcome
+## Outcome
 
-The system should distinguish coordination from actual results.
+FOLKOOP must distinguish internal state from real-world result.
 
-"Task marked done" is not automatically independent proof of impact. Shared-purchase order/delivery states in the current pilot are self-reported coordination records. Civic actions remain subject to the official authority or service.
+Examples:
 
-Where appropriate, FOLKOOP should record a clear result without fabricating verification it does not have.
+- `done` is a product state;
+- a task-complete flag is a coordination record;
+- `paid` is a financial-system state;
+- an official authority status is an external-source claim;
+- a rating is a participant statement.
 
-### 7. Trust and history
+None automatically proves a real-world outcome beyond what its evidence supports.
 
-Repeated useful cooperation can create a meaningful history:
+The SDCF bridge remains the semantic guardrail for this boundary.
 
-- projects completed;
-- resources shared;
-- commitments fulfilled;
-- useful contributions;
-- communities participated in;
-- skills demonstrated.
+## Repeat
 
-This history may later support better discovery and matching, but it must not become a hidden social-credit score or political/ideological profile.
+The strongest network signal is not registration.
 
-## The cooperation graph
+It is that a participant who obtained useful value returns for another distinct cooperation.
 
-Conventional social networks are largely organized around a social graph:
+---
+
+# 4. Cooperation graph
+
+Traditional social products are often organized primarily around a social graph:
 
 **person -> follows / knows -> person**
 
-FOLKOOP's central product hypothesis is a richer **cooperation graph**:
+FOLKOOP's product hypothesis is a richer **cooperation graph**:
 
-**person -> skill -> need -> offer -> resource -> community -> project -> task -> supplier -> city opportunity -> action -> outcome**
+**person -> skill -> intent -> need -> offer -> resource -> community -> project -> task -> place -> activity -> organization -> city opportunity -> action -> outcome**
 
-The important object is not only "who knows whom", but:
+The useful question is not only:
 
-**who can do what with whom, using which resource, toward which result.**
+> Who knows whom?
 
-"Cooperation graph" is a FOLKOOP product concept, not a claim of inventing graph theory or a new scientific field.
+It is:
 
-## Action-first, not engagement-first
+> **Who can do what with whom, using which resource or institution, toward which result?**
 
-FOLKOOP should not optimize for maximum time spent in the application.
+The cooperation graph is a FOLKOOP product concept, not a claim of inventing graph theory.
 
-The preferred sequence is often:
+---
 
-1. open FOLKOOP;
-2. find the relevant person/resource/opportunity;
-3. coordinate;
-4. leave the screen;
-5. do the thing;
-6. return only when useful.
+# 5. FOLKOOP as an orchestration layer
 
-Therefore:
-- no product requirement for infinite scroll;
-- no requirement to maximize impressions;
-- no ad-ranking objective;
-- no streak punishment;
-- no fake urgency;
-- no gamification that rewards political positions or complaint volume.
+The competitor research strengthens a key architectural conclusion:
 
-The current Home design already follows this direction by prioritizing pending actions and active cooperation over an infinite feed.
+**FOLKOOP should not try to reproduce every specialist system.**
 
-## Four connected layers
+Instead, it should own the cooperation/orchestration layer.
 
-FOLKOOP combines four layers that are usually separate.
+FOLKOOP should be able to:
 
-### People and Communities
+1. understand the user's intent;
+2. identify the appropriate route;
+3. connect the relevant people/resources/organizations;
+4. provide enough coordination to move forward;
+5. hand off to an authoritative specialist system where necessary;
+6. retain clear provenance and outcome history.
 
-The social layer:
+Examples:
+
+## "I need a drill on Saturday."
+
+Possible routes:
+- a free shared Resource;
+- equipment at a Center;
+- a community member;
+- an external commercial rental provider.
+
+## "I want to comment on a street project."
+
+Possible routes:
+- relevant City information;
+- authoritative consultation/process;
+- related neighbors/community;
+- a FOLKOOP Project organizing around the issue.
+
+## "I just moved here and know nobody."
+
+Possible routes:
+- people;
+- Community;
+- Meetup;
+- Center;
+- local activity.
+
+The user expresses the objective.
+
+The system chooses or explains the mechanism.
+
+---
+
+# 6. What FOLKOOP should own natively
+
+The native core should remain focused on the cooperation graph.
+
+## People and Communities
 
 - profiles;
 - skills;
 - opt-in discovery;
 - communities;
-- publications;
-- direct/group communication.
+- community publications;
+- direct/group communication;
+- contextual participation history.
 
-Its purpose is not only identity or content. It supplies participants to cooperation.
+## Cooperation
 
-### Together and Projects
+Current first-class cooperation types:
 
-The cooperation layer:
+- Need;
+- Offer;
+- Resource;
+- Shared Purchase;
+- Project.
 
-- needs;
-- offers;
-- shared resources;
-- shared purchases;
-- projects;
-- teams;
+These are not just content categories.
+
+They are structured objects around which participation and action can occur.
+
+## Project
+
+Project is the long-lived execution object.
+
+Current implementation already includes:
+
+- participants;
 - tasks;
-- supplier offers;
-- linked work chats;
-- activity state.
+- assignees;
+- task status;
+- linked work chat.
 
-This is the current core of the cooperation engine.
+Future evidence may justify linking:
 
-### City
+- Needs;
+- Offers;
+- Resources;
+- Shared Purchases;
+- Activities;
+- Decisions;
+- external finance;
+- outcomes.
 
-The civic/opportunity layer inherited from FOLKOOP.
+## City
 
-The principle is:
+City is FOLKOOP's navigation/orchestration layer across public, civic and local opportunities.
+
+Its governing principle is:
 
 **start from the person's problem, not from knowledge of the correct authority.**
 
-City can connect a user to official information and services while preserving the boundary between FOLKOOP and the authority itself.
+FOLKOOP may:
 
-FOLKOOP should not pretend to submit, approve, resolve or verify an official case unless a real integration actually does so.
+- discover;
+- explain;
+- route;
+- connect related people/projects;
+- follow source changes.
 
-### Center
+FOLKOOP must not pretend to:
 
-The real-world/community layer inherited from FOLKOOP.
+- approve;
+- decide;
+- officially submit;
+- legally verify;
+- replace an authority
 
-A future Center/Node may provide:
-- a place to meet;
+unless a real integration actually provides that capability.
+
+## Center
+
+Center is the future physical/community layer.
+
+A future Center/Node may include:
+
 - Hosts;
+- Meetups;
+- Activities;
+- Projects;
+- equipment/resources;
+- onboarding;
 - learning;
-- equipment;
+- local opportunities;
+- community access.
+
+There is no claim that an operating Center currently exists.
+
+## FOLKOOP guide
+
+The guide is the human-facing onboarding/navigation layer.
+
+Current implementation is deterministic and non-AI.
+
+A future guide may help route intent across FOLKOOP, but it must not fabricate knowledge or hide recommendation logic.
+
+## Outcome and provenance
+
+FOLKOOP should own the clear relationship between:
+
+- cooperation state;
+- source;
+- action;
+- outcome classification;
+- evidence strength/provenance.
+
+That integrity is a core product property.
+
+---
+
+# 7. Cooperation type-specific processes
+
+The competitor research, especially Sharetribe, reinforces that different cooperation types should not be forced into one universal lifecycle.
+
+A future architecture may introduce:
+
+- `process_type`
+- `process_version`
+
+Examples:
+
+- `need-help-v1`
+- `resource-share-v1`
+- `resource-booking-v1`
+- `shared-purchase-v2`
+- `project-v1`
+- `meetup-v1`
+
+This would allow:
+
+- state-specific actions;
+- type-specific fields;
+- safer lifecycle evolution;
+- clearer authorization;
+- better auditability.
+
+This is a future architecture direction, not a requirement for the current pilot.
+
+---
+
+# 8. Future supporting objects
+
+The following objects are justified by competitor research as possible future additions, but must be activated only by evidence.
+
+## Place
+
+A persistent physical place may have:
+
+- type;
+- location/privacy scope;
+- steward;
+- access rules;
+- resources;
+- activities;
+- roles;
+- history.
+
+Examples:
+- Center;
+- partner workshop;
+- library room;
+- community garden;
+- pickup point.
+
+## Meetup
+
+A lightweight social event.
+
+Example:
+
+> Who wants coffee or a walk tonight?
+
+It should not require full Project structure.
+
+## Activity
+
+An operational event.
+
+Example:
+
+> Two Hosts and five volunteers are needed on Saturday.
+
+Potential attributes:
+- time/place;
+- capacity;
+- roles/slots;
+- signup;
+- reminder;
+- activity chat;
+- feedback.
+
+## Meeting
+
+A structured working/governance event:
+
+- agenda;
+- participants;
+- minutes;
+- decisions;
+- action items;
+- provenance.
+
+## Decision
+
+A future lightweight Decision object may support methods such as:
+
+- Advice;
+- Consent;
+- Consensus;
+- Choose;
+- Rank;
+- Allocate;
+- Time.
+
+A Decision should record:
+
+- scope;
+- question;
+- method;
+- eligible participants;
+- timing;
+- responses/reasons;
+- DecisionOutcome;
+- responsible next action;
+- review date;
+- rule/template version.
+
+A DecisionOutcome must remain distinct from a RealWorldOutcome.
+
+## Contribution Record
+
+FOLKOOP may record non-transferable contribution such as:
+
+- volunteer time;
+- Host shifts;
+- workshops;
+- completed Project work;
+- resource stewardship;
+- confirmed help exchanges.
+
+Contribution may support:
+
+- history;
+- capacity planning;
+- recognition;
+- eligibility for scoped roles/benefits.
+
+It should **not** automatically become a transferable internal currency.
+
+---
+
+# 9. Cooperation loop and belonging loop
+
+The core cooperation loop remains primary.
+
+However, the BFF/Geneva and Center research identifies a second legitimate mode of value.
+
+## Cooperation loop
+
+**Intent -> Match -> Commit -> Coordinate -> Act -> Outcome -> Repeat**
+
+## Belonging loop
+
+**Arrive alone -> Discover -> Low-risk contact -> Join -> Meet -> Return -> Belong**
+
+The belonging loop is especially relevant to:
+
+- newcomers;
+- language/social groups;
+- Centers;
+- local activities;
+- people who do not yet have a specific Need or Project.
+
+A future product should allow:
+
+> "I just want to meet people or do something nearby."
+
+without forcing that intent into Need, Offer or Project.
+
+The first Göteborg pilot still tests only the core cooperation loop.
+
+---
+
+# 10. Specialist systems: integrate rather than imitate
+
+## Formal civic participation
+
+Decidim and authoritative public systems are better suited to:
+
+- official proposals;
+- petitions/signatures;
+- participatory budgets;
+- elections;
+- formal eligibility;
+- official voting;
+- public accountability records.
+
+FOLKOOP's role should normally be:
+
+**discover -> explain -> route -> follow authoritative status**
+
+not to create shadow democratic processes.
+
+## Collective finance
+
+Open Collective-like/fiscal-host systems are better suited to:
+
+- holding funds;
+- accounting;
+- grants;
+- expenses;
+- reimbursements;
+- payouts;
+- tax/compliance.
+
+A future FOLKOOP Project may display financial data from an external source, but FOLKOOP should not create a shadow ledger.
+
+## Commercial marketplace transactions
+
+Sharetribe/Stripe-like systems are better suited to:
+
+- card payment;
+- provider KYC;
+- refunds;
+- chargebacks;
+- payouts;
+- deposits;
+- commercial commissions.
+
+FOLKOOP may coordinate a transaction or hand off to such a system without becoming the financial operator.
+
+---
+
+# 11. Lessons deliberately adapted from competitors
+
+The deep dives are benchmarks, not templates.
+
+## From Hylo
+
+Adapt when justified:
+- cross-community visibility of one cooperation object;
+- linked/peer community topology;
+- reusable Offers;
 - events;
-- project activity;
-- local onboarding;
-- physical discovery of people and opportunities.
+- agreements/roles.
 
-There is no claim that such an operating venue exists in the current software pilot.
+Do not make FOLKOOP group-first or feed-first.
 
-## Why the physical layer matters
+## From Karrot
 
-A new network has a cold-start problem.
+Adapt:
+- Place;
+- Activity;
+- participant slots;
+- physical roles;
+- post-activity feedback;
+- proportional moderation.
 
-If few relevant people or opportunities are present, a user can ask for something and receive no useful response.
+Do not use a scalar peer-trust score as the universal authority model.
 
-A physical FOLKOOP community layer may help create the first local density:
+## From Decidim
 
-**physical community -> real interactions -> digital cooperation graph -> better matching -> more useful interactions -> stronger local network**
+Adapt:
+- process phase/deadline presentation;
+- official result/status separation;
+- meeting agenda/minutes;
+- accountability/provenance patterns.
 
-This is a product hypothesis to test in Göteborg. It is not yet proven.
+Route formal civic power to the authoritative system.
 
-## City as a network participant
+## From Open Collective
 
-FOLKOOP does not need to rebuild every service that already exists.
+Adapt:
+- financial source-of-truth;
+- expected != received;
+- separation between community approval and legal/payment approval.
 
-When a library, NGO, maker space, sports club, public authority, support organization, supplier or other provider already performs a function well, the platform can make that opportunity discoverable and route the user onward.
+Keep money custody/accounting external.
 
-The intended role is often:
+## From Loomio
 
-**discovery + navigation + matching + coordination**
+Adapt:
+- Advice;
+- Consent;
+- DecisionOutcome;
+- review dates;
+- decision -> action linkage.
 
-rather than replacement.
+Do not use majority voting as the universal governance method.
 
-## What is and is not novel
+## From Nextdoor
 
-FOLKOOP does **not** claim to have invented:
+Adapt:
+- local density thinking;
+- trusted organization/source types;
+- local alerts/following;
+- local knowledge discovery.
 
-- social networking;
-- messaging;
-- local communities;
-- marketplaces;
-- group buying;
-- project management;
-- civic technology;
-- recommendation systems;
-- community centers.
+Do not make advertising, demographic targeting or precise-address identity the core model.
 
-All of these categories already exist.
+## From BFF / former Geneva
 
-The product's novelty thesis is the architecture:
+Adapt:
+- low-friction first contact;
+- public group preview;
+- newcomer Welcome flow;
+- "come alone" UX;
+- chat -> Meetup.
 
-1. make cooperation rather than content consumption the primary organizing principle;
-2. connect social, economic/project, civic and physical layers in one cooperation graph;
-3. make the next useful action more important than feed engagement;
-4. retain outcomes and cooperation history so the network can become more useful over time.
+Do not turn FOLKOOP into a dating-like friend-swipe product.
 
-This combination may become distinctive. It is not a "revolutionary invention" merely because it is written in this document.
+## From TimeRepublik
 
-The hypothesis becomes meaningful only if real users repeatedly achieve useful outcomes through the system.
+Adapt:
+- estimated effort/duration;
+- reusable service Offers;
+- contribution-time visibility.
 
-## Network effect hypothesis
+Do not create transferable FOLKOOP Credits by default.
 
-The defensible asset is not expected to be the interface code alone.
+## From Sharetribe
 
-If a local FOLKOOP network grows, it can accumulate:
+Adapt:
+- type-specific lifecycle;
+- process versioning;
+- availability/booking;
+- state-specific actions;
+- contextual transaction history.
 
-- people;
-- skills;
-- communities;
-- active projects;
-- shared resources;
-- supplier relationships;
-- city knowledge;
-- trusted organizations;
-- physical Nodes/Centers;
-- histories of successful cooperation.
+Do not turn FOLKOOP into a generic marketplace.
 
-A competing interface can be copied more easily than a dense, functioning local cooperation ecosystem.
+---
 
-The same network effect creates the largest early risk: an empty network has little value. Therefore local density matters more than premature geographic scale.
+# 12. Action-first, not engagement-first
 
-## Göteborg-first strategy
+The preferred FOLKOOP sequence remains:
 
-Göteborg is the pilot environment.
+1. open the product;
+2. express or discover a useful intent;
+3. find the relevant person/resource/opportunity;
+4. coordinate;
+5. leave the screen;
+6. do the thing;
+7. return when useful.
 
-The initial objective is not "launch globally".
+Therefore there is no core requirement for:
 
-It is to prove that one sufficiently dense local network can repeatedly convert intentions into outcomes.
+- infinite scroll;
+- maximum impressions;
+- session-time optimization;
+- engagement streaks;
+- viral outrage;
+- feed popularity as the primary ranking rule.
 
-Expansion to another city should follow evidence that the local model works, not merely the completion of more software features.
+A bounded feed may exist as support.
 
-The first concrete test is defined in `docs/GOTEBORG_CORE_LOOP_PILOT.md`: a deliberately narrow need/offer pilot measuring the path from genuine intent to confirmed real-world outcome and repeat cooperation.
+It must not become the product's north star.
 
-## Primary users
+---
 
-FOLKOOP is intentionally broad, but the product should enter through concrete use cases rather than "for everyone".
+# 13. Local density before geographic scale
 
-Initial useful user situations include:
+A cooperation network has a severe cold-start problem.
 
-- a person who needs help or a resource;
-- a person who can offer a skill/resource;
-- someone who wants to start or join a project;
-- a small group coordinating a shared purchase;
-- a newcomer trying to understand the city and find people/opportunities;
-- a community coordinating members and work;
-- a local organization that wants to become discoverable and connect to relevant people.
+A user who sees:
 
-The current controlled pilot is not evidence that all of these segments have product-market fit.
+- no relevant people;
+- no resources;
+- no Projects;
+- no nearby opportunities
 
-## Product success
+has little reason to return.
 
-Registrations, downloads and time spent are insufficient measures.
+Therefore the early network objective is:
 
-The central question is:
+**useful local density**
+
+not maximum registrations.
+
+Important future measures include:
+
+- percentage of intents with at least one plausible local match;
+- time to first useful match;
+- skill/resource coverage;
+- unmatched categories;
+- repeat local cooperation.
+
+The first pilot is deliberately bounded to Göteborg and a small cohort for this reason.
+
+---
+
+# 14. Trust without social scoring
+
+Repeated cooperation may create useful context.
+
+Examples:
+
+- Projects completed;
+- resources successfully returned;
+- confirmed help exchanges;
+- scoped roles;
+- contribution history;
+- skills demonstrated.
+
+FOLKOOP should prefer contextual evidence over a single scalar reputation number.
+
+Avoid by default:
+
+- global star score;
+- social credit;
+- neighborhood friendliness ranking;
+- points for generic activity;
+- popularity as proof of reliability.
+
+A person's suitability is contextual.
+
+---
+
+# 15. Contribution is not currency
+
+Contribution and internal money are different product objects.
+
+FOLKOOP may eventually record:
+
+- time;
+- skill;
+- hosting;
+- resource stewardship;
+- completed work;
+- community contribution.
+
+This may unlock scoped benefits or roles.
+
+It does **not** imply that the contribution becomes a transferable balance.
+
+A bounded, opt-in timebank may be tested in the future only if a real community demonstrates a reciprocity problem that contribution history cannot solve.
+
+Basic:
+
+- City access;
+- belonging;
+- public-benefit navigation;
+- community participation
+
+should never depend on internal credits by default.
+
+---
+
+# 16. Privacy and verification principle
+
+Verification should be proportional to the action.
+
+Examples:
+
+- reading public City information may need no account;
+- joining an ordinary Community may need a normal account;
+- high-risk physical access may justify stronger verification;
+- payment KYC should be handled by the financial provider;
+- legally meaningful civic eligibility should be handled by the authoritative system.
+
+Do not collect:
+
+- precise home addresses;
+- biometrics;
+- tax data;
+- bank details;
+- sensitive profile categories
+
+merely because another platform uses them.
+
+Collect the minimum necessary for the actual function.
+
+Civic behavior must never become a hidden political-targeting profile.
+
+---
+
+# 17. Product success
+
+Registrations, downloads, messages and time spent are insufficient.
+
+The central question remains:
 
 **Did FOLKOOP help useful cooperation reach a real outcome?**
 
-### North-star direction
+## Core metrics
 
-A future primary metric should be based on **useful completed outcomes**, not feed engagement.
+- intent -> useful match;
+- match -> commitment;
+- commitment -> action;
+- action -> confirmed outcome;
+- repeat cooperation;
+- organic vs facilitated match rate;
+- unmatched intents;
+- time to first useful match.
 
-Examples:
-- a need successfully matched and resolved;
-- a useful skill/help exchange;
-- a project that moves from idea to completed work;
-- a shared resource actually used;
-- a shared purchase that reaches an externally completed order/pickup;
-- a resident who successfully reaches and uses the relevant official route;
-- a participant who joins a useful real-world activity.
+## Additional metrics by future layer
 
-### Leading indicators
+### Belonging
+- first visit;
+- came alone;
+- returned;
+- later joined a cooperation.
 
-Before enough outcomes exist, track:
-- time to first useful match;
-- intent-to-commit conversion;
-- commit-to-outcome conversion;
-- repeat cooperation rate;
-- active cooperation per member;
-- local supply/demand coverage;
-- number of intents receiving no useful match;
-- participant return after a completed cooperation.
+### Physical Activity
+- required slots filled;
+- attendance;
+- activity result.
 
-These are hypotheses for measurement design, not current validated benchmarks.
+### Governance
+- DecisionOutcome;
+- unresolved objections;
+- action generated;
+- review performed.
 
-## Trust and safety
+### City
+- relevant route found;
+- authoritative action reached;
+- source freshness/provenance.
 
-A cooperation network has risks that a passive content feed may not have.
+### Finance
+- source-reported money states only.
 
-The product must expect:
-- fraud;
-- spam;
-- harassment;
-- unreliable commitments;
-- disputes;
-- unsafe meetings;
-- misleading supplier claims;
-- misuse of community authority.
+Money received is not social impact.
 
-Current and future safeguards include:
-- opt-in discovery;
-- blocking/reporting;
-- moderation roles;
-- server-side authorization/RLS;
-- explicit state transitions;
-- truthful self-reported labels;
-- data minimization;
-- no unnecessary sensitive profiling.
+---
 
-Payments, escrow, identity assurance and legally significant voting require separate design/legal/security work before they can be treated as product capabilities.
+# 18. Business hypothesis
 
-## Privacy principle
+The resident/community core should create value without requiring every useful interaction to be monetized.
 
-Collect only data necessary for a useful function.
+Potential future commercial layers may include:
 
-FOLKOOP should not infer or build profiles of:
-- political beliefs;
-- religion;
-- health;
-- migration status;
-- other sensitive categories
-
-unless a future narrowly defined function has a lawful, necessary basis and has been explicitly reviewed.
-
-Civic behavior must not be repurposed for political targeting.
-
-## Business hypothesis
-
-The resident/community core should be able to create network value without requiring every useful interaction to be monetized.
-
-Potential future commercial value may exist around:
 - organization tools;
 - professional coordination;
-- supplier/business services;
-- advanced marketplace infrastructure;
+- supplier/business tooling;
+- commercial resource transactions;
 - B2B/B2G integrations;
 - software/network licensing;
-- physical Node services;
-- other optional paid layers.
+- physical Center/Node services;
+- specialist integration services.
+
+Do not assume:
+
+- advertisements;
+- sale of intent data;
+- paid ranking;
+- transaction commission on all cooperation
+
+as the default business model.
+
+The economic model may differ by cooperation type.
 
 No specific revenue model is proven yet.
 
-The current repository remains proprietary under its existing LICENSE. A future public-core/private-business architecture is a separate licensing and repository decision, not silently created by this product concept.
+---
 
-## Current pilot reality
+# 19. Current pilot reality
 
-The current codebase is an architectural pilot, not a mature public social network.
+The current software remains an architectural pilot, not a mature public network.
 
-Already implemented include:
-- local/private profile and draft workspace;
-- optional network profile and discovery;
-- communities and publications;
+Current implementation includes:
+
+- local/private workspace;
+- optional network profile;
+- opt-in discovery;
+- Communities;
+- publications;
 - direct/group messaging;
-- needs/offers/resources/shared purchases/projects;
-- participants and tasks;
-- linked work chats;
+- Needs;
+- Offers;
+- Resources;
+- Shared Purchases;
+- Projects;
+- Project tasks/assignees;
+- linked work chat;
 - supplier offers;
-- shared-purchase coordination lifecycle;
-- activity summaries/unread state;
-- preserved City civic tools.
+- Shared Purchase coordination lifecycle;
+- activity/unread state;
+- City civic tools;
+- deterministic onboarding guide.
 
-Important current limitations include:
-- controlled rather than general-public onboarding;
-- no push/realtime dependency;
-- no E2E-encrypted messaging;
-- no integrated checkout/payment/escrow;
-- no guarantee of delivery or supplier performance;
-- no operating physical Center claimed;
-- no validated large-scale recommendation engine;
+Important limitations remain:
+
+- controlled onboarding;
+- participant Auth activation/testing still gated;
+- no realtime/push dependency;
+- no E2E messaging;
+- no integrated payments/escrow;
+- no public physical Center operation;
+- no validated large-scale matching;
 - no proven product-market fit.
 
-## Semantic and decision-integrity bridge
+The current pilot therefore does **not** require implementation of the v2 future architecture.
 
-FOLKOOP uses a lightweight architectural bridge to the separate SDCF systems-reasoning framework.
+---
 
-The bridge is defined in:
+# 20. Product decision rule
 
-- `docs/architecture/SDCF_BRIDGE.md`
-- `docs/architecture/sdcf-bridge-v0.2.json`
+Every proposed major feature should answer:
 
-For the current Göteborg pilot this is **not a production RDF/OWL/SHACL dependency**. It is a semantic guardrail for places where FOLKOOP could otherwise overstate what its data proves.
+1. Which user intent does it serve?
+2. Which stage of the cooperation loop is failing?
+3. What evidence says this is the next bottleneck?
+4. What behavior should improve?
+5. How will improvement be measured?
+6. Can a manual process or external service test the same hypothesis first?
+7. What privacy/safety/legal/moderation burden does it add?
+8. Does it create a new source-of-truth?
+9. Does it require a new semantic/evidence boundary?
+10. Is a new top-level module actually necessary?
 
-In particular:
+If there is no good evidence-based answer:
 
-- a database/UI `done` state is not automatically a confirmed real-world outcome; outcome classification remains separate from the strength/source of evidence;
-- an activity-log event records product provenance, not proof of an external effect;
-- a City source and a claim inferred from that source remain distinct;
-- a FOLKOOP routing recommendation is not an authority decision;
-- organic and operator-facilitated matches remain distinguishable;
-- any future algorithmic recommendation must retain method/model provenance and must not silently use sensitive categories.
+**Do not build it yet.**
 
-If pilot evidence later justifies structured outcome verification, model-driven matching, consequential City inference or multi-city interoperability, FOLKOOP should adopt only the required SDCF semantics through a versioned adapter rather than replacing the operational PostgreSQL model.
+---
 
-## Product decision rule
+# 21. What FOLKOOP should not become
 
-The persistent governance rule is defined in `docs/PRODUCT_DECISION_POLICY.md`. It is the short operational gate for future feature work.
+By default, FOLKOOP should not become:
 
+- another infinite social feed;
+- an advertising network;
+- a system that sells user Need/Intent for targeting;
+- a universal marketplace;
+- a payment processor;
+- an escrow operator;
+- a bank/fiscal host;
+- a generic project-management suite;
+- a petition/voting clone of municipal systems;
+- a friendship/dating app;
+- a global social-credit/reputation system;
+- an internal-currency economy;
+- a platform where every shared decision requires a vote.
 
-When evaluating a proposed feature, ask:
+Specialist capabilities may be linked or integrated where they genuinely help the cooperation loop.
 
-1. What user intent does it start from?
-2. What useful match or coordination does it enable?
-3. What real action should follow?
-4. What outcome can be recorded truthfully?
-5. Does it strengthen repeat cooperation or only increase screen engagement?
-6. Is an existing external service already better at this function?
-7. Does the feature increase local cooperation density?
-8. Does it introduce a new trust, safety, legal or privacy risk?
-9. Is it necessary now, or is it scope creep?
+---
 
-A feature that cannot answer these questions should not enter the core merely because another social platform has it.
+# 22. Novelty thesis
 
-## Strategic failure conditions
+FOLKOOP does not claim to have invented:
 
-FOLKOOP should be considered to be failing its core hypothesis if, after a meaningful pilot:
+- communities;
+- chat;
+- Needs/Offers;
+- marketplaces;
+- project management;
+- resource booking;
+- timebanks;
+- collective governance;
+- civic technology;
+- fiscal hosting;
+- community centers;
+- recommendation systems.
 
-- users mainly consume content rather than cooperate;
-- most intents receive no useful match;
-- people coordinate once but do not return;
-- completed outcomes remain rare;
-- users consistently move all real coordination to external chats because FOLKOOP adds no value;
-- the product requires a large feature surface to explain a simple use case;
-- moderation/trust costs overwhelm useful cooperation;
-- local density cannot be achieved without unsustainable manual intervention.
+The product thesis is the connected architecture:
 
-Failure evidence should lead to narrowing or changing the product, not adding more features by default.
+1. start from human intent rather than content consumption;
+2. connect people, skills, resources, communities, Projects, City and physical places in one cooperation graph;
+3. route to specialist systems instead of rebuilding every domain;
+4. prioritize a concrete next action over feed engagement;
+5. distinguish commitment, action, transaction state and real-world outcome;
+6. retain enough trustworthy history to make future cooperation easier.
 
-## Long-term vision
+This combination may become distinctive.
 
-If the Göteborg model is proven, FOLKOOP can become a reusable cooperation layer for other cities.
+It becomes meaningful only if real users repeatedly achieve useful outcomes through it.
 
-A person arriving in another participating city could potentially retain a portable profile/history while discovering:
+---
+
+# 23. Network-effect hypothesis
+
+The defensible asset is not expected to be interface code alone.
+
+A mature local FOLKOOP network may accumulate:
+
+- people;
+- skills;
+- Needs/Offers;
+- communities;
+- Projects;
+- tasks;
+- Places;
+- Activities;
+- Resources;
+- supplier relationships;
+- organizations;
+- City knowledge;
+- trusted roles;
+- physical Centers/Nodes;
+- cooperation history;
+- evidence-aware outcomes.
+
+A competing interface can be copied more easily than a dense functioning local cooperation ecosystem.
+
+The same network effect works against FOLKOOP at the beginning.
+
+Therefore:
+
+**prove one useful dense local network before expanding geographically.**
+
+---
+
+# 24. Göteborg-first strategy
+
+Göteborg remains the first validation environment.
+
+The objective is not to demonstrate every future module.
+
+The first test is intentionally narrow:
+
+**Need / Offer -> Match -> Commit -> Coordinate -> Act -> confirmed Outcome -> Repeat**
+
+The pilot is defined by `docs/GOTEBORG_CORE_LOOP_PILOT.md`.
+
+The v2 concept does not change that test.
+
+After the pilot, the next major development slice must follow the measured bottleneck, not this document's feature breadth.
+
+---
+
+# 25. Long-term vision
+
+If the Göteborg model is proven, FOLKOOP may become a reusable cooperation layer across cities.
+
+A person arriving in another participating city could potentially discover:
 
 - people;
 - communities;
-- projects;
+- Projects;
 - resources;
-- city services;
+- Places;
+- Activities;
 - organizations;
-- physical Nodes;
+- city services;
 - opportunities to contribute.
 
-The long-term ambition is therefore not merely a social app.
+FOLKOOP may connect to specialist civic, financial and marketplace systems while preserving one understandable user-facing route:
 
-It is a **cooperation operating system for real life**: a network through which people can find the people, resources and institutions needed to do useful things together.
+> **What are you trying to do?**
 
-That is the ambition.
+The long-term ambition is therefore not simply a social network, marketplace, civic app or project manager.
 
-Whether FOLKOOP earns that category must be demonstrated by real-world outcomes.
+It is a **cooperation operating system for real life**:
+
+a network through which people can find the people, resources, places, organizations and institutions needed to do useful things together.
+
+That category is an ambition, not a proven fact.
+
+It must be earned through real repeated cooperation and truthful outcomes.
+
+---
+
+# 26. Research basis
+
+This v2 concept incorporates lessons recorded in:
+
+- `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/KARROT_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/DECIDIM_CIVIC_FEATURE_GAP_BACKLOG_20260929.md`
+- `docs/OPEN_COLLECTIVE_FINANCE_BACKLOG_20260929.md`
+- `docs/LOOMIO_GOVERNANCE_BACKLOG_20260929.md`
+- `docs/NEXTDOOR_HYPERLOCAL_BACKLOG_20260929.md`
+- `docs/BFF_GENEVA_SOCIAL_DISCOVERY_BACKLOG_20260929.md`
+- `docs/TIMEREPUBLIK_TIMEBANK_BACKLOG_20260929.md`
+- `docs/SHARETRIBE_MARKETPLACE_BACKLOG_20260929.md`
+- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+
+These are benchmark/research documents.
+
+They do not override the product decision gate or automatically authorize competitor-derived features.
