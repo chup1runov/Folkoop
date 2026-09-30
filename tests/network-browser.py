@@ -136,11 +136,14 @@ async def main():
   page=await context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#/me')
   await page.screenshot(path=str(OUT/'pilot-login-step1-mobile.png'),full_page=True)
+  assert await page.locator('#workspace').is_hidden()
+  await expect(page.locator('[data-net=localGuest]')).to_be_visible()
+  assert await page.locator('.mura-actor:not(.is-tour)').is_hidden()
   assert await page.locator('#netLogin [name=code]').count()==0
   assert await page.locator('#netLogin [name=inviteCode]').count()==0
   assert await page.locator('#netLogin [name=policyAccepted]').count()==0
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-  passed.append('First login step stays compact: email only, with no hidden legal/form wall')
+  passed.append('First login step stays compact: email only; local profile is a separate opt-in path and Mura does not cover Auth')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.click('#netLogin [value=code]')
   await expect(page.locator('#netStatus')).to_contain_text('одноразовый код отправлен')
