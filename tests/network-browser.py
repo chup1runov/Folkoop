@@ -196,7 +196,7 @@ async def main():
   await page.click('#netPost button')
   await expect(page.locator('#netStatus')).to_contain_text('не подтверждено')
   await expect(page.locator('#netPost [name=body]')).to_have_value('Retain this unsent text')
-  await page.select_option('#language','en')
+  await page.evaluate("window.dispatchEvent(new CustomEvent('folkoop:language-picked',{detail:{language:'en'}}))")
   await expect(page.locator('#netPost [name=body]')).to_have_value('Retain this unsent text')
   passed.append('Failed writes and language changes preserve unsent text')
   for width in [320,390,1280]:
@@ -204,7 +204,7 @@ async def main():
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   passed.append('Network controls reflow at 320,390,1280px')
   await page.set_viewport_size({'width':390,'height':844})
-  await page.select_option('#language','ru')
+  await page.evaluate("window.dispatchEvent(new CustomEvent('folkoop:language-picked',{detail:{language:'ru'}}))")
   await page.evaluate("location.hash='#/together'")
   await expect(page.locator('#networkPanel')).to_contain_text('Кооперация')
   await page.select_option('#netCoopCreate [name=kind]','purchase')
