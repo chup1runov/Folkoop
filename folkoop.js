@@ -13,7 +13,7 @@ const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
  {id:'home',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
@@ -34,6 +34,31 @@ const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>store.get().profile.city||'';
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
+const MOBILE_PRIMARY=['home','together','projects','city','messages','me'];
+const MOBILE_CONTEXT={
+ together:['together','people','communities'],
+ city:['city','center'],
+ me:['me','settings','about']
+};
+const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
+const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
+function renderMobileChrome(){
+ const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
+ const active=mobilePrimaryFor(current);
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
+ const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
+ const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
+ const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>DEMO</span></button>':'';
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>DEMO</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
+ dock.innerHTML=demo+items+language+popover;
+ dock.hidden=!(guest||context.length);
+ document.body.classList.toggle('mobile-context-visible',!dock.hidden);
+}
+function closeMobileDemo(){
+ const dock=$('#mobileContextDock'),pop=dock?.querySelector('.mobile-demo-popover'),button=dock?.querySelector('[data-mobile-action="demo"]');
+ if(pop)pop.hidden=true;if(button)button.setAttribute('aria-expanded','false');
+}
 
 const a=(route,label,cls='button')=>`<a class="${cls}" href="#/${route}">${esc(t(label))}${icon('arrow')}</a>`;
 const button=(kind,key,cls='button')=>`<button class="${cls}" type="button" data-create="${kind}">${esc(t(key))}${icon('plus')}</button>`;
@@ -60,7 +85,7 @@ function myPage(){
  const p=profileScratch||store.get().profile;
  return head('myTitle','myText')+`<div class="profile-grid"><form id="profileForm" class="card editor"><div class="profile-avatar" aria-hidden="true">${icon('me')}</div><label>${esc(t('name'))}<input name="name" maxlength="60" autocomplete="nickname" value="${esc(p.name||'')}"></label><label>${esc(t('cityProfile'))}<input name="city" maxlength="120" autocomplete="address-level2" value="${esc(p.city||'')}"></label><p class="meta">${esc(t('cityHelp'))}</p><label>${esc(t('skills'))}<input name="skills" maxlength="200" value="${esc(p.skills||'')}"></label><label>${esc(t('about'))}<textarea name="about" rows="4" maxlength="600">${esc(p.about||'')}</textarea></label><p class="meta">${esc(t('privacy'))}</p><button class="button" type="submit">${esc(t('saveProfile'))}</button></form><aside><div class="card"><h2>${esc(t('profileSaved'))}</h2><p>${esc(t('myText'))}</p><label class="checkbox"><input id="remember" type="checkbox"${store.isPersistent()?' checked':''}> <span>${esc(t('remember'))}</span></label><p class="meta">${esc(t(store.isPersistent()?'device':'memory'))}</p><div class="stack"><button class="button secondary" type="button" data-action="export">${esc(t('export'))}</button><button class="text-button danger" type="button" data-action="clear">${esc(t('clear'))}</button></div></div><div class="card"><strong class="stat">${store.get().drafts.length}</strong><p>${esc(t('count'))}</p>${a('projects','projects','text-link')}</div></aside></div><h2>${esc(t('drafts'))}</h2>${drafts()}`;
 }
-function center(){return head('centerTitle','centerText')+`<div class="feature-grid">${[1,2,3].map(n=>`<article class="card"><span class="small-icon">${icon(['','people','together','center'][n])}</span><h2>${esc(t('centerCard'+n))}</h2><p>${esc(t('centerCard'+n+'Text'))}</p><span class="badge muted-badge">${esc(t('future'))}</span></article>`).join('')}</div><div class="actions">${button('event','proposeEvent')}</div>${form()}${drafts(['event'])}`;}
+function center(){return head('centerTitle','centerText')+`<div class="feature-grid">${[1,2,3].map(n=>`<article class="card"><span class="small-icon">${icon(['','people','together','center'][n])}</span><h2>${esc(t('centerCard'+n))}</h2><p>${esc(t('centerCard'+n+'Text'))}</p><span class="badge muted-badge">${esc(t('future'))}</span></article>`).join('')}</div><div class="actions">${a('communities','communities','button secondary')}${a('people','people','text-link')}</div>`;}
 
 function settingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
@@ -253,11 +278,13 @@ function ensureOnboarding(){
  return dialog;
 }
 function onboardingTarget(step){
- const mobileToggle=$('#mobileMenuToggle');
- const mobileMenu=mobileToggle&&getComputedStyle(mobileToggle).display!=='none';
+ const mobile=$('#mobilePrimaryNav')&&getComputedStyle($('#mobilePrimaryNav')).display!=='none';
  if(step.id==='helper')globalThis.FolkoopGuide?.home({instant:true,pose:step.pose||'wink'});
- if(step.target.startsWith('#nav')&&mobileMenu)openMenu();
- else if(menuOpen&&!step.target.startsWith('#nav'))closeMenu();
+ if(mobile&&step.target.startsWith('#nav')){
+  const primary=mobilePrimaryFor(step.route);
+  return document.querySelector(step.route===primary?'#mobilePrimaryNav [data-mobile-nav="'+primary+'"]':'#mobileContextDock [data-mobile-subnav="'+step.route+'"]');
+ }
+ if(menuOpen)closeMenu();
  return document.querySelector(step.target);
 }
 function positionOnboarding(step){
@@ -265,7 +292,21 @@ function positionOnboarding(step){
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
  if(step.id!=='helper')target.classList.add('tutorial-target');
- if(step.id!=='helper')target.scrollIntoView({block:'center',inline:'nearest',behavior:'auto'});
+ if(step.id!=='helper'){
+  // WebKit may ignore scrollIntoView() for a target inside content that is
+  // currently inert because the modal tour owns focus. Move the document
+  // explicitly so every highlighted target is actually visible before guide
+  // geometry is calculated.
+  const r=target.getBoundingClientRect();
+  const mobile=innerWidth<=760;
+  const dockReserve=mobile?(document.body.classList.contains('mobile-context-visible')?126:76):24;
+  const safeTop=mobile?72:24;
+  const safeBottom=innerHeight-dockReserve;
+  if(r.top<safeTop||r.bottom>safeBottom){
+   const desired=(safeTop+safeBottom)/2;
+   window.scrollBy(0,r.top+r.height/2-desired);
+  }
+ }
  requestAnimationFrame(()=>{
   const rect=target.getBoundingClientRect(),pad=7;
   spot.hidden=false;dialog.dataset.noTarget='0';
@@ -320,6 +361,7 @@ function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',langu
 function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML=NAV_ORDER.map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''} data-nav="${k}">${icon(k)}<span>${esc(navText(k))}</span></a>`).join('');
+ renderMobileChrome();
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
  $('#messageLink').setAttribute('aria-label',t('messages'));$('#messageLabel').textContent=t('messages');
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
@@ -356,6 +398,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  if(!C.LANGS.includes(value))return;
  globalThis.FolkoopGuide?.hideLanguageGate();
  changeLanguage(value);
+ if(languageOnlyFlow){languageOnlyFlow=false;return;}
  if(firstVisitFlow){firstVisitFlow=false;setTimeout(showEntryGate,80);}
  else setTimeout(()=>showOnboarding(0),80);
 });
@@ -365,14 +408,21 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
+ const mobileAction=e.target.closest('[data-mobile-action]');
+ if(mobileAction){
+  const action=mobileAction.dataset.mobileAction;
+  if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
+  if(action==='signin'){closeMobileDemo();showEntryGate();return;}
+  if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+ }
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
   if(action==='guest'){setEntryMode('guest');return;}
   if(action==='email'){setEntryMode('account');return;}
-  if(action==='language'){hideEntryGate();firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+  if(action==='language'){hideEntryGate();languageOnlyFlow=false;firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
  const helper=e.target.closest('[data-helper]');
  if(helper){
@@ -429,13 +479,13 @@ render();
 function startFullIntroduction(){
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
- helperOpen=false;updateHelper();firstVisitFlow=false;
+ helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
  if(globalThis.FolkoopGuide){
   globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
 }
 function startFirstVisit(){
- onboardingOpen=false;helperOpen=false;updateHelper();firstVisitFlow=true;
+ onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=true;
  if(globalThis.FolkoopGuide)globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  else showEntryGate();
 }
