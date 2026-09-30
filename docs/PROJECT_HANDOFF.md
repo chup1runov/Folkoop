@@ -4,7 +4,7 @@
 
 30 September 2026.
 
-Current public application version: **v0.36.0**.  
+Current public application version: **v0.38.0**.  
 Current product phase: **pre-pilot execution**.  
 Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
@@ -37,7 +37,7 @@ Earlier standalone component identities are historical only. Current modules suc
 
 ## Current interface state
 
-v0.36 includes the current guest/read-only presentation and first-session work:
+v0.38 includes the current guest/read-only presentation, first-session/mobile-shell work and summary-first cooperation detail:
 - language-first entry;
 - an 8-step value-first tour that is completed only after the tour itself finishes;
 - compact guest overview with localized sample content and participant-facing date/event formatting;
@@ -45,7 +45,8 @@ v0.36 includes the current guest/read-only presentation and first-session work:
 - progressive pilot sign-in;
 - local/private workspace remains explicitly separate from the network account;
 - the FOLKOOP guide remains deterministic/non-AI and uses a smaller normal-browsing footprint while preserving authored tour poses;
-- signed-in Home remains action-first rather than infinite-feed-first.
+- signed-in Home remains action-first rather than infinite-feed-first;
+- cooperation/project detail is summary-first: core state and the next useful step remain visible while activity, participants, tasks, updates, supplier offers, purchase progress and owner management use compact native disclosures.
 
 The participant-facing interface follows the persistent requirement in `PRODUCT_DECISION_POLICY.md`:
 
