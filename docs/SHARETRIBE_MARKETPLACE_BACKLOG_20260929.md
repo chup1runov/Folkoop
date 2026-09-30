@@ -30,7 +30,7 @@ FOLKOOP:
 - `docs/COOPERATION_V018.md`
 - `docs/PURCHASE_LIFECYCLE_V020.md`
 - `docs/PROJECT_HANDOFF.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - previous competitor deep dives.
 
 ---
@@ -451,7 +451,7 @@ The economic model should follow the cooperation type.
 | 81 | Listing-specific reputation | ✅ | — | ADAPT | LATER |
 | 82 | Global person rating | 🟡 customer profile review | — | DO NOT COPY as core | — |
 | 83 | Skill/outcome-specific history | —/limited | 🟡 FOLKOOP concept | KEEP/DEVELOP | LATER |
-| 84 | Review = independent outcome proof | — | explicitly no | KEEP SDCF | NOW |
+| 84 | Review = independent outcome proof | — | explicitly no | KEEP FOLKOOP outcome integrity | NOW |
 
 ## FOLKOOP rule
 
@@ -507,7 +507,7 @@ This reinforces the same conclusion from BFF/Decidim:
 | 101 | Ban/delete user affects payout | ✅ complex | — | LEARN | LATER |
 | 102 | Console analytics/management | ✅ | — | LATER | SCALE |
 
-## SDCF warning
+## FOLKOOP outcome integrity warning
 
 Sharetribe allows operators to move transaction states.
 
@@ -946,7 +946,7 @@ the user does not need to know whether their intent belongs to:
 
 ---
 
-# X. SDCF relationship
+# X. FOLKOOP outcome integrity relationship
 
 Marketplace systems are full of state claims:
 
@@ -957,7 +957,7 @@ Marketplace systems are full of state claims:
 - completed;
 - reviewed.
 
-SDCF forces FOLKOOP to ask:
+FOLKOOP outcome integrity forces FOLKOOP to ask:
 
 **What exactly does each state prove?**
 
@@ -1070,7 +1070,7 @@ A more defensible architecture is:
 - City orchestration;
 - Center/physical network;
 - FOLKOOP guide interface;
-- outcome/provenance model via SDCF.
+- outcome/provenance model via FOLKOOP outcome integrity.
 
 ## FOLKOOP learns/adapts
 - community topology from Hylo;

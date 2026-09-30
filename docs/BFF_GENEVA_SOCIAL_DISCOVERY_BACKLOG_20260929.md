@@ -257,7 +257,7 @@ This suggests FOLKOOP needs a **social-entry mode** in addition to structured Ne
 | 86 | Event created without full Project | ✅ | — | ADAPT | POST-PILOT | Important for low-commitment social activity. |
 | 87 | Project task structure around event | — | ✅ | KEEP | POST-PILOT | FOLKOOP can deepen events when work is required. |
 | 88 | Participant slots/roles | — | — future Karrot pattern | ADAPT FROM KARROT | POST-PILOT | Better for volunteer/work events. |
-| 89 | Minutes/outcome record | — | — future Decidim/SDCF pattern | ADAPT ELSEWHERE | LATER | Different type of event. |
+| 89 | Minutes/outcome record | — | — future Decidim/FOLKOOP outcome integrity pattern | ADAPT ELSEWHERE | LATER | Different type of event. |
 
 ## Critical lesson
 
@@ -478,7 +478,7 @@ FOLKOOP potentially operates a persistent physical third place.
 BFF uses conventional discovery UI.
 FOLKOOP guide could explicitly welcome a person, explain the environment and route them to people/actions.
 
-## 6. SDCF
+## 6. FOLKOOP outcome integrity
 
 Friendship/social success is fuzzy.
 FOLKOOP can preserve evidence-aware outcomes for projects/civic work.
@@ -662,7 +662,7 @@ A social outcome:
 is not the same evidence type as:
 **"Project task X was independently confirmed completed."**
 
-SDCF can help keep measurement classes separate.
+FOLKOOP outcome integrity can help keep measurement classes separate.
 
 ---
 

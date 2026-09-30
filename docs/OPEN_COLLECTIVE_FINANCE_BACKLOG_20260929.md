@@ -27,7 +27,7 @@ FOLKOOP:
 - `docs/COOPERATION_V018.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - competitor deep dives for Hylo, Karrot and Decidim.
 
 ---
@@ -203,7 +203,7 @@ than:
 | 47 | CSV export | ✅ | — | ADAPT/ROUTE | LATER | Useful for project reporting. |
 | 48 | API access to ledger | ✅ | — | INTEGRATE | LATER | Preferred path for FOLKOOP budget display. |
 | 49 | Off-platform transactions documented in ledger | ✅ | — | ROUTE | LATER | FOLKOOP should not create shadow balances. |
-| 50 | Expected money explicitly not counted as transaction | ✅ | — | ADAPT SEMANTICS | LATER | Strong analogy with SDCF: expected != received. |
+| 50 | Expected money explicitly not counted as transaction | ✅ | — | ADAPT SEMANTICS | LATER | Strong analogy with FOLKOOP outcome integrity: expected != received. |
 
 ## Critical FOLKOOP rule
 
@@ -471,7 +471,7 @@ It does **not** prove:
 - the purchased item solved the problem;
 - the project created impact.
 
-Keep SDCF outcome semantics.
+Keep FOLKOOP outcome integrity outcome semantics.
 
 ## 4. City and people network
 
@@ -608,7 +608,7 @@ Project displays:
 - funding target;
 - external finance link.
 
-### SDCF boundary
+### FOLKOOP outcome integrity boundary
 
 FOLKOOP can truthfully say:
 
@@ -730,7 +730,7 @@ Route/integrate with Open Collective-like systems.
 FOLKOOP guide.
 
 ### Provenance/outcome integrity
-SDCF.
+FOLKOOP outcome integrity.
 
 ### FOLKOOP's own core
 - Intent;

@@ -284,7 +284,7 @@ This allows FOLKOOP to orchestrate without claiming authority.
 
 ## 3.10 Outcome
 
-Preserve SDCF rules:
+Preserve FOLKOOP outcome integrity rules:
 - UI state != evidence;
 - done != confirmed outcome;
 - transaction/payment != impact;
@@ -1037,7 +1037,7 @@ For every major feature after the pilot, require:
 6. What privacy/safety/legal/moderation burden is added?
 7. Does it require another top-level module?
 8. Does it create a new source-of-truth?
-9. Does SDCF require a new semantic/evidence boundary?
+9. Does FOLKOOP outcome integrity require a new semantic/evidence boundary?
 10. What is the rollback/deprecation path if the feature fails?
 
 If the answers are weak:

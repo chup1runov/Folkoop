@@ -20,7 +20,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/PROJECT_HANDOFF.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 
 This backlog does **not** mean "copy Hylo". The FOLKOOP product rule remains:
 
@@ -67,7 +67,7 @@ The first Göteborg core-loop pilot remains protected. Features that do not unbl
 | 7 | Cooperation lifecycle states | ✅ fulfilled | ✅ open/active/done/cancelled | KEEP | NOW | Preserve explicit state transitions. |
 | 8 | Expiration date for Need / Offer | ✅ | — | ADAPT | POST-PILOT | Low-complexity way to reduce stale supply/demand if pilot shows this problem. |
 | 9 | Reminder to close/update stale Need / Offer | 🧪 | — | LATER | POST-PILOT | Add only if stale objects become a measurable problem. |
-| 10 | Bilateral outcome confirmation | 🧪 helper-selection direction | 🟡 manual pilot protocol | ADAPT | POST-PILOT | FOLKOOP should go beyond "fulfilled": SDCF requires evidence-aware outcome classification. |
+| 10 | Bilateral outcome confirmation | 🧪 helper-selection direction | 🟡 manual pilot protocol | ADAPT | POST-PILOT | FOLKOOP should go beyond "fulfilled": FOLKOOP outcome integrity requires evidence-aware outcome classification. |
 | 11 | AI-assisted matching | 🧪 | — | LATER | LATER | No algorithm solves a low-density network. Add only after enough real matching data exists. |
 | 12 | Organic vs operator-facilitated match distinction | — | ✅ pilot definition | KEEP | NOW | Important for truthful pilot evidence and not inflating product performance. |
 
@@ -86,7 +86,7 @@ The first Göteborg core-loop pilot remains protected. Features that do not unbl
 | 19 | Kanban / task visualization | 🧪 | — | LATER | LATER | Presentation layer, not core evidence. |
 | 20 | Link Need / Offer / Event / Resource to a Project | ✅ linked content | 🟡 separate cooperation types | ADAPT | POST-PILOT | High-value structural idea: Project should become a container for related cooperation objects. |
 | 21 | Contribution history by project/member | 🧪 | 🟡 activity journal | ADAPT | POST-PILOT | Build from event history without creating a social-credit score. |
-| 22 | Verified project outcome distinct from task completion | — | 🟡 SDCF/manual protocol | KEEP | POST-PILOT | Major FOLKOOP differentiation: task done != confirmed outcome. |
+| 22 | Verified project outcome distinct from task completion | — | 🟡 FOLKOOP outcome integrity/manual protocol | KEEP | POST-PILOT | Major FOLKOOP differentiation: task done != confirmed outcome. |
 
 ---
 
@@ -155,7 +155,7 @@ The first Göteborg core-loop pilot remains protected. Features that do not unbl
 | 53 | Obfuscated / user-controlled location precision | ✅ | — | ADAPT | LATER | Mandatory if proximity discovery is introduced. |
 | 54 | External civic/public-service navigation | — | ✅ | KEEP | NOW | Major FOLKOOP distinction: City extends beyond content created inside the network. |
 | 55 | Official-source provenance for civic data | — | ✅ | KEEP | NOW | Preserve source/version boundary; central to City trust. |
-| 56 | Routing recommendation separated from authority decision | — | ✅ | KEEP | NOW | SDCF/FOLKOOP guardrail; do not weaken it. |
+| 56 | Routing recommendation separated from authority decision | — | ✅ | KEEP | NOW | FOLKOOP outcome integrity/FOLKOOP guardrail; do not weaken it. |
 
 ---
 
@@ -199,8 +199,8 @@ The first Göteborg core-loop pilot remains protected. Features that do not unbl
 | 76 | Data export / portability | ✅ | 🟡 local export / account work | ADAPT | POST-PILOT | Important trust feature for a cooperative/civic platform. |
 | 77 | Open-source codebase | ✅ Apache 2.0 | — proprietary | STRATEGIC DECISION | LATER | Not a feature-gap bug; requires separate licensing/business decision. |
 | 78 | No ads / no data sales | ✅ | 🟡 product principle | KEEP | NOW | Strong alignment with FOLKOOP mission. |
-| 79 | Federation / cross-platform interoperability | 🧪 | 🟡 SDCF multi-city/export path | LATER | LATER | Valuable after one city works. |
-| 80 | Semantic provenance / source != claim / done != outcome | — | ✅ SDCF bridge | KEEP | NOW | Strong FOLKOOP differentiator and trust foundation. |
+| 79 | Federation / cross-platform interoperability | 🧪 | 🟡 FOLKOOP outcome integrity multi-city/export path | LATER | LATER | Valuable after one city works. |
+| 80 | Semantic provenance / source != claim / done != outcome | — | ✅ FOLKOOP outcome integrity bridge | KEEP | NOW | Strong FOLKOOP differentiator and trust foundation. |
 
 ---
 
@@ -216,7 +216,7 @@ These are current FOLKOOP advantages or defining choices:
 4. project tasks + assignees + statuses;
 5. dedicated shared-purchase lifecycle;
 6. City as a gateway to external public/civic infrastructure, not only internal network activity;
-7. SDCF outcome/provenance guardrails;
+7. FOLKOOP outcome integrity outcome/provenance guardrails;
 8. action-first Home instead of feed-first engagement;
 9. organic vs facilitated pilot-match distinction;
 10. FOLKOOP guide as a human-facing navigation/onboarding layer.
@@ -340,7 +340,7 @@ Investigate:
 Prioritize:
 - structured bilateral outcome confirmation;
 - evidence qualifiers;
-- SDCF-compatible outcome record.
+- FOLKOOP outcome integrity-compatible outcome record.
 
 ### Outcomes occur, but people do not return
 Investigate recurring user value before adding breadth.

@@ -29,7 +29,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - previous competitor deep dives.
 
 ---
@@ -356,7 +356,7 @@ Do not implement object 3 merely because objects 1 and 2 are useful.
 | 27 | Provider can redo/improve work after complaint | ✅ practice | — | ADAPT | POST-PILOT | Repair-before-punishment is good pattern. |
 | 28 | One global reputation score | 🟡 ratings | — | DO NOT COPY as core | — | Capability/context matters more than popularity. |
 | 29 | Skill-specific evidence/history | 🟡 skills + ratings | 🟡 cooperation history | ADAPT | LATER | Better than one generic rating. |
-| 30 | Confirmed outcome separate from payment | — not explicit | ✅ SDCF direction | KEEP | NOW | Payment/credit transfer != verified useful outcome. |
+| 30 | Confirmed outcome separate from payment | — not explicit | ✅ FOLKOOP outcome integrity direction | KEEP | NOW | Payment/credit transfer != verified useful outcome. |
 
 ---
 
@@ -604,7 +604,7 @@ But:
 10 hours can produce little value.
 1 hour can solve an important problem.
 
-SDCF should preserve:
+FOLKOOP outcome integrity should preserve:
 
 **ContributionTime**
 separate from

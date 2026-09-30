@@ -29,7 +29,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/PROJECT_HANDOFF.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - `docs/HYLO_FEATURE_GAP_BACKLOG_20260929.md`
 
 ## One-sentence comparison
@@ -77,7 +77,7 @@ FOLKOOP additionally intends to connect:
 - communities;
 - City/public opportunities;
 - future physical Center;
-- outcome/provenance integrity through the SDCF bridge.
+- outcome/provenance integrity through the FOLKOOP outcome integrity bridge.
 
 ## Strategic implication
 
@@ -207,9 +207,9 @@ while City still covers external city infrastructure that is not managed by FOLK
 | 32 | Post-activity feedback window | ✅ | 🟡 manual outcome interviews | ADAPT | POST-PILOT | Strong operational feedback loop. |
 | 33 | Prompt members for missing feedback | ✅ | — | ADAPT | POST-PILOT | Can improve completion evidence if not intrusive. |
 | 34 | Participation logged in history | ✅ | ✅ activity journal | KEEP | NOW | Both retain provenance of product actions. |
-| 35 | UI participation record treated as real-world outcome | 🟡 operationally implied but not SDCF model | — | DO NOT COPY | NOW | FOLKOOP must keep activity log != verified external outcome. |
+| 35 | UI participation record treated as real-world outcome | 🟡 operationally implied but not FOLKOOP outcome integrity model | — | DO NOT COPY | NOW | FOLKOOP must keep activity log != verified external outcome. |
 | 36 | Bilateral outcome confirmation | — | 🟡 manual protocol | KEEP/BUILD | POST-PILOT | FOLKOOP should retain stronger evidence model. |
-| 37 | Outcome evidence qualifier/provenance | — | ✅ SDCF contract | KEEP | NOW | Strategic FOLKOOP differentiator. |
+| 37 | Outcome evidence qualifier/provenance | — | ✅ FOLKOOP outcome integrity contract | KEEP | NOW | Strategic FOLKOOP differentiator. |
 
 ## Important distinction
 
@@ -279,7 +279,7 @@ rather than:
 
 **one scalar reputation score**.
 
-That aligns well with the SDCF philosophy and avoids social-credit dynamics.
+That aligns well with the FOLKOOP outcome integrity philosophy and avoids social-credit dynamics.
 
 ---
 
@@ -311,7 +311,7 @@ That aligns well with the SDCF philosophy and avoids social-credit dynamics.
 | 75 | Place creation/edit logged | ✅ | — | ADAPT | CENTER STAGE | Important for physical-resource accountability. |
 | 76 | Activity participation logged | ✅ | ✅ in cooperation context | KEEP | NOW | Useful provenance. |
 | 77 | Moderation/sanction decision history | ✅ | 🟡 | ADAPT | POST-PILOT | Accountability for community power. |
-| 78 | Source/claim/evidence semantic separation | — | ✅ SDCF | KEEP | NOW | FOLKOOP differentiator. |
+| 78 | Source/claim/evidence semantic separation | — | ✅ FOLKOOP outcome integrity | KEEP | NOW | FOLKOOP differentiator. |
 
 ---
 
@@ -359,7 +359,7 @@ That aligns well with the SDCF philosophy and avoids social-credit dynamics.
 | 95 | Free/open-source software | ✅ | — proprietary | STRATEGIC DECISION | LATER | Business/governance choice, not an automatic gap. |
 | 96 | Self-hosting | ✅ | — | LATER | LATER | Could matter for municipalities/cooperatives wanting sovereignty. |
 | 97 | Multiple independent instances | ✅ | — | LATER | LATER | Relevant only after one-city product works. |
-| 98 | Federation between instances | 🧪 discussed/proposed | 🟡 future interoperability path | LATER | LATER | SDCF/versioned adapters may help, but no need now. |
+| 98 | Federation between instances | 🧪 discussed/proposed | 🟡 future interoperability path | LATER | LATER | FOLKOOP outcome integrity/versioned adapters may help, but no need now. |
 | 99 | Plugin architecture | ✅ current developer API | — | LATER | LATER | Powerful for organizations, but large complexity cost. |
 | 100 | Co-op Cloud deployment path | ✅ | — | LATER | OPTIONAL | Relevant if FOLKOOP adopts self-hosted cooperative deployments. |
 | 101 | Hosted public instance | ✅ | ✅ hosted pilot | KEEP | NOW | Low-friction access is still necessary. |
@@ -408,7 +408,7 @@ This is a strong model for a future physical FOLKOOP Center.
 
 Karrot treats action history as a core transparency mechanism.
 
-FOLKOOP should preserve this, while adding SDCF's stricter outcome/evidence semantics.
+FOLKOOP should preserve this, while adding FOLKOOP outcome integrity's stricter outcome/evidence semantics.
 
 ## 5. Public-to-private activity funnel
 
@@ -582,7 +582,7 @@ If pilot evidence justifies it, a future FOLKOOP architecture could become:
 ↓
 **Outcome confirmation**
 ↓
-**SDCF evidence classification**
+**FOLKOOP outcome integrity evidence classification**
 ↓
 **Cooperation history**
 
@@ -643,7 +643,7 @@ Add:
 - post-activity feedback;
 - bilateral outcome confirmation;
 - evidence qualifier;
-- SDCF provenance.
+- FOLKOOP outcome integrity provenance.
 
 ---
 
@@ -676,7 +676,7 @@ It can learn:
 
 - **community/network topology from Hylo**;
 - **physical operations from Karrot**;
-- while preserving **intent-first cooperation + City + Projects + Shared Purchase + FOLKOOP guide + SDCF** as its own architecture.
+- while preserving **intent-first cooperation + City + Projects + Shared Purchase + FOLKOOP guide + FOLKOOP outcome integrity** as its own architecture.
 
 ---
 

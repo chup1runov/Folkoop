@@ -26,7 +26,7 @@ FOLKOOP:
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
 - `docs/COOPERATION_V018.md`
 - `docs/COOPERATIVE_ORGANIZATION_STRATEGY_20260929.md`
-- `docs/architecture/SDCF_BRIDGE.md`
+- `docs/architecture/OUTCOME_INTEGRITY.md`
 - previous competitor deep dives.
 
 ---
@@ -176,7 +176,7 @@ over:
 | 25 | Route answer to neighbor | ✅ | 🟡 People/Need | ADAPT | POST-PILOT | Strong matching use case. |
 | 26 | Route answer to Group | ✅ | 🟡 Communities | ADAPT | POST-PILOT | Good for intent-to-community routing. |
 | 27 | Summarize years of local conversations | ✅ | — | LATER | LATER | Powerful moat only after scale. |
-| 28 | Explain why/source of recommendation | 🟡 summary/recommendation basis | ✅ SDCF philosophy | KEEP/EXPAND | LATER | FOLKOOP should be more explicit about provenance. |
+| 28 | Explain why/source of recommendation | 🟡 summary/recommendation basis | ✅ FOLKOOP outcome integrity philosophy | KEEP/EXPAND | LATER | FOLKOOP should be more explicit about provenance. |
 | 29 | Ask becomes primary local-search interface | ✅ direction | 🟡 FOLKOOP guide future | ADAPT strategically | LATER | FOLKOOP guide could route intent across people/city/projects, not only content. |
 | 30 | AI response when no human replied | ✅ | — | LATER | LATER | Useful but must not fabricate local knowledge. |
 
@@ -352,7 +352,7 @@ That is a much more action-oriented direction.
 | 105 | Route to person/group/business | ✅ | 🟡 architecture | ADAPT |
 | 106 | Route to Project/Task/Need/Offer | — | ✅ possible graph | KEEP DIFFERENTIATION |
 | 107 | Route to official civic action | 🟡 public agencies/news | ✅ City architecture | KEEP |
-| 108 | Provenance/evidence explicit | 🟡 | ✅ SDCF direction | KEEP |
+| 108 | Provenance/evidence explicit | 🟡 | ✅ FOLKOOP outcome integrity direction | KEEP |
 | 109 | Persistent embodied visual guide | — | ✅ FOLKOOP guide | KEEP |
 | 110 | Optimize answer for next action, not engagement | 🟡 | ✅ intended | KEEP |
 
@@ -483,7 +483,7 @@ Future Center + Karrot-inspired Activity/Place can turn the network into real in
 
 Human interface to cooperation graph, not only AI local search.
 
-## 8. SDCF
+## 8. FOLKOOP outcome integrity
 
 Explicit provenance/outcome integrity beyond conversational consensus.
 
@@ -644,7 +644,7 @@ The strongest City concept becomes a combination of lessons:
 - external service discovery;
 - related people/projects/resources;
 - action-first next step;
-- provenance through SDCF.
+- provenance through FOLKOOP outcome integrity.
 
 Future City could answer:
 

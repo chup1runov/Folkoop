@@ -12,7 +12,7 @@
       "folkoop": "fk_cooperations",
       "meaning": "Intent-bearing cooperation workspace and lifecycle context.",
       "mapping": "contextual",
-      "note": "A cooperation row is not identical to any single SDCF class; its kind, description and lifecycle determine which SDCF roles are relevant.",
+      "note": "A cooperation row is not identical to any single integrity role; its kind, description and lifecycle determine which integrity roles are relevant.",
       "integrityRoles": [
         "SystemScope",
         "Objective",
