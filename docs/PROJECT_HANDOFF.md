@@ -29,7 +29,7 @@ Permanent product rule:
 See:
 - `docs/PRODUCT_DECISION_POLICY.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
-- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
+- `docs/research/competitors/2026-09-29/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md`
 
 Earlier standalone component identities are historical only. Current modules such as City, Center and the FOLKOOP guide are parts of FOLKOOP, not separate products.
 
@@ -223,7 +223,7 @@ Start with:
 - `docs/PRODUCT_CONCEPT.md` — canonical Product Concept v2.0;
 - `docs/PRODUCT_DECISION_POLICY.md` — permanent feature gate;
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md` — first real product test;
-- `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md` — post-pilot architecture/branching roadmap;
+- `docs/research/competitors/2026-09-29/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md` — post-pilot architecture/branching roadmap;
 - `docs/PRE_PILOT_AUTH_READINESS.md` — exact remaining Auth gate;
 - `docs/AUTH_GOOGLE_PILOT.md` — Google setup;
 - `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` — two-account technical run;

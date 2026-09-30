@@ -18,7 +18,7 @@ FOLKOOP:
 - `docs/PRODUCT_CONCEPT.md`
 - `docs/PRODUCT_DECISION_POLICY.md`
 - `docs/GOTEBORG_CORE_LOOP_PILOT.md`
-- `docs/COOPERATION_V018.md`
+- `docs/history/releases/COOPERATION_V018.md`
 - `docs/PROJECT_HANDOFF.md`
 - `docs/architecture/OUTCOME_INTEGRITY.md`
 
