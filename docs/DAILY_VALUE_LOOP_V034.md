@@ -218,7 +218,7 @@ Only after pilot evidence:
    - skills/topics/areas chosen by the participant;
    - transparent reason why an opportunity was shown.
 
-5. **Positive Mura celebration**
+5. **Positive FOLKOOP guide celebration**
    - small animation for a truthful cooperation milestone;
    - never interrupt urgent work;
    - never cover controls;
