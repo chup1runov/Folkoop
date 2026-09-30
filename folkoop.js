@@ -10,9 +10,10 @@ let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=nu
 const NAV_ORDER=['me','home','messages','people','communities','together','projects','city','center','settings','about'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
+const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
  {id:'me',route:'me',target:'#nav a[href="#/me"]',motion:'point',pose:'point'},
@@ -138,6 +139,52 @@ const tutorialTitles={
  ru:{welcome:'Добро пожаловать в FOLKOOP',quick:'Четыре быстрых действия',language:'Язык',helper:'FOLKOOP guide · помощник FOLKOOP'},
  sv:{welcome:'Välkommen till FOLKOOP',quick:'Fyra snabba sätt att börja',language:'Språk',helper:'FOLKOOP guide-hjälp'}
 };
+const entryCopy={
+ en:{title:'How do you want to enter?',body:'Sign in to participate, or explore the whole product in read-only guest mode.',email:'Continue with email',guest:'Explore as guest',guestNote:'Guest mode uses sample data. You can browse every main area, but creating, joining, sending and changing data requires a full account.',back:'Back to language'},
+ ru:{title:'Как хочешь войти?',body:'Войди, чтобы участвовать, или посмотри весь FOLKOOP в гостевом режиме.',email:'Войти по почте',guest:'Посмотреть как гость',guestNote:'В гостевом режиме используются демонстрационные данные. Можно открыть все основные разделы, но создавать, вступать, отправлять и менять данные можно только после полного входа.',back:'Назад к языку'},
+ sv:{title:'Hur vill du gå in?',body:'Logga in för att delta, eller utforska hela FOLKOOP i skrivskyddat gästläge.',email:'Fortsätt med e-post',guest:'Utforska som gäst',guestNote:'Gästläget använder exempeldata. Du kan se alla huvuddelar, men skapa, gå med, skicka och ändra data kräver ett fullständigt konto.',back:'Tillbaka till språk'},
+ es:{title:'¿Cómo quieres entrar?',body:'Inicia sesión para participar o explora todo FOLKOOP en modo invitado de solo lectura.',email:'Continuar con correo',guest:'Explorar como invitado',guestNote:'El modo invitado usa datos de ejemplo. Puedes ver todas las áreas principales, pero crear, unirte, enviar o cambiar datos requiere una cuenta completa.',back:'Volver al idioma'},
+ uk:{title:'Як хочеш увійти?',body:'Увійди, щоб брати участь, або переглянь увесь FOLKOOP у гостьовому режимі лише для читання.',email:'Продовжити з e-mail',guest:'Переглянути як гість',guestNote:'Гостьовий режим використовує демонстраційні дані. Можна переглядати всі основні розділи, але створення, вступ, надсилання та зміни потребують повного акаунта.',back:'Назад до мови'},
+ fi:{title:'Miten haluat jatkaa?',body:'Kirjaudu osallistuaksesi tai tutustu koko FOLKOOPiin vain luku -vierastilassa.',email:'Jatka sähköpostilla',guest:'Tutustu vieraana',guestNote:'Vierastila käyttää esimerkkitietoja. Voit selata kaikkia pääalueita, mutta luominen, liittyminen, lähettäminen ja muuttaminen vaativat täyden tilin.',back:'Takaisin kieleen'},
+ bs:{title:'Kako želiš ući?',body:'Prijavi se da učestvuješ ili pregledaj cijeli FOLKOOP u gostujućem režimu samo za čitanje.',email:'Nastavi e-poštom',guest:'Pogledaj kao gost',guestNote:'Gostujući režim koristi primjerne podatke. Sve glavne dijelove možeš pregledati, ali kreiranje, pridruživanje, slanje i promjene traže puni račun.',back:'Nazad na jezik'},
+ ar:{title:'كيف تريد الدخول؟',body:'سجّل الدخول للمشاركة، أو استكشف FOLKOOP كاملًا في وضع ضيف للقراءة فقط.',email:'المتابعة بالبريد الإلكتروني',guest:'الاستكشاف كضيف',guestNote:'يستخدم وضع الضيف بيانات تجريبية. يمكنك تصفح كل الأقسام الرئيسية، لكن الإنشاء والانضمام والإرسال والتعديل تتطلب حسابًا كاملاً.',back:'العودة إلى اللغة'},
+ fa:{title:'چطور می‌خواهید وارد شوید؟',body:'برای مشارکت وارد شوید، یا کل FOLKOOP را در حالت مهمان فقط‌خواندنی ببینید.',email:'ادامه با ایمیل',guest:'مشاهده به‌عنوان مهمان',guestNote:'حالت مهمان از داده‌های نمونه استفاده می‌کند. همه بخش‌های اصلی قابل مشاهده‌اند، اما ساختن، پیوستن، ارسال و تغییر داده به حساب کامل نیاز دارد.',back:'بازگشت به زبان'},
+ so:{title:'Sidee rabtaa inaad u gasho?',body:'Soo gal si aad uga qaybqaadato, ama ku eeg FOLKOOP oo dhan qaab marti oo akhris-keliya.',email:'Ku sii wad iimayl',guest:'U eeg marti ahaan',guestNote:'Qaabka martidu wuxuu isticmaalaa xog tusaale ah. Qaybaha waaweyn oo dhan waad daawan kartaa, laakiin samayn, ku biirid, dirid iyo beddelid waxay u baahan yihiin akoon buuxa.',back:'Ku noqo luqadda'},
+ ku:{title:'Tu dixwazî çawa têkevî?',body:'Ji bo beşdarbûnê têkevî, an jî FOLKOOP hemû bi moda mêvanê tenê-xwendinê bibîne.',email:'Bi e-nameyê bidomîne',guest:'Wek mêvan bibîne',guestNote:'Moda mêvanê daneyên mînak bikar tîne. Tu dikarî hemû beşên sereke bibînî, lê çêkirin, tevlêbûn, şandin û guhartin hesabek tam dixwaze.',back:'Vegere ziman'}
+};
+const entrySource=()=>entryCopy[lang]||entryCopy.en;
+function ensureEntryGate(){
+ let gate=document.getElementById('folkoopEntryGate');
+ if(gate)return gate;
+ gate=document.createElement('section');
+ gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
+ gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><div class="entry-gate-actions"><button type="button" class="button" data-entry="email"></button><button type="button" class="button secondary" data-entry="guest"></button></div><p id="entryGateNote" class="meta"></p><button type="button" class="text-button entry-gate-back" data-entry="language"></button></div>';
+ document.body.append(gate);return gate;
+}
+function showEntryGate(){
+ const gate=ensureEntryGate(),x=entrySource();
+ gate.querySelector('#entryGateTitle').textContent=x.title;
+ gate.querySelector('#entryGateBody').textContent=x.body;
+ gate.querySelector('#entryGateNote').textContent=x.guestNote;
+ gate.querySelector('[data-entry="email"]').textContent=x.email;
+ gate.querySelector('[data-entry="guest"]').textContent=x.guest;
+ gate.querySelector('[data-entry="language"]').textContent=x.back;
+ gate.hidden=false;document.body.classList.add('entry-gate-open');
+ globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');
+ requestAnimationFrame(()=>gate.querySelector('[data-entry="email"]')?.focus());
+}
+function hideEntryGate(){
+ const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');
+ globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
+}
+function setEntryMode(mode){
+ try{sessionStorage.setItem(ENTRY_KEY,mode);storage?.setItem(ONBOARDING_KEY,'done');}catch{}
+ hideEntryGate();
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest'}}));
+ if(mode==='guest'){location.hash='#/home';}
+ else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
+}
 const helperCopy={
  en:{name:'FOLKOOP guide',label:'FOLKOOP helper',open:'Open FOLKOOP guide',close:'Close',tour:'Show the full introduction again',intro:'I live here to explain what this part of FOLKOOP is for.',tips:{
   me:'Fill in only what helps cooperation: a name or nickname, city, skills and a short introduction. Directory visibility remains your choice.',
@@ -335,14 +382,23 @@ window.addEventListener('folkoop:language-picked',e=>{
  if(!C.LANGS.includes(value))return;
  globalThis.FolkoopGuide?.hideLanguageGate();
  changeLanguage(value);
- setTimeout(()=>showOnboarding(0),80);
+ if(firstVisitFlow){firstVisitFlow=false;setTimeout(showEntryGate,80);}
+ else setTimeout(()=>showOnboarding(0),80);
 });
+window.addEventListener('folkoop:open-entry',()=>showEntryGate());
 window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
 window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
+ const entry=e.target.closest('[data-entry]');
+ if(entry){
+  const action=entry.dataset.entry;
+  if(action==='guest'){setEntryMode('guest');return;}
+  if(action==='email'){setEntryMode('account');return;}
+  if(action==='language'){hideEntryGate();firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+ }
  const helper=e.target.closest('[data-helper]');
  if(helper){
   const action=helper.dataset.helper;
@@ -390,7 +446,7 @@ window.addEventListener('message',e=>{
  if(C.LANGS.includes(e.data.language)&&e.data.language!==lang)changeLanguage(e.data.language);
 });
 $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!ensureEntryGate().hidden){const mode=sessionStorage.getItem(ENTRY_KEY);if(mode)hideEntryGate();return;}if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
 window.addEventListener('resize',()=>{if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
 ensureHelper();
 globalThis.FolkoopGuide?.home({instant:true});
@@ -398,18 +454,27 @@ render();
 function startFullIntroduction(){
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
- helperOpen=false;updateHelper();
+ helperOpen=false;updateHelper();firstVisitFlow=false;
  if(globalThis.FolkoopGuide){
   globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
+}
+function startFirstVisit(){
+ onboardingOpen=false;helperOpen=false;updateHelper();firstVisitFlow=true;
+ if(globalThis.FolkoopGuide)globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
+ else showEntryGate();
 }
 let onboardingDone=false,languageChosen=false;
 try{
  onboardingDone=storage?.getItem(ONBOARDING_KEY)==='done';
  languageChosen=storage?.getItem(LANGUAGE_KEY)==='done';
 }catch{}
-if(!onboardingSuppressed&&(introParam==='1'||!onboardingDone)){
- setTimeout(()=>{if(introParam==='1'||!languageChosen)startFullIntroduction();else showOnboarding(0);},120);
+let entryMode='';try{entryMode=sessionStorage.getItem(ENTRY_KEY)||'';}catch{}
+if(!onboardingSuppressed){
+ if(introParam==='1')setTimeout(startFullIntroduction,120);
+ else if(!languageChosen)setTimeout(startFirstVisit,120);
+ else if(!entryMode)setTimeout(showEntryGate,120);
+ else if(!onboardingDone)setTimeout(()=>showOnboarding(0),120);
 }
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
