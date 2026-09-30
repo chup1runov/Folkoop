@@ -5,7 +5,9 @@ const ALLOWED_MAPPINGS=new Set(['contextual','direct-role','future']);
 const REQUIRED_OUTCOME_CLASSES=new Set(['self_reported','participant_confirmed','not_completed','unclear']);
 const REQUIRED_EVIDENCE_QUALIFIERS=new Set(['participant_only','external_evidence_present']);
 
-export async function loadIntegrity(url=new URL('../docs/architecture/outcome-integrity-v1.json',import.meta.url)){
+const REPO_ROOT=new URL('../../',import.meta.url);
+
+export async function loadIntegrity(url=new URL('docs/architecture/outcome-integrity-v1.json',REPO_ROOT)){
   return JSON.parse(await readFile(url,'utf8'));
 }
 
@@ -59,14 +61,14 @@ export async function validateRepositoryBindings(profile){
   const runtime=profile?.cityProvenanceContract?.runtimeEnforcement;
   if(runtime?.path){
     try{
-      const source=await readFile(new URL('../'+runtime.path,import.meta.url),'utf8');
+      const source=await readFile(new URL(runtime.path,REPO_ROOT),'utf8');
       if(!source.includes('adapterVersion')) errors.push(`${runtime.path} does not enforce adapterVersion`);
       if(!source.includes('INVALID_FEED')) errors.push(`${runtime.path} does not fail closed on malformed feeds`);
     }catch{errors.push(`missing City runtime enforcement file: ${runtime.path}`);}
   }
   for(const adapter of profile?.cityProvenanceContract?.currentAdapters||[]){
     let source;
-    try{source=await readFile(new URL('../'+adapter.path,import.meta.url),'utf8');}
+    try{source=await readFile(new URL(adapter.path,REPO_ROOT),'utf8');}
     catch{errors.push(`missing adapter file: ${adapter.path}`);continue;}
     if(!source.includes(adapter.sourceId)) errors.push(`${adapter.path} does not contain sourceId ${adapter.sourceId}`);
     if(!source.includes(adapter.expectedAdapterVersion)) errors.push(`${adapter.path} does not contain adapterVersion ${adapter.expectedAdapterVersion}`);
@@ -74,7 +76,7 @@ export async function validateRepositoryBindings(profile){
     if(!source.includes(adapter.locator)) errors.push(`${adapter.path} does not record locator ${adapter.locator}`);
   }
   for(const ref of profile?.outcomeContract?.policyRefs||[]){
-    try{await readFile(new URL('../'+ref,import.meta.url),'utf8');}
+    try{await readFile(new URL(ref,REPO_ROOT),'utf8');}
     catch{errors.push(`missing policy reference: ${ref}`);}
   }
   return errors;

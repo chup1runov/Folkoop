@@ -29,7 +29,7 @@ jobs:
           for file in *.js; do node --check "$file"; done
           find scripts -type f -name '*.mjs' -print0 | xargs -0 -r -n1 node --check
           python -m py_compile tests/browser.py
-          node scripts/static-smoke.mjs
+          node scripts/ci/static-smoke.mjs
           node --test tests/*.test.mjs
       - name: Install pinned browser test driver
         run: python -m pip install 'playwright==1.57.0'
@@ -38,7 +38,7 @@ jobs:
       - name: Audit built asset closure
         run: node scripts/audit-built-assets.mjs
       - name: Browser interactions at actual project subpath
-        run: bash scripts/browser-smoke.sh
+        run: bash scripts/ci/browser-smoke.sh
       - name: Fetch Riksdagen once
         run: node scripts/sources/fetch-riksdagen.mjs
       - name: Fetch Gothenburg consultations once
@@ -88,7 +88,7 @@ jobs:
       - name: Build the same static site
         run: node scripts/build-site.mjs
       - name: WebKit FOLKOOP guide onboarding and geometry gate
-        run: bash scripts/webkit-smoke.sh
+        run: bash scripts/ci/webkit-smoke.sh
       - name: Retain WebKit QA evidence
         if: always()
         uses: actions/upload-artifact@v4
