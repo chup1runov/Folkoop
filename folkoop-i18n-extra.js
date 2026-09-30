@@ -3848,6 +3848,18 @@ const policyCopy={
 };
 for(const [code,copy] of Object.entries(policyCopy))Object.assign(languages[code].network.base,copy);
 
+const homeDailyCopy={
+ es:{daily:'Hoy',nextStep:'Un siguiente paso útil',caughtUp:'Estás al día. Ahora mismo nada necesita tu atención.',feedEnd:'Estás al día · el feed termina aquí.'},
+ uk:{daily:'Сьогодні',nextStep:'Один корисний наступний крок',caughtUp:'Усе переглянуто. Зараз ніщо не потребує твоєї уваги.',feedEnd:'Усе переглянуто · стрічка закінчується тут.'},
+ fi:{daily:'Tänään',nextStep:'Yksi hyödyllinen seuraava askel',caughtUp:'Olet ajan tasalla. Mikään ei tarvitse huomiotasi juuri nyt.',feedEnd:'Olet ajan tasalla · syöte päättyy tähän.'},
+ bs:{daily:'Danas',nextStep:'Jedan koristan sljedeći korak',caughtUp:'Sve je pregledano. Trenutno ništa ne traži tvoju pažnju.',feedEnd:'Sve je pregledano · sadržaj se ovdje završava.'},
+ ar:{daily:'اليوم',nextStep:'خطوة تالية مفيدة واحدة',caughtUp:'أنت على اطلاع. لا شيء يحتاج إلى انتباهك الآن.',feedEnd:'أنت على اطلاع · ينتهي الموجز هنا.'},
+ fa:{daily:'امروز',nextStep:'یک گام مفید بعدی',caughtUp:'همه‌چیز را دیده‌اید. فعلاً چیزی نیاز به توجه شما ندارد.',feedEnd:'همه‌چیز دیده شد · فید اینجا تمام می‌شود.'},
+ so:{daily:'Maanta',nextStep:'Hal tallaabo oo xigta oo waxtar leh',caughtUp:'Waad la socotaa. Hadda wax dareenkaaga u baahan ma jiraan.',feedEnd:'Waad la socotaa · quudintu halkan ayay ku dhammaanaysaa.'},
+ ku:{daily:'Îro',nextStep:'Yek gavê din ê bikêrhatî',caughtUp:'Tu gihîştî dawiyê. Niha tiştek bala te naxwaze.',feedEnd:'Tu gihîştî dawiyê · feed li vir diqede.'}
+};
+for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
+
 // LANG_BLOCKS
 globalThis.FolkoopExtraCopy = Object.freeze({languages});
 })();

@@ -1,4 +1,4 @@
-"""FOLKOOP v0.23 action-first Home browser contract.
+"""FOLKOOP v0.34 Daily Value Loop browser contract.
 Synthetic API only; no live accounts or transactions.
 """
 import asyncio,json,os,shutil
@@ -82,17 +82,28 @@ async def main():
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
   await page.evaluate("location.hash='#/home'")
+  await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
+  await expect(page.locator('.home-daily-focus')).to_contain_text('Совместные дрова')
+  await expect(page.locator('.home-daily-focus')).to_contain_text('Один полезный следующий шаг')
   await expect(page.locator('#networkPanel')).to_contain_text('Требует внимания')
   await expect(page.locator('#networkPanel')).to_contain_text('Позвонить владельцу помещения')
-  await expect(page.locator('#networkPanel')).to_contain_text('Подтверди количество в закупке')
   await expect(page.locator('#networkPanel')).to_contain_text('Непрочитанные сообщения · 3')
   await expect(page.locator('#networkPanel')).to_contain_text('Приглашения в чаты · 1')
-  passed.append('Home prioritizes tasks, purchase confirmation, messages and invitations')
+  passed.append('Daily focus promotes one real pending action while keeping the remaining obligations visible')
 
   await expect(page.locator('#networkPanel')).to_contain_text('В субботу общий субботник')
   await expect(page.locator('#networkPanel')).to_contain_text('Соседи Олофсторпа')
   await expect(page.locator('#networkPanel')).to_contain_text('Общая мастерская')
-  passed.append('Home merges community publications and cooperation activity into a bounded action feed')
+  await expect(page.locator('.home-feed-end')).to_contain_text('лента заканчивается здесь')
+  assert await page.locator('.home-feed-card').count() <= 12
+  passed.append('Home keeps a bounded social feed and explicitly tells the participant when the feed ends')
+  await page.screenshot(path=str(OUT/'folkoop-v034-daily-value-home-mobile.png'),full_page=True)
+
+  confirmations.clear();tasks.clear();chat_inbox.clear();invites.clear();activity.clear()
+  for coop in cooperations: coop['status']='done'
+  await page.click('[data-net=refresh]')
+  await expect(page.locator('.home-daily-clear')).to_contain_text('Всё просмотрено')
+  passed.append('Home provides a truthful caught-up state instead of manufacturing more urgency')
 
   await page.click('[data-home=createCoop][data-kind=project]')
   await expect(page.locator('#netCoopCreate')).to_be_visible()
@@ -105,10 +116,9 @@ async def main():
   passed.append('Home community publication opens its real community context')
 
   assert errors==[],errors
-  await page.screenshot(path=str(OUT/'folkoop-v023-home-mobile.png'),full_page=True)
   await context.close();await browser.close()
 
- OUT.joinpath('home-results.json').write_text(json.dumps({'passed':passed,'limits':['Synthetic API; not a real social feed','Home is action-first and intentionally capped instead of infinite scroll']},ensure_ascii=False,indent=2))
+ OUT.joinpath('home-results.json').write_text(json.dumps({'passed':passed,'limits':['Synthetic API; not a real social feed','Home is action-first, daily-value focused and intentionally capped instead of infinite scroll']},ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
 asyncio.run(main())

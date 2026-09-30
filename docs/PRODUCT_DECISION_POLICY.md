@@ -127,6 +127,30 @@ When compactness conflicts with safety, privacy, accessibility or informed choic
 the required information stays; solve the conflict with hierarchy, sequencing and
 spacing rather than omission.
 
+## Daily-return rule — value, not compulsion
+
+FOLKOOP may deliberately help participants remember and resume useful cooperation,
+but it must not optimize for compulsive checking.
+
+Daily-return mechanics must follow these rules:
+
+- prioritize a real pending action, commitment, message or cooperation before
+  generic content;
+- show a bounded feed with an explicit end rather than infinite scroll;
+- celebrate real cooperation progress or outcomes, not mere app opens;
+- do not use streak loss, countdown pressure, fake scarcity or random rewards to
+  punish absence;
+- do not manufacture unread counts, waiting people, popularity or urgency;
+- notification/reminder systems must be controllable and proportionate;
+- personalization should prefer transparent signals such as the participant's
+  active cooperation, unread shared activity and explicit interests;
+- any future algorithmic ranking must preserve user control and be tested for
+  usefulness, not only for time spent or DAU.
+
+The desired habit is:
+
+**notice a useful next step -> act -> leave when caught up -> return when there is new value.**
+
 ## Outcome integrity
 
 Product metrics must not convert internal UI events into stronger claims than the evidence supports.

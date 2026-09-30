@@ -2,7 +2,7 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-## Current pilot state — v0.33.0
+## Current pilot state — v0.34.0
 
 Navigation: **Profile · Home · Messages · People · Communities · Together · Projects · City · Center · Settings · About**. City displays the user-selected city when available.
 
@@ -10,7 +10,7 @@ Implemented:
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
 - language-first onboarding with the FOLKOOP guide, authored left/right/up/down pointing poses, sit-edge body artwork, spotlight tour and replay from Settings;
-- signed-in Home dashboard that prioritizes pending actions, active cooperation and a bounded shared-activity feed rather than infinite scrolling;
+- signed-in Home dashboard with a Daily Value Loop: one truthful next step first, remaining obligations second, active cooperation ordered by unread activity/recency, and an explicitly finite shared feed rather than infinite scrolling;
 - server-backed pilot profile and opt-in directory;
 - invite-only network admission after Auth verification; first admission requires explicit versioned Pilot Terms acceptance and Privacy Notice acknowledgement recorded server-side; sign-in uses progressive disclosure so the first screen stays compact; plaintext invite codes are never stored in the database;
 - Google OAuth browser scaffold is implemented but disabled by configuration until provider credentials and a two-account hosted test are complete;
@@ -38,7 +38,7 @@ All eleven existing City languages remain. Navigation has eleven languages; deta
 
 `npm test` runs deterministic tests. `bash scripts/browser-smoke.sh` runs unchanged legacy City assertions at the relocated entry point plus the new shell browser suite. GitHub Actions must pass before a release is described as published.
 
-Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md` for the evidence-routed post-pilot roadmap, `docs/architecture/OUTCOME_INTEGRITY.md` for the non-runtime outcome/provenance integrity contract, then `docs/PROJECT_HANDOFF.md` for the current implementation state. `docs/UNIFICATION.md` records the single-product identity. Historical predecessor material remains available through Git history and private archives, not as current product files. `docs/COOPERATIVE_NETWORK_SOURCE_RESEARCH.md` separates source-supported cooperative-network ideas from FOLKOOP design choices. Historic requirements remain requirements only where a later current decision has not superseded them.
+Start with `docs/PRODUCT_CONCEPT.md` for the product thesis, `docs/DAILY_VALUE_LOOP_V034.md` for the ethical daily-return design, `docs/PRODUCT_DECISION_POLICY.md` for the permanent feature gate, `docs/GOTEBORG_CORE_LOOP_PILOT.md` for the first real-world product test, `docs/COMPETITOR_SYNTHESIS_MASTER_ROADMAP_20260929.md` for the evidence-routed post-pilot roadmap, `docs/architecture/OUTCOME_INTEGRITY.md` for the non-runtime outcome/provenance integrity contract, then `docs/PROJECT_HANDOFF.md` for the current implementation state. `docs/UNIFICATION.md` records the single-product identity. Historical predecessor material remains available through Git history and private archives, not as current product files. `docs/COOPERATIVE_NETWORK_SOURCE_RESEARCH.md` separates source-supported cooperative-network ideas from FOLKOOP design choices. Historic requirements remain requirements only where a later current decision has not superseded them.
 
 ## Identity and rights
 
