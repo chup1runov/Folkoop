@@ -135,9 +135,24 @@ async def main():
   await context.route('**/*',routing)
   page=await context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#/me')
+  await page.screenshot(path=str(OUT/'pilot-login-step1-mobile.png'),full_page=True)
+  assert await page.locator('#workspace').is_hidden()
+  await expect(page.locator('[data-net=localGuest]')).to_be_visible()
+  assert await page.locator('.folkoop-guide-actor:not(.is-tour)').is_hidden()
+  assert await page.locator('#netLogin [name=code]').count()==0
+  assert await page.locator('#netLogin [name=inviteCode]').count()==0
+  assert await page.locator('#netLogin [name=policyAccepted]').count()==0
+  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+  passed.append('First login step stays compact: email only; local profile is separate and the guide does not cover Auth')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.click('#netLogin [value=code]')
-  await expect(page.locator('#netStatus')).to_contain_text('Если адрес разрешён')
+  await expect(page.locator('#netStatus')).to_contain_text('одноразовый код отправлен')
+  await page.screenshot(path=str(OUT/'pilot-login-step2-mobile.png'),full_page=True)
+  await expect(page.locator('#netLogin [name=code]')).to_be_visible()
+  await expect(page.locator('#netLogin [name=inviteCode]')).to_be_visible()
+  await expect(page.locator('#netLogin [name=policyAccepted]')).to_be_visible()
+  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+  passed.append('Second login step reveals only OTP, first-entry invite and policy acceptance')
   assert state['requests'][0][1]['create_user'] is True
   await page.fill('#netLogin [name=code]','123456')
   await page.fill('#netLogin [name=inviteCode]','FOLK-TEST-INVITE-01')
