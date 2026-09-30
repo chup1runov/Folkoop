@@ -1,4 +1,4 @@
-"""FOLKOOP v0.23 action-first Home browser contract.
+"""FOLKOOP v0.34 Daily Value Loop browser contract.
 Synthetic API only; no live accounts or transactions.
 """
 import asyncio,json,os,shutil
@@ -97,6 +97,13 @@ async def main():
   await expect(page.locator('.home-feed-end')).to_contain_text('лента заканчивается здесь')
   assert await page.locator('.home-feed-card').count() <= 12
   passed.append('Home keeps a bounded social feed and explicitly tells the participant when the feed ends')
+  await page.screenshot(path=str(OUT/'folkoop-v034-daily-value-home-mobile.png'),full_page=True)
+
+  confirmations.clear();tasks.clear();chat_inbox.clear();invites.clear();activity.clear()
+  for coop in cooperations: coop['status']='done'
+  await page.click('[data-net=refresh]')
+  await expect(page.locator('.home-daily-clear')).to_contain_text('Всё просмотрено')
+  passed.append('Home provides a truthful caught-up state instead of manufacturing more urgency')
 
   await page.click('[data-home=createCoop][data-kind=project]')
   await expect(page.locator('#netCoopCreate')).to_be_visible()
@@ -109,7 +116,6 @@ async def main():
   passed.append('Home community publication opens its real community context')
 
   assert errors==[],errors
-  await page.screenshot(path=str(OUT/'folkoop-v034-daily-value-home-mobile.png'),full_page=True)
   await context.close();await browser.close()
 
  OUT.joinpath('home-results.json').write_text(json.dumps({'passed':passed,'limits':['Synthetic API; not a real social feed','Home is action-first, daily-value focused and intentionally capped instead of infinite scroll']},ensure_ascii=False,indent=2))
