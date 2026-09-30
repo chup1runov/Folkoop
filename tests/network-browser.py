@@ -272,7 +272,7 @@ async def main():
   assert any(url.endswith('/fk_set_purchase_commitment') for url,_ in state['requests'])
   assert any(url.endswith('/fk_create_project_task') for url,_ in state['requests'])
   passed.append('Projects create a shared project and server-backed task')
-  await page.click('#messageLink')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await page.select_option('#netDirect [name=other]',OTHER)
   await page.click('#netDirect button')
