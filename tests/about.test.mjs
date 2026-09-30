@@ -37,7 +37,7 @@ test('about: activities and finance remain plans, not a launched rewards service
  assert(A.COPY.ru.purpose.includes('ещё не'));
 });
 test('about: copy loads before renderer and is included in offline shell/build',async()=>{
- const [html,build,sw]=await Promise.all(['index.html','scripts/build-site.mjs','sw.js'].map(f=>readFile(f,'utf8')));
+ const [html,build,sw]=await Promise.all(['index.html','scripts/build/build-site.mjs','sw.js'].map(f=>readFile(f,'utf8')));
  for(const f of ['about-copy.js','about-project.js','about-project.css']){assert(html.includes(f));assert(build.includes(f));assert(sw.includes(f));}
  assert(html.indexOf('./about-copy.js')<html.indexOf('./about-project.js'));
  assert(script.includes("stack.querySelector('.about-meta a')?.remove()"));
