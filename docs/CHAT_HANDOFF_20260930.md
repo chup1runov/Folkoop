@@ -1,111 +1,191 @@
-# FOLKOOP — chat handoff snapshot — 30 September 2026
+# FOLKOOP — DELETE-READY MASTER CHAT HANDOFF — 30 September 2026
 
-This document preserves the project-relevant decisions and implementation state
-from the 30 September 2026 product/UX working session.
+Purpose: preserve the project-relevant decisions, implementation history, current GitHub state, product strategy and exact continuation order from the ChatGPT working thread before the thread is deleted.
 
-It is intentionally a structured handoff rather than a raw conversation archive.
-Private strategy details are mirrored separately in the project's private Box workspace.
+This is a structured handoff, not a raw transcript. It intentionally excludes secrets and real participant PII.
 
-## Product direction preserved
+## 1. Canonical identity and product thesis
 
-FOLKOOP is one product/brand.
+Current product/brand: **FOLKOOP** only.
 
-Core cooperation loop:
+Older names such as FOLKUNO/Sverinav are historical source context only and must not reappear as current product brands.
+
+Repository:
+`chup1runov/Folkoop`
+
+Production:
+`https://chup1runov.github.io/Folkoop/`
+
+Canonical cooperation loop:
 
 **Intent -> Match -> Commit -> Coordinate -> Act -> Outcome -> Repeat**
 
-Current product principle:
+Long-term category ambition:
+a cooperation operating system for real life — a network that helps people find the people, skills, resources, places, organizations and civic routes needed to do useful things together.
 
-**compact, calm, friendly, mobile-first, progressive disclosure**
+Current strategic rule:
 
-Daily-return principle:
+**Göteborg core-loop first. Feature breadth later.**
 
-**value, not compulsion**
+Permanent UX direction:
 
-FOLKOOP should feel familiar enough to a social-app user while avoiding:
+**compact, calm, friendly, mobile-first, progressive disclosure.**
+
+Permanent daily-return rule:
+
+**value, not compulsion.**
+
+Do not optimize FOLKOOP for:
 - infinite scroll;
 - generic app-open streaks;
-- fake FOMO or fake urgency;
-- fabricated popularity/unread states;
-- unsupported outcome/savings claims;
-- notification spam.
+- fake FOMO/scarcity/urgency;
+- fabricated unread/popularity;
+- notification spam;
+- time-spent maximization;
+- unsupported claims about guaranteed savings, friendship, work, meaning or outcomes.
 
-The desired habit is:
+Desired habit:
+
 **notice useful value -> take a real action -> get caught up -> leave -> return when there is new value.**
 
-## Completed releases in this session
+## 2. Current production state
 
-### v0.33 — compact pilot sign-in — merged
+Current `main`:
+`b6fa42c2326ba51b0d034d4bc3e42bb0505328da`
 
-PR #76.
+Current package version on main:
+**v0.36.0**
 
-Key result:
-the unauthenticated path uses progressive disclosure and keeps legal/policy
-information available without turning the first screen into a compliance form.
+Latest confirmed production workflows for current main:
+- Validate and deploy FOLKOOP: run `36754824298` — **SUCCESS**
+- Network authorization tests: run `36754824365` — **SUCCESS**
 
-### v0.34 — Daily Value Loop — merged
+Therefore v0.36 is confirmed deployed.
 
-PR #78.
+## 3. Completed releases and major work from this thread
 
-Home now:
-- promotes one useful next step first;
-- prioritizes real commitments/messages/tasks;
-- sorts active cooperation by unread activity and recency;
-- uses a bounded shared feed;
-- provides explicit caught-up/end-of-feed states.
+### v0.33 — compact pilot sign-in — DONE
+
+PR #76 — merged.
+
+Delivered:
+- compact first sign-in step;
+- OTP/invite/policy shown progressively;
+- local workspace separated from Auth;
+- no preselected consent;
+- Terms/Privacy remain available without dominating first screen;
+- guide hidden on Auth surface;
+- persistent product rule: compact/calm/friendly.
+
+### v0.34 — Daily Value Loop — DONE
+
+PR #78 — merged.
+
+Home:
+- exactly one useful next step first;
+- deterministic priority:
+  1. pending purchase confirmation;
+  2. assigned unfinished task;
+  3. unread message;
+  4. chat invitation;
+  5. unread cooperation activity;
+  6. otherwise most relevant active cooperation;
+- active cooperation ordered by unread activity then recency;
+- feed capped at 12;
+- explicit caught-up state;
+- explicit end-of-feed;
+- no behavioural AI ranking;
+- no streak;
+- no new analytics/personal-data category.
 
 Research/decision record:
 `docs/DAILY_VALUE_LOOP_V034.md`
 
-### v0.35 — Guest Preview — merged
+### v0.35 — Guest Preview — DONE
 
-PR #79.
+PR #79 — merged.
 
 First entry:
 **Language -> Email sign-in or Guest preview**
 
-Guest mode:
-- uses real FOLKOOP network renderers;
-- uses local clearly-labelled synthetic data;
-- allows broad read-only inspection;
-- makes no guest Supabase request;
-- keeps mutations behind full sign-in;
-- never presents sample people/activity as real network state.
+Guest:
+- uses real network renderers;
+- local clearly-labelled synthetic data;
+- broad read-only inspection;
+- no guest Supabase request;
+- no server mutation;
+- mutation forms hidden rather than shown disabled;
+- a blocked mutation routes to sign-in.
 
-### v0.36 — value-first first session — merged
+Truth rule:
+sample people/activity/demand/outcomes must never be presented as real.
 
-PR #86.
+### v0.36 — value-first first session — DONE / DEPLOYED
 
-Merge commit:
-`3943df70c388a7becc83761cb29350a34b4ebfb1`
+PR #86 — merged.
 
 Delivered:
-- fixed first-run onboarding being marked complete too early;
-- replaced 14 module-oriented steps with 8 benefit-led steps;
-- translated the value tour across all supported UI languages;
-- updated stale People/Together/Projects/City/Center copy;
-- localized RU/SV demo content;
-- added locale-aware timestamps;
-- reduced internal enum leakage;
-- reduced normal guide footprint;
-- made navigation/action hierarchy denser.
+- fixed bug where choosing Guest/Email could mark onboarding complete before the tour;
+- 14 module-oriented steps -> 8 benefit-led steps;
+- first real account gets same value tour;
+- tour translated across all 11 supported UI languages;
+- stale People/Together/Projects/City/Center copy corrected;
+- RU/SV demo content localized;
+- locale-aware dates;
+- internal enum leakage reduced;
+- normal guide footprint reduced;
+- action-first navigation hierarchy;
+- secondary Home cards denser.
 
 Audit:
 `docs/UX_PRODUCT_AUDIT_20260930.md`
 
-At this snapshot the post-merge production deployment for v0.36 was still
-running. Do not treat deployment as confirmed until the main workflow succeeds.
+### Chat continuity preservation — DONE
 
-## Open UX stack
+PR #100 — merged.
 
-### Planned v0.37 — mobile social-app navigation
+Added:
+`docs/CHAT_HANDOFF_20260930.md`
 
-PR #97:
-`UX: mobile bottom navigation and contextual second row`
+`docs/PROJECT_HANDOFF.md` links to it.
 
-Current design:
+### Repository/tooling organization — DONE
 
-Primary mobile bar:
+PR #99 — merged.
+
+Current scripts are grouped by responsibility, including:
+- `scripts/build/`
+- `scripts/auth/`
+- `scripts/ci/`
+
+Package commands currently include:
+- `npm run build`
+- `npm test`
+- `npm run auth:preflight`
+- `npm run auth:require-provider`
+- `npm run auth:require-google`
+- `npm run audit:built-assets`
+
+## 4. Current UX work still open
+
+### v0.37 — mobile social-app navigation — OPEN / CI BLOCKED
+
+Canonical current PR:
+**#101 — UX: mobile bottom navigation on current main**
+
+Branch:
+`ux/mobile-bottom-navigation-v037-current`
+
+Head:
+`80c3da522d2dc309931936295b2752ca9cb11ec4`
+
+Base:
+current main.
+
+This PR supersedes stale PR #97. PR #97 was closed unmerged and should not be resumed.
+
+Design:
+primary mobile bottom bar:
 - Home
 - Together
 - Projects
@@ -118,29 +198,62 @@ Contextual second row:
 - City -> City / Center
 - Profile -> Profile / Settings / About / Language
 
-Additional behavior:
-- desktop keeps the full sidebar;
-- large page DEMO banner becomes a compact expandable bottom DEMO chip;
-- Center is visually part of the City/local context;
-- while no real Center exists, it points to real People/Communities;
-- the FOLKOOP guide docks above mobile bars;
-- normal idle animation is slightly more playful.
+Guest:
+- large page DEMO banner removed;
+- compact bottom DEMO chip;
+- tap -> explanation + sign-in CTA.
 
-At this snapshot:
-- Network authorization tests are green;
-- application CI is running;
-- merge only after full CI + visual QA are green.
+Center:
+- visually belongs under City/local context;
+- no fake Center chat or venue;
+- until a real Center exists, route to existing People/Communities.
 
-### Planned v0.38 — summary-first Project/Together details
+Guide:
+- small while browsing;
+- large authored poses during onboarding;
+- slightly more playful idle motion;
+- docked above mobile bars.
 
-PR #98:
-`UX: summary-first projects and collapsible cooperation details`
+Current PR #101 CI:
+- Network authorization tests run `36755337561` — **SUCCESS**
+- Validate/deploy PR run `36755337516` — **FAILURE**
 
-Goal:
-reduce vertical overload without removing existing functionality.
+Known blockers from the failed run:
 
-First screen should emphasize:
-- goal/title;
+1. Chromium/browser contract:
+`tests/network-browser.py` still clicks top `#messageLink` in a mobile state where top actions are intentionally hidden by the new bottom navigation.
+Result: Playwright timeout because `#messageLink` is not visible.
+
+Fix direction:
+update the test/action path to use the visible bottom Messages destination or route directly; do not restore the hidden top control just to satisfy an old test.
+
+2. WebKit onboarding geometry:
+last value-tour step "Начни с одной реальной вещи" targets the quick-grid far below the viewport after the bottom-nav reorganization.
+The current sit-edge geometry assertion sees target y around 2009 while guide seat is around 774.
+
+Fix direction:
+make the tour scroll/position the final quick-grid target into the safe visible region before seat geometry is asserted, or revise the placement logic/test consistently. Preserve the no-overlap/accessibility contract.
+
+Do one focused fix pass, re-run CI once, inspect mobile QA, then merge only when green.
+
+### v0.38 — summary-first Project/Together details — NOT MERGED
+
+Old PR:
+**#98 — UX: summary-first projects and collapsible cooperation details**
+
+PR #98 is **closed, not merged**.
+
+Preserved branch:
+`ux/summary-first-details-v038`
+
+Current branch head:
+`4b889a2b4b8541243cdb0e25cea5e8e8bf05e63a`
+
+The branch currently diverges from main and must not be merged directly.
+
+Preserved intended behavior:
+first view shows:
+- goal/title and description;
 - status/place;
 - participant count;
 - task/progress summary;
@@ -153,18 +266,46 @@ Expandable detail:
 - tasks;
 - updates/history;
 - supplier offers;
-- purchase progress/lifecycle;
-- owner management/destructive controls.
+- purchase commitments/lifecycle;
+- owner edit/destructive controls.
 
-At this snapshot PR #98 is not ready to merge because its stacked base advanced
-and its current state has not completed CI. Restack/update it after #97 is final.
+Existing branch/old PR already contains the beginning of:
+- summary card/stats;
+- next-step callout;
+- native `details/summary` disclosure structure;
+- compact detail styling/tests.
 
-## First-session narrative decision
+Continuation:
+after #101 is merged, create a clean current-main v0.38 branch and port/reconcile the useful summary-first changes from `ux/summary-first-details-v038`; then full CI + mobile QA.
 
-Do not teach the user "cooperative", "blockchain", "decentralization" or similar
-technical/organizational vocabulary first.
+Do not reopen/merge old PR #98 as-is.
 
-Default message:
+## 5. Other open GitHub work
+
+Open Dependabot PRs:
+- #91 — actions/checkout 6 -> 7
+- #92 — actions/upload-pages-artifact 4 -> 5
+- #93 — actions/deploy-pages 4 -> 5
+
+Keep separate from the UX stack.
+
+Open project issues of note:
+- #59 — reserve FOLKOOP name across domains/social/developer namespaces
+- #83 — manual Google OAuth provider setup
+
+Closed security issue:
+- #68 — private-table RLS defense-in-depth review
+
+## 6. First-session product narrative
+
+Do NOT teach these first:
+- cooperative;
+- blockchain;
+- decentralization;
+- collective ownership;
+- solidarity economy.
+
+Default hook:
 
 > **Не всё нужно делать одному.**
 
@@ -175,7 +316,7 @@ Then:
 
 > **FOLKOOP делает это видимым.**
 
-Core brand line:
+Brand line:
 
 > **Не больше контента. Больше возможностей вокруг тебя.**
 
@@ -185,6 +326,22 @@ Youth/creator line:
 
 > **Не ищи аудиторию. Найди людей, с которыми можно что-то сделать.**
 
+Social/brand line:
+
+> **Социальная сеть, после которой что-то происходит в реальной жизни.**
+
+Sharper cultural framing accepted:
+
+> **Современная жизнь очень хорошо научила нас жить параллельно: работа, покупки, экран, дом.**
+
+> **FOLKOOP возвращает слой совместного действия.**
+
+Rejected as official onboarding:
+"элите выгодно раздробить общество"
+
+Reason:
+unsupported motive attribution, political/conspiracy framing risk, and weaker first-value communication.
+
 Recommended first intent choices:
 - Мне нужно
 - Я могу помочь
@@ -193,55 +350,70 @@ Recommended first intent choices:
 - Купить вместе
 - Просто посмотреть
 
-Avoid using "элите выгодно раздробить общество" as the official onboarding
-hook: it is an unsupported motive claim, politically polarizing and weaker than
-a direct value proposition.
+Private strategy detail is stored in Box.
 
-A sharper but evidence-compatible alternative:
+## 7. Joint-purchase / Sweden research conclusion
 
-> **Современная жизнь очень хорошо научила нас жить параллельно: работа, покупки, экран, дом.**
+Do not claim:
+"neighbourhood buying is always cheaper than ICA/Willys/Lidl."
 
-> **FOLKOOP возвращает слой совместного действия.**
-
-## Joint-purchase / Sweden conclusion
-
-Product rule:
-**group buying can be cheaper, but not automatically.**
-
-FOLKOOP must not promise that neighborhood buying always beats ICA/Willys/Lidl.
+Conclusion:
+**sometimes cheaper, not automatically.**
 
 Future Joint Purchase should compare:
-- reference unit price;
-- supplier/group unit price;
+- realistic reference unit price;
+- group/supplier unit price;
 - delivery/fees;
 - allocated final cost per participant;
-- SEK savings;
-- percentage savings;
-- minimum group quantity for positive savings.
+- SEK saved;
+- percentage saved;
+- minimum group quantity for positive savings;
+- waste/storage risk where relevant.
 
-If there is no real advantage, the product should say so.
+If there is no real advantage, say so.
 
-Private research supporting this conclusion is preserved in the strategy archive.
+Good candidate categories often include:
+- fixed-delivery/bulk goods;
+- firewood/pellets;
+- household consumables;
+- producer boxes;
+- freezer/meat boxes;
+- seasonal produce;
+- tools/materials;
+- shared resources that avoid duplicate purchases.
 
-## City decision
+Weak candidates often include:
+- small everyday baskets;
+- supermarket promotion items;
+- perishables with high waste;
+- categories where transport/handling removes the discount.
 
-City is a module inside FOLKOOP, not a separate product.
+REKO is a useful Swedish proof of direct local producer-consumer coordination, but not proof that every REKO purchase is cheaper.
 
-It should:
-- surface connected official local sources;
-- help users find the correct civic route;
-- remain source-first;
-- never pretend to be the authority.
+## 8. City
 
-Longer-term City can add local events/opportunities/services only when reliable
-sources and pilot evidence support them.
+City is a module/mini-project inside FOLKOOP, not a separate product.
 
-## Center decision
+Purpose:
+- source-first official local information;
+- civic routes/handoffs;
+- local opportunities/services;
+- reduce the need to know which authority/site to search first.
 
-Center belongs under the local/City context.
+Current Göteborg logic remains.
+
+Future:
+events/opportunities/local activity can be added only with reliable source/evidence.
+
+Visual task still open:
+embedded City should feel visually inside FOLKOOP rather than like a separate legacy app.
+
+## 9. Center
+
+Center belongs under City/local context.
 
 Long-term ambition:
-a physical FOLKOOP node in participating cities if the model proves useful.
+a physical FOLKOOP node in sufficiently large participating cities if the model proves useful.
 
 Potential roles:
 - meet people;
@@ -250,83 +422,299 @@ Potential roles:
 - learning;
 - shared tools/equipment;
 - activities;
-- local project support.
+- local project support;
+- bridge from online cooperation to real life.
 
 Truth rule:
-no venue, inventory or program may be presented as operating unless it really exists.
+do not claim an operating venue, inventory or program unless it exists.
 
 Current state:
 **no open FOLKOOP Center exists yet.**
 
-## FOLKOOP guide
+Do not fabricate a Center chat.
+Until a real Center-specific community/chat exists, route people toward real People/Communities.
+
+Historical FOLKUNO physical-node source remains useful as long-term research, not current branding or current commitments.
+
+Historical/long-term ideas preserved from that source include:
+- Library of Things;
+- Repair & Reuse;
+- Studio;
+- Community Kitchen;
+- Accessibility Lab;
+- Resilience Lab;
+- Civic Lab;
+- micro-volunteering;
+- Study Commons;
+- partner hours;
+- City Challenges;
+- community assembly;
+- impact wall;
+- possible contribution credits;
+- small-project Spark Fund;
+- Node / Inside / Pop-up physical formats.
+
+These are future research/backlog, not pre-pilot scope.
+
+## 10. FOLKOOP guide
 
 The guide is a deterministic local helper, not a runtime AI agent.
 
 Desired behavior:
-- expressive during onboarding;
+- expressive/playful during onboarding;
 - smaller while browsing;
-- slightly playful idle animation;
-- never covers critical controls/legal/status content;
+- slightly more animation, but not distracting;
+- never cover controls/legal/status/unread;
+- replayable;
 - reduced-motion respected.
 
-## Security/privacy/auth baseline
+Real-device visual acceptance remains open.
 
-Keep the existing pre-pilot security model:
-- versioned Terms/Privacy acceptance;
-- RLS and reviewed RPC boundaries;
+## 11. Privacy/security/backend baseline
+
+Supabase project:
+`cwvhkdqsrbllsykhccmb`
+
+Region:
+`eu-north-1` (Stockholm)
+
+Current policy:
+zero-cost infrastructure unless separately approved.
+
+Completed:
+- account lifecycle hardening;
+- versioned Pilot Terms/Privacy acceptance;
+- privacy decision pack/runbooks;
+- processor/DPA review;
 - account-closure runbook;
 - OAuth callback hardening;
-- no real participant PII in Box.
+- private-table RLS defense-in-depth;
+- SECURITY DEFINER surface audit;
+- browser writes through reviewed RPCs;
+- public application tables with RLS.
 
-Google OAuth remains the true external pre-pilot gate.
+Important:
+Box must not contain real participant PII.
+Use Supabase for participant identity/contact/profile/network data.
 
-## Remaining pre-pilot sequence
+At the documented pre-pilot checkpoint:
+- Auth users: 0
+- sessions: 0
+- profiles: 0
+- cooperations: 0
+- P01-P04 invite slots unused
 
-1. Finish/verify the current UX stack (#97, then restack/verify #98).
-2. Stop indefinite visual polishing.
-3. Configure Google OAuth provider externally.
-4. Run provider readiness.
-5. Enable the app Google flag only after provider readiness.
-6. Run full auth readiness.
-7. Deploy.
-8. Run the two-real-account operator test.
-9. Rehearse full account closure on a test/developer identity.
-10. Finalize participant privacy notice for the active auth route.
-11. Explicitly authorize invite distribution.
-12. Run the controlled Göteborg pilot.
+Do not assume these counts remain true forever without rechecking hosted state.
 
-## Autonomous work that can wait until after the immediate stack
+## 12. Google OAuth / pilot gate — NOT DONE
 
-- visually unify embedded City with the main shell;
-- strengthen About/value story;
-- add calm success confirmations;
-- clarify Private Drafts as a distinct optional mode;
-- split the large `network-ui.js` by domain;
-- extract demo fixture;
-- later lazy-load non-selected language packs.
+Issue:
+#83
 
-Larger recommendation/notification/community features should follow measured
-pilot bottlenecks rather than competitor feature lists.
+Required sequence:
 
-## Working-process rule preserved from the session
+1. Create/configure Google OAuth Web client.
+2. Authorized JS origin:
+   `https://chup1runov.github.io`
+3. Google redirect URI:
+   `https://cwvhkdqsrbllsykhccmb.supabase.co/auth/v1/callback`
+4. In Supabase enable Google provider and enter Client ID/Secret directly there.
+5. Allowed app redirect:
+   `https://chup1runov.github.io/Folkoop/auth-callback.html`
+6. Never put Client Secret in chat, GitHub, screenshots or browser code.
+7. Run:
+   `npm run auth:preflight`
+8. Run:
+   `npm run auth:require-provider`
+9. Only after provider gate passes, reviewed change:
+   `googleOAuthEnabled:true`
+10. Run:
+   `npm run auth:require-google`
+11. Deploy.
+12. Run `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` with two independent real Google identities and P01/P02.
+13. Rehearse account closure on a developer/test identity.
+14. Finalize participant Privacy Notice against the actual active auth route.
+15. Explicitly authorize invite distribution.
+16. Run controlled Göteborg pilot.
 
-Avoid long polling loops.
+Do not expand major feature scope before this gate unless a safety/privacy defect requires it.
+
+## 13. Pilot strategy
+
+First real validation remains narrow:
+
+**Need / Offer -> Match -> Commit -> Coordinate -> Act -> confirmed Outcome -> Repeat**
+
+Target discussed:
+small controlled Göteborg pilot, roughly 20–40 participants, around 3 weeks.
+
+Measure:
+- intent -> useful match;
+- match -> commitment;
+- commitment -> action;
+- action -> confirmed outcome;
+- repeat cooperation;
+- unmatched intents;
+- time to first useful match;
+- participant-reported usefulness.
+
+Raw daily opens/session time are not the success metric.
+
+## 14. Competitor/research direction
+
+Closest single benchmark in prior research:
+**Hylo**
+
+Useful adjacent references:
+- Karrot — grassroots/local coordination;
+- Nextdoor — hyperlocal graph;
+- Geneva/Meetup — people + offline activity;
+- TimeRepublik — Need/Offer;
+- Decidim — civic participation;
+- Loomio — collective decision process;
+- Open Collective — collective finance/fiscal hosting;
+- Sharetribe — marketplace/resource transactions.
+
+Distinctive FOLKOOP thesis:
+not that each feature is new, but that the product connects:
+
+**People -> Need/Offer -> Match -> Cooperation -> Project/Resource -> City -> Center -> Action -> Outcome**
+
+Future finance/governance/timebank/marketplace layers remain evidence-gated.
+
+## 15. SDCF / provenance
+
+The project has already done SDCF/outcome-integrity groundwork.
+
+Rule:
+do not resume broad SDCF runtime expansion before pilot evidence.
+
+Keep:
+- source/claim distinctions;
+- fetched/publication distinctions;
+- self-reported vs participant-confirmed vs unclear outcome semantics;
+- privacy precedence;
+- no internal state presented as independently proven real-world outcome.
+
+## 16. Brand/licensing/archive
+
+Brand:
+FOLKOOP is the sole current identity.
+
+Handle direction:
+`@folkoop`
+
+Issue #59 tracks namespace reservation.
+
+License direction:
+proprietary / all rights reserved subject to mandatory existing rights and explicit permissions.
+
+Historical project names remain only in Git history/private archives.
+
+Mura/FOLKOOP-guide source preservation:
+current source/archive work was merged earlier, but before deleting any historical external repository, verify the dedicated preservation/archive checklist rather than assuming a source-tree snapshot equals complete issue/PR/action history.
+
+## 17. Working-process rule
+
+Avoid long tool/CI polling loops.
 
 Use:
+
 **one coherent batch -> one PR -> one final CI check -> one focused failure-fix pass if needed.**
 
-## Continuation pointer
+Do not spend wall-clock time repeatedly asking GitHub for unchanged status.
 
-When resuming after this chat is gone, read in this order:
+## 18. Exact continuation order after this chat is deleted
+
+### Immediate UX close-out
+
+1. Open PR #101.
+2. Fix only the two known CI blocker classes:
+   - mobile network test must use visible bottom Messages route instead of hidden top `#messageLink`;
+   - WebKit final onboarding quick-grid target must be scrolled/placed safely for guide geometry.
+3. Run one full CI pass.
+4. Inspect mobile QA.
+5. Merge #101 only when network + validate + WebKit are green.
+6. Verify main production deploy.
+
+### Summary-first v0.38
+
+7. Do not reuse old PR #98 directly.
+8. Create a fresh branch from the post-#101 main.
+9. Port/reconcile useful changes from `ux/summary-first-details-v038`.
+10. Keep summary-first:
+    title/status/people/progress/next-step/chat visible first.
+11. Put activity/participants/tasks/updates/offers/lifecycle/owner controls behind disclosures.
+12. Full CI + mobile QA.
+13. Merge when green.
+
+### Stop polishing and activate the real pilot gate
+
+14. Configure Google OAuth externally.
+15. Provider readiness -> app flag -> full readiness.
+16. Two-real-account operator test.
+17. Account closure rehearsal.
+18. Final Privacy Notice check.
+19. Explicit invite authorization.
+20. Controlled Göteborg pilot.
+
+### Only after evidence
+
+Possible later autonomous work:
+- visual unification of embedded City;
+- stronger About/value story;
+- calm success confirmations;
+- explicit Private Drafts mode;
+- further Home compaction if users still experience overload;
+- split `network-ui.js`;
+- extract demo fixture;
+- lazy-load non-selected language packs.
+
+Larger recommendations, push/digests, governance, finance, timebank, ratings, AI matching, broad Center management and nationwide expansion should follow measured bottlenecks.
+
+## 19. Public files to read first next session
 
 1. `docs/PROJECT_HANDOFF.md`
-2. this file
+2. `docs/CHAT_HANDOFF_20260930.md`
 3. `docs/UX_PRODUCT_AUDIT_20260930.md`
 4. `docs/PRODUCT_DECISION_POLICY.md`
 5. `docs/PRODUCT_CONCEPT.md`
-6. PR #97
-7. PR #98
+6. `docs/GOTEBORG_CORE_LOOP_PILOT.md`
+7. `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md`
+8. `docs/AUTH_GOOGLE_PILOT.md`
+9. PR #101
+10. branch `ux/summary-first-details-v038`
 
-Then continue with:
+## 20. Status legend at deletion handoff
 
-**finish #97 -> restack/finish #98 -> stop feature polishing -> activate Google/two-account pilot gate.**
+DONE:
+- single FOLKOOP identity
+- privacy/security hardening baseline
+- v0.33 compact sign-in
+- v0.34 Daily Value Loop
+- v0.35 Guest Preview
+- v0.36 value-first first session
+- production v0.36 deploy
+- whole-project UX audit
+- Sweden cooperation/joint-purchase research
+- first-30-seconds narrative strategy
+- public/private chat-continuity handoff
+
+IN PROGRESS / BLOCKED BY TEST FIX:
+- v0.37 mobile bottom navigation — PR #101
+
+PRESERVED BUT MUST BE REBUILT ON CURRENT MAIN:
+- v0.38 summary-first Project/Together — old PR #98 closed; branch preserved
+
+EXTERNAL/OWNER GATE:
+- Google OAuth provider setup
+- two real accounts
+- real-device iPhone/Safari/VoiceOver acceptance
+- Center actual venue/partner status
+- real savings baselines/data
+- push/email provider if later needed
+- real pilot evidence
+
+## 21. One-sentence continuation instruction
+
+**Fix and merge #101, rebuild/finish v0.38 on current main, then stop visual feature expansion and activate Google OAuth -> two real accounts -> account-closure rehearsal -> controlled Göteborg pilot.**
