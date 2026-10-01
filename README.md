@@ -4,14 +4,15 @@
 
 Current execution plan: [`docs/WORK_PLAN_20261001.md`](docs/WORK_PLAN_20261001.md). Current priority remains Google Auth gate → two-account technical gate → account-closure rehearsal → controlled Göteborg core-loop pilot.
 
-## Current pilot state — v0.39.0
+## Current pilot state — v0.39.1
 
 Navigation: **Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
+- first-contact purpose clarity: Home, entry and onboarding now explain that FOLKOOP starts from a real need/offer/idea, helps find relevant people/resources and a concrete next step, and starts before a group chat; Guest mode persistently states that all demo people/messages/projects/activity are fictional examples;
 - public About now includes a clearly labelled future-architecture section covering portable trust/Passport, a future FOLKOOP action agent, cross-city federation and physical/digital Places; it explicitly states that these are planned directions rather than shipped crypto features;
 - summary-first cooperation/project detail: goal, status, people/progress and one next step remain visible; activity, participants, tasks, updates, supplier offers, purchase progress and edit controls use compact expandable sections;
-- mobile social-app shell: six compact bottom destinations plus a contextual second row; City contains Center, Profile contains Settings/About/Language, Together contains People/Communities; Guest limitations live in an expandable bottom DEMO chip rather than a large page banner;
+- mobile social-app shell: six compact bottom destinations plus a contextual second row; City contains Center, Profile contains Settings/About/Language, Together contains People/Communities; Guest mode uses both a persistent in-content DEMO notice and the compact bottom DEMO chip, so fictional sample people/activity cannot be mistaken for real participants;
 - first-session **value tour**: 8 benefit-led steps instead of a 14-step module tour; guest first entry no longer marks onboarding complete before the tour is shown;
 - local private workspace and optional browser-only persistence;
 - explicit local city selection in Profile, with Göteborg-only civic data guarded from other cities;
