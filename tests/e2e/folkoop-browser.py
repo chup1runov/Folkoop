@@ -25,6 +25,7 @@ async def main():
   await page.screenshot(path=str(OUT/'folkoop-desktop.png'),full_page=True)
   results.append('FOLKOOP root, brand asset and eleven ordered destinations')
   await page.evaluate("location.hash='#/me'")
+  await expect(page.locator('#workspace > h1')).to_have_text('Моё место')
   await expect(page.locator('#myPlaceEditorPanel')).to_be_hidden()
   await page.locator('[data-action="toggle-my-place-editor"]').first.click()
   await page.fill('#profileForm [name="name"]','Test User')
