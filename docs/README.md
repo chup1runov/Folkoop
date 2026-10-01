@@ -35,6 +35,9 @@ Start with:
 - `SOURCE_REGISTRY.json` — source registry.
 - `architecture/OUTCOME_INTEGRITY.md` — outcome/provenance integrity contract.
 - `architecture/outcome-integrity-v1.json` — machine-readable integrity profile.
+- `architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md` — approved future architecture for trust, portable identity, agents, federation and physical-world integration; non-runtime until evidence gates are met.
+- `architecture/WEB3_WEB4_ROADMAP.md` — evidence-gated implementation sequence for those future layers.
+- `architecture/adr/ADR-001-web3-web4-direction.md` — durable decision: FOLKOOP is not crypto-first; Web3 mechanisms are limited to trust/identity/portability and Web4 mechanisms to agents/physical-world integration unless a later explicit ADR changes that direction.
 - `architecture/adr/` — durable engineering decisions.
 - `history/architecture/` — superseded architecture proposals.
 
