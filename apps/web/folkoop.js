@@ -485,6 +485,9 @@ document.addEventListener('click',e=>{
  const action=target.dataset.action;
  if(action==='cancel'){formKind=null;scratch={};render();}
  if(action==='toggle-my-place-editor'){
+  const panel=$('#myPlaceEditorPanel'),open=panel?.hidden!==false;if(!panel)return;panel.hidden=!open;target.setAttribute('aria-expanded',String(open));
+  if(open){panel.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});setTimeout(()=>panel.querySelector('input,textarea,button')?.focus({preventScroll:true}),reducedMotion?0:220);}return;
+ }
  if(action==='tutorial'){startFullIntroduction();return;}
  if(action==='clear'&&confirm(t('confirmClear'))){if(store.clear()){scratch={};profileScratch=null;render();$('#status').textContent=t('deleted');}else status(false);}
  if(action==='export'){
