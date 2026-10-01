@@ -95,9 +95,10 @@ B06 test-taxonomy work remains a later behavior-neutral maintenance task and sho
 
 ## First-contact product evidence
 
-Three informal external reviews independently showed the same comprehension problem:
+Four informal external reviews independently showed the same comprehension problem:
 - purpose not immediately clear;
 - FOLKOOP collapsed into familiar categories such as social network/group chat/resource platform/civic portal;
+- the future Center could overshadow the core software/cooperation purpose and be mistaken for the main product;
 - synthetic Guest people could be mistaken for real participants.
 
 Reviewer identities and verbatim messages are not public.
