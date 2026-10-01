@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const assets=[
- 'folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-inspect.webp',
+ 'folkoop-guide-idle.webp','folkoop-guide-confident.webp','folkoop-guide-inspect.webp',
  'folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp'
 ];
 
