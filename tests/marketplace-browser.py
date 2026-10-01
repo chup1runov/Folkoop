@@ -80,6 +80,10 @@ async def main():
   await page.fill('#netCoopCreate [name=targetQuantity]','10')
   await page.fill('#netCoopCreate [name=unit]','m3')
   await page.click('#netCoopCreate button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  offers=page.locator('[data-coop-section="offers"]')
+  await expect(offers).to_be_visible()
+  await offers.locator('summary').click()
 
   await expect(page.locator('#networkPanel')).to_contain_text('Synthetic Supplier')
   await expect(page.locator('#networkPanel')).to_contain_text('5.25 SEK / m3')
@@ -88,15 +92,22 @@ async def main():
   passed.append('Joint purchase renders structured supplier offer as escaped text')
 
   await page.click('[data-coop=selectOffer]')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
   await expect(page.locator('#networkPanel')).to_contain_text('Выбрано')
   assert state['choice'] and state['choice'][0]['offer_id']==OFFER
   assert any(url.endswith('/fk_choose_purchase_offer') for url,_ in state['requests'])
   passed.append('Purchase owner selects a preferred offer through server RPC')
 
+  purchase_progress=page.locator('[data-coop-section="purchase-progress"]')
+  await expect(purchase_progress).to_be_visible()
+  await purchase_progress.locator('summary').click()
+  await expect(page.locator('#netCommitment')).to_be_visible()
   await page.fill('#netCommitment [name=quantity]','2')
   await page.fill('#netCommitment [name=note]','Нужна доставка')
   await page.click('#netCommitment button.button')
-  await expect(page.locator('#networkPanel')).to_contain_text('2 / 10 m3')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await expect(page.locator('.coop-summary-stats')).to_contain_text('2 / 10')
+  await expect(page.locator('.coop-summary-stats')).to_contain_text('m3')
   passed.append('Buyer quantity coordination remains independent of supplier selection and payment')
 
   assert errors==[],errors
