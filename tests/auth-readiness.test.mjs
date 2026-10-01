@@ -27,6 +27,7 @@ test('public network config is valid and contains no secret/service-role key',as
   assert.match(cfg.projectHost,/^[a-z0-9]{20}\.supabase\.co$/);
   assert.match(cfg.publishableKey,/^sb_publishable_/);
   assert.equal(cfg.oauthRedirectUrl,'https://chup1runov.github.io/Folkoop/auth-callback.html');
+  assert.equal(cfg.googleOAuthEnabled,true);
   assert(!/service_role|sb_secret_/i.test(JSON.stringify(cfg)));
 });
 
