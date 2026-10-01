@@ -4,13 +4,13 @@ Status: **informal product evidence, not a formal user study**.
 
 ## Context
 
-Three independent external reviewers were shown the current FOLKOOP product and gave open first-contact reactions.
+Four independent external reviewers were shown the current FOLKOOP product and gave open first-contact reactions.
 
 Reviewer identities are intentionally excluded from the public repository. Full named feedback remains private.
 
 ## Repeated observations
 
-Across the three reviews, the same comprehension problem appeared:
+Across the four reviews, the same comprehension problem appeared:
 
 1. **The purpose was not immediately clear.**
    Reviewers asked what FOLKOOP is actually for and how it helps them personally.
@@ -26,7 +26,10 @@ Across the three reviews, the same comprehension problem appeared:
    Reviewers understood chat/group tools, but did not immediately see the intended earlier step:
    `real need / offer / idea -> relevant people or resources -> concrete next action`.
 
-4. **Guest DEMO content was not always perceived as fictional.**
+4. **The future physical Center concept could overshadow the product.**
+   One reviewer interpreted FOLKOOP mainly as renting a physical meeting/repair space and immediately moved to questions about rent, financing and profit.
+
+5. **Guest DEMO content was not always perceived as fictional.**
    A synthetic guest profile was interpreted as a real participant, even though DEMO disclosure already existed.
 
 ## Product interpretation
