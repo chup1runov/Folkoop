@@ -24,3 +24,27 @@
 @media(prefers-reduced-motion:reduce){
  .folkoop-guide-actor,.folkoop-guide-actor>img,.folkoop-guide-language-character img,.onboarding-spotlight{animation:none!important;transition:none!important}
 }
+
+
+/* Mura v1 motion language: one canonical character, expressive movement.
+   Motion communicates attention/direction without swapping her identity. */
+.folkoop-guide-actor:not(.is-tour) img{animation:mura-breathe 3.8s ease-in-out infinite;transform-origin:50% 92%}
+.folkoop-guide-actor.is-tour img{animation:mura-attend 2.4s ease-in-out infinite;transform-origin:50% 92%}
+.folkoop-guide-actor[data-pose="point-left"] img{animation:mura-nudge-left 1.35s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="point-right"] img{animation:mura-nudge-right 1.35s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="point-up"] img{animation:mura-nudge-up 1.35s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="point-down"] img{animation:mura-nudge-down 1.35s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="idea"] img{animation:mura-idea 1.9s ease-in-out infinite}
+.folkoop-guide-actor[data-pose="sit-edge"] img{animation:mura-attend 2.1s ease-in-out infinite}
+.folkoop-guide-actor:hover img,.folkoop-guide-actor:focus-visible img{animation:mura-greet .72s ease-in-out 1}
+@keyframes mura-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.012)}}
+@keyframes mura-attend{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
+@keyframes mura-nudge-left{0%,100%{transform:translateX(0)}50%{transform:translateX(-7px) rotate(-1.5deg)}}
+@keyframes mura-nudge-right{0%,100%{transform:translateX(0)}50%{transform:translateX(7px) rotate(1.5deg)}}
+@keyframes mura-nudge-up{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes mura-nudge-down{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@keyframes mura-idea{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-7px) rotate(1.8deg)}65%{transform:translateY(-5px) rotate(-1deg)}}
+@keyframes mura-greet{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-7px) rotate(-2deg)}65%{transform:translateY(-5px) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){
+ .folkoop-guide-actor img{animation:none!important;transform:none!important}
+}
