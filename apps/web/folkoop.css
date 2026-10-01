@@ -223,3 +223,11 @@
 .secondary-actions{padding-top:2px}
 @media(max-width:760px){.first-actions{margin:4px 0 25px;padding:17px;border-radius:18px}.first-actions-copy h2{font-size:1.3rem}.first-actions-grid{grid-template-columns:1fr}.first-action{min-height:60px;padding:11px 13px}.secondary-actions{margin-top:0}}
 @media(prefers-reduced-motion:reduce){.first-action{transition:none!important}.first-action:hover{transform:none}}
+
+/* P0-02 visual QA: keep the value choice inside the first mobile screen. */
+@media(max-width:760px){
+ .hero{margin-bottom:18px}
+ .hero h1{font-size:clamp(2.15rem,11vw,2.55rem);line-height:1.03;margin-bottom:14px}
+ .hero p:not(.eyebrow){font-size:.93rem;line-height:1.48;margin-bottom:0}
+ .first-actions{margin-top:0}
+}
