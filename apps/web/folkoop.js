@@ -288,7 +288,7 @@ function ensureOnboarding(){
  dialog.id='onboarding';
  dialog.className='onboarding';
  dialog.hidden=true;
- dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="row"><span id="onboardingProgress" class="eyebrow"></span><button type="button" class="text-button" data-onboarding="skip"></button></div><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><button type="button" class="button" data-onboarding="next"></button></div></section>';
+ dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="row"><span id="onboardingProgress" class="eyebrow"></span><button type="button" class="text-button" data-onboarding="skip"></button></div><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><div class="mura-practice" id="muraPractice" hidden><span id="muraPracticeStars">○ ○ ○</span><strong id="muraPracticeXp">0 XP</strong></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><button type="button" class="button" data-onboarding="next"></button></div></section>';
  document.body.append(dialog);
  return dialog;
 }
@@ -351,6 +351,18 @@ function updateOnboardingScrollCue(){
  const atEnd=copy.scrollTop+copy.clientHeight>=copy.scrollHeight-3;
  cue.hidden=!overflow||atEnd;
 }
+function muraPracticeForStep(step){return step===2?1:step===3?2:step===4?3:0;}
+function updateMuraPractice(){
+ const dialog=ensureOnboarding(),box=dialog.querySelector('#muraPractice');if(!box)return;
+ box.hidden=muraPracticeStep===0&&onboardingStep<2;
+ dialog.querySelector('#muraPracticeStars').textContent=[0,1,2].map(i=>i<muraPracticeStep?'★':'○').join(' ');
+ dialog.querySelector('#muraPracticeXp').textContent=muraPracticeXp+' XP';
+}
+function completeMuraPractice(step){
+ const n=muraPracticeForStep(step);if(!n||n<=muraPracticeStep)return;
+ muraPracticeStep=n;muraPracticeXp=Math.min(15,n*5);updateMuraPractice();
+ globalThis.FolkoopGuide?.react?.('done');
+}
 function showOnboarding(step=0){
  onboardingOpen=true;
  onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
@@ -365,7 +377,8 @@ function showOnboarding(step=0){
  requestAnimationFrame(updateOnboardingScrollCue);
  dialog.querySelector('[data-onboarding="skip"]').textContent=t('tutorialSkip');
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=t('tutorialBack');back.disabled=onboardingStep===0;
- dialog.querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');
+ const next=dialog.querySelector('[data-onboarding="next"]');next.textContent=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep)?(lang==='ru'?'Помочь Муре':lang==='sv'?'Hjälp Mura':'Help Mura'):(onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext'));
+ updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
 }
@@ -473,7 +486,11 @@ document.addEventListener('click',e=>{
   const action=onboarding.dataset.onboarding;
   if(action==='skip'){finishOnboarding();return;}
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
-  if(action==='next'){if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;}
+  if(action==='next'){
+   const task=muraPracticeForStep(onboardingStep);
+   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?`Спасибо! +5 учебных XP. ${muraPracticeStep===3?'Три звезды собраны — теперь ты знаешь основные действия FOLKOOP.':'Звезда получена. Продолжим?'}`:lang==='sv'?`Tack! +5 övnings-XP. ${muraPracticeStep===3?'Tre stjärnor är klara — nu kan du de viktigaste handlingarna i FOLKOOP.':'En stjärna klar. Fortsätter vi?'}`:`Thanks! +5 practice XP. ${muraPracticeStep===3?'All three stars are complete — you now know FOLKOOP’s core actions.':'One star earned. Ready to continue?'}`);ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');return;}
+   if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
+  }
  }
  const navLink=e.target.closest('#nav a');if(navLink){closeMenu();return;}
  const target=e.target.closest('button');if(!target)return;
