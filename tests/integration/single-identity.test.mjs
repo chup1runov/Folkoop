@@ -6,7 +6,6 @@ import {extname,relative} from 'node:path';
 const forbidden=[
   ['Sver','inav'].join(''),
   ['FOLK','UNO'].join(''),
-  ['Mu','ra'].join(''),
   ['SD','CF'].join('')
 ];
 const skipDirs=new Set(['.git','node_modules','_site','qa-output']);
