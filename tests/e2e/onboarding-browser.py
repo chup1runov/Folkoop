@@ -27,7 +27,7 @@ async def settled_actor(page):
  await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
  await page.wait_for_function("""() => {
   const actor=document.getElementById('folkoopGuideActor');
-  return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
+  return actor && !actor.hidden && actor.classList.contains('is-tour') &&
    !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
  }""")
 
