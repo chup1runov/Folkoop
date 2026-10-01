@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node scripts/build/build-site.mjs",
     "start": "node scripts/build/build-site.mjs && node scripts/build/dev-server.mjs",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs",
     "auth:preflight": "node scripts/auth/probe-auth-readiness.mjs",
     "auth:require-google": "node scripts/auth/probe-auth-readiness.mjs --require-google-ready",
     "auth:require-provider": "node scripts/auth/probe-auth-readiness.mjs --require-hosted-google",

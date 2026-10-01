@@ -2,7 +2,7 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-const code=await readFile(new URL('../apps/web/sw.js',import.meta.url),'utf8');
+const code=await readFile(new URL('../../apps/web/sw.js',import.meta.url),'utf8');
 function harness(){
  const retired='sveri'+'nav',legacyScoped=retired+':/legacy/:0.10.1',legacyVersion=retired+'-v0.10.1';
  const listeners={},stored=new Map(),deleted=[],names=['another-project-cache','folkoop:/FOLKOOP/:0.10.1',legacyScoped,legacyVersion];

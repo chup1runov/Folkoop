@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {releaseVersion} from '../scripts/build/release-version.mjs';
+import {releaseVersion} from '../../scripts/build/release-version.mjs';
 test('release stamp has one authoritative package version',()=>{
  assert.equal(releaseVersion("const APP_VERSION = '0.11.0';",'0.12.0'),"const APP_VERSION = '0.12.0';");
  assert.throws(()=>releaseVersion('no marker','0.12.0'));
