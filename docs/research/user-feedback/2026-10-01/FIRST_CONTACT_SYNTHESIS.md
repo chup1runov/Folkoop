@@ -4,13 +4,13 @@ Status: **informal product evidence, not a formal user study**.
 
 ## Context
 
-Four independent external reviewers were shown the current FOLKOOP product and asked for an open reaction.
+Three independent external reviewers were shown the current FOLKOOP product and gave open first-contact reactions.
 
 Reviewer identities are intentionally excluded from the public repository. Full named feedback remains private.
 
 ## Repeated observations
 
-Across the four reviews, the same comprehension problem appeared:
+Across the three reviews, the same comprehension problem appeared:
 
 1. **The purpose was not immediately clear.**
    Reviewers asked what FOLKOOP is actually for and how it helps them personally.
@@ -26,10 +26,7 @@ Across the four reviews, the same comprehension problem appeared:
    Reviewers understood chat/group tools, but did not immediately see the intended earlier step:
    `real need / offer / idea -> relevant people or resources -> concrete next action`.
 
-4. **The future physical Center concept could overshadow the product.**
-   One reviewer interpreted FOLKOOP mainly as renting a physical meeting/repair space and immediately moved to questions about rent, financing and profit.
-
-5. **Guest DEMO content was not always perceived as fictional.**
+4. **Guest DEMO content was not always perceived as fictional.**
    A synthetic guest profile was interpreted as a real participant, even though DEMO disclosure already existed.
 
 ## Product interpretation
@@ -52,7 +49,6 @@ Issue #136 and the corresponding v0.39.1 UX patch are limited to comprehension a
 - explain the pre-chat value explicitly;
 - keep the first action concrete;
 - identify FOLKOOP as a cooperation network rather than leading with a generic social-network label;
-- keep future Center material secondary to the core cooperation thesis;
 - make guest DEMO boundaries persistent;
 - state that sample people/messages/projects/activity are fictional examples;
 - preserve all 11 supported languages.
@@ -67,7 +63,6 @@ These reviews do **not** establish:
 - superiority over WhatsApp/Telegram/Facebook;
 - successful matching;
 - real-world outcomes;
-- a viable Center business model;
 - a viable revenue model.
 
 Those questions remain for the controlled Göteborg pilot and later evidence.
