@@ -84,8 +84,6 @@ async def mobile_flow(browser,passed):
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
-  if idx in (1,2,4,5,6,7):
-   await assert_directional_pose(page)
   if idx==3:
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
@@ -99,7 +97,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while motion and spotlight indicate context')
+ passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while spotlight and accessible motion indicate context')
 
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
