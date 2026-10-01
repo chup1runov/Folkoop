@@ -213,3 +213,13 @@
 .folkoop-guide-actor.is-home::after{content:'Mura';position:absolute;z-index:5;right:2px;bottom:3px;padding:3px 7px;border:1px solid #d9c8bd;border-radius:999px;background:#fffefdf2;color:var(--ink);font-size:.68rem;font-weight:800;letter-spacing:.02em;box-shadow:0 3px 10px #0002}
 .folkoop-guide-actor.is-tour::after{display:none}
 @media(prefers-reduced-motion:reduce){.quick.intent-action,.mobile-primary-nav a,.mobile-context-dock a{transition:none!important}}
+
+.first-actions{margin:8px 0 34px;padding:24px;border:1px solid #d9d3cb;border-radius:22px;background:linear-gradient(145deg,#fff 0%,#faf7f2 100%);box-shadow:0 14px 40px #2c24180b}
+.first-actions-copy{max-width:720px}.first-actions-copy .eyebrow{margin-bottom:8px}.first-actions-copy h2{font-size:1.55rem;margin-bottom:7px}.first-actions-copy p:last-child{color:var(--muted);margin-bottom:18px}
+.first-actions-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.first-action{--intent-color:var(--accent);--intent-bg:var(--soft);display:flex;min-height:76px;align-items:center;justify-content:flex-start;gap:11px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--intent-color) 38%,white);border-radius:15px;background:var(--intent-bg);color:var(--ink);font-weight:760;text-align:start;box-shadow:inset 5px 0 0 var(--intent-color);transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.first-action.intent-need{--intent-color:var(--intent-need);--intent-bg:var(--intent-need-bg)}.first-action.intent-offer{--intent-color:var(--intent-offer);--intent-bg:var(--intent-offer-bg)}.first-action.intent-project{--intent-color:var(--intent-project);--intent-bg:var(--intent-project-bg)}
+.first-action svg{width:25px;height:25px;color:var(--intent-color);stroke-width:2}.first-action:hover{transform:translateY(-2px);box-shadow:inset 5px 0 0 var(--intent-color),0 8px 18px #0000000c}.first-action:focus-visible{outline-color:var(--intent-color)}
+.secondary-actions{padding-top:2px}
+@media(max-width:760px){.first-actions{margin:4px 0 25px;padding:17px;border-radius:18px}.first-actions-copy h2{font-size:1.3rem}.first-actions-grid{grid-template-columns:1fr}.first-action{min-height:60px;padding:11px 13px}.secondary-actions{margin-top:0}}
+@media(prefers-reduced-motion:reduce){.first-action{transition:none!important}.first-action:hover{transform:none}}
