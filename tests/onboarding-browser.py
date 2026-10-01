@@ -59,6 +59,7 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Принеси реальную потребность, навык, ресурс или идею')
+ await expect(page.locator('#onboardingBody')).to_contain_text('раньше группового чата')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
