@@ -280,6 +280,14 @@ function ensureOnboarding(){
 function onboardingTarget(step){
  const mobile=$('#mobilePrimaryNav')&&getComputedStyle($('#mobilePrimaryNav')).display!=='none';
  if(step.id==='helper')globalThis.FolkoopGuide?.home({instant:true,pose:step.pose||'wink'});
+ // The final "start with one real thing" step used to target the Home quick grid.
+ // On a narrow screen that grid can sit far below the fold while the modal tour
+ // intentionally locks page scrolling. Point at the always-visible Together
+ // destination instead: it is the mobile entry point for Need/Offer/Resource/
+ // Shared Purchase and preserves the same user action without off-screen geometry.
+ if(mobile&&step.id==='quick'){
+  return document.querySelector('#mobilePrimaryNav [data-mobile-nav="together"]');
+ }
  if(mobile&&step.target.startsWith('#nav')){
   const primary=mobilePrimaryFor(step.route);
   return document.querySelector(step.route===primary?'#mobilePrimaryNav [data-mobile-nav="'+primary+'"]':'#mobileContextDock [data-mobile-subnav="'+step.route+'"]');
