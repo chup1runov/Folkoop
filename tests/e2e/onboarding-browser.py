@@ -100,7 +100,6 @@ async def mobile_flow(browser,passed):
   if overflow: assert not await cue.is_hidden(),f'step {idx+1} overflow has no scroll cue'
   if idx in (2,3,4):
    expected_task=idx-1
-   await page.evaluate("step => window.dispatchEvent(new HashChangeEvent('hashchange'))", idx)
    await expect(page.locator('#onboardingProgress')).to_contain_text(str(idx+1)+' / 8')
    await page.wait_for_function("() => document.querySelector('[data-onboarding=\\\"next\\\"]')?.textContent.includes('Муре')")
    await page.click('[data-onboarding="next"]')
