@@ -1,0 +1,186 @@
+{
+  "capturedAt": "2026-10-01",
+  "sourceRepository": "chup1runov/Mura",
+  "issues": [
+    {
+      "url": "https://github.com/chup1runov/Mura/issues/1",
+      "title": "Bootstrap Mura Companion 0.9 source snapshot",
+      "issue_number": 1,
+      "body": "Mura Companion has advanced to **0.9 — Paired Transport / Live Visits**.\n\nCurrent local development snapshot: `19846baa48e9dd3ee1e8532d4450c6da4b9aaf80`.\n\nValidated locally:\n- 120/120 unit tests pass\n- JavaScript syntax checks pass\n- Character Pack validation passes (Mura, 20 actions)\n- `git diff --check` passes\n\n0.9 adds:\n- signed `.mura-pair` / `.mura-pair-accept` device pairing\n- per-device X25519 transport identities protected by LocalSecretStore\n- peer-vector delta sync in encrypted `.mura-delta` packets using X25519 + HKDF-SHA256 + AES-256-GCM\n- replay windows, sequence tracking, out-of-order-safe idempotent merge and peer revocation\n- per-peer + per-packet personal-memory opt-in\n- acknowledged-event compaction with a recent safety window\n- ciphertext-only blind-relay capsule primitive; no hosted relay service yet\n- signed `.mura-live-invite` / `.mura-live-arrival` handshake for known companions\n- sandboxed click-through guest presence with only presence/greet/gesture authority\n- full-identity import clears active peer authority when establishing a new replica baseline\n- memory schema v8 with transport/live boundaries\n\nThe GitHub `main` README and protocol/design docs are being updated to 0.9. The complete runnable source + art snapshot remains available as the local ZIP/Git bundle because the connected repository interface is not a convenient bulk binary transport. Real macOS/Windows Electron acceptance testing is still pending.",
+      "state": "open",
+      "user": {
+        "login": "chup1runov",
+        "name": "chup1runov",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+        "id": 17845704
+      },
+      "assignees": [
+        {
+          "login": "chup1runov",
+          "name": "chup1runov",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+          "id": 17845704
+        }
+      ],
+      "labels": null,
+      "milestone": null,
+      "state_reason": null,
+      "comments": 0,
+      "created_at": "2026-09-17T09:13:00Z",
+      "updated_at": "2026-09-29T06:14:38Z",
+      "closed_at": null,
+      "display_url": "https://github.com/chup1runov/Mura/issues/1",
+      "display_title": "Bootstrap Mura Companion 0.9 source snapshot",
+      "discussion": []
+    },
+    {
+      "url": "https://github.com/chup1runov/Mura/issues/2",
+      "title": "0.8 — Replicas / Optional Transport ✅",
+      "issue_number": 2,
+      "body": "Delivered in Mura Companion **0.8 — Replicas**.\n\nCompleted:\n- stable replica/device IDs and common baseline hash;\n- append-only validated event model + vector progress;\n- deterministic convergence across 2+ replicas;\n- explicit conflict records instead of silent last-write-wins;\n- replay/idempotency and out-of-order handling;\n- LocalSecretStore abstraction with Electron safeStorage where an encrypted backend is actually available;\n- encrypted transport-neutral `.mura-sync` packets;\n- privacy separation for device-local paths, file-content permissions, timers and window geometry;\n- threat-model and real desktop smoke-test documentation;\n- 101/101 automated tests passing locally.\n\nDeferred intentionally to 0.9:\n- public-key device pairing;\n- delta/ack transport;\n- optional ciphertext-only relay;\n- live visits;\n- conflict-resolution UI and log checkpoint/compaction;\n- actual macOS/Windows runtime acceptance pass.",
+      "state": "closed",
+      "user": {
+        "login": "chup1runov",
+        "name": "chup1runov",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+        "id": 17845704
+      },
+      "assignees": [
+        {
+          "login": "chup1runov",
+          "name": "chup1runov",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+          "id": 17845704
+        }
+      ],
+      "labels": null,
+      "milestone": null,
+      "state_reason": "completed",
+      "comments": 0,
+      "created_at": "2026-09-17T09:40:09Z",
+      "updated_at": "2026-09-17T10:05:53Z",
+      "closed_at": "2026-09-17T10:05:53Z",
+      "display_url": "https://github.com/chup1runov/Mura/issues/2",
+      "display_title": "0.8 — Replicas / Optional Transport ✅",
+      "discussion": []
+    },
+    {
+      "url": "https://github.com/chup1runov/Mura/issues/3",
+      "title": "0.9 — Paired Transport / Live Visits ✅",
+      "issue_number": 3,
+      "body": "Delivered in Mura Companion **0.9 — Paired Transport / Live Visits**.\n\nCompleted in code:\n- per-device X25519 transport identities and signed pairing ceremony;\n- pairing bound to companion identity + replica baseline;\n- peer-vector delta-only replica sync;\n- AES-256-GCM packets derived from X25519 shared secret via HKDF-SHA256;\n- replay protection, sequence tracking and safe out-of-order merge;\n- peer revocation, local transport-key rotation and acknowledged-event compaction;\n- per-peer + per-packet personal-memory opt-in;\n- ciphertext-only blind-relay capsule format;\n- signed live-visit invitation/arrival handshake;\n- sandboxed click-through guest window with presence/greet/gesture authority only;\n- guest receives no file, screen, microphone, host-memory or window-geometry authority;\n- 120/120 automated tests pass locally.\n\nExplicitly deferred to 1.0 hardening:\n- actual background socket/relay transport client and hosted relay;\n- forward-secret online ratchet;\n- distributed lost-device revocation across a peer graph;\n- richer cross-replica conflict-resolution UI/semantics;\n- real macOS/Windows Electron runtime acceptance pass;\n- real-time remote animation streaming (0.9 visits are signed presence handshakes).",
+      "state": "closed",
+      "user": {
+        "login": "chup1runov",
+        "name": "chup1runov",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+        "id": 17845704
+      },
+      "assignees": [
+        {
+          "login": "chup1runov",
+          "name": "chup1runov",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+          "id": 17845704
+        }
+      ],
+      "labels": null,
+      "milestone": null,
+      "state_reason": "completed",
+      "comments": 0,
+      "created_at": "2026-09-17T10:06:03Z",
+      "updated_at": "2026-09-17T10:27:47Z",
+      "closed_at": "2026-09-17T10:27:46Z",
+      "display_url": "https://github.com/chup1runov/Mura/issues/3",
+      "display_title": "0.9 — Paired Transport / Live Visits ✅",
+      "discussion": []
+    },
+    {
+      "url": "https://github.com/chup1runov/Mura/issues/4",
+      "title": "1.0 — Companion Platform / Hardening",
+      "issue_number": 4,
+      "body": "Next Mura Companion milestone after 0.9 Paired Transport / Live Visits.\n\nGoal: harden Mura into a trustworthy platform foundation before broadening the feature surface.\n\nPlanned work:\n- run the full Electron acceptance checklist on real macOS + Windows and fix runtime-specific behavior;\n- define convergent, user-visible conflict-resolution semantics for non-commutative portable objects;\n- build an optional ciphertext-only relay client/server around the existing blind-relay capsule;\n- add a forward-secret online session ratchet instead of relying only on the static X25519 relationship key;\n- design distributed key rotation / lost-device removal across the peer graph;\n- harden log checkpoint/compaction for long-lived identities;\n- stabilize the Character Pack SDK and validator so a second first-party character can run on the same engine without Mura-specific assumptions;\n- add creator tooling only behind the stable Character Pack contract;\n- integrate true source-layer facial art (pupils/eyelids/brows/mouth/hair) when source assets exist;\n- keep local-first/offline operation and explicit permission boundaries as release requirements.\n\nAcceptance targets:\n1. Real macOS + Windows smoke/acceptance pass completed with documented results.\n2. Two or more replicas converge after conflict resolution with deterministic replay tests.\n3. Relay compromise exposes ciphertext/transport metadata only, not Mura memory.\n4. Online paired sessions provide forward secrecy and reject revoked/lost devices after rotation.\n5. A second first-party Character Pack can be installed and validated without engine code forks.\n6. Mura remains useful with all networking disabled.",
+      "state": "open",
+      "user": {
+        "login": "chup1runov",
+        "name": "chup1runov",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+        "id": 17845704
+      },
+      "assignees": [
+        {
+          "login": "chup1runov",
+          "name": "chup1runov",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+          "id": 17845704
+        }
+      ],
+      "labels": null,
+      "milestone": null,
+      "state_reason": null,
+      "comments": 0,
+      "created_at": "2026-09-17T10:28:00Z",
+      "updated_at": "2026-09-29T06:14:41Z",
+      "closed_at": null,
+      "display_url": "https://github.com/chup1runov/Mura/issues/4",
+      "display_title": "1.0 — Companion Platform / Hardening",
+      "discussion": []
+    },
+    {
+      "url": "https://github.com/chup1runov/Mura/issues/23",
+      "title": "Character Pack: authored directional pointing + seated edge pose for Mura",
+      "issue_number": 23,
+      "body": "## Why\n\nFOLKOOP v0.28 can now consume real canonical Mura poses instead of painting a fake skin-coloured CSS arm. The current schema-4 Character Pack still has no authored directional pointing set and no true seated/dangling-leg pose.\n\nDo not solve this by renaming `inspect` or `lean-in`. They are useful existing poses but are not the requested body mechanics.\n\n## Required first-party assets\n\nAdd canonical Mura assets on the existing **192×208** Character Pack canvas:\n\n- `point-left.webp`\n- `point-right.webp`\n- `point-up.webp`\n- `point-down.webp`\n- `sit-edge.webp`\n\nOptional only if visual review proves useful:\n- diagonal pointing variants.\n\n## Visual contract\n\nPreserve `mura.default` identity exactly:\n- long chestnut-brown hair;\n- blue/white striped shirt;\n- light-blue cuffed jeans;\n- white sneakers;\n- existing chibi / semi-cartoon full-body proportions and face.\n\nPointing poses:\n- the hand/finger itself must unambiguously indicate the named direction;\n- readable when rendered around **86 px wide** on mobile;\n- arm anatomy must belong to the illustration, not a browser overlay;\n- enough transparent margin that the fingertip is not clipped.\n\nSeated pose:\n- pelvis visibly rests on a horizontal edge;\n- knees genuinely bend;\n- lower legs hang below the edge;\n- shoes remain visible;\n- silhouette must still read as seated at mobile helper size;\n- no fake “standing sprite shifted downward” acceptance.\n\n## File contract\n\n- VP8X WebP with alpha;\n- 192×208 canvas unless a Character Pack schema change is deliberately approved first;\n- no opaque/dark matte around the body;\n- no external runtime asset dependency;\n- update `assets/character/manifest.json` actions;\n- Character Pack validator/tests must resolve every new action through the first-party bundle/runtime path.\n\nSuggested actions:\n`point-left`, `point-right`, `point-up`, `point-down`, `sit-edge`.\n\n## Acceptance\n\n1. Visual review of all five raw poses at native size and at ~86 px width.\n2. Identity comparison against the existing canonical pack.\n3. Alpha/canvas contract test.\n4. Mura Character Pack validation green.\n5. Only after that should FOLKOOP replace its separate direction cue / lean-in surface pose.\n\nThis issue is an art/Character-Pack task. It must not be closed merely because CSS or DOM positioning simulates the behavior.",
+      "state": "closed",
+      "user": {
+        "login": "chup1runov",
+        "name": "chup1runov",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+        "id": 17845704
+      },
+      "assignees": null,
+      "labels": null,
+      "milestone": null,
+      "state_reason": "completed",
+      "comments": 1,
+      "created_at": "2026-09-28T21:08:04Z",
+      "updated_at": "2026-09-28T23:08:37Z",
+      "closed_at": "2026-09-28T23:08:37Z",
+      "display_url": "https://github.com/chup1runov/Mura/issues/23",
+      "display_title": "Character Pack: authored directional pointing + seated edge pose for Mura",
+      "discussion": [
+        {
+          "url": "https://github.com/chup1runov/Mura/issues/23#issuecomment-5879243369",
+          "body": "Progress 2026-09-28: five candidate source poses have now been generated and visually reviewed outside the repository: point-left, point-right, point-up, point-down, and sit-edge. point-right initially pointed the wrong way and was corrected in a separate edit pass. All candidates were normalized to 192×208 transparent PNG previews; sit-edge visibly bends hips/knees with both lower legs hanging below the ledge.\n\nThese are **candidates, not yet canonical assets**. They are not merged because the current Adobe → GitHub connector boundary does not expose the final binary PNG bytes to the GitHub connector in this session. Do not close this issue until the actual binaries are committed, visually compared against the current Mura pack, added to the manifest/bundle, and the Character Pack validator passes.\n\nNext acceptance step: commit the five binaries as first-party assets, review identity consistency at native size and ~86 px, then integrate into FOLKOOP and remove the temporary orange directional cue / lean-in approximation.",
+          "user": {
+            "login": "chup1runov",
+            "name": "chup1runov",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/u/17845704?v=4",
+            "id": 17845704
+          },
+          "id": 5879243369,
+          "pull_request_review_id": null,
+          "in_reply_to_id": null,
+          "created_at": null,
+          "updated_at": null,
+          "review": null,
+          "side": null,
+          "line": null,
+          "start_line": null,
+          "path": null,
+          "body_html": "<p dir=\"auto\">Progress 2026-09-28: five candidate source poses have now been generated and visually reviewed outside the repository: point-left, point-right, point-up, point-down, and sit-edge. point-right initially pointed the wrong way and was corrected in a separate edit pass. All candidates were normalized to 192×208 transparent PNG previews; sit-edge visibly bends hips/knees with both lower legs hanging below the ledge.</p>\n<p dir=\"auto\">These are <strong>candidates, not yet canonical assets</strong>. They are not merged because the current Adobe → GitHub connector boundary does not expose the final binary PNG bytes to the GitHub connector in this session. Do not close this issue until the actual binaries are committed, visually compared against the current Mura pack, added to the manifest/bundle, and the Character Pack validator passes.</p>\n<p dir=\"auto\">Next acceptance step: commit the five binaries as first-party assets, review identity consistency at native size and ~86 px, then integrate into FOLKOOP and remove the temporary orange directional cue / lean-in approximation.</p>"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "characterId": "ksyusha.default",
+  "displayName": "Ксюша",
+  "canvas": { "width": 252, "height": 318 },
+  "temperament": { "curiosity": 0.74, "warmth": 0.68, "playfulness": 0.6 },
+  "attention": {
+    "assets": {
+      "center": "look-center.png",
+      "left": "look-center.png",
+      "right": "look-center.png",
+      "up": "look-center.png",
+      "down": "look-center.png",
+      "up-left": "look-center.png",
+      "up-right": "look-center.png",
+      "down-left": "look-center.png",
+      "down-right": "look-center.png"
+    }
+  },
+  "actions": {
+    "idle": { "asset": "look-center.png", "durationMs": 1800 },
+    "wave": { "asset": "look-center.png", "durationMs": 1500 },
+    "thinking": { "asset": "look-center.png", "durationMs": 1800 },
+    "jump": { "asset": "look-center.png", "durationMs": 1200 },
+    "rest": { "asset": "look-center.png", "durationMs": 2200 },
+    "inspect": { "asset": "look-center.png", "durationMs": 1800 },
+    "confident": { "asset": "look-center.png", "durationMs": 1600 },
+    "shy": { "asset": "look-center.png", "durationMs": 1800 },
+    "idea": { "asset": "look-center.png", "durationMs": 1700 }
+  }
+}

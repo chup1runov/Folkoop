@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>Дом Ксюши</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="home-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">MURA COMPANION · WORLD / MEMORY</span>
+        <h1>Дом Ксюши</h1>
+        <p>Место, где совместная история становится вещами, маленькими сюжетами и привычками — без обязательного гринда и наказаний за отсутствие.</p>
+      </div>
+      <div class="top-actions">
+        <div id="together" class="together"></div>
+        <button id="shareButton" class="primary-action" type="button">Сохранить момент</button>
+      </div>
+    </header>
+
+    <section class="room" aria-label="Комната Ксюши">
+      <div class="window-light"></div>
+      <div class="shelf shelf-one"></div>
+      <div class="shelf shelf-two"></div>
+      <div class="rug"></div>
+      <div class="desk"><span>✎</span></div>
+      <div id="plant" class="plant" title="Растение Ксюши"></div>
+      <img class="home-character" src="../../assets/character/idle.gif" alt="Mura дома" />
+      <div id="roomNote" class="room-note">Комната постепенно меняется из реальных совместных событий.</div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel relationship-panel">
+        <div class="panel-head"><div><span class="eyebrow">GROW</span><h2>Как вы освоились</h2></div><span id="relationshipScore" class="count"></span></div>
+        <strong id="relationshipStage" class="relationship-stage"></strong>
+        <p id="relationshipDescription" class="muted"></p>
+        <div class="progress"><span id="relationshipProgress"></span></div>
+        <div id="relationshipFacts" class="fact-row"></div>
+      </article>
+      <article class="panel episode-panel"><div class="panel-head"><div><span class="eyebrow">STORIES</span><h2>Текущая маленькая история</h2></div></div><div id="episode"></div></article>
+      <article class="panel presence-panel">
+        <div class="panel-head"><div><span class="eyebrow">PRESENCE</span><h2>Ритм сейчас</h2></div></div>
+        <div id="presenceStatus" class="presence-status"></div>
+        <div class="quick-actions">
+          <button type="button" data-focus="25">Фокус 25</button><button type="button" data-focus="50">Фокус 50</button>
+          <button type="button" data-quiet="1800000">Тихо 30 мин</button><button type="button" data-quiet="3600000">Тихо 1 час</button>
+          <button type="button" data-quiet="clear" class="ghost">Снять тишину</button>
+          <button type="button" data-surface="toggle" class="ghost">Геометрия окон</button><button type="button" data-surface="perch">Сесть на окно</button><button type="button" data-surface="leave" class="ghost">Сойти</button>
+        </div>
+      </article>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">REMEMBER</span><h2>Полка воспоминаний</h2></div><span id="keepsakeCount" class="count"></span></div><div id="keepsakes" class="keepsakes emptyable"></div></section>
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">OBJECTS</span><h2>Доверенные вещи</h2></div><span id="fileCount" class="count"></span></div><div id="files" class="files emptyable"></div><div id="objects" class="files objects emptyable"></div></section>
+    </div>
+    <div class="content-grid lower-grid">
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">ACT</span><h2>Активные таймеры</h2></div></div><div id="timers" class="timers emptyable"></div></section>
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">HISTORY</span><h2>Недавние значимые моменты</h2></div></div><div id="timeline" class="timeline emptyable"></div></section>
+    </div>
+    <div id="shareStatus" class="share-status" hidden></div>
+  </main>
+  <script src="./home.js"></script>
+</body>
+</html>

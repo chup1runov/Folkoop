@@ -1,0 +1,165 @@
+{
+  "capturedAt": "2026-10-01",
+  "sourceRepository": "chup1runov/Mura",
+  "pullRequests": [
+    {
+      "number": 20,
+      "title": "Audit: verify stabilized Alpha 6 A01-A18",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "created_at": "2026-09-21T07:51:10Z",
+      "updated_at": "2026-09-21T07:53:12Z",
+      "closed_at": null,
+      "merged_at": null,
+      "base": "alpha-6-stabilized-candidate",
+      "base_sha": "f60b9a29d3a34102539b81d2a0415b240d646baa",
+      "head": "audit/alpha6-stabilized-2026-09-21",
+      "head_sha": "986f02ef4df4f0b45d254efdf3f357a4f0275489",
+      "body": "Audit-only PR targeting the consolidated stabilization candidate.\n\nRuntime source is unchanged relative to `alpha-6-stabilized-candidate`. This PR adds the 2026-09-19 A01–A18 probe suite, updates A02 to validate the intended Character Pack resolver remediation, and gates ordinary CI on a complete audit rerun.\n\nExpected exit criterion: A01–A18 all PASS on Ubuntu, macOS and Windows. This remains source-level evidence, not native GUI acceptance.",
+      "url": "https://github.com/chup1runov/Mura/pull/20",
+      "discussion": []
+    },
+    {
+      "number": 21,
+      "title": "Alpha 6 stabilized candidate: consolidate A01-A18 remediation",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "created_at": "2026-09-21T08:03:55Z",
+      "updated_at": "2026-09-21T08:03:55Z",
+      "closed_at": null,
+      "merged_at": null,
+      "base": "alpha-6-lived-continuity",
+      "base_sha": "10732445fbb45f5a25957a3fc4d1c99f5573a38f",
+      "head": "alpha-6-stabilized-candidate",
+      "head_sha": "8939c47272b58e74ff6e926a75570ce78ec101ea",
+      "body": "Consolidated stabilization candidate for Alpha 6 Lived Continuity.\n\nRuntime source through `f60b9a29d3a34102539b81d2a0415b240d646baa`; current branch head adds only `docs/STABILIZATION_AUDIT_2026-09-21.md`.\n\nThis consolidates the stacked stabilization work from PRs #17, #18 and #19.\n\nSource-level result:\n- A01–A18 remediation regressions PASS.\n- Final runtime CI `35574184985`: Ubuntu/macOS/Windows PASS.\n- Final runtime Test Builds `35574184958`: macOS/Windows PASS.\n- Ubuntu final suite: 71 tests PASS / 0 FAIL.\n- syntax and first-party Character Pack validation PASS across all three CI runners.\n\nThe full mapping, evidence and remaining native acceptance work are in `docs/STABILIZATION_AUDIT_2026-09-21.md`.\n\nImportant: this does **not** close physical desktop acceptance. macOS packaged startup/Gatekeeper, real DnD, click-through/focus, surfaces, locomotion visuals, multi-monitor hot-unplug/mixed-DPI, restart/crash recovery and Windows native acceptance still need device testing.\n\nKeep draft until packaged macOS then Windows acceptance is completed.",
+      "url": "https://github.com/chup1runov/Mura/pull/21",
+      "discussion": []
+    },
+    {
+      "number": 22,
+      "title": "Alpha 6 Web Mode: stabilize browser experience on current candidate",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "created_at": "2026-09-21T08:48:31Z",
+      "updated_at": "2026-09-21T10:17:58Z",
+      "closed_at": null,
+      "merged_at": null,
+      "base": "alpha-6-stabilized-candidate",
+      "base_sha": "8939c47272b58e74ff6e926a75570ce78ec101ea",
+      "head": "alpha-6-web-stabilized",
+      "head_sha": "087b9617f4c9cd5408c20e11c5552da38db44462",
+      "body": "Creates stabilized Web Mode directly from the current Alpha 6 stabilized candidate.\n\nCurrent head: `bc0cb5fbc5468887eefcd40c3c766ee2d64a3eca`.\n\nIncluded:\n- browser model aligned with desktop first-week, relationship, Home and episode rules;\n- parity tests against the actual desktop engine;\n- onboarding handoff pause/resume parity;\n- browser-local Focus timer and Quiet mode;\n- continuity delivery consumed only when delivery is still allowed;\n- browser-local remembered-file metadata and Home materialization;\n- self-contained embedded character assets;\n- Playwright Chromium acceptance spec;\n- self-contained Web Mode artifact packaging;\n- static-host security config under `web-preview/vercel.json`.\n\nDirect live-branch validation from the connected GitHub source confirms:\n- `app.js` and `model.js` parse;\n- all 42 runtime DOM ids exist;\n- required character assets are present;\n- no fetch/XMLHttpRequest/WebSocket/FileReader/arrayBuffer calls exist in the browser runtime;\n- first-week choice, relationship score/stage, room props, Home scenes and one-stage-per-day plant progression match the desktop engine in executed parity checks.\n\nGitHub Actions note: current CI/Test Builds/Web Mode E2E runs are failing before any executable step starts; connector metadata reports `steps=null` for every job. Do not interpret those runs as source-test failures or PASS evidence. Real Chromium E2E remains pending until a runner actually starts.\n\nFull status: `docs/WEB_MODE_2026-09-21.md`.\n\nOld prototype PR #16 is closed as superseded.\n\nNext operational step: deploy `web-preview/` as a static HTTPS site. No backend is required. Keep this PR draft until real browser E2E and public URL smoke testing are completed.",
+      "url": "https://github.com/chup1runov/Mura/pull/22",
+      "discussion": [
+        {
+          "url": "https://github.com/chup1runov/Mura/pull/22#issuecomment-5758758674",
+          "body": "[vc]: #+EWptAfzuMohcLglcnA4h0P4VCLft1DsKlXWg8yUx94=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJtdXJhLWNvbXBhbmlvbiIsInByb2plY3RJZCI6InByal9LRW90MVZEYjZFVW0xdDd0U0U1SmxHUU9uOEhwIiwicm9vdERpcmVjdG9yeSI6bnVsbCwiaW5zcGVjdG9yVXJsIjoiaHR0cHM6Ly92ZXJjZWwuY29tL3BhNHVwLTE1MDkvbXVyYS1jb21wYW5pb24vOGc1U1Y2dUdhczhER1R1TGFHQnp2RFlaQ1QxZyIsInByZXZpZXdVcmwiOiJtdXJhLWNvbXBhbmlvbi1naXQtYWxwaGEtNi13ZWItc3RhYmlsaXplZC1wYTR1cC0xNTA5LnZlcmNlbC5hcHAiLCJuZXh0Q29tbWl0U3RhdHVzIjoiREVQTE9ZRUQiLCJsaXZlRmVlZGJhY2siOnsicmVzb2x2ZWQiOjAsInVucmVzb2x2ZWQiOjAsInRvdGFsIjowLCJsaW5rIjoibXVyYS1jb21wYW5pb24tZ2l0LWFscGhhLTYtd2ViLXN0YWJpbGl6ZWQtcGE0dXAtMTUwOS52ZXJjZWwuYXBwIn19XX0=\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n| Project | Deployment | Actions | Updated |\n| :--- | :----- | :------ | :------ |\n| <a href=\"https://vercel.com/pa4up-1509/mura-companion\"><sup><img src=\"https://vercel.com/api/www/avatar?projectId=prj_KEot1VDb6EUm1t7tSE5JlGQOn8Hp&teamId=team_FGABb8iVHeyVMyN6XAeduPlL&s=32\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" /></sup></a> [mura-companion](https://vercel.com/pa4up-1509/mura-companion) | ![Ready](https://vercel.com/static/status/ready.svg) [Ready](https://vercel.com/pa4up-1509/mura-companion/8g5SV6uGas8DGTuLaGBzvDYZCT1g) | [Preview](https://mura-companion-git-alpha-6-web-stabilized-pa4up-1509.vercel.app) | <relative-time datetime=\"2026-09-21T10:17:58.572Z\">Sep 21, 2026 10:17am UTC</relative-time> |\n\n",
+          "user": {
+            "login": "vercel[bot]",
+            "name": "vercel[bot]",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/8329?v=4",
+            "id": 35613825
+          },
+          "id": 5758758674,
+          "pull_request_review_id": null,
+          "in_reply_to_id": null,
+          "created_at": "2026-09-21T10:07:27Z",
+          "updated_at": "2026-09-21T10:17:58Z",
+          "review": null,
+          "side": null,
+          "line": null,
+          "start_line": null,
+          "path": null,
+          "body_html": "<p dir=\"auto\">The latest updates on your projects. Learn more about <a href=\"https://vercel.link/github-learn-more\" rel=\"nofollow\">Vercel for GitHub</a>.</p>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th align=\"left\">Project</th>\n<th align=\"left\">Deployment</th>\n<th align=\"left\">Actions</th>\n<th align=\"left\">Updated</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\"><a href=\"https://vercel.com/pa4up-1509/mura-companion\" rel=\"nofollow\"><sup><img src=\"https://camo.githubusercontent.com/e575b0ca841ca1ec473e35249996fbcb35788de95d9245d55ff3764a00ac324b/68747470733a2f2f76657263656c2e636f6d2f6170692f7777772f6176617461723f70726f6a65637449643d70726a5f4b456f74315644623645556d317437745345354a6c47514f6e384870267465616d49643d7465616d5f4647414262386956486579564d794e365841656475506c4c26733d3332\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" data-canonical-src=\"https://vercel.com/api/www/avatar?projectId=prj_KEot1VDb6EUm1t7tSE5JlGQOn8Hp&amp;teamId=team_FGABb8iVHeyVMyN6XAeduPlL&amp;s=32\" style=\"max-width: 100%; height: auto; max-height: 16px;; aspect-ratio: 16 / 16; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></sup></a> <a href=\"https://vercel.com/pa4up-1509/mura-companion\" rel=\"nofollow\">mura-companion</a></td>\n<td align=\"left\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://camo.githubusercontent.com/2d058aa4937109084c3b00dc259081ef9f01257a8504a292a286041635575d96/68747470733a2f2f76657263656c2e636f6d2f7374617469632f7374617475732f72656164792e737667\"><img src=\"https://camo.githubusercontent.com/2d058aa4937109084c3b00dc259081ef9f01257a8504a292a286041635575d96/68747470733a2f2f76657263656c2e636f6d2f7374617469632f7374617475732f72656164792e737667\" alt=\"Ready\" data-canonical-src=\"https://vercel.com/static/status/ready.svg\" style=\"max-width: 100%;\"></a> <a href=\"https://vercel.com/pa4up-1509/mura-companion/8g5SV6uGas8DGTuLaGBzvDYZCT1g\" rel=\"nofollow\">Ready</a></td>\n<td align=\"left\"><a href=\"https://mura-companion-git-alpha-6-web-stabilized-pa4up-1509.vercel.app\" rel=\"nofollow\">Preview</a></td>\n<td align=\"left\"><relative-time datetime=\"2026-09-21T10:17:58.572Z\">Sep 21, 2026 10:17am UTC</relative-time></td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "title": "Character Pack: add pointing and sit-edge Mura poses",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "created_at": "2026-09-28T21:48:15Z",
+      "updated_at": "2026-09-29T06:20:10Z",
+      "closed_at": "2026-09-28T21:52:38Z",
+      "merged_at": "2026-09-28T21:52:38Z",
+      "base": "main",
+      "base_sha": "454dae8b902f03e98882527d5f9aace4d3f7b534",
+      "head": "feature/ksyusha-pointing-sit-edge",
+      "head_sha": "5609418e7aa9e8e74602aa72d64ce19124d211df",
+      "body": "Implements #23 with five new AI-assisted first-party `mura.default` source poses:\n\n- point-left / point-right / point-up / point-down\n- sit-edge\n\nThe loose 192×208 8-bit RGBA PNGs are source-of-truth. `bundle-poses-c-png.cjs` mirrors the exact source bytes for the current runtime resolver. Manifest actions expose all five poses.\n\n## Provenance\nAdobe Firefly was used with the existing Mura visual identity as reference. These are new AI-assisted assets, not recovered historical illustrations. The first point-right candidate was rejected because it pointed left; the committed asset is the corrected pass. Background cleanup was repeated before import.\n\n`sit-edge` intentionally contains no fake furniture. Its body supplies the seated anatomy (hips/knees bent, lower legs hanging); the host UI/window supplies the visible edge.\n\n## Direct asset/pack validation performed\nBecause the private-repository GitHub Actions jobs received no runner (`runner_id=0`, `steps=[]` on Ubuntu/macOS/Windows), the hosted commands never started. This is an Actions-runner/quota condition, not a test assertion failure.\n\nThe branch was therefore additionally checked directly against its exact Git objects:\n- all five branch blob SHAs equal the blobs created from the reviewed Adobe outputs;\n- bundle base64 is byte-for-byte identical to the corresponding raw Adobe PNG for every pose;\n- all five parse as 192×208, 8-bit RGBA PNG (color type 6);\n- all five manifest actions resolve to the correct source filename;\n- `bundle-poses-c-png.cjs` is declared in the manifest;\n- new bundle/test JavaScript parses successfully.\n\nThe regression test committed in this PR repeats the PNG geometry/alpha and source-vs-bundle equality checks whenever a runner is available.\n\n## Remaining downstream gate\nFOLKOOP still must test the assets at the actual ~86–110 px helper size and on real highlighted controls. This PR does not claim that web placement is complete.",
+      "url": "https://github.com/chup1runov/Mura/pull/24",
+      "discussion": [
+        {
+          "url": "https://github.com/chup1runov/Mura/pull/24#issuecomment-5879363397",
+          "body": "Historical Vercel preview for the Mura pointing/sit-edge asset branch. The source assets are merged; current canonical character name: **Mura**.",
+          "user": {
+            "login": "vercel[bot]",
+            "name": "vercel[bot]",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/8329?v=4",
+            "id": 35613825
+          },
+          "id": 5879363397,
+          "pull_request_review_id": null,
+          "in_reply_to_id": null,
+          "created_at": "2026-09-28T21:48:17Z",
+          "updated_at": "2026-09-29T06:20:10Z",
+          "review": null,
+          "side": null,
+          "line": null,
+          "start_line": null,
+          "path": null,
+          "body_html": "<p dir=\"auto\">Historical Vercel preview for the Mura pointing/sit-edge asset branch. The source assets are merged; current canonical character name: <strong>Mura</strong>.</p>"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "title": "Rename flagship character identity to Mura",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "created_at": "2026-09-28T23:08:52Z",
+      "updated_at": "2026-09-29T06:12:24Z",
+      "closed_at": "2026-09-29T06:12:24Z",
+      "merged_at": "2026-09-29T06:12:23Z",
+      "base": "main",
+      "base_sha": "8b3306943b969895f37ac81b1543d191ade5f37f",
+      "head": "rename/character-to-mura",
+      "head_sha": "f3f60ac447677392f06946975f0283105b6e47e3",
+      "body": "## Canonical naming decision\n\n**Mura is the only current character name.**\n\nThis migration changes the active repository tree and runtime surfaces to:\n- Character Pack id: `mura.default`\n- display name: `Mura`\n- Home/renderer/runtime copy: `Mura`\n- no legacy window compatibility alias\n- no legacy character name in current docs, archived handoff text, tests, runtime or manifest\n- naming-contract test prevents legacy names returning\n\nDirect branch audit covered all 88 tracked text/code/config files in the current tree plus path names: **0 legacy-name hits and 0 legacy-name paths**.\n\nGit history and old commit messages are intentionally not rewritten.\n\n### CI note\nThe private-repository Actions matrix did not obtain runners: Windows/macOS/Linux jobs completed with `steps=null`. This is the same runner/quota condition recorded by the preceding Character Pack PR, not a test assertion failure. The rename is a current-tree naming migration; asset bytes and behavior are unchanged.",
+      "url": "https://github.com/chup1runov/Mura/pull/25",
+      "discussion": [
+        {
+          "url": "https://github.com/chup1runov/Mura/pull/25#issuecomment-5880359079",
+          "body": "[vc]: #0wyLEhIZVfzAg1a17CJ+hM76NuiF+rDNdG6LiM9DRV4=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJtdXJhLWNvbXBhbmlvbiIsInByb2plY3RJZCI6InByal9LRW90MVZEYjZFVW0xdDd0U0U1SmxHUU9uOEhwIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6Im11cmEtY29tcGFuaW9uLWdpdC1yZW5hbWUtY2hhcmFjdGVyLXRvLW11cmEtcGE0dXAtMTUwOS52ZXJjZWwuYXBwIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9wYTR1cC0xNTA5L211cmEtY29tcGFuaW9uL0JDWDVlaUZ5RWtwc3ZvUlNjNThpOExSSkxVNmkiLCJwcmV2aWV3VXJsIjoibXVyYS1jb21wYW5pb24tZ2l0LXJlbmFtZS1jaGFyYWN0ZXItdG8tbXVyYS1wYTR1cC0xNTA5LnZlcmNlbC5hcHAiLCJuZXh0Q29tbWl0U3RhdHVzIjoiREVQTE9ZRUQiLCJyb290RGlyZWN0b3J5IjpudWxsfV19\nThe latest updates on your projects. Learn more about [Vercel for GitHub](https://vercel.link/github-learn-more).\n\n| Project | Deployment | Actions | Updated |\n| :--- | :----- | :------ | :------ |\n| <a href=\"https://vercel.com/pa4up-1509/mura-companion\"><sup><img src=\"https://vercel.com/api/www/avatar?projectId=prj_KEot1VDb6EUm1t7tSE5JlGQOn8Hp&teamId=team_FGABb8iVHeyVMyN6XAeduPlL&s=32\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" /></sup></a> [mura-companion](https://vercel.com/pa4up-1509/mura-companion) | ![Ready](https://vercel.com/static/status/ready.svg) [Ready](https://vercel.com/pa4up-1509/mura-companion/BCX5eiFyEkpsvoRSc58i8LRJLU6i) | [Preview](https://mura-companion-git-rename-character-to-mura-pa4up-1509.vercel.app) | <relative-time datetime=\"2026-09-28T23:11:00.493Z\">Sep 28, 2026 11:11pm UTC</relative-time> |\n\n",
+          "user": {
+            "login": "vercel[bot]",
+            "name": "vercel[bot]",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/8329?v=4",
+            "id": 35613825
+          },
+          "id": 5880359079,
+          "pull_request_review_id": null,
+          "in_reply_to_id": null,
+          "created_at": "2026-09-28T23:08:58Z",
+          "updated_at": "2026-09-28T23:11:00Z",
+          "review": null,
+          "side": null,
+          "line": null,
+          "start_line": null,
+          "path": null,
+          "body_html": "<p dir=\"auto\">The latest updates on your projects. Learn more about <a href=\"https://vercel.link/github-learn-more\" rel=\"nofollow\">Vercel for GitHub</a>.</p>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th align=\"left\">Project</th>\n<th align=\"left\">Deployment</th>\n<th align=\"left\">Actions</th>\n<th align=\"left\">Updated</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\"><a href=\"https://vercel.com/pa4up-1509/mura-companion\" rel=\"nofollow\"><sup><img src=\"https://camo.githubusercontent.com/e575b0ca841ca1ec473e35249996fbcb35788de95d9245d55ff3764a00ac324b/68747470733a2f2f76657263656c2e636f6d2f6170692f7777772f6176617461723f70726f6a65637449643d70726a5f4b456f74315644623645556d317437745345354a6c47514f6e384870267465616d49643d7465616d5f4647414262386956486579564d794e365841656475506c4c26733d3332\" width=\"16\" height=\"16\" align=\"middle\" alt=\"\" data-canonical-src=\"https://vercel.com/api/www/avatar?projectId=prj_KEot1VDb6EUm1t7tSE5JlGQOn8Hp&amp;teamId=team_FGABb8iVHeyVMyN6XAeduPlL&amp;s=32\" style=\"max-width: 100%; height: auto; max-height: 16px;; aspect-ratio: 16 / 16; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></sup></a> <a href=\"https://vercel.com/pa4up-1509/mura-companion\" rel=\"nofollow\">mura-companion</a></td>\n<td align=\"left\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://camo.githubusercontent.com/2d058aa4937109084c3b00dc259081ef9f01257a8504a292a286041635575d96/68747470733a2f2f76657263656c2e636f6d2f7374617469632f7374617475732f72656164792e737667\"><img src=\"https://camo.githubusercontent.com/2d058aa4937109084c3b00dc259081ef9f01257a8504a292a286041635575d96/68747470733a2f2f76657263656c2e636f6d2f7374617469632f7374617475732f72656164792e737667\" alt=\"Ready\" data-canonical-src=\"https://vercel.com/static/status/ready.svg\" style=\"max-width: 100%;\"></a> <a href=\"https://vercel.com/pa4up-1509/mura-companion/BCX5eiFyEkpsvoRSc58i8LRJLU6i\" rel=\"nofollow\">Ready</a></td>\n<td align=\"left\"><a href=\"https://mura-companion-git-rename-character-to-mura-pa4up-1509.vercel.app\" rel=\"nofollow\">Preview</a></td>\n<td align=\"left\"><relative-time datetime=\"2026-09-28T23:11:00.493Z\">Sep 28, 2026 11:11pm UTC</relative-time></td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>"
+        }
+      ]
+    }
+  ]
+}

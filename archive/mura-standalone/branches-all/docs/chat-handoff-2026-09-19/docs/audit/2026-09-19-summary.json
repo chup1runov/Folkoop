@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "recordType": "curated-summary-of-executed-audit-not-raw-log",
+  "date": "2026-09-19",
+  "reviewedRuntimeCommit": "10732445fbb45f5a25957a3fc4d1c99f5573a38f",
+  "mainBeforeDocumentationUpdate": "8db4c6765f6e139c5206e61b5d69de157cf8ed99",
+  "auditCommit": "57d2d3d41eae4d8499f67bbe0dc0ae232c80e1c4",
+  "artifactUploadCorrection": "4ee2e2ec48130dd7ec67b836c2ab1514b01b4d33",
+  "auditRunId": 35439904375,
+  "auditPullRequest": 14,
+  "candidatePullRequest": 13,
+  "runtimeChangedByAudit": false,
+  "candidateTrackedFiles": 89,
+  "auditTrackedFiles": 92,
+  "existingTests": {"pass": 48, "fail": 0},
+  "syntaxCheckedJavaScriptFiles": 46,
+  "characterReferencesResolved": 29,
+  "characterManifestSchema": 4,
+  "targetedChecks": {"pass": 4, "fail": 18, "total": 22},
+  "passingControls": ["CTRL-01", "CTRL-02", "CTRL-03", "CTRL-04"],
+  "failingDesiredBehaviorAssertions": ["A01", "A02", "A03", "A04", "A05", "A06", "A07", "A08", "A09", "A10", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18"],
+  "runners": [
+    {"platform": "linux", "jobId": 105888796644, "node": "22.23.2", "targetedPass": 4, "targetedFail": 18},
+    {"platform": "darwin", "jobId": 105888796555, "node": "22.23.2", "targetedPass": 4, "targetedFail": 18},
+    {"platform": "win32", "jobId": 105888796669, "node": "22.23.2", "targetedPass": 4, "targetedFail": 18, "nativeSyntheticPowerShellAssignment": "VariableNotWritable"}
+  ],
+  "nativeDesktopAcceptance": "NOT_VERIFIED",
+  "physicalObservation": "MAC-001: earlier Alpha 5 downloaded app blocked by macOS damaged-app warning; no successful workaround result recorded",
+  "methodLimits": ["targeted not exhaustive", "mocked Electron and DOM", "no interactive GUI acceptance", "no user data", "no demonstrated exploit chain", "no binary signature or inner installer checksum attestation"],
+  "initialRunArtifactUpload": "reports written but hidden directory excluded; upload-only correction committed",
+  "details": "../CODE_REVIEW_2026-09-19.md"
+}

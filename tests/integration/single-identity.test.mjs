@@ -8,7 +8,7 @@ const forbidden=[
   ['FOLK','UNO'].join(''),
   ['SD','CF'].join('')
 ];
-const skipDirs=new Set(['.git','node_modules','_site','qa-output']);
+const skipDirs=new Set(['.git','node_modules','_site','qa-output','archive']);
 const textExt=new Set(['.md','.txt','.json','.js','.mjs','.cjs','.ts','.tsx','.html','.css','.yml','.yaml','.sql','.toml','.xml','.webmanifest','']);
 
 async function walk(dir='.'){
@@ -26,7 +26,7 @@ test('current tree exposes only the FOLKOOP project identity',async()=>{
   const violations=[];
   for(const path of await walk('.')){
     const name=relative('.',path);
-    if(/^docs\/CHAT_HANDOFF_[^/]+\.md$/.test(name)) continue;
+    if(name.startsWith('docs/history/')||/^docs\/CHAT_HANDOFF_[^/]+\.md$/.test(name)) continue;
     for(const word of forbidden) if(name.toLowerCase().includes(word.toLowerCase())) violations.push(`path: ${name}`);
     if(!textExt.has(extname(path)) && !['LICENSE','README','CONTRIBUTING'].includes(name)) continue;
     let text;

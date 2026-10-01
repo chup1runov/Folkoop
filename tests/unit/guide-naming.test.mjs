@@ -9,7 +9,7 @@ const legacy=[
   '\u043a\u0441\u0435'+'\u043d\u0438\u044f'
 ];
 const textExt=new Set(['.md','.txt','.json','.js','.mjs','.cjs','.html','.css','.yml','.yaml','.sql','.py','.sh']);
-const skipDirs=new Set(['.git','node_modules','_site','qa-output']);
+const skipDirs=new Set(['.git','node_modules','_site','qa-output','archive']);
 
 async function walk(entry){
  const s=await stat(entry);
@@ -26,7 +26,7 @@ test('Mura is the canonical current guide identity without personal-name leakage
  const offenders=[];
  for(const file of await walk('.')){
   const normalized=file.replaceAll('\\','/').toLowerCase();
-  if(normalized.startsWith('archive/folkoop-guide-standalone/')||normalized.startsWith('docs/history/folkoop-guide/'))continue;
+  if(normalized.startsWith('docs/history/folkoop-guide/')||normalized.startsWith('docs/history/mura/'))continue;
   for(const word of legacy)if(normalized.includes(word))offenders.push(normalized+': legacy path');
   const ext=path.extname(file).toLowerCase();
   if(ext&&!textExt.has(ext))continue;

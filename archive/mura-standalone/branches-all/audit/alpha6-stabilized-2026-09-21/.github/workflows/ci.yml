@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Existing tests
+        run: npm test
+      - name: Syntax
+        run: npm run check
+      - name: Character Pack validation
+        run: npm run validate:character
+      - name: A01-A18 stabilized audit
+        shell: bash
+        run: |
+          set +e
+          node audit/snapshot-review.cjs
+          code=$?
+          echo "$code" > .audit-results/exit-code.txt
+          exit 0
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stabilized-alpha6-audit-${{ matrix.os }}-${{ github.sha }}
+          path: .audit-results/*
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+      - name: Gate on audit result
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'); const r=JSON.parse(fs.readFileSync('.audit-results/report.json','utf8')); console.log('AUDIT_COUNTS',r.counts); if(r.counts.fail) process.exit(1)"

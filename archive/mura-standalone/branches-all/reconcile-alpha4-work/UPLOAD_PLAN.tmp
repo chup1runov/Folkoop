@@ -1,0 +1,16 @@
+Mura Companion source import is in progress.
+
+Imported in this session:
+- package/CI foundation;
+- 1.0 platform core source;
+- convergent conflict-resolution primitives;
+- lost-device revocation model;
+- ciphertext-only blind relay store contract;
+- Character Pack SDK v1 validator;
+- automated platform-core tests;
+- docs/PLATFORM_1_0.md.
+
+Still to import before this marker is removed:
+- the full Electron desktop shell/history (Presence, Rig, Surface, Memory, Home, paired transport, live visits);
+- first-party Ksyusha art/assets;
+- the complete historical test suite.

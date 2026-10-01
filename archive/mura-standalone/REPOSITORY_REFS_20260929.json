@@ -1,0 +1,357 @@
+{
+  "capturedAt": "2026-09-29",
+  "sourceRepository": "chup1runov/Mura",
+  "sourceRepositoryId": 1374123971,
+  "defaultBranch": "main",
+  "mainHead": "e76f92dec25a581792371125561aee31dee058a6",
+  "note": "Branch tips and PR index captured before repository retirement. Exact current source snapshots are stored separately under archive/mura-standalone/.",
+  "branches": [
+    {
+      "name": "alpha5-acceptance-report",
+      "sha": "2fb195bc6275999adabc841f8bbfa63aa1de5277",
+      "protected": false
+    },
+    {
+      "name": "alpha5-build-clarity",
+      "sha": "4223381570d761b3b4acfd1eac4974984319f1b1",
+      "protected": false
+    },
+    {
+      "name": "alpha5-desktop-hardening",
+      "sha": "b4306d9c68b670604be731e137cf42f4560a1e5f",
+      "protected": false
+    },
+    {
+      "name": "alpha5-packaging",
+      "sha": "db2f889a53076616cf3241d6062e9d6d67e2f5da",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-lived-continuity",
+      "sha": "10732445fbb45f5a25957a3fc4d1c99f5573a38f",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-stabilization-behavior-surfaces",
+      "sha": "3ca7bea97905f2c862a33fab5c54282feef67840",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-stabilization-first-experience",
+      "sha": "76890b364fd2e155ee653ea9b9ae5992a0209563",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-stabilization-foundations",
+      "sha": "f60b9a29d3a34102539b81d2a0415b240d646baa",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-stabilized-candidate",
+      "sha": "8939c47272b58e74ff6e926a75570ce78ec101ea",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-web-preview",
+      "sha": "82ef83102793a017eaf8cf3887885d21db7d1021",
+      "protected": false
+    },
+    {
+      "name": "alpha-6-web-stabilized",
+      "sha": "087b9617f4c9cd5408c20e11c5552da38db44462",
+      "protected": false
+    },
+    {
+      "name": "audit/alpha6-stabilized-2026-09-21",
+      "sha": "986f02ef4df4f0b45d254efdf3f357a4f0275489",
+      "protected": false
+    },
+    {
+      "name": "audit/handoff-2026-09-19",
+      "sha": "4ee2e2ec48130dd7ec67b836c2ab1514b01b4d33",
+      "protected": false
+    },
+    {
+      "name": "bootstrap/import-v05",
+      "sha": "2c800b742a73d872df2d216b75d2368d98c3663f",
+      "protected": false
+    },
+    {
+      "name": "character-presence-alpha4",
+      "sha": "d9ea945c04e1249bb11dc4e7acaedc5e75d0affa",
+      "protected": false
+    },
+    {
+      "name": "docs/chat-handoff-2026-09-19",
+      "sha": "e1051d7a80ad7ea69553220092fd5e5ab764d351",
+      "protected": false
+    },
+    {
+      "name": "docs-master-handoff-2026-09-18",
+      "sha": "c99d34d17914f3bcf3a87824254dafe3ccc770a0",
+      "protected": false
+    },
+    {
+      "name": "feat/v0.10-platform-hardening",
+      "sha": "b9f9c47858607e7c716e7162e79c0396cd9342fd",
+      "protected": false
+    },
+    {
+      "name": "feature/ksyusha-pointing-sit-edge",
+      "sha": "5609418e7aa9e8e74602aa72d64ce19124d211df",
+      "protected": false
+    },
+    {
+      "name": "import-runtime",
+      "sha": "49e1bef8239eec51d45f32f103f9df34c313e29a",
+      "protected": false
+    },
+    {
+      "name": "import-runtime-2",
+      "sha": "805587ea0aa5a030eec0e8fb3401acd785485e8a",
+      "protected": false
+    },
+    {
+      "name": "import-runtime-3",
+      "sha": "805587ea0aa5a030eec0e8fb3401acd785485e8a",
+      "protected": false
+    },
+    {
+      "name": "import-runtime-4",
+      "sha": "805587ea0aa5a030eec0e8fb3401acd785485e8a",
+      "protected": false
+    },
+    {
+      "name": "import-runtime-5",
+      "sha": "805587ea0aa5a030eec0e8fb3401acd785485e8a",
+      "protected": false
+    },
+    {
+      "name": "import-v0.4",
+      "sha": "b9f9c47858607e7c716e7162e79c0396cd9342fd",
+      "protected": false
+    },
+    {
+      "name": "main",
+      "sha": "e76f92dec25a581792371125561aee31dee058a6",
+      "protected": false
+    },
+    {
+      "name": "reconcile-alpha4-home",
+      "sha": "a59f0f0fea77fa5102b53211c3086af78060c4ec",
+      "protected": false
+    },
+    {
+      "name": "reconcile-alpha4-home2",
+      "sha": "a59f0f0fea77fa5102b53211c3086af78060c4ec",
+      "protected": false
+    },
+    {
+      "name": "reconcile-alpha4-work",
+      "sha": "a59f0f0fea77fa5102b53211c3086af78060c4ec",
+      "protected": false
+    },
+    {
+      "name": "reconcile-alpha4",
+      "sha": "95f4895550b9507d568cafa9872bd24ae1b1431c",
+      "protected": false
+    },
+    {
+      "name": "rename/character-to-mura",
+      "sha": "f3f60ac447677392f06946975f0283105b6e47e3",
+      "protected": false
+    },
+    {
+      "name": "surface-presence",
+      "sha": "46b27ba1127062bb382dedc07fcfbde9ce98f5a8",
+      "protected": false
+    },
+    {
+      "name": "tmp/sdcf-v0.6-beta-validation-20260928",
+      "sha": "454dae8b902f03e98882527d5f9aace4d3f7b534",
+      "protected": false
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 5,
+      "title": "Restore runnable desktop runtime for Mura 1.0 alpha",
+      "url": "https://github.com/chup1runov/Mura/pull/5",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 6,
+      "title": "Add opt-in native window surfaces and real perching",
+      "url": "https://github.com/chup1runov/Mura/pull/6",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 7,
+      "title": "Alpha 4: restore character presence, Home and consent handoff",
+      "url": "https://github.com/chup1runov/Mura/pull/7",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 8,
+      "title": "Alpha 5: desktop acceptance and runtime hardening",
+      "url": "https://github.com/chup1runov/Mura/pull/8",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 9,
+      "title": "Alpha 5.1: build unsigned macOS and Windows test artifacts",
+      "url": "https://github.com/chup1runov/Mura/pull/9",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 10,
+      "title": "Alpha 5.1.1: clarify test artifacts and add SHA256 manifests",
+      "url": "https://github.com/chup1runov/Mura/pull/10",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 11,
+      "title": "Alpha 5.2: save desktop acceptance diagnostics",
+      "url": "https://github.com/chup1runov/Mura/pull/11",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 12,
+      "title": "Docs: add canonical project handoff for fresh chats",
+      "url": "https://github.com/chup1runov/Mura/pull/12",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 13,
+      "title": "Alpha 6 candidate: first-run discovery and lived continuity",
+      "url": "https://github.com/chup1runov/Mura/pull/13",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 14,
+      "title": "Audit: snapshot verification and reproducible Alpha 6 defects",
+      "url": "https://github.com/chup1runov/Mura/pull/14",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 15,
+      "title": "Docs: durable audited handoff before chat deletion",
+      "url": "https://github.com/chup1runov/Mura/pull/15",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 16,
+      "title": "Alpha 6 web preview: browser-openable UX build",
+      "url": "https://github.com/chup1runov/Mura/pull/16",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 17,
+      "title": "Alpha 6 stabilization: fix first-experience blockers",
+      "url": "https://github.com/chup1runov/Mura/pull/17",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 18,
+      "title": "Alpha 6 stabilization: behavior and display surfaces",
+      "url": "https://github.com/chup1runov/Mura/pull/18",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 19,
+      "title": "Alpha 6 stabilization: foundation contracts",
+      "url": "https://github.com/chup1runov/Mura/pull/19",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 20,
+      "title": "Audit: verify stabilized Alpha 6 A01-A18",
+      "url": "https://github.com/chup1runov/Mura/pull/20",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 21,
+      "title": "Alpha 6 stabilized candidate: consolidate A01-A18 remediation",
+      "url": "https://github.com/chup1runov/Mura/pull/21",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 22,
+      "title": "Alpha 6 Web Mode: stabilize browser experience on current candidate",
+      "url": "https://github.com/chup1runov/Mura/pull/22",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 24,
+      "title": "Character Pack: add pointing and sit-edge Mura poses",
+      "url": "https://github.com/chup1runov/Mura/pull/24",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    },
+    {
+      "number": 25,
+      "title": "Rename flagship character identity to Mura",
+      "url": "https://github.com/chup1runov/Mura/pull/25",
+      "state": null,
+      "created_at": null,
+      "updated_at": null,
+      "closed_at": null
+    }
+  ]
+}

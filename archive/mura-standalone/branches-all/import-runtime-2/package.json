@@ -1,0 +1,12 @@
+{
+  "name": "mura-companion",
+  "version": "1.0.0-alpha.1",
+  "private": true,
+  "description": "Mura Companion platform core — convergent continuity, blind relay primitives, revocation and Character Pack SDK contracts.",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "check": "node --check src/core/*.cjs && node --check test/*.test.cjs"
+  },
+  "engines": { "node": ">=20" }
+}

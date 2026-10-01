@@ -1,0 +1,44 @@
+{
+  "name": "mura-companion",
+  "version": "1.0.0-alpha.4",
+  "description": "Mura Companion Engine — living desktop character platform. Ksyusha is the flagship character pack.",
+  "main": "src/main/main.cjs",
+  "author": "Pavel Chuprunov",
+  "private": true,
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "check": "node --check src/main/main.cjs && node --check src/main/preload.cjs && node --check src/engine/*.cjs && node --check src/platform/*.cjs && node --check src/core/*.cjs && node --check src/renderer/renderer.js && node --check src/home/home.js && node --check test/*.test.cjs",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux",
+    "validate:character": "node tools/validate-character.cjs"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.chup1runov.mura",
+    "productName": "Mura Companion",
+    "asar": true,
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "category": "Utility",
+      "target": ["AppImage", "deb"]
+    }
+  }
+}

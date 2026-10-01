@@ -1,0 +1,36 @@
+name: Source Audit
+on:
+  push:
+    branches: [audit/handoff-2026-09-19]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Existing tests
+        run: npm test
+      - name: Syntax of tracked source
+        run: npm run check
+      - name: Character Pack contract
+        run: npm run validate:character
+      - name: Targeted audit probes (known defects must remain visible)
+        run: node audit/snapshot-review.cjs
+      - name: Preserve inventory and findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-audit-${{ matrix.os }}-${{ github.sha }}
+          path: .audit-results/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
