@@ -100,7 +100,9 @@ async def main():
   await expect(page.locator('[name="name"]')).to_have_value('')
   assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')") is None
   await expect(page.locator('.my-place-hero')).to_be_visible()
-  await expect(page.locator('.my-place-stats strong').nth(0)).to_have_text('0')
+  await expect(page.locator('.my-place-stats')).to_have_count(0)
+  await expect(page.locator('.my-place-empty')).to_be_visible()
+  await expect(page.locator('.my-place-empty')).to_contain_text('Сделай это место своим')
   await page.screenshot(path=str(OUT/'folkoop-my-place-empty-mobile.png'),full_page=True)
   await page.click('#brandHome');await page.screenshot(path=str(OUT/'folkoop-mobile.png'),full_page=True)
   results.append('Erase removes only FOLKOOP local data; mobile screens captured')
