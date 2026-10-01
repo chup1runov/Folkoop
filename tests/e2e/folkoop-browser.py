@@ -116,7 +116,7 @@ async def main():
   blocked=await browser.new_context(service_workers='block')
   await blocked.route('**/*',local_only)
   await blocked.add_init_script("Storage.prototype.getItem=()=>{throw Error('blocked')};Storage.prototype.setItem=()=>{throw Error('blocked')}")
-  b=await blocked.new_page();await b.goto(BASE+'#/me');await b.click('[data-net="localGuest"]');await expect(b.locator('#profileForm')).to_be_visible()
+  b=await blocked.new_page();await b.goto(BASE+'#/me');await b.click('[data-net="localGuest"]');await b.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click();await expect(b.locator('#profileForm')).to_be_visible()
   await b.fill('[name="name"]','Memory');await b.click('#profileForm button[type="submit"]')
   await expect(b.locator('#status')).not_to_be_empty()
   results.append('Blocked storage does not prevent starting or editing My page')
