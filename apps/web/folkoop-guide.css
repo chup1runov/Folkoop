@@ -48,3 +48,9 @@
 @media(prefers-reduced-motion:reduce){
  .folkoop-guide-actor img{animation:none!important;transform:none!important}
 }
+
+.folkoop-guide-actor.mura-react-step img{animation:mura-step-pop .5s cubic-bezier(.2,.8,.2,1) 1!important}
+.folkoop-guide-actor.mura-react-done img{animation:mura-done .85s cubic-bezier(.2,.8,.2,1) 1!important}
+@keyframes mura-step-pop{0%{transform:translateY(0) scale(1)}45%{transform:translateY(-8px) scale(1.055)}100%{transform:translateY(0) scale(1)}}
+@keyframes mura-done{0%{transform:translateY(0) scale(1) rotate(0)}35%{transform:translateY(-10px) scale(1.07) rotate(-2deg)}65%{transform:translateY(-7px) scale(1.06) rotate(2deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){.folkoop-guide-actor.mura-react-step img,.folkoop-guide-actor.mura-react-done img{animation:none!important}}
