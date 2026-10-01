@@ -47,24 +47,24 @@ function assertSameShape(actual,expected,label){
 }
 
 const extraCtx=vm.createContext({});
-vm.runInContext(await readFile('folkoop-i18n-extra.js','utf8'),extraCtx);
+vm.runInContext(await readFile('apps/web/folkoop-i18n-extra.js','utf8'),extraCtx);
 const extra=extraCtx.FolkoopExtraCopy.languages;
 
 const shellCtx=vm.createContext({});
-vm.runInContext(await readFile('folkoop-core.js','utf8'),shellCtx);
-vm.runInContext(await readFile('folkoop-i18n-extra.js','utf8'),shellCtx);
-vm.runInContext(await readFile('folkoop-copy.js','utf8'),shellCtx);
+vm.runInContext(await readFile('apps/web/folkoop-core.js','utf8'),shellCtx);
+vm.runInContext(await readFile('apps/web/folkoop-i18n-extra.js','utf8'),shellCtx);
+vm.runInContext(await readFile('apps/web/folkoop-copy.js','utf8'),shellCtx);
 const shellEn=shellCtx.FolkoopCopy.COPY.en;
 
-const folkoop=await readFile('folkoop.js','utf8');
+const folkoop=await readFile('apps/web/folkoop.js','utf8');
 const tutorialEn=parseObject(folkoop,'tutorialCopy').en;
 const tutorialTitlesEn=parseObject(folkoop,'tutorialTitles').en;
 const helperEn=parseObject(folkoop,'helperCopy').en;
 
-const welcome=await readFile('home-welcome.js','utf8');
+const welcome=await readFile('apps/web/home-welcome.js','utf8');
 const welcomeEn=parseObject(welcome,'copy').en;
 
-const network=await readFile('network-ui.js','utf8');
+const network=await readFile('apps/web/network-ui.js','utf8');
 const networkEn={
  base:parseObject(network,'en'),
  chat:parseObject(network,'chatCopy').en,
@@ -74,7 +74,7 @@ const networkEn={
  activity:parseObject(network,'activityCopy').en,
  home:parseObject(network,'homeCopy').en
 };
-const auth=await readFile('auth-callback.js','utf8');
+const auth=await readFile('apps/web/auth-callback.js','utf8');
 const authEn=parseObject(auth,'copyByLanguage').en;
 
 const baseline={shell:shellEn,tutorial:tutorialEn,tutorialTitles:tutorialTitlesEn,helper:helperEn,homeWelcome:welcomeEn,network:networkEn,auth:authEn};
