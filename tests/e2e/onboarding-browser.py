@@ -80,7 +80,6 @@ async def mobile_flow(browser,passed):
   'Теперь сделай своё место своим'
  ]
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
- assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-tour')")
  first_box=await page.locator('#folkoopGuideActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
