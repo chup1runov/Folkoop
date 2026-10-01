@@ -2,11 +2,12 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-## Current pilot state — v0.39.0
+## Current pilot state — v0.40.0
 
 Navigation: **Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
+- Google OAuth pilot activation candidate: the application flag is enabled, but CI now fails closed unless the hosted Supabase Google provider and signup state are actually ready; this branch must not merge until the hosted provider gate passes;
 - public About now includes a clearly labelled future-architecture section covering portable trust/Passport, a future FOLKOOP action agent, cross-city federation and physical/digital Places; it explicitly states that these are planned directions rather than shipped crypto features;
 - summary-first cooperation/project detail: goal, status, people/progress and one next step remain visible; activity, participants, tasks, updates, supplier offers, purchase progress and edit controls use compact expandable sections;
 - mobile social-app shell: six compact bottom destinations plus a contextual second row; City contains Center, Profile contains Settings/About/Language, Together contains People/Communities; Guest limitations live in an expandable bottom DEMO chip rather than a large page banner;
