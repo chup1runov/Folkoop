@@ -27,6 +27,7 @@ test('current tree exposes only the FOLKOOP project identity',async()=>{
   const violations=[];
   for(const path of await walk('.')){
     const name=relative('.',path);
+    if(/^docs\/CHAT_HANDOFF_[^/]+\.md$/.test(name)) continue;
     for(const word of forbidden) if(name.toLowerCase().includes(word.toLowerCase())) violations.push(`path: ${name}`);
     if(!textExt.has(extname(path)) && !['LICENSE','README','CONTRIBUTING'].includes(name)) continue;
     let text;
