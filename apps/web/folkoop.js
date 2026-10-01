@@ -313,7 +313,7 @@ function onboardingTarget(step){
 function positionOnboarding(step){
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
- if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
+ if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';return;}
  if(step.id!=='helper')target.classList.add('tutorial-target');
  if(step.id!=='helper'){
   // WebKit may ignore scrollIntoView() for a target inside content that is
