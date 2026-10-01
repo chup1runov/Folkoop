@@ -149,8 +149,9 @@ async def scenario(browser, kind, partial):
         # disclosure. The focus regression still needs to verify the edit form
         # rendered after creation, so reveal the native Manage section first.
         manage = page.locator('[data-coop-section="manage"]')
-        if await manage.count() and await manage.get_attribute('open') is None:
-            await manage.locator('summary').click()
+        if await manage.count():
+            await manage.evaluate("(el)=>{el.open=true}")
+            await expect(manage).to_have_attribute('open', '')
         await expect(page.locator('#netCoopEdit')).to_be_visible()
         assert len(state['writes']) == 1, state['writes']
         assert state['writes'][0]['p_title'] == expected_title
