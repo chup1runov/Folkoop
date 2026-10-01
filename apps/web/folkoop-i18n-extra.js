@@ -4060,7 +4060,10 @@ const guestDemoCopy={
  ar:{guideBadge:"مرشدة FOLKOOP",guideText:"مورا هي مرشدة FOLKOOP. الأشخاص والرسائل والمشاريع والأنشطة في مساحتها أمثلة توضيحية لشرح الخدمة وليست ادعاءات عن مشاركين أو أحداث حقيقية.",guideCta:"سجّل الدخول للمشاركة",guideLocked:"سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.",guideExit:"الخروج من جولة مورا"},
  fa:{guideBadge:"راهنمای FOLKOOP",guideText:"مورا راهنمای FOLKOOP است. افراد، پیام‌ها، پروژه‌ها و فعالیت‌های فضای او نمونه‌هایی برای توضیح سرویس هستند، نه ادعا دربارهٔ افراد یا رویدادهای واقعی.",guideCta:"برای مشارکت وارد شوید",guideLocked:"برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.",guideExit:"خروج از راهنمای مورا"},
  so:{guideBadge:"Hagaha FOLKOOP",guideText:"Mura waa hagaha FOLKOOP. Dadka, fariimaha, mashaariicda iyo hawlaha meesheeda waa tusaalooyin lagu sharxayo adeegga, mana aha sheegashooyin ku saabsan dad ama dhacdooyin dhab ah.",guideCta:"Soo gal si aad uga qaybqaadato",guideLocked:"Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.",guideExit:"Ka bax socdaalka Mura"},
- ku:{guideBadge:"Rêberê FOLKOOP",guideText:"Mura rêberê FOLKOOP e. Mirov, peyam, proje û çalakiyên li cihê wê nimûneyên ravekirina servîsê ne, ne îdiayên li ser beşdar an bûyerên rastîn.",guideCta:"Ji bo beşdarbûnê têkevî",guideLocked:"Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.",guideExit:"Ji gera Mura derkeve"}* Additional full-interface translations for FOLKOOP.
+ ku:{guideBadge:"Rêberê FOLKOOP",guideText:"Mura rêberê FOLKOOP e. Mirov, peyam, proje û çalakiyên li cihê wê nimûneyên ravekirina servîsê ne, ne îdiayên li ser beşdar an bûyerên rastîn.",guideCta:"Ji bo beşdarbûnê têkevî",guideLocked:"Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.",guideExit:"Ji gera Mura derkeve"}
+};
+
+/* Additional full-interface translations for FOLKOOP.
    The canonical English, Swedish and Russian copy remains in the original modules.
    This registry supplies the other eight supported UI languages. */
 (() => {
