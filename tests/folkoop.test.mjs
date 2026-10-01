@@ -54,3 +54,17 @@ test('public About exposes the future architecture as planned, not shipped',asyn
  assert(I.COPY.ru.futureArchitectureText.includes('пилот'));
  assert(!I.COPY.en.futureArchitectureNote.includes('FOLKOOP Coin is'));
 });
+
+
+test('first contact explains the cooperation purpose instead of only naming modules',()=>{
+ for(const lang of C.LANGS){
+  assert.equal(typeof I.COPY[lang].hero,'string',lang+':hero');
+  assert.equal(typeof I.COPY[lang].intro,'string',lang+':intro');
+  assert.equal(typeof I.COPY[lang].aboutText,'string',lang+':aboutText');
+ }
+ assert(I.COPY.en.intro.includes('group chat'));
+ assert(I.COPY.ru.intro.includes('Групповой чат'));
+ assert(I.COPY.sv.intro.includes('gruppchatt'));
+ assert(I.COPY.en.aboutText.includes('cooperation network'));
+ assert(I.COPY.ru.aboutText.includes('сеть кооперации'));
+});
