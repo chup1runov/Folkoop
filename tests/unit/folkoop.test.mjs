@@ -28,7 +28,7 @@ test('returned snapshots cannot mutate live state',()=>{const w=C.workspace();w.
 test('erase resets profile, drafts and consent without clearing unrelated preferences',()=>{const s=memory(),w=C.workspace(s);s.setItem('folkoop-language','ru');w.profile({name:'Test'});w.add(item);w.remember(true);assert(w.clear());assert.equal(w.get().drafts.length,0);assert.equal(w.get().profile.name,'');assert.equal(w.isPersistent(),false);assert.equal(s.getItem('folkoop-language'),'ru');});
 test('new shell has no third-party network calls or payment simulation',async()=>{const s=await readFile('apps/web/folkoop.js','utf8');assert(!/\bfetch\(/.test(s));assert(!/WebSocket|sendBeacon/.test(s));assert(s.includes("e.origin!==location.origin"));assert(s.includes("e.source!==frame.contentWindow"));});
 
-test('FOLKOOP guide presence is local-only and uses authored pointing/sit assets',async()=>{
+test('Mura presence is local-only and keeps one authored canonical identity',async()=>{
  const guide=await readFile('apps/web/folkoop-guide.js','utf8');
  assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
  for(const asset of ['folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp'])assert((await readFile('apps/web/'+asset)).length>1000,asset);
@@ -38,7 +38,8 @@ test('FOLKOOP guide presence is local-only and uses authored pointing/sit assets
  const shell=await readFile('apps/web/folkoop.js','utf8');
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
- assert(shell.includes("pose:'sit-edge'"));
+ assert(shell.includes("target:'[data-intent=\\\"need\\\"]'")||shell.includes("target:'[data-intent=\"need\"]'"));
+ assert(guide.includes("const CANONICAL_MURA='./folkoop-guide-please.webp'"));
 });
 
 
