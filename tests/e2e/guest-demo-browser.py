@@ -28,7 +28,7 @@ async def main():
   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
   await page.click('[data-folkoop-guide-lang="ru"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь войти?')
+  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
   await expect(page.locator('#entryGateBody')).to_contain_text('найти подходящих людей или ресурсы и конкретный следующий шаг')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
   await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
