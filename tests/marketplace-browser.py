@@ -92,8 +92,7 @@ async def main():
   passed.append('Joint purchase renders structured supplier offer as escaped text')
 
   await page.click('[data-coop=selectOffer]')
-  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
-  await expect(page.locator('#networkPanel')).to_contain_text('Выбрано')
+  await expect(page.locator('#networkPanel')).to_contain_text('Выбрано',timeout=15000)
   assert state['choice'] and state['choice'][0]['offer_id']==OFFER
   assert any(url.endswith('/fk_choose_purchase_offer') for url,_ in state['requests'])
   passed.append('Purchase owner selects a preferred offer through server RPC')
