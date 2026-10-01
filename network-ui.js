@@ -297,6 +297,9 @@ function syncBadges(){
  setCountBadge(document.getElementById('messageLink'),messageCount);
  setCountBadge(document.querySelector('#nav a[href="#/together"]'),togetherCount);
  setCountBadge(document.querySelector('#nav a[href="#/projects"]'),projectCount);
+ setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/messages"]'),messageCount);
+ setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/together"]'),togetherCount);
+ setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/projects"]'),projectCount);
 }
 function renderActivityNotifications(u){
  const rows=data.activityInbox.filter(x=>x.last_activity_at).slice(0,12);
@@ -581,10 +584,6 @@ function render(){
   }else{
    html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div>`;
   }
- }
- if(guestDemo){
-  const banner=`<aside class="demo-banner" id="demoBanner"><div><span class="badge">${esc(ht('demoBadge'))}</span><span class="demo-banner-text">${esc(ht('demoText'))}</span></div><button class="button secondary compact" type="button" data-demo="register">${esc(ht('demoCta'))}</button></aside>`;
-  html=banner+html;
  }
  host.innerHTML=html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.classList.toggle('guest-demo',guestDemo);

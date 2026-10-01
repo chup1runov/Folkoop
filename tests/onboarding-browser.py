@@ -112,10 +112,10 @@ async def mobile_flow(browser,passed):
  passed.append('After onboarding the physical FOLKOOP guide remains as the lightweight contextual helper')
 
  await page.click('[data-helper=close]')
- await page.click('#mobileMenuToggle')
- labels=await page.locator('#nav a span').all_text_contents()
- assert labels[:11]==['Главная','Вместе','Проекты','Сообщения','Люди','Сообщества','Город','Центр','Профиль','Настройки','О нас'],labels
- await page.click('#nav a[href="#/settings"]')
+ labels=await page.locator('#mobilePrimaryNav a span:not(.net-count)').all_text_contents()
+ assert labels[:6]==['Главная','Вместе','Проекты','Город','Сообщения','Профиль'],labels
+ await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+ await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
  await page.click('[data-action=tutorial]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  passed.append('Replay from Settings restarts from language, preserving the language-first contract')

@@ -136,8 +136,19 @@ function layoutTour(target){
  card.style.maxHeight=Math.floor(short&&!mobile?Math.min(innerHeight-24,260):(mobile?innerHeight*.44:Math.min(innerHeight*.72,620)))+'px';
  card.style.left=left||mobile?gap+'px':'auto';
  card.style.right=left&&!mobile?'auto':gap+'px';
- card.style.top=helper&&mobile?gap+'px':'auto';
- card.style.bottom=helper&&mobile?'auto':gap+'px';
+ // On mobile the primary/context navigation lives at the bottom of the viewport.
+ // Put the explanation on the opposite vertical side of the highlighted target
+ // instead of always pinning it to the bottom and covering the very control
+ // being explained.
+ if(mobile){
+  const targetLow=r.top+r.height/2>innerHeight/2;
+  const cardAtTop=helper||targetLow;
+  card.style.top=cardAtTop?gap+'px':'auto';
+  card.style.bottom=cardAtTop?'auto':gap+'px';
+ }else{
+  card.style.top='auto';
+  card.style.bottom=gap+'px';
+ }
  const c=card.getBoundingClientRect();
  document.body.style.setProperty('--guide-card-height',Math.ceil(c.height)+'px');
  if(!helper){
@@ -148,7 +159,18 @@ function layoutTour(target){
   if(bottom>top&&r.height<=bottom-top&&(r.top<top||r.bottom>bottom)){
    const delta=r.top+r.height/2-(top+bottom)/2;
    if(sidebar)sidebar.scrollTop+=delta;
-   else window.scrollBy({top:delta,behavior:'instant'});
+   else{
+    // WebKit can refuse page scrolling toward an element inside an inert
+    // subtree. Restore each element's pre-modal inert value only for the
+    // synchronous scroll, then reinstate the modal barrier immediately.
+    const suspended=[];
+    for(const [el,value] of inertBefore){
+     if(el.isConnected&&el.inert){el.inert=value;suspended.push(el);}
+    }
+    window.scrollBy(0,delta);
+    for(const el of suspended)if(el.isConnected)el.inert=true;
+   }
+   r=target.getBoundingClientRect();
   }
  }
  updateSpotlight(target);
@@ -160,7 +182,7 @@ function applyPosition(target,mode='point',poseName=null){
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
  if(mode==='home'||!target){
-  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';actor.style.bottom=innerWidth<720?'10px':'18px';
+  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';const mobileBottom=document.body.classList.contains('mobile-context-visible')?'118px':'72px';actor.style.bottom=innerWidth<720?mobileBottom:'18px';
   pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
  }
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
