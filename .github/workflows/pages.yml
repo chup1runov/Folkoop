@@ -26,7 +26,7 @@ jobs:
           python-version: '3.12'
       - name: Syntax, versions, assets and deterministic regression tests
         run: |
-          for file in *.js; do node --check "$file"; done
+          find apps/web -maxdepth 1 -type f -name '*.js' -print0 | xargs -0 -r -n1 node --check
           find scripts -type f -name '*.mjs' -print0 | xargs -0 -r -n1 node --check
           python -m py_compile tests/browser.py
           node scripts/ci/static-smoke.mjs
@@ -47,7 +47,7 @@ jobs:
         run: |
           node --input-type=module <<'JS'
           import {readFile} from 'node:fs/promises';
-          import './civic-core.js';
+          import './apps/web/civic-core.js';
           for(const [file,id,hosts] of [['riksdagen-decisions','riksdagen_open_data',['data.riksdagen.se']],['goteborg-open-plans','goteborg_open_plans',['goteborg.se','www.goteborg.se']]]){
             const p=JSON.parse(await readFile(`data/${file}.json`,'utf8'));
             FolkoopCityCore.feed(p,id,hosts);
