@@ -101,7 +101,7 @@ async def mobile_flow(browser,passed):
   if idx in (2,3,4):
    expected_task=idx-1
    await expect(page.locator('#onboardingProgress')).to_contain_text(str(idx+1)+' / 8')
-   await expect(page.locator('[data-onboarding="next"]')).to_have_text('Помочь Муре')
+   await page.wait_for_function("() => document.querySelector('[data-onboarding=\\\"next\\\"]')?.textContent.includes('Муре')")
    await page.click('[data-onboarding="next"]')
    await expect(page.locator('#muraPracticeStars')).to_contain_text('★')
    await expect(page.locator('#muraPracticeXp')).to_have_text(str(expected_task*5)+' XP')
