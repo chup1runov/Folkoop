@@ -44,6 +44,8 @@ async def main():
   await expect(page.locator('#networkPanel')).to_be_visible()
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
+  await expect(page.locator('.guest-demo-banner')).to_be_visible()
+  await expect(page.locator('.guest-demo-banner')).to_contain_text('реальные участники FOLKOOP здесь не показаны')
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
@@ -52,7 +54,7 @@ async def main():
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('демонстрационные данные')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('вымышленные примеры')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
 
@@ -60,6 +62,8 @@ async def main():
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
+  await expect(page.locator('.guest-demo-banner')).to_be_visible()
+  await expect(page.locator('.guest-demo-banner')).to_contain_text('вымышленные примеры')
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
