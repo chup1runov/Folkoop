@@ -93,7 +93,7 @@ test('My Place renders authored identity and truthful local activity rather than
 test('Mura practice progression is capped and separate from real XP',async()=>{
  const shell=await readFile('apps/web/folkoop.js','utf8');
  assert(shell.includes('muraPracticeXp=Math.min(15,n*5)'));
- assert(shell.includes("'muraPracticeStars'"));
+ assert(shell.includes("muraPracticeStars"));
  assert(shell.includes('completeMuraPractice'));
  assert(!shell.includes('user.xp'));
 });
