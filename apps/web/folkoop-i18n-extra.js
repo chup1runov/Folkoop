@@ -6,13 +6,13 @@
 const languages = Object.create(null);
 languages.es = {
   "shell": {
-    "home": "Inicio",
-    "people": "Personas",
+    "home": "Solo tienes que elegir una de tres formas de empezar: Necesito, Puedo ayudar o Quiero hacer algo juntos.",
+    "people": "Elige «Quiero hacer algo juntos» cuando tengas una idea o quieras hacer que algo ocurra con otras personas. Empieza pequeño; después pueden aparecer personas, roles, tareas y un chat de trabajo.",
     "communities": "Comunidades",
-    "together": "Juntos",
-    "projects": "Proyectos",
-    "city": "Ciudad",
-    "center": "Centro",
+    "together": "Elige «Necesito» cuando necesites ayuda, una cosa, una habilidad u otro recurso. Describe la necesidad real; FOLKOOP puede ayudarte a encontrar una persona, un recurso o el siguiente paso.",
+    "projects": "Elige «Puedo ayudar» cuando puedas ofrecer una habilidad, una cosa, un recurso o tu tiempo. Una oferta concreta da a otras personas algo claro a lo que responder.",
+    "city": "Después del primer paso, FOLKOOP conecta tu intención con personas, recursos u oportunidades relevantes. Cuando las personas ya se han encontrado, los mensajes y el chat sirven para coordinarse; el chat no es el principio.",
+    "center": "Vuelve a Inicio para ver lo que necesita tu atención: respuestas, mensajes, tareas, confirmaciones y pasos de proyectos. Si no queda nada útil, estás al día.",
     "me": "Perfil",
     "messages": "Mensajes",
     "settings": "Ajustes",
@@ -131,24 +131,24 @@ languages.es = {
     "check": "Tu propia nota"
   },
   "tutorial": {
-    "welcome": "Empieza con una necesidad, una oferta o una idea real. FOLKOOP ayuda antes que un chat de grupo: primero a encontrar personas o recursos relevantes y un siguiente paso; después el chat sirve para coordinarse.",
+    "welcome": "FOLKOOP empieza con algo real: lo que necesitas, lo que puedes ofrecer o lo que quieres hacer con otras personas. Te ayuda a encontrar personas o recursos relevantes y un siguiente paso concreto, antes de necesitar un chat de grupo.",
     "home": "Inicio te muestra lo que importa hoy: un mensaje, una tarea, una confirmación o el siguiente paso de un proyecto. Haz primero lo útil y sal cuando estés al día.",
     "together": "¿Necesitas ayuda? ¿Puedes ayudar? ¿Tienes algo que compartir? ¿Quieres comprar en grupo? Aquí las necesidades cotidianas se convierten en cooperación.",
     "projects": "¿Tienes una idea? Conviértela en un equipo: personas, roles, tareas, actualizaciones y un chat de trabajo alrededor de un objetivo real.",
     "people": "Encuentra personas por lo que saben hacer y comunidades por lo que os importa. La meta no son seguidores, sino gente con la que puedas hacer algo de verdad.",
     "city": "Ciudad reúne fuentes y rutas oficiales locales conectadas. No deberías tener que saber de antemano qué autoridad o web buscar para dar el siguiente paso.",
     "center": "Centro es la futura capa física de FOLKOOP: un lugar para conocer gente, recibir ayuda humana, aprender, trabajar en proyectos y compartir herramientas. Aún no hay un Centro FOLKOOP abierto.",
-    "quick": "No necesitas aprenderlo todo primero. Empieza con una cosa real: pide ayuda, ofrece ayuda, compra en grupo o comparte un recurso."
+    "quick": "Eso basta para empezar. Elige ahora una cosa real: algo que necesitas, algo que puedes ofrecer o algo que quieres hacer juntos. Ciudad y las demás secciones estarán ahí cuando sean útiles."
   },
   "tutorialTitles": {
-    "welcome": "Trae una necesidad, capacidad, recurso o idea real",
-    "home": "Lo que importa hoy",
-    "together": "No lo hagas todo solo",
-    "projects": "Convierte una idea en un equipo",
-    "people": "Encuentra a tu gente",
-    "city": "Tu ciudad, una ruta clara",
-    "center": "De la red a un lugar real",
-    "quick": "Empieza con una cosa real"
+    "welcome": "Qué hace FOLKOOP",
+    "home": "Tres formas de empezar",
+    "together": "1 · Necesito",
+    "projects": "2 · Puedo ayudar",
+    "people": "3 · Quiero hacer algo juntos",
+    "city": "Qué ocurre después",
+    "center": "Dónde vuelves",
+    "quick": "Empieza ahora con una cosa real"
   },
   "helper": {
     "name": "Mura",
@@ -494,13 +494,13 @@ languages.es = {
 };
 languages.uk = {
   "shell": {
-    "home": "Головна",
-    "people": "Люди",
+    "home": "Спочатку обери лише один із трьох шляхів: «Мені потрібно», «Я можу допомогти» або «Хочу зробити щось разом».",
+    "people": "Обери «Хочу зробити щось разом», якщо маєш ідею або хочеш щось організувати з іншими. Почни з малого; далі можуть з’явитися люди, ролі, завдання й робочий чат.",
     "communities": "Спільноти",
-    "together": "Разом",
-    "projects": "Проєкти",
-    "city": "Місто",
-    "center": "Центр",
+    "together": "Обери «Мені потрібно», якщо потрібна допомога, річ, навичка чи інший ресурс. Опиши реальну потребу — FOLKOOP допоможе знайти людину, ресурс або наступний крок.",
+    "projects": "Обери «Я можу допомогти», якщо можеш запропонувати навичку, річ, ресурс або свій час. Конкретна пропозиція дає іншим зрозумілий привід відгукнутися.",
+    "city": "Після першої дії FOLKOOP пов’язує намір із потрібними людьми, ресурсами чи можливостями. Коли люди вже знайшли одне одного, повідомлення й робочий чат допомагають координуватися — чат не є початком.",
+    "center": "На Головну повертаєшся за тим, що потребує уваги: відповідями, повідомленнями, завданнями, підтвердженнями й кроками проєктів. Якщо корисних дій немає — ти все переглянув.",
     "me": "Профіль",
     "messages": "Повідомлення",
     "settings": "Налаштування",
@@ -619,24 +619,24 @@ languages.uk = {
     "check": "Твоя власна нотатка"
   },
   "tutorial": {
-    "welcome": "Почни з реальної потреби, пропозиції або ідеї. FOLKOOP допомагає ще до групового чату: спочатку знайти потрібних людей чи ресурси та наступний крок, а потім координуватися в чаті.",
+    "welcome": "FOLKOOP починається з чогось реального: що тобі потрібно, що можеш запропонувати або що хочеш зробити разом з іншими. Він допомагає знайти потрібних людей чи ресурси та конкретний наступний крок — ще до групового чату.",
     "home": "Головна показує, що важливо сьогодні: повідомлення, завдання, підтвердження або крок проєкту. Спочатку зроби корисне, а коли все переглянуто — можна спокійно вийти.",
     "together": "Потрібна допомога? Можеш допомогти? Є чим поділитися? Хочеш купити разом? Тут повсякденні потреби перетворюються на співпрацю.",
     "projects": "Є ідея? Перетвори її на команду: люди, ролі, завдання, оновлення та робочий чат навколо реальної мети.",
     "people": "Знаходь людей за тим, що вони вміють, а спільноти — за тим, що для вас важливо. Мета не в підписниках, а в людях, з якими можна щось реально зробити.",
     "city": "Місто збирає підключені офіційні місцеві джерела й маршрути в одному місці. Не потрібно наперед знати, яку установу чи сайт шукати.",
     "center": "Центр — майбутня фізична частина FOLKOOP: місце для знайомств, людської допомоги, навчання, роботи над проєктами й спільних інструментів. Відкритого Центру FOLKOOP поки немає.",
-    "quick": "Не потрібно спочатку вивчати все. Почни з однієї реальної речі: попроси допомогу, запропонуй її, купи разом або поділися ресурсом."
+    "quick": "Цього достатньо. Обери зараз одну реальну річ: що тобі потрібно, що можеш запропонувати або що хочеш зробити разом. Місто та інші розділи знадобляться пізніше."
   },
   "tutorialTitles": {
-    "welcome": "Принеси реальну потребу, навичку, ресурс або ідею",
-    "home": "Що важливо сьогодні",
-    "together": "Не роби все сам",
-    "projects": "Перетвори ідею на команду",
-    "people": "Знайди своїх людей",
-    "city": "Твоє місто — один зрозумілий маршрут",
-    "center": "Від мережі до реального місця",
-    "quick": "Почни з однієї реальної речі"
+    "welcome": "Що робить FOLKOOP",
+    "home": "Три способи почати",
+    "together": "1 · Мені потрібно",
+    "projects": "2 · Я можу допомогти",
+    "people": "3 · Хочу зробити щось разом",
+    "city": "Що буде далі",
+    "center": "Куди повертатися",
+    "quick": "Тепер почни з однієї реальної речі"
   },
   "helper": {
     "name": "Мура",
@@ -982,13 +982,13 @@ languages.uk = {
 };
 languages.fi = {
   "shell": {
-    "home": "Koti",
-    "people": "Ihmiset",
+    "home": "Valitse aluksi vain yksi kolmesta tavasta: Tarvitsen, Voin auttaa tai Haluan tehdä jotain yhdessä.",
+    "people": "Valitse «Haluan tehdä jotain yhdessä», kun sinulla on idea tai haluat saada jotain aikaan muiden kanssa. Aloita pienestä; siitä voi kasvaa ihmisiä, rooleja, tehtäviä ja työchat.",
     "communities": "Yhteisöt",
-    "together": "Yhdessä",
-    "projects": "Projektit",
-    "city": "Kaupunki",
-    "center": "Keskus",
+    "together": "Valitse «Tarvitsen», kun tarvitset apua, tavaran, taidon tai muun resurssin. Kuvaa todellinen tarve; FOLKOOP voi auttaa löytämään ihmisen, resurssin tai seuraavan askeleen.",
+    "projects": "Valitse «Voin auttaa», kun voit tarjota taidon, tavaran, resurssin tai aikaasi. Konkreettiseen tarjoukseen muiden on helppo vastata.",
+    "city": "Ensimmäisen askeleen jälkeen FOLKOOP yhdistää aikomuksesi sopiviin ihmisiin, resursseihin tai mahdollisuuksiin. Kun ihmiset ovat löytäneet toisensa, viestit ja työchat auttavat koordinoinnissa — chat ei ole alku.",
+    "center": "Palaa Etusivulle nähdäksesi, mikä tarvitsee huomiotasi: vastaukset, viestit, tehtävät, vahvistukset ja projektien vaiheet. Kun hyödyllistä tehtävää ei ole, olet ajan tasalla.",
     "me": "Profiili",
     "messages": "Viestit",
     "settings": "Asetukset",
@@ -1107,24 +1107,24 @@ languages.fi = {
     "check": "Oma muistiinpanosi"
   },
   "tutorial": {
-    "welcome": "Aloita aidosta tarpeesta, tarjouksesta tai ideasta. FOLKOOP auttaa ennen ryhmäkeskustelua: ensin löytämään sopivia ihmisiä tai resursseja ja seuraavan askeleen, sitten keskustelu auttaa koordinoinnissa.",
+    "welcome": "FOLKOOP alkaa jostakin todellisesta: mitä tarvitset, mitä voit tarjota tai mitä haluat tehdä muiden kanssa. Se auttaa löytämään sopivia ihmisiä tai resursseja ja konkreettisen seuraavan askeleen jo ennen ryhmäkeskustelua.",
     "home": "Etusivu näyttää, mikä on tärkeää tänään: viesti, tehtävä, vahvistus tai projektin seuraava vaihe. Tee hyödyllinen asia ensin ja poistu, kun olet ajan tasalla.",
     "together": "Tarvitsetko apua? Voitko auttaa? Onko sinulla jotain jaettavaa? Haluatko ostaa yhdessä? Täällä arjen tarpeet muuttuvat yhteistyöksi.",
     "projects": "Onko sinulla idea? Tee siitä tiimi: ihmiset, roolit, tehtävät, päivitykset ja työchat yhden todellisen tavoitteen ympärille.",
     "people": "Löydä ihmiset sen perusteella, mitä he osaavat, ja yhteisöt sen perusteella, mikä teille on tärkeää. Tavoite ei ole seuraajamäärä vaan ihmiset, joiden kanssa voi oikeasti tehdä jotain.",
     "city": "Kaupunki kokoaa yhdistetyt viralliset paikalliset lähteet ja reitit yhteen paikkaan. Sinun ei tarvitse tietää etukäteen, mitä viranomaista tai sivustoa etsiä.",
     "center": "Center on FOLKOOPin tuleva fyysinen kerros: paikka tavata ihmisiä, saada ihmisen apua, oppia, tehdä projekteja ja jakaa työkaluja. Avointa FOLKOOP Centeriä ei vielä ole.",
-    "quick": "Kaikkea ei tarvitse opetella ensin. Aloita yhdestä aidosta asiasta: pyydä apua, tarjoa apua, osta yhdessä tai jaa resurssi."
+    "quick": "Tämä riittää alkuun. Valitse nyt yksi todellinen asia: jotain mitä tarvitset, voit tarjota tai haluat tehdä yhdessä. Kaupunki ja muut osiot ovat käytettävissä, kun niitä tarvitaan."
   },
   "tutorialTitles": {
-    "welcome": "Tuo mukaan todellinen tarve, taito, resurssi tai idea",
-    "home": "Mikä on tärkeää tänään",
-    "together": "Älä tee kaikkea yksin",
-    "projects": "Muuta idea tiimiksi",
-    "people": "Löydä omat ihmiset",
-    "city": "Kaupunkisi — yksi selkeä reitti",
-    "center": "Verkosta oikeaan paikkaan",
-    "quick": "Aloita yhdestä oikeasta asiasta"
+    "welcome": "Mitä FOLKOOP tekee",
+    "home": "Kolme tapaa aloittaa",
+    "together": "1 · Tarvitsen",
+    "projects": "2 · Voin auttaa",
+    "people": "3 · Haluan tehdä jotain yhdessä",
+    "city": "Mitä tapahtuu seuraavaksi",
+    "center": "Minne palaat",
+    "quick": "Aloita nyt yhdestä todellisesta asiasta"
   },
   "helper": {
     "name": "Mura",
@@ -1470,13 +1470,13 @@ languages.fi = {
 };
 languages.bs = {
   "shell": {
-    "home": "Početna",
-    "people": "Ljudi",
+    "home": "Za početak izaberi samo jedan od tri puta: Treba mi, Mogu pomoći ili Želim nešto uraditi zajedno.",
+    "people": "Izaberi «Želim nešto uraditi zajedno» kada imaš ideju ili želiš nešto pokrenuti s drugima. Počni malim korakom; kasnije mogu doći ljudi, uloge, zadaci i radni chat.",
     "communities": "Zajednice",
-    "together": "Zajedno",
-    "projects": "Projekti",
-    "city": "Grad",
-    "center": "Centar",
+    "together": "Izaberi «Treba mi» kada ti treba pomoć, predmet, vještina ili drugi resurs. Opiši stvarnu potrebu; FOLKOOP može pomoći pronaći osobu, resurs ili sljedeći korak.",
+    "projects": "Izaberi «Mogu pomoći» kada možeš ponuditi vještinu, predmet, resurs ili svoje vrijeme. Konkretna ponuda daje drugima jasan razlog da odgovore.",
+    "city": "Nakon prvog koraka FOLKOOP povezuje tvoju namjeru s relevantnim ljudima, resursima ili prilikama. Kada se ljudi pronađu, poruke i radni chat služe koordinaciji — chat nije početak.",
+    "center": "Na Početnu se vraćaš zbog onoga što traži pažnju: odgovora, poruka, zadataka, potvrda i koraka projekta. Kada nema korisnih radnji, sve si pregledao.",
     "me": "Profil",
     "messages": "Poruke",
     "settings": "Postavke",
@@ -1595,24 +1595,24 @@ languages.bs = {
     "check": "Tvoja vlastita bilješka"
   },
   "tutorial": {
-    "welcome": "Počni sa stvarnom potrebom, ponudom ili idejom. FOLKOOP pomaže prije grupnog chata: prvo pronaći odgovarajuće ljude ili resurse i sljedeći korak, a zatim se u chatu koordinirati.",
+    "welcome": "FOLKOOP počinje nečim stvarnim: onim što ti treba, što možeš ponuditi ili što želiš uraditi s drugima. Pomaže pronaći odgovarajuće ljude ili resurse i konkretan sljedeći korak prije nego što je potreban grupni chat.",
     "home": "Početna pokazuje šta je važno danas: poruku, zadatak, potvrdu ili sljedeći korak projekta. Prvo uradi korisnu stvar, a kada si u toku možeš izaći.",
     "together": "Treba ti pomoć? Možeš pomoći? Imaš nešto za podijeliti? Želiš kupiti zajedno? Ovdje svakodnevne potrebe postaju saradnja.",
     "projects": "Imaš ideju? Pretvori je u tim: ljudi, uloge, zadaci, ažuriranja i radni chat oko stvarnog cilja.",
     "people": "Pronađi ljude po onome što znaju i zajednice po onome što vam je važno. Cilj nisu pratioci nego ljudi s kojima možeš stvarno nešto uraditi.",
     "city": "Grad okuplja povezane službene lokalne izvore i puteve na jednom mjestu. Ne moraš unaprijed znati koju ustanovu ili web-stranicu tražiti.",
     "center": "Centar je budući fizički sloj FOLKOOP-a: mjesto za upoznavanje, ljudsku pomoć, učenje, projekte i dijeljenje alata. Otvoren FOLKOOP Centar još ne postoji.",
-    "quick": "Ne moraš prvo naučiti sve. Počni s jednom stvarnom stvari: traži pomoć, ponudi pomoć, kupi zajedno ili podijeli resurs."
+    "quick": "To je dovoljno za početak. Izaberi jednu stvarnu stvar: nešto što ti treba, što možeš ponuditi ili što želiš uraditi zajedno. Grad i ostali dijelovi tu su kada postanu korisni."
   },
   "tutorialTitles": {
-    "welcome": "Donesi stvarnu potrebu, vještinu, resurs ili ideju",
-    "home": "Šta je važno danas",
-    "together": "Ne radi sve sam",
-    "projects": "Pretvori ideju u tim",
-    "people": "Pronađi svoje ljude",
-    "city": "Tvoj grad — jedan jasan put",
-    "center": "Od mreže do stvarnog mjesta",
-    "quick": "Počni s jednom stvarnom stvari"
+    "welcome": "Šta radi FOLKOOP",
+    "home": "Tri načina za početak",
+    "together": "1 · Treba mi",
+    "projects": "2 · Mogu pomoći",
+    "people": "3 · Želim nešto uraditi zajedno",
+    "city": "Šta slijedi",
+    "center": "Gdje se vraćaš",
+    "quick": "Počni sada s jednom stvarnom stvari"
   },
   "helper": {
     "name": "Mura",
