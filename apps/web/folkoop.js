@@ -383,6 +383,7 @@ function showOnboarding(step=0){
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
+ const completedMuraPractice=muraPracticeStep===3&&entryModeNow()==='guest';
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
  dialog.querySelector('#onboardingSpotlight').hidden=true;
@@ -392,6 +393,7 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
+ if(completedMuraPractice){setEntryMode('local');location.hash='#/me';setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
