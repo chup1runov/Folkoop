@@ -71,6 +71,12 @@ async def main():
   await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP Center is open yet')
   await page.click('#messageLink');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
   results.append('No fictitious venue, members, payments or message delivery')
+  await page.evaluate("location.hash='#/about'")
+  await expect(page.locator('#futureArchitectureTitle')).to_contain_text('Where FOLKOOP can go next')
+  await expect(page.locator('.future-architecture .card')).to_have_count(4)
+  await expect(page.locator('.future-architecture .notice')).to_contain_text('not crypto-first')
+  await expect(page.locator('.future-architecture a')).to_have_attribute('href','https://github.com/chup1runov/Folkoop/blob/main/docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md')
+  results.append('About makes the approved future architecture visible while labelling it planned and non-crypto-first')
   for lang in ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']:
    await page.select_option('#language',lang)
    for width in [320,390,1280]:

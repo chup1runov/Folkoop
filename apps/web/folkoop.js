@@ -91,7 +91,8 @@ function settingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
 }
 function aboutPage(){
- return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><div class="card"><p><strong>FOLKOOP</strong></p><p class="meta">${esc(t('tagline'))}</p></div>`;
+ const architectureUrl='https://github.com/chup1runov/Folkoop/blob/main/docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md';
+ return head('aboutTitle','aboutText')+`<section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section><section class="future-architecture" aria-labelledby="futureArchitectureTitle"><div class="row"><div><h2 id="futureArchitectureTitle">${esc(t('futureArchitectureTitle'))}</h2><p class="muted">${esc(t('futureArchitectureText'))}</p></div><span class="badge muted-badge">${esc(t('future'))}</span></div><div class="feature-grid"><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('trustLayerTitle'))}</h2><p>${esc(t('trustLayerText'))}</p></article><article class="card"><span class="small-icon">${icon('together')}</span><h2>${esc(t('agentLayerTitle'))}</h2><p>${esc(t('agentLayerText'))}</p></article><article class="card"><span class="small-icon">${icon('city')}</span><h2>${esc(t('networkLayerTitle'))}</h2><p>${esc(t('networkLayerText'))}</p></article><article class="card"><span class="small-icon">${icon('center')}</span><h2>${esc(t('physicalLayerTitle'))}</h2><p>${esc(t('physicalLayerText'))}</p></article></div><aside class="notice"><p>${esc(t('futureArchitectureNote'))}</p></aside><p><a class="text-link" href="${architectureUrl}" target="_blank" rel="noopener noreferrer">${esc(t('futureArchitectureLink'))} ↗</a></p></section><div class="card"><p><strong>FOLKOOP</strong></p><p class="meta">${esc(t('tagline'))}</p></div>`;
 }
 function cityShell(){
  const city=selectedCity();
@@ -195,7 +196,7 @@ const helperCopy={
   city:'City connects you to civic information and official routes. FOLKOOP does not pretend to be the authority itself.',
   center:'Center is the future physical layer: meetings, learning, equipment and human help in real life.',
   settings:'Settings contains language and the button to replay the introduction.',
-  about:'About explains the purpose, boundaries and current pilot state of FOLKOOP.'
+  about:'About explains the purpose, boundaries, current pilot state and the future architecture direction of FOLKOOP.'
  }},
  ru:{name:'FOLKOOP guide',label:'помощник FOLKOOP',open:'Открыть Муру',close:'Закрыть',tour:'Показать всю инструкцию ещё раз',intro:'Я живу здесь, чтобы объяснять, зачем нужен текущий раздел FOLKOOP.',tips:{
   me:'Заполни только то, что помогает кооперации: имя или ник, город, навыки и коротко о себе. Видимость сетевого профиля остаётся твоим выбором.',
@@ -208,7 +209,7 @@ const helperCopy={
   city:'Город связывает тебя с городской информацией и официальными маршрутами. FOLKOOP не выдаёт себя за муниципалитет или ведомство.',
   center:'Центр — будущий физический слой: встречи, обучение, оборудование и помощь людей в реальном мире.',
   settings:'В Настройках меняется язык и можно заново запустить эту инструкцию.',
-  about:'О нас объясняет идею FOLKOOP, границы продукта и текущее состояние пилота.'
+  about:'О нас объясняет идею FOLKOOP, границы продукта, текущее состояние пилота и направление будущей архитектуры.'
  }},
  sv:{name:'FOLKOOP guide',label:'FOLKOOP-hjälp',open:'Öppna FOLKOOP guide',close:'Stäng',tour:'Visa hela introduktionen igen',intro:'Jag finns här för att förklara vad den aktuella delen av FOLKOOP är till för.',tips:{
   me:'Fyll bara i sådant som hjälper samarbete: namn eller smeknamn, stad, färdigheter och en kort presentation. Synlighet i nätverkskatalogen är ditt val.',
@@ -221,7 +222,7 @@ const helperCopy={
   city:'Stad kopplar dig till samhällsinformation och officiella vägar utan att låtsas vara myndigheten.',
   center:'Center är det framtida fysiska lagret: möten, lärande, utrustning och mänsklig hjälp i verkligheten.',
   settings:'I Inställningar byter du språk och kan starta introduktionen igen.',
-  about:'Om oss förklarar FOLKOOPs syfte, gränser och pilotens nuvarande läge.'
+  about:'Om oss förklarar FOLKOOPs syfte, gränser, pilotens nuvarande läge och riktningen för den framtida arkitekturen.'
  }}
 };
 const extraCopy=globalThis.FolkoopExtraCopy?.languages||{};
