@@ -13,7 +13,7 @@ async def main():
    if route.request.url.startswith(BASE):await route.continue_()
    else:await route.abort()
   await context.route('**/*',local_only)
-  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-language-choice-v1','done');sessionStorage.setItem('folkoop-entry-mode-v1','guest')")
+  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-language-choice-v1','done');sessionStorage.setItem('folkoop-entry-mode-v1','account')")
   page=await context.new_page();errors=[]
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
@@ -25,6 +25,7 @@ async def main():
   await page.screenshot(path=str(OUT/'folkoop-desktop.png'),full_page=True)
   results.append('FOLKOOP root, brand asset and eleven ordered destinations')
   await page.goto(BASE+'#/me')
+  await page.click('[data-net="localGuest"]')
   await expect(page.locator('#myPlaceEditorPanel')).to_be_hidden()
   await page.locator('[data-action="toggle-my-place-editor"]:visible').click()
   await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()
