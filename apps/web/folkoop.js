@@ -394,7 +394,7 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
- if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));location.hash='#/me';render();setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
+ if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));location.hash='#/me';render();globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
