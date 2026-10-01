@@ -85,7 +85,7 @@ The deep dives cover Hylo, Karrot, Decidim, Open Collective, Loomio, Nextdoor, B
 
 ## History
 
-`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence.
+`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence. `history/CHAT_PUBLIC_HANDOFF_20261001.md` preserves the later public-safe decisions and current execution state from the same work session.
 
 `history/architecture/` contains superseded architecture descriptions.
 
