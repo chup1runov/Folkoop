@@ -52,8 +52,8 @@ function renderMobileChrome(){
  dock.dataset.parentSection=active;
  const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'" data-section="'+active+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
- const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>DEMO</span></button>':'';
- const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>DEMO</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>${esc(entrySource().muraRole)}</span></button>':'';
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().muraRole)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
@@ -117,34 +117,34 @@ function cityShell(){
 
 const tutorialCopy={
  en:{
-  welcome:"Hi, I'm Mura. This is my DEMO profile — a fictional example, not a real person's history. I use FOLKOOP for practical things I do not want to solve alone.",
+  welcome:"Hi, I'm Mura, FOLKOOP's guide. I'll show you my space and use examples to explain how things work here.",
   home:"This is my place. I keep a short line about myself, what I can offer and the things I have started. Your own place can grow from your real activity instead of a long profile form.",
   together:"For example, I am fixing up a room and need a tile cutter for one weekend. I can post that need instead of buying a tool I may use once.",
   projects:"I can also give something back. I know basic photography, so I can offer to help a neighbour photograph an item, a small event or a community project.",
-  people:"One of my DEMO projects is a small plant-and-seed exchange. An idea can become people, roles, tasks and a work chat instead of disappearing in a group conversation.",
+  people:"One example project in my space is a small plant-and-seed exchange. An idea can become people, roles, tasks and a work chat instead of disappearing in a group conversation.",
   city:"People and communities help me find others around a practical interest — gardening, cycling, fixing things or helping locally. The point is not followers; it is finding someone to do something with.",
   center:"Messages are where we coordinate after we have a reason to talk. City helps with local information and official routes; Center is a future physical layer and is not open yet.",
-  quick:"That is my DEMO place. Yours starts empty on purpose. Begin with one real thing: something you need, something you can offer, or something you want to make happen with other people."
+  quick:"That's my space in FOLKOOP. Yours starts empty on purpose. Begin with one real thing: something you need, something you can offer, or something you want to make happen with other people."
  },
  ru:{
-  welcome:"Привет, я Мура. Это мой ДЕМО-профиль — вымышленный пример, а не история реального человека. Я пользуюсь FOLKOOP для обычных дел, которые не хочется решать в одиночку.",
+  welcome:"Привет, я Мура, помощница FOLKOOP. Покажу тебе своё пространство и на примерах объясню, как здесь всё работает.",
   home:"Это моё место. Здесь я показываю немного о себе, чем могу помочь и что уже начинала. Твоё место тоже может постепенно складываться из реальных дел, а не из длинной анкеты.",
   together:"Например, я делаю небольшой ремонт и мне нужен плиткорез всего на выходные. Здесь я могу попросить инструмент, а не покупать вещь ради одного раза.",
   projects:"Но я не только прошу. Я немного умею фотографировать и могу помочь соседу снять вещь для объявления, небольшое мероприятие или местный проект.",
-  people:"Один из моих ДЕМО-проектов — небольшой обмен растениями и семенами. Идея может превратиться в людей, роли, задачи и рабочий чат, а не потеряться в общей переписке.",
+  people:"Один из проектов-примеров в моём пространстве — небольшой обмен растениями и семенами. Идея может превратиться в людей, роли, задачи и рабочий чат, а не потеряться в общей переписке.",
   city:"Люди и сообщества помогают мне находить тех, кому тоже интересны сад, велосипед, ремонт или помощь рядом. Смысл не в подписчиках, а в людях, с которыми реально можно что-то сделать.",
   center:"В Сообщениях мы договариваемся уже после того, как появился повод общаться. Город помогает с местной информацией и официальными маршрутами; Центр — будущая физическая часть и пока не открыт.",
-  quick:"Вот так выглядит моё ДЕМО-место. Твоё специально начинается пустым. Начни с одной реальной вещи: что тебе нужно, чем можешь помочь или что хочешь сделать вместе с другими."
+  quick:"Вот так выглядит моё пространство в FOLKOOP. Твоё специально начинается пустым. Начни с одной реальной вещи: что тебе нужно, чем можешь помочь или что хочешь сделать вместе с другими."
  },
  sv:{
-  welcome:"Hej, jag är Mura. Det här är min DEMO-profil — ett påhittat exempel, inte en riktig persons historia. Jag använder FOLKOOP för praktiska saker som jag inte vill lösa ensam.",
+  welcome:"Hej, jag är Mura, FOLKOOPs guide. Jag visar dig min plats och förklarar med exempel hur allt fungerar här.",
   home:"Det här är min plats. Här visar jag lite om mig själv, vad jag kan erbjuda och sådant jag har startat. Din egen plats kan växa ur verkliga handlingar i stället för ett långt profilformulär.",
   together:"Till exempel håller jag på att fixa ett rum och behöver en kakelskärare över en helg. Här kan jag fråga efter verktyget i stället för att köpa något jag kanske använder en gång.",
   projects:"Jag kan också bidra. Jag kan lite fotografering och kan erbjuda hjälp med att fotografera en sak, ett litet evenemang eller ett lokalt projekt.",
-  people:"Ett av mina DEMO-projekt är ett litet växt- och fröbyte. En idé kan bli människor, roller, uppgifter och en arbetschatt i stället för att försvinna i en gruppkonversation.",
+  people:"Ett exempelprojekt på min plats är ett litet växt- och fröbyte. En idé kan bli människor, roller, uppgifter och en arbetschatt i stället för att försvinna i en gruppkonversation.",
   city:"Människor och gemenskaper hjälper mig hitta andra kring praktiska intressen — odling, cykling, att laga saker eller hjälpa till lokalt. Poängen är inte följare utan människor att faktiskt göra något med.",
   center:"I Meddelanden samordnar vi när det redan finns en anledning att prata. Stad hjälper med lokal information och officiella vägar; Center är ett framtida fysiskt lager och är inte öppet ännu.",
-  quick:"Det här är min DEMO-plats. Din börjar tom med flit. Börja med en verklig sak: något du behöver, kan erbjuda eller vill få gjort tillsammans med andra."
+  quick:"Det här är min plats i FOLKOOP. Din börjar tom med flit. Börja med en verklig sak: något du behöver, kan erbjuda eller vill få gjort tillsammans med andra."
  }
 };
 const tutorialTitles={
@@ -153,9 +153,9 @@ const tutorialTitles={
  sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Där vi samordnar',quick:'Gör nu din plats till din'}
 };
 const entryCopy={
- en:{title:'How do you want to enter?',body:"FOLKOOP starts with something you need, can offer or want to do, then helps you find relevant people or resources and a concrete next step. Sign in to participate, or explore the demo.",email:'Continue with email',guest:'Explore as guest',guestNote:"Guest mode is a DEMO. All people, messages, projects and activity are fictional examples, not real participants. You can browse, but creating, joining, sending or changing anything requires sign-in.",back:'Back to language'},
- ru:{title:'Как хочешь войти?',body:"FOLKOOP начинается с того, что тебе нужно, что ты можешь предложить или что хочешь сделать, и помогает найти подходящих людей или ресурсы и конкретный следующий шаг. Войди для участия или посмотри демо.",email:'Войти по почте',guest:'Посмотреть как гость',guestNote:"Гостевой режим — ДЕМО. Все люди, сообщения, проекты и действия здесь — вымышленные примеры, а не реальные участники. Смотреть можно без входа; создавать, вступать, отправлять и менять данные — только после входа.",back:'Назад к языку'},
- sv:{title:'Hur vill du gå in?',body:"FOLKOOP börjar med något du behöver, kan erbjuda eller vill göra och hjälper dig hitta relevanta människor eller resurser och ett konkret nästa steg. Logga in för att delta eller utforska demon.",email:'Fortsätt med e-post',guest:'Utforska som gäst',guestNote:"Gästläget är en DEMO. Alla personer, meddelanden, projekt och aktiviteter är fiktiva exempel, inte riktiga deltagare. Du kan titta runt, men för att skapa, gå med, skicka eller ändra något måste du logga in.",back:'Tillbaka till språk'},
+ en:{title:'How do you want to start?',body:"Sign in to participate, or let Mura show you how FOLKOOP works first.",email:'Continue with email',guest:'Let Mura show me',muraRole:'FOLKOOP guide',guestNote:"Mura uses illustrative people, messages, projects and activity to explain FOLKOOP. They are examples, not claims about real participants or events. Sign in to participate yourself.",back:'Back to language'},
+ ru:{title:'Как хочешь начать?',body:"Войди, чтобы участвовать, или сначала позволь Муре показать, как работает FOLKOOP.",email:'Войти по почте',guest:'Мура покажет',muraRole:'Помощница FOLKOOP',guestNote:"Мура использует примеры людей, сообщений, проектов и действий, чтобы объяснить FOLKOOP. Это примеры, а не утверждения о реальных участниках или событиях. Войди, чтобы участвовать самому.",back:'Назад к языку'},
+ sv:{title:'Hur vill du börja?',body:"Logga in för att delta, eller låt Mura först visa hur FOLKOOP fungerar.",email:'Fortsätt med e-post',guest:'Låt Mura visa',muraRole:'FOLKOOP-guide',guestNote:"Mura använder exempel på människor, meddelanden, projekt och aktivitet för att förklara FOLKOOP. De är exempel, inte påståenden om riktiga deltagare eller händelser. Logga in för att delta själv.",back:'Tillbaka till språk'},
  es:{title:'¿Cómo quieres entrar?',body:"FOLKOOP empieza con algo que necesitas, puedes ofrecer o quieres hacer y te ayuda a encontrar personas o recursos relevantes y un siguiente paso concreto. Inicia sesión para participar o explora el demo.",email:'Continuar con correo',guest:'Explorar como invitado',guestNote:"El modo invitado es un DEMO. Todas las personas, mensajes, proyectos y actividades son ejemplos ficticios, no participantes reales. Puedes explorar, pero para crear, unirte, enviar o cambiar algo debes iniciar sesión.",back:'Volver al idioma'},
  uk:{title:'Як хочеш увійти?',body:"FOLKOOP починається з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити, і допомагає знайти потрібних людей чи ресурси та конкретний наступний крок. Увійди для участі або переглянь демо.",email:'Продовжити з e-mail',guest:'Переглянути як гість',guestNote:"Гостьовий режим — ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади, а не реальні учасники. Переглядати можна без входу; створювати, приєднуватися, надсилати чи змінювати — лише після входу.",back:'Назад до мови'},
  fi:{title:'Miten haluat jatkaa?',body:"FOLKOOP alkaa siitä, mitä tarvitset, voit tarjota tai haluat tehdä, ja auttaa löytämään sopivia ihmisiä tai resursseja sekä konkreettisen seuraavan askeleen. Kirjaudu osallistuaksesi tai tutustu demoon.",email:'Jatka sähköpostilla',guest:'Tutustu vieraana',guestNote:"Vierastila on DEMO. Kaikki ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä, eivät oikeita osallistujia. Voit selata, mutta luominen, liittyminen, lähettäminen ja muuttaminen vaativat kirjautumisen.",back:'Takaisin kieleen'},
