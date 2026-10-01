@@ -100,6 +100,13 @@ async def mobile_flow(browser,passed):
   cb=await card.bounding_box();ab=await actions.bounding_box();assert cb and ab and ab['y']+ab['height']<=cb['y']+cb['height']+1,(idx,cb,ab)
   overflow=await copy.evaluate('(el)=>el.scrollHeight>el.clientHeight+3')
   if overflow: assert not await cue.is_hidden(),f'step {idx+1} overflow has no scroll cue'
+  if idx in (2,3,4):
+   expected_task=idx-1
+   await expect(page.locator('[data-onboarding="next"]')).to_have_text('Помочь Муре')
+   await page.click('[data-onboarding="next"]')
+   await expect(page.locator('#muraPracticeStars')).to_contain_text('★')
+   await expect(page.locator('#muraPracticeXp')).to_have_text(str(expected_task*5)+' XP')
+   await expect(page.locator('#onboardingBody')).to_contain_text('+5 учебных XP')
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
