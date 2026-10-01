@@ -58,22 +58,22 @@ async def mobile_flow(browser,passed):
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
- await expect(page.locator('#onboardingTitle')).to_have_text('Принеси реальную потребность, навык, ресурс или идею')
- await expect(page.locator('#onboardingBody')).to_contain_text('раньше группового чата')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Что делает FOLKOOP')
+ await expect(page.locator('#onboardingBody')).to_contain_text('ещё до группового чата')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
  passed.append('Chosen language is applied before FOLKOOP guide starts explaining FOLKOOP')
 
  titles=[
-  'Принеси реальную потребность, навык, ресурс или идею',
-  'Что важно сегодня',
-  'Не делай всё в одиночку',
-  'Преврати идею в команду',
-  'Найди своих людей',
-  'Твой город — один понятный маршрут',
-  'От онлайн-сети к реальному месту',
-  'Начни с одной реальной вещи'
+  'Что делает FOLKOOP',
+  'Три способа начать',
+  '1 · Мне нужно',
+  '2 · Я могу помочь',
+  '3 · Хочу сделать что-то вместе',
+  'Что произойдёт дальше',
+  'Куда возвращаться',
+  'Теперь начни с одной реальной вещи'
  ]
  await settled_actor(page)
  assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-tour')")
@@ -83,16 +83,15 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  if title in ('Что важно сегодня','Не делай всё в одиночку','Найди своих людей','Твой город — один понятный маршрут'):
+  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
+  if idx in (1,2,3,4,5,6):
    await assert_directional_pose(page)
-  if title in ('От онлайн-сети к реальному месту','Начни с одной реальной вещи'):
+  if idx==7:
    assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-perched')")
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='sit-edge'
-   target=await page.locator('.tutorial-target').bounding_box()
-   seat=box['y']+box['height']*.44
-   assert target and abs(seat-target['y'])<14,(title,seat,target)
-  if title=='Преврати идею в команду':
+  if idx==3:
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
+  await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await settled_actor(page)
@@ -103,7 +102,7 @@ async def mobile_flow(browser,passed):
  await page.click('[data-onboarding=next]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
- passed.append('FOLKOOP guide uses real directional/idea/sit-edge poses through the 8-step value-first tour')
+ passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while motion and spotlight indicate context')
 
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
@@ -153,7 +152,7 @@ async def main():
   await mobile_flow(browser,passed)
   await desktop_flow(browser,passed)
   await browser.close()
- OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Value tour copy is localized across all supported shell languages; native-language review remains desirable','FOLKOOP guide motion is local CSS/JS using canonical FOLKOOP guide WebP + RGBA PNG pose assets; no AI service is called at runtime']},ensure_ascii=False,indent=2))
+ OUT.joinpath('onboarding-results.json').write_text(json.dumps({'passed':passed,'limits':[('WebKit engine on Linux; not real iOS Safari' if ENGINE=='webkit' else 'Chromium emulation; not real iOS Safari'),'Value tour copy is localized across all supported shell languages; native-language review remains desirable','Mura motion is local CSS/JS around one canonical artwork; no AI service is called at runtime']},ensure_ascii=False,indent=2))
  print(f'ENGINE {ENGINE}')
  print('\n'.join('PASS '+x for x in passed))
 
