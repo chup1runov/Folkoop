@@ -1,5 +1,8 @@
 # Kärnflöden v0.2
 
+> **Superseded civic-flow document.** Retained for historical/source-design provenance. These flows do not override the current FOLKOOP cooperation loop or work plan. See `PRODUCT_CONCEPT.md`, `GOTEBORG_CORE_LOOP_PILOT.md` and `WORK_PLAN_20261001.md`.
+
+
 ## A. Hål i vägen
 
 1. Användaren anger eller fångar plats.
