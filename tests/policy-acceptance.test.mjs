@@ -7,12 +7,12 @@ const PRIVACY='2026-09-29-v1';
 
 test('pilot policy versions stay aligned across server, client and participant docs',async()=>{
  const [client,migration,termsEn,termsSv,privacy,ui,workflow,dbRunner]=await Promise.all([
-  readFile('network-client.js','utf8'),
+  readFile('apps/web/network-client.js','utf8'),
   readFile('supabase/migrations/202609290003_pilot_terms_acceptance.sql','utf8'),
   readFile('docs/PILOT_TERMS_EN.md','utf8'),
   readFile('docs/PILOT_TERMS_SV.md','utf8'),
   readFile('docs/PILOT_PRIVACY_NOTICE_DRAFT.md','utf8'),
-  readFile('network-ui.js','utf8'),
+  readFile('apps/web/network-ui.js','utf8'),
   readFile('.github/workflows/network.yml','utf8'),
   readFile('scripts/ci/test-database.sh','utf8')
  ]);
