@@ -33,6 +33,8 @@ Broader participation still requires a genuinely free authentication/delivery ro
 
 ### Frontend hosting and CI
 
+The current production deployment target is GitHub Pages. No Vercel deployment is part of the supported current architecture; the unused `vercel.json` configuration has been removed to avoid implying otherwise.
+
 Keep the existing non-transactional prototype available while preparing a suitable host. GitHub Pages must not be treated as the long-term host for an online business, e-commerce or commercial SaaS; its published limits also caution against sensitive transactions. Resolve hosting suitability before activating the corresponding product features.
 
 Cloudflare Pages static hosting is a candidate: official documentation says static asset requests are free and unlimited, while builds and functions have limits. This is not a claim that a Cloudflare account was connected or that a site was deployed. No paid Workers plan, domain or add-on is approved.
