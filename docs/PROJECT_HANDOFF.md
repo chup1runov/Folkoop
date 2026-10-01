@@ -2,11 +2,11 @@
 
 > Chat-continuity snapshot: see `docs/CHAT_HANDOFF_20260930.md` for the 30 September UX/product decisions, completed releases, open PR stack, cooperation-value research conclusions and exact continuation order.
 
-30 September 2026.
+1 October 2026.
 
-Current public application version: **v0.36.0**.  
+Current public application version: **v0.38.0**.  
 Current product phase: **pre-pilot execution**.  
-Current priority: **finish the already-started mobile/summary UX close-out (#101, then a clean current-main v0.38), then activate the real participant Auth path, run the two-account gate, rehearse account closure, and authorize the controlled Göteborg pilot.**
+Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
 Do not resume feature expansion before that evidence gate unless a safety/privacy defect blocks the pilot.
 
@@ -37,22 +37,17 @@ Earlier standalone component identities are historical only. Current modules suc
 
 ## Current interface state
 
-Delete-ready chat snapshot:
-- v0.36 is deployed and confirmed green on current main;
-- PR #101 is the canonical current mobile-navigation PR; network authorization is green, while application CI currently fails on two known UI-test/guide-geometry regressions documented in `docs/CHAT_HANDOFF_20260930.md`;
-- old PR #97 is superseded/closed;
-- old PR #98 is closed/unmerged; branch `ux/summary-first-details-v038` is preserved only as source material for a clean post-#101 v0.38 rebuild.
-
-
-v0.36 includes the current guest/read-only presentation and first-session work:
+v0.38 includes:
 - language-first entry;
 - an 8-step value-first tour that is completed only after the tour itself finishes;
-- compact guest overview with localized sample content and participant-facing date/event formatting;
+- mobile bottom navigation for Home / Together / Projects / City / Messages / Profile, with contextual secondary navigation for People/Communities, Center and Profile utilities;
+- compact Guest preview with localized sample content and an expandable bottom DEMO disclosure;
 - reduced mutation clutter before sign-in;
 - progressive pilot sign-in;
-- local/private workspace remains explicitly separate from the network account;
-- the FOLKOOP guide remains deterministic/non-AI and uses a smaller normal-browsing footprint while preserving authored tour poses;
-- signed-in Home remains action-first rather than infinite-feed-first.
+- local/private workspace explicitly separate from the network account;
+- a deterministic/non-AI FOLKOOP guide with compact normal-browsing presence and tested mobile/landscape geometry;
+- action-first signed-in Home rather than an infinite-feed-first model;
+- summary-first cooperation/project detail: core state and the next useful step remain visible while activity, participants, tasks, updates, supplier offers, purchase progress and owner management use compact native disclosures.
 
 The participant-facing interface follows the persistent requirement in `PRODUCT_DECISION_POLICY.md`:
 
