@@ -31,6 +31,13 @@ jobs:
           python -m py_compile tests/browser.py
           node scripts/ci/static-smoke.mjs
           node --test tests/*.test.mjs
+      - name: Fail closed if Google OAuth UI is enabled before hosted Auth is ready
+        run: |
+          if grep -q "googleOAuthEnabled:true" apps/web/network-config.js; then
+            npm run auth:require-google
+          else
+            npm run auth:preflight
+          fi
       - name: Install pinned browser test driver
         run: python -m pip install 'playwright==1.57.0'
       - name: Prepare static browser test build
