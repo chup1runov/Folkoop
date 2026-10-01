@@ -40,3 +40,17 @@ test('FOLKOOP guide presence is local-only and uses authored pointing/sit assets
  assert(shell.includes("folkoop-language-choice-v1"));
  assert(shell.includes("pose:'sit-edge'"));
 });
+
+
+test('public About exposes the future architecture as planned, not shipped',async()=>{
+ const shell=await readFile('apps/web/folkoop.js','utf8');
+ for(const key of ['futureArchitectureTitle','trustLayerTitle','agentLayerTitle','networkLayerTitle','physicalLayerTitle','futureArchitectureNote','futureArchitectureLink']){
+  for(const lang of C.LANGS)assert.equal(typeof I.COPY[lang][key],'string',lang+':'+key);
+ }
+ assert(shell.includes("TRUST_IDENTITY_WEB4_ARCHITECTURE.md"));
+ assert(shell.includes("futureArchitectureTitle"));
+ assert(I.COPY.en.futureArchitectureNote.includes('not crypto-first'));
+ assert(I.COPY.sv.futureArchitectureText.includes('piloten'));
+ assert(I.COPY.ru.futureArchitectureText.includes('пилот'));
+ assert(!I.COPY.en.futureArchitectureNote.includes('FOLKOOP Coin is'));
+});
