@@ -189,7 +189,7 @@ function applyPosition(target,mode='point',poseName=null){
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
- const sideGap=mobile?10:16;
+ const mobile=innerWidth<720,sideGap=mobile?10:16;
  const candidates=mode==='perch'
   ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
   :[[r.right+sideGap,r.top+r.height/2-h/2],[r.left-w-sideGap,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+12],[12,12],[innerWidth-w-12,12]];
