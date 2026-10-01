@@ -4,7 +4,7 @@
 
 1 October 2026.
 
-Current public application version: **v0.39.0**.  
+Activation candidate version: **v0.40.0** (not mergeable until hosted Google Auth is ready).  
 Current product phase: **pre-pilot execution**.  
 Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
@@ -157,6 +157,8 @@ Active policy versions:
 Versioned acceptance is already enforced server-side during first admission.
 
 ## Auth state
+
+The `auth/google-pilot-activation-v040` candidate enables the application Google OAuth flag and adds a fail-closed CI gate: whenever that flag is true, `npm run auth:require-google` must pass against the hosted Supabase project before the candidate can merge. The last verified hosted preflight on 1 October 2026 still reported `googleProviderEnabled=false`, so the branch is expected to remain blocked until external Google/Supabase provider setup is completed.
 
 Google OAuth remains intentionally disabled until the external provider is configured and verified.
 
