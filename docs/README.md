@@ -77,7 +77,7 @@ The deep dives cover Hylo, Karrot, Decidim, Open Collective, Loomio, Nextdoor, B
 
 ### First-contact user feedback
 
-`research/user-feedback/2026-10-01/FIRST_CONTACT_SYNTHESIS.md` records the anonymized repeated comprehension signal from three informal external reviews. It is product evidence, not a formal user study, and does not override the protected pilot decision process.
+`research/user-feedback/2026-10-01/FIRST_CONTACT_SYNTHESIS.md` records the anonymized repeated comprehension signal from four informal external reviews. It is product evidence, not a formal user study, and does not override the protected pilot decision process.
 
 ### Source research
 
