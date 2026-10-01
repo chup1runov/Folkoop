@@ -85,6 +85,11 @@ async def mobile_flow(browser,passed):
  first_box=await page.locator('#folkoopGuideActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
+  semantic={2:('together','Одолжить плиткорез на выходные'),3:('together','Могу помочь с фотографией'),4:('projects','Обмен растениями и семенами по соседству')}
+  if idx in semantic:
+   route_name,visible_text=semantic[idx]
+   assert page.url.endswith('#/'+route_name),(idx,page.url)
+   await expect(page.locator('#networkPanel')).to_contain_text(visible_text)
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
