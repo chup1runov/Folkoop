@@ -350,6 +350,7 @@ function showOnboarding(step=0){
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=t('tutorialBack');back.disabled=onboardingStep===0;
  dialog.querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');
  positionOnboarding(item);
+ globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
  onboardingOpen=false;
@@ -358,6 +359,7 @@ function finishOnboarding(){
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(menuOpen)closeMenu();
  globalThis.FolkoopGuide?.home({instant:true});
+ globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
 }
