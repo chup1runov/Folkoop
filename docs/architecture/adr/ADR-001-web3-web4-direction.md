@@ -38,7 +38,7 @@ Instead:
    - federation between trust domains;
    - optional external integrity anchoring.
 3. Web4-derived mechanisms may be adopted selectively for:
-   - Mura/action agents;
+   - FOLKOOP action agent/action agents;
    - MCP/A2A interoperability;
    - Places/digital-twin state;
    - QR/NFC and physical resources;
