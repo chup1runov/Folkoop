@@ -4,7 +4,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {decodeEntities,parsePlans} from '../scripts/sources/fetch-goteborg-open-plans.mjs';
 const ctx=vm.createContext({console,URL,Date,Intl,setTimeout,clearTimeout,AbortController,Headers,Response,fetch,localStorage:{getItem(){throw new Error('disabled');},setItem(){throw new Error('disabled');}}});
-for(const file of ['civic-core.js','daily-data.js','goteborg-plans.js'])vm.runInContext(await readFile(new URL('../'+file,import.meta.url),'utf8'),ctx);
+for(const file of ['civic-core.js','daily-data.js','goteborg-plans.js'])vm.runInContext(await readFile(new URL('../apps/web/'+file,import.meta.url),'utf8'),ctx);
 const C=ctx.FolkoopCityCore,D=ctx.FolkoopCityDaily;
 const now=Date.parse('2026-09-23T10:15:00Z');
 const forecast={referenceTime:'2026-09-23T10:00:00Z',timeSeries:[{time:'2026-09-23T11:00:00Z',data:{air_temperature:13,wind_speed:4,probability_of_precipitation:30}}]};
