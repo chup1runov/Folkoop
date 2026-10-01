@@ -16,13 +16,13 @@ const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!==
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
 const onboardingSteps=[
  {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
- {id:'home',route:'home',target:'.first-actions',motion:'point',pose:'point'},
+ {id:'home',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
  {id:'together',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
  {id:'projects',route:'home',target:'[data-intent="offer"]',motion:'point',pose:'idea'},
  {id:'people',route:'home',target:'[data-intent="project"]',motion:'point',pose:'point'},
- {id:'city',route:'home',target:'.first-actions',motion:'point',pose:'point'},
+ {id:'city',route:'home',target:'#mobilePrimaryNav [data-mobile-nav="messages"], #nav a[href="#/messages"]',motion:'point',pose:'point'},
  {id:'center',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
- {id:'quick',route:'home',target:'.first-actions',motion:'perch',pose:'sit-edge'}
+ {id:'quick',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
