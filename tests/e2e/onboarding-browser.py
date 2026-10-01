@@ -45,10 +45,9 @@ async def assert_directional_pose(page):
 async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
  await local_only_factory(context)
+ await context.add_init_script('localStorage.clear();sessionStorage.clear()')
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE)
- await page.evaluate('localStorage.clear();sessionStorage.clear()')
- await page.goto(BASE+'?intro=1')
 
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
