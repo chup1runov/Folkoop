@@ -98,7 +98,7 @@ async def main():
    await expect(page.locator('#translationNote')).to_be_hidden()
   results.append('All eleven full-interface languages, RTL, and no horizontal overflow at 320/390/1280px')
   await page.select_option('#language','ru');await page.set_viewport_size({'width':390,'height':844})
-  await page.evaluate("location.hash='#/me'")
+  await page.goto(BASE+'#/me');await page.click('[data-net="localGuest"]');await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click()
   page.on('dialog',lambda d:d.accept())
   await page.click('[data-action="clear"]')
   await expect(page.locator('[name="name"]')).to_have_value('')
