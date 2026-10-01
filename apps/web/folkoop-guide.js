@@ -240,6 +240,14 @@ function refresh(){
  if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
  else if(currentTarget?.isConnected){layoutTour(currentTarget);applyPosition(currentTarget,currentMode,currentPose);}
 }
+function react(kind='step'){
+ ensureActor();
+ if(reduced())return;
+ actor.classList.remove('mura-react-step','mura-react-done');
+ void actor.offsetWidth;
+ actor.classList.add(kind==='done'?'mura-react-done':'mura-react-step');
+ setTimeout(()=>actor?.classList.remove('mura-react-step','mura-react-done'),kind==='done'?900:520);
+}
 function setExpanded(value){
  ensureActor().setAttribute('aria-expanded',String(!!value));
  queueMicrotask(()=>{
@@ -289,5 +297,5 @@ window.addEventListener('scroll',()=>{
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);
-globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,setExpanded});
+globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,setExpanded});
 })();
