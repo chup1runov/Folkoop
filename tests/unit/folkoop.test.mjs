@@ -31,7 +31,7 @@ test('new shell has no third-party network calls or payment simulation',async()=
 test('Mura presence is local-only and keeps one authored canonical identity',async()=>{
  const guide=await readFile('apps/web/folkoop-guide.js','utf8');
  assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
- for(const asset of ['folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp'])assert((await readFile('apps/web/'+asset)).length>1000,asset);
+ for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp'])assert((await readFile('apps/web/'+asset)).length>1000,asset);
  for(const asset of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert((await readFile('apps/web/'+asset)).length>20_000,asset);
  assert(!/transparentAsset|getContext\(|toDataURL\(|folkoop-guide-pointer|point-angle|point-length/.test(guide));
  for(const pose of ['point-left','point-right','point-up','point-down','sit-edge'])assert(guide.includes(pose));
@@ -39,7 +39,7 @@ test('Mura presence is local-only and keeps one authored canonical identity',asy
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
  assert(shell.includes("target:'[data-intent=\\\"need\\\"]'")||shell.includes("target:'[data-intent=\"need\"]'"));
- assert(guide.includes("const CANONICAL_MURA='./folkoop-guide-please.webp'"));
+ assert(guide.includes("const CANONICAL_MURA='./folkoop-guide-confident.webp'"));
 });
 
 
