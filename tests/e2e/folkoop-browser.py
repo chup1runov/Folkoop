@@ -19,7 +19,7 @@ async def main():
   await page.goto(BASE)
   await expect(page.locator('#nav a')).to_have_count(11)
   await page.select_option('#language','ru')
-  await expect(page.locator('h1')).to_contain_text('Что-то нужно? Можешь помочь?')
+  await expect(page.locator('#workspace h1')).to_contain_text('Что-то нужно? Можешь помочь?')
   await expect(page.locator('.hero p').nth(1)).to_contain_text('Групповой чат начинается, когда люди уже нашли друг друга')
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   await page.screenshot(path=str(OUT/'folkoop-desktop.png'),full_page=True)
