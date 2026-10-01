@@ -15,14 +15,14 @@ const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
 const onboardingSteps=[
- {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
- {id:'home',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
- {id:'together',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
- {id:'projects',route:'home',target:'[data-intent="offer"]',motion:'point',pose:'idea'},
- {id:'people',route:'home',target:'[data-intent="project"]',motion:'point',pose:'point'},
- {id:'city',route:'home',target:'#mobilePrimaryNav [data-mobile-nav="messages"], #nav a[href="#/messages"]',motion:'point',pose:'point'},
- {id:'center',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
- {id:'quick',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'}
+ {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
+ {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
+ {id:'together',route:'together',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'projects',route:'together',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'people',route:'projects',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'city',route:'people',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'center',route:'messages',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'quick',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
