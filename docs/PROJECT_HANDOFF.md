@@ -4,7 +4,7 @@
 
 1 October 2026.
 
-Current public application version: **v0.38.0**.  
+Current public application version: **v0.39.0**.  
 Current product phase: **pre-pilot execution**.  
 Current priority: **activate the real participant Auth path, run the two-account gate, rehearse account closure, then authorize the controlled Göteborg pilot.**
 
@@ -36,6 +36,8 @@ See:
 Earlier standalone component identities are historical only. Current modules such as City, Center and the FOLKOOP guide are parts of FOLKOOP, not separate products.
 
 ## Current interface state
+
+v0.39 adds one public informational layer only: About now shows the approved future architecture direction (portable trust/Passport, future action-agent assistance, cross-city interoperability and physical/digital Places), clearly marked as planned rather than current runtime functionality. The technical architecture remains evidence-gated and does not change the Auth/pilot priority.
 
 v0.38 includes:
 - language-first entry;
