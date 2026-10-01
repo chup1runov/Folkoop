@@ -28,7 +28,7 @@ async def main():
   await page.click('[data-net="localGuest"]')
   await page.fill('[name="name"]','Test User')
   await expect(page.locator('#myPlaceEditorPanel')).to_be_hidden()
-  await page.locator('[data-action="toggle-my-place-editor"]').first().click()
+  await page.locator('[data-action="toggle-my-place-editor"]').first.click()
   await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()
   await page.fill('[name="motto"]','Я люблю делать полезные вещи вместе')
   await page.check('[name="accent"][value="purple"]')
