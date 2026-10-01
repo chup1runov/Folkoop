@@ -19,8 +19,8 @@ languages.es = {
     "aboutPage": "Acerca de",
     "language": "Idioma",
     "tagline": "Personas diferentes. Un terreno común.",
-    "hero": "Encuentra a tu gente.\nHaced más juntos.",
-    "intro": "Un lugar para conocerse, compartir recursos y convertir intereses comunes en proyectos reales.",
+    "hero": "¿Necesitas algo? ¿Puedes ayudar?\\n¿Quieres hacer que algo ocurra?",
+    "intro": "Empieza con una necesidad, una oferta o una idea real. FOLKOOP te ayuda a encontrar personas, recursos y un siguiente paso concreto. Un chat de grupo empieza cuando las personas ya se han encontrado; FOLKOOP empieza antes.",
     "pilot": "PRIMERA VERSIÓN FUNCIONAL",
     "scope": "Las herramientas de Ciudad funcionan. La red piloto ya tiene perfiles, comunidades, mensajes y objetos de cooperación alojados en el servidor; los borradores locales siguen siendo privados y separados.",
     "newProject": "Crear un borrador de proyecto",
@@ -100,7 +100,7 @@ languages.es = {
     "settingsText": "Idioma, introducción y preferencias locales de la aplicación.",
     "repeatTutorial": "Volver a mostrar la introducción",
     "aboutTitle": "Acerca de FOLKOOP",
-    "aboutText": "FOLKOOP es una plataforma social cooperativa para personas, comunidades, proyectos, vida urbana y cooperación en el mundo real.",
+    "aboutText": "FOLKOOP es una red de cooperación: empieza con algo que necesitas, puedes ofrecer o quieres hacer y encuentra personas, recursos y un siguiente paso concreto.",
     "futureArchitectureTitle": "Hacia dónde puede evolucionar FOLKOOP",
     "futureArchitectureText": "El piloto actual se mantiene sencillo. Si el uso real lo justifica, FOLKOOP podrá añadir confianza portátil, agentes de acción seguros, cooperación entre nodos urbanos independientes y un vínculo digital con lugares y recursos compartidos del mundo real.",
     "trustLayerTitle": "Confianza y pasaporte",
@@ -131,7 +131,7 @@ languages.es = {
     "check": "Tu propia nota"
   },
   "tutorial": {
-    "welcome": "Trae algo real: una necesidad, una capacidad, un recurso que puedas compartir o una idea que quieras construir. FOLKOOP te ayuda a encontrar personas y recursos y convertirlo en un siguiente paso concreto.",
+    "welcome": "Empieza con una necesidad, una oferta o una idea real. FOLKOOP ayuda antes que un chat de grupo: primero a encontrar personas o recursos relevantes y un siguiente paso; después el chat sirve para coordinarse.",
     "home": "Inicio te muestra lo que importa hoy: un mensaje, una tarea, una confirmación o el siguiente paso de un proyecto. Haz primero lo útil y sal cuando estés al día.",
     "together": "¿Necesitas ayuda? ¿Puedes ayudar? ¿Tienes algo que compartir? ¿Quieres comprar en grupo? Aquí las necesidades cotidianas se convierten en cooperación.",
     "projects": "¿Tienes una idea? Conviértela en un equipo: personas, roles, tareas, actualizaciones y un chat de trabajo alrededor de un objetivo real.",
@@ -457,7 +457,7 @@ languages.es = {
     },
     "home": {
       "title": "Inicio",
-      "subtitle": "Un único campo de información para lo que ha cambiado, lo que requiere tu acción y lo que puede hacerse juntos.",
+      "subtitle": "Empieza por lo que necesitas, puedes ofrecer o quieres hacer. FOLKOOP te ayuda a encontrar personas o recursos y el siguiente paso, antes incluso de que exista un chat de grupo.",
       "attention": "Requiere tu atención",
       "nothingUrgent": "Ahora mismo no hay nada urgente.",
       "messages": "Mensajes sin leer",
@@ -507,8 +507,8 @@ languages.uk = {
     "aboutPage": "Про FOLKOOP",
     "language": "Мова",
     "tagline": "Різні люди. Спільні можливості.",
-    "hero": "Знаходь людей.\nРобіть більше разом.",
-    "intro": "Місце, де можна знайомитися, ділитися ресурсами й перетворювати спільні інтереси на реальні проєкти.",
+    "hero": "Щось потрібно? Можеш допомогти?\\nХочеш щось зробити?",
+    "intro": "Почни з реальної потреби, пропозиції або ідеї. FOLKOOP допомагає знайти потрібних людей, ресурси й конкретний наступний крок. Груповий чат починається, коли люди вже знайшли одне одного; FOLKOOP починається раніше.",
     "pilot": "ПЕРША РОБОЧА ВЕРСІЯ",
     "scope": "Інструменти розділу «Місто» працюють. У пілотній мережі вже є серверні профілі, спільноти, повідомлення та об’єкти співпраці; локальні чернетки залишаються приватними й окремими.",
     "newProject": "Створити чернетку проєкту",
@@ -588,7 +588,7 @@ languages.uk = {
     "settingsText": "Мова, вступ і локальні налаштування застосунку.",
     "repeatTutorial": "Показати вступ ще раз",
     "aboutTitle": "Про FOLKOOP",
-    "aboutText": "FOLKOOP — кооперативна соціальна платформа для людей, спільнот, проєктів, міського життя та співпраці в реальному світі.",
+    "aboutText": "FOLKOOP — мережа співпраці: почни з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити, а далі знайди людей, ресурси й конкретний наступний крок.",
     "futureArchitectureTitle": "Куди може розвиватися FOLKOOP",
     "futureArchitectureText": "Поточний пілот залишається простим. Якщо реальне використання це виправдає, FOLKOOP зможе додати переносиму довіру, безпечних агентів дії, співпрацю між незалежними міськими вузлами та цифровий зв’язок із реальними місцями й спільними ресурсами.",
     "trustLayerTitle": "Довіра та Passport",
@@ -619,7 +619,7 @@ languages.uk = {
     "check": "Твоя власна нотатка"
   },
   "tutorial": {
-    "welcome": "Принеси щось реальне: потребу, навичку, ресурс, яким можеш поділитися, або ідею, яку хочеш створити. FOLKOOP допомагає знайти людей і ресурси та перетворити це на конкретний наступний крок.",
+    "welcome": "Почни з реальної потреби, пропозиції або ідеї. FOLKOOP допомагає ще до групового чату: спочатку знайти потрібних людей чи ресурси та наступний крок, а потім координуватися в чаті.",
     "home": "Головна показує, що важливо сьогодні: повідомлення, завдання, підтвердження або крок проєкту. Спочатку зроби корисне, а коли все переглянуто — можна спокійно вийти.",
     "together": "Потрібна допомога? Можеш допомогти? Є чим поділитися? Хочеш купити разом? Тут повсякденні потреби перетворюються на співпрацю.",
     "projects": "Є ідея? Перетвори її на команду: люди, ролі, завдання, оновлення та робочий чат навколо реальної мети.",
@@ -945,7 +945,7 @@ languages.uk = {
     },
     "home": {
       "title": "Головна",
-      "subtitle": "Єдине інформаційне поле: що змінилося, що потребує твоєї дії та що можна зробити разом.",
+      "subtitle": "Почни з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити. FOLKOOP допомагає знайти людей чи ресурси й наступний крок ще до появи групового чату.",
       "attention": "Потребує твоєї уваги",
       "nothingUrgent": "Зараз нічого термінового.",
       "messages": "Непрочитані повідомлення",
@@ -995,8 +995,8 @@ languages.fi = {
     "aboutPage": "Tietoa",
     "language": "Kieli",
     "tagline": "Erilaisia ihmisiä. Yhteisiä mahdollisuuksia.",
-    "hero": "Löydä ihmiset.\nTehkää enemmän yhdessä.",
-    "intro": "Paikka tavata, jakaa resursseja ja muuttaa yhteiset kiinnostuksen kohteet oikeiksi projekteiksi.",
+    "hero": "Tarvitsetko jotain? Voitko auttaa?\\nHaluatko saada jotain aikaan?",
+    "intro": "Aloita aidosta tarpeesta, tarjouksesta tai ideasta. FOLKOOP auttaa löytämään sopivia ihmisiä, resursseja ja konkreettisen seuraavan askeleen. Ryhmäkeskustelu alkaa, kun ihmiset ovat jo löytäneet toisensa; FOLKOOP alkaa aiemmin.",
     "pilot": "ENSIMMÄINEN TOIMIVA VERSIO",
     "scope": "Kaupunkityökalut toimivat. Pilottiverkossa on nyt palvelimelle tallennetut profiilit, yhteisöt, viestit ja yhteistyökohteet; paikalliset luonnokset pysyvät yksityisinä ja erillään.",
     "newProject": "Luo projektin luonnos",
@@ -1076,7 +1076,7 @@ languages.fi = {
     "settingsText": "Kieli, esittely ja sovelluksen paikalliset asetukset.",
     "repeatTutorial": "Näytä esittely uudelleen",
     "aboutTitle": "Tietoa FOLKOOPista",
-    "aboutText": "FOLKOOP on yhteistoiminnallinen sosiaalinen alusta ihmisille, yhteisöille, projekteille, kaupunkielämälle ja tosielämän yhteistyölle.",
+    "aboutText": "FOLKOOP on yhteistyöverkosto: aloita siitä, mitä tarvitset, voit tarjota tai haluat tehdä, ja löydä sitten sopivia ihmisiä, resursseja ja konkreettinen seuraava askel.",
     "futureArchitectureTitle": "Mihin FOLKOOP voi kehittyä",
     "futureArchitectureText": "Nykyinen pilotti pidetään yksinkertaisena. Jos todellinen käyttö osoittaa tarpeen, FOLKOOPiin voidaan lisätä siirrettävä luottamus, turvallisia toiminta-agentteja, yhteistyötä itsenäisten kaupunkisolmujen välillä sekä digitaalinen yhteys oikeisiin paikkoihin ja yhteisiin resursseihin.",
     "trustLayerTitle": "Luottamus ja Passport",
@@ -1107,7 +1107,7 @@ languages.fi = {
     "check": "Oma muistiinpanosi"
   },
   "tutorial": {
-    "welcome": "Tuo mukaan jotain todellista: tarve, taito jonka voit tarjota, jaettava resurssi tai idea jonka haluat toteuttaa. FOLKOOP auttaa löytämään ihmiset ja resurssit ja muuttamaan sen konkreettiseksi seuraavaksi askeleeksi.",
+    "welcome": "Aloita aidosta tarpeesta, tarjouksesta tai ideasta. FOLKOOP auttaa ennen ryhmäkeskustelua: ensin löytämään sopivia ihmisiä tai resursseja ja seuraavan askeleen, sitten keskustelu auttaa koordinoinnissa.",
     "home": "Etusivu näyttää, mikä on tärkeää tänään: viesti, tehtävä, vahvistus tai projektin seuraava vaihe. Tee hyödyllinen asia ensin ja poistu, kun olet ajan tasalla.",
     "together": "Tarvitsetko apua? Voitko auttaa? Onko sinulla jotain jaettavaa? Haluatko ostaa yhdessä? Täällä arjen tarpeet muuttuvat yhteistyöksi.",
     "projects": "Onko sinulla idea? Tee siitä tiimi: ihmiset, roolit, tehtävät, päivitykset ja työchat yhden todellisen tavoitteen ympärille.",
@@ -1433,7 +1433,7 @@ languages.fi = {
     },
     "home": {
       "title": "Koti",
-      "subtitle": "Yksi tietonäkymä sille, mikä muuttui, mikä vaatii toimintaasi ja mitä voidaan tehdä yhdessä.",
+      "subtitle": "Aloita siitä, mitä tarvitset, voit tarjota tai haluat tehdä. FOLKOOP auttaa löytämään ihmisiä tai resursseja ja seuraavan askeleen jo ennen ryhmäkeskustelua.",
       "attention": "Vaatii huomiotasi",
       "nothingUrgent": "Ei mitään kiireellistä juuri nyt.",
       "messages": "Lukemattomat viestit",
@@ -1483,8 +1483,8 @@ languages.bs = {
     "aboutPage": "O FOLKOOP-u",
     "language": "Jezik",
     "tagline": "Različiti ljudi. Zajedničke mogućnosti.",
-    "hero": "Pronađi svoje ljude.\nUradite više zajedno.",
-    "intro": "Mjesto za upoznavanje, dijeljenje resursa i pretvaranje zajedničkih interesa u stvarne projekte.",
+    "hero": "Treba ti nešto? Možeš pomoći?\\nŽeliš nešto pokrenuti?",
+    "intro": "Počni sa stvarnom potrebom, ponudom ili idejom. FOLKOOP pomaže pronaći odgovarajuće ljude, resurse i konkretan sljedeći korak. Grupni chat počinje kada su se ljudi već pronašli; FOLKOOP počinje ranije.",
     "pilot": "PRVA RADNA VERZIJA",
     "scope": "Gradski alati rade. Pilot-mreža sada ima profile, zajednice, poruke i objekte saradnje pohranjene na serveru; lokalne skice ostaju privatne i odvojene.",
     "newProject": "Napravi skicu projekta",
@@ -1564,7 +1564,7 @@ languages.bs = {
     "settingsText": "Jezik, uvod i lokalne postavke aplikacije.",
     "repeatTutorial": "Ponovo prikaži uvod",
     "aboutTitle": "O FOLKOOP-u",
-    "aboutText": "FOLKOOP je kooperativna društvena platforma za ljude, zajednice, projekte, gradski život i saradnju u stvarnom svijetu.",
+    "aboutText": "FOLKOOP je mreža saradnje: počni s onim što ti treba, što možeš ponuditi ili što želiš uraditi, pa pronađi odgovarajuće ljude, resurse i konkretan sljedeći korak.",
     "futureArchitectureTitle": "Kuda se FOLKOOP može razvijati",
     "futureArchitectureText": "Trenutni pilot ostaje jednostavan. Ako stvarna upotreba pokaže potrebu, FOLKOOP može dodati prenosivo povjerenje, sigurne akcijske agente, saradnju između nezavisnih gradskih čvorova i digitalnu vezu sa stvarnim mjestima i zajedničkim resursima.",
     "trustLayerTitle": "Povjerenje i Passport",
@@ -1595,7 +1595,7 @@ languages.bs = {
     "check": "Tvoja vlastita bilješka"
   },
   "tutorial": {
-    "welcome": "Donesi nešto stvarno: potrebu, vještinu koju možeš ponuditi, resurs koji možeš podijeliti ili ideju koju želiš izgraditi. FOLKOOP pomaže pronaći ljude i resurse i pretvoriti to u konkretan sljedeći korak.",
+    "welcome": "Počni sa stvarnom potrebom, ponudom ili idejom. FOLKOOP pomaže prije grupnog chata: prvo pronaći odgovarajuće ljude ili resurse i sljedeći korak, a zatim se u chatu koordinirati.",
     "home": "Početna pokazuje šta je važno danas: poruku, zadatak, potvrdu ili sljedeći korak projekta. Prvo uradi korisnu stvar, a kada si u toku možeš izaći.",
     "together": "Treba ti pomoć? Možeš pomoći? Imaš nešto za podijeliti? Želiš kupiti zajedno? Ovdje svakodnevne potrebe postaju saradnja.",
     "projects": "Imaš ideju? Pretvori je u tim: ljudi, uloge, zadaci, ažuriranja i radni chat oko stvarnog cilja.",
@@ -1921,7 +1921,7 @@ languages.bs = {
     },
     "home": {
       "title": "Početna",
-      "subtitle": "Jedno informativno polje za ono što se promijenilo, što traži tvoju akciju i šta se može uraditi zajedno.",
+      "subtitle": "Počni od onoga što ti treba, što možeš ponuditi ili što želiš uraditi. FOLKOOP pomaže pronaći ljude ili resurse i sljedeći korak prije nego što uopće postoji grupni chat.",
       "attention": "Traži tvoju pažnju",
       "nothingUrgent": "Trenutno nema ničeg hitnog.",
       "messages": "Nepročitane poruke",
@@ -1971,8 +1971,8 @@ languages.ar = {
     "aboutPage": "حول FOLKOOP",
     "language": "اللغة",
     "tagline": "أشخاص مختلفون. فرص مشتركة.",
-    "hero": "اعثر على أشخاصك.\nأنجزوا المزيد معًا.",
-    "intro": "مكان للتعارف ومشاركة الموارد وتحويل الاهتمامات المشتركة إلى مشاريع حقيقية.",
+    "hero": "هل تحتاج شيئًا؟ هل تستطيع المساعدة؟\\nهل تريد إنجاز شيء؟",
+    "intro": "ابدأ بحاجة أو عرض أو فكرة حقيقية. يساعدك FOLKOOP على العثور على أشخاص وموارد مناسبة وخطوة تالية واضحة. تبدأ المحادثة الجماعية بعد أن يجد الناس بعضهم؛ أما FOLKOOP فيبدأ قبل ذلك.",
     "pilot": "أول نسخة عاملة",
     "scope": "أدوات المدينة تعمل. تضم شبكة التجربة الآن ملفات شخصية ومجتمعات ورسائل وعناصر تعاون محفوظة على الخادم؛ وتبقى المسودات المحلية خاصة ومنفصلة.",
     "newProject": "إنشاء مسودة مشروع",
@@ -2052,7 +2052,7 @@ languages.ar = {
     "settingsText": "اللغة والمقدمة وإعدادات التطبيق المحلية.",
     "repeatTutorial": "عرض المقدمة مرة أخرى",
     "aboutTitle": "حول FOLKOOP",
-    "aboutText": "FOLKOOP منصة اجتماعية تعاونية للأشخاص والمجتمعات والمشاريع وحياة المدينة والتعاون في العالم الحقيقي.",
+    "aboutText": "FOLKOOP شبكة للتعاون: ابدأ بما تحتاجه أو تستطيع تقديمه أو تريد فعله، ثم اعثر على الأشخاص والموارد والخطوة التالية المناسبة.",
     "futureArchitectureTitle": "إلى أين يمكن أن يتطور FOLKOOP",
     "futureArchitectureText": "يبقى الإصدار التجريبي الحالي بسيطًا. إذا أثبت الاستخدام الفعلي الحاجة، يمكن لـ FOLKOOP إضافة ثقة قابلة للنقل، ووكلاء آمنين لتنفيذ الإجراءات، وتعاون بين عقد مدن مستقلة، وربط رقمي بالأماكن والموارد المشتركة في العالم الحقيقي.",
     "trustLayerTitle": "الثقة وPassport",
@@ -2083,7 +2083,7 @@ languages.ar = {
     "check": "ملاحظتك الخاصة"
   },
   "tutorial": {
-    "welcome": "أحضر شيئًا حقيقيًا: حاجة لديك، أو مهارة تستطيع تقديمها، أو موردًا يمكنك مشاركته، أو فكرة تريد تنفيذها. يساعدك FOLKOOP على العثور على الأشخاص والموارد وتحويل ذلك إلى خطوة تالية واضحة.",
+    "welcome": "ابدأ بحاجة أو عرض أو فكرة حقيقية. يساعد FOLKOOP قبل المحادثة الجماعية: أولًا في العثور على الأشخاص أو الموارد والخطوة التالية، ثم تستخدم المحادثة للتنسيق.",
     "home": "تعرض الصفحة الرئيسية ما يهم اليوم: رسالة أو مهمة أو تأكيدًا أو خطوة في مشروع. أنجز الشيء المفيد أولًا، وعندما تنتهي يمكنك مغادرة التطبيق.",
     "together": "هل تحتاج مساعدة؟ هل تستطيع المساعدة؟ هل لديك مورد للمشاركة؟ هل تريد الشراء معًا؟ هنا تتحول الاحتياجات اليومية إلى تعاون.",
     "projects": "لديك فكرة؟ حوّلها إلى فريق: أشخاص وأدوار ومهام وتحديثات ودردشة عمل حول هدف حقيقي.",
@@ -2409,7 +2409,7 @@ languages.ar = {
     },
     "home": {
       "title": "الرئيسية",
-      "subtitle": "مساحة معلومات واحدة لما تغيّر، وما يحتاج إلى إجراء منك، وما يمكن فعله معًا.",
+      "subtitle": "ابدأ بما تحتاجه أو تستطيع تقديمه أو تريد فعله. يساعدك FOLKOOP على العثور على الأشخاص أو الموارد والخطوة التالية حتى قبل وجود محادثة جماعية.",
       "attention": "يحتاج إلى انتباهك",
       "nothingUrgent": "لا يوجد شيء عاجل الآن.",
       "messages": "رسائل غير مقروءة",
@@ -2459,8 +2459,8 @@ languages.fa = {
     "aboutPage": "درباره FOLKOOP",
     "language": "زبان",
     "tagline": "آدم‌های متفاوت. فرصت‌های مشترک.",
-    "hero": "آدم‌های خودت را پیدا کن.\nبا هم کارهای بیشتری انجام دهید.",
-    "intro": "جایی برای آشنا شدن، به‌اشتراک‌گذاشتن منابع و تبدیل علاقه‌های مشترک به پروژه‌های واقعی.",
+    "hero": "چیزی لازم داری؟ می‌توانی کمک کنی؟\\nمی‌خواهی کاری را پیش ببری؟",
+    "intro": "با یک نیاز، پیشنهاد یا ایدهٔ واقعی شروع کن. FOLKOOP کمک می‌کند آدم‌ها، منابع و گام بعدی مشخص را پیدا کنی. گفت‌وگوی گروهی وقتی شروع می‌شود که آدم‌ها همدیگر را پیدا کرده‌اند؛ FOLKOOP زودتر شروع می‌شود.",
     "pilot": "نخستین نسخهٔ عملیاتی",
     "scope": "ابزارهای شهر کار می‌کنند. شبکهٔ آزمایشی اکنون پروفایل‌ها، جوامع، پیام‌ها و موارد همکاریِ ذخیره‌شده روی سرور دارد؛ پیش‌نویس‌های محلی همچنان خصوصی و جدا می‌مانند.",
     "newProject": "ساخت پیش‌نویس پروژه",
@@ -2540,7 +2540,7 @@ languages.fa = {
     "settingsText": "زبان، معرفی و تنظیمات محلی برنامه.",
     "repeatTutorial": "نمایش دوبارهٔ معرفی",
     "aboutTitle": "دربارهٔ FOLKOOP",
-    "aboutText": "FOLKOOP یک پلتفرم اجتماعی تعاونی برای افراد، جوامع، پروژه‌ها، زندگی شهری و همکاری در دنیای واقعی است.",
+    "aboutText": "FOLKOOP یک شبکهٔ همکاری است: از چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی انجام دهی شروع کن و سپس آدم‌ها، منابع و گام بعدی مشخص را پیدا کن.",
     "futureArchitectureTitle": "FOLKOOP می‌تواند به کجا برسد",
     "futureArchitectureText": "پایلوت فعلی ساده می‌ماند. اگر استفاده واقعی نیاز را نشان دهد، FOLKOOP می‌تواند اعتماد قابل‌انتقال، عامل‌های ایمن برای اقدام، همکاری میان گره‌های مستقل شهری و پیوند دیجیتال با مکان‌ها و منابع مشترک دنیای واقعی را اضافه کند.",
     "trustLayerTitle": "اعتماد و Passport",
@@ -2571,7 +2571,7 @@ languages.fa = {
     "check": "یادداشت شخصی تو"
   },
   "tutorial": {
-    "welcome": "یک چیز واقعی بیاور: نیازی که داری، مهارتی که می‌توانی ارائه کنی، منبعی که می‌توانی به اشتراک بگذاری یا ایده‌ای که می‌خواهی بسازی. FOLKOOP کمک می‌کند آدم‌ها و منابع را پیدا کنی و آن را به یک گام بعدی مشخص تبدیل کنی.",
+    "welcome": "با یک نیاز، پیشنهاد یا ایدهٔ واقعی شروع کن. FOLKOOP پیش از گفت‌وگوی گروهی کمک می‌کند: اول آدم‌ها یا منابع مناسب و گام بعدی را پیدا کنی، بعد برای هماهنگی از گفت‌وگو استفاده کنی.",
     "home": "خانه نشان می‌دهد امروز چه چیزی مهم است: پیام، کار، تأیید یا گام بعدی پروژه. اول کار مفید را انجام بده و وقتی همه‌چیز بررسی شد، می‌توانی برنامه را ببندی.",
     "together": "کمک می‌خواهی؟ می‌توانی کمک کنی؟ چیزی برای اشتراک داری؟ می‌خواهی با هم خرید کنید؟ اینجا نیازهای روزمره به همکاری تبدیل می‌شوند.",
     "projects": "ایده داری؟ آن را به یک تیم تبدیل کن: آدم‌ها، نقش‌ها، کارها، به‌روزرسانی‌ها و گفت‌وگوی کاری پیرامون یک هدف واقعی.",
@@ -2897,7 +2897,7 @@ languages.fa = {
     },
     "home": {
       "title": "خانه",
-      "subtitle": "یک نمای اطلاعاتی برای آنچه تغییر کرده، آنچه به اقدام تو نیاز دارد و آنچه می‌توان با هم انجام داد.",
+      "subtitle": "از چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی انجام دهی شروع کن. FOLKOOP کمک می‌کند آدم‌ها یا منابع و گام بعدی را حتی پیش از شکل‌گیری گفت‌وگوی گروهی پیدا کنی.",
       "attention": "نیازمند توجه تو",
       "nothingUrgent": "فعلاً چیز فوری وجود ندارد.",
       "messages": "پیام‌های خوانده‌نشده",
@@ -2947,8 +2947,8 @@ languages.so = {
     "aboutPage": "Ku saabsan FOLKOOP",
     "language": "Luqad",
     "tagline": "Dad kala duwan. Fursado wadaag ah.",
-    "hero": "Hel dadkaaga.\nWax badan wada sameeya.",
-    "intro": "Meel lagu kulmo, lagu wadaago kheyraadka laguna beddelo danaha wadajirka ah mashaariic dhab ah.",
+    "hero": "Wax ma u baahan tahay? Ma caawin kartaa?\\nWax ma rabtaa inaad hirgeliso?",
+    "intro": "Ka bilow baahi, wax aad bixin karto ama fikrad dhab ah. FOLKOOP wuxuu kaa caawiyaa helidda dadka, kheyraadka iyo tallaabada xigta ee cad. Wadahadal kooxeed wuxuu bilaabmaa marka dadku is heleen; FOLKOOP wuxuu bilaabmaa ka hor.",
     "pilot": "NOOCA UGU HORREEYA EE SHAQAYNAYA",
     "scope": "Qalabka Magaalada way shaqaynayaan. Shabakadda tijaabadu hadda waxay leedahay profile-yo, bulshooyin, farriimo iyo waxyaabo iskaashi oo server-ku kaydiyo; qabyooyinka gudaha qalabka waxay ahaanayaan gaar oo ka soocan.",
     "newProject": "Samee qabyo mashruuc",
@@ -3028,7 +3028,7 @@ languages.so = {
     "settingsText": "Luqadda, hordhaca iyo dejimaha gudaha ee app-ka.",
     "repeatTutorial": "Hordhaca mar kale muuji",
     "aboutTitle": "Ku saabsan FOLKOOP",
-    "aboutText": "FOLKOOP waa madal bulsho oo iskaashi u ah dadka, bulshooyinka, mashaariicda, nolosha magaalada iyo iskaashiga nolosha dhabta ah.",
+    "aboutText": "FOLKOOP waa shabakad iskaashi: ka bilow waxa aad u baahan tahay, bixin karto ama rabto inaad qabato, dabadeed hel dadka, kheyraadka iyo tallaabada xigta ee cad.",
     "futureArchitectureTitle": "Halka uu FOLKOOP u kori karo",
     "futureArchitectureText": "Pilot-ka hadda jira wuu fududaanayaa. Haddii isticmaalka dhabta ahi muujiyo baahi, FOLKOOP wuxuu ku dari karaa kalsooni la qaadi karo, wakiillo ammaan ah oo ficil sameeya, iskaashi u dhexeeya node-yo magaalo oo madax-bannaan iyo xiriir dijitaal ah oo lala yeesho goobaha iyo kheyraadka la wadaago ee dunida dhabta ah.",
     "trustLayerTitle": "Kalsooni iyo Passport",
@@ -3059,7 +3059,7 @@ languages.so = {
     "check": "Qoraalkaaga gaarka ah"
   },
   "tutorial": {
-    "welcome": "Keen wax dhab ah: baahi aad qabto, xirfad aad bixin karto, kheyraad aad wadaagi karto ama fikrad aad rabto inaad dhisto. FOLKOOP wuxuu kaa caawinayaa inaad hesho dadka iyo kheyraadka oo aad uga dhigto tallaabo xigta oo cad.",
+    "welcome": "Ka bilow baahi, wax aad bixin karto ama fikrad dhab ah. FOLKOOP wuxuu caawiyaa ka hor chat kooxeed: marka hore hel dadka ama kheyraadka ku habboon iyo tallaabada xigta, dabadeed chat-ku wuxuu caawiyaa isku-duwidda.",
     "home": "Bogga hore wuxuu ku tusayaa waxa maanta muhiimka ah: fariin, hawl, xaqiijin ama tallaabada mashruuca. Marka hore samee waxa faa’iidada leh, markaad la socotana waad ka bixi kartaa.",
     "together": "Ma u baahan tahay caawimo? Ma caawin kartaa? Wax ma wadaagi kartaa? Ma rabtaa inaad si wadajir ah wax u iibsataan? Halkan baahiyaha maalinlaha ahi waxay isu beddelaan iskaashi.",
     "projects": "Fikrad ma haysaa? U beddel koox: dad, doorar, hawlo, cusboonaysiin iyo wada-sheekeysi shaqo oo ku wareegsan yool dhab ah.",
@@ -3385,7 +3385,7 @@ languages.so = {
     },
     "home": {
       "title": "Bogga hore",
-      "subtitle": "Hal meel oo macluumaad ah oo muujisa waxa is beddelay, waxa ficilkaaga u baahan iyo waxa wadajir loo qaban karo.",
+      "subtitle": "Ka bilow waxa aad u baahan tahay, bixin karto ama rabto inaad qabato. FOLKOOP wuxuu kaa caawiyaa helidda dadka ama kheyraadka iyo tallaabada xigta ka hor inta uusan chat kooxeed jirin.",
       "attention": "Waxay u baahan tahay dareenkaaga",
       "nothingUrgent": "Hadda wax degdeg ah ma jiraan.",
       "messages": "Farriimo aan la akhrin",
@@ -3435,8 +3435,8 @@ languages.ku = {
     "aboutPage": "Derbarê FOLKOOP de",
     "language": "Ziman",
     "tagline": "Mirovên cuda. Derfetên hevpar.",
-    "hero": "Mirovên xwe bibîne.\nBi hev re bêtir bikin.",
-    "intro": "Cihek ji bo naskirinê, parvekirina çavkaniyan û veguherandina eleqeyên hevpar bo projeyên rastîn.",
+    "hero": "Tiştek pêwîst e? Dikare alîkar bî?\\nDixwazî tiştek pêk bînî?",
+    "intro": "Bi hewcedarî, pêşniyar an fikrekî rast dest pê bike. FOLKOOP alîkar dike ku mirov, çavkanî û gava paşîn a zelal bibînî. Axaftina komê piştî ku mirov hev bibînin dest pê dike; FOLKOOP berî wê dest pê dike.",
     "pilot": "Guhertoya yekem a dixebite",
     "scope": "Amûrên Bajar dixebitin. Tora pilot niha profîl, civak, peyam û tiştên hevkariyê yên li ser serverê hilanîn hene; pêşnivîsên herêmî taybet û cuda dimînin.",
     "newProject": "Pêşnivîsa projeyê biafirîne",
@@ -3516,7 +3516,7 @@ languages.ku = {
     "settingsText": "Ziman, danasîn û mîhengên herêmî yên sepanê.",
     "repeatTutorial": "Danasînê dîsa nîşan bide",
     "aboutTitle": "Derbarê FOLKOOP de",
-    "aboutText": "FOLKOOP platformeke civakî ya hevkariyê ye ji bo mirov, civak, proje, jiyana bajêr û hevkariya di jiyana rastîn de.",
+    "aboutText": "FOLKOOP tora hevkariyê ye: bi tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî bikî dest pê bike, paşê mirov, çavkanî û gava paşîn a zelal bibîne.",
     "futureArchitectureTitle": "FOLKOOP dikare ber bi ku ve pêş bikeve",
     "futureArchitectureText": "Pilota heyî hêsan dimîne. Heke bikaranîna rastîn pêdiviyê nîşan bide, FOLKOOP dikare baweriyeke veguhêzbar, agentên ewle yên çalakiyê, hevkarî di navbera nodeyên bajarî yên serbixwe û girêdaneke dîjîtal bi cih û çavkaniyên hevpar ên cîhana rastîn re zêde bike.",
     "trustLayerTitle": "Bawerî û Passport",
@@ -3547,7 +3547,7 @@ languages.ku = {
     "check": "Nota te ya taybet"
   },
   "tutorial": {
-    "welcome": "Tiştekî rast bîne: hewcedariyek, jêhatiyek ku dikarî pêşkêş bikî, çavkaniyek ku dikarî parve bikî an fikrek ku dixwazî ava bikî. FOLKOOP alîkarî dike ku mirov û çavkaniyan bibînî û wê bike gavekî din ê zelal.",
+    "welcome": "Bi hewcedarî, pêşniyar an fikrekî rast dest pê bike. FOLKOOP berî axaftina komê alîkar dike: pêşî mirov an çavkaniyên guncaw û gava paşîn bibîne, paşê ji chatê ji bo koordînasyonê bikar bîne.",
     "home": "Mal nîşan dide îro çi girîng e: peyam, peywir, pejirandin an gavekî projeyê. Pêşî tiştê bikêr bike û dema ku hemû tişt dîtî, dikarî derkevî.",
     "together": "Alîkarî dixwazî? Dikarin alîkarî bikî? Tiştek heye ku parve bikî? Dixwazî bi hev re bikirin? Li vir hewcedariyên rojane dibin hevkariyê.",
     "projects": "Fikrek heye? Wê bike tîmek: mirov, rol, peywir, nûvekirin û sohbetek karê li dor armancekî rast.",
@@ -3873,7 +3873,7 @@ languages.ku = {
     },
     "home": {
       "title": "Destpêk",
-      "subtitle": "Qadeke agahiyê ji bo tiştê ku guherî, tiştê ku kiryara te dixwaze û tiştê ku dikare bi hev re were kirin.",
+      "subtitle": "Bi tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî bikî dest pê bike. FOLKOOP alîkar dike ku mirov an çavkanî û gava paşîn bibînî berî ku axaftina komê jî hebe.",
       "attention": "Bala te dixwaze",
       "nothingUrgent": "Niha tiştek lezgîn tune.",
       "messages": "Peyamên nexwendî",
@@ -3933,14 +3933,14 @@ const homeDailyCopy={
 for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
 
 const guestDemoCopy={
- es:{demoBadge:'DEMO',demoText:'Vista de invitado · solo datos de ejemplo · nada se envía al servidor.',demoCta:'Inicia sesión para participar',demoLocked:'Inicia sesión para crear, unirte, enviar o cambiar datos.',demoExit:'Salir del demo'},
- uk:{demoBadge:'ДЕМО',demoText:'Гостьовий огляд · лише демонстраційні дані · нічого не надсилається на сервер.',demoCta:'Увійти, щоб брати участь',demoLocked:'Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.',demoExit:'Вийти з демо'},
- fi:{demoBadge:'DEMO',demoText:'Vierasesikatselu · vain esimerkkitietoja · mitään ei lähetetä palvelimelle.',demoCta:'Kirjaudu osallistuaksesi',demoLocked:'Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.',demoExit:'Poistu demosta'},
- bs:{demoBadge:'DEMO',demoText:'Gostujući pregled · samo primjerni podaci · ništa se ne šalje serveru.',demoCta:'Prijavi se za učešće',demoLocked:'Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.',demoExit:'Izađi iz demoa'},
- ar:{demoBadge:'تجريبي',demoText:'عرض ضيف · بيانات نموذجية فقط · لا يتم إرسال شيء إلى الخادم.',demoCta:'سجّل الدخول للمشاركة',demoLocked:'سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.',demoExit:'الخروج من العرض'},
- fa:{demoBadge:'دمو',demoText:'نمایش مهمان · فقط داده‌های نمونه · چیزی به سرور ارسال نمی‌شود.',demoCta:'برای مشارکت وارد شوید',demoLocked:'برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.',demoExit:'خروج از دمو'},
- so:{demoBadge:'DEMO',demoText:'Muuqaal marti · xog tusaale ah oo keliya · waxba looma diro server-ka.',demoCta:'Soo gal si aad uga qaybqaadato',demoLocked:'Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.',demoExit:'Ka bax demada'},
- ku:{demoBadge:'DEMO',demoText:'Dîtina mêvan · tenê daneyên mînak · tiştek ji serverê re nayê şandin.',demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
+ es:{demoBadge:'DEMO',demoText:"DEMO. Todas las personas, mensajes, proyectos y actividades que ves aquí son ejemplos ficticios; no se muestran participantes reales de FOLKOOP.",demoCta:'Inicia sesión para participar',demoLocked:'Inicia sesión para crear, unirte, enviar o cambiar datos.',demoExit:'Salir del demo'},
+ uk:{demoBadge:'ДЕМО',demoText:"ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади; реальних учасників FOLKOOP тут не показано.",demoCta:'Увійти, щоб брати участь',demoLocked:'Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.',demoExit:'Вийти з демо'},
+ fi:{demoBadge:'DEMO',demoText:"DEMO. Kaikki täällä näkyvät ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä; oikeita FOLKOOP-osallistujia ei näytetä.",demoCta:'Kirjaudu osallistuaksesi',demoLocked:'Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.',demoExit:'Poistu demosta'},
+ bs:{demoBadge:'DEMO',demoText:"DEMO. Sve osobe, poruke, projekti i aktivnosti ovdje su izmišljeni primjeri; stvarni učesnici FOLKOOP-a nisu prikazani.",demoCta:'Prijavi se za učešće',demoLocked:'Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.',demoExit:'Izađi iz demoa'},
+ ar:{demoBadge:'تجريبي',demoText:"تجريبي. جميع الأشخاص والرسائل والمشاريع والأنشطة المعروضة هنا أمثلة خيالية؛ لا يتم عرض مشاركين حقيقيين في FOLKOOP.",demoCta:'سجّل الدخول للمشاركة',demoLocked:'سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.',demoExit:'الخروج من العرض'},
+ fa:{demoBadge:'دمو',demoText:"دمو. همهٔ افراد، پیام‌ها، پروژه‌ها و فعالیت‌های اینجا نمونه‌های ساختگی‌اند؛ هیچ شرکت‌کنندهٔ واقعی FOLKOOP نمایش داده نمی‌شود.",demoCta:'برای مشارکت وارد شوید',demoLocked:'برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.',demoExit:'خروج از دمو'},
+ so:{demoBadge:'DEMO',demoText:"DEMO. Dhammaan dadka, fariimaha, mashaariicda iyo hawlaha halkan ka muuqda waa tusaalooyin la sameeyay; ka-qaybgalayaal dhab ah oo FOLKOOP ah lama muujinayo.",demoCta:'Soo gal si aad uga qaybqaadato',demoLocked:'Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.',demoExit:'Ka bax demada'},
+ ku:{demoBadge:'DEMO',demoText:"DEMO. Hemû mirov, peyam, proje û çalakiyên li vir nimûneyên çêkirî ne; beşdarên rastîn ên FOLKOOP nayên nîşandan.",demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 

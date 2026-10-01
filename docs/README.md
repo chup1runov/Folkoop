@@ -75,13 +75,17 @@ Start with:
 
 The deep dives cover Hylo, Karrot, Decidim, Open Collective, Loomio, Nextdoor, BFF/Geneva, TimeRepublik and Sharetribe.
 
+### First-contact user feedback
+
+`research/user-feedback/2026-10-01/FIRST_CONTACT_SYNTHESIS.md` records the anonymized repeated comprehension signal from four informal external reviews. It is product evidence, not a formal user study, and does not override the protected pilot decision process.
+
 ### Source research
 
 `research/sources/` contains source-specific research and review-status material. It preserves attribution and evidence but does not define current product policy.
 
 ## History
 
-`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence.
+`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence. `history/CHAT_PUBLIC_HANDOFF_20261001.md` preserves the later public-safe decisions and current execution state from the same work session.
 
 `history/architecture/` contains superseded architecture descriptions.
 

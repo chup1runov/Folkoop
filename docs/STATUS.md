@@ -1,7 +1,7 @@
 # FOLKOOP current status
 
 Date: 2026-10-01  
-Release line: **v0.39.0**  
+Release line: **v0.39.1**  
 Repository: `chup1runov/Folkoop`
 
 ## Product phase
@@ -18,7 +18,9 @@ The first human pilot is still centered on:
 
 ## Current implemented line
 
-The current v0.39 application includes:
+The current v0.39.1 application includes:
+- first-contact purpose copy now directly states the core value: start from a real need/offer/idea, find relevant people/resources and a concrete next step; it explicitly distinguishes this from a group chat that assumes people have already found one another;
+- Guest mode now keeps a persistent in-content DEMO notice stating that sample people, messages, projects and activity are fictional and not real FOLKOOP participants;
 - public About presents the approved future trust/identity/agent/physical-world architecture as a planned direction, with explicit non-crypto-first boundaries and a link to the technical architecture;
 - language-first entry, read-only Guest preview and an 8-step value-first first-session tour;
 - mobile bottom navigation with six primary destinations and contextual secondary navigation for Together, City and Profile;
