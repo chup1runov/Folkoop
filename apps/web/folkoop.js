@@ -117,40 +117,40 @@ function cityShell(){
 
 const tutorialCopy={
  en:{
-  welcome:'FOLKOOP starts with something real: what you need, what you can offer, or what you want to do with other people. It helps you find relevant people or resources and a concrete next step — before a group chat is needed.',
-  home:'You only need to choose how you want to start. There are three main paths: I need something, I can help, or I want to do something together.',
-  together:'Choose this when you need help, a thing, a skill or another resource. Describe the real need; FOLKOOP can then look for a relevant person, resource or next step.',
-  projects:'Choose this when you can help or offer a skill, thing or resource. A useful offer gives other people something concrete to respond to.',
-  people:'Choose this when you have an idea or want to make something happen with other people. Start small; a project can grow into people, roles, tasks and a work chat.',
-  city:'After you start, FOLKOOP connects the intent to relevant people, resources or opportunities. When people have found one another, messages and work chat are for coordination — the chat is not the starting point.',
-  center:'Home is where you return to see what needs your attention: replies, messages, tasks, confirmations and project steps. When there is nothing useful to do, you are caught up.',
-  quick:'That is enough to begin. Pick one real thing now: something you need, something you can offer, or something you want to do together. City and the other sections are there when they become useful.'
+  welcome:"Hi, I'm Mura. This is my DEMO profile — a fictional example, not a real person's history. I use FOLKOOP for practical things I do not want to solve alone.",
+  home:"This is my place. I keep a short line about myself, what I can offer and the things I have started. Your own place can grow from your real activity instead of a long profile form.",
+  together:"For example, I am fixing up a room and need a tile cutter for one weekend. I can post that need instead of buying a tool I may use once.",
+  projects:"I can also give something back. I know basic photography, so I can offer to help a neighbour photograph an item, a small event or a community project.",
+  people:"One of my DEMO projects is a small plant-and-seed exchange. An idea can become people, roles, tasks and a work chat instead of disappearing in a group conversation.",
+  city:"People and communities help me find others around a practical interest — gardening, cycling, fixing things or helping locally. The point is not followers; it is finding someone to do something with.",
+  center:"Messages are where we coordinate after we have a reason to talk. City helps with local information and official routes; Center is a future physical layer and is not open yet.",
+  quick:"That is my DEMO place. Yours starts empty on purpose. Begin with one real thing: something you need, something you can offer, or something you want to make happen with other people."
  },
  ru:{
-  welcome:'FOLKOOP начинается с чего-то реального: что тебе нужно, что ты можешь предложить или что хочешь сделать вместе с другими. Он помогает найти подходящих людей или ресурсы и конкретный следующий шаг — ещё до группового чата.',
-  home:'Сначала нужно выбрать только одно из трёх: «Мне нужно», «Я могу помочь» или «Хочу сделать что-то вместе». Этого достаточно, чтобы начать.',
-  together:'Выбери «Мне нужно», если нужна помощь, вещь, навык или другой ресурс. Опиши реальную потребность — дальше FOLKOOP помогает найти подходящего человека, ресурс или следующий шаг.',
-  projects:'Выбери «Я могу помочь», если можешь предложить навык, вещь, ресурс или своё время. Конкретное предложение даёт другим понятный повод откликнуться.',
-  people:'Выбери «Хочу сделать что-то вместе», если есть идея или хочется что-то организовать с другими. Начать можно с малого; затем появятся люди, роли, задачи и рабочий чат.',
-  city:'После первого действия FOLKOOP связывает намерение с подходящими людьми, ресурсами или возможностями. Когда люди уже нашли друг друга, сообщения и рабочий чат помогают договориться — чат не является началом.',
-  center:'На Главную ты возвращаешься за тем, что требует внимания: ответами, сообщениями, задачами, подтверждениями и шагами проектов. Если полезных действий нет — ты всё просмотрел.',
-  quick:'Этого достаточно. Выбери сейчас одну реальную вещь: что тебе нужно, что можешь предложить или что хочешь сделать вместе. Город и остальные разделы пригодятся тогда, когда понадобятся.'
+  welcome:"Привет, я Мура. Это мой ДЕМО-профиль — вымышленный пример, а не история реального человека. Я пользуюсь FOLKOOP для обычных дел, которые не хочется решать в одиночку.",
+  home:"Это моё место. Здесь я показываю немного о себе, чем могу помочь и что уже начинала. Твоё место тоже может постепенно складываться из реальных дел, а не из длинной анкеты.",
+  together:"Например, я делаю небольшой ремонт и мне нужен плиткорез всего на выходные. Здесь я могу попросить инструмент, а не покупать вещь ради одного раза.",
+  projects:"Но я не только прошу. Я немного умею фотографировать и могу помочь соседу снять вещь для объявления, небольшое мероприятие или местный проект.",
+  people:"Один из моих ДЕМО-проектов — небольшой обмен растениями и семенами. Идея может превратиться в людей, роли, задачи и рабочий чат, а не потеряться в общей переписке.",
+  city:"Люди и сообщества помогают мне находить тех, кому тоже интересны сад, велосипед, ремонт или помощь рядом. Смысл не в подписчиках, а в людях, с которыми реально можно что-то сделать.",
+  center:"В Сообщениях мы договариваемся уже после того, как появился повод общаться. Город помогает с местной информацией и официальными маршрутами; Центр — будущая физическая часть и пока не открыт.",
+  quick:"Вот так выглядит моё ДЕМО-место. Твоё специально начинается пустым. Начни с одной реальной вещи: что тебе нужно, чем можешь помочь или что хочешь сделать вместе с другими."
  },
  sv:{
-  welcome:'FOLKOOP börjar med något verkligt: vad du behöver, vad du kan erbjuda eller vad du vill göra tillsammans med andra. Det hjälper dig hitta relevanta människor eller resurser och ett konkret nästa steg — innan en gruppchatt behövs.',
-  home:'Först behöver du bara välja ett av tre sätt att börja: Jag behöver, Jag kan hjälpa eller Jag vill göra något tillsammans.',
-  together:'Välj detta när du behöver hjälp, en sak, en färdighet eller en annan resurs. Beskriv det verkliga behovet; FOLKOOP kan sedan hjälpa dig hitta en relevant person, resurs eller nästa steg.',
-  projects:'Välj detta när du kan hjälpa eller erbjuda en färdighet, sak, resurs eller din tid. Ett konkret erbjudande ger andra något tydligt att svara på.',
-  people:'Välj detta när du har en idé eller vill få något att hända tillsammans med andra. Börja smått; ett projekt kan växa till människor, roller, uppgifter och en arbetschatt.',
-  city:'Efter första steget kopplar FOLKOOP din avsikt till relevanta människor, resurser eller möjligheter. När människor har hittat varandra används meddelanden och arbetschatt för samordning — chatten är inte början.',
-  center:'Till Hem återvänder du för sådant som behöver din uppmärksamhet: svar, meddelanden, uppgifter, bekräftelser och projektsteg. När inget nyttigt återstår är du ikapp.',
-  quick:'Det räcker för att börja. Välj en verklig sak nu: något du behöver, något du kan erbjuda eller något du vill göra tillsammans. Stad och de andra delarna finns när de blir användbara.'
+  welcome:"Hej, jag är Mura. Det här är min DEMO-profil — ett påhittat exempel, inte en riktig persons historia. Jag använder FOLKOOP för praktiska saker som jag inte vill lösa ensam.",
+  home:"Det här är min plats. Här visar jag lite om mig själv, vad jag kan erbjuda och sådant jag har startat. Din egen plats kan växa ur verkliga handlingar i stället för ett långt profilformulär.",
+  together:"Till exempel håller jag på att fixa ett rum och behöver en kakelskärare över en helg. Här kan jag fråga efter verktyget i stället för att köpa något jag kanske använder en gång.",
+  projects:"Jag kan också bidra. Jag kan lite fotografering och kan erbjuda hjälp med att fotografera en sak, ett litet evenemang eller ett lokalt projekt.",
+  people:"Ett av mina DEMO-projekt är ett litet växt- och fröbyte. En idé kan bli människor, roller, uppgifter och en arbetschatt i stället för att försvinna i en gruppkonversation.",
+  city:"Människor och gemenskaper hjälper mig hitta andra kring praktiska intressen — odling, cykling, att laga saker eller hjälpa till lokalt. Poängen är inte följare utan människor att faktiskt göra något med.",
+  center:"I Meddelanden samordnar vi när det redan finns en anledning att prata. Stad hjälper med lokal information och officiella vägar; Center är ett framtida fysiskt lager och är inte öppet ännu.",
+  quick:"Det här är min DEMO-plats. Din börjar tom med flit. Börja med en verklig sak: något du behöver, kan erbjuda eller vill få gjort tillsammans med andra."
  }
 };
 const tutorialTitles={
- en:{welcome:'What FOLKOOP does',home:'Three ways to start',together:'1 · I need something',projects:'2 · I can help',people:'3 · I want to do something together',city:'What happens next',center:'Where you return',quick:'Now start with one real thing'},
- ru:{welcome:'Что делает FOLKOOP',home:'Три способа начать',together:'1 · Мне нужно',projects:'2 · Я могу помочь',people:'3 · Хочу сделать что-то вместе',city:'Что произойдёт дальше',center:'Куда возвращаться',quick:'Теперь начни с одной реальной вещи'},
- sv:{welcome:'Vad FOLKOOP gör',home:'Tre sätt att börja',together:'1 · Jag behöver',projects:'2 · Jag kan hjälpa',people:'3 · Jag vill göra något tillsammans',city:'Vad händer sedan',center:'Hit återvänder du',quick:'Börja nu med en verklig sak'}
+ en:{welcome:"Hi, I'm Mura",home:'This is my place',together:'A tool I need',projects:'What I can offer',people:'A project I started',city:'How I find people',center:'Where we coordinate',quick:'Now make your place yours'},
+ ru:{welcome:'Привет, я Мура',home:'Это моё место',together:'Что мне понадобилось',projects:'Чем я могу помочь',people:'Проект, который я начала',city:'Как я нахожу людей',center:'Где мы договариваемся',quick:'Теперь сделай своё место своим'},
+ sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Där vi samordnar',quick:'Gör nu din plats till din'}
 };
 const entryCopy={
  en:{title:'How do you want to enter?',body:"FOLKOOP starts with something you need, can offer or want to do, then helps you find relevant people or resources and a concrete next step. Sign in to participate, or explore the demo.",email:'Continue with email',guest:'Explore as guest',guestNote:"Guest mode is a DEMO. All people, messages, projects and activity are fictional examples, not real participants. You can browse, but creating, joining, sending or changing anything requires sign-in.",back:'Back to language'},
@@ -195,7 +195,7 @@ function setEntryMode(mode){
  try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
  hideEntryGate();
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest'}}));
- if(mode==='guest'){location.hash='#/home';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},220);}
+ if(mode==='guest'){location.hash='#/me';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},220);}
  else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
