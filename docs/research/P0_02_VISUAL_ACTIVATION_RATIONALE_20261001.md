@@ -91,7 +91,7 @@ Mura is not currently:
 - a claim of automatic matching;
 - a replacement for normal navigation.
 
-The original visual direction remains canonical. Any later likeness refinement based on Kseniia requires user-supplied reference photographs.
+The original visual direction remains canonical. Any later likeness refinement requires user-supplied reference photographs and stays outside the public repository unless explicitly approved.
 
 ## Measurement
 
