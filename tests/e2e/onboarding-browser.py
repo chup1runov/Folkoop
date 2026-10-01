@@ -49,6 +49,7 @@ async def mobile_flow(browser,passed):
  await page.goto(BASE)
  await page.evaluate('localStorage.clear();sessionStorage.clear()')
  await page.reload()
+ await page.evaluate("window.dispatchEvent(new Event('folkoop:start-intro'))")
 
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
