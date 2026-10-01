@@ -1,16 +1,17 @@
 /* Lightweight local FOLKOOP guide presence for FOLKOOP. No network/API calls. */
 (() => {
 'use strict';
+const CANONICAL_MURA='./folkoop-guide-please.webp';
 const ASSETS=Object.freeze({
- welcome:'./folkoop-guide-please.webp',
- idle:'./folkoop-guide-confident.webp',
- idea:'./folkoop-guide-idea.webp',
- wink:'./folkoop-guide-wink.webp',
- 'point-left':'./folkoop-guide-point-left.png',
- 'point-right':'./folkoop-guide-point-right.png',
- 'point-up':'./folkoop-guide-point-up.png',
- 'point-down':'./folkoop-guide-point-down.png',
- 'sit-edge':'./folkoop-guide-sit-edge.png'
+ welcome:CANONICAL_MURA,
+ idle:CANONICAL_MURA,
+ idea:CANONICAL_MURA,
+ wink:CANONICAL_MURA,
+ 'point-left':CANONICAL_MURA,
+ 'point-right':CANONICAL_MURA,
+ 'point-up':CANONICAL_MURA,
+ 'point-down':CANONICAL_MURA,
+ 'sit-edge':CANONICAL_MURA
 });
 // v0.29 consumes the exact 192x208 RGBA pose assets accepted into the pre-unification guide asset baseline.
 // Pointing is body artwork, not a DOM/CSS arm.
@@ -30,7 +31,7 @@ function ensureActor(){
  actor.id='folkoopGuideActor';
  actor.className='folkoop-guide-actor is-home';
  actor.type='button';
- actor.setAttribute('aria-label','FOLKOOP guide');
+ actor.setAttribute('aria-label','Mura · FOLKOOP guide');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
  actor.innerHTML='<span class="folkoop-guide-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
@@ -47,7 +48,7 @@ function pose(name){
 }
 function dims(mode='home'){
  const short=innerHeight<520,mobile=innerWidth<720,tour=mode!=='home';
- const w=tour?(short?82:mobile?96:124):(short?56:mobile?64:78);
+ const w=tour?(short?90:mobile?108:132):(short?56:mobile?64:78);
  return {w,h:w*(208/192)};
 }
 function pointPose(targetRect,actorRect){
@@ -188,9 +189,10 @@ function applyPosition(target,mode='point',poseName=null){
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
+ const mobile=innerWidth<720,sideGap=mobile?10:16;
  const candidates=mode==='perch'
   ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
-  :[[r.left+r.width/2-w/2,r.bottom+12],[r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[12,12],[innerWidth-w-12,12]];
+  :[[r.right+sideGap,r.top+r.height/2-h/2],[r.left-w-sideGap,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+12],[12,12],[innerWidth-w-12,12]];
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);
   const box={left:x,top:y,right:x+w,bottom:y+h};
@@ -237,6 +239,14 @@ function refresh(){
  cancelTeleport();
  if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
  else if(currentTarget?.isConnected){layoutTour(currentTarget);applyPosition(currentTarget,currentMode,currentPose);}
+}
+function react(kind='step'){
+ ensureActor();
+ if(reduced())return;
+ actor.classList.remove('mura-react-step','mura-react-done');
+ void actor.offsetWidth;
+ actor.classList.add(kind==='done'?'mura-react-done':'mura-react-step');
+ setTimeout(()=>actor?.classList.remove('mura-react-step','mura-react-done'),kind==='done'?900:520);
 }
 function setExpanded(value){
  ensureActor().setAttribute('aria-expanded',String(!!value));
@@ -287,5 +297,5 @@ window.addEventListener('scroll',()=>{
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);
-globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,setExpanded});
+globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,setExpanded});
 })();

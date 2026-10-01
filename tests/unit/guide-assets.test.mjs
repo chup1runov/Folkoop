@@ -33,3 +33,11 @@ for(const asset of pngAssets)test(`FOLKOOP guide v0.29 pose ${asset} is canonica
  assert.deepEqual(meta,{width:192,height:208,bitDepth:8,colorType:6});
  assert(file.length>20_000&&file.length<50_000,'unexpected pose payload size');
 });
+
+
+test('runtime guide states resolve to one canonical Mura artwork',async()=>{
+ const runtime=await readFile('apps/web/folkoop-guide.js','utf8');
+ assert.match(runtime,/const CANONICAL_MURA='\.\/folkoop-guide-please\.webp'/);
+ const expected=["welcome:CANONICAL_MURA","idle:CANONICAL_MURA","idea:CANONICAL_MURA","wink:CANONICAL_MURA","'point-left':CANONICAL_MURA","'point-right':CANONICAL_MURA","'point-up':CANONICAL_MURA","'point-down':CANONICAL_MURA","'sit-edge':CANONICAL_MURA"];
+ for(const entry of expected)assert(runtime.includes(entry),entry);
+});
