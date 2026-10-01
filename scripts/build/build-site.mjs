@@ -1,10 +1,11 @@
 import {mkdir,copyFile,cp,rm,writeFile,readFile} from 'node:fs/promises';
 import {releaseVersion} from './release-version.mjs';
+import {BUILD_FILES} from './public-assets.mjs';
 // Deploy only allowlisted public application files, never SQL/tests/private archives.
 const APP_ROOT='apps/web';
 const rootFiles=new Set(['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md']);
 const source=file=>rootFiles.has(file)?file:`${APP_ROOT}/${file}`;
-const files=['city-source.html','folkoop.html','styles.css','compact.css','about-project.css','civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js','about-copy.js','about-project.js','manifest.webmanifest','sw.js','icon.svg','icon-180.png','icon-192.png','icon-512.png','LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md','folkoop-core.js','folkoop-i18n-extra.js','folkoop-copy.js','folkoop-guide.js','folkoop-guide.css','folkoop.js','folkoop.css','folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp','folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png','folkoop-city.js','folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js','network-form-focus.js','network-ui.js','auth-callback.html','auth-callback-core.js','auth-callback.js','home-welcome.js'];
+const files=BUILD_FILES;
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const app=releaseVersion(await readFile(source('app.js'),'utf8'),pkg.version);
 await rm('_site',{recursive:true,force:true});await mkdir('_site',{recursive:true});
