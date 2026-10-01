@@ -6,6 +6,21 @@
 const languages = Object.create(null);
 languages.es = {
   "shell": {
+    "makeItYours": "Hazlo tuyo",
+    "makeItYoursText": "Empieza eligiendo un pequeño detalle: una frase sobre ti o un color. Tu actividad real aparecerá aquí a medida que uses FOLKOOP.",
+    "myPlace": "Mi lugar",
+    "myPlaceIntro": "Un espacio que toma forma con lo que eliges, creas y haces aquí.",
+    "motto": "Una frase que se sienta tuya",
+    "accent": "Mi color",
+    "accentCoral": "Coral",
+    "accentBlue": "Azul",
+    "accentGreen": "Verde",
+    "accentPurple": "Morado",
+    "myActivity": "Mi actividad",
+    "createdByMe": "Creado por mí",
+    "completedByMe": "Marcado como terminado por mí",
+    "myKinds": "Lo que he empezado",
+    "editMyPlace": "Editar mi lugar",
     "home": "Solo tienes que elegir una de tres formas de empezar: Necesito, Puedo ayudar o Quiero hacer algo juntos.",
     "people": "Elige «Quiero hacer algo juntos» cuando tengas una idea o quieras hacer que algo ocurra con otras personas. Empieza pequeño; después pueden aparecer personas, roles, tareas y un chat de trabajo.",
     "communities": "Comunidades",
@@ -494,6 +509,21 @@ languages.es = {
 };
 languages.uk = {
   "shell": {
+    "makeItYours": "Зроби це місце своїм",
+    "makeItYoursText": "Для початку обери одну маленьку деталь — рядок про себе або колір. Реальні справи з’являтимуться тут у міру використання FOLKOOP.",
+    "myPlace": "Моє місце",
+    "myPlaceIntro": "Простір, який поступово складається з твоїх виборів, ідей і справ.",
+    "motto": "Рядок, який про тебе",
+    "accent": "Мій акцент",
+    "accentCoral": "Кораловий",
+    "accentBlue": "Синій",
+    "accentGreen": "Зелений",
+    "accentPurple": "Фіолетовий",
+    "myActivity": "Моя активність",
+    "createdByMe": "Створено мною",
+    "completedByMe": "Позначено мною як завершене",
+    "myKinds": "Що я вже починав/ла",
+    "editMyPlace": "Налаштувати моє місце",
     "home": "Спочатку обери лише один із трьох шляхів: «Мені потрібно», «Я можу допомогти» або «Хочу зробити щось разом».",
     "people": "Обери «Хочу зробити щось разом», якщо маєш ідею або хочеш щось організувати з іншими. Почни з малого; далі можуть з’явитися люди, ролі, завдання й робочий чат.",
     "communities": "Спільноти",
@@ -982,6 +1012,21 @@ languages.uk = {
 };
 languages.fi = {
   "shell": {
+    "makeItYours": "Tee siitä omasi",
+    "makeItYoursText": "Valitse ensin yksi pieni yksityiskohta: rivi itsestäsi tai korostusväri. Todellinen toimintasi ilmestyy tänne, kun käytät FOLKOOPia.",
+    "myPlace": "Oma paikkani",
+    "myPlaceIntro": "Tila, joka muotoutuu siitä, mitä valitset, luot ja teet täällä.",
+    "motto": "Rivi, joka tuntuu omalta",
+    "accent": "Oma korostusvärini",
+    "accentCoral": "Koralli",
+    "accentBlue": "Sininen",
+    "accentGreen": "Vihreä",
+    "accentPurple": "Violetti",
+    "myActivity": "Oma toimintani",
+    "createdByMe": "Minun luomani",
+    "completedByMe": "Minun valmiiksi merkitsemäni",
+    "myKinds": "Mitä olen aloittanut",
+    "editMyPlace": "Muokkaa omaa paikkaani",
     "home": "Valitse aluksi vain yksi kolmesta tavasta: Tarvitsen, Voin auttaa tai Haluan tehdä jotain yhdessä.",
     "people": "Valitse «Haluan tehdä jotain yhdessä», kun sinulla on idea tai haluat saada jotain aikaan muiden kanssa. Aloita pienestä; siitä voi kasvaa ihmisiä, rooleja, tehtäviä ja työchat.",
     "communities": "Yhteisöt",
@@ -1470,6 +1515,21 @@ languages.fi = {
 };
 languages.bs = {
   "shell": {
+    "makeItYours": "Učini ga svojim",
+    "makeItYoursText": "Za početak izaberi jedan mali detalj: rečenicu o sebi ili boju. Tvoja stvarna aktivnost pojavljivat će se ovdje dok koristiš FOLKOOP.",
+    "myPlace": "Moje mjesto",
+    "myPlaceIntro": "Prostor koji oblikuju tvoji izbori, ono što stvaraš i radiš ovdje.",
+    "motto": "Rečenica koja zvuči kao ti",
+    "accent": "Moj naglasak",
+    "accentCoral": "Koraljna",
+    "accentBlue": "Plava",
+    "accentGreen": "Zelena",
+    "accentPurple": "Ljubičasta",
+    "myActivity": "Moja aktivnost",
+    "createdByMe": "Ja sam kreirao/la",
+    "completedByMe": "Ja sam označio/la kao završeno",
+    "myKinds": "Šta sam započeo/la",
+    "editMyPlace": "Uredi moje mjesto",
     "home": "Za početak izaberi samo jedan od tri puta: Treba mi, Mogu pomoći ili Želim nešto uraditi zajedno.",
     "people": "Izaberi «Želim nešto uraditi zajedno» kada imaš ideju ili želiš nešto pokrenuti s drugima. Počni malim korakom; kasnije mogu doći ljudi, uloge, zadaci i radni chat.",
     "communities": "Zajednice",
@@ -1958,6 +2018,21 @@ languages.bs = {
 };
 languages.ar = {
   "shell": {
+    "makeItYours": "اجعله مكانك",
+    "makeItYoursText": "ابدأ بتفصيل صغير واحد: سطر عنك أو لون. سيظهر نشاطك الحقيقي هنا مع استخدامك لـ FOLKOOP.",
+    "myPlace": "مكاني",
+    "myPlaceIntro": "مساحة تتشكل مما تختاره وتصنعه وتفعله هنا.",
+    "motto": "سطر يشبهك",
+    "accent": "لوني",
+    "accentCoral": "مرجاني",
+    "accentBlue": "أزرق",
+    "accentGreen": "أخضر",
+    "accentPurple": "بنفسجي",
+    "myActivity": "نشاطي",
+    "createdByMe": "أنشأته أنا",
+    "completedByMe": "علّمتُه كمكتمل",
+    "myKinds": "ما بدأتُه",
+    "editMyPlace": "تعديل مكاني",
     "home": "في البداية اختر واحدًا فقط من ثلاثة مسارات: أحتاج، أستطيع المساعدة، أو أريد أن نفعل شيئًا معًا.",
     "people": "اختر «أريد أن نفعل شيئًا معًا» عندما تكون لديك فكرة أو تريد إنجاز شيء مع الآخرين. ابدأ بخطوة صغيرة؛ ثم يمكن أن ينمو المشروع إلى أشخاص وأدوار ومهام ومحادثة عمل.",
     "communities": "المجتمعات",
@@ -2446,6 +2521,21 @@ languages.ar = {
 };
 languages.fa = {
   "shell": {
+    "makeItYours": "این فضا را مال خودت کن",
+    "makeItYoursText": "اول یک جزئیات کوچک انتخاب کن: یک جمله دربارهٔ خودت یا یک رنگ. فعالیت واقعی تو با استفاده از FOLKOOP اینجا ظاهر می‌شود.",
+    "myPlace": "جای من",
+    "myPlaceIntro": "فضایی که با انتخاب‌ها، ساخته‌ها و کارهای تو شکل می‌گیرد.",
+    "motto": "یک جمله که شبیه توست",
+    "accent": "رنگ من",
+    "accentCoral": "مرجانی",
+    "accentBlue": "آبی",
+    "accentGreen": "سبز",
+    "accentPurple": "بنفش",
+    "myActivity": "فعالیت من",
+    "createdByMe": "ساختهٔ من",
+    "completedByMe": "توسط من کامل علامت‌گذاری شده",
+    "myKinds": "چیزهایی که شروع کرده‌ام",
+    "editMyPlace": "ویرایش جای من",
     "home": "برای شروع فقط یکی از سه راه را انتخاب کن: نیاز دارم، می‌توانم کمک کنم، یا می‌خواهم کاری را با هم انجام دهیم.",
     "people": "وقتی ایده‌ای داری یا می‌خواهی با دیگران کاری را پیش ببری «می‌خواهم کاری را با هم انجام دهیم» را انتخاب کن. کوچک شروع کن؛ بعد می‌تواند به آدم‌ها، نقش‌ها، کارها و گفت‌وگوی کاری برسد.",
     "communities": "جوامع",
@@ -2934,6 +3024,21 @@ languages.fa = {
 };
 languages.so = {
   "shell": {
+    "makeItYours": "Ka dhig meeshaada",
+    "makeItYoursText": "Marka hore dooro hal faahfaahin yar: sadar adiga kaa hadlaya ama midab. Hawshaada dhabta ah ayaa halkan ka muuqan doonta marka aad FOLKOOP isticmaasho.",
+    "myPlace": "Meeshayda",
+    "myPlaceIntro": "Meel ay qaabeeyaan waxa aad doorato, samayso oo aad halkan ka qabato.",
+    "motto": "Hal sadar oo adiga kuu eg",
+    "accent": "Midabkayga",
+    "accentCoral": "Koraal",
+    "accentBlue": "Buluug",
+    "accentGreen": "Cagaar",
+    "accentPurple": "Guduud-buluug",
+    "myActivity": "Hawshayda",
+    "createdByMe": "Anigaa sameeyay",
+    "completedByMe": "Anigaa calaamadeeyay inuu dhammaaday",
+    "myKinds": "Waxa aan bilaabay",
+    "editMyPlace": "Wax ka beddel meeshayda",
     "home": "Bilowga dooro hal keliya oo saddex waddo ah: Waan u baahanahay, Waan caawin karaa, ama Waxaan rabaa inaan wax wada qabanno.",
     "people": "Dooro «Waxaan rabaa inaan wax wada qabanno» marka aad fikrad leedahay ama rabto inaad dadka kale wax la hirgeliso. Wax yar ka bilow; dabadeed waxay u kori kartaa dad, doorar, hawlo iyo chat shaqo.",
     "communities": "Bulshooyinka",
@@ -3422,6 +3527,21 @@ languages.so = {
 };
 languages.ku = {
   "shell": {
+    "makeItYours": "Bike cihê xwe",
+    "makeItYoursText": "Pêşî yek hûrguliyek biçûk hilbijêre: risteyek li ser xwe an rengek. Çalakiya te ya rast dema ku FOLKOOP bikar tînî li vir xuya dibe.",
+    "myPlace": "Cihê min",
+    "myPlaceIntro": "Cihek ku bi hilbijartin, afirandin û kirinên te li vir teşe digire.",
+    "motto": "Risteyek ku wek te hîs dike",
+    "accent": "Rengê min",
+    "accentCoral": "Mercan",
+    "accentBlue": "Şîn",
+    "accentGreen": "Kesk",
+    "accentPurple": "Mor",
+    "myActivity": "Çalakiya min",
+    "createdByMe": "Ji aliyê min ve hat afirandin",
+    "completedByMe": "Ji aliyê min ve qediyayî hat nîşankirin",
+    "myKinds": "Tiştên ku min dest pê kirine",
+    "editMyPlace": "Cihê min sererast bike",
     "home": "Ji bo destpêkê tenê yek ji sê rêyan hilbijêre: Pêwîst e, Ez dikarim alîkarî bikim, an Ez dixwazim tiştek bi hev re bikim.",
     "people": "Dema ku fikrek heye an dixwazî bi kesên din re tiştek pêk bînî «Ez dixwazim tiştek bi hev re bikim» hilbijêre. Bi tiştekî biçûk dest pê bike; paşê dikare bibe mirov, rol, peywir û axaftina karê.",
     "communities": "Civak",
@@ -3933,14 +4053,14 @@ const homeDailyCopy={
 for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
 
 const guestDemoCopy={
- es:{demoBadge:'DEMO',demoText:"DEMO. Todas las personas, mensajes, proyectos y actividades que ves aquí son ejemplos ficticios; no se muestran participantes reales de FOLKOOP.",demoCta:'Inicia sesión para participar',demoLocked:'Inicia sesión para crear, unirte, enviar o cambiar datos.',demoExit:'Salir del demo'},
- uk:{demoBadge:'ДЕМО',demoText:"ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади; реальних учасників FOLKOOP тут не показано.",demoCta:'Увійти, щоб брати участь',demoLocked:'Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.',demoExit:'Вийти з демо'},
- fi:{demoBadge:'DEMO',demoText:"DEMO. Kaikki täällä näkyvät ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä; oikeita FOLKOOP-osallistujia ei näytetä.",demoCta:'Kirjaudu osallistuaksesi',demoLocked:'Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.',demoExit:'Poistu demosta'},
- bs:{demoBadge:'DEMO',demoText:"DEMO. Sve osobe, poruke, projekti i aktivnosti ovdje su izmišljeni primjeri; stvarni učesnici FOLKOOP-a nisu prikazani.",demoCta:'Prijavi se za učešće',demoLocked:'Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.',demoExit:'Izađi iz demoa'},
- ar:{demoBadge:'تجريبي',demoText:"تجريبي. جميع الأشخاص والرسائل والمشاريع والأنشطة المعروضة هنا أمثلة خيالية؛ لا يتم عرض مشاركين حقيقيين في FOLKOOP.",demoCta:'سجّل الدخول للمشاركة',demoLocked:'سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.',demoExit:'الخروج من العرض'},
- fa:{demoBadge:'دمو',demoText:"دمو. همهٔ افراد، پیام‌ها، پروژه‌ها و فعالیت‌های اینجا نمونه‌های ساختگی‌اند؛ هیچ شرکت‌کنندهٔ واقعی FOLKOOP نمایش داده نمی‌شود.",demoCta:'برای مشارکت وارد شوید',demoLocked:'برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.',demoExit:'خروج از دمو'},
- so:{demoBadge:'DEMO',demoText:"DEMO. Dhammaan dadka, fariimaha, mashaariicda iyo hawlaha halkan ka muuqda waa tusaalooyin la sameeyay; ka-qaybgalayaal dhab ah oo FOLKOOP ah lama muujinayo.",demoCta:'Soo gal si aad uga qaybqaadato',demoLocked:'Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.',demoExit:'Ka bax demada'},
- ku:{demoBadge:'DEMO',demoText:"DEMO. Hemû mirov, peyam, proje û çalakiyên li vir nimûneyên çêkirî ne; beşdarên rastîn ên FOLKOOP nayên nîşandan.",demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
+ es:{guideBadge:"Guía de FOLKOOP",guideText:"Mura es la guía de FOLKOOP. Las personas, mensajes, proyectos y actividades de su espacio son ejemplos para explicar el servicio, no afirmaciones sobre participantes o hechos reales.",guideCta:"Inicia sesión para participar",guideLocked:"Inicia sesión para crear, unirte, enviar o cambiar datos.",guideExit:"Salir del recorrido de Mura"},
+ uk:{guideBadge:"Помічниця FOLKOOP",guideText:"Мура — помічниця FOLKOOP. Люди, повідомлення, проєкти й дії в її просторі — приклади для пояснення сервісу, а не твердження про реальних учасників чи події.",guideCta:"Увійти, щоб брати участь",guideLocked:"Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.",guideExit:"Вийти з екскурсії Мури"},
+ fi:{guideBadge:"FOLKOOP-opas",guideText:"Mura on FOLKOOPin opas. Hänen tilansa ihmiset, viestit, projektit ja toiminta ovat havainnollistavia esimerkkejä, eivät väitteitä oikeista osallistujista tai tapahtumista.",guideCta:"Kirjaudu osallistuaksesi",guideLocked:"Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.",guideExit:"Poistu Muran kierrokselta"},
+ bs:{guideBadge:"FOLKOOP vodič",guideText:"Mura je FOLKOOP vodič. Osobe, poruke, projekti i aktivnosti u njenom prostoru služe kao primjeri za objašnjenje usluge, a nisu tvrdnje o stvarnim učesnicima ili događajima.",guideCta:"Prijavi se za učešće",guideLocked:"Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.",guideExit:"Izađi iz Murinog obilaska"},
+ ar:{guideBadge:"مرشدة FOLKOOP",guideText:"مورا هي مرشدة FOLKOOP. الأشخاص والرسائل والمشاريع والأنشطة في مساحتها أمثلة توضيحية لشرح الخدمة وليست ادعاءات عن مشاركين أو أحداث حقيقية.",guideCta:"سجّل الدخول للمشاركة",guideLocked:"سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.",guideExit:"الخروج من جولة مورا"},
+ fa:{guideBadge:"راهنمای FOLKOOP",guideText:"مورا راهنمای FOLKOOP است. افراد، پیام‌ها، پروژه‌ها و فعالیت‌های فضای او نمونه‌هایی برای توضیح سرویس هستند، نه ادعا دربارهٔ افراد یا رویدادهای واقعی.",guideCta:"برای مشارکت وارد شوید",guideLocked:"برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.",guideExit:"خروج از راهنمای مورا"},
+ so:{guideBadge:"Hagaha FOLKOOP",guideText:"Mura waa hagaha FOLKOOP. Dadka, fariimaha, mashaariicda iyo hawlaha meesheeda waa tusaalooyin lagu sharxayo adeegga, mana aha sheegashooyin ku saabsan dad ama dhacdooyin dhab ah.",guideCta:"Soo gal si aad uga qaybqaadato",guideLocked:"Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.",guideExit:"Ka bax socdaalka Mura"},
+ ku:{guideBadge:"Rêberê FOLKOOP",guideText:"Mura rêberê FOLKOOP e. Mirov, peyam, proje û çalakiyên li cihê wê nimûneyên ravekirina servîsê ne, ne îdiayên li ser beşdar an bûyerên rastîn.",guideCta:"Ji bo beşdarbûnê têkevî",guideLocked:"Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.",guideExit:"Ji gera Mura derkeve"}
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 
