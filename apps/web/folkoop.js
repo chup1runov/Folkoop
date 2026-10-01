@@ -17,9 +17,9 @@ let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstV
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
  {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
- {id:'together',route:'together',target:'#networkPanel',motion:'point',pose:'point'},
- {id:'projects',route:'together',target:'#networkPanel',motion:'point',pose:'point'},
- {id:'people',route:'projects',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'together',route:'together',target:'[data-demo-story="need"]',motion:'point',pose:'point'},
+ {id:'projects',route:'together',target:'[data-demo-story="offer"]',motion:'point',pose:'point'},
+ {id:'people',route:'projects',target:'[data-demo-story="project"]',motion:'point',pose:'point'},
  {id:'city',route:'people',target:'#networkPanel',motion:'point',pose:'point'},
  {id:'center',route:'messages',target:'#networkPanel',motion:'point',pose:'point'},
  {id:'quick',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'}
