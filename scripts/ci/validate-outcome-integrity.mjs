@@ -38,7 +38,7 @@ export function validateIntegrity(profile){
 
   const city=profile?.cityProvenanceContract;
   if(city?.version!=='1.0') errors.push('city provenance contract version must be 1.0');
-  if(city?.runtimeEnforcement?.path!=='civic-core.js'||city?.runtimeEnforcement?.function!=='feed') errors.push('city runtime enforcement must bind to civic-core.js feed()');
+  if(city?.runtimeEnforcement?.path!=='apps/web/civic-core.js'||city?.runtimeEnforcement?.function!=='feed') errors.push('city runtime enforcement must bind to apps/web/civic-core.js feed()');
   for(const key of ['schemaVersion','sourceId','fetchedAt','adapterVersion','items']){
     if(!city?.feedEnvelope?.required?.includes(key)) errors.push(`city feed envelope must require ${key}`);
   }
