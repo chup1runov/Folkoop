@@ -48,7 +48,7 @@ function pose(name){
 }
 function dims(mode='home'){
  const short=innerHeight<520,mobile=innerWidth<720,tour=mode!=='home';
- const w=tour?(short?82:mobile?96:124):(short?56:mobile?64:78);
+ const w=tour?(short?90:mobile?108:132):(short?56:mobile?64:78);
  return {w,h:w*(208/192)};
 }
 function pointPose(targetRect,actorRect){
@@ -189,9 +189,10 @@ function applyPosition(target,mode='point',poseName=null){
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
+ const sideGap=mobile?10:16;
  const candidates=mode==='perch'
   ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
-  :[[r.left+r.width/2-w/2,r.bottom+12],[r.right+16,r.top+r.height/2-h/2],[r.left-w-16,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[12,12],[innerWidth-w-12,12]];
+  :[[r.right+sideGap,r.top+r.height/2-h/2],[r.left-w-sideGap,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+12],[12,12],[innerWidth-w-12,12]];
  const best=candidates.map(([x,y],index)=>{
   x=clamp(x,12,innerWidth-w-12);y=clamp(y,12,innerHeight-h-12);
   const box={left:x,top:y,right:x+w,bottom:y+h};
