@@ -37,17 +37,23 @@ test('rights: built artifact ships exact notices without changing application co
  const tmp=await mkdtemp(path.join(os.tmpdir(),'folkoop-rights-'));
  try{
   await mkdir(path.join(tmp,'scripts','build'),{recursive:true});
+  await mkdir(path.join(tmp,'apps','web'),{recursive:true});
   await copyFile(path.join(root,'scripts/build/build-site.mjs'),path.join(tmp,'scripts/build/build-site.mjs'));
   await copyFile(path.join(root,'scripts/build/release-version.mjs'),path.join(tmp,'scripts/build/release-version.mjs'));
   await writeFile(path.join(tmp,'package.json'),JSON.stringify(pkg));
-  for(const name of files)await copyFile(path.join(root,name),path.join(tmp,name));
+  for(const name of files){
+   const appSource=!['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md'].includes(name);
+   const from=appSource?path.join(root,'apps','web',name):path.join(root,name);
+   const to=appSource?path.join(tmp,'apps','web',name):path.join(tmp,name);
+   await copyFile(from,to);
+  }
   const run=spawnSync(process.execPath,['scripts/build/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
   assert.equal(run.status,0,run.stderr);
   for(const name of files){
    if(name==='app.js')continue;
-   assert.deepEqual(await readFile(path.join(tmp,'_site',name)),await readFile(path.join(root,name)),name);
+   assert.deepEqual(await readFile(path.join(tmp,'_site',name)),await readFile(['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md'].includes(name)?path.join(root,name):path.join(root,'apps','web',name)),name);
   }
-  const sourceApp=await readFile(path.join(root,'app.js'),'utf8');
+  const sourceApp=await readFile(path.join(root,'apps','web','app.js'),'utf8');
   const expected=sourceApp.replace(/const APP_VERSION = '[^']+';/,`const APP_VERSION = '${pkg.version}';`);
   assert.equal(await readFile(path.join(tmp,'_site/app.js'),'utf8'),expected);
  }finally{await rm(tmp,{recursive:true,force:true});}
