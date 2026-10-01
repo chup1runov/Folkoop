@@ -52,7 +52,7 @@ function renderMobileChrome(){
  dock.dataset.parentSection=active;
  const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'" data-section="'+active+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
- const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>${esc(entrySource().muraRole)}</span></button>':'';
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>'+esc(entrySource().muraRole)+'</span></button>':'';
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().muraRole)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
