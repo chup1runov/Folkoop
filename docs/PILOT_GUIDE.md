@@ -1,5 +1,8 @@
 # FOLKOOP — Göteborg pilot test v0.10
 
+> **Superseded pilot guide.** This is an earlier civic usability pilot for approximately 5–10 testers. It is not the current Göteborg core-loop pilot. Use `GOTEBORG_CORE_LOOP_PILOT.md` and `GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` for current pilot work.
+
+
 This guide is for a small first pilot of approximately 5–10 people.
 
 ## Purpose
