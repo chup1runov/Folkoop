@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {join} from 'node:path';
 import {releaseVersion} from '../build/release-version.mjs';
+import {PRECACHE_PATHS} from '../build/public-assets.mjs';
 const APP='apps/web';
 const appPath=f=>join(APP,f);
 const read=f=>readFile(f,'utf8'),readApp=f=>read(appPath(f));
@@ -12,6 +13,10 @@ const manifest=JSON.parse(await readApp('manifest.webmanifest')),pkg=JSON.parse(
 const stamped=releaseVersion(app,pkg.version);
 assert.equal(stamped.match(/const APP_VERSION = '([^']+)'/)[1],pkg.version,'Built UI/package mismatch');
 assert.equal(sw.match(/const VERSION='([^']+)'/)[1],pkg.version,'SW/package version mismatch');
+const coreMatch=sw.match(/const CORE_PATHS=\[(.*?)\];/s);
+assert(coreMatch,'SW CORE_PATHS missing');
+const swCore=[...coreMatch[1].matchAll(/'([^']*)'/g)].map(m=>m[1]);
+assert.deepEqual(swCore,[...PRECACHE_PATHS],'SW precache list drifted from scripts/build/public-assets.mjs');
 for(const match of html.matchAll(/(?:src|href)="\.\/([^"?#]+)"/g))await access(appPath(match[1]));
 assert(html.includes('href="./compact.css"'),'Compact stylesheet missing');
 for(const icon of manifest.icons)await access(appPath(icon.src));
