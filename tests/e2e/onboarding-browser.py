@@ -47,6 +47,8 @@ async def mobile_flow(browser,passed):
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE)
+ await page.evaluate('localStorage.clear();sessionStorage.clear()')
+ await page.reload()
 
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
