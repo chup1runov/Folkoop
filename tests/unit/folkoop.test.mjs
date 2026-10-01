@@ -69,3 +69,19 @@ test('first contact explains the cooperation purpose instead of only naming modu
  assert(I.COPY.en.aboutText.includes('cooperation network'));
  assert(I.COPY.ru.aboutText.includes('сеть кооперации'));
 });
+
+
+test('My Place identity choices are bounded, local and allowlisted',()=>{
+ const cleaned=C.clean({profile:{name:'Ada',motto:'Build useful things',accent:'purple',unknown:'no'}});
+ assert.equal(cleaned.profile.motto,'Build useful things');
+ assert.equal(cleaned.profile.accent,'purple');
+ assert.equal(cleaned.profile.unknown,undefined);
+ assert.equal(C.clean({profile:{accent:'javascript:red'}}).profile.accent,'coral');
+ assert.deepEqual(Array.from(C.ACCENTS),['coral','blue','green','purple']);
+});
+
+test('My Place renders authored identity and truthful local activity rather than social scoring',async()=>{
+ const shell=await readFile('apps/web/folkoop.js','utf8');
+ for(const token of ['my-place-hero','my-place-life','createdByMe','completedByMe','myKinds'])assert(shell.includes(token),token);
+ for(const forbidden of ['follower-count','social-score','leaderboard','login-streak'])assert(!shell.includes(forbidden),forbidden);
+});
