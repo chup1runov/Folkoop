@@ -4063,7 +4063,7 @@ const guestDemoCopy={
  ku:{guideBadge:"Rêberê FOLKOOP",guideText:"Mura rêberê FOLKOOP e. Mirov, peyam, proje û çalakiyên li cihê wê nimûneyên ravekirina servîsê ne, ne îdiayên li ser beşdar an bûyerên rastîn.",guideCta:"Ji bo beşdarbûnê têkevî",guideLocked:"Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.",guideExit:"Ji gera Mura derkeve"}
 };
 
-/*};
+for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 
 /* Additional full-interface translations for FOLKOOP.
    The canonical English, Swedish and Russian copy remains in the original modules.
