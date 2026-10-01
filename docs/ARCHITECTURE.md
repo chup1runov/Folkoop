@@ -26,7 +26,8 @@ Current runtime:
 - static HTML/CSS/JavaScript;
 - progressive-web-app manifest and service worker;
 - mobile-first browser UI;
-- GitHub Pages deployment;
+- GitHub Pages is the only current production deployment target;
+- `vercel.json` has been removed because no Vercel deployment is part of the supported current architecture;
 - explicit production allowlist in `scripts/build/build-site.mjs`.
 
 The build creates `_site/` and deliberately excludes database migrations, tests and non-public repository material.
