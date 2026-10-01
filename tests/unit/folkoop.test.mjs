@@ -39,7 +39,9 @@ test('Mura presence is local-only and keeps one authored canonical identity',asy
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
  assert(shell.includes("route:'me',target:'.demo-profile-card'"));
- assert(shell.includes("route:'projects',target:'#networkPanel'"));
+ assert(shell.includes("route:'together',target:'[data-demo-story=\\\"need\\\"]'")||shell.includes("route:'together',target:'[data-demo-story=\"need\"]'"));
+ assert(shell.includes("route:'together',target:'[data-demo-story=\\\"offer\\\"]'")||shell.includes("route:'together',target:'[data-demo-story=\"offer\"]'"));
+ assert(shell.includes("route:'projects',target:'[data-demo-story=\\\"project\\\"]'")||shell.includes("route:'projects',target:'[data-demo-story=\"project\"]'"));
  assert(guide.includes("const CANONICAL_MURA='./folkoop-guide-confident.webp'"));
 });
 
