@@ -13,7 +13,7 @@ const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0;
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
  {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
