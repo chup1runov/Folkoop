@@ -26,7 +26,7 @@ test('outcome and provenance boundaries remain explicit',async()=>{
 
 test('City provenance remains bound to current adapters',async()=>{
   const p=await loadIntegrity();
-  assert.equal(p.cityProvenanceContract.runtimeEnforcement.path,'civic-core.js');
+  assert.equal(p.cityProvenanceContract.runtimeEnforcement.path,'apps/web/civic-core.js');
   assert.deepEqual(p.cityProvenanceContract.feedEnvelope.required,['schemaVersion','sourceId','fetchedAt','adapterVersion','items']);
   assert.equal(p.cityProvenanceContract.currentAdapters.length,2);
   assert.deepEqual(await validateRepositoryBindings(p),[]);
