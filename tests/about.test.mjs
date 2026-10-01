@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-const copy=await readFile('about-copy.js','utf8'),script=await readFile('about-project.js','utf8');
+const copy=await readFile('apps/web/about-copy.js','utf8'),script=await readFile('apps/web/about-project.js','utf8');
 const ctx=vm.createContext({console});vm.runInContext(copy,ctx);vm.runInContext(script,ctx);
 const A=ctx.FolkoopProjectAbout;
 test('about: eleven complete localizations with eleven practical answers',()=>{
@@ -37,7 +37,7 @@ test('about: activities and finance remain plans, not a launched rewards service
  assert(A.COPY.ru.purpose.includes('ещё не'));
 });
 test('about: copy loads before renderer and is included in offline shell/build',async()=>{
- const [html,build,sw]=await Promise.all(['index.html','scripts/build/build-site.mjs','sw.js'].map(f=>readFile(f,'utf8')));
+ const [html,build,sw]=await Promise.all(['apps/web/index.html','scripts/build/build-site.mjs','apps/web/sw.js'].map(f=>readFile(f,'utf8')));
  for(const f of ['about-copy.js','about-project.js','about-project.css']){assert(html.includes(f));assert(build.includes(f));assert(sw.includes(f));}
  assert(html.indexOf('./about-copy.js')<html.indexOf('./about-project.js'));
  assert(script.includes("stack.querySelector('.about-meta a')?.remove()"));

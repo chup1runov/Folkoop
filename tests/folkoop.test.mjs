@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 const ctx=vm.createContext({});
-vm.runInContext(await readFile('folkoop-core.js','utf8'),ctx);
-vm.runInContext(await readFile('folkoop-i18n-extra.js','utf8'),ctx);
-vm.runInContext(await readFile('folkoop-copy.js','utf8'),ctx);
+vm.runInContext(await readFile('apps/web/folkoop-core.js','utf8'),ctx);
+vm.runInContext(await readFile('apps/web/folkoop-i18n-extra.js','utf8'),ctx);
+vm.runInContext(await readFile('apps/web/folkoop-copy.js','utf8'),ctx);
 const C=ctx.FolkoopCore,I=ctx.FolkoopCopy;
 const memory=()=>{const values=new Map();return{getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k),values};};
 const item={id:'safe-123',kind:'project',title:'Together',body:'Build a workshop'};
@@ -26,16 +26,16 @@ test('duplicate IDs and over-limit drafts are rejected',()=>{const w=C.workspace
 test('storage failure after consent returns failure while preserving in-memory edit',()=>{const s=memory(),w=C.workspace(s);w.remember(true);s.setItem=()=>{throw Error('quota');};assert.equal(w.profile({name:'Latest',city:'Göteborg'}),false);assert.equal(w.get().profile.name,'Latest');assert.equal(w.get().profile.city,'Göteborg');});
 test('returned snapshots cannot mutate live state',()=>{const w=C.workspace();w.add(item);w.get().drafts[0].title='changed';assert.equal(w.get().drafts[0].title,'Together');});
 test('erase resets profile, drafts and consent without clearing unrelated preferences',()=>{const s=memory(),w=C.workspace(s);s.setItem('folkoop-language','ru');w.profile({name:'Test'});w.add(item);w.remember(true);assert(w.clear());assert.equal(w.get().drafts.length,0);assert.equal(w.get().profile.name,'');assert.equal(w.isPersistent(),false);assert.equal(s.getItem('folkoop-language'),'ru');});
-test('new shell has no third-party network calls or payment simulation',async()=>{const s=await readFile('folkoop.js','utf8');assert(!/\bfetch\(/.test(s));assert(!/WebSocket|sendBeacon/.test(s));assert(s.includes("e.origin!==location.origin"));assert(s.includes("e.source!==frame.contentWindow"));});
+test('new shell has no third-party network calls or payment simulation',async()=>{const s=await readFile('apps/web/folkoop.js','utf8');assert(!/\bfetch\(/.test(s));assert(!/WebSocket|sendBeacon/.test(s));assert(s.includes("e.origin!==location.origin"));assert(s.includes("e.source!==frame.contentWindow"));});
 
 test('FOLKOOP guide presence is local-only and uses authored pointing/sit assets',async()=>{
- const guide=await readFile('folkoop-guide.js','utf8');
+ const guide=await readFile('apps/web/folkoop-guide.js','utf8');
  assert(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(guide));
- for(const asset of ['folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp'])assert((await readFile(asset)).length>1000,asset);
- for(const asset of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert((await readFile(asset)).length>20_000,asset);
+ for(const asset of ['folkoop-guide-please.webp','folkoop-guide-confident.webp','folkoop-guide-idea.webp','folkoop-guide-wink.webp'])assert((await readFile('apps/web/'+asset)).length>1000,asset);
+ for(const asset of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert((await readFile('apps/web/'+asset)).length>20_000,asset);
  assert(!/transparentAsset|getContext\(|toDataURL\(|folkoop-guide-pointer|point-angle|point-length/.test(guide));
  for(const pose of ['point-left','point-right','point-up','point-down','sit-edge'])assert(guide.includes(pose));
- const shell=await readFile('folkoop.js','utf8');
+ const shell=await readFile('apps/web/folkoop.js','utf8');
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
  assert(shell.includes("pose:'sit-edge'"));

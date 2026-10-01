@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const core=await readFile('auth-callback-core.js','utf8');
-const runtime=await readFile('auth-callback.js','utf8');
+const core=await readFile('apps/web/auth-callback-core.js','utf8');
+const runtime=await readFile('apps/web/auth-callback.js','utf8');
 
 function execute(hash,{opener=true,closed=false}={}){
   const status={textContent:''};

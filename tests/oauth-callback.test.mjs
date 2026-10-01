@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
 const ctx=vm.createContext({URLSearchParams});
-vm.runInContext(await readFile('auth-callback-core.js','utf8'),ctx);
+vm.runInContext(await readFile('apps/web/auth-callback-core.js','utf8'),ctx);
 const P=ctx.FolkoopOAuthCallback;
 
 test('OAuth callback parser accepts access token and finite expiry',()=>{
@@ -26,7 +26,7 @@ test('OAuth callback parser rejects malformed or excessive token data',()=>{
 
 
 test('OAuth callback document has restrictive token-handling headers/meta',async()=>{
- const html=await readFile('auth-callback.html','utf8');
+ const html=await readFile('apps/web/auth-callback.html','utf8');
  assert.match(html,/name="referrer" content="no-referrer"/);
  assert.match(html,/name="robots" content="noindex,nofollow"/);
  assert.match(html,/http-equiv="Content-Security-Policy"/);

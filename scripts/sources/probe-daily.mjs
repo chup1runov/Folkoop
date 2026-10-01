@@ -1,6 +1,6 @@
 import {fetchBounded} from './http.mjs';
-import '../../civic-core.js';
-import '../../daily-data.js';
+import '../../apps/web/civic-core.js';
+import '../../apps/web/daily-data.js';
 const origin='https://chup1runov.github.io';
 for(const [name,url,normalize] of [
  ['SMHI SNOW1gv1','https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/11.97/lat/57.71/data.json',FolkoopCityDaily.forecast],

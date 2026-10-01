@@ -31,7 +31,7 @@ Current runtime:
 
 The build creates `_site/` and deliberately excludes database migrations, tests and non-public repository material.
 
-The current source layout still contains many runtime files at repository root. Moving them into an explicit application/source hierarchy is a maintainability refactor, not a product rewrite.
+Runtime source is grouped under `apps/web/`, while repository-level policy, tooling, tests and backend files remain outside the application boundary. Further decomposition inside `apps/web/` is a maintainability refactor, not a product rewrite.
 
 ## Client-state boundaries
 

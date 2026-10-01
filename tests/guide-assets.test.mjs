@@ -15,7 +15,7 @@ function vp8x(buffer){
 }
 
 for(const asset of assets)test(`FOLKOOP guide pose ${asset} is canonical 192x208 alpha WebP`,async()=>{
- const file=await readFile(asset),meta=vp8x(file);
+ const file=await readFile('apps/web/'+asset),meta=vp8x(file);
  assert.equal(meta.width,192);
  assert.equal(meta.height,208);
  assert(meta.flags&0x10,'VP8X alpha flag missing');
@@ -29,7 +29,7 @@ function pngMeta(buffer){
  return {width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),bitDepth:buffer[24],colorType:buffer[25]};
 }
 for(const asset of pngAssets)test(`FOLKOOP guide v0.29 pose ${asset} is canonical 192x208 RGBA PNG`,async()=>{
- const file=await readFile(asset),meta=pngMeta(file);
+ const file=await readFile('apps/web/'+asset),meta=pngMeta(file);
  assert.deepEqual(meta,{width:192,height:208,bitDepth:8,colorType:6});
  assert(file.length>20_000&&file.length<50_000,'unexpected pose payload size');
 });

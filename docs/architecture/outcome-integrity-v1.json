@@ -306,7 +306,7 @@
       }
     ],
     "runtimeEnforcement": {
-      "path": "civic-core.js",
+      "path": "apps/web/civic-core.js",
       "function": "feed",
       "enforces": [
         "schemaVersion",

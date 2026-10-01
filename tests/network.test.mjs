@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 const ctx=vm.createContext({URL,AbortController,setTimeout,clearTimeout});
-vm.runInContext(await readFile('network-client.js','utf8'),ctx);
+vm.runInContext(await readFile('apps/web/network-client.js','utf8'),ctx);
 const N=ctx.FolkoopNetwork;
 const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishableKey:'sb_publishable_example_for_tests_only'};
 const oauthCfg={...cfg,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/Folkoop/auth-callback.html'};
@@ -76,5 +76,5 @@ test('mark cooperation read validates cooperation id locally',async()=>{const s=
 
 test('Home feed and attention queries are scoped to visible rows and current user',async()=>{const s=setup(url=>url.endsWith('/rpc/fk_chat_inbox')||url.endsWith('/rpc/fk_activity_inbox')?json([]):null);await s.login();await s.c.homePosts();assert(s.calls.at(-1).url.includes('/rest/v1/fk_posts?select='));await s.c.assignedTasks();assert(s.calls.at(-1).url.includes('assignee_id=eq.'+uid));assert(s.calls.at(-1).url.includes('status=neq.done'));await s.c.myPurchaseConfirmations();assert(s.calls.at(-1).url.includes('user_id=eq.'+uid));await s.c.purchaseProcesses();assert(s.calls.at(-1).url.includes('/rest/v1/fk_purchase_process?select='));});
 
-test('Home UI stays bounded and action-first in source',async()=>{const s=await readFile('network-ui.js','utf8');assert(s.includes('function renderHome'));assert(s.includes('slice(0,12)'));assert(s.includes("data-home=\"openCoop\""));assert(!/infiniteScroll|IntersectionObserver/.test(s));});
-test('no persistent tokens or implicit local draft upload',async()=>{const code=await readFile('network-client.js','utf8');assert(!/localStorage|sessionStorage|indexedDB|sendBeacon/.test(code.replace(/\/\/[^\n]*/g,'')));assert(!/result\.refresh_token/.test(code));assert(!code.includes('folkoop-workspace-v1'));});
+test('Home UI stays bounded and action-first in source',async()=>{const s=await readFile('apps/web/network-ui.js','utf8');assert(s.includes('function renderHome'));assert(s.includes('slice(0,12)'));assert(s.includes("data-home=\"openCoop\""));assert(!/infiniteScroll|IntersectionObserver/.test(s));});
+test('no persistent tokens or implicit local draft upload',async()=>{const code=await readFile('apps/web/network-client.js','utf8');assert(!/localStorage|sessionStorage|indexedDB|sendBeacon/.test(code.replace(/\/\/[^\n]*/g,'')));assert(!/result\.refresh_token/.test(code));assert(!code.includes('folkoop-workspace-v1'));});
