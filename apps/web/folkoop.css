@@ -256,3 +256,5 @@
  .onboarding-card p{font-size:.96rem;line-height:1.42;margin:0;padding-bottom:5px}.onboarding-actions{flex:0 0 auto;margin-top:10px;padding-top:8px;border-top:1px solid #eee8e3;background:#fff}
 }
 @media(max-width:720px) and (min-height:700px){.onboarding-card,.onboarding-card[data-side="left"]{max-height:min(62vh,610px)}}
+
+.mura-practice{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 7px;padding:7px 10px;border:1px solid #eadfd7;border-radius:12px;background:#fffaf6}.mura-practice[hidden]{display:none}.mura-practice span{font-size:1.05rem;letter-spacing:.12em;color:#9a4c2f}.mura-practice strong{font-size:.82rem;color:var(--muted)}
