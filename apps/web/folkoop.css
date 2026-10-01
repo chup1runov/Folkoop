@@ -232,6 +232,19 @@
  .first-actions{margin-top:0}
 }
 
+/* P0-03 My Place v0: authorship and truthful personal history, not social rank. */
+.my-place-hero{--my-accent:#ac361f;position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;margin:0 0 22px;padding:24px;border:1px solid color-mix(in srgb,var(--my-accent) 30%,var(--line));border-radius:24px;background:linear-gradient(135deg,color-mix(in srgb,var(--my-accent) 10%,#fff) 0%,#fff 72%);box-shadow:inset 6px 0 0 var(--my-accent),0 12px 34px #0000000a}
+.my-place-blue{--my-accent:#176a99}.my-place-green{--my-accent:#2f6f4e}.my-place-purple{--my-accent:#684b86}.my-place-coral{--my-accent:#ac361f}
+.my-place-avatar{display:grid;place-items:center;width:74px;height:74px;border-radius:22px;background:var(--my-accent);color:#fff}.my-place-avatar svg{width:38px;height:38px}.my-place-identity h2{margin:2px 0 6px;font-size:1.7rem}.my-place-motto{margin:0 0 5px;font-size:1.02rem}
+.my-place-life{margin:0 0 24px;padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff}.my-place-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.my-place-stats article{display:flex;align-items:baseline;gap:10px;padding:14px;border-radius:14px;background:var(--soft)}.my-place-stats strong{font-size:1.65rem}.my-place-stats span{color:var(--muted)}
+.my-place-kinds h3{margin:14px 0 9px;font-size:.95rem}.my-place-chips{display:flex;flex-wrap:wrap;gap:8px}.my-place-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff}.my-place-chip svg{width:17px;height:17px}
+.my-place-accent{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border:0;padding:0;margin:0}.my-place-accent legend{grid-column:1/-1;font-weight:700;margin-bottom:3px}.accent-choice{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid var(--line);border-radius:12px}.accent-choice>span{width:18px;height:18px;border-radius:50%;background:var(--choice)}.accent-coral{--choice:#ac361f}.accent-blue{--choice:#176a99}.accent-green{--choice:#2f6f4e}.accent-purple{--choice:#684b86}.anchor-target{position:relative;top:-20px}
+@media(max-width:760px){.my-place-hero{grid-template-columns:auto 1fr;padding:17px;gap:12px}.my-place-hero>.button{grid-column:1/-1;width:100%}.my-place-avatar{width:58px;height:58px;border-radius:17px}.my-place-avatar svg{width:30px;height:30px}.my-place-identity h2{font-size:1.4rem}.my-place-life{padding:16px}.my-place-stats{grid-template-columns:1fr}.my-place-accent{grid-template-columns:1fr 1fr}}
+
+.my-place-empty{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;margin:0 0 24px;padding:18px;border:1px dashed color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--soft) 72%,#fff)}
+.my-place-empty-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#fff;color:var(--accent);border:1px solid var(--line)}.my-place-empty-mark svg{width:23px;height:23px}.my-place-empty h2{font-size:1.05rem;margin:0 0 4px}.my-place-empty p{margin:0;color:var(--muted);max-width:58ch}
+@media(max-width:760px){.my-place-empty{grid-template-columns:auto 1fr}.my-place-empty>.button{grid-column:1/-1;width:100%}}
+
 /* Mobile onboarding: keep controls visible and make any remaining overflow obvious. */
 .onboarding-copy{position:relative;min-height:0}
 .onboarding-scroll-cue[hidden]{display:none!important}
