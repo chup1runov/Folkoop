@@ -48,7 +48,7 @@ async def main():
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Create and search a private project; HTML entered by a user is text, not executable')
   await page.evaluate("location.hash='#/me'");await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click();await expect(page.locator('#myPlaceEditorPanel')).to_be_visible();await page.check('#remember')
-  await page.reload();await page.click('[data-net="localGuest"]');await expect(page.locator('[name="name"]')).to_have_value('Test User')
+  await page.reload();await page.click('[data-net="localGuest"]');await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click();await expect(page.locator('[name="name"]')).to_have_value('Test User')
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Opt-in browser storage restores profile and drafts')
   async with page.expect_download() as download:
