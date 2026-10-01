@@ -457,7 +457,7 @@ languages.es = {
     },
     "home": {
       "title": "Inicio",
-      "subtitle": "Un único campo de información para lo que ha cambiado, lo que requiere tu acción y lo que puede hacerse juntos.",
+      "subtitle": "Empieza por lo que necesitas, puedes ofrecer o quieres hacer. FOLKOOP te ayuda a encontrar personas o recursos y el siguiente paso, antes incluso de que exista un chat de grupo.",
       "attention": "Requiere tu atención",
       "nothingUrgent": "Ahora mismo no hay nada urgente.",
       "messages": "Mensajes sin leer",
@@ -945,7 +945,7 @@ languages.uk = {
     },
     "home": {
       "title": "Головна",
-      "subtitle": "Єдине інформаційне поле: що змінилося, що потребує твоєї дії та що можна зробити разом.",
+      "subtitle": "Почни з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити. FOLKOOP допомагає знайти людей чи ресурси й наступний крок ще до появи групового чату.",
       "attention": "Потребує твоєї уваги",
       "nothingUrgent": "Зараз нічого термінового.",
       "messages": "Непрочитані повідомлення",
@@ -1433,7 +1433,7 @@ languages.fi = {
     },
     "home": {
       "title": "Koti",
-      "subtitle": "Yksi tietonäkymä sille, mikä muuttui, mikä vaatii toimintaasi ja mitä voidaan tehdä yhdessä.",
+      "subtitle": "Aloita siitä, mitä tarvitset, voit tarjota tai haluat tehdä. FOLKOOP auttaa löytämään ihmisiä tai resursseja ja seuraavan askeleen jo ennen ryhmäkeskustelua.",
       "attention": "Vaatii huomiotasi",
       "nothingUrgent": "Ei mitään kiireellistä juuri nyt.",
       "messages": "Lukemattomat viestit",
@@ -1921,7 +1921,7 @@ languages.bs = {
     },
     "home": {
       "title": "Početna",
-      "subtitle": "Jedno informativno polje za ono što se promijenilo, što traži tvoju akciju i šta se može uraditi zajedno.",
+      "subtitle": "Počni od onoga što ti treba, što možeš ponuditi ili što želiš uraditi. FOLKOOP pomaže pronaći ljude ili resurse i sljedeći korak prije nego što uopće postoji grupni chat.",
       "attention": "Traži tvoju pažnju",
       "nothingUrgent": "Trenutno nema ničeg hitnog.",
       "messages": "Nepročitane poruke",
@@ -2409,7 +2409,7 @@ languages.ar = {
     },
     "home": {
       "title": "الرئيسية",
-      "subtitle": "مساحة معلومات واحدة لما تغيّر، وما يحتاج إلى إجراء منك، وما يمكن فعله معًا.",
+      "subtitle": "ابدأ بما تحتاجه أو تستطيع تقديمه أو تريد فعله. يساعدك FOLKOOP على العثور على الأشخاص أو الموارد والخطوة التالية حتى قبل وجود محادثة جماعية.",
       "attention": "يحتاج إلى انتباهك",
       "nothingUrgent": "لا يوجد شيء عاجل الآن.",
       "messages": "رسائل غير مقروءة",
@@ -2897,7 +2897,7 @@ languages.fa = {
     },
     "home": {
       "title": "خانه",
-      "subtitle": "یک نمای اطلاعاتی برای آنچه تغییر کرده، آنچه به اقدام تو نیاز دارد و آنچه می‌توان با هم انجام داد.",
+      "subtitle": "از چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی انجام دهی شروع کن. FOLKOOP کمک می‌کند آدم‌ها یا منابع و گام بعدی را حتی پیش از شکل‌گیری گفت‌وگوی گروهی پیدا کنی.",
       "attention": "نیازمند توجه تو",
       "nothingUrgent": "فعلاً چیز فوری وجود ندارد.",
       "messages": "پیام‌های خوانده‌نشده",
@@ -3385,7 +3385,7 @@ languages.so = {
     },
     "home": {
       "title": "Bogga hore",
-      "subtitle": "Hal meel oo macluumaad ah oo muujisa waxa is beddelay, waxa ficilkaaga u baahan iyo waxa wadajir loo qaban karo.",
+      "subtitle": "Ka bilow waxa aad u baahan tahay, bixin karto ama rabto inaad qabato. FOLKOOP wuxuu kaa caawiyaa helidda dadka ama kheyraadka iyo tallaabada xigta ka hor inta uusan chat kooxeed jirin.",
       "attention": "Waxay u baahan tahay dareenkaaga",
       "nothingUrgent": "Hadda wax degdeg ah ma jiraan.",
       "messages": "Farriimo aan la akhrin",
@@ -3873,7 +3873,7 @@ languages.ku = {
     },
     "home": {
       "title": "Destpêk",
-      "subtitle": "Qadeke agahiyê ji bo tiştê ku guherî, tiştê ku kiryara te dixwaze û tiştê ku dikare bi hev re were kirin.",
+      "subtitle": "Bi tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî bikî dest pê bike. FOLKOOP alîkar dike ku mirov an çavkanî û gava paşîn bibînî berî ku axaftina komê jî hebe.",
       "attention": "Bala te dixwaze",
       "nothingUrgent": "Niha tiştek lezgîn tune.",
       "messages": "Peyamên nexwendî",
