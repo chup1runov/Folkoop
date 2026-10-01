@@ -13,6 +13,14 @@ BUY='77777777-7777-4777-8777-777777777777'
 OFFER='bbbbbbbb-1111-4111-8111-bbbbbbbbbbbb'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 
+async def open_section(page,key):
+ section=page.locator(f'[data-coop-section="{key}"]')
+ await expect(section).to_be_visible()
+ if await section.get_attribute('open') is None:
+  await section.locator('summary').click()
+ await expect(section).to_have_attribute('open','')
+ return section
+
 async def main():
  passed=[]
  async with async_playwright() as pw:
@@ -98,38 +106,55 @@ async def main():
   await page.fill('#netCoopCreate [name=targetQuantity]','10')
   await page.fill('#netCoopCreate [name=unit]','m3')
   await page.click('#netCoopCreate button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await page.fill('#netCommitment [name=quantity]','4')
   await page.click('#netCommitment button.button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'offers')
   await page.click('[data-coop=selectOffer]')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#netPurchaseStart')).to_be_visible()
   passed.append('Selected supplier offer exposes final-confirmation step')
 
   await page.fill('#netPurchaseStart [name=deadline]','2030-01-01T12:00')
   await page.click('#netPurchaseStart button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#netPurchaseConfirm')).to_be_visible()
   await expect(page.locator('#networkPanel')).to_contain_text('Финальное подтверждение')
   passed.append('Starting confirmation snapshots participant quantity and changes stage')
 
   await page.fill('#netPurchaseConfirm [name=note]','Подтверждаю четыре')
   await page.click('#netPurchaseConfirm [value=yes]')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#netPurchaseOrdered')).to_be_visible()
   await page.fill('#netPurchaseOrdered [name=reference]','EXT-TEST')
   await page.fill('#netPurchaseOrdered [name=pickupPlace]','Test Center')
   await page.click('#netPurchaseOrdered button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#networkPanel')).to_contain_text('заказ оформлен вне FOLKOOP')
   await expect(page.locator('#networkPanel')).to_contain_text('EXT-TEST')
   passed.append('Organizer mark is explicitly external/self-reported, not a fake order submission')
 
   await page.fill('#netPurchaseDelivered [name=note]','Synthetic arrival')
   await page.click('#netPurchaseDelivered button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#netPurchaseCollected')).to_be_visible()
   await page.fill('#netPurchaseCollected [name=note]','Synthetic pickup')
   await page.click('#netPurchaseCollected [value=yes]')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await open_section(page,'purchase-progress')
   await expect(page.locator('#networkPanel')).to_contain_text('Выдача участникам')
   passed.append('Delivery and participant collection are separate self-reported states')
 
   await page.fill('#netPurchaseFinish [name=note]','Synthetic lifecycle completed without payment.')
   await page.click('#netPurchaseFinish button')
+  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
   await expect(page.locator('#networkPanel')).to_contain_text('Завершено')
   assert state['cooperations'][0]['status']=='done'
   assert not any('/payment' in url or '/checkout' in url for url,_ in state['requests'])
