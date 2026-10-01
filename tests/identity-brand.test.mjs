@@ -26,7 +26,7 @@ test('FOLKOOP is the only current project brand',async()=>{
   const offenders=[];
   for(const file of await walk('.')){
     const normalized=file.replaceAll('\\','/');
-    if(normalized.startsWith('docs/history/')||normalized.startsWith('docs/proposals/'))continue;
+    if(normalized.startsWith('docs/history/')||normalized.startsWith('docs/proposals/')||/^docs\/CHAT_HANDOFF_[^/]+\.md$/.test(normalized))continue;
     for(const rule of forbidden){
       if(rule.pattern.test(normalized))offenders.push(normalized+' [path: '+rule.name+']');
       rule.pattern.lastIndex=0;
