@@ -13,7 +13,7 @@ async def main():
    if route.request.url.startswith(BASE):await route.continue_()
    else:await route.abort()
   await context.route('**/*',local_only)
-  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-language-choice-v1','done')")
+  await context.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-language-choice-v1','done');sessionStorage.setItem('folkoop-entry-mode-v1','guest')")
   page=await context.new_page();errors=[]
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
