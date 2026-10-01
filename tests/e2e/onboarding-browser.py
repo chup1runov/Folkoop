@@ -83,7 +83,7 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
+  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-idle.webp')
   if idx==3:
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
   card=page.locator('.onboarding-card');actions=page.locator('.onboarding-actions');copy=page.locator('#onboardingCopy');cue=page.locator('#onboardingScrollCue')
