@@ -368,7 +368,7 @@ function showOnboarding(step=0){
  onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
  const item=onboardingSteps[onboardingStep],dialog=ensureOnboarding(),source=helperSource();
  dialog.hidden=false;
- if(current!==item.route){location.hash='#/'+item.route;current=item.route;render();return;}
+ if(current!==item.route){current=item.route;history.replaceState(null,'','#/'+item.route);render();return;}
  dialog.querySelector('#onboardingProgress').textContent=t('tutorialProgress')+' '+(onboardingStep+1)+' / '+onboardingSteps.length;
  dialog.querySelector('#onboardingGuideName').textContent=source.name+' · '+source.label;
  dialog.querySelector('#onboardingTitle').textContent=tutorialTitle(item);
