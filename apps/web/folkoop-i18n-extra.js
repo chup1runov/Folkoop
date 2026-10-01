@@ -6,6 +6,8 @@
 const languages = Object.create(null);
 languages.es = {
   "shell": {
+    "makeItYours": "Hazlo tuyo",
+    "makeItYoursText": "Empieza eligiendo un pequeño detalle: una frase sobre ti o un color. Tu actividad real aparecerá aquí a medida que uses FOLKOOP.",
     "myPlace": "Mi lugar",
     "myPlaceIntro": "Un espacio que toma forma con lo que eliges, creas y haces aquí.",
     "motto": "Una frase que se sienta tuya",
@@ -507,6 +509,8 @@ languages.es = {
 };
 languages.uk = {
   "shell": {
+    "makeItYours": "Зроби це місце своїм",
+    "makeItYoursText": "Для початку обери одну маленьку деталь — рядок про себе або колір. Реальні справи з’являтимуться тут у міру використання FOLKOOP.",
     "myPlace": "Моє місце",
     "myPlaceIntro": "Простір, який поступово складається з твоїх виборів, ідей і справ.",
     "motto": "Рядок, який про тебе",
@@ -1008,6 +1012,8 @@ languages.uk = {
 };
 languages.fi = {
   "shell": {
+    "makeItYours": "Tee siitä omasi",
+    "makeItYoursText": "Valitse ensin yksi pieni yksityiskohta: rivi itsestäsi tai korostusväri. Todellinen toimintasi ilmestyy tänne, kun käytät FOLKOOPia.",
     "myPlace": "Oma paikkani",
     "myPlaceIntro": "Tila, joka muotoutuu siitä, mitä valitset, luot ja teet täällä.",
     "motto": "Rivi, joka tuntuu omalta",
@@ -1509,6 +1515,8 @@ languages.fi = {
 };
 languages.bs = {
   "shell": {
+    "makeItYours": "Učini ga svojim",
+    "makeItYoursText": "Za početak izaberi jedan mali detalj: rečenicu o sebi ili boju. Tvoja stvarna aktivnost pojavljivat će se ovdje dok koristiš FOLKOOP.",
     "myPlace": "Moje mjesto",
     "myPlaceIntro": "Prostor koji oblikuju tvoji izbori, ono što stvaraš i radiš ovdje.",
     "motto": "Rečenica koja zvuči kao ti",
@@ -2010,6 +2018,8 @@ languages.bs = {
 };
 languages.ar = {
   "shell": {
+    "makeItYours": "اجعله مكانك",
+    "makeItYoursText": "ابدأ بتفصيل صغير واحد: سطر عنك أو لون. سيظهر نشاطك الحقيقي هنا مع استخدامك لـ FOLKOOP.",
     "myPlace": "مكاني",
     "myPlaceIntro": "مساحة تتشكل مما تختاره وتصنعه وتفعله هنا.",
     "motto": "سطر يشبهك",
@@ -2511,6 +2521,8 @@ languages.ar = {
 };
 languages.fa = {
   "shell": {
+    "makeItYours": "این فضا را مال خودت کن",
+    "makeItYoursText": "اول یک جزئیات کوچک انتخاب کن: یک جمله دربارهٔ خودت یا یک رنگ. فعالیت واقعی تو با استفاده از FOLKOOP اینجا ظاهر می‌شود.",
     "myPlace": "جای من",
     "myPlaceIntro": "فضایی که با انتخاب‌ها، ساخته‌ها و کارهای تو شکل می‌گیرد.",
     "motto": "یک جمله که شبیه توست",
@@ -3012,6 +3024,8 @@ languages.fa = {
 };
 languages.so = {
   "shell": {
+    "makeItYours": "Ka dhig meeshaada",
+    "makeItYoursText": "Marka hore dooro hal faahfaahin yar: sadar adiga kaa hadlaya ama midab. Hawshaada dhabta ah ayaa halkan ka muuqan doonta marka aad FOLKOOP isticmaasho.",
     "myPlace": "Meeshayda",
     "myPlaceIntro": "Meel ay qaabeeyaan waxa aad doorato, samayso oo aad halkan ka qabato.",
     "motto": "Hal sadar oo adiga kuu eg",
@@ -3513,6 +3527,8 @@ languages.so = {
 };
 languages.ku = {
   "shell": {
+    "makeItYours": "Bike cihê xwe",
+    "makeItYoursText": "Pêşî yek hûrguliyek biçûk hilbijêre: risteyek li ser xwe an rengek. Çalakiya te ya rast dema ku FOLKOOP bikar tînî li vir xuya dibe.",
     "myPlace": "Cihê min",
     "myPlaceIntro": "Cihek ku bi hilbijartin, afirandin û kirinên te li vir teşe digire.",
     "motto": "Risteyek ku wek te hîs dike",
