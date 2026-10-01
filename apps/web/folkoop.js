@@ -484,6 +484,10 @@ document.addEventListener('click',e=>{
  const action=target.dataset.action;
  if(action==='cancel'){formKind=null;scratch={};render();}
  if(action==='tutorial'){startFullIntroduction();return;}
+ if(action==='toggle-my-place-editor'){
+  const panel=$('#myPlaceEditorPanel'),open=panel?.hidden!==false;if(!panel)return;panel.hidden=!open;target.setAttribute('aria-expanded',String(open));
+  if(open){panel.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});setTimeout(()=>panel.querySelector('input,textarea,button')?.focus({preventScroll:true}),reducedMotion?0:220);}return;
+ }
  if(action==='clear'&&confirm(t('confirmClear'))){if(store.clear()){scratch={};profileScratch=null;render();$('#status').textContent=t('deleted');}else status(false);}
  if(action==='export'){
   capture();const file=new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(file);const link=document.createElement('a');link.href=url;link.download='folkoop-my-data.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
