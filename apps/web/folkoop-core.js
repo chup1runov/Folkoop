@@ -4,12 +4,13 @@
   const LANGS = ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'];
   const ROUTES = ['home','people','communities','together','projects','city','center','me','messages','settings','about'];
   const KINDS = ['need','offer','purchase','resource','project','event'];
+  const ACCENTS = ['coral','blue','green','purple'];
   const KEY = 'folkoop-workspace-v1';
   const text = (v, max) => typeof v === 'string' ? v.slice(0, max).trim() : '';
   function clean(input) {
     const x = input && typeof input === 'object' ? input : {};
     const p = x.profile && typeof x.profile === 'object' ? x.profile : {};
-    return {version:1, profile:{name:text(p.name,60),city:text(p.city,120),skills:text(p.skills,200),about:text(p.about,600)},
+    return {version:1, profile:{name:text(p.name,60),city:text(p.city,120),skills:text(p.skills,200),about:text(p.about,600),motto:text(p.motto,100),accent:ACCENTS.includes(p.accent)?p.accent:'coral'},
       drafts:Array.isArray(x.drafts) ? x.drafts.slice(0,100).filter(d => d && KINDS.includes(d.kind) && /^[a-zA-Z0-9-]{1,80}$/.test(d.id || '') && text(d.title,100)).map(d=>({id:d.id,kind:d.kind,title:text(d.title,100),body:text(d.body,1500),done:d.done===true})) : []};
   }
   function workspace(storage) {
@@ -39,5 +40,5 @@
   }
   const route = hash => {const value=String(hash||'').replace(/^#\/?/,'').split('/')[0];return ROUTES.includes(value)?value:'home';};
   const escape = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  globalThis.FolkoopCore = Object.freeze({LANGS,ROUTES,KINDS,KEY,clean,workspace,route,escape});
+  globalThis.FolkoopCore = Object.freeze({LANGS,ROUTES,KINDS,ACCENTS,KEY,clean,workspace,route,escape});
 })();
