@@ -1,7 +1,7 @@
 /* Lightweight local FOLKOOP guide presence for FOLKOOP. No network/API calls. */
 (() => {
 'use strict';
-const CANONICAL_MURA='./folkoop-guide-idle.webp';
+const CANONICAL_MURA='./folkoop-guide-confident.webp';
 const ASSETS=Object.freeze({
  welcome:CANONICAL_MURA,
  idle:CANONICAL_MURA,
