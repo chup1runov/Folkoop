@@ -1,7 +1,7 @@
 # FOLKOOP current status
 
 Date: 2026-10-01  
-Release line: **v0.39.0**  
+Release line: **v0.40.0**  
 Repository: `chup1runov/Folkoop`
 
 ## Product phase
@@ -18,7 +18,8 @@ The first human pilot is still centered on:
 
 ## Current implemented line
 
-The current v0.39 application includes:
+The current v0.40 activation candidate includes:
+- participant-facing Google OAuth flag enabled in the activation candidate, with CI deliberately blocked until hosted Supabase reports Google provider enabled and signup available;
 - public About presents the approved future trust/identity/agent/physical-world architecture as a planned direction, with explicit non-crypto-first boundaries and a link to the technical architecture;
 - language-first entry, read-only Guest preview and an 8-step value-first first-session tour;
 - mobile bottom navigation with six primary destinations and contextual secondary navigation for Together, City and Profile;
