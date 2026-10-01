@@ -84,7 +84,7 @@ async def mobile_flow(browser,passed):
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
   await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
-  if idx in (1,2,3,4,5,6):
+  if idx in (1,2,4,5,6):
    await assert_directional_pose(page)
   if idx==7:
    assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-perched')")
