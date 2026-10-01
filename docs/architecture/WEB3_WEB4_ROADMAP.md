@@ -156,7 +156,7 @@ Add:
 Cross-object matching/navigation becomes difficult with module-specific queries, for example:
 
 - people + skills + projects + resources must be queried together;
-- Mura or another interface needs one stable cross-domain read model;
+- FOLKOOP action agent or another interface needs one stable cross-domain read model;
 - export/federation work needs stable object semantics.
 
 ## Dependencies
@@ -192,7 +192,7 @@ At least two existing modules can use the same graph API without duplicating tru
 
 ---
 
-# 6. Phase 4 — Mura READ mode
+# 6. Phase 4 — FOLKOOP action agent READ mode
 
 ## Trigger
 
@@ -207,7 +207,7 @@ Pilot evidence shows discovery/navigation is a bottleneck and deterministic UI/s
 
 ## Smallest deliverable
 
-Mura can only:
+FOLKOOP action agent can only:
 
 - search opt-in people;
 - search Needs/Offers/Projects/Resources;
@@ -228,11 +228,11 @@ No service-role key. No arbitrary SQL. No mutation.
 
 ## Exit criteria
 
-Mura improves discovery without hiding source/provenance or generating unsafe matches.
+FOLKOOP action agent improves discovery without hiding source/provenance or generating unsafe matches.
 
 ---
 
-# 7. Phase 5 — Mura DRAFT mode
+# 7. Phase 5 — FOLKOOP action agent DRAFT mode
 
 ## Trigger
 
@@ -240,11 +240,11 @@ READ mode is useful, but users still struggle to translate intent into structure
 
 ## Dependencies
 
-Successful Mura READ evaluation.
+Successful FOLKOOP action agent READ evaluation.
 
 ## Smallest deliverable
 
-Mura may draft but not publish:
+FOLKOOP action agent may draft but not publish:
 
 - Need;
 - Offer;
@@ -267,7 +267,7 @@ Users understand/edit drafts and accidental publication is impossible.
 
 ---
 
-# 8. Phase 6 — Mura COMMIT mode
+# 8. Phase 6 — FOLKOOP action agent COMMIT mode
 
 ## Trigger
 
@@ -343,7 +343,7 @@ A FOLKOOP-controlled role must be provable outside one database/Node.
 
 Preferred first use case:
 
-**FOLKUNO Host Credential.**
+**FOLKOOP Host Credential.**
 
 ## Dependencies
 
@@ -540,7 +540,7 @@ External discovery can lead back to FOLKOOP without creating duplicate authority
 
 ## Trigger
 
-Mura or external/personal AI clients need a standard tool interface.
+FOLKOOP action agent or external/personal AI clients need a standard tool interface.
 
 ## Dependencies
 
@@ -852,7 +852,7 @@ The architecture is valuable even if only:
 
 - Outcome model;
 - Action Graph;
-- Mura;
+- FOLKOOP action agent;
 - Passport;
 - Place
 
@@ -872,7 +872,7 @@ many intents but weak evidence of outcomes
 
 many intents but weak matching/discovery
   -> Action Graph
-  -> Mura READ if needed
+  -> FOLKOOP action agent READ if needed
 
 good outcomes + repeated roles/history
   -> Passport
