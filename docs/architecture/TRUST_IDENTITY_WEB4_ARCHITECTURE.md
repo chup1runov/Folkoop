@@ -30,7 +30,7 @@ Nothing in this document authorizes immediate runtime implementation before the 
 
 # 1. Decision in one paragraph
 
-FOLKOOP remains a normal web application with PostgreSQL/Supabase as its operational source of truth. It may adopt Web3-derived mechanisms where they solve a concrete trust, identity, portability or multi-organisation interoperability problem: verifiable credentials, selective disclosure, cryptographic attestations, federation and optional external integrity anchoring. It may adopt Web4-derived mechanisms where they connect the cooperation graph to intelligent agents and the physical world: Mura action tools, MCP/A2A interoperability, Places, Resources, QR/NFC, digital-twin state and later IoT/access systems. No crypto wallet, token, NFT, blockchain, graph database or AI model becomes a mandatory participant dependency by default.
+FOLKOOP remains a normal web application with PostgreSQL/Supabase as its operational source of truth. It may adopt Web3-derived mechanisms where they solve a concrete trust, identity, portability or multi-organisation interoperability problem: verifiable credentials, selective disclosure, cryptographic attestations, federation and optional external integrity anchoring. It may adopt Web4-derived mechanisms where they connect the cooperation graph to intelligent agents and the physical world: FOLKOOP action-agent tools, MCP/A2A interoperability, Places, Resources, QR/NFC, digital-twin state and later IoT/access systems. No crypto wallet, token, NFT, blockchain, graph database or AI model becomes a mandatory participant dependency by default.
 
 ---
 
@@ -150,7 +150,7 @@ flowchart TB
     DB[(PostgreSQL / Supabase)]
     GRAPH[Action / Cooperation Graph]
     TRUST[Trust & Provenance Layer]
-    MURA[Mura Action Layer]
+    AGENT[FOLKOOP Action-Agent Layer]
     PASS[Passport / Credentials]
     FED[Federation]
     CENTER[Place / Center Digital Twin]
@@ -163,10 +163,10 @@ flowchart TB
     CORE --> DB
     DB --> GRAPH
     DB --> TRUST
-    CORE --> MURA
-    MURA --> GRAPH
-    MURA --> TRUST
-    MURA --> MCP
+    CORE --> AGENT
+    AGENT --> GRAPH
+    AGENT --> TRUST
+    AGENT --> MCP
     MCP --> A2A
     TRUST --> PASS
     PASS --> EUDI
@@ -237,7 +237,7 @@ The view can be generated from existing normalized tables and later additions.
 
 Benefits:
 
-- Mura obtains a common query model;
+- FOLKOOP action agent obtains a common query model;
 - export/federation has stable vocabulary;
 - no duplication of operational truth;
 - no premature Neo4j/RDF runtime dependency.
@@ -351,7 +351,7 @@ confirmed_cooperations: 12
 resource_returns: 8
 hosted_activities: 4
 active_credentials:
-  - FOLKUNO Host
+  - FOLKOOP Host
   - Safety onboarding
 ```
 
@@ -545,7 +545,7 @@ Never treat an imported unverified JSON file as a verified credential.
 
 ## First recommended FOLKOOP-issued credential
 
-`FOLKUNO Host Credential`
+`FOLKOOP Host Credential`
 
 Why:
 
@@ -784,11 +784,11 @@ A user may import a self-asserted skill, but cannot manufacture a verified crede
 
 ---
 
-# 18. Mura as an action agent
+# 18. FOLKOOP guide as a future action agent
 
-Mura should not be designed as "LLM with database access".
+FOLKOOP action agent should not be designed as "LLM with database access".
 
-Mura should call explicit product tools protected by the same authorization model as the normal UI.
+FOLKOOP action agent should call explicit product tools protected by the same authorization model as the normal UI.
 
 ## 18.1 Permission classes
 
@@ -834,7 +834,7 @@ Higher-risk actions may require re-authentication or stronger verification.
 
 ## 18.2 No direct SQL
 
-Mura must not receive:
+FOLKOOP action agent must not receive:
 
 - service-role database credentials;
 - arbitrary SQL capability;
@@ -951,7 +951,7 @@ The 2026-07-28 MCP revision is the current protocol reference for future evaluat
 A2A becomes relevant only when independent agents exist, for example:
 
 - user's personal agent;
-- FOLKOOP/Mura agent;
+- FOLKOOP action agent;
 - Center agent;
 - partner organisation agent;
 - external service agent.
@@ -1263,9 +1263,9 @@ A future capability should be implemented only after its trigger exists.
 |---|---|
 | structured Outcome tables | pilot shows current outcome capture is insufficient |
 | Action Graph view/API | multiple modules need common cross-object matching/query |
-| Mura READ tools | discovery/navigation bottleneck is demonstrated |
-| Mura DRAFT tools | users understand results but need orchestration help |
-| Mura COMMIT actions | DRAFT flow is safe and approval UX is proven |
+| FOLKOOP action agent READ tools | discovery/navigation bottleneck is demonstrated |
+| FOLKOOP action agent DRAFT tools | users understand results but need orchestration help |
+| FOLKOOP action agent COMMIT actions | DRAFT flow is safe and approval UX is proven |
 | Passport | contextual history/roles create participant value |
 | FOLKOOP VC issuance | a role/qualification must move across trust boundaries |
 | EUDI verification | a real high-assurance attribute such as 18+ is needed |
@@ -1326,9 +1326,9 @@ flowchart LR
     PILOT[Real Göteborg pilot]
     OUT[Outcome model]
     GRAPH[Action Graph API]
-    MURAR[Mura READ]
-    MURAD[Mura DRAFT]
-    MURAC[Mura COMMIT]
+    AGENTR[FOLKOOP action agent READ]
+    AGENTD[FOLKOOP action agent DRAFT]
+    AGENTC[FOLKOOP action agent COMMIT]
     PASS[Passport]
     VC[Verifiable Credentials]
     EUDI[EUDI verifier]
@@ -1345,9 +1345,9 @@ flowchart LR
 
     PILOT --> OUT
     PILOT --> GRAPH
-    GRAPH --> MURAR
-    MURAR --> MURAD
-    MURAD --> MURAC
+    GRAPH --> AGENTR
+    AGENTR --> AGENTD
+    AGENTD --> AGENTC
     OUT --> PASS
     PASS --> VC
     VC --> EUDI
@@ -1355,7 +1355,7 @@ flowchart LR
     GRAPH --> FED
     VC --> FED
     FED --> AP
-    MURAR --> MCP
+    AGENTR --> MCP
     MCP --> A2A
     PLACE --> QR
     PLACE --> IOT
