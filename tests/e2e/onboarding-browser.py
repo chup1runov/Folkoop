@@ -86,6 +86,10 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
   if idx==3:
    assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
+  card=page.locator('.onboarding-card');actions=page.locator('.onboarding-actions');copy=page.locator('#onboardingCopy');cue=page.locator('#onboardingScrollCue')
+  cb=await card.bounding_box();ab=await actions.bounding_box();assert cb and ab and ab['y']+ab['height']<=cb['y']+cb['height']+1,(idx,cb,ab)
+  overflow=await copy.evaluate('(el)=>el.scrollHeight>el.clientHeight+3')
+  if overflow: assert not await cue.is_hidden(),f'step {idx+1} overflow has no scroll cue'
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
