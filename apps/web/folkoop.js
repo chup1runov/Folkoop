@@ -384,7 +384,8 @@ function showOnboarding(step=0){
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
- const completedMuraPractice=muraPracticeStep===3&&entryModeNow()==='guest';
+ const guestTour=entryModeNow()==='guest';
+ const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
  dialog.querySelector('#onboardingSpotlight').hidden=true;
@@ -394,6 +395,7 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
+ if(guestTour&&!completedMuraPractice){current='home';history.replaceState(null,'','#/home');render();}
  if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));document.body.classList.remove('network-login-open','guest-preview-open');location.hash='#/me';render();globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
