@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {loadIntegrity,validateIntegrity,validateRepositoryBindings} from '../scripts/ci/validate-outcome-integrity.mjs';
+import {loadIntegrity,validateIntegrity,validateRepositoryBindings} from '../../scripts/ci/validate-outcome-integrity.mjs';
 
 test('FOLKOOP outcome integrity profile is internally consistent and non-runtime',async()=>{
   const p=await loadIntegrity();

@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from playwright.async_api import async_playwright,expect
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/FOLKOOP/')
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 passed=[]
 async def main():

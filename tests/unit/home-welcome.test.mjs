@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-const source=readFileSync(new URL('../apps/web/home-welcome.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../../apps/web/home-welcome.js',import.meta.url),'utf8');
 const context=vm.createContext({});vm.runInContext(source,context);
 const {markup}=context.FolkoopHomeWelcome;
 test('public Home has no invented activity, credentials, API or storage',()=>{

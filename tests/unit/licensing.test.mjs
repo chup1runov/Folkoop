@@ -5,7 +5,7 @@ import {readFile,mkdtemp,mkdir,rm,writeFile,copyFile} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import {spawnSync} from 'node:child_process';
-import {BUILD_FILES} from '../scripts/build/public-assets.mjs';
+import {BUILD_FILES} from '../../scripts/build/public-assets.mjs';
 const root=process.cwd();
 const license=(await readFile('LICENSE','utf8')).replace(/\s+/g,' ');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
