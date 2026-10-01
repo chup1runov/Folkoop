@@ -27,7 +27,7 @@ async def main():
   await page.goto(BASE+'#/me')
   await page.click('[data-net="localGuest"]')
   await expect(page.locator('#myPlaceEditorPanel')).to_be_hidden()
-  await page.locator('[data-action="toggle-my-place-editor"]:visible').click()
+  await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click()
   await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()
   await page.fill('#profileForm [name="name"]','Test User')
   await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()
