@@ -1,5 +1,8 @@
 # Roadmap — Idag v0.11
 
+> **Superseded planning document.** This is an early City/civic roadmap and no longer defines current execution priority. Use `WORK_PLAN_20261001.md`, `PRODUCT_DECISION_POLICY.md` and `GOTEBORG_CORE_LOOP_PILOT.md`. Historical unchecked items are not automatically active work. The operative licensing decision is in the root `LICENSE` and `LICENSING.md`.
+
+
 ## Fas 0 — förstudie
 
 - [x] produktidé

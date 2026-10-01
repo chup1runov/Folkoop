@@ -1,5 +1,8 @@
 # MVP v0.2
 
+> **Superseded product-scope document.** This describes the earlier civic MVP. It is retained for provenance. Current product scope is defined by `PRODUCT_CONCEPT.md`; current pilot scope by `GOTEBORG_CORE_LOOP_PILOT.md`; current execution by `WORK_PLAN_20261001.md`.
+
+
 ## 1. Vem ansvarar?
 
 Input:

@@ -11,8 +11,9 @@ When documents disagree, use this order unless a more specific current document 
 3. `GOTEBORG_CORE_LOOP_PILOT.md` for the protected first-pilot scope;
 4. current privacy/security and operator documents for their specific domain;
 5. `STATUS.md` and `PROJECT_HANDOFF.md` for current-state orientation;
-6. research documents as inputs to future decisions;
-7. `history/` only as historical evidence.
+6. `WORK_PLAN_20261001.md` for execution sequencing and mini-project dependencies;
+7. research documents as inputs to future decisions;
+8. `history/` and documents explicitly marked superseded only as historical evidence.
 
 Research and old release notes do not silently override current product policy.
 
@@ -24,6 +25,7 @@ Start with:
 - `GOTEBORG_CORE_LOOP_PILOT.md` — first human-pilot scope.
 - `PROJECT_HANDOFF.md` — detailed current implementation and launch-gate state.
 - `STATUS.md` — short current-state pointer.
+- `WORK_PLAN_20261001.md` — canonical mini-project execution plan and dependency graph.
 - `FREE_ONLY.md` — zero-cost infrastructure policy.
 - `ROADMAP.md`, `VALUE_ROADMAP.md`, `MVP.md`, `USER_FLOWS.md` — supporting product direction.
 
@@ -88,3 +90,14 @@ Other historical records should stay under `history/` when historical terminolog
 ## Proposals
 
 `proposals/` contains drafts or decision records that are not automatically operative. For rights and licensing, the root `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md` are authoritative.
+
+## Superseded planning documents
+
+The following root-level docs are retained for historical/product provenance but no longer define current execution priority:
+- `ROADMAP.md` — early City/civic roadmap;
+- `MVP.md` — early civic MVP;
+- `USER_FLOWS.md` — early civic user flows;
+- `VALUE_ROADMAP.md` — early value/retention roadmap;
+- `PILOT_GUIDE.md` — earlier civic usability pilot.
+
+Use `WORK_PLAN_20261001.md` plus `GOTEBORG_CORE_LOOP_PILOT.md` for current work.

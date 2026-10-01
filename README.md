@@ -2,6 +2,8 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
+Current execution plan: [`docs/WORK_PLAN_20261001.md`](docs/WORK_PLAN_20261001.md). Current priority remains Google Auth gate → two-account technical gate → account-closure rehearsal → controlled Göteborg core-loop pilot.
+
 ## Current pilot state — v0.39.0
 
 Navigation: **Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**. City displays the user-selected city when available.
