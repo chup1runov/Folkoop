@@ -2,11 +2,12 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-## Current pilot state — v0.37.0
+## Current pilot state — v0.38.0
 
 Navigation: **Home · Together · Projects · Messages · People · Communities · City · Center · Profile · Settings · About**. City displays the user-selected city when available.
 
 Implemented:
+- summary-first cooperation/project detail: goal, status, people/progress and one next step remain visible; activity, participants, tasks, updates, supplier offers, purchase progress and edit controls use compact expandable sections;
 - mobile social-app shell: six compact bottom destinations plus a contextual second row; City contains Center, Profile contains Settings/About/Language, Together contains People/Communities; Guest limitations live in an expandable bottom DEMO chip rather than a large page banner;
 - first-session **value tour**: 8 benefit-led steps instead of a 14-step module tour; guest first entry no longer marks onboarding complete before the tour is shown;
 - local private workspace and optional browser-only persistence;
