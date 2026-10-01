@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>Дом Ксюши</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="home-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">ДОМ КСЮШИ · ВАША ИСТОРИЯ</span>
+        <h1>Дом Ксюши</h1>
+        <p>Не журнал активности, а место, которое меняется из того, что вы прожили вместе.</p>
+      </div>
+      <div class="top-actions">
+        <div id="together" class="together"></div>
+        <button id="shareButton" class="primary-action" type="button">Сохранить момент</button>
+      </div>
+    </header>
+
+    <section id="room" class="room room-v2" data-scene="settling" aria-label="Комната Ксюши">
+      <div class="window-light"></div>
+      <div class="shelf shelf-one"></div>
+      <div class="shelf shelf-two"></div>
+      <div class="rug"></div>
+      <div class="desk"><span>✎</span></div>
+      <div id="plant" class="plant" title="Растение Ксюши"></div>
+      <div id="roomProps" class="room-props" aria-label="Вещи из вашей общей истории"></div>
+      <img id="homeCharacter" class="home-character" data-spot="center" src="../../assets/character/idle.gif" alt="Ксюша дома" />
+
+      <aside id="roomMemoryCard" class="room-memory-card" hidden>
+        <button id="roomMemoryClose" class="room-memory-close" type="button" aria-label="Закрыть">×</button>
+        <span id="roomMemoryEmoji" class="room-memory-emoji">✦</span>
+        <strong id="roomMemoryTitle"></strong>
+        <p id="roomMemoryText"></p>
+        <button id="roomMemoryOpen" class="room-memory-open" type="button" hidden>Открыть</button>
+      </aside>
+
+      <div class="room-caption">
+        <strong id="roomSceneTitle">Ксюша осваивается</strong>
+        <span id="roomNote">Комната постепенно меняется из реальных совместных событий.</span>
+      </div>
+
+      <div class="room-actions" aria-label="Быстрые совместные действия">
+        <button type="button" data-focus="25">◎ 25 минут</button>
+        <button type="button" data-quiet="1800000">Тихо 30 мин</button>
+        <button type="button" data-surface="perch">На окно</button>
+      </div>
+    </section>
+
+    <section class="story-ribbon" aria-label="Что происходит сейчас">
+      <article class="story-piece">
+        <span class="eyebrow">СЕЙЧАС</span>
+        <div id="presenceStatus" class="presence-status"></div>
+      </article>
+      <article class="story-piece">
+        <span class="eyebrow">ДОМА</span>
+        <div id="episode"></div>
+      </article>
+    </section>
+
+    <details id="memoryDrawer" class="memory-drawer">
+      <summary>
+        <span>Воспоминания и настройки</span>
+        <small>Открывай, когда захочешь посмотреть детали</small>
+      </summary>
+
+      <div class="drawer-body">
+        <section class="panel relationship-panel">
+          <div class="panel-head"><div><span class="eyebrow">ВМЕСТЕ</span><h2>Как вам живётся вместе</h2></div><span id="relationshipScore" class="count"></span></div>
+          <strong id="relationshipStage" class="relationship-stage"></strong>
+          <p id="relationshipDescription" class="muted"></p>
+          <div class="progress"><span id="relationshipProgress"></span></div>
+          <div id="relationshipFacts" class="fact-row"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">ПАМЯТЬ</span><h2>Полка воспоминаний</h2></div><span id="keepsakeCount" class="count"></span></div>
+          <div id="keepsakes" class="keepsakes emptyable"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">ДОВЕРЕНО</span><h2>Доверенные вещи</h2></div><span id="fileCount" class="count"></span></div>
+          <div id="files" class="files emptyable"></div>
+          <div id="objects" class="files objects emptyable"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">РЯДОМ</span><h2>То, что вы делаете вместе</h2></div></div>
+          <div id="timers" class="timers emptyable"></div>
+          <div class="quick-actions">
+            <button type="button" data-focus="25">Фокус 25</button>
+            <button type="button" data-focus="50">Фокус 50</button>
+            <button type="button" data-quiet="1800000">Тихо 30 мин</button>
+            <button type="button" data-quiet="3600000">Тихо 1 час</button>
+            <button type="button" data-quiet="clear" class="ghost">Снять тишину</button>
+            <button type="button" data-surface="toggle" class="ghost">Геометрия окон</button>
+            <button type="button" data-surface="perch">Сесть на окно</button>
+            <button type="button" data-surface="leave" class="ghost">Сойти</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><div><span class="eyebrow">БЫЛО</span><h2>Что Ксюша считает важным</h2></div></div>
+          <div id="timeline" class="timeline emptyable"></div>
+        </section>
+      </div>
+    </details>
+
+    <div id="shareStatus" class="share-status" hidden></div>
+  </main>
+  <script src="./home.js"></script>
+</body>
+</html>

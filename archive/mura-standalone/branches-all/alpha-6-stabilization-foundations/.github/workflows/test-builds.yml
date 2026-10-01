@@ -1,0 +1,86 @@
+name: Test Builds
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "assets/**"
+      - "tools/**"
+      - "package.json"
+      - ".github/workflows/test-builds.yml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "assets/**"
+      - "tools/**"
+      - "package.json"
+      - ".github/workflows/test-builds.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mac:
+    name: macOS unsigned test builds
+    runs-on: macos-latest
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate source
+        run: |
+          npm test
+          npm run check
+          npm run validate:character
+      - name: Build unsigned macOS x64 + arm64
+        run: npx electron-builder --mac dmg zip --x64 --arm64 --publish never
+      - name: Write SHA256 checksums
+        run: node tools/write-checksums.cjs dist dist/SHA256SUMS-macos.txt .dmg .zip
+      - name: Upload macOS test builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: mura-companion-macos-${{ github.sha }}
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/SHA256SUMS-macos.txt
+          if-no-files-found: error
+          retention-days: 14
+
+  windows:
+    name: Windows unsigned test builds
+    runs-on: windows-latest
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate source
+        run: |
+          npm test
+          npm run check
+          npm run validate:character
+      - name: Build unsigned Windows x64
+        run: npx electron-builder --win nsis portable --x64 --publish never
+      - name: Write SHA256 checksums
+        run: node tools/write-checksums.cjs dist dist/SHA256SUMS-windows.txt .exe
+      - name: Upload Windows test builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: mura-companion-windows-${{ github.sha }}
+          path: |
+            dist/*.exe
+            dist/SHA256SUMS-windows.txt
+          if-no-files-found: error
+          retention-days: 14
