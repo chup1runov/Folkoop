@@ -151,9 +151,9 @@ languages.es = {
     "quick": "Empieza con una cosa real"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "ayudante de FOLKOOP",
-    "open": "Abrir FOLKOOP guide",
+    "open": "Abrir Mura",
     "close": "Cerrar",
     "tour": "Mostrar de nuevo toda la introducción",
     "intro": "Estoy aquí para explicar para qué sirve la sección actual de FOLKOOP.",
@@ -1127,7 +1127,7 @@ languages.fi = {
     "quick": "Aloita yhdestä oikeasta asiasta"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "FOLKOOP-apuri",
     "open": "Avaa FOLKOOP guide",
     "close": "Sulje",
@@ -1615,7 +1615,7 @@ languages.bs = {
     "quick": "Počni s jednom stvarnom stvari"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "FOLKOOP pomoćnik",
     "open": "Otvori Muru",
     "close": "Zatvori",
@@ -2103,7 +2103,7 @@ languages.ar = {
     "quick": "ابدأ بشيء حقيقي واحد"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "مساعدة FOLKOOP",
     "open": "فتح FOLKOOP guide",
     "close": "إغلاق",
@@ -2591,7 +2591,7 @@ languages.fa = {
     "quick": "با یک چیز واقعی شروع کن"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "راهنمای FOLKOOP",
     "open": "باز کردن FOLKOOP guide",
     "close": "بستن",
@@ -3079,7 +3079,7 @@ languages.so = {
     "quick": "Ku bilow hal shay oo dhab ah"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "kaaliyaha FOLKOOP",
     "open": "Fur FOLKOOP guide",
     "close": "Xir",
@@ -3567,7 +3567,7 @@ languages.ku = {
     "quick": "Bi yek tiştê rast dest pê bike"
   },
   "helper": {
-    "name": "FOLKOOP guide",
+    "name": "Mura",
     "label": "alîkarê FOLKOOP",
     "open": "FOLKOOP guide veke",
     "close": "Bigire",

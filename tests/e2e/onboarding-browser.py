@@ -108,7 +108,7 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
- await expect(page.locator('#folkoopHelperTitle')).to_have_text('FOLKOOP guide')
+ await expect(page.locator('#folkoopHelperTitle')).to_have_text('Mura')
  await expect(page.locator('#folkoopHelperPanel')).to_contain_text('Показать всю инструкцию ещё раз')
  passed.append('After onboarding the physical FOLKOOP guide remains as the lightweight contextual helper')
 

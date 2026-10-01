@@ -239,3 +239,18 @@ When in doubt, ask:
 If there is no good answer:
 
 > **Do not build it yet.**
+
+
+## Retention and engagement
+
+FOLKOOP should deliberately improve activation, voluntary return and useful repeat cooperation.
+
+Retention work is allowed when it helps a participant notice relevant people/resources/actions, continue a real cooperation, see truthful progress or return for recurring value.
+
+Do not optimize compulsive screen time as an end in itself. Do not introduce dark patterns, fabricated urgency, deceptive notifications, infinite-scroll engagement loops or loss-framed mechanics merely to increase sessions.
+
+Preferred product objective:
+
+`understand -> useful first action -> meaningful response/progress -> real outcome -> voluntary repeat`
+
+Candidate retention mechanics (personalization, reminders, progress, social feedback, streak-like continuity) remain evidence-gated. Their success metric must connect to useful cooperation/outcomes rather than raw time-on-app alone.

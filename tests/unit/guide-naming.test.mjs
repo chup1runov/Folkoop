@@ -22,7 +22,7 @@ async function walk(entry){
  return out;
 }
 
-test('FOLKOOP guide is the sole current character name and filename prefix',async()=>{
+test('Mura is the canonical current guide identity without personal-name leakage',async()=>{
  const offenders=[];
  for(const file of await walk('.')){
   const normalized=file.replaceAll('\\','/').toLowerCase();
@@ -34,4 +34,6 @@ test('FOLKOOP guide is the sole current character name and filename prefix',asyn
   for(const word of legacy)if(content.includes(word))offenders.push(normalized+': legacy text');
  }
  assert.deepEqual([...new Set(offenders)].sort(),[]);
+ const runtime=(await readFile('apps/web/folkoop.js','utf8'))+(await readFile('apps/web/folkoop-i18n-extra.js','utf8'));
+ assert.match(runtime,/\bMura\b/);
 });

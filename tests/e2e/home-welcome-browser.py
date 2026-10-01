@@ -44,7 +44,14 @@ async def main():
         await expect(panel).to_contain_text('После входа')
         await expect(panel.locator('.net-count')).to_have_count(0)
         await expect(page.locator('#workspace')).to_be_visible()
-        passed.append('Public Home explains four real entry points without invented personal data')
+        actions = page.locator('.first-actions .first-action')
+        await expect(actions).to_have_count(3)
+        assert await page.locator('.first-action[data-intent=need] svg').count()==1
+        assert await page.locator('.first-action[data-intent=offer] svg').count()==1
+        assert await page.locator('.first-action[data-intent=project] svg').count()==1
+        backgrounds = await actions.evaluate_all("els => els.map(el => getComputedStyle(el).backgroundColor)")
+        assert len(set(backgrounds))==3, backgrounds
+        passed.append('Public Home leads with three visually distinct, text-and-icon coded cooperation intents')
 
         # The original shell handles this button. It creates no network object.
         await panel.locator('[data-create=project]').click()
@@ -70,6 +77,15 @@ async def main():
         await page.select_option('#language','ru')
         await page.screenshot(path=str(OUT/'folkoop-home-guest-desktop.png'), full_page=True)
         await page.set_viewport_size({'width':390,'height':844})
+        await page.locator('#mobilePrimaryNav [data-mobile-nav="together"]').click()
+        dock=page.locator('#mobileContextDock')
+        await expect(dock).to_be_visible()
+        assert await dock.get_attribute('data-parent-section')=='together'
+        primary_box=await page.locator('#mobilePrimaryNav').bounding_box()
+        dock_box=await dock.bounding_box()
+        assert primary_box and dock_box and abs(dock_box['y']+dock_box['height']-primary_box['y'])<2,(dock_box,primary_box)
+        passed.append('Mobile contextual actions are visibly attached to their selected primary section')
+        await page.locator('#mobilePrimaryNav [data-mobile-nav="home"]').click()
         await page.screenshot(path=str(OUT/'folkoop-home-guest-mobile.png'), full_page=True)
 
         # This enhancement must not unhide a workspace that its owner has hidden.

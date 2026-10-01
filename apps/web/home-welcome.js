@@ -48,11 +48,12 @@
   if(globalThis.FolkoopCore?.route(location.hash)!=='home'||root.querySelector('[data-home-welcome]'))return;
   const hero=root.querySelector('.hero');
   if(!hero)return;
+  const firstActions=root.querySelector('.first-actions');
   const section=document.createElement('section');
   section.className='home-section';section.dataset.homeWelcome='';
   section.setAttribute('aria-labelledby','homeWelcomeTitle');
   section.innerHTML=markup(document.documentElement.lang);
-  hero.after(section);
+  (firstActions||hero).after(section);
  }
  // Shell re-renders after navigation and language changes. Insertion is idempotent.
  new MutationObserver(attach).observe(root,{childList:true});
