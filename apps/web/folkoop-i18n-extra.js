@@ -5,6 +5,19 @@
 'use strict';
 const languages = Object.create(null);
 languages.es = {
+  "myPlace": "Mi lugar",
+  "myPlaceIntro": "Un espacio que toma forma con lo que eliges, creas y haces aquí.",
+  "motto": "Una frase que se sienta tuya",
+  "accent": "Mi color",
+  "accentCoral": "Coral",
+  "accentBlue": "Azul",
+  "accentGreen": "Verde",
+  "accentPurple": "Morado",
+  "myActivity": "Mi actividad",
+  "createdByMe": "Creado por mí",
+  "completedByMe": "Marcado como terminado por mí",
+  "myKinds": "Lo que he empezado",
+  "editMyPlace": "Editar mi lugar",
   "shell": {
     "home": "Solo tienes que elegir una de tres formas de empezar: Necesito, Puedo ayudar o Quiero hacer algo juntos.",
     "people": "Elige «Quiero hacer algo juntos» cuando tengas una idea o quieras hacer que algo ocurra con otras personas. Empieza pequeño; después pueden aparecer personas, roles, tareas y un chat de trabajo.",
@@ -493,6 +506,19 @@ languages.es = {
   }
 };
 languages.uk = {
+  "myPlace": "Моє місце",
+  "myPlaceIntro": "Простір, який поступово складається з твоїх виборів, ідей і справ.",
+  "motto": "Рядок, який про тебе",
+  "accent": "Мій акцент",
+  "accentCoral": "Кораловий",
+  "accentBlue": "Синій",
+  "accentGreen": "Зелений",
+  "accentPurple": "Фіолетовий",
+  "myActivity": "Моя активність",
+  "createdByMe": "Створено мною",
+  "completedByMe": "Позначено мною як завершене",
+  "myKinds": "Що я вже починав/ла",
+  "editMyPlace": "Налаштувати моє місце",
   "shell": {
     "home": "Спочатку обери лише один із трьох шляхів: «Мені потрібно», «Я можу допомогти» або «Хочу зробити щось разом».",
     "people": "Обери «Хочу зробити щось разом», якщо маєш ідею або хочеш щось організувати з іншими. Почни з малого; далі можуть з’явитися люди, ролі, завдання й робочий чат.",
@@ -981,6 +1007,19 @@ languages.uk = {
   }
 };
 languages.fi = {
+  "myPlace": "Oma paikkani",
+  "myPlaceIntro": "Tila, joka muotoutuu siitä, mitä valitset, luot ja teet täällä.",
+  "motto": "Rivi, joka tuntuu omalta",
+  "accent": "Oma korostusvärini",
+  "accentCoral": "Koralli",
+  "accentBlue": "Sininen",
+  "accentGreen": "Vihreä",
+  "accentPurple": "Violetti",
+  "myActivity": "Oma toimintani",
+  "createdByMe": "Minun luomani",
+  "completedByMe": "Minun valmiiksi merkitsemäni",
+  "myKinds": "Mitä olen aloittanut",
+  "editMyPlace": "Muokkaa omaa paikkaani",
   "shell": {
     "home": "Valitse aluksi vain yksi kolmesta tavasta: Tarvitsen, Voin auttaa tai Haluan tehdä jotain yhdessä.",
     "people": "Valitse «Haluan tehdä jotain yhdessä», kun sinulla on idea tai haluat saada jotain aikaan muiden kanssa. Aloita pienestä; siitä voi kasvaa ihmisiä, rooleja, tehtäviä ja työchat.",
@@ -1469,6 +1508,19 @@ languages.fi = {
   }
 };
 languages.bs = {
+  "myPlace": "Moje mjesto",
+  "myPlaceIntro": "Prostor koji oblikuju tvoji izbori, ono što stvaraš i radiš ovdje.",
+  "motto": "Rečenica koja zvuči kao ti",
+  "accent": "Moj naglasak",
+  "accentCoral": "Koraljna",
+  "accentBlue": "Plava",
+  "accentGreen": "Zelena",
+  "accentPurple": "Ljubičasta",
+  "myActivity": "Moja aktivnost",
+  "createdByMe": "Ja sam kreirao/la",
+  "completedByMe": "Ja sam označio/la kao završeno",
+  "myKinds": "Šta sam započeo/la",
+  "editMyPlace": "Uredi moje mjesto",
   "shell": {
     "home": "Za početak izaberi samo jedan od tri puta: Treba mi, Mogu pomoći ili Želim nešto uraditi zajedno.",
     "people": "Izaberi «Želim nešto uraditi zajedno» kada imaš ideju ili želiš nešto pokrenuti s drugima. Počni malim korakom; kasnije mogu doći ljudi, uloge, zadaci i radni chat.",
@@ -1957,6 +2009,19 @@ languages.bs = {
   }
 };
 languages.ar = {
+  "myPlace": "مكاني",
+  "myPlaceIntro": "مساحة تتشكل مما تختاره وتصنعه وتفعله هنا.",
+  "motto": "سطر يشبهك",
+  "accent": "لوني",
+  "accentCoral": "مرجاني",
+  "accentBlue": "أزرق",
+  "accentGreen": "أخضر",
+  "accentPurple": "بنفسجي",
+  "myActivity": "نشاطي",
+  "createdByMe": "أنشأته أنا",
+  "completedByMe": "علّمتُه كمكتمل",
+  "myKinds": "ما بدأتُه",
+  "editMyPlace": "تعديل مكاني",
   "shell": {
     "home": "في البداية اختر واحدًا فقط من ثلاثة مسارات: أحتاج، أستطيع المساعدة، أو أريد أن نفعل شيئًا معًا.",
     "people": "اختر «أريد أن نفعل شيئًا معًا» عندما تكون لديك فكرة أو تريد إنجاز شيء مع الآخرين. ابدأ بخطوة صغيرة؛ ثم يمكن أن ينمو المشروع إلى أشخاص وأدوار ومهام ومحادثة عمل.",
@@ -2445,6 +2510,19 @@ languages.ar = {
   }
 };
 languages.fa = {
+  "myPlace": "جای من",
+  "myPlaceIntro": "فضایی که با انتخاب‌ها، ساخته‌ها و کارهای تو شکل می‌گیرد.",
+  "motto": "یک جمله که شبیه توست",
+  "accent": "رنگ من",
+  "accentCoral": "مرجانی",
+  "accentBlue": "آبی",
+  "accentGreen": "سبز",
+  "accentPurple": "بنفش",
+  "myActivity": "فعالیت من",
+  "createdByMe": "ساختهٔ من",
+  "completedByMe": "توسط من کامل علامت‌گذاری شده",
+  "myKinds": "چیزهایی که شروع کرده‌ام",
+  "editMyPlace": "ویرایش جای من",
   "shell": {
     "home": "برای شروع فقط یکی از سه راه را انتخاب کن: نیاز دارم، می‌توانم کمک کنم، یا می‌خواهم کاری را با هم انجام دهیم.",
     "people": "وقتی ایده‌ای داری یا می‌خواهی با دیگران کاری را پیش ببری «می‌خواهم کاری را با هم انجام دهیم» را انتخاب کن. کوچک شروع کن؛ بعد می‌تواند به آدم‌ها، نقش‌ها، کارها و گفت‌وگوی کاری برسد.",
@@ -2933,6 +3011,19 @@ languages.fa = {
   }
 };
 languages.so = {
+  "myPlace": "Meeshayda",
+  "myPlaceIntro": "Meel ay qaabeeyaan waxa aad doorato, samayso oo aad halkan ka qabato.",
+  "motto": "Hal sadar oo adiga kuu eg",
+  "accent": "Midabkayga",
+  "accentCoral": "Koraal",
+  "accentBlue": "Buluug",
+  "accentGreen": "Cagaar",
+  "accentPurple": "Guduud-buluug",
+  "myActivity": "Hawshayda",
+  "createdByMe": "Anigaa sameeyay",
+  "completedByMe": "Anigaa calaamadeeyay inuu dhammaaday",
+  "myKinds": "Waxa aan bilaabay",
+  "editMyPlace": "Wax ka beddel meeshayda",
   "shell": {
     "home": "Bilowga dooro hal keliya oo saddex waddo ah: Waan u baahanahay, Waan caawin karaa, ama Waxaan rabaa inaan wax wada qabanno.",
     "people": "Dooro «Waxaan rabaa inaan wax wada qabanno» marka aad fikrad leedahay ama rabto inaad dadka kale wax la hirgeliso. Wax yar ka bilow; dabadeed waxay u kori kartaa dad, doorar, hawlo iyo chat shaqo.",
@@ -3421,6 +3512,19 @@ languages.so = {
   }
 };
 languages.ku = {
+  "myPlace": "Cihê min",
+  "myPlaceIntro": "Cihek ku bi hilbijartin, afirandin û kirinên te li vir teşe digire.",
+  "motto": "Risteyek ku wek te hîs dike",
+  "accent": "Rengê min",
+  "accentCoral": "Mercan",
+  "accentBlue": "Şîn",
+  "accentGreen": "Kesk",
+  "accentPurple": "Mor",
+  "myActivity": "Çalakiya min",
+  "createdByMe": "Ji aliyê min ve hat afirandin",
+  "completedByMe": "Ji aliyê min ve qediyayî hat nîşankirin",
+  "myKinds": "Tiştên ku min dest pê kirine",
+  "editMyPlace": "Cihê min sererast bike",
   "shell": {
     "home": "Ji bo destpêkê tenê yek ji sê rêyan hilbijêre: Pêwîst e, Ez dikarim alîkarî bikim, an Ez dixwazim tiştek bi hev re bikim.",
     "people": "Dema ku fikrek heye an dixwazî bi kesên din re tiştek pêk bînî «Ez dixwazim tiştek bi hev re bikim» hilbijêre. Bi tiştekî biçûk dest pê bike; paşê dikare bibe mirov, rol, peywir û axaftina karê.",
