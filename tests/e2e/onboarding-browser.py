@@ -109,7 +109,7 @@ async def mobile_flow(browser,passed):
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
    await expect(page.locator('#folkoopGuideActor')).to_be_visible()
-   await page.wait_for_timeout(500)
+   await expect(page.locator('#onboardingProgress')).to_contain_text(str(idx+2)+' / 8')
 
  moved_box=await page.locator('#folkoopGuideActor').bounding_box()
  assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8),(first_box,moved_box)
