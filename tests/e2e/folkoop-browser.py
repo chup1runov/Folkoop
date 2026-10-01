@@ -53,8 +53,8 @@ async def main():
   await page.fill('#draftSearch','Workshop')
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Create and search a private project; HTML entered by a user is text, not executable')
-  await page.evaluate("location.hash='#/me'");await page.screenshot(path=str(OUT/'folkoop-my-place-authored-desktop.png'),full_page=True);await page.check('#remember')
-  await page.reload();await page.evaluate("location.hash='#/me'");await expect(page.locator('#profileForm [name="name"]')).to_have_value('Test User')
+  await page.goto(BASE+'#/me');await page.click('[data-net="localGuest"]');await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click();await page.screenshot(path=str(OUT/'folkoop-my-place-authored-desktop.png'),full_page=True);await page.check('#remember')
+  await page.reload();await page.goto(BASE+'#/me');await page.click('[data-net="localGuest"]');await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click();await expect(page.locator('#profileForm [name="name"]')).to_have_value('Test User')
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Opt-in browser storage restores profile and drafts')
   async with page.expect_download() as download:
