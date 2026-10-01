@@ -46,7 +46,7 @@ async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
- await page.goto(BASE+'?intro=1')
+ await page.goto(BASE)
 
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
@@ -57,13 +57,16 @@ async def mobile_flow(browser,passed):
 
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
+ await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+ await page.click('[data-entry="guest"]')
+ await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
  await expect(page.locator('#onboardingBody')).to_contain_text('ДЕМО-профиль')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
- passed.append('Chosen language is applied before FOLKOOP guide starts explaining FOLKOOP')
+ passed.append('Chosen language leads to explicit Guest choice before Mura opens her DEMO place')
 
  titles=[
   'Привет, я Мура',
