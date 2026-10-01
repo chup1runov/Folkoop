@@ -1,5 +1,8 @@
 # Accepted value roadmap — 23 September 2026
 
+> **Superseded planning document.** Retained as evidence of the 23 September civic/value direction. Pending items here are not automatically current backlog. Use `WORK_PLAN_20261001.md` and the current product/pilot policy for execution decisions.
+
+
 Direction: save time on a familiar journey and identify relevant civic changes. Adoption is unproven; a simulated review is not a user study. This document records accepted priorities, not a promise of completed functions or dates.
 
 | ID | Priority | Work | Status and acceptance condition |
