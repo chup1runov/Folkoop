@@ -145,6 +145,14 @@ async def scenario(browser, kind, partial):
         assert await page.evaluate("formEvents.some(e=>e.type==='invalid')")
         await title.fill(expected_title)
         await page.click('#netCoopCreate button')
+        # Creation triggers a server read-back and a final render. Wait for
+        # that confirmed state before opening the v0.38 progressive-disclosure
+        # owner controls; otherwise an intermediate render can be replaced by
+        # the final closed <details>.
+        await expect(page.locator('#netStatus')).to_contain_text('Saved on server.')
+        manage = page.locator('[data-coop-section="manage"]')
+        await expect(manage).to_be_visible()
+        await manage.locator('summary').click()
         await expect(page.locator('#netCoopEdit')).to_be_visible()
         assert len(state['writes']) == 1, state['writes']
         assert state['writes'][0]['p_title'] == expected_title
