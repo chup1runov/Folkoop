@@ -145,6 +145,12 @@ async def scenario(browser, kind, partial):
         assert await page.evaluate("formEvents.some(e=>e.type==='invalid')")
         await title.fill(expected_title)
         await page.click('#netCoopCreate button')
+        # v0.38 keeps owner edit controls behind summary-first progressive
+        # disclosure. The focus regression still needs to verify the edit form
+        # rendered after creation, so reveal the native Manage section first.
+        manage = page.locator('[data-coop-section="manage"]')
+        if await manage.count() and await manage.get_attribute('open') is None:
+            await manage.locator('summary').click()
         await expect(page.locator('#netCoopEdit')).to_be_visible()
         assert len(state['writes']) == 1, state['writes']
         assert state['writes'][0]['p_title'] == expected_title
