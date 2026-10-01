@@ -29,7 +29,7 @@ async def main():
   await page.click('[data-folkoop-guide-lang="ru"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
   await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
-  await expect(page.locator('#entryGateBody')).to_contain_text('найти подходящих людей или ресурсы и конкретный следующий шаг')
+  await expect(page.locator('#entryGateBody')).to_contain_text('позволь Муре показать, как работает FOLKOOP')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
   await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
