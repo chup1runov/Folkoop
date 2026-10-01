@@ -31,7 +31,7 @@ async def main():
   await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь войти?')
   await expect(page.locator('#entryGateBody')).to_contain_text('найти подходящих людей или ресурсы и конкретный следующий шаг')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
-  await expect(page.locator('[data-entry="guest"]')).to_have_text('Посмотреть как гость')
+  await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
   passed.append('First visit is language -> account choice, not language -> long tutorial/form')
 
@@ -39,7 +39,7 @@ async def main():
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await expect(page.locator('#onboarding')).to_be_visible()
   await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
-  await expect(page.locator('#onboardingBody')).to_contain_text('ДЕМО-профиль')
+  await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Guest first session enters Mura’s clearly fictional story-driven demo profile')
   await page.click('[data-onboarding="skip"]')
@@ -48,7 +48,7 @@ async def main():
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('.home-subtitle')).to_contain_text('до того, как появился групповой чат')
   await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('реальные участники FOLKOOP здесь не показаны')
+  await expect(page.locator('.guest-demo-banner')).to_contain_text('примеры для объяснения сервиса')
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
@@ -57,16 +57,16 @@ async def main():
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('вымышленные примеры')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('примеры для объяснения сервиса')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
+  passed.append('Guest limitations live in a compact expandable bottom guide examples chip')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
   await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('вымышленные примеры')
+  await expect(page.locator('.guest-demo-banner')).to_contain_text('примеры для объяснения сервиса')
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
