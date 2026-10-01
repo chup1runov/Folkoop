@@ -244,3 +244,15 @@
 .my-place-empty{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;margin:0 0 24px;padding:18px;border:1px dashed color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--soft) 72%,#fff)}
 .my-place-empty-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#fff;color:var(--accent);border:1px solid var(--line)}.my-place-empty-mark svg{width:23px;height:23px}.my-place-empty h2{font-size:1.05rem;margin:0 0 4px}.my-place-empty p{margin:0;color:var(--muted);max-width:58ch}
 @media(max-width:760px){.my-place-empty{grid-template-columns:auto 1fr}.my-place-empty>.button{grid-column:1/-1;width:100%}}
+
+/* Mobile onboarding: keep controls visible and make any remaining overflow obvious. */
+.onboarding-copy{position:relative;min-height:0}
+.onboarding-scroll-cue[hidden]{display:none!important}
+.onboarding-scroll-cue{position:sticky;z-index:2;bottom:0;height:28px;margin-top:-28px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 70%);color:var(--accent);font-size:1.35rem;font-weight:900;pointer-events:none}
+@media(max-width:720px){
+ .onboarding-card,.onboarding-card[data-side="left"]{display:flex;flex-direction:column;max-height:min(58vh,560px);padding:15px 18px 14px;overflow:hidden}
+ .onboarding-card>.row{flex:0 0 auto}.onboarding-guide{flex:0 0 auto;margin:2px 0 7px}.onboarding-card h2{flex:0 0 auto;font-size:1.3rem;line-height:1.16;margin:5px 0 8px}
+ .onboarding-copy{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin}.onboarding-copy::-webkit-scrollbar{width:4px}.onboarding-copy::-webkit-scrollbar-thumb{background:#b9ada5;border-radius:4px}
+ .onboarding-card p{font-size:.96rem;line-height:1.42;margin:0;padding-bottom:5px}.onboarding-actions{flex:0 0 auto;margin-top:10px;padding-top:8px;border-top:1px solid #eee8e3;background:#fff}
+}
+@media(max-width:720px) and (min-height:700px){.onboarding-card,.onboarding-card[data-side="left"]{max-height:min(62vh,610px)}}
