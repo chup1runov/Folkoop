@@ -27,12 +27,16 @@ async def main():
   await page.evaluate("location.hash='#/me'")
   await page.click('[data-net="localGuest"]')
   await page.fill('[name="name"]','Test User')
+  await page.fill('[name="motto"]','Я люблю делать полезные вещи вместе')
+  await page.check('[name="accent"][value="purple"]')
   await page.fill('[name="city"]','Göteborg')
   await page.fill('[name="skills"]','Repair, design')
   await page.click('#profileForm button[type="submit"]')
   assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')") is None
   await expect(page.locator('#status')).to_contain_text('сессии')
-  results.append('My page saves in memory without a compulsory account or storage consent')
+  await expect(page.locator('.my-place-hero')).to_have_class(__import__('re').compile('my-place-purple'))
+  await expect(page.locator('.my-place-motto')).to_have_text('Я люблю делать полезные вещи вместе')
+  results.append('My Place reflects user-authored identity choices without a compulsory account or storage consent')
   await page.evaluate("location.hash='#/projects'")
   await page.click('[data-create="project"]')
   await page.fill('#draftForm [name="title"]','Workshop <img src=x onerror=alert(1)>')
@@ -45,7 +49,7 @@ async def main():
   await page.fill('#draftSearch','Workshop')
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Create and search a private project; HTML entered by a user is text, not executable')
-  await page.evaluate("location.hash='#/me'");await page.check('#remember')
+  await page.evaluate("location.hash='#/me'");await page.screenshot(path=str(OUT/'folkoop-my-place-authored-desktop.png'),full_page=True);await page.check('#remember')
   await page.reload();await page.click('[data-net="localGuest"]');await expect(page.locator('[name="name"]')).to_have_value('Test User')
   await expect(page.locator('.draft')).to_have_count(1)
   results.append('Opt-in browser storage restores profile and drafts')
@@ -55,6 +59,8 @@ async def main():
   exported=json.loads(OUT.joinpath('test-local-export.json').read_text())
   assert exported['profile']['name']=='Test User'
   assert exported['profile']['city']=='Göteborg'
+  assert exported['profile']['motto']=='Я люблю делать полезные вещи вместе'
+  assert exported['profile']['accent']=='purple'
   results.append('Export contains local profile city and private FOLKOOP workspace')
   await page.evaluate("location.hash='#/city'")
   city=page.frame_locator('#cityFrame')
@@ -93,7 +99,11 @@ async def main():
   await page.click('[data-action="clear"]')
   await expect(page.locator('[name="name"]')).to_have_value('')
   assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')") is None
-  await page.screenshot(path=str(OUT/'folkoop-my-page-mobile.png'),full_page=True)
+  await expect(page.locator('.my-place-hero')).to_be_visible()
+  await expect(page.locator('.my-place-stats')).to_have_count(0)
+  await expect(page.locator('.my-place-empty')).to_be_visible()
+  await expect(page.locator('.my-place-empty')).to_contain_text('Сделай это место своим')
+  await page.screenshot(path=str(OUT/'folkoop-my-place-empty-mobile.png'),full_page=True)
   await page.click('#brandHome');await page.screenshot(path=str(OUT/'folkoop-mobile.png'),full_page=True)
   results.append('Erase removes only FOLKOOP local data; mobile screens captured')
   assert not errors,errors
