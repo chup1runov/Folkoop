@@ -113,7 +113,7 @@ async def main():
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
   await open_section(page,'offers')
   await page.click('[data-coop=selectOffer]')
-  await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере',timeout=15000)
+  await expect(page.locator('#networkPanel')).to_contain_text('Выбрано',timeout=15000)
   await open_section(page,'purchase-progress')
   await expect(page.locator('#netPurchaseStart')).to_be_visible()
   passed.append('Selected supplier offer exposes final-confirmation step')
