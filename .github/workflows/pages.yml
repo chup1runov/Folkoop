@@ -136,5 +136,6 @@ jobs:
       - name: Verify the deployed release from the public origin
         env:
           FOLKOOP_PRODUCTION_URL: ${{ steps.deployment.outputs.page_url }}
-          FOLKOOP_EXPECTED_VERSION: ${{ github.event.repository.default_branch == github.ref_name && '0.40.0' || '' }}
-        run: node scripts/ci/production-smoke.mjs
+        run: |
+          export FOLKOOP_EXPECTED_VERSION="$(node -p "require('./package.json').version")"
+          node scripts/ci/production-smoke.mjs
