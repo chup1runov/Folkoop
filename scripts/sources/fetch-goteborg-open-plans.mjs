@@ -49,23 +49,12 @@ function toAbsoluteUrl(href) {
   }
 }
 
+function escapeRegex(value) {
+  return String(value).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 function phrasePattern(phrase) {
-  const words = String(phrase).trim().split(/\s+/).map(word => word.replace(/[.*+?^\${}()|[\]\\]/g, '\\function extractSection(html) {
-  const startNeedle = 'Planer öppna för synpunkter';
-  const endNeedles = ['Byggs just nu', 'Markanvisningar'];
-
-  const start = html.indexOf(startNeedle);
-  if (start < 0) throw new Error('Open-for-comments section not found on Göteborgs Stad page');
-
-  let end = html.length;
-  for (const needle of endNeedles) {
-    const index = html.indexOf(needle, start + startNeedle.length);
-    if (index >= 0) end = Math.min(end, index);
-  }
-
-  if (end <= start) throw new Error('Could not determine Göteborg open-plans section boundary');
-  return html.slice(start, end);
-}'));
+  const words = String(phrase).trim().split(/\s+/).map(escapeRegex);
   return new RegExp(words.join('(?:\\s|<[^>]*>)+'), 'i');
 }
 
@@ -73,7 +62,6 @@ function phraseIndex(html, phrase, from = 0) {
   const match = phrasePattern(phrase).exec(html.slice(from));
   return match ? from + match.index : -1;
 }
-
 export function extractSection(html) {
   const decodedHtml = decodeEntities(html);
   const startNeedle = 'Planer öppna för synpunkter';
