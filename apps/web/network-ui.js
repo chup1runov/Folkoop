@@ -275,10 +275,6 @@ function guestRequireAccount(){
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
-globalThis.FolkoopNetworkSecurity=Object.freeze({
- escape: value=>esc(value),
- probe: payload=>`<article class="card"><h3>${esc(payload?.name||'')}</h3><p>${esc(payload?.body||'')}</p><span data-id="${esc(payload?.id||'')}">${esc(payload?.note||'')}</span></article>`
-});
 const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
 const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
 const ot=k=>offerCopy[lang()][k]||offerCopy.en[k]||k;
