@@ -123,6 +123,7 @@ async def main():
   passed.append('Guest project view shows process/state without duplicate local workspace or mutation clutter')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
+  await page.click('[data-subsection="home-actions"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
   await expect(page.locator('#entryGateNote')).to_contain_text('Сейчас ты в гостях у Муры')
