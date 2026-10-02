@@ -396,7 +396,7 @@ function finishOnboarding(){
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
  if(guestTour&&!completedMuraPractice){current='home';history.replaceState(null,'','#/home');render();}
- if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));document.body.classList.remove('network-login-open','guest-preview-open');location.hash='#/me';render();globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
+ if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));document.body.classList.remove('network-login-open','guest-preview-open');current='me';history.replaceState(null,'','#/me');render();document.body.classList.remove('network-login-open','guest-preview-open');globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
