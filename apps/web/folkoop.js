@@ -16,14 +16,14 @@ const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null;
 const onboardingSteps=[
- {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
- {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
- {id:'together',route:'together',target:'[data-demo-story="need"]',motion:'point',pose:'point'},
- {id:'projects',route:'together',target:'[data-demo-story="offer"]',motion:'point',pose:'point'},
- {id:'people',route:'projects',target:'[data-demo-story="project"]',motion:'point',pose:'point'},
- {id:'city',route:'people',target:'#networkPanel',motion:'point',pose:'point'},
- {id:'center',route:'messages',target:'#networkPanel',motion:'point',pose:'point'},
- {id:'quick',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'}
+ {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'},
+ {id:'home',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'},
+ {id:'together',route:'together',target:'[data-demo-story="need"] h3',motion:'point',pose:'point'},
+ {id:'projects',route:'together',target:'[data-demo-story="offer"] h3',motion:'point',pose:'point'},
+ {id:'people',route:'projects',target:'[data-demo-story="project"] h3',motion:'point',pose:'point'},
+ {id:'city',route:'people',target:'[data-demo-story="person"] h3',motion:'point',pose:'point'},
+ {id:'center',route:'messages',target:'[data-demo-story="chat"] h3',motion:'point',pose:'point'},
+ {id:'quick',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -195,8 +195,8 @@ function hideEntryGate(){
 function setEntryMode(mode){
  try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
  hideEntryGate();
- window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode}}));
- if(mode==='guest'){location.hash='#/home';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},220);}
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?'tour':mode}}));
+ if(mode==='guest'){location.hash='#/me';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},260);}
  else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
@@ -314,7 +314,7 @@ function onboardingTarget(step){
 function positionOnboarding(step){
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
- if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';return;}
+ if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';globalThis.FolkoopGuide?.syncModal?.();return;}
  if(step.id!=='helper')target.classList.add('tutorial-target');
  if(step.id!=='helper'){
   // WebKit may ignore scrollIntoView() for a target inside content that is
@@ -460,6 +460,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  else setTimeout(()=>showOnboarding(0),80);
 });
 window.addEventListener('folkoop:open-entry',()=>showEntryGate());
+window.addEventListener('folkoop:network-rendered',()=>{if(onboardingOpen)requestAnimationFrame(()=>positionOnboarding(onboardingSteps[onboardingStep]));});
 window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),120);});
 window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
@@ -546,7 +547,7 @@ function startFullIntroduction(){
  const dialog=ensureOnboarding();dialog.hidden=true;
  helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
  tourReturnMode=entryModeNow()||'local';
- window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:true,temporary:true}}));
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:true,target:'tour',temporary:true}}));
  if(globalThis.FolkoopGuide){
   globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
