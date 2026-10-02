@@ -185,7 +185,7 @@ function showEntryGate(){
  gate.querySelector('[data-entry="email"]').textContent=x.email;
  gate.querySelector('[data-entry="guest"]').textContent=x.guest;
  choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
- gate.dir=['ar','fa','ku'].includes(lang)?'rtl':'ltr';
+ gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
  requestAnimationFrame(()=>gate.querySelector('[data-entry="guest"]')?.focus());
