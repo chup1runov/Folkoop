@@ -8,7 +8,7 @@ let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
-const NAV_ORDER=['home','together','projects','messages','people','communities','city','center','me','settings','about'];
+const NAV_ORDER=['home','together','projects','city','messages','me'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -36,22 +36,49 @@ const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>store.get().profile.city||'';
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
-const MOBILE_PRIMARY=['home','together','projects','city','messages','me'];
+const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
+ home:['home-overview','home-attention','home-feed','home-actions'],
  together:['together','people','communities'],
+ projects:['projects-overview','projects-mine','projects-tasks','projects-updates'],
  city:['city','center'],
+ messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
+const SUBSECTION_KEY='folkoop-subsection-v1';
+let subsection='';
+try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
+document.documentElement.dataset.folkoopSubsection=subsection;
+const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':'';
+const SUBNAV_LABELS={
+ en:{'home-overview':'Overview','home-attention':'Needs attention','home-feed':'What is happening','home-actions':'Quick actions','projects-overview':'Projects','projects-mine':'Mine','projects-tasks':'Tasks','projects-updates':'Updates','messages-chats':'Chats','messages-direct':'Direct','messages-groups':'Groups','messages-invites':'Invitations'},
+ sv:{'home-overview':'Översikt','home-attention':'Behöver uppmärksamhet','home-feed':'Vad händer','home-actions':'Snabbåtgärder','projects-overview':'Projekt','projects-mine':'Mina','projects-tasks':'Uppgifter','projects-updates':'Uppdateringar','messages-chats':'Chattar','messages-direct':'Direkt','messages-groups':'Grupper','messages-invites':'Inbjudningar'},
+ ru:{'home-overview':'Обзор','home-attention':'Требует внимания','home-feed':'Что происходит','home-actions':'Быстрые действия','projects-overview':'Проекты','projects-mine':'Мои','projects-tasks':'Задачи','projects-updates':'Обновления','messages-chats':'Чаты','messages-direct':'Личные','messages-groups':'Групповые','messages-invites':'Приглашения'},
+ es:{'home-overview':'Resumen','home-attention':'Requiere atención','home-feed':'Qué ocurre','home-actions':'Acciones rápidas','projects-overview':'Proyectos','projects-mine':'Míos','projects-tasks':'Tareas','projects-updates':'Actualizaciones','messages-chats':'Chats','messages-direct':'Directos','messages-groups':'Grupos','messages-invites':'Invitaciones'},
+ uk:{'home-overview':'Огляд','home-attention':'Потребує уваги','home-feed':'Що відбувається','home-actions':'Швидкі дії','projects-overview':'Проєкти','projects-mine':'Мої','projects-tasks':'Завдання','projects-updates':'Оновлення','messages-chats':'Чати','messages-direct':'Особисті','messages-groups':'Групові','messages-invites':'Запрошення'},
+ fi:{'home-overview':'Yleiskuva','home-attention':'Vaatii huomiota','home-feed':'Mitä tapahtuu','home-actions':'Pikatoiminnot','projects-overview':'Projektit','projects-mine':'Omat','projects-tasks':'Tehtävät','projects-updates':'Päivitykset','messages-chats':'Keskustelut','messages-direct':'Yksityiset','messages-groups':'Ryhmät','messages-invites':'Kutsut'},
+ bs:{'home-overview':'Pregled','home-attention':'Traži pažnju','home-feed':'Šta se dešava','home-actions':'Brze radnje','projects-overview':'Projekti','projects-mine':'Moji','projects-tasks':'Zadaci','projects-updates':'Ažuriranja','messages-chats':'Razgovori','messages-direct':'Direktno','messages-groups':'Grupe','messages-invites':'Pozivi'},
+ ar:{'home-overview':'نظرة عامة','home-attention':'يحتاج انتباهًا','home-feed':'ما الذي يحدث','home-actions':'إجراءات سريعة','projects-overview':'المشاريع','projects-mine':'مشاريعي','projects-tasks':'المهام','projects-updates':'التحديثات','messages-chats':'المحادثات','messages-direct':'مباشر','messages-groups':'المجموعات','messages-invites':'الدعوات'},
+ fa:{'home-overview':'نمای کلی','home-attention':'نیازمند توجه','home-feed':'چه خبر است','home-actions':'کارهای سریع','projects-overview':'پروژه‌ها','projects-mine':'پروژه‌های من','projects-tasks':'وظایف','projects-updates':'به‌روزرسانی‌ها','messages-chats':'گفت‌وگوها','messages-direct':'مستقیم','messages-groups':'گروه‌ها','messages-invites':'دعوت‌ها'},
+ so:{'home-overview':'Dulmar','home-attention':'U baahan fiiro','home-feed':'Waxa dhacaya','home-actions':'Tallaabooyin degdeg ah','projects-overview':'Mashaariic','projects-mine':'Kuweyga','projects-tasks':'Hawlo','projects-updates':'Cusboonaysiin','messages-chats':'Wadahadallo','messages-direct':'Toos','messages-groups':'Kooxo','messages-invites':'Casuumado'},
+ ku:{'home-overview':'Nêrîna giştî','home-attention':'Pêdivî bi baldarî ye','home-feed':'Çi diqewime','home-actions':'Kiryarên bilez','projects-overview':'Proje','projects-mine':'Yên min','projects-tasks':'Kar','projects-updates':'Nûvekirin','messages-chats':'Peyamdan','messages-direct':'Rasterast','messages-groups':'Kom','messages-invites':'Dawet'}
+};
+const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
+
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
+ if(defaultSubsection[active]&&subsectionParent(subsection)!==active){subsection=defaultSubsection[active];try{sessionStorage.setItem(SUBSECTION_KEY,subsection);}catch{}}
+ document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
  const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
  dock.dataset.parentSection=active;
- const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'" data-section="'+active+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
+ const subLabel=k=>SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
+ const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&subsection===k);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
@@ -86,7 +113,7 @@ function firstActions(){
  return `<section class="first-actions" aria-labelledby="firstActionsTitle"><div class="first-actions-copy"><p class="eyebrow">FOLKOOP</p><h2 id="firstActionsTitle">${esc(t('next'))}</h2><p>${esc(t('aboutText'))}</p></div><div class="first-actions-grid">${button('need','need','first-action')}${button('offer','offer','first-action')}${button('project','newProject','first-action')}</div></section>`;
 }
 function home(){
- return `<section class="hero"><div><p class="eyebrow">${esc(selectedCity()?selectedCity().toUpperCase()+' · FOLKOOP':'FOLKOOP')}</p><h1 tabindex="-1">${esc(t('hero')).replace('\n','<br>')}</h1><p>${esc(t('intro'))}</p></div><div class="hero-symbol" aria-hidden="true"><img src="./folkoop-mark.png" alt=""></div></section>${firstActions()}<section class="start secondary-actions"><div class="row"><h2>${esc(t('together'))}</h2><span class="muted">${esc(t('tagline'))}</span></div><div class="quick-grid">${['purchase','resource'].map(k=>button(k,k,'quick')).join('')}</div></section><div class="feature-grid"><article class="card city-card"><span class="small-icon">${icon('city')}</span><h2>${esc(t('city'))}</h2><p>${esc(t('cityText'))}</p>${a('city','openCity','text-link')}</article><article class="card"><span class="small-icon">${icon('projects')}</span><h2>${esc(t('projects'))}</h2><p>${esc(t('projectsText'))}</p>${a('projects','projects','text-link')}</article><article class="card"><span class="small-icon">${icon('center')}</span><h2>${esc(t('center'))}</h2><p>${esc(t('centerCard3Text'))}</p><span class="badge muted-badge">${esc(t('future'))}</span></article></div><section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section>`;
+ return `<section class="hero"><div><p class="eyebrow">${esc(selectedCity()?selectedCity().toUpperCase()+' · FOLKOOP':'FOLKOOP')}</p><h1 tabindex="-1">${esc(t('hero')).replace('\n','<br>')}</h1><p>${esc(t('intro'))}</p></div><div class="hero-symbol" aria-hidden="true"><img src="./folkoop-mark.png" alt=""></div></section>${firstActions()}<section class="start secondary-actions"><div class="row"><h2>${esc(t('together'))}</h2><span class="muted">${esc(t('tagline'))}</span></div><div class="quick-grid">${['purchase','resource'].map(k=>button(k,k,'quick')).join('')}</div></section><div class="feature-grid"><article class="card city-card"><span class="small-icon">${icon('city')}</span><h2>${esc(t('city'))}</h2><p>${esc(t('cityText'))}</p>${a('city','openCity','text-link')}</article><article class="card"><span class="small-icon">${icon('projects')}</span><h2>${esc(t('projects'))}</h2><p>${esc(t('projectsText'))}</p>${a('projects','projects','text-link')}</article></div><section class="mission"><h2>${esc(t('mission'))}</h2><p>${esc(t('missionBody'))}</p></section>`;
 }
 function myPage(){
  const p=profileScratch||store.get().profile,draftsNow=store.get().drafts;
@@ -421,10 +448,10 @@ function showCity(){
 function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,visible:current==='city'&&citySupported(selectedCity())},location.origin);}
 function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
- $('#nav').innerHTML=NAV_ORDER.map(k=>`<a href="#/${k}"${current===k?' aria-current="page"':''} data-nav="${k}">${icon(k)}<span>${esc(navText(k))}</span></a>`).join('');
+ $('#nav').innerHTML='';
  renderMobileChrome();
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
- $('#messageLink').setAttribute('aria-label',t('messages'));$('#messageLabel').textContent=t('messages');
+ const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
  const location=$('#locationLabel');if(location)location.textContent=selectedCity()||'FOLKOOP';
@@ -454,6 +481,21 @@ function render(focus=false){
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
+document.addEventListener('click',e=>{
+ const link=e.target.closest?.('[data-subsection]');if(!link)return;
+ const key=link.dataset.subsection,parent=subsectionParent(key);if(!parent)return;
+ e.preventDefault();subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
+ if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
+ render();
+ window.dispatchEvent(new CustomEvent('folkoop:subsection',{detail:{key,parent}}));
+ const selector={
+  'home-overview':'.home-dashboard','home-attention':'.home-daily, .home-section','home-feed':'.home-feed','home-actions':'.home-quick, .first-actions',
+  'projects-overview':'#networkPanel, #draftList','projects-mine':'#networkPanel','projects-tasks':'#networkPanel','projects-updates':'#networkPanel',
+  'messages-chats':'#networkPanel','messages-direct':'#networkPanel','messages-groups':'#networkPanel','messages-invites':'#networkPanel'
+ }[key];
+ const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});
+});
+
 window.addEventListener('folkoop:language-picked',e=>{
  const value=e.detail?.language;
  if(!C.LANGS.includes(value))return;

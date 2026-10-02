@@ -110,8 +110,8 @@ async def main():
   state['chat_inbox'][0].update({'unread_count':1,'last_message_at':'2026-09-25T16:04:00Z'})
 
   await page.click('[data-net=refresh]')
-  await expect(page.locator('#nav a[href="#/projects"] .net-count')).to_have_text('2')
-  await expect(page.locator('#messageLink .net-count')).to_have_text('1')
+  await expect(page.locator('#mobilePrimaryNav a[href="#/projects"] .net-count')).to_have_text('2')
+  await expect(page.locator('#mobilePrimaryNav a[href="#/messages"] .net-count')).to_have_text('1')
   await expect(page.locator('#networkPanel .net-count').first).to_have_text('2')
   passed.append('Activity and chat unread counts are independent and visible in navigation')
 
@@ -123,14 +123,14 @@ async def main():
   await page.click('[data-coop=openNotify]')
   await expect(page.locator('#networkPanel')).to_contain_text('Progress from another member')
   assert state['activity_inbox'][0]['unread_count']==0
-  await expect(page.locator('#nav a[href="#/projects"] .net-count')).to_have_count(0)
+  await expect(page.locator('#mobilePrimaryNav a[href="#/projects"] .net-count')).to_have_count(0)
   passed.append('Opening the cooperation marks its activity read on the server')
 
   await page.click('[data-coop=openLinkedChat]')
   await expect(page.locator('#networkPanel')).to_contain_text('Unread work-chat message')
   await expect(page.locator('#networkPanel')).to_contain_text('Рабочий чат')
   assert state['chat_inbox'][0]['unread_count']==0
-  await expect(page.locator('#messageLink .net-count')).to_have_count(0)
+  await expect(page.locator('#mobilePrimaryNav a[href="#/messages"] .net-count')).to_have_count(0)
   passed.append('Opening the linked work chat marks message unread separately')
 
   assert errors==[],errors

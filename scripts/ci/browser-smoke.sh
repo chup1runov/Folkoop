@@ -19,6 +19,7 @@ python3 tests/e2e/network-browser.py
 python3 tests/e2e/marketplace-browser.py
 python3 tests/e2e/purchase-lifecycle-browser.py
 python3 tests/e2e/activity-chat-browser.py
+python3 tests/e2e/navigation-ia-browser.py
 python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/home-browser.py
 python3 tests/e2e/home-welcome-browser.py

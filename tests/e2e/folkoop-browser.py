@@ -17,7 +17,7 @@ async def main():
   page=await context.new_page();errors=[]
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
-  await expect(page.locator('#nav a')).to_have_count(11)
+  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(6)
   await page.select_option('#language','ru')
   await expect(page.locator('h1')).to_contain_text('Что-то нужно? Можешь помочь?')
   await expect(page.locator('.hero p').nth(1)).to_contain_text('Групповой чат начинается, когда люди уже нашли друг друга')
@@ -72,7 +72,7 @@ async def main():
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
   await page.evaluate("location.hash='#/center'")
   await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP Center is open yet')
-  await page.click('#messageLink');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
+  await page.click('#mobilePrimaryNav a[href="#/messages"]');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
   results.append('No fictitious venue, members, payments or message delivery')
   await page.evaluate("location.hash='#/about'")
   await expect(page.locator('#futureArchitectureTitle')).to_contain_text('Where FOLKOOP can go next')
@@ -113,10 +113,23 @@ async def main():
   offline=await browser.new_context(service_workers='allow',locale='en-US')
   await offline.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-workspace-v1',JSON.stringify({version:1,profile:{name:'Offline',city:'Göteborg',skills:'',about:''},drafts:[]}))")
   op=await offline.new_page();await op.goto(BASE)
-  await op.evaluate('navigator.serviceWorker.ready');await op.wait_for_function('!!navigator.serviceWorker.controller')
+  await op.evaluate('navigator.serviceWorker.ready')
+  controlled=False
+  for _ in range(40):
+   try:
+    if await op.evaluate('navigator.serviceWorker.controller !== null'):
+     controlled=True;break
+   except Exception:
+    try: await op.wait_for_load_state('domcontentloaded',timeout=2000)
+    except Exception: pass
+   await asyncio.sleep(.1)
+  if not controlled:
+   await op.reload(wait_until='load')
+   controlled=await op.evaluate('navigator.serviceWorker.controller !== null')
+  assert controlled
   await offline.set_offline(True);await op.reload()
-  await expect(op.locator('#nav a')).to_have_count(11)
-  await op.click('#nav a[href="#/city"]')
+  await expect(op.locator('#mobilePrimaryNav a')).to_have_count(6)
+  await op.click('#mobilePrimaryNav a[href="#/city"]')
   await expect(op.frame_locator('#cityFrame').locator('#view')).not_to_be_empty()
   results.append('Installed shell and embedded City entry load offline; no fabricated source success')
   await offline.close();await browser.close()

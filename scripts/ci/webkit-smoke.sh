@@ -12,6 +12,7 @@ done
 export BASE_URL=http://127.0.0.1:4174/Folkoop/
 export BROWSER_ENGINE=webkit
 export QA_OUTPUT=qa-output/webkit
+python3 tests/e2e/navigation-ia-browser.py
 python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/security-csp-browser.py
 python3 tests/e2e/entry-welcome-audit-browser.py
