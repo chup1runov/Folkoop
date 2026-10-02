@@ -64,7 +64,7 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
- await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
+ await expect(page.locator('#onboardingBody')).to_contain_text('Я Мура')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
@@ -92,7 +92,9 @@ async def mobile_flow(browser,passed):
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
+  src=await page.locator('#folkoopGuideActor img').get_attribute('src')
+  assert src and src.startswith('./folkoop-guide-'),(idx,src)
+  assert not (idx>0 and src=='./folkoop-guide-please.webp'),(idx,src)
 
   card=page.locator('.onboarding-card');actions=page.locator('.onboarding-actions');copy=page.locator('#onboardingCopy');cue=page.locator('#onboardingScrollCue')
   cb=await card.bounding_box();ab=await actions.bounding_box();assert cb and ab and ab['y']+ab['height']<=cb['y']+cb['height']+1,(idx,cb,ab)
