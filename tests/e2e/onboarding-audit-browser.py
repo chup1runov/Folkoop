@@ -35,6 +35,8 @@ GEOMETRY = """() => {
   actorOverlap:overlap(actor,card),targetOverlap:overlap(target,card),
   controlsVisible:[heading,next,back,skip].every(contained)&&!!hit&&button.contains(hit),
   copyHeight:copy?.h||0,copyScrollTop:document.querySelector('#onboardingBody').scrollTop,
+  copyOverflow:!!document.querySelector('#onboardingCopy')&&document.querySelector('#onboardingCopy').scrollHeight>document.querySelector('#onboardingCopy').clientHeight+3,
+  cardRatio:card?card.h/innerHeight:1,pose:document.querySelector('#folkoopGuideActor')?.dataset.pose||'',
   animation:getComputedStyle(document.querySelector('#folkoopGuideActor>img')).animationName,
   focusInTour:!!document.activeElement.closest('.onboarding-card'),
   outside:[actor,card].some(r=>!r||r.x<-.5||r.y<-.5||r.x+r.w>innerWidth+.5||r.y+r.h>innerHeight+.5)};
@@ -67,13 +69,17 @@ async def main():
     if not record['controlsVisible']: failures.append(f'{width} step {index+1}: title or buttons clipped before clicking/scrolling')
     if record['copyHeight']<18: failures.append(f'{width} step {index+1}: explanation viewport too short to read')
     if record['copyScrollTop']>1: failures.append(f'{width} step {index+1}: new explanation did not start at the top')
+    if width==390 and height==844 and record['copyOverflow']: failures.append(f'{width} step {index+1}: normal iPhone-sized tour copy still requires internal scrolling')
+    if width==390 and height==844 and record['cardRatio']>.48: failures.append(f'{width} step {index+1}: story card still occupies too much of the viewport ({record["cardRatio"]:.2f})')
     if index==0:
      await page.locator('[data-onboarding="skip"]').focus()
      await page.keyboard.press('Shift+Tab')
      if not await page.evaluate("!!document.activeElement.closest('.onboarding-card')"):
       failures.append(f'{width}: tour leaks keyboard focus')
-    if index in (0,2,6,7) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
-     await page.screenshot(path=str(OUT/f'audit-tour-{width}-{index+1}.png'))
+    # Retain the complete 390x844 physical-iPhone review set; other viewports
+    # keep representative/problem screenshots to limit artifact size.
+    if (width==390 and height==844) or index in (0,2,6,7) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
+     await page.screenshot(path=str(OUT/f'audit-tour-{width}x{height}-{index+1}.png'))
     await page.locator('#onboardingBody').evaluate('e=>e.scrollTop=e.scrollHeight')
     await page.click('[data-onboarding="next"]')
     if index in (2,3,4):
@@ -94,7 +100,7 @@ async def main():
    await context.close()
   await browser.close()
  if not failures:
-  passed=['Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
+  passed=['Normal iPhone-sized tour copy needs no internal scrolling and the card stays under 48% of viewport height', 'Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
  result={'passed':passed,'failures':failures,'geometry':records,'limits':[('WebKit engine on Linux; real iOS Safari and physical devices not tested' if ENGINE=='webkit' else 'Chromium emulation only; real iOS Safari and physical devices not tested'),'No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  print('ENGINE '+ENGINE)
