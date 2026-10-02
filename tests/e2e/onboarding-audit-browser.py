@@ -83,6 +83,9 @@ async def main():
      await page.screenshot(path=str(OUT/f'audit-tour-{width}-{index+1}.png'))
     await page.locator('#onboardingBody').evaluate('e=>e.scrollTop=e.scrollHeight')
     await page.click('[data-onboarding="next"]')
+    if index in (2,3,4):
+     await expect(page.locator('#muraPracticeXp')).to_have_text(str((index-1)*5)+' XP')
+     await page.click('[data-onboarding="next"]')
     await page.wait_for_timeout(220)
    await expect(page.locator('#onboarding')).to_be_hidden()
    await page.emulate_media(reduced_motion='no-preference')
