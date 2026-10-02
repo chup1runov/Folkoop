@@ -8,6 +8,7 @@ function create({
   getData,
   text,
   homeText,
+  shellText=key=>key,
   field,
   button,
   renderActivityNotifications
@@ -20,9 +21,13 @@ function create({
     const data=getData()||{};
     const profile=profileDraft||data.profile||{};
     const blocks=Array.isArray(data.blocks)?data.blocks:[];
+    const localDrafts=Array.isArray(data.localDrafts)?data.localDrafts:[];
 
     if(guestDemo){
-      return `<div class="row"><h2>${escape(text('profile'))}</h2>${button('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${escape(homeText('demoBadge'))}</span><h2>${escape(profile.name||'')}</h2><p><strong>${escape(text('skills'))}:</strong> ${escape(profile.skills||'')}</p><p>${escape(profile.about||'')}</p><p class="meta">${escape(text('listed'))}</p></article><div class="actions"><button class="button" type="button" data-demo="register">${escape(homeText('demoCta'))}</button></div>${renderActivityNotifications(user)}`;
+      const city=profile.city||'';
+      const draftCards=localDrafts.map(draft=>`<article class="card mura-draft-card"><div class="row"><span class="badge">${escape(shellText(draft.kind))}</span><span class="meta">${escape(shellText('local'))}</span></div><h3>${escape(draft.title||'')}</h3><p>${escape(draft.body||'')}</p></article>`).join('');
+      const drafts=`<section class="mura-drafts"><div class="row"><h3>${escape(shellText('drafts'))}</h3><span class="meta">${escape(String(localDrafts.length))}</span></div><div class="draft-grid">${draftCards}</div></section>`;
+      return `<div class="row"><h2>${escape(text('profile'))}</h2>${button('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${escape(homeText('demoBadge'))}</span><div class="mura-profile-head"><div><h2>${escape(profile.name||'')}</h2>${city?`<p class="meta"><strong>${escape(shellText('cityProfile'))}:</strong> ${escape(city)}</p>`:''}</div></div><p><strong>${escape(text('skills'))}:</strong> ${escape(profile.skills||'')}</p><p>${escape(profile.about||'')}</p><p class="meta">${escape(text('listed'))}</p></article>${drafts}<div class="actions"><button class="button" type="button" data-demo="register">${escape(homeText('demoCta'))}</button></div>${renderActivityNotifications(user)}`;
     }
 
     const blockRows=blocks
