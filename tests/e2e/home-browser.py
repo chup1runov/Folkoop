@@ -105,6 +105,7 @@ async def main():
   confirmations.clear();tasks.clear();chat_inbox.clear();invites.clear();activity.clear()
   for coop in cooperations: coop['status']='done'
   await page.click('[data-net=refresh]')
+  await page.click('[data-subsection="home-overview"]')
   await expect(page.locator('.home-daily-clear')).to_contain_text('Всё просмотрено')
   passed.append('Home provides a truthful caught-up state instead of manufacturing more urgency')
 
