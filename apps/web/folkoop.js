@@ -187,11 +187,11 @@ function showEntryGate(){
  choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
  gate.dir=['ar','fa','ku'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
- globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');
+ globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
  requestAnimationFrame(()=>gate.querySelector('[data-entry="guest"]')?.focus());
 }
 function hideEntryGate(){
- const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');
+ const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');globalThis.FolkoopGuide?.syncModal?.();
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
 function setEntryMode(mode){
