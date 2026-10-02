@@ -56,6 +56,8 @@ async def main():
   await expect(page.locator('.home-subtitle')).to_contain_text('до того, как появился групповой чат')
   assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
+  visible_guest_text=(await page.locator('body').inner_text()).lower()
+  assert 'demo' not in visible_guest_text and 'демо' not in visible_guest_text
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
@@ -65,7 +67,7 @@ async def main():
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
   await expect(page.locator('.mobile-demo-popover')).to_contain_text('учебное пространство')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Mura visit context is available without a DEMO label')
+  passed.append('Mura visit context is available without a DEMO label or stale DEMO wording')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
