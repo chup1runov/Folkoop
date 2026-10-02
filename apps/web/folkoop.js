@@ -33,7 +33,7 @@ const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project
 const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8 12 3 3 5-6M4 5h16v14H4Z',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
-const selectedCity=()=>store.get().profile.city||'';
+const selectedCity=()=>{try{if(sessionStorage.getItem(ENTRY_KEY)==='guest')return 'Göteborg';}catch{}return store.get().profile.city||'';};
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
@@ -416,6 +416,7 @@ function showOnboarding(step=0){
 }
 function finishOnboarding(){
  const temporaryTour=tourReturnMode!==null;
+ const explicitMuraVisit=entryModeNow()==='guest'&&!temporaryTour;
  const guestTour=entryModeNow()==='guest'||temporaryTour;
  const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
@@ -427,6 +428,19 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
+
+ // Visiting Mura is a read-only account visit, not a forced transition into
+ // the visitor's own empty account. Finishing or skipping the tour keeps Mura
+ // active until the visitor explicitly chooses Sign in / register.
+ if(explicitMuraVisit){
+  current=completedMuraPractice?'me':'home';
+  history.replaceState(null,'','#/'+current);
+  render();
+  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
+  tourReturnMode=null;
+  return;
+ }
+
  const returnTarget=temporaryTour&&tourReturnMode==='account'?'account':'local';
  if(guestTour&&!completedMuraPractice){if(temporaryTour)window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:true}}));current='home';history.replaceState(null,'','#/home');render();tourReturnMode=null;}
  if(completedMuraPractice){try{if(returnTarget==='account')sessionStorage.setItem(ENTRY_KEY,'account');else sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:temporaryTour}}));document.body.classList.remove('network-login-open','guest-preview-open');current='me';history.replaceState(null,'','#/me');render();document.body.classList.remove('network-login-open','guest-preview-open');globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');tourReturnMode=null;setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
@@ -454,7 +468,7 @@ function render(focus=false){
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
- const location=$('#locationLabel');if(location)location.textContent=selectedCity()||'FOLKOOP';
+ const location=$('#locationLabel');if(location){const city=selectedCity();location.textContent=city;location.hidden=!city;}
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
  const partial=!I.FULL.includes(lang);$('#translationNote').hidden=!partial;$('#translationNote').textContent=t('partial');
  const root=$('#workspace');root.lang=partial?'en':lang;root.dir=partial?'ltr':document.documentElement.dir;

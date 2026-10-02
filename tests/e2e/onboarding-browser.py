@@ -122,8 +122,13 @@ async def mobile_flow(browser,passed):
  passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while spotlight and accessible motion indicate context')
 
  await expect(page).to_have_url(re.compile(r'#/me$'))
- await expect(page.locator('#workspace')).to_be_visible()
- await expect(page.locator('#networkPanel')).to_be_hidden()
+ assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
+ await expect(page.locator('#networkPanel')).to_be_visible()
+ await expect(page.locator('#workspace')).to_be_hidden()
+ await expect(page.locator('.demo-profile-card')).to_contain_text('Мура')
+ await expect(page.locator('.demo-profile-card')).to_contain_text('Göteborg')
+ await expect(page.locator('.mura-drafts')).to_be_visible()
+ assert await page.locator('.pilot:visible').count()==0
  await page.evaluate("document.querySelector('#folkoopGuideActor')?.removeAttribute('hidden')")
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')

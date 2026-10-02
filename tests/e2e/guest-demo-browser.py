@@ -59,6 +59,13 @@ async def main():
   visible_guest_text=(await page.locator('body').inner_text()).lower()
   assert 'demo' not in visible_guest_text and 'демо' not in visible_guest_text
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
+  assert await page.locator('.pilot:visible').count()==0
+  await expect(page.locator('#locationLabel')).to_have_text('Göteborg')
+  assert await page.locator('#netLogin').count()==0
+  body_text=await page.locator('body').inner_text()
+  assert 'ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ' not in body_text
+  assert 'Вход в пилот' not in body_text
+  assert 'Выполняется…' not in body_text
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Mura visit uses the real Home renderer with local learning data and no Supabase request')
@@ -87,16 +94,34 @@ async def main():
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
    assert await page.locator('.guest-demo-banner').count()==0
    passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
+  assert await page.locator('#netLogin').count()==0
+  await expect(page.locator('#networkPanel')).to_contain_text('Omar')
+  direct=page.locator('article.card').filter(has_text='Omar')
+  await expect(direct).to_be_visible()
+  await direct.locator('[data-net="openChat"]').click()
+  await expect(page.locator('#networkPanel')).to_contain_text('Могу помочь забрать дрова')
+  assert 'Вход в пилот' not in await page.locator('#networkPanel').inner_text()
+  passed.append('Mura Messages opens her existing conversation instead of showing pilot sign-in')
+
   await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
+  await expect(page.locator('#cityWorkspace')).to_be_visible()
+  assert 'Укажи свой город' not in await page.locator('body').inner_text()
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="center"]')).to_be_visible()
   await page.click('#mobileContextDock [data-mobile-subnav="center"]')
   await expect(page.locator('#workspace')).to_contain_text('Центр')
   passed.append('City opens a compact second row with Center inside the local context')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await expect(page.locator('.demo-profile-card')).to_contain_text('Мура')
+  await expect(page.locator('.demo-profile-card')).to_contain_text('Göteborg')
+  await expect(page.locator('.mura-drafts')).to_contain_text('Одолжить дрель на вечер')
+  await expect(page.locator('.mura-drafts')).to_contain_text('Могу проверить резюме')
+  assert await page.locator('#netLogin').count()==0
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="settings"]')).to_be_visible()
   await expect(page.locator('#mobileContextDock [data-mobile-action="language"]')).to_be_visible()
-  passed.append('Profile opens a second row for profile settings, About and language')
+  passed.append('Mura Profile is complete with Göteborg and private read-only drafts')
 
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
