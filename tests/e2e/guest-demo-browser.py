@@ -57,7 +57,7 @@ async def main():
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('вымышленные примеры')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('примеры, а не утверждения о реальных участниках')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
 
