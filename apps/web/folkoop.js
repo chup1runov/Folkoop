@@ -568,5 +568,4 @@ if(!onboardingSuppressed){
  else if(!entryMode)setTimeout(showEntryGate,120);
  else if(!onboardingDone)setTimeout(()=>showOnboarding(0),120);
 }
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
 })();
