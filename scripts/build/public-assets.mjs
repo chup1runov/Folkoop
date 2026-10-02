@@ -6,7 +6,7 @@ export const BUILD_FILES=Object.freeze([
   'city-source.html','folkoop.html','styles.css','compact.css','about-project.css',
   'civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js',
   'goteborg-plans.js','app.js','about-copy.js','about-project.js',
-  'manifest.webmanifest','sw.js','icon.svg','icon-180.png','icon-192.png',
+  'manifest.webmanifest','sw.js','sw-register.js','icon.svg','icon-180.png','icon-192.png',
   'icon-512.png','LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md',
   'folkoop-core.js','folkoop-i18n-extra.js','folkoop-copy.js','folkoop-guide.js',
   'folkoop-guide.css','folkoop.js','folkoop.css','folkoop-guide-please.webp',
@@ -22,7 +22,7 @@ export const BUILD_FILES=Object.freeze([
 export const PRECACHE_PATHS=Object.freeze([
   '','index.html','styles.css','compact.css','about-project.css','civic-core.js',
   'daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js',
-  'about-copy.js','about-project.js','manifest.webmanifest','icon.svg',
+  'about-copy.js','about-project.js','manifest.webmanifest','sw-register.js','icon.svg',
   'icon-180.png','icon-192.png','icon-512.png','city.html','folkoop-core.js',
   'folkoop-i18n-extra.js','folkoop-copy.js','folkoop-guide.js','folkoop-guide.css',
   'folkoop.js','folkoop.css','folkoop-guide-please.webp','folkoop-guide-confident.webp',

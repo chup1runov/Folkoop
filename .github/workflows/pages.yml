@@ -133,3 +133,9 @@ jobs:
       - name: Deploy tested artifact without fetching or rebuilding
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Verify the deployed release from the public origin
+        env:
+          FOLKOOP_PRODUCTION_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          export FOLKOOP_EXPECTED_VERSION="$(node -p "require('./package.json').version")"
+          node scripts/ci/production-smoke.mjs
