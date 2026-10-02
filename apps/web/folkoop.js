@@ -46,6 +46,10 @@ const MOBILE_CONTEXT={
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
+const SUBSECTION_KEY='folkoop-subsection-v1';
+let subsection='';
+try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
+const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':'';
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
@@ -60,7 +64,7 @@ function renderMobileChrome(){
   'messages-chats':'Чаты','messages-direct':'Личные','messages-groups':'Групповые','messages-invites':'Приглашения'
  }[k]||t(k==='about'?'aboutPage':k));
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
- const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&(k.endsWith('-overview')||k.endsWith('-chats')));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(target)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&(subsection===k||(!subsection&&((k==='home-overview')||(k==='projects-overview')||(k==='messages-chats')))));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(target)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
@@ -463,6 +467,20 @@ function render(focus=false){
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
+document.addEventListener('click',e=>{
+ const link=e.target.closest?.('[data-subsection]');if(!link)return;
+ const key=link.dataset.subsection,parent=subsectionParent(key);if(!parent)return;
+ e.preventDefault();subsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
+ if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
+ render();
+ const selector={
+  'home-overview':'.home-dashboard','home-attention':'.home-daily, .home-section','home-feed':'.home-feed','home-actions':'.home-quick, .first-actions',
+  'projects-overview':'#networkPanel, #draftList','projects-mine':'#networkPanel','projects-tasks':'#networkPanel','projects-updates':'#networkPanel',
+  'messages-chats':'#networkPanel','messages-direct':'#networkPanel','messages-groups':'#networkPanel','messages-invites':'#networkPanel'
+ }[key];
+ const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});
+});
+
 window.addEventListener('folkoop:language-picked',e=>{
  const value=e.detail?.language;
  if(!C.LANGS.includes(value))return;
