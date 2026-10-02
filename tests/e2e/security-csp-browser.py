@@ -6,7 +6,9 @@ BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
 
 async def main():
  async with async_playwright() as pw:
-  browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
+  engine=os.getenv('BROWSER_ENGINE','chromium').lower()
+  if engine=='webkit': browser=await pw.webkit.launch()
+  else: browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   page=await browser.new_page()
   errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE)
