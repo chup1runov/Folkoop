@@ -351,6 +351,14 @@ const profileDomain=globalThis.FolkoopNetworkProfile.create({
  renderActivityNotifications
 });
 
+const communitiesDomain=globalThis.FolkoopNetworkCommunities.create({
+ escape:esc,
+ getData:()=>data,
+ text:t,
+ field,
+ button:btn
+});
+
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -620,16 +628,9 @@ function render(){
  }else if(r==='people'){
   html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"${guestDemo?' data-demo-story="person"':''}><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
-  const group=data.groups.find(g=>g.id===selected),membership=data.memberships.find(m=>m.community_id===selected),member=membership&&!membership.banned;
-  html=`<div class="row"><h2>${esc(t('groups'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><p>${esc(t('desc'))}</p>`;
-  if(group){
-   html+=`${btn('back','back')}<article class="card"><h2>${esc(group.name)}</h2><p>${esc(group.description)}</p><div class="actions">${membership?.banned?esc(t('banned')):member?(group.owner_id===u.id?btn('deleteGroup','ownerDelete',group.id):btn('leave','leave',group.id)):btn('join','join',group.id)}</div></article>`;
-   if(member){html+=`<form id="netPost" class="editor card">${field('body','post',postDrafts[selected]||'',3000,true)}<button class="button">${esc(t('publish'))}</button></form><h3>${esc(t('members'))}</h3>`+data.posts.map(p=>`<article class="card"><small>${esc(p.author_id===u.id?t('own'):t('by')+' '+p.author_id.slice(0,8))}</small><p style="white-space:pre-wrap">${esc(p.body)}</p><div class="actions">${p.author_id===u.id||group.owner_id===u.id?btn('deletePost','delete',p.id):''}${p.author_id!==u.id?btn('report','report',p.id)+btn('block','block',p.author_id)+(group.owner_id===u.id?btn('ban','ban',p.author_id):''):''}</div></article>`).join('');}
-  }else{
-   html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div>`;
-  }
+  html=communitiesDomain.render(u,{selected,groupDraft,postDrafts});
  }
- const demoBanner='';
+  const demoBanner='';
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.classList.toggle('guest-demo',guestDemo);
  if(guestDemo){
