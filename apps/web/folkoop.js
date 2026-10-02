@@ -188,7 +188,6 @@ function showEntryGate(noteOverride=''){
  gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
- requestAnimationFrame(()=>gate.querySelector('[data-entry="guest"]')?.focus());
 }
 function hideEntryGate(){
  const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');globalThis.FolkoopGuide?.syncModal?.();
