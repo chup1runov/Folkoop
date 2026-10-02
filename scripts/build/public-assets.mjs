@@ -11,9 +11,9 @@ export const BUILD_FILES=Object.freeze([
   'folkoop-core.js','folkoop-i18n-extra.js','folkoop-copy.js','folkoop-guide.js',
   'folkoop-guide.css','folkoop.js','folkoop.css','folkoop-guide-please.webp',
   'folkoop-guide-confident.webp','folkoop-guide-inspect.webp','folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp',
-  'folkoop-guide-point-left.png','folkoop-guide-point-right.png',
-  'folkoop-guide-point-up.png','folkoop-guide-point-down.png',
-  'folkoop-guide-sit-edge.png','folkoop-city.js','folkoop-mark.png',
+  
+  
+  'folkoop-city.js','folkoop-mark.png',
   'folkoop-icon-512.png','network-config.js','network-client.js',
   'network-form-focus.js','network-ui.js','auth-callback.html',
   'auth-callback-core.js','auth-callback.js','home-welcome.js'
@@ -27,9 +27,9 @@ export const PRECACHE_PATHS=Object.freeze([
   'folkoop-i18n-extra.js','folkoop-copy.js','folkoop-guide.js','folkoop-guide.css',
   'folkoop.js','folkoop.css','folkoop-guide-please.webp','folkoop-guide-confident.webp',
   'folkoop-guide-inspect.webp','folkoop-guide-idea.webp','folkoop-guide-searching.webp',
-  'folkoop-guide-lean-in.webp','folkoop-guide-wink.webp','folkoop-guide-point-left.png',
-  'folkoop-guide-point-right.png','folkoop-guide-point-up.png',
-  'folkoop-guide-point-down.png','folkoop-guide-sit-edge.png','folkoop-city.js',
+  'folkoop-guide-lean-in.webp','folkoop-guide-wink.webp',
+  
+  'folkoop-city.js',
   'folkoop-mark.png','folkoop-icon-512.png','network-config.js','network-client.js',
   'network-form-focus.js','network-ui.js','home-welcome.js'
 ]);
