@@ -16,7 +16,7 @@ export const BUILD_FILES=Object.freeze([
   'folkoop-city.js','folkoop-mark.png',
   'folkoop-icon-512.png','network-config.js','network-client.js',
   'network-form-focus.js','network-ui.js','auth-callback.html',
-  'auth-callback-core.js','auth-callback.js','home-welcome.js'
+  'auth-callback-core.mjs','auth-callback.mjs','home-welcome.js'
 ]);
 
 export const PRECACHE_PATHS=Object.freeze([

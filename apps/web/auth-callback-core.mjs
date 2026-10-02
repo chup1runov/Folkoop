@@ -1,7 +1,5 @@
 /* Parse only the Supabase OAuth callback fragment. No persistence. */
-(() => {
-'use strict';
-function parse(hash){
+export function parse(hash){
  const raw=typeof hash==='string'?hash.replace(/^#/,''):'';
  const p=new URLSearchParams(raw);
  const error=p.get('error');
@@ -13,5 +11,3 @@ function parse(hash){
  }
  return {ok:true,accessToken,expiresIn};
 }
-globalThis.FolkoopOAuthCallback=Object.freeze({parse});
-})();

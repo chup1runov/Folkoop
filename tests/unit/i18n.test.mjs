@@ -74,7 +74,7 @@ const networkEn={
  activity:parseObject(network,'activityCopy').en,
  home:parseObject(network,'homeCopy').en
 };
-const auth=await readFile('apps/web/auth-callback.js','utf8');
+const auth=await readFile('apps/web/auth-callback.mjs','utf8');
 const authEn=parseObject(auth,'copyByLanguage').en;
 
 const baseline={shell:shellEn,tutorial:tutorialEn,tutorialTitles:tutorialTitlesEn,helper:helperEn,homeWelcome:welcomeEn,network:networkEn,auth:authEn};
