@@ -62,7 +62,10 @@ async def main():
   assert await page.locator('.pilot:visible').count()==0
   await expect(page.locator('#locationLabel')).to_have_text('Göteborg')
   assert await page.locator('#netLogin').count()==0
-  assert 'ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ' not in await page.locator('body').inner_text()
+  body_text=await page.locator('body').inner_text()
+  assert 'ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ' not in body_text
+  assert 'Вход в пилот' not in body_text
+  assert 'Выполняется…' not in body_text
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Mura visit uses the real Home renderer with local learning data and no Supabase request')
