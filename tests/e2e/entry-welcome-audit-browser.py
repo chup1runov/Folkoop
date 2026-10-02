@@ -56,6 +56,7 @@ async def main():
     if route.request.url.startswith(BASE): await route.continue_()
     else: await route.abort()
    await context.route('**/*',local_only)
+   await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false});localStorage.clear();sessionStorage.clear();")
    page=await context.new_page();errors=[]
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE)
