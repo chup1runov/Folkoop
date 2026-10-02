@@ -62,6 +62,7 @@ const demoLocaleCopy={
  ru:{
   'Photography · neighbourhood help':'Фотография · помощь по соседству',
   'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'Помощница FOLKOOP. Учебный профиль и примеры, показывающие, как работает кооперация.',
+  'FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.':'Помощница FOLKOOP. Добро пожаловать ко мне — здесь я показываю, как работает кооперация.',
   'Plant and seed exchange':'Обмен растениями и семенами по соседству',
   'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Организовать небольшой обмен растениями и семенами с ролями, задачами и рабочим чатом.',
   'Borrow a tile cutter for the weekend':'Одолжить плиткорез на выходные',
@@ -78,9 +79,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Дизайн · организация групп',
   'Runs small community workshops.':'Организует небольшие общественные мастерские.',
   'Olofstorp neighbours':'Соседи Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Демонстрационное местное сообщество для взаимопомощи и совместных дел.',
+  'Sample local community for shared help and practical coordination.':'Пример местного сообщества для взаимопомощи и совместных дел.',
   'Göteborg language exchange':'Языковой обмен Göteborg',
-  'Sample group for informal language practice and meetups.':'Демонстрационная группа для языковой практики и встреч.',
+  'Sample group for informal language practice and meetups.':'Пример группы для языковой практики и встреч.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
   'Neighbourhood repair café':'Ремонтное кафе по соседству',
@@ -107,7 +108,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
   'Can collect after work':'Могу забрать после работы',
   'Need delivery help':'Нужна помощь с доставкой',
-  'Sample supplier offer for the demo.':'Демонстрационное предложение поставщика.',
+  'Sample supplier offer for the demo.':'Пример предложения поставщика.',
   'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
   'Entrance sign ready':'Табличка для входа готова',
   'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
@@ -115,6 +116,7 @@ const demoLocaleCopy={
  sv:{
   'Photography · neighbourhood help':'Fotografering · hjälp i grannskapet',
   'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'FOLKOOP-guide. Ett lärande exempel som visar hur samarbete fungerar.',
+  'FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.':'FOLKOOP-guide. Välkommen hem till mig — här visar jag hur samarbete fungerar.',
   'Plant and seed exchange':'Växt- och fröbyte i grannskapet',
   'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Ordna ett litet växt- och fröbyte med roller, uppgifter och en arbetschatt.',
   'Borrow a tile cutter for the weekend':'Låna en kakelskärare över helgen',
