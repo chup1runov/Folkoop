@@ -95,9 +95,9 @@ async def main():
 
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
+  await expect(page.locator('#networkPanel')).to_contain_text('Обмен растениями и семенами по соседству')
   await page.click('[data-coop="open"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить помещение')
+  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
   await expect(page.locator('.coop-summary-stats')).to_be_visible()
   tasks=page.locator('[data-coop-section="tasks"]')
   members=page.locator('[data-coop-section="members"]')
@@ -106,7 +106,7 @@ async def main():
   assert await members.get_attribute('open') is None
   assert await activity.get_attribute('open') is None
   await tasks.locator('summary').click()
-  await expect(tasks).to_contain_text('Подтвердить помещение')
+  await expect(tasks).to_contain_text('Подтвердить место для обмена')
   await members.locator('summary').click()
   await expect(members).to_contain_text('Anna')
   passed.append('Project starts with summary/next step and keeps tasks, participants and activity collapsible')
