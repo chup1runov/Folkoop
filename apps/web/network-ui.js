@@ -329,12 +329,18 @@ const activityDomain=globalThis.FolkoopNetworkActivity.create({
 const {activityLabel,syncBadges,renderNotifications:renderActivityNotifications}=activityDomain;
 
 const profileFor=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
-function chatLabel(chat,u){
- if(!chat)return mt('conversation');
- if(chat.kind==='group')return chat.title;
- const other=data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id!==u.id);
- return profileFor(other?.user_id)?.name||mt('direct');
-}
+const messagingDomain=globalThis.FolkoopNetworkMessaging.create({
+ escape:esc,
+ getData:()=>data,
+ getProfile:profileFor,
+ generalText:t,
+ chatText:mt,
+ activityText:at,
+ formatWhen,
+ networkButton:btn,
+ activityButton:abtn
+});
+
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -399,44 +405,15 @@ function renderHome(u){
 }
 
 function renderMessages(u){
- const chat=data.chats.find(x=>x.id===selectedChat);
- const ownMember=chat&&data.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id===u.id);
- const ownInvite=chat&&data.chatInvites.find(i=>i.conversation_id===chat.id&&i.user_id===u.id);
- const linked=chat&&data.coopChats.find(x=>x.conversation_id===chat.id);
- const discoverable=data.directory.filter(p=>p.id!==u.id);
- let html=`<div class="row"><div><h2>${esc(mt('messagesTitle'))}</h2><p class="meta">${esc(mt('messagesDesc'))}</p></div><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div>`;
- if(chat){
-  html+=`${btn('backChats','back','')}<article class="card"><div class="row"><h2>${esc(chatLabel(chat,u))}</h2>${linked?`<span class="badge">${esc(at('workChat'))}</span>`:''}</div><p class="meta">${esc(mt('notEncrypted'))}</p>`;
-  if(linked)html+=`<p class="meta">${esc(at('managedChat'))}</p><div class="actions">${abtn('openNotify','openActivity',linked.cooperation_id)}</div>`;
-  if(ownInvite&&!ownMember){
-   html+=`<div class="actions">${btn('acceptChat','accept',chat.id)}${btn('declineChat','decline',chat.id)}</div></article>`;
-   return html;
-  }
-  if(!ownMember){html+=`<p>${esc(t('denied'))}</p></article>`;return html;}
-  const members=data.chatMembers.filter(m=>m.conversation_id===chat.id);
-  html+=`<h3>${esc(mt('membersList'))}</h3><div class="stack">${members.map(m=>{const p=profileFor(m.user_id);const name=m.user_id===u.id?mt('you'):(p?.name||m.user_id.slice(0,8));const remove=!linked&&chat.kind==='group'&&chat.owner_id===u.id&&m.user_id!==u.id?btn('removeChatMember','removeMember',m.user_id):'';return `<div class="row"><span>${esc(name)}</span>${remove}</div>`;}).join('')}</div></article>`;
-  if(!linked&&chat.kind==='group'&&chat.owner_id===u.id){
-   const existing=new Set(members.map(m=>m.user_id).concat(data.chatInvites.filter(i=>i.conversation_id===chat.id).map(i=>i.user_id)));
-   const candidates=discoverable.filter(p=>!existing.has(p.id));
-   html+=`<form id="netChatInvite" class="editor card"><label>${esc(mt('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(p=>`<option value="${esc(p.id)}"${p.id===inviteTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('invite'))}</button></form>`;
-  }
-  html+=`<section class="chat-messages">${data.chatMessages.map(m=>{const p=profileFor(m.author_id);const mine=m.author_id===u.id;const canDelete=mine||(chat.kind==='group'&&chat.owner_id===u.id);return `<article class="card"><small>${esc(mine?mt('you'):(p?.name||m.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${esc(m.body)}</p><p class="meta">${esc(formatWhen(m.created_at))}</p><div class="actions">${canDelete?btn('deleteMessage','delete',m.id):''}${!mine?btn('reportMessage','report',m.id)+btn('block','block',m.author_id):''}</div></article>`;}).join('')||`<div class="empty"><p>${esc(t('empty'))}</p></div>`}</section>`;
-  html+=`<form id="netMessage" class="editor card"><label>${esc(mt('message'))}<textarea name="body" maxlength="4000" rows="3" required>${esc(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${esc(mt('sendMessage'))}</button></form>`;
-  if(!linked&&chat.kind==='group')html+=`<div class="actions">${chat.owner_id===u.id?btn('deleteChat','deleteChat',chat.id):btn('leaveChat','leaveChat',chat.id)}</div>`;
-  return html;
- }
- const invitations=data.chatInvites.filter(i=>i.user_id===u.id).map(i=>data.chats.find(c=>c.id===i.conversation_id)).filter(Boolean);
- const joined=data.chats.filter(ch=>data.chatMembers.some(m=>m.conversation_id===ch.id&&m.user_id===u.id));
- const view=currentSubsection('messages');
- const directForm=`<form id="netDirect" class="editor card"><h3>${esc(mt('direct'))}</h3><label>${esc(mt('choosePerson'))}<select name="other" required><option value="">—</option>${discoverable.map(p=>`<option value="${esc(p.id)}"${p.id===directTarget?' selected':''}>${esc(p.name)}</option>`).join('')}</select></label><button class="button">${esc(mt('startDirect'))}</button><p class="meta">${discoverable.length?'':esc(mt('noPeople'))}</p></form>`;
- const groupForm=`<form id="netNewChat" class="editor card"><h3>${esc(mt('newGroupChat'))}</h3><label>${esc(mt('groupTitle'))}<input name="title" maxlength="80" required value="${esc(chatDraft.title||'')}"></label><fieldset><legend>${esc(mt('chooseMembers'))}</legend>${discoverable.map(p=>`<label class="checkbox"><input type="checkbox" name="members" value="${esc(p.id)}"${chatDraft.members.includes(p.id)?' checked':''}> <span>${esc(p.name)}</span></label>`).join('')||`<p class="meta">${esc(mt('noPeople'))}</p>`}</fieldset><button class="button" ${discoverable.length?'':'disabled'}>${esc(t('create'))}</button></form>`;
- const invitationView=`<h3>${esc(mt('invitations'))}</h3><div class="draft-grid">${invitations.map(ch=>`<article class="card"><h3>${esc(chatLabel(ch,u))}</h3><span class="badge">${esc(mt('invitePending'))}</span><div class="actions">${btn('openChat','open',ch.id)}${btn('acceptChat','accept',ch.id)}${btn('declineChat','decline',ch.id)}</div></article>`).join('')||`<div class="empty"><p>${esc(mt('noChats'))}</p></div>`}</div>`;
- const cards=list=>`<h3>${esc(mt('conversation'))}</h3><div class="draft-grid">${list.map(ch=>{const unread=Number(data.chatInbox.find(x=>x.conversation_id===ch.id)?.unread_count||0),link=data.coopChats.find(x=>x.conversation_id===ch.id);return `<article class="card"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${esc(chatLabel(ch,u))}</h3>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><p class="meta">${esc(link?at('linkedChat'):(ch.kind==='group'?mt('groupChat'):mt('direct')))}</p>${btn('openChat','open',ch.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(mt('noChats'))}</p></div>`}</div>`;
- if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joined.filter(ch=>ch.kind==='direct'));
- else if(view==='messages-groups')html+=`<div class="profile-grid">${groupForm}</div>`+cards(joined.filter(ch=>ch.kind==='group'));
- else if(view==='messages-invites')html+=invitationView;
- else html+=`<div class="profile-grid">${directForm}${groupForm}</div>`+(invitations.length?invitationView:'')+cards(joined);
- return html;
+ return messagingDomain.render(u,{
+  selectedChat,
+  directTarget,
+  chatDraft,
+  inviteTarget,
+  messageDrafts,
+  guestDemo,
+  view:currentSubsection('messages')
+ });
 }
 
 function renderPurchaseLifecycle(u,coop,owner){
