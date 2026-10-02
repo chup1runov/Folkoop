@@ -8,12 +8,15 @@ function contrast(a,b){const x=lum(a),y=lum(b),hi=Math.max(x,y),lo=Math.min(x,y)
 
 test('Civic Teal core color pairs meet WCAG AA for normal text',async()=>{
  const css=await readFile('apps/web/folkoop.css','utf8');
- for(const token of ['--ink:#1F2933','--muted:#667085','--paper:#F7F5F1','--accent:#176B6B','--orange:#A94F36'])assert(css.includes(token),token);
+ for(const token of ['--ink:#1F2933','--muted:#667085','--paper:#F7F5F1','--accent:#176B6B','--orange:#A94F36','--focus:#0B6FA4','--danger:#9E3530','--success:#2F6F4E'])assert(css.includes(token),token);
  const pairs=[
   ['#1F2933','#F7F5F1','primary text'],
   ['#667085','#F7F5F1','secondary text'],
   ['#176B6B','#FFFFFF','primary action/link'],
-  ['#A94F36','#FFFFFF','warm accent']
+  ['#A94F36','#FFFFFF','warm accent'],
+  ['#0B6FA4','#FFFFFF','focus'],
+  ['#9E3530','#FFFFFF','danger'],
+  ['#2F6F4E','#FFFFFF','success']
  ];
  for(const [fg,bg,label] of pairs)assert(contrast(fg,bg)>=4.5,label+' contrast '+contrast(fg,bg).toFixed(2));
 });
