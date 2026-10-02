@@ -16,7 +16,10 @@ test('Civic Teal core color pairs meet WCAG AA for normal text',async()=>{
   ['#A94F36','#FFFFFF','warm accent'],
   ['#0B6FA4','#FFFFFF','focus'],
   ['#9E3530','#FFFFFF','danger'],
-  ['#2F6F4E','#FFFFFF','success']
+  ['#2F6F4E','#FFFFFF','success'],
+  ['#246B7A','#FFFFFF','need intent'],
+  ['#526C73','#FFFFFF','project intent'],
+  ['#8B5C2C','#FFFFFF','purchase intent']
  ];
  for(const [fg,bg,label] of pairs)assert(contrast(fg,bg)>=4.5,label+' contrast '+contrast(fg,bg).toFixed(2));
 });
