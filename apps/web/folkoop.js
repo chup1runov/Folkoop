@@ -53,8 +53,8 @@ function renderMobileChrome(){
  dock.dataset.parentSection=active;
  const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'" data-section="'+active+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
- const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>DEMO</span></button>':'';
- const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>DEMO</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
@@ -154,17 +154,17 @@ const tutorialTitles={
  sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Där vi samordnar',quick:'Gör nu din plats till din'}
 };
 const entryCopy={
- en:{title:'How do you want to start?',body:"Sign in to participate, or let Mura show you how FOLKOOP works first.",email:'Continue with email',guest:'Let Mura show me',muraRole:'FOLKOOP guide',guestNote:"Mura uses illustrative people, messages, projects and activity to explain FOLKOOP. They are examples, not claims about real participants or events. Sign in to participate yourself.",back:'Back to language'},
- ru:{title:'Как хочешь начать?',body:"Войди, чтобы участвовать, или сначала позволь Муре показать, как работает FOLKOOP.",email:'Войти по почте',guest:'Мура покажет',muraRole:'Помощница FOLKOOP',guestNote:"Мура использует примеры людей, сообщений, проектов и действий, чтобы объяснить FOLKOOP. Это примеры, а не утверждения о реальных участниках или событиях. Войди, чтобы участвовать самому.",back:'Назад к языку'},
- sv:{title:'Hur vill du börja?',body:"Logga in för att delta, eller låt Mura först visa hur FOLKOOP fungerar.",email:'Fortsätt med e-post',guest:'Låt Mura visa',muraRole:'FOLKOOP-guide',guestNote:"Mura använder exempel på människor, meddelanden, projekt och aktivitet för att förklara FOLKOOP. De är exempel, inte påståenden om riktiga deltagare eller händelser. Logga in för att delta själv.",back:'Tillbaka till språk'},
- es:{title:'¿Cómo quieres entrar?',body:"FOLKOOP empieza con algo que necesitas, puedes ofrecer o quieres hacer y te ayuda a encontrar personas o recursos relevantes y un siguiente paso concreto. Inicia sesión para participar o explora el demo.",email:'Continuar con correo',guest:'Explorar como invitado',guestNote:"El modo invitado es un DEMO. Todas las personas, mensajes, proyectos y actividades son ejemplos ficticios, no participantes reales. Puedes explorar, pero para crear, unirte, enviar o cambiar algo debes iniciar sesión.",back:'Volver al idioma'},
- uk:{title:'Як хочеш увійти?',body:"FOLKOOP починається з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити, і допомагає знайти потрібних людей чи ресурси та конкретний наступний крок. Увійди для участі або переглянь демо.",email:'Продовжити з e-mail',guest:'Переглянути як гість',guestNote:"Гостьовий режим — ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади, а не реальні учасники. Переглядати можна без входу; створювати, приєднуватися, надсилати чи змінювати — лише після входу.",back:'Назад до мови'},
- fi:{title:'Miten haluat jatkaa?',body:"FOLKOOP alkaa siitä, mitä tarvitset, voit tarjota tai haluat tehdä, ja auttaa löytämään sopivia ihmisiä tai resursseja sekä konkreettisen seuraavan askeleen. Kirjaudu osallistuaksesi tai tutustu demoon.",email:'Jatka sähköpostilla',guest:'Tutustu vieraana',guestNote:"Vierastila on DEMO. Kaikki ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä, eivät oikeita osallistujia. Voit selata, mutta luominen, liittyminen, lähettäminen ja muuttaminen vaativat kirjautumisen.",back:'Takaisin kieleen'},
- bs:{title:'Kako želiš ući?',body:"FOLKOOP počinje od onoga što ti treba, što možeš ponuditi ili što želiš uraditi i pomaže pronaći odgovarajuće ljude ili resurse i konkretan sljedeći korak. Prijavi se za učešće ili pogledaj demo.",email:'Nastavi e-poštom',guest:'Pogledaj kao gost',guestNote:"Gostujući režim je DEMO. Sve osobe, poruke, projekti i aktivnosti su izmišljeni primjeri, ne stvarni učesnici. Možeš pregledati sadržaj, ali kreiranje, pridruživanje, slanje i promjene traže prijavu.",back:'Nazad na jezik'},
- ar:{title:'كيف تريد الدخول؟',body:"يبدأ FOLKOOP بما تحتاجه أو تستطيع تقديمه أو تريد فعله، ثم يساعدك على العثور على الأشخاص أو الموارد المناسبة والخطوة التالية الواضحة. سجّل الدخول للمشاركة أو استكشف العرض التجريبي.",email:'المتابعة بالبريد الإلكتروني',guest:'الاستكشاف كضيف',guestNote:"وضع الضيف هو عرض تجريبي. جميع الأشخاص والرسائل والمشاريع والأنشطة أمثلة خيالية وليست لمشاركين حقيقيين. يمكنك التصفح، لكن الإنشاء والانضمام والإرسال والتعديل تتطلب تسجيل الدخول.",back:'العودة إلى اللغة'},
- fa:{title:'چطور می‌خواهید وارد شوید؟',body:"FOLKOOP از چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی انجام دهی شروع می‌شود و کمک می‌کند آدم‌ها یا منابع مناسب و گام بعدی مشخص را پیدا کنی. برای مشارکت وارد شو یا دمو را ببین.",email:'ادامه با ایمیل',guest:'مشاهده به‌عنوان مهمان',guestNote:"حالت مهمان یک دمو است. همهٔ افراد، پیام‌ها، پروژه‌ها و فعالیت‌ها نمونه‌های ساختگی‌اند و شرکت‌کنندهٔ واقعی نیستند. می‌توانی مرور کنی، اما ساختن، پیوستن، ارسال یا تغییر نیاز به ورود دارد.",back:'بازگشت به زبان'},
- so:{title:'Sidee rabtaa inaad u gasho?',body:"FOLKOOP wuxuu ka bilaabmaa waxa aad u baahan tahay, bixin karto ama rabto inaad qabato, wuxuuna kaa caawiyaa helidda dadka ama kheyraadka ku habboon iyo tallaabada xigta ee cad. Soo gal si aad uga qaybqaadato ama eeg demada.",email:'Ku sii wad iimayl',guest:'U eeg marti ahaan',guestNote:"Qaabka martidu waa DEMO. Dhammaan dadka, fariimaha, mashaariicda iyo hawlaha waa tusaalooyin la sameeyay, ma aha ka-qaybgalayaal dhab ah. Waad daawan kartaa, laakiin samayn, ku biirid, dirid ama beddelid waxay u baahan yihiin gelitaan.",back:'Ku noqo luqadda'},
- ku:{title:'Tu dixwazî çawa têkevî?',body:"FOLKOOP bi tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî bikî dest pê dike û alîkar dike ku mirov an çavkaniyên guncaw û gava paşîn a zelal bibînî. Ji bo beşdarbûnê têkevî an demoyê bibîne.",email:'Bi e-nameyê bidomîne',guest:'Wek mêvan bibîne',guestNote:"Moda mêvanê DEMO ye. Hemû mirov, peyam, proje û çalakî nimûneyên çêkirî ne, ne beşdarên rastîn. Tu dikarî temaşe bikî, lê çêkirin, tevlêbûn, şandin an guhartin têketin dixwaze.",back:'Vegere ziman'}
+ en:{title:"Hi, I'm Mura",body:"I'm the FOLKOOP guide. FOLKOOP helps turn “I need”, “I can offer” or “I want to do” into relevant people, resources and a concrete next step. Come visit my place and I'll show you how it works — or sign in if you're ready to make your own place.",email:'Sign in / register',guest:"Come visit Mura",guestNote:"Mura's place is a guided learning space. The people and activities you meet there are examples used to teach FOLKOOP, not claims about real participants.",language:'Choose language'},
+ ru:{title:'Привет! Я Мура',body:'Я помощница FOLKOOP. Здесь «мне нужно», «я могу предложить» или «я хочу что-то сделать» превращается в людей, ресурсы и конкретный следующий шаг. Заходи ко мне в гости — я покажу, как всё устроено. Или войди, если уже готов создать своё место.',email:'Войти / зарегистрироваться',guest:'Зайти к Муре в гости',guestNote:'Место Муры — учебное пространство. Люди и действия, которые встретятся в гостях, используются как примеры, чтобы познакомить тебя с FOLKOOP.',language:'Выбери язык'},
+ sv:{title:'Hej! Jag är Mura',body:'Jag är FOLKOOP-guiden. Här kan ”jag behöver”, ”jag kan erbjuda” eller ”jag vill göra” bli människor, resurser och ett konkret nästa steg. Kom hem till mig så visar jag hur det fungerar — eller logga in om du är redo att skapa din egen plats.',email:'Logga in / registrera dig',guest:'Hälsa på hos Mura',guestNote:'Muras plats är en guidad lärmiljö. Personer och aktiviteter du möter där är exempel som visar hur FOLKOOP fungerar, inte påståenden om verkliga deltagare.',language:'Välj språk'},
+ es:{title:'¡Hola! Soy Mura',body:'Soy la guía de FOLKOOP. Aquí «necesito», «puedo ofrecer» o «quiero hacer» puede convertirse en personas, recursos y un siguiente paso concreto. Ven a visitarme y te enseñaré cómo funciona, o inicia sesión para crear tu propio espacio.',email:'Entrar / registrarse',guest:'Visitar a Mura',guestNote:'El espacio de Mura es un entorno guiado de aprendizaje. Las personas y actividades que aparecen son ejemplos para explicar FOLKOOP, no afirmaciones sobre participantes reales.',language:'Elige idioma'},
+ uk:{title:'Привіт! Я Мура',body:'Я помічниця FOLKOOP. Тут «мені потрібно», «я можу запропонувати» або «я хочу щось зробити» перетворюється на людей, ресурси та конкретний наступний крок. Заходь до мене в гості — я покажу, як усе працює, або увійди, щоб створити своє місце.',email:'Увійти / зареєструватися',guest:'Зайти до Мури в гості',guestNote:'Місце Мури — навчальний простір. Люди й дії тут є прикладами для знайомства з FOLKOOP, а не твердженнями про реальних учасників.',language:'Обери мову'},
+ fi:{title:'Hei! Olen Mura',body:'Olen FOLKOOP-opas. Täällä ”tarvitsen”, ”voin tarjota” tai ”haluan tehdä” voi johtaa sopiviin ihmisiin, resursseihin ja konkreettiseen seuraavaan askeleeseen. Tule käymään luonani, niin näytän miten tämä toimii — tai kirjaudu luomaan oma paikkasi.',email:'Kirjaudu / rekisteröidy',guest:'Tule Muran luo kylään',guestNote:'Muran paikka on ohjattu oppimisympäristö. Siellä näkyvät ihmiset ja toiminta ovat esimerkkejä FOLKOOPin opetteluun, eivät väitteitä oikeista osallistujista.',language:'Valitse kieli'},
+ bs:{title:'Zdravo! Ja sam Mura',body:'Ja sam FOLKOOP vodič. Ovdje se „treba mi“, „mogu ponuditi“ ili „želim uraditi“ može pretvoriti u ljude, resurse i konkretan sljedeći korak. Dođi mi u goste da ti pokažem kako radi, ili se prijavi da napraviš svoje mjesto.',email:'Prijava / registracija',guest:'Dođi Muri u goste',guestNote:'Murino mjesto je vođeni prostor za učenje. Ljudi i aktivnosti koje vidiš služe kao primjeri za upoznavanje FOLKOOP-a, a nisu tvrdnje o stvarnim učesnicima.',language:'Izaberi jezik'},
+ ar:{title:'مرحباً! أنا مورا',body:'أنا مرشدة FOLKOOP. هنا يمكن أن تتحول «أحتاج» أو «أستطيع أن أقدم» أو «أريد أن أفعل» إلى أشخاص وموارد وخطوة تالية واضحة. تعال لزيارتي وسأريك كيف يعمل FOLKOOP، أو سجّل الدخول لإنشاء مساحتك.',email:'تسجيل الدخول / التسجيل',guest:'زيارة مورا',guestNote:'مساحة مورا بيئة تعليمية موجهة. الأشخاص والأنشطة فيها أمثلة لشرح FOLKOOP وليست ادعاءات عن مشاركين حقيقيين.',language:'اختر اللغة'},
+ fa:{title:'سلام! من مورا هستم',body:'من راهنمای FOLKOOP هستم. اینجا «نیاز دارم»، «می‌توانم ارائه کنم» یا «می‌خواهم انجام دهم» می‌تواند به آدم‌ها، منابع و یک گام بعدی مشخص برسد. به دیدنم بیا تا نشان بدهم چگونه کار می‌کند، یا وارد شو و جای خودت را بساز.',email:'ورود / ثبت‌نام',guest:'به دیدن مورا برو',guestNote:'جای مورا یک فضای آموزشی هدایت‌شده است. افراد و فعالیت‌های آن نمونه‌هایی برای آشنایی با FOLKOOP هستند، نه ادعا دربارهٔ شرکت‌کنندگان واقعی.',language:'زبان را انتخاب کن'},
+ so:{title:'Salaan! Waxaan ahay Mura',body:'Waxaan ahay hagaha FOLKOOP. Halkan “waxaan u baahanahay”, “waan bixin karaa” ama “waxaan rabaa inaan sameeyo” waxay kuu horseedi karaan dad, kheyraad iyo tallaabo xigta oo cad. I soo booqo si aan kuu tuso sida ay u shaqeyso, ama soo gal si aad meeshaada u samaysato.',email:'Soo gal / isdiiwaangeli',guest:'Booqo Mura',guestNote:'Meesha Mura waa goob waxbarasho oo la hago. Dadka iyo hawlaha halkaas ka muuqda waa tusaalooyin lagu baranayo FOLKOOP, ma aha sheegashooyin ku saabsan ka-qaybgalayaal dhab ah.',language:'Dooro luqad'},
+ ku:{title:'Silav! Ez Mura me',body:'Ez rêbera FOLKOOP im. Li vir “pêdiviya min heye”, “ez dikarim pêşkêş bikim” an “ez dixwazim bikim” dikare bibe mirov, çavkanî û gaveke paşîn a zelal. Were mêvanê min da ku ez nîşan bidim çawa dixebite, an têkevî û cihê xwe çêke.',email:'Têketin / qeydkirin',guest:'Were mêvanê Mura',guestNote:'Cihê Mura cihê hînbûnê yê rêberkirî ye. Mirov û çalakiyên li wir nimûne ne ji bo nasîna FOLKOOP, ne îdiayên derbarê beşdarên rastîn.',language:'Ziman hilbijêre'}
 };
 const entrySource=()=>entryCopy[lang]||entryCopy.en;
 function ensureEntryGate(){
@@ -173,20 +173,22 @@ function ensureEntryGate(){
  gate=document.createElement('section');
  gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
  gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
- gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><div class="entry-gate-actions"><button type="button" class="button" data-entry="email"></button><button type="button" class="button secondary" data-entry="guest"></button></div><p id="entryGateNote" class="meta"></p><button type="button" class="text-button entry-gate-back" data-entry="language"></button></div>';
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
 function showEntryGate(){
- const gate=ensureEntryGate(),x=entrySource();
+ const gate=ensureEntryGate(),x=entrySource(),choices=gate.querySelector('#entryLanguageChoices');
  gate.querySelector('#entryGateTitle').textContent=x.title;
  gate.querySelector('#entryGateBody').textContent=x.body;
  gate.querySelector('#entryGateNote').textContent=x.guestNote;
+ gate.querySelector('#entryLanguageLabel').textContent=x.language;
  gate.querySelector('[data-entry="email"]').textContent=x.email;
  gate.querySelector('[data-entry="guest"]').textContent=x.guest;
- gate.querySelector('[data-entry="language"]').textContent=x.back;
+ choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ gate.dir=['ar','fa','ku'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');
- requestAnimationFrame(()=>gate.querySelector('[data-entry="email"]')?.focus());
+ requestAnimationFrame(()=>gate.querySelector('[data-entry="guest"]')?.focus());
 }
 function hideEntryGate(){
  const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');
@@ -196,7 +198,7 @@ function setEntryMode(mode){
  try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
  hideEntryGate();
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?'tour':mode}}));
- if(mode==='guest'){location.hash='#/me';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},260);}
+ if(mode==='guest'){muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);}
  else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
@@ -455,9 +457,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  if(!C.LANGS.includes(value))return;
  globalThis.FolkoopGuide?.hideLanguageGate();
  changeLanguage(value);
- if(languageOnlyFlow){languageOnlyFlow=false;return;}
- if(firstVisitFlow){firstVisitFlow=false;setTimeout(showEntryGate,80);}
- else setTimeout(()=>showOnboarding(0),80);
+ languageOnlyFlow=false;firstVisitFlow=false;
 });
 window.addEventListener('folkoop:open-entry',()=>showEntryGate());
 window.addEventListener('folkoop:network-rendered',()=>{if(onboardingOpen)requestAnimationFrame(()=>positionOnboarding(onboardingSteps[onboardingStep]));});
@@ -475,12 +475,13 @@ document.addEventListener('click',e=>{
   if(action==='signin'){closeMobileDemo();showEntryGate();return;}
   if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
+ const entryLanguage=e.target.closest('[data-entry-language]');
+ if(entryLanguage){changeLanguage(entryLanguage.dataset.entryLanguage);showEntryGate();return;}
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
   if(action==='guest'){setEntryMode('guest');return;}
   if(action==='email'){setEntryMode('account');return;}
-  if(action==='language'){hideEntryGate();languageOnlyFlow=false;firstVisitFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
  const helper=e.target.closest('[data-helper]');
  if(helper){
@@ -548,14 +549,10 @@ function startFullIntroduction(){
  helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
  tourReturnMode=entryModeNow()||'local';
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:true,target:'tour',temporary:true}}));
- if(globalThis.FolkoopGuide){
-  globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
- }else showOnboarding(0);
+ muraPracticeStep=0;muraPracticeXp=0;showOnboarding(0);
 }
 function startFirstVisit(){
- onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=true;tourReturnMode=null;
- if(globalThis.FolkoopGuide)globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
- else showEntryGate();
+ onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=false;tourReturnMode=null;showEntryGate();
 }
 let onboardingDone=false,languageChosen=false;
 try{
