@@ -38,8 +38,11 @@ const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').t
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
+ home:['home'],
  together:['together','people','communities'],
+ projects:['projects'],
  city:['city','center'],
+ messages:['messages'],
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
