@@ -1,6 +1,10 @@
 import { fetchBounded } from './http.mjs';
 import { pathToFileURL } from 'node:url';
 const SOURCE_URL = 'https://goteborg.se/planochbyggprojekt';
+const SOURCE_FETCH_URLS = [
+  SOURCE_URL,
+  'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.bb7386fd-1152-47cb-9da4-d06bd7780a77'
+];
 const SOURCE_NAME = 'Göteborgs Stad';
 const SOURCE_ID = 'goteborg_open_plans';
 
@@ -130,28 +134,28 @@ export function parsePlans(sectionHtml, today = stockholmDate()) {
   }).sort((a, b) => a.deadline.localeCompare(b.deadline));
 }
 
-async function fetchOpenPlansSection(attempts = 3) {
+async function fetchOpenPlansSection() {
   let lastError;
-  for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const response = await fetchBounded(SOURCE_URL, {
-      headers: {
-        accept: 'text/html,application/xhtml+xml',
-        'accept-language': 'sv-SE,sv;q=0.9',
-        'cache-control': 'no-cache',
-        'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+  for (const url of SOURCE_FETCH_URLS) {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const response = await fetchBounded(url, {
+          headers: {
+            accept: 'text/html,application/xhtml+xml',
+            'accept-language': 'sv-SE,sv;q=0.9',
+            'cache-control': 'no-cache',
+            'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+          }
+        });
+        if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
+        return extractSection(await response.text());
+      } catch (error) {
+        lastError = error;
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 750));
       }
-    });
-
-    if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
-
-    try {
-      return extractSection(await response.text());
-    } catch (error) {
-      lastError = error;
-      if (attempt + 1 < attempts) await new Promise(resolve => setTimeout(resolve, 750 * (attempt + 1)));
     }
   }
-  throw lastError;
+  throw lastError || new Error('Göteborg open-plans source unavailable');
 }
 
 async function main() {
