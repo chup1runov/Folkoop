@@ -331,3 +331,14 @@ body{background:var(--paper)}
 
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:var(--focus)}
 .text-button.danger{color:var(--danger)}
+
+/* Civic Teal intent palette: differentiated actions without the previous rainbow effect. */
+:root{
+ --intent-need:#246B7A;--intent-need-bg:#E8F2F3;
+ --intent-offer:#2F6F4E;--intent-offer-bg:#EAF3ED;
+ --intent-project:#526C73;--intent-project-bg:#EDF1F2;
+ --intent-purchase:#8B5C2C;--intent-purchase-bg:#F7EFE5;
+ --intent-resource:#176B6B;--intent-resource-bg:#EAF3F2
+}
+.button.intent-project:not(.quick){background:var(--intent-project);border-color:var(--intent-project)}
+.button.intent-project:not(.quick):hover{background:#435A60;border-color:#435A60}
