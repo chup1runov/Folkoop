@@ -130,6 +130,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Checkout release metadata and production smoke only
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            package.json
+            scripts/ci/production-smoke.mjs
+          sparse-checkout-cone-mode: false
       - name: Deploy tested artifact without fetching or rebuilding
         id: deployment
         uses: actions/deploy-pages@v5
