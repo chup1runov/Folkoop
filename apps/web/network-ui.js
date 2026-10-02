@@ -341,6 +341,16 @@ const messagingDomain=globalThis.FolkoopNetworkMessaging.create({
  activityButton:abtn
 });
 
+const profileDomain=globalThis.FolkoopNetworkProfile.create({
+ escape:esc,
+ getData:()=>data,
+ text:t,
+ homeText:ht,
+ field,
+ button:btn,
+ renderActivityNotifications
+});
+
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -606,12 +616,7 @@ function render(){
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
-  const p=profileDraft||data.profile;
-  if(guestDemo){
-   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${esc(ht('demoBadge'))}</span><h2>${esc(p.name||'')}</h2><p><strong>${esc(t('skills'))}:</strong> ${esc(p.skills||'')}</p><p>${esc(p.about||'')}</p><p class="meta">${esc(t('listed'))}</p></article><div class="actions"><button class="button" type="button" data-demo="register">${esc(ht('demoCta'))}</button></div>${renderActivityNotifications(u)}`;
-  }else{
-   html=`<div class="row"><h2>${esc(t('profile'))}</h2>${btn('logout','out')}</div><p>${esc(t('private'))}</p><form id="netProfile" class="editor card">${field('name','name',p.name||'',60)}${field('skills','skills',p.skills||'',200)}${field('about','about',p.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${p.listed?' checked':''}>${esc(t('listed'))}</label><button class="button">${esc(t('save'))}</button></form><div class="actions">${btn('deleteProfile','deleteProfile')}${btn('export','export')}${btn('refresh','refresh')}</div><p class="meta">${esc(t('accountDelete'))} ${esc(t('exportNote'))}</p><h3>${esc(t('blocks'))}</h3>${data.blocks.map(b=>`<p>${esc(b.target_id)} ${btn('unblock','unblock',b.target_id)}</p>`).join('')}${renderActivityNotifications(u)}<h3>${esc(t('localTitle'))}</h3>`;
-  }
+  html=profileDomain.render(u,{profileDraft,guestDemo});
  }else if(r==='people'){
   html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"${guestDemo?' data-demo-story="person"':''}><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
