@@ -299,6 +299,9 @@
  --soft:#EAF3F2;
  --warm:#A94F36;
  --warm-soft:#F7EDE9;
+ --focus:#0B6FA4;
+ --danger:#9E3530;
+ --success:#2F6F4E;
  --section-home:#176B6B;
  --section-together:#2D6F68;
  --section-projects:#497271;
@@ -325,3 +328,6 @@ body{background:var(--paper)}
 .demo-dot{background:var(--warm)}
 .guest-demo-banner{background:#FFF9F5;border-color:#E4C7BC}
 .quick.intent-action{border-color:color-mix(in srgb,var(--intent-color,var(--accent)) 34%,white)}
+
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:var(--focus)}
+.text-button.danger{color:var(--danger)}
