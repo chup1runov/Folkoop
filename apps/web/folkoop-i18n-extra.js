@@ -4060,7 +4060,7 @@ const guestDemoCopy={
  ar:{demoBadge:'مساحة مورا · مثال تعليمي',demoText:'أنت تزور مساحة مورا التعليمية الموجهة.',demoCta:'إنشاء مساحتي',demoLocked:'أنت في زيارة عند مورا. سجّل الدخول لتفعل ذلك في مساحتك.',demoExit:'مغادرة مساحة مورا'},
  fa:{demoBadge:'جای مورا · نمونهٔ آموزشی',demoText:'مهمان فضای آموزشی مورا هستی.',demoCta:'جای خودم را بسازم',demoLocked:'مهمان مورا هستی. برای انجام این کار در جای خودت وارد شو.',demoExit:'ترک جای مورا'},
  so:{demoBadge:'Meesha Mura · tusaale waxbarasho',demoText:'Waxaad marti ku tahay meesha hagidda ee Mura.',demoCta:'Samee meeshayda',demoLocked:'Waxaad marti u tahay Mura. Soo gal si aad tan uga samayso meeshaada.',demoExit:'Ka bax meesha Mura'},
- ku:{demoBadge:'DEMO',demoText:"DEMO. Hemû mirov, peyam, proje û çalakiyên li vir nimûneyên çêkirî ne; beşdarên rastîn ên FOLKOOP nayên nîşandan.",demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
+ ku:{demoBadge:'Cihê Mura · nimûneya hînbûnê',demoText:'Tu li cihê hînbûnê yê rêberkirî yê Mura mêvan î.',demoCta:'Cihê xwe çêke',demoLocked:'Tu mêvanê Mura yî. Ji bo ku vê li cihê xwe bikî, têkevî.',demoExit:'Ji cihê Mura derkeve'}
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 
