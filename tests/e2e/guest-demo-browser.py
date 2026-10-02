@@ -1,4 +1,4 @@
-"""FOLKOOP v0.38 first-entry + read-only guest preview browser contract.
+"""FOLKOOP Mura visit + read-only guided-space browser contract.
 No live accounts and no external API requests.
 """
 import asyncio,json,os,shutil
@@ -25,15 +25,15 @@ async def main():
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE)
 
-  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
-  await page.click('[data-folkoop-guide-lang="ru"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
-  await expect(page.locator('#entryGateBody')).to_contain_text('позволь Муре показать, как работает FOLKOOP')
-  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
-  await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
+  assert await page.locator('[data-entry-language]').count()==11
+  await page.click('[data-entry-language="ru"]')
+  await expect(page.locator('#entryGateTitle')).to_have_text('Привет! Я Мура')
+  await expect(page.locator('#entryGateBody')).to_contain_text('Заходи ко мне в гости')
+  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти / зарегистрироваться')
+  await expect(page.locator('[data-entry="guest"]')).to_have_text('Зайти к Муре в гости')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
-  passed.append('First visit is language -> account choice, not language -> long tutorial/form')
+  passed.append('First visit is one Mura welcome with language and visit/account choice')
 
   await page.click('[data-entry="guest"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
@@ -41,34 +41,32 @@ async def main():
   await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
   await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
-  passed.append('Guest first session receives the short value-first product tour')
+  passed.append('Visiting Mura always launches the guided value-first tour')
   await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('.home-subtitle')).to_contain_text('до того, как появился групповой чат')
-  await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('реальные участники FOLKOOP здесь не показаны')
+  assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
-  passed.append('Guest sees the real Home renderer with local sample data and makes no Supabase request')
+  passed.append('Mura visit uses the real Home renderer with local learning data and no Supabase request')
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('примеры, а не утверждения о реальных участниках')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('учебное пространство')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
+  passed.append('Mura visit context is available without a DEMO label')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
-  await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('вымышленные примеры')
+  assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
-  passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
+  passed.append('Mura visit can browse the real People UI without persistent DEMO chrome')
 
   for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
@@ -79,7 +77,7 @@ async def main():
    else:
     await page.click(f'#mobilePrimaryNav [data-mobile-nav="{route_name}"]')
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
-   await expect(page.locator('.guest-demo-banner')).to_be_visible()
+   assert await page.locator('.guest-demo-banner').count()==0
    await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
   await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
@@ -120,7 +118,7 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('Войди, чтобы участвовать самому')
+  await expect(page.locator('#entryGateNote')).to_contain_text('учебное пространство')
   passed.append('A real mutation attempt opens the account choice instead of changing demo state')
 
   await page.click('[data-entry="email"]')
@@ -134,7 +132,7 @@ async def main():
 
  OUT.joinpath('guest-demo-results.json').write_text(json.dumps({
   'passed':passed,
-  'limits':['Demo data are local samples, never evidence of real participants or activity','Guest cannot mutate network state']
+  'limits':['Mura learning data are local examples, never evidence of real participants or activity','A visitor cannot mutate network state']
  },ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
