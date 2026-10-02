@@ -120,7 +120,7 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('создавать')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Войди, чтобы участвовать самому')
   passed.append('A real mutation attempt opens the account choice instead of changing demo state')
 
   await page.click('[data-entry="email"]')
