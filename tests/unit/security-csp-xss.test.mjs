@@ -15,6 +15,7 @@ for(const path of shells)test(path+' ships a restrictive CSP',async()=>{
  assert.doesNotMatch(csp,/script-src[^;]*'unsafe-inline'/);
  assert.doesNotMatch(csp,/script-src[^;]*'unsafe-eval'/);
  assert.doesNotMatch(csp,/frame-ancestors/,'frame-ancestors is ignored in meta CSP; enforce it with an HTTP header when hosting supports headers');
+ assert.doesNotMatch(csp,/upgrade-insecure-requests/,'meta CSP must not rewrite localhost HTTP QA URLs to HTTPS');
 });
 
 test('OAuth callback remains stricter than the main application shell',async()=>{
