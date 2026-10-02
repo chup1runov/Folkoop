@@ -572,13 +572,13 @@ function renderCooperation(u,r){
 }
 
 function render(){
- const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser);host.hidden=!relevant;
- document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo));
+ const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser),localMyPlace=r==='me'&&!hasUser&&!guestDemo&&showLocalGuest;host.hidden=!relevant||localMyPlace;
+ document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo&&!showLocalGuest));
  document.body.classList.toggle('guest-preview-open',!!(guestDemo&&relevant));
  const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
  document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
- if(!relevant)return;host.lang=lang();host.dir='ltr';
+ if(!relevant||localMyPlace)return;host.lang=lang();host.dir='ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
  if(!u){
@@ -789,10 +789,10 @@ window.addEventListener('message',e=>{
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:guest-demo',e=>{
  guestDemo=e.detail?.enabled!==false;
- if(!guestDemo)document.body.classList.remove('guest-preview-open','network-login-open');
+ if(!guestDemo){showLocalGuest=true;document.body.classList.remove('guest-preview-open','network-login-open');}
  try{if(guestDemo)sessionStorage.setItem('folkoop-entry-mode-v1','guest');else if(sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');}catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else{host.hidden=true;document.getElementById('workspace').hidden=false;}
+ if(guestDemo){showLocalGuest=false;load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else render();
 });
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
