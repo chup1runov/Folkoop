@@ -354,3 +354,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   #cityFrame{border-radius:16px}
 }
 
+/* Mura visit is a compact read-only account, not an auth screen. */
+.demo-profile-card{max-width:760px;padding:18px 20px}
+.demo-profile-card h2{margin:8px 0 4px}
+.demo-profile-card p{margin-bottom:9px}
+.mura-profile-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mura-drafts{max-width:900px;margin:16px 0 18px}
+.mura-drafts>.row{margin-bottom:8px}
+.mura-drafts>.row h3{margin:0}
+.mura-drafts .draft-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mura-draft-card{padding:13px 14px}
+.mura-draft-card h3{font-size:.98rem;margin:8px 0 5px}
+.mura-draft-card p{font-size:.84rem;margin:0}
+@media(max-width:760px){
+ .demo-profile-card{padding:15px 16px}
+ .mura-drafts .draft-grid{display:grid;grid-template-columns:1fr;gap:8px}
+ .mura-draft-card{padding:12px 13px;margin:0!important}
+}
+
