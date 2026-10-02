@@ -174,19 +174,29 @@ async def main():
   }
   assert any(url.endswith('/fk_claim_pilot_invite') and payload==expected_policy for url,payload in state['requests'])
   passed.append('OTP verification plus invite admission records versioned policy acceptance')
-  await page.fill('#netProfile [name=name]','Synthetic Alice')
+  xss='<img src=x onerror="window.__folkoopXssProbe=7"><script>window.__folkoopXssProbe=8<\\/script>'
+  await page.evaluate("window.__folkoopXssProbe=0")
+  await page.fill('#netProfile [name=name]',xss+' Alice')
+  await page.fill('#netProfile [name=skills]',xss+' Design')
+  await page.fill('#netProfile [name=about]',xss+' About')
   await page.click('#netProfile button')
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере')
   assert state['profile'][0]['listed'] is False
-  assert state['profile'][0]['skills']==''
+  assert xss in state['profile'][0]['name']
+  assert await page.locator('#networkPanel img[src="x"]').count()==0
+  assert await page.locator('#networkPanel script').count()==0
+  assert await page.evaluate("window.__folkoopXssProbe") == 0
   assert await page.evaluate("!Object.values(localStorage).some(x=>x.includes('synthetic-only'))")
-  passed.append('Private-by-default profile, optional skills and no persistent token')
+  passed.append('Profile server text is escaped and cannot execute hostile markup')
   await page.evaluate("location.hash='#/communities'")
-  await page.fill('#netGroup [name=name]','Test workshop')
-  await page.fill('#netGroup [name=description]','A synthetic test, not a real community')
+  await page.fill('#netGroup [name=name]',xss+' Test workshop')
+  await page.fill('#netGroup [name=description]',xss+' A synthetic test, not a real community')
   await page.click('#netGroup button')
   await expect(page.locator('#netPost')).to_be_visible()
-  await page.fill('#netPost [name=body]','<img src=x onerror=alert(1)> Test post')
+  assert await page.locator('#networkPanel img[src="x"]').count()==0
+  assert await page.locator('#networkPanel script').count()==0
+  assert await page.evaluate("window.__folkoopXssProbe") == 0
+  await page.fill('#netPost [name=body]',xss+' Test post')
   await page.click('#netPost button')
   await expect(page.locator('#networkPanel')).to_contain_text('Test post')
   assert await page.locator('#networkPanel img').count()==0
@@ -292,10 +302,12 @@ async def main():
   await page.click('#netDirect button')
   await expect(page.locator('#netMessage')).to_be_visible()
   await expect(page.locator('#networkPanel')).to_contain_text('Synthetic Bob')
-  await page.fill('#netMessage [name=body]','<img src=x onerror=alert(1)> hello')
+  await page.fill('#netMessage [name=body]',xss+' hello')
   await page.click('#netMessage button')
   await expect(page.locator('#networkPanel')).to_contain_text('hello')
-  assert await page.locator('#networkPanel img').count()==0
+  assert await page.locator('#networkPanel img[src="x"]').count()==0
+  assert await page.locator('#networkPanel script').count()==0
+  assert await page.evaluate("window.__folkoopXssProbe") == 0
   assert any(url.endswith('/fk_start_direct') for url,_ in state['requests'])
   assert any(url.endswith('/fk_send_message') for url,_ in state['requests'])
   passed.append('Direct messaging uses server RPCs and escapes message HTML')
