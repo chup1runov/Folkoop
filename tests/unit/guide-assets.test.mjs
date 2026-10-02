@@ -54,3 +54,8 @@ test('runtime guide states use one Mura identity with authored pose artwork',asy
  for(const entry of expected)assert(runtime.includes(entry),entry);
  assert(!/welcome:CANONICAL_MURA[\s\S]*'point-left':CANONICAL_MURA/.test(runtime),'tour states collapsed back to one praying pose');
 });
+
+test('service worker ships every authored Mura runtime pose',async()=>{
+ const sw=await readFile('apps/web/sw.js','utf8');
+ for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-inspect.webp','folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp','folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert(sw.includes(asset),asset);
+});
