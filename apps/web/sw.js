@@ -19,6 +19,7 @@ async function navigationResponse(request){const cached=await saved(SHELL);if(ca
 async function coreResponse(request){return (await saved(request))||fetch(request);}
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll([...CORE])));});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();const owned=k=>k.startsWith(PREFIX)||k.startsWith(RETIRED_CACHE_PREFIX+':')||k.startsWith(RETIRED_CACHE_PREFIX+'-v');await Promise.all(keys.filter(k=>owned(k)&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();})());});
+self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting();});
 self.addEventListener('fetch',event=>{
  const request=event.request,url=new URL(request.url);
  if(request.method!=='GET'||url.origin!==BASE.origin||!url.pathname.startsWith(BASE.pathname))return;
