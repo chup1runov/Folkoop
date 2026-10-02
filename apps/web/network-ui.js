@@ -333,8 +333,6 @@ function syncBadges(){
  const togetherCount=data.activityInbox.filter(x=>x.cooperation_kind!=='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
  const projectCount=data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((a,x)=>a+Number(x.unread_count||0),0);
  setCountBadge(document.getElementById('messageLink'),messageCount);
- setCountBadge(document.querySelector('#nav a[href="#/together"]'),togetherCount);
- setCountBadge(document.querySelector('#nav a[href="#/projects"]'),projectCount);
  setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/messages"]'),messageCount);
  setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/together"]'),togetherCount);
  setCountBadge(document.querySelector('#mobilePrimaryNav a[href="#/projects"]'),projectCount);
