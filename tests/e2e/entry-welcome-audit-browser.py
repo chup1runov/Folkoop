@@ -62,6 +62,9 @@ async def main():
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE)
    await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+   await page.wait_for_timeout(80)
+   initial_scroll=await page.locator('.entry-welcome-card').evaluate('e=>e.scrollTop')
+   if initial_scroll>1: failures.append(f'{width}x{height}: fresh welcome auto-scrolled to {initial_scroll}px')
    for code in LANGS:
     await page.click(f'[data-entry-language="{code}"]')
     await page.wait_for_timeout(40)
@@ -103,6 +106,7 @@ async def main():
    'No horizontal overflow appears in the welcome surface',
    'Both start paths remain reachable on short screens',
    'Primary welcome content and both CTA are initially visible at 390x844 and desktop',
+   'Fresh first contact starts at the top instead of auto-scrolling to a CTA',
    'Keyboard focus remains inside the welcome dialog',
    'No page errors in the audited first-contact flow'
   ]
