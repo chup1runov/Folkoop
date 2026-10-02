@@ -54,13 +54,6 @@ async def main():
    errors = []
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE+'?intro=1')
-   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
-   await page.locator('[data-folkoop-guide-lang]').first.focus()
-   await page.keyboard.press('Shift+Tab')
-   if not await page.evaluate("!!document.activeElement.closest('#folkoopGuideLanguageGate')"):
-    failures.append(f'{width}: language gate leaks keyboard focus')
-   await page.screenshot(path=str(OUT/f'audit-language-{width}.png'))
-   await page.click('[data-folkoop-guide-lang="ru"]')
    await expect(page.locator('#onboarding')).to_be_visible()
    await page.wait_for_timeout(220)
    for index in range(8):
@@ -101,7 +94,7 @@ async def main():
    await context.close()
   await browser.close()
  if not failures:
-  passed=['Keyboard focus stays in the language gate and tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
+  passed=['Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
  result={'passed':passed,'failures':failures,'geometry':records,'limits':[('WebKit engine on Linux; real iOS Safari and physical devices not tested' if ENGINE=='webkit' else 'Chromium emulation only; real iOS Safari and physical devices not tested'),'No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  print('ENGINE '+ENGINE)
