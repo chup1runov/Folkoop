@@ -55,7 +55,10 @@ test('runtime guide states use one Mura identity with authored pose artwork',asy
  assert(!/welcome:CANONICAL_MURA[\s\S]*'point-left':CANONICAL_MURA/.test(runtime),'tour states collapsed back to one praying pose');
 });
 
-test('service worker ships every authored Mura runtime pose',async()=>{
- const sw=await readFile('apps/web/sw.js','utf8');
- for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-inspect.webp','folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp','folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert(sw.includes(asset),asset);
+
+
+test('tour never mixes the legacy alternate Mura PNG character set into runtime',async()=>{
+ const runtime=await readFile('apps/web/folkoop-guide.js','utf8');
+ for(const asset of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert(!runtime.includes(asset),asset);
+ for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-inspect.webp','folkoop-guide-idea.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-wink.webp'])assert(runtime.includes(asset),asset);
 });
