@@ -40,7 +40,7 @@ GEOMETRY="""() => {
   card,mura,title,body,langs,guest,email,note,
   horizontalInside:[mura,title,body,langs,guest,email,note].every(inside),
   cardOutside:!card||card.x<-.5||card.y<-.5||card.x+card.w>innerWidth+.5||card.y+card.h>innerHeight+.5,
-  horizontalOverflow:document.documentElement.scrollWidth>innerWidth+1,
+  horizontalOverflow:q('#folkoopEntryGate').scrollWidth>q('#folkoopEntryGate').clientWidth+1,
   guestVisible:visible(guest),emailVisible:visible(email),titleVisible:visible(title),muraVisible:visible(mura),
   cardScrollTop:c?.scrollTop||0,cardScrollable:!!c&&c.scrollHeight>c.clientHeight+1,
   cardClientHeight:c?.clientHeight||0,cardScrollHeight:c?.scrollHeight||0
