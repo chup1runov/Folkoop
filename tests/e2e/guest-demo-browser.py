@@ -123,8 +123,9 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('учебное пространство')
-  passed.append('A real mutation attempt opens the account choice instead of changing demo state')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Сейчас ты в гостях у Муры')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Войди')
+  passed.append('A real mutation attempt explains the Mura visit boundary and opens account choice')
 
   await page.click('[data-entry="email"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
