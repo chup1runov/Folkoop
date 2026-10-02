@@ -11,14 +11,13 @@ const ASSETS=Object.freeze({
  'lean-in':'./folkoop-guide-lean-in.webp',
  idea:'./folkoop-guide-idea.webp',
  wink:'./folkoop-guide-wink.webp',
- 'point-left':'./folkoop-guide-point-left.png',
- 'point-right':'./folkoop-guide-point-right.png',
- 'point-up':'./folkoop-guide-point-up.png',
- 'point-down':'./folkoop-guide-point-down.png',
- 'sit-edge':'./folkoop-guide-sit-edge.png'
+ 'point-left':'./folkoop-guide-inspect.webp',
+ 'point-right':'./folkoop-guide-inspect.webp',
+ 'point-up':'./folkoop-guide-idea.webp',
+ 'point-down':'./folkoop-guide-lean-in.webp',
+ 'sit-edge':'./folkoop-guide-confident.webp'
 });
-// v0.29 consumes the exact 192x208 RGBA pose assets accepted into the pre-unification guide asset baseline.
-// Pointing is body artwork, not a DOM/CSS arm.
+// Keep one visual Mura identity. Direction comes from placement/motion; legacy PNG pose set is not used at runtime.
 const artState=new WeakMap();
 function setArt(el,src){
  if(artState.get(el)===src)return;
