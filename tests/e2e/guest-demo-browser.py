@@ -135,6 +135,21 @@ async def main():
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='account'")
   passed.append('Guest can switch directly to the real email sign-in flow')
 
+
+  # Regression: a returning browser may already have completed onboarding, but an explicit
+  # invitation to visit Mura must still launch the full tour.
+  await context.close()
+  context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
+  await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false});localStorage.setItem('folkoop-language','ru');localStorage.setItem('folkoop-language-choice-v1','done');localStorage.setItem('folkoop-onboarding-v3','done');sessionStorage.clear();")
+  await context.route('**/*',route)
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  await page.goto(BASE)
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Explicit visit to Mura restarts the tour even when onboarding was completed before')
+
   assert not errors,errors
   await context.close();await browser.close()
 
