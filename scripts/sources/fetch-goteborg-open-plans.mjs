@@ -130,18 +130,32 @@ export function parsePlans(sectionHtml, today = stockholmDate()) {
   }).sort((a, b) => a.deadline.localeCompare(b.deadline));
 }
 
-async function main() {
-  const response = await fetchBounded(SOURCE_URL, {
-    headers: {
-      accept: 'text/html,application/xhtml+xml',
-      'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+async function fetchOpenPlansSection(attempts = 3) {
+  let lastError;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const response = await fetchBounded(SOURCE_URL, {
+      headers: {
+        accept: 'text/html,application/xhtml+xml',
+        'accept-language': 'sv-SE,sv;q=0.9',
+        'cache-control': 'no-cache',
+        'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+      }
+    });
+
+    if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
+
+    try {
+      return extractSection(await response.text());
+    } catch (error) {
+      lastError = error;
+      if (attempt + 1 < attempts) await new Promise(resolve => setTimeout(resolve, 750 * (attempt + 1)));
     }
-  });
+  }
+  throw lastError;
+}
 
-  if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
-
-  const html = await response.text();
-  const section = extractSection(html);
+async function main() {
+  const section = await fetchOpenPlansSection();
   const sectionText = textFromHtml(section);
 
   if (!/samråd|granskning/i.test(sectionText)) {
