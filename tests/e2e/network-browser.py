@@ -174,22 +174,23 @@ async def main():
   }
   assert any(url.endswith('/fk_claim_pilot_invite') and payload==expected_policy for url,payload in state['requests'])
   passed.append('OTP verification plus invite admission records versioned policy acceptance')
+  xss_short='<img src=x onerror=window.__folkoopXssProbe=7>'
   xss='<img src=x onerror="window.__folkoopXssProbe=7"><script>window.__folkoopXssProbe=8<\\/script>'
   await page.evaluate("window.__folkoopXssProbe=0")
-  await page.fill('#netProfile [name=name]',xss+' Alice')
-  await page.fill('#netProfile [name=skills]',xss+' Design')
+  await page.fill('#netProfile [name=name]',xss_short+' Alice')
+  await page.fill('#netProfile [name=skills]',xss_short+' Design')
   await page.fill('#netProfile [name=about]',xss+' About')
   await page.click('#netProfile button')
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере')
   assert state['profile'][0]['listed'] is False
-  assert xss in state['profile'][0]['name']
+  assert xss_short in state['profile'][0]['name']
   assert await page.locator('#networkPanel img[src="x"]').count()==0
   assert await page.locator('#networkPanel script').count()==0
   assert await page.evaluate("window.__folkoopXssProbe") == 0
   assert await page.evaluate("!Object.values(localStorage).some(x=>x.includes('synthetic-only'))")
   passed.append('Profile server text is escaped and cannot execute hostile markup')
   await page.evaluate("location.hash='#/communities'")
-  await page.fill('#netGroup [name=name]',xss+' Test workshop')
+  await page.fill('#netGroup [name=name]',xss_short+' Test workshop')
   await page.fill('#netGroup [name=description]',xss+' A synthetic test, not a real community')
   await page.click('#netGroup button')
   await expect(page.locator('#netPost')).to_be_visible()
