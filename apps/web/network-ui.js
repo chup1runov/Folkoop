@@ -9,8 +9,8 @@ const sv={...en,title:'Nätverkskonto',off:'Servern är inte ansluten ännu. Din
 let api,configError=false;try{api=FolkoopNetwork.client(globalThis.FolkoopNetworkConfig);}catch{configError=true;}
 const chatCopy={
  en:{messagesTitle:'Messages',messagesDesc:'Direct and group conversations for pilot participants. Messages are stored on the server, use manual refresh and are not end-to-end encrypted.',direct:'Direct conversation',startDirect:'Start conversation',choosePerson:'Choose a person',groupChat:'Group conversation',newGroupChat:'Create group conversation',groupTitle:'Conversation name',chooseMembers:'Invite people',invitations:'Invitations',accept:'Accept',decline:'Decline',conversation:'Conversation',sendMessage:'Send',message:'Message',noChats:'No conversations yet.',backChats:'All conversations',invite:'Invite',leaveChat:'Leave conversation',deleteChat:'Delete group conversation',removeMember:'Remove',membersList:'Participants',manual:'Refresh',notEncrypted:'Manual refresh · not end-to-end encrypted',you:'You',reportMessage:'Report message',deletedMessage:'Message deleted.',invitePending:'Invitation pending',noPeople:'No discoverable pilot profiles are available yet.'},
- ru:{
- sv:{
+ ru:{messagesTitle:'Сообщения',messagesDesc:'Личные и групповые разговоры участников пилота. Сообщения хранятся на сервере, обновляются вручную и пока не имеют сквозного шифрования.',direct:'Личный разговор',startDirect:'Начать разговор',choosePerson:'Выбери человека',groupChat:'Групповой разговор',newGroupChat:'Создать групповой разговор',groupTitle:'Название разговора',chooseMembers:'Пригласить людей',invitations:'Приглашения',accept:'Принять',decline:'Отклонить',conversation:'Разговор',sendMessage:'Отправить',message:'Сообщение',noChats:'Разговоров пока нет.',backChats:'Все разговоры',invite:'Пригласить',leaveChat:'Выйти из разговора',deleteChat:'Удалить групповой разговор',removeMember:'Удалить',membersList:'Участники',manual:'Обновить',notEncrypted:'Ручное обновление · без сквозного шифрования',you:'Ты',reportMessage:'Пожаловаться на сообщение',deletedMessage:'Сообщение удалено.',invitePending:'Ожидает ответа',noPeople:'Пока нет доступных для поиска участников пилота.'},
+ sv:{messagesTitle:'Meddelanden',messagesDesc:'Direkta och gruppsamtal för pilotdeltagare. Meddelanden lagras på servern, uppdateras manuellt och är ännu inte end-to-end-krypterade.',direct:'Direktsamtal',startDirect:'Starta samtal',choosePerson:'Välj en person',groupChat:'Gruppsamtal',newGroupChat:'Skapa gruppsamtal',groupTitle:'Samtalets namn',chooseMembers:'Bjud in personer',invitations:'Inbjudningar',accept:'Acceptera',decline:'Avböj',conversation:'Samtal',sendMessage:'Skicka',message:'Meddelande',noChats:'Inga samtal ännu.',backChats:'Alla samtal',invite:'Bjud in',leaveChat:'Lämna samtalet',deleteChat:'Radera gruppsamtalet',removeMember:'Ta bort',membersList:'Deltagare',manual:'Uppdatera',notEncrypted:'Manuell uppdatering · inte end-to-end-krypterat',you:'Du',reportMessage:'Rapportera meddelande',deletedMessage:'Meddelandet raderades.',invitePending:'Väntar på svar',noPeople:'Det finns ännu inga sökbara pilotprofiler.'}
 };
 const coopCopy={
  en:{togetherTitle:'Cooperate',projectsTitle:'Projects',networkDesc:'Shared cooperation objects are visible to pilot participants. Joining reveals the participant workspace. Local drafts below stay private.',projectDesc:'Projects have participants, updates and tasks. Local project drafts below stay private until you choose to recreate them on the network.',newCoop:'Create cooperation',kind:'Type',need:'Need',offer:'Offer',purchase:'Joint purchase',resource:'Shared resource',project:'Project',title:'Title',description:'Description',location:'Area / place',target:'Target quantity',unit:'Unit',status:'Status',openStatus:'Open',activeStatus:'Active',doneStatus:'Done',cancelledStatus:'Cancelled',join:'Join',leave:'Leave',delete:'Delete cooperation',edit:'Edit cooperation',members:'Participants',updates:'Updates',newUpdate:'Add update',publishUpdate:'Post update',back:'All',progress:'Progress',commitment:'My quantity',commitNote:'Note',saveCommit:'Save quantity',removeCommit:'Remove quantity',tasks:'Tasks',newTask:'Add task',taskTitle:'Task',taskDetails:'Details',assignee:'Assignee',unassigned:'Unassigned',todo:'To do',doing:'Doing',done:'Done',saveTask:'Save task',assign:'Assign',remove:'Remove',owner:'Owner',member:'Member',empty:'Nothing here yet.',created:'Created',localBelow:'Private local drafts remain below.',quantityNeeded:'Joint purchases require a positive target and unit.',memberOnly:'Join to see participants, updates and project work.',deleteUpdate:'Delete update',deleteTask:'Delete task',editSaved:'Updated.',purchaseHelp:'Quantity is a physical amount, not a payment. No checkout or money transfer is performed.',noProfile:'Participant',open:'Open'},
@@ -68,14 +68,6 @@ const demoLocaleCopy={
   'Need a tile cutter for a small room repair over one weekend.':'Нужен плиткорез для небольшого ремонта комнаты на выходные.',
   'I can help with photography':'Могу помочь с фотографией',
   'Can help photograph an item, a small event or a neighbourhood project.':'Могу помочь сфотографировать вещь, небольшое мероприятие или местный проект.',
-  'Photography · neighbourhood help':'Фотография · помощь по соседству',
-  'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'Помощница FOLKOOP. Учебный профиль и примеры, показывающие, как работает кооперация.',
-  'Plant and seed exchange':'Обмен растениями и семенами по соседству',
-  'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Организовать небольшой обмен растениями и семенами с ролями, задачами и рабочим чатом.',
-  'Borrow a tile cutter for the weekend':'Одолжить плиткорез на выходные',
-  'Need a tile cutter for a small room repair over one weekend.':'Нужен плиткорез для небольшого ремонта комнаты на выходные.',
-  'I can help with photography':'Могу помочь с фотографией',
-  'Can help photograph an item, a small event or a neighbourhood project.':'Могу помочь сфотографировать вещь, небольшое мероприятие или местный проект.',
   'Alex · Demo':'Alex · Демо',
   'Repair · coordination':'Ремонт · координация',
   'Guest preview profile. Sample data only.':'Гостевой демонстрационный профиль. Только пример данных.',
@@ -117,14 +109,6 @@ const demoLocaleCopy={
   'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
  },
  sv:{
-  'Photography · neighbourhood help':'Fotografering · hjälp i grannskapet',
-  'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'FOLKOOP-guide. Ett lärande exempel som visar hur samarbete fungerar.',
-  'Plant and seed exchange':'Växt- och fröbyte i grannskapet',
-  'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Ordna ett litet växt- och fröbyte med roller, uppgifter och en arbetschatt.',
-  'Borrow a tile cutter for the weekend':'Låna en kakelskärare över helgen',
-  'Need a tile cutter for a small room repair over one weekend.':'Behöver en kakelskärare för en liten rumsrenovering över helgen.',
-  'I can help with photography':'Jag kan hjälpa till med fotografering',
-  'Can help photograph an item, a small event or a neighbourhood project.':'Kan hjälpa till att fotografera en sak, ett litet evenemang eller ett lokalt projekt.',
   'Photography · neighbourhood help':'Fotografering · hjälp i grannskapet',
   'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'FOLKOOP-guide. Ett lärande exempel som visar hur samarbete fungerar.',
   'Plant and seed exchange':'Växt- och fröbyte i grannskapet',
