@@ -11,6 +11,7 @@ test('production smoke validates the canonical WEBP Mura set, not deleted PNGs',
  }
  for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-wink.webp','folkoop-guide-inspect.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-idea.webp']){
   assert(guide.includes(asset),asset);
-  assert(smoke.includes(asset),asset+' missing from production smoke');
+  const escaped=asset.replaceAll('.', '\\\\.');
+  assert(smoke.includes(asset)||smoke.includes(escaped),asset+' missing from production smoke');
  }
 });
