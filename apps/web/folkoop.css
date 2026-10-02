@@ -264,3 +264,11 @@
 }
 
 .mura-practice{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 7px;padding:7px 10px;border:1px solid #eadfd7;border-radius:12px;background:#fffaf6}.mura-practice[hidden]{display:none}.mura-practice span{font-size:1.05rem;letter-spacing:.12em;color:#9a4c2f}.mura-practice strong{font-size:.82rem;color:var(--muted)}
+
+/* Unified first-contact welcome: Mura, language and path choice on one surface. */
+.entry-welcome-card{width:min(760px,100%);display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:24px;align-items:center;max-height:min(92vh,760px);overflow:auto}
+.entry-mura{align-self:center;text-align:center}.entry-mura img{display:block;width:min(100%,192px);height:auto;margin:auto;filter:drop-shadow(0 12px 18px #0002)}
+.entry-welcome-copy{min-width:0}.entry-language-label{font-size:.78rem;font-weight:750;letter-spacing:.04em;margin:14px 0 7px}
+.entry-language-choices{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}.entry-language-choice{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:6px 9px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:.76rem}.entry-language-choice span{color:var(--muted);font-size:.65rem}.entry-language-choice.is-current{border-color:var(--accent);box-shadow:0 0 0 2px #ac361f18;background:var(--soft)}
+.entry-learning-note{padding-top:11px;border-top:1px solid var(--line)}
+@media(max-width:620px){.entry-welcome-card{display:block;max-height:calc(100vh - 24px);padding:18px}.entry-mura img{width:92px;margin-bottom:4px}.entry-welcome-card h1{font-size:1.65rem}.entry-gate-body{font-size:.9rem;margin-bottom:10px}.entry-language-label{margin-top:10px}.entry-language-choices{max-height:112px;overflow:auto;margin-bottom:12px}.entry-language-choice{min-height:36px}.entry-learning-note{font-size:.72rem;margin-top:10px}}
