@@ -85,18 +85,21 @@ async def main():
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Совместные дрова')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Один полезный следующий шаг')
+
+  await page.click('[data-subsection="home-attention"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Требует внимания')
   await expect(page.locator('#networkPanel')).to_contain_text('Позвонить владельцу помещения')
   await expect(page.locator('#networkPanel')).to_contain_text('Непрочитанные сообщения · 3')
   await expect(page.locator('#networkPanel')).to_contain_text('Приглашения в чаты · 1')
-  passed.append('Daily focus promotes one real pending action while keeping the remaining obligations visible')
+  passed.append('Home attention tab exposes real pending obligations')
 
+  await page.click('[data-subsection="home-feed"]')
   await expect(page.locator('#networkPanel')).to_contain_text('В субботу общий субботник')
   await expect(page.locator('#networkPanel')).to_contain_text('Соседи Олофсторпа')
   await expect(page.locator('#networkPanel')).to_contain_text('Общая мастерская')
   await expect(page.locator('.home-feed-end')).to_contain_text('лента заканчивается здесь')
   assert await page.locator('.home-feed-card').count() <= 12
-  passed.append('Home keeps a bounded social feed and explicitly tells the participant when the feed ends')
+  passed.append('Home feed tab keeps a bounded social feed and explicitly tells the participant when the feed ends')
   await page.screenshot(path=str(OUT/'folkoop-v034-daily-value-home-mobile.png'),full_page=True)
 
   confirmations.clear();tasks.clear();chat_inbox.clear();invites.clear();activity.clear()
@@ -105,12 +108,14 @@ async def main():
   await expect(page.locator('.home-daily-clear')).to_contain_text('Всё просмотрено')
   passed.append('Home provides a truthful caught-up state instead of manufacturing more urgency')
 
+  await page.click('[data-subsection="home-actions"]')
   await page.click('[data-home=createCoop][data-kind=project]')
   await expect(page.locator('#netCoopCreate')).to_be_visible()
   await expect(page.locator('#netCoopCreate [name=kind]')).to_have_value('project')
   passed.append('Home quick action opens real network Project creation, not a mock shortcut')
 
   await page.evaluate("location.hash='#/home'")
+  await page.click('[data-subsection="home-feed"]')
   await page.click('[data-home=openCommunity]')
   await expect(page.locator('#netPost')).to_be_visible()
   passed.append('Home community publication opens its real community context')
