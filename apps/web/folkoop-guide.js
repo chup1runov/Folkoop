@@ -235,7 +235,7 @@ function leaveWelcome(){
  ensureActor();actor.hidden=false;actor.classList.remove('is-welcome');
 }
 function element(){return ensureActor();}
-function syncModal(){const root=activeTour();if(root)openModal(root);else if(modal?.id==='onboarding')closeModal();}
+function syncModal(){const tour=activeTour(),entry=document.getElementById('folkoopEntryGate'),root=tour||(entry&&!entry.hidden?entry:null);if(root)openModal(root);else if(modal?.id==='onboarding'||modal?.id==='folkoopEntryGate')closeModal(false);}
 function refresh(){
  cancelTeleport();
  if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
