@@ -101,6 +101,11 @@ export function safePrintableReport(report){
   };
 }
 
+export function googleActivationGateExitCode(report){
+  if(!report?.application?.googleOAuthEnabled)return 0;
+  return report.googlePilotReady?0:2;
+}
+
 async function main(){
   const config=await loadPublicNetworkConfig();
   const report=await probeHostedAuth(config);
@@ -110,6 +115,9 @@ async function main(){
   }
   if(process.argv.includes('--require-google-ready')&&!report.googlePilotReady){
     process.exitCode=2;
+  }
+  if(process.argv.includes('--require-google-if-app-enabled')){
+    process.exitCode=googleActivationGateExitCode(report);
   }
 }
 

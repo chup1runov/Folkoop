@@ -26,6 +26,8 @@ jobs:
           python-version: '3.12'
       - name: Verify reproducible npm metadata
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Fail closed if Google app flag is enabled before hosted provider is ready
+        run: node scripts/auth/probe-auth-readiness.mjs --require-google-if-app-enabled
       - name: Syntax, versions, assets and deterministic regression tests
         run: |
           find apps/web -maxdepth 1 -type f -name '*.js' -print0 | xargs -0 -r -n1 node --check

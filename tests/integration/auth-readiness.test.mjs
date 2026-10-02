@@ -1,10 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {
   loadPublicNetworkConfig,
   summarizeAuthSettings,
   probeHostedAuth,
-  safePrintableReport
+  safePrintableReport,
+  googleActivationGateExitCode
 } from '../../scripts/auth/probe-auth-readiness.mjs';
 
 const config={
@@ -94,4 +96,33 @@ test('printable report never includes API key or provider secrets',()=>{
   const printed=JSON.stringify(safePrintableReport(report));
   assert(!printed.includes('sb_publishable_'));
   assert(!/secret|client_id|client_secret/i.test(printed));
+});
+
+
+test('activation CI gate is permissive while app Google flag is off and fail-closed once enabled',()=>{
+  const hostedOff=summarizeAuthSettings(
+    {external:{google:false,email:true},disable_signup:false},
+    config
+  );
+  assert.equal(googleActivationGateExitCode(hostedOff),0);
+
+  const enabled={...config,googleOAuthEnabled:true};
+  const premature=summarizeAuthSettings(
+    {external:{google:false,email:true},disable_signup:false},
+    enabled
+  );
+  assert.equal(googleActivationGateExitCode(premature),2);
+
+  const ready=summarizeAuthSettings(
+    {external:{google:true,email:true},disable_signup:false},
+    enabled
+  );
+  assert.equal(googleActivationGateExitCode(ready),0);
+});
+
+test('Google activation gate runs in the required validate job, not only continue-on-error sources',async()=>{
+  const workflow=await readFile('.github/workflows/pages.yml','utf8');
+  const gate='node scripts/auth/probe-auth-readiness.mjs --require-google-if-app-enabled';
+  assert(workflow.includes(gate));
+  assert(workflow.indexOf(gate)<workflow.indexOf('  sources:'),'activation gate must run before the continue-on-error sources job');
 });
