@@ -36,6 +36,7 @@ GEOMETRY="""() => {
   direction:getComputedStyle(q('#folkoopEntryGate')).direction,
   languageCount:document.querySelectorAll('[data-entry-language]').length,
   currentCount:document.querySelectorAll('[data-entry-language][aria-pressed="true"]').length,
+  languagesClipped:!!q('#entryLanguageChoices')&&q('#entryLanguageChoices').scrollHeight>q('#entryLanguageChoices').clientHeight+1,
   card,mura,title,body,langs,guest,email,note,
   horizontalInside:[mura,title,body,langs,guest,email,note].every(inside),
   cardOutside:!card||card.x<-.5||card.y<-.5||card.x+card.w>innerWidth+.5||card.y+card.h>innerHeight+.5,
@@ -74,6 +75,7 @@ async def main():
     if record['cardOutside']: failures.append(f'{width}x{height} {code}: welcome card outside viewport')
     if not record['horizontalInside']: failures.append(f'{width}x{height} {code}: welcome content exceeds card horizontally')
     if record['horizontalOverflow']: failures.append(f'{width}x{height} {code}: document has horizontal overflow')
+    if width>=390 and height>=800 and record['languagesClipped']: failures.append(f'{width}x{height} {code}: not all 11 language choices are exposed')
     if width>=390 and height>=800 and (not record['guestVisible'] or not record['emailVisible'] or not record['titleVisible'] or not record['muraVisible']):
      failures.append(f'{width}x{height} {code}: primary welcome content or CTA not initially visible')
     # On short screens scrolling is acceptable, but both CTA must be reachable.
@@ -96,7 +98,7 @@ async def main():
  if not failures:
   passed=[
    'Unified Mura welcome stays inside four representative viewports',
-   'All 11 language choices remain available with one selected state',
+   'All 11 language choices remain available with one selected state and are exposed on normal-height mobile/desktop',
    'Arabic and Persian are RTL while Latin-script Kurdish remains LTR',
    'No horizontal overflow appears in the welcome surface',
    'Both start paths remain reachable on short screens',
