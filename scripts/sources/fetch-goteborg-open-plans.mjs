@@ -1,6 +1,10 @@
 import { fetchBounded } from './http.mjs';
 import { pathToFileURL } from 'node:url';
 const SOURCE_URL = 'https://goteborg.se/planochbyggprojekt';
+const SOURCE_FETCH_URLS = [
+  SOURCE_URL,
+  'https://goteborg.se/wps/portal?uri=gbglnk%3Agbg.page.bb7386fd-1152-47cb-9da4-d06bd7780a77'
+];
 const SOURCE_NAME = 'Göteborgs Stad';
 const SOURCE_ID = 'goteborg_open_plans';
 
@@ -49,21 +53,35 @@ function toAbsoluteUrl(href) {
   }
 }
 
-function extractSection(html) {
+function escapeRegex(value) {
+  return String(value).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+function phrasePattern(phrase) {
+  const words = String(phrase).trim().split(/\s+/).map(escapeRegex);
+  return new RegExp(words.join('(?:\\s|<[^>]*>)+'), 'i');
+}
+
+function phraseIndex(html, phrase, from = 0) {
+  const match = phrasePattern(phrase).exec(html.slice(from));
+  return match ? from + match.index : -1;
+}
+export function extractSection(html) {
+  const decodedHtml = decodeEntities(html);
   const startNeedle = 'Planer öppna för synpunkter';
   const endNeedles = ['Byggs just nu', 'Markanvisningar'];
 
-  const start = html.indexOf(startNeedle);
+  const start = phraseIndex(decodedHtml, startNeedle);
   if (start < 0) throw new Error('Open-for-comments section not found on Göteborgs Stad page');
 
-  let end = html.length;
+  let end = decodedHtml.length;
   for (const needle of endNeedles) {
-    const index = html.indexOf(needle, start + startNeedle.length);
+    const index = phraseIndex(decodedHtml, needle, start + startNeedle.length);
     if (index >= 0) end = Math.min(end, index);
   }
 
   if (end <= start) throw new Error('Could not determine Göteborg open-plans section boundary');
-  return html.slice(start, end);
+  return decodedHtml.slice(start, end);
 }
 
 export function parsePlans(sectionHtml, today = stockholmDate()) {
@@ -116,18 +134,32 @@ export function parsePlans(sectionHtml, today = stockholmDate()) {
   }).sort((a, b) => a.deadline.localeCompare(b.deadline));
 }
 
-async function main() {
-  const response = await fetchBounded(SOURCE_URL, {
-    headers: {
-      accept: 'text/html,application/xhtml+xml',
-      'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+async function fetchOpenPlansSection() {
+  let lastError;
+  for (const url of SOURCE_FETCH_URLS) {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const response = await fetchBounded(url, {
+          headers: {
+            accept: 'text/html,application/xhtml+xml',
+            'accept-language': 'sv-SE,sv;q=0.9',
+            'cache-control': 'no-cache',
+            'user-agent': 'FOLKOOP/0.7 (+https://github.com/chup1runov/Folkoop)'
+          }
+        });
+        if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
+        return extractSection(await response.text());
+      } catch (error) {
+        lastError = error;
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 750));
+      }
     }
-  });
+  }
+  throw lastError || new Error('Göteborg open-plans source unavailable');
+}
 
-  if (!response.ok) throw new Error(`Göteborgs Stad returned ${response.status}`);
-
-  const html = await response.text();
-  const section = extractSection(html);
+async function main() {
+  const section = await fetchOpenPlansSection();
   const sectionText = textFromHtml(section);
 
   if (!/samråd|granskning/i.test(sectionText)) {
