@@ -286,3 +286,58 @@
 .mobile-context-dock>a,.mobile-context-dock>button{display:inline-flex;flex:0 0 auto;align-items:center;gap:5px;min-height:36px;padding:5px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);text-decoration:none;font-size:.76rem;font-weight:650}
 .mobile-context-dock>a svg,.mobile-context-dock>button svg{width:15px;height:15px}.mobile-context-dock>a[aria-current="page"]{background:#fff;color:var(--ink);border-color:var(--line);font-weight:780}
 @media(max-width:760px){.layout{display:block}.content{padding-bottom:142px}.mobile-primary-nav{left:0;right:0;transform:none;width:100%;border-radius:0}.mobile-context-dock{left:8px;right:8px;transform:none;width:auto;justify-content:flex-start}}
+
+/* Civic Teal visual theme draft: neutral surfaces, calm interactive color, warm human accent. */
+:root{
+ --ink:#1F2933;
+ --muted:#667085;
+ --paper:#F7F5F1;
+ --line:#D8D5CF;
+ --accent:#176B6B;
+ --orange:#A94F36;
+ --soft:#EAF3F2;
+ --warm:#A94F36;
+ --warm-soft:#F7EDE9;
+ --focus:#0B6FA4;
+ --danger:#9E3530;
+ --success:#2F6F4E;
+ --section-home:#176B6B;
+ --section-together:#2D6F68;
+ --section-projects:#497271;
+ --section-city:#246781;
+ --section-messages:#356A5B;
+ --section-me:#59666D
+}
+body{background:var(--paper)}
+.button{background:var(--accent);border-color:var(--accent)}
+.button:hover{background:#125959;border-color:#125959}
+.button.secondary{background:transparent;color:var(--ink);border-color:var(--line)}
+.button.secondary:hover{background:#fff}
+.text-link,.text-button{color:var(--accent)}
+.pilot{border-inline-start-color:var(--warm)}
+.pilot>span,.eyebrow{color:var(--warm)}
+.badge{background:var(--warm-soft);color:#7D3E2E}
+.net-count{background:var(--accent)}
+.activity-dot{background:var(--warm)}
+.home-attention-card{border-inline-start-color:var(--warm)}
+.onboarding-guide{color:var(--warm)}
+.onboarding-guide-mark{background:var(--warm-soft);border-color:#E4C7BC;color:var(--warm)}
+.entry-language-choice.is-current{border-color:var(--accent);box-shadow:0 0 0 2px #176B6B18;background:var(--soft)}
+.mobile-demo-chip{color:var(--warm)!important;box-shadow:0 0 0 1px #E4C7BC!important}
+.demo-dot{background:var(--warm)}
+.guest-demo-banner{background:#FFF9F5;border-color:#E4C7BC}
+.quick.intent-action{border-color:color-mix(in srgb,var(--intent-color,var(--accent)) 34%,white)}
+
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:var(--focus)}
+.text-button.danger{color:var(--danger)}
+
+/* Civic Teal intent palette: differentiated actions without the previous rainbow effect. */
+:root{
+ --intent-need:#246B7A;--intent-need-bg:#E8F2F3;
+ --intent-offer:#2F6F4E;--intent-offer-bg:#EAF3ED;
+ --intent-project:#526C73;--intent-project-bg:#EDF1F2;
+ --intent-purchase:#8B5C2C;--intent-purchase-bg:#F7EFE5;
+ --intent-resource:#176B6B;--intent-resource-bg:#EAF3F2
+}
+.button.intent-project:not(.quick){background:var(--intent-project);border-color:var(--intent-project)}
+.button.intent-project:not(.quick):hover{background:#435A60;border-color:#435A60}
