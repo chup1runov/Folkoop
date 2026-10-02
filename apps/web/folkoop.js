@@ -38,11 +38,11 @@ const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').t
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
- home:['home'],
+ home:['home-overview','home-attention','home-feed','home-actions'],
  together:['together','people','communities'],
- projects:['projects'],
+ projects:['projects-overview','projects-mine','projects-tasks','projects-updates'],
  city:['city','center'],
- messages:['messages'],
+ messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
@@ -54,7 +54,13 @@ function renderMobileChrome(){
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
  const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
  dock.dataset.parentSection=active;
- const items=context.map(k=>'<a href="#/'+k+'" data-mobile-subnav="'+k+'" data-section="'+active+'"'+(current===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='about'?t('aboutPage'):t(k))+'</span></a>').join('');
+ const subLabel=k=>({
+  'home-overview':'Обзор','home-attention':'Требует внимания','home-feed':'Что происходит','home-actions':'Быстрые действия',
+  'projects-overview':'Проекты','projects-mine':'Мои','projects-tasks':'Задачи','projects-updates':'Обновления',
+  'messages-chats':'Чаты','messages-direct':'Личные','messages-groups':'Групповые','messages-invites':'Приглашения'
+ }[k]||t(k==='about'?'aboutPage':k));
+ const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&(k.endsWith('-overview')||k.endsWith('-chats')));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(target)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
