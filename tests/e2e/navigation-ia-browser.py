@@ -1,9 +1,11 @@
 """Unified two-line navigation and subsection behavior."""
 import asyncio, os, shutil
+from pathlib import Path
 from playwright.async_api import async_playwright, expect
 
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
 ENGINE=os.getenv('BROWSER_ENGINE','chromium').lower()
+OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(parents=True,exist_ok=True)
 
 async def launch(pw):
  if ENGINE=='webkit': return await pw.webkit.launch()
@@ -45,6 +47,9 @@ async def audit(browser,width,height):
  await expect(page.locator('#mobileContextDock a')).to_have_count(2)
  assert await page.locator('a[href="#/center"]').count()==1
  await expect(page.locator('#mobileContextDock a[href="#/center"]')).to_be_visible()
+ await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
+ await page.click('#mobilePrimaryNav a[href="#/projects"]')
+ await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
  await context.close()
 
 async def main():
