@@ -35,9 +35,22 @@ for(const asset of pngAssets)test(`FOLKOOP guide v0.29 pose ${asset} is canonica
 });
 
 
-test('runtime guide states resolve to one canonical Mura artwork',async()=>{
+test('runtime guide states use one Mura identity with authored pose artwork',async()=>{
  const runtime=await readFile('apps/web/folkoop-guide.js','utf8');
- assert.match(runtime,/const CANONICAL_MURA='\.\/folkoop-guide-please\.webp'/);
- const expected=["welcome:CANONICAL_MURA","idle:CANONICAL_MURA","idea:CANONICAL_MURA","wink:CANONICAL_MURA","'point-left':CANONICAL_MURA","'point-right':CANONICAL_MURA","'point-up':CANONICAL_MURA","'point-down':CANONICAL_MURA","'sit-edge':CANONICAL_MURA"];
+ assert.match(runtime,/const CANONICAL_MURA='\.\/folkoop-guide-confident\.webp'/);
+ const expected=[
+  "welcome:'./folkoop-guide-wink.webp'",
+  "idle:CANONICAL_MURA",
+  "confident:'./folkoop-guide-confident.webp'",
+  "inspect:'./folkoop-guide-inspect.webp'",
+  "searching:'./folkoop-guide-searching.webp'",
+  "'lean-in':'./folkoop-guide-lean-in.webp'",
+  "idea:'./folkoop-guide-idea.webp'",
+  "'point-left':'./folkoop-guide-point-left.png'",
+  "'point-right':'./folkoop-guide-point-right.png'",
+  "'point-up':'./folkoop-guide-point-up.png'",
+  "'point-down':'./folkoop-guide-point-down.png'"
+ ];
  for(const entry of expected)assert(runtime.includes(entry),entry);
+ assert(!/welcome:CANONICAL_MURA[\s\S]*'point-left':CANONICAL_MURA/.test(runtime),'tour states collapsed back to one praying pose');
 });
