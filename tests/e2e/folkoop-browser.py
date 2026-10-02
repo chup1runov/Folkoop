@@ -114,10 +114,19 @@ async def main():
   await offline.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-workspace-v1',JSON.stringify({version:1,profile:{name:'Offline',city:'Göteborg',skills:'',about:''},drafts:[]}))")
   op=await offline.new_page();await op.goto(BASE)
   await op.evaluate('navigator.serviceWorker.ready')
-  await op.wait_for_load_state('load')
-  if not await op.evaluate('navigator.serviceWorker.controller !== null'):
+  controlled=False
+  for _ in range(40):
+   try:
+    if await op.evaluate('navigator.serviceWorker.controller !== null'):
+     controlled=True;break
+   except Exception:
+    try: await op.wait_for_load_state('domcontentloaded',timeout=2000)
+    except Exception: pass
+   await asyncio.sleep(.1)
+  if not controlled:
    await op.reload(wait_until='load')
-  assert await op.evaluate('navigator.serviceWorker.controller !== null')
+   controlled=await op.evaluate('navigator.serviceWorker.controller !== null')
+  assert controlled
   await offline.set_offline(True);await op.reload()
   await expect(op.locator('#mobilePrimaryNav a')).to_have_count(6)
   await op.click('#mobilePrimaryNav a[href="#/city"]')
