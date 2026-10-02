@@ -789,9 +789,10 @@ window.addEventListener('message',e=>{
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:guest-demo',e=>{
  guestDemo=e.detail?.enabled!==false;
+ if(!guestDemo)document.body.classList.remove('guest-preview-open','network-login-open');
  try{if(guestDemo)sessionStorage.setItem('folkoop-entry-mode-v1','guest');else if(sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');}catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else render();
+ if(guestDemo){load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else{host.hidden=true;document.getElementById('workspace').hidden=false;}
 });
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
