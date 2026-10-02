@@ -94,6 +94,10 @@ const demoLocaleCopy={
   'Shared cargo bike':'Общий грузовой велосипед',
   'Available for short local borrowing by arrangement.':'Можно ненадолго взять поблизости по договорённости.',
   'Repair café · work chat':'Ремонтное кафе · рабочий чат',
+  'Plant exchange · work chat':'Обмен растениями · рабочий чат',
+  'Confirm the exchange table':'Подтвердить место для обмена',
+  'Check that the exchange table is available on Saturday 13:00–16:00.':'Проверить, что место для обмена доступно в субботу с 13:00 до 16:00.',
+  'todo · Confirm the exchange table':'Нужно сделать · Подтвердить место для обмена',
   'I can bring hand tools and a folding table.':'Я могу принести ручные инструменты и складной стол.',
   'I made a simple sign for the entrance. We still need someone for coffee.':'Я подготовила простую табличку для входа. Ещё нужен кто-то для кофе.',
   'I can help collect the firewood if the pickup is after 17:00.':'Могу помочь забрать дрова, если получение будет после 17:00.',
@@ -143,6 +147,10 @@ const demoLocaleCopy={
   'Shared cargo bike':'Delad lastcykel',
   'Available for short local borrowing by arrangement.':'Kan lånas kort lokalt efter överenskommelse.',
   'Repair café · work chat':'Reparationscafé · arbetschatt',
+  'Plant exchange · work chat':'Växtbyte · arbetschatt',
+  'Confirm the exchange table':'Bekräfta bytesbordet',
+  'Check that the exchange table is available on Saturday 13:00–16:00.':'Kontrollera att bytesbordet är tillgängligt på lördag 13:00–16:00.',
+  'todo · Confirm the exchange table':'Att göra · Bekräfta bytesbordet',
   'I can bring hand tools and a folding table.':'Jag kan ta med handverktyg och ett fällbord.',
   'I made a simple sign for the entrance. We still need someone for coffee.':'Jag gjorde en enkel skylt till entrén. Vi behöver fortfarande någon som ordnar kaffe.',
   'I can help collect the firewood if the pickup is after 17:00.':'Jag kan hjälpa till att hämta veden om det blir efter 17:00.',
@@ -196,7 +204,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
  ];
  const chats=[
-  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Repair café · work chat'),created_at:'2026-09-28T10:00:00Z'},
+  {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Plant exchange · work chat'),created_at:'2026-09-28T10:00:00Z'},
   {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
  ];
  const chatMembers=[
@@ -212,7 +220,7 @@ function demoSnapshot(){
   {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'}
  ];
  const tasks=[
-  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the room'),details:demoText('Ask whether the community room is free on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
+  {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the exchange table'),details:demoText('Check that the exchange table is available on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
   {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
  ];
  const commitments=[
@@ -222,11 +230,11 @@ function demoSnapshot(){
  ];
  const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Sample supplier offer for the demo.')}];
  const activity=[
-  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Neighbourhood repair café'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the room')},
+  {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
   {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
  ];
  const coopActivity=[
-  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the room'),created_at:'2026-09-30T08:30:00Z'},
+  {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the exchange table'),created_at:'2026-09-30T08:30:00Z'},
   {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:demoText('Entrance sign ready'),created_at:'2026-09-29T18:00:00Z'},
   {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
  ];
