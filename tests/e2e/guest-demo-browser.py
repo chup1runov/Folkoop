@@ -28,18 +28,18 @@ async def main():
   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
   await page.click('[data-folkoop-guide-lang="ru"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь войти?')
-  await expect(page.locator('#entryGateBody')).to_contain_text('найти подходящих людей или ресурсы и конкретный следующий шаг')
+  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
+  await expect(page.locator('#entryGateBody')).to_contain_text('позволь Муре показать, как работает FOLKOOP')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
-  await expect(page.locator('[data-entry="guest"]')).to_have_text('Посмотреть как гость')
+  await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
   passed.append('First visit is language -> account choice, not language -> long tutorial/form')
 
   await page.click('[data-entry="guest"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await expect(page.locator('#onboarding')).to_be_visible()
-  await expect(page.locator('#onboardingTitle')).to_have_text('Что делает FOLKOOP')
-  await expect(page.locator('#onboardingBody')).to_contain_text('ещё до группового чата')
+  await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
+  await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Guest first session receives the short value-first product tour')
   await page.click('[data-onboarding="skip"]')
@@ -57,7 +57,7 @@ async def main():
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('вымышленные примеры')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('примеры, а не утверждения о реальных участниках')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
 
@@ -70,7 +70,7 @@ async def main():
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
-  for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Ремонтное кафе'),('together','Купить сухие дрова вместе')]:
+  for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
     await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
    elif route_name in ('communities',):
@@ -95,9 +95,9 @@ async def main():
 
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Ремонтное кафе по соседству')
+  await expect(page.locator('#networkPanel')).to_contain_text('Обмен растениями и семенами по соседству')
   await page.click('[data-coop="open"]')
-  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить помещение')
+  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
   await expect(page.locator('.coop-summary-stats')).to_be_visible()
   tasks=page.locator('[data-coop-section="tasks"]')
   members=page.locator('[data-coop-section="members"]')
@@ -106,7 +106,7 @@ async def main():
   assert await members.get_attribute('open') is None
   assert await activity.get_attribute('open') is None
   await tasks.locator('summary').click()
-  await expect(tasks).to_contain_text('Подтвердить помещение')
+  await expect(tasks).to_contain_text('Подтвердить место для обмена')
   await members.locator('summary').click()
   await expect(members).to_contain_text('Anna')
   passed.append('Project starts with summary/next step and keeps tasks, participants and activity collapsible')
@@ -120,7 +120,7 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('создавать')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Войди, чтобы участвовать самому')
   passed.append('A real mutation attempt opens the account choice instead of changing demo state')
 
   await page.click('[data-entry="email"]')

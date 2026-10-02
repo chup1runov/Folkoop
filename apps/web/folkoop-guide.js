@@ -235,6 +235,7 @@ function leaveWelcome(){
  ensureActor();actor.hidden=false;actor.classList.remove('is-welcome');
 }
 function element(){return ensureActor();}
+function syncModal(){const root=activeTour();if(root)openModal(root);else if(modal?.id==='onboarding')closeModal();}
 function refresh(){
  cancelTeleport();
  if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
@@ -297,5 +298,5 @@ window.addEventListener('scroll',()=>{
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);
-globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,setExpanded});
+globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,setExpanded,syncModal});
 })();
