@@ -70,7 +70,7 @@ async def main():
   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
   passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
 
-  for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Ремонтное кафе'),('together','Купить сухие дрова вместе')]:
+  for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
     await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
    elif route_name in ('communities',):
