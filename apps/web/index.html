@@ -77,12 +77,6 @@
   <script src="./app.js"></script>
   <script src="./about-copy.js"></script>
   <script src="./about-project.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
-      });
-    }
-  </script>
+  <script src="./sw-register.js"></script>
 </body>
 </html>
