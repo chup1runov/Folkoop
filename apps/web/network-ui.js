@@ -53,12 +53,11 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const SUBSECTION_KEY='folkoop-subsection-v1';
 function currentSubsection(parent){
- try{
-  const key=sessionStorage.getItem(SUBSECTION_KEY)||'';
-  if(parent==='home'&&key.startsWith('home-'))return key;
-  if(parent==='projects'&&key.startsWith('projects-'))return key;
-  if(parent==='messages'&&key.startsWith('messages-'))return key;
- }catch{}
+ let key=document.documentElement.dataset.folkoopSubsection||'';
+ if(!key){try{key=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}}
+ if(parent==='home'&&key.startsWith('home-'))return key;
+ if(parent==='projects'&&key.startsWith('projects-'))return key;
+ if(parent==='messages'&&key.startsWith('messages-'))return key;
  return parent==='home'?'home-overview':parent==='projects'?'projects-overview':'messages-chats';
 }
 
