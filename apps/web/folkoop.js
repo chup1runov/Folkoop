@@ -49,6 +49,7 @@ const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together
 const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
+document.documentElement.dataset.folkoopSubsection=subsection;
 const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':'';
 const SUBNAV_LABELS={
  en:{'home-overview':'Overview','home-attention':'Needs attention','home-feed':'What is happening','home-actions':'Quick actions','projects-overview':'Projects','projects-mine':'Mine','projects-tasks':'Tasks','projects-updates':'Updates','messages-chats':'Chats','messages-direct':'Direct','messages-groups':'Groups','messages-invites':'Invitations'},
@@ -70,6 +71,7 @@ function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
  if(defaultSubsection[active]&&subsectionParent(subsection)!==active){subsection=defaultSubsection[active];try{sessionStorage.setItem(SUBSECTION_KEY,subsection);}catch{}}
+ document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
  const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
@@ -482,7 +484,7 @@ $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
 document.addEventListener('click',e=>{
  const link=e.target.closest?.('[data-subsection]');if(!link)return;
  const key=link.dataset.subsection,parent=subsectionParent(key);if(!parent)return;
- e.preventDefault();subsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
+ e.preventDefault();subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
  if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
  render();
  window.dispatchEvent(new CustomEvent('folkoop:subsection',{detail:{key,parent}}));
