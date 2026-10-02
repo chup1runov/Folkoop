@@ -790,3 +790,82 @@ button,a,input,textarea,select{max-width:100%}
 .info-button{display:grid;place-items:center;flex:none}
 @media(min-width:680px){.today{padding:30px 28px}.daily-grid{grid-template-columns:1.15fr 1fr}.daily-tools{grid-template-columns:1fr 1fr}}
 @media(max-width:359px){.topbar{padding-inline:12px;gap:8px}.brand{font-size:18px}.brand-lockup{gap:6px}.tagline{font-size:10px}.top-actions{gap:5px}.today{padding:22px 14px}.daily-card{padding:15px}.section-head{flex-wrap:wrap}}
+
+/* Embedded City: inherit FOLKOOP Civic Teal chrome without changing civic semantics. */
+html[data-folkoop-embedded-city="1"]{
+  --ink:#1F2933;
+  --muted:#667085;
+  --line:#D8D5CF;
+  --bg:#F7F5F1;
+  --surface:#FFFFFF;
+  --surface-soft:#FAF8F4;
+  --teal:#176B6B;
+  --teal-strong:#125959;
+  --teal-soft:#EAF3F2;
+  --teal-line:#C7DCD9;
+  --warm:#F7EDE9;
+  --focus:#0B6FA4;
+}
+html[data-folkoop-embedded-city="1"] body{background:transparent}
+html[data-folkoop-embedded-city="1"] .app-shell{
+  width:100%;
+  max-width:none;
+  min-height:100%;
+  padding-bottom:18px;
+  background:transparent;
+  box-shadow:none
+}
+/* The outer FOLKOOP shell already owns branding and language selection. */
+html[data-folkoop-embedded-city="1"] .topbar{display:none}
+html[data-folkoop-embedded-city="1"] .bottom-nav{
+  position:sticky;
+  top:0;
+  bottom:auto;
+  left:auto;
+  transform:none;
+  width:100%;
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-top:0;
+  border-radius:0 0 16px 16px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 8px 24px rgba(31,41,51,.07);
+  backdrop-filter:blur(16px);
+  z-index:25
+}
+html[data-folkoop-embedded-city="1"] .bottom-nav button{
+  min-height:48px;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:12px
+}
+html[data-folkoop-embedded-city="1"] .bottom-nav button.active,
+html[data-folkoop-embedded-city="1"] .bottom-nav button[aria-current="page"]{
+  color:var(--teal);
+  background:var(--teal-soft)
+}
+html[data-folkoop-embedded-city="1"] .screen{
+  max-width:860px;
+  padding:24px 22px 28px
+}
+html[data-folkoop-embedded-city="1"] .compact-today{max-width:860px}
+html[data-folkoop-embedded-city="1"] .action{
+  min-height:44px;
+  border-radius:10px;
+  background:var(--teal)
+}
+html[data-folkoop-embedded-city="1"] .action:hover{background:var(--teal-strong)}
+html[data-folkoop-embedded-city="1"] .action.secondary{
+  background:#fff;
+  color:var(--ink);
+  border-color:var(--line)
+}
+html[data-folkoop-embedded-city="1"] .result,
+html[data-folkoop-embedded-city="1"] .compact-row-group,
+html[data-folkoop-embedded-city="1"] .compact-weather{border-radius:16px}
+@media(max-width:520px){
+  html[data-folkoop-embedded-city="1"] .bottom-nav{border-radius:0 0 12px 12px;padding-inline:5px}
+  html[data-folkoop-embedded-city="1"] .bottom-nav button{font-size:10.5px;padding-inline:2px}
+  html[data-folkoop-embedded-city="1"] .screen{padding:20px 16px 26px}
+}
+
