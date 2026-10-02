@@ -22,19 +22,6 @@ for(const asset of assets)test(`FOLKOOP guide pose ${asset} is canonical 192x208
  assert(file.length>7000&&file.length<20000,'unexpected pose payload size');
 });
 
-const pngAssets=['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'];
-function pngMeta(buffer){
- assert.equal(buffer.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
- assert.equal(buffer.subarray(12,16).toString('ascii'),'IHDR');
- return {width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),bitDepth:buffer[24],colorType:buffer[25]};
-}
-for(const asset of pngAssets)test(`FOLKOOP guide v0.29 pose ${asset} is canonical 192x208 RGBA PNG`,async()=>{
- const file=await readFile('apps/web/'+asset),meta=pngMeta(file);
- assert.deepEqual(meta,{width:192,height:208,bitDepth:8,colorType:6});
- assert(file.length>20_000&&file.length<50_000,'unexpected pose payload size');
-});
-
-
 test('runtime guide states use one Mura identity with authored pose artwork',async()=>{
  const runtime=await readFile('apps/web/folkoop-guide.js','utf8');
  assert.match(runtime,/const CANONICAL_MURA='\.\/folkoop-guide-confident\.webp'/);
@@ -46,10 +33,10 @@ test('runtime guide states use one Mura identity with authored pose artwork',asy
   "searching:'./folkoop-guide-searching.webp'",
   "'lean-in':'./folkoop-guide-lean-in.webp'",
   "idea:'./folkoop-guide-idea.webp'",
-  "'point-left':'./folkoop-guide-point-left.png'",
-  "'point-right':'./folkoop-guide-point-right.png'",
-  "'point-up':'./folkoop-guide-point-up.png'",
-  "'point-down':'./folkoop-guide-point-down.png'"
+  "'point-left':'./folkoop-guide-inspect.webp'",
+  "'point-right':'./folkoop-guide-inspect.webp'",
+  "'point-up':'./folkoop-guide-idea.webp'",
+  "'point-down':'./folkoop-guide-lean-in.webp'"
  ];
  for(const entry of expected)assert(runtime.includes(entry),entry);
  assert(!/welcome:CANONICAL_MURA[\s\S]*'point-left':CANONICAL_MURA/.test(runtime),'tour states collapsed back to one praying pose');
