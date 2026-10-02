@@ -266,8 +266,9 @@ function demoSnapshot(){
  };
 }
 function guestRequireAccount(){
- notice=ht('demoLocked');
- window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action'}}));
+ const note=ht('demoLocked');
+ notice=note;
+ window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action',note}}));
  render();
 }
 
