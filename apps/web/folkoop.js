@@ -50,21 +50,33 @@ const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
 const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':'';
+const SUBNAV_LABELS={
+ en:{'home-overview':'Overview','home-attention':'Needs attention','home-feed':'What is happening','home-actions':'Quick actions','projects-overview':'Projects','projects-mine':'Mine','projects-tasks':'Tasks','projects-updates':'Updates','messages-chats':'Chats','messages-direct':'Direct','messages-groups':'Groups','messages-invites':'Invitations'},
+ sv:{'home-overview':'Översikt','home-attention':'Behöver uppmärksamhet','home-feed':'Vad händer','home-actions':'Snabbåtgärder','projects-overview':'Projekt','projects-mine':'Mina','projects-tasks':'Uppgifter','projects-updates':'Uppdateringar','messages-chats':'Chattar','messages-direct':'Direkt','messages-groups':'Grupper','messages-invites':'Inbjudningar'},
+ ru:{'home-overview':'Обзор','home-attention':'Требует внимания','home-feed':'Что происходит','home-actions':'Быстрые действия','projects-overview':'Проекты','projects-mine':'Мои','projects-tasks':'Задачи','projects-updates':'Обновления','messages-chats':'Чаты','messages-direct':'Личные','messages-groups':'Групповые','messages-invites':'Приглашения'},
+ es:{'home-overview':'Resumen','home-attention':'Requiere atención','home-feed':'Qué ocurre','home-actions':'Acciones rápidas','projects-overview':'Proyectos','projects-mine':'Míos','projects-tasks':'Tareas','projects-updates':'Actualizaciones','messages-chats':'Chats','messages-direct':'Directos','messages-groups':'Grupos','messages-invites':'Invitaciones'},
+ uk:{'home-overview':'Огляд','home-attention':'Потребує уваги','home-feed':'Що відбувається','home-actions':'Швидкі дії','projects-overview':'Проєкти','projects-mine':'Мої','projects-tasks':'Завдання','projects-updates':'Оновлення','messages-chats':'Чати','messages-direct':'Особисті','messages-groups':'Групові','messages-invites':'Запрошення'},
+ fi:{'home-overview':'Yleiskuva','home-attention':'Vaatii huomiota','home-feed':'Mitä tapahtuu','home-actions':'Pikatoiminnot','projects-overview':'Projektit','projects-mine':'Omat','projects-tasks':'Tehtävät','projects-updates':'Päivitykset','messages-chats':'Keskustelut','messages-direct':'Yksityiset','messages-groups':'Ryhmät','messages-invites':'Kutsut'},
+ bs:{'home-overview':'Pregled','home-attention':'Traži pažnju','home-feed':'Šta se dešava','home-actions':'Brze radnje','projects-overview':'Projekti','projects-mine':'Moji','projects-tasks':'Zadaci','projects-updates':'Ažuriranja','messages-chats':'Razgovori','messages-direct':'Direktno','messages-groups':'Grupe','messages-invites':'Pozivi'},
+ ar:{'home-overview':'نظرة عامة','home-attention':'يحتاج انتباهًا','home-feed':'ما الذي يحدث','home-actions':'إجراءات سريعة','projects-overview':'المشاريع','projects-mine':'مشاريعي','projects-tasks':'المهام','projects-updates':'التحديثات','messages-chats':'المحادثات','messages-direct':'مباشر','messages-groups':'المجموعات','messages-invites':'الدعوات'},
+ fa:{'home-overview':'نمای کلی','home-attention':'نیازمند توجه','home-feed':'چه خبر است','home-actions':'کارهای سریع','projects-overview':'پروژه‌ها','projects-mine':'پروژه‌های من','projects-tasks':'وظایف','projects-updates':'به‌روزرسانی‌ها','messages-chats':'گفت‌وگوها','messages-direct':'مستقیم','messages-groups':'گروه‌ها','messages-invites':'دعوت‌ها'},
+ so:{'home-overview':'Dulmar','home-attention':'U baahan fiiro','home-feed':'Waxa dhacaya','home-actions':'Tallaabooyin degdeg ah','projects-overview':'Mashaariic','projects-mine':'Kuweyga','projects-tasks':'Hawlo','projects-updates':'Cusboonaysiin','messages-chats':'Wadahadallo','messages-direct':'Toos','messages-groups':'Kooxo','messages-invites':'Casuumado'},
+ ku:{'home-overview':'Nêrîna giştî','home-attention':'Pêdivî bi baldarî ye','home-feed':'Çi diqewime','home-actions':'Kiryarên bilez','projects-overview':'Proje','projects-mine':'Yên min','projects-tasks':'Kar','projects-updates':'Nûvekirin','messages-chats':'Peyamdan','messages-direct':'Rasterast','messages-groups':'Kom','messages-invites':'Dawet'}
+};
+const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
+
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
+ if(defaultSubsection[active]&&subsectionParent(subsection)!==active){subsection=defaultSubsection[active];try{sessionStorage.setItem(SUBSECTION_KEY,subsection);}catch{}}
  primary.dataset.activeSection=active;
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
  const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
  dock.dataset.parentSection=active;
- const subLabel=k=>({
-  'home-overview':'Обзор','home-attention':'Требует внимания','home-feed':'Что происходит','home-actions':'Быстрые действия',
-  'projects-overview':'Проекты','projects-mine':'Мои','projects-tasks':'Задачи','projects-updates':'Обновления',
-  'messages-chats':'Чаты','messages-direct':'Личные','messages-groups':'Групповые','messages-invites':'Приглашения'
- }[k]||t(k==='about'?'aboutPage':k));
+ const subLabel=k=>SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
- const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&(subsection===k||(!subsection&&((k==='home-overview')||(k==='projects-overview')||(k==='messages-chats')))));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(target)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&subsection===k);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(target)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
@@ -473,6 +485,7 @@ document.addEventListener('click',e=>{
  e.preventDefault();subsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
  if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
  render();
+ window.dispatchEvent(new CustomEvent('folkoop:subsection',{detail:{key,parent}}));
  const selector={
   'home-overview':'.home-dashboard','home-attention':'.home-daily, .home-section','home-feed':'.home-feed','home-actions':'.home-quick, .first-actions',
   'projects-overview':'#networkPanel, #draftList','projects-mine':'#networkPanel','projects-tasks':'#networkPanel','projects-updates':'#networkPanel',
