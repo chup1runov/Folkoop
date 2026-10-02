@@ -118,7 +118,11 @@ async def mobile_flow(browser,passed):
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
  passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while spotlight and accessible motion indicate context')
 
- await expect(page).to_have_url(re.compile(r'#/me
+ await expect(page).to_have_url(re.compile(r'#/me$'))
+ await expect(page.locator('#workspace')).to_be_visible()
+ await expect(page.locator('#networkPanel')).to_be_hidden()
+ await page.evaluate("document.querySelector('#folkoopGuideActor')?.removeAttribute('hidden')")
+ await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
  await expect(page.locator('#folkoopHelperTitle')).to_have_text('Mura')
