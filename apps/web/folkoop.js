@@ -16,14 +16,14 @@ const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null;
 const onboardingSteps=[
- {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'},
- {id:'home',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'},
+ {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'wink'},
+ {id:'home',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'inspect'},
  {id:'together',route:'together',target:'[data-demo-story="need"] h3',motion:'point',pose:'point'},
- {id:'projects',route:'together',target:'[data-demo-story="offer"] h3',motion:'point',pose:'point'},
- {id:'people',route:'projects',target:'[data-demo-story="project"] h3',motion:'point',pose:'point'},
- {id:'city',route:'people',target:'[data-demo-story="person"] h3',motion:'point',pose:'point'},
+ {id:'projects',route:'together',target:'[data-demo-story="offer"] h3',motion:'point',pose:'idea'},
+ {id:'people',route:'projects',target:'[data-demo-story="project"] h3',motion:'point',pose:'lean-in'},
+ {id:'city',route:'people',target:'[data-demo-story="person"] h3',motion:'point',pose:'searching'},
  {id:'center',route:'messages',target:'[data-demo-story="chat"] h3',motion:'point',pose:'point'},
- {id:'quick',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'point'}
+ {id:'quick',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'confident'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -290,7 +290,7 @@ function ensureOnboarding(){
  dialog.id='onboarding';
  dialog.className='onboarding';
  dialog.hidden=true;
- dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="row"><span id="onboardingProgress" class="eyebrow"></span><button type="button" class="text-button" data-onboarding="skip"></button></div><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div id="muraPractice" class="mura-practice" hidden><span id="muraPracticeStars" aria-label="Mura practice stars">○ ○ ○</span><strong id="muraPracticeXp">0 XP</strong></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><button type="button" class="button" data-onboarding="next"></button></div></section>';
+ dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="onboarding-head"><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div id="muraPractice" class="mura-practice" hidden><span id="muraPracticeStars" aria-label="Mura practice stars">○ ○ ○</span><strong id="muraPracticeXp">0 XP</strong></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><span id="onboardingProgress" class="onboarding-progress"></span><button type="button" class="button" data-onboarding="next"></button></div></section>';
  document.body.append(dialog);
  return dialog;
 }
