@@ -147,6 +147,17 @@ async def main():
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Explicit visit to Mura restarts the tour even when onboarding was completed before')
 
+  # Regression: an explicit visit to Mura must start the tour even when this
+  # browser has completed onboarding before.
+  await page.evaluate("localStorage.setItem('folkoop-onboarding-v3','done');sessionStorage.removeItem('folkoop-entry-mode-v1')")
+  await page.reload()
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Explicitly visiting Mura always starts her tour even after onboarding was completed earlier')
+  await page.click('[data-onboarding="skip"]')
+
   assert not errors,errors
   await context.close();await browser.close()
 
