@@ -72,7 +72,7 @@ async def main():
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
   await page.evaluate("location.hash='#/center'")
   await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP Center is open yet')
-  await page.click('#messageLink');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
+  await page.click('#mobilePrimaryNav a[href="#/messages"]');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
   results.append('No fictitious venue, members, payments or message delivery')
   await page.evaluate("location.hash='#/about'")
   await expect(page.locator('#futureArchitectureTitle')).to_contain_text('Where FOLKOOP can go next')
