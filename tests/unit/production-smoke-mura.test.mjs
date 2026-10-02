@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 test('production smoke validates the canonical WEBP Mura set, not deleted PNGs',async()=>{
- const smoke=await readFile('scripts/ci/production-smoke.mjs','utf8');
+ const smoke=(await readFile('scripts/ci/production-smoke.mjs','utf8')).replaceAll('\\\\','');
  const guide=await readFile('apps/web/folkoop-guide.js','utf8');
  assert(!smoke.includes("assert.match(guide,/folkoop-guide-point-left\\.png/"));
  for(const legacy of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png']){
@@ -11,7 +11,6 @@ test('production smoke validates the canonical WEBP Mura set, not deleted PNGs',
  }
  for(const asset of ['folkoop-guide-confident.webp','folkoop-guide-wink.webp','folkoop-guide-inspect.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-idea.webp']){
   assert(guide.includes(asset),asset);
-  const escaped=asset.replaceAll('.', '\\\\.');
-  assert(smoke.includes(asset)||smoke.includes(escaped),asset+' missing from production smoke');
+  assert(smoke.includes(asset),asset+' missing from production smoke');
  }
 });
