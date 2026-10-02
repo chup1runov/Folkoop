@@ -14,7 +14,7 @@ const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null;
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
  {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
@@ -195,7 +195,7 @@ function hideEntryGate(){
 function setEntryMode(mode){
  try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
  hideEntryGate();
- window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest'}}));
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode}}));
  if(mode==='guest'){location.hash='#/home';setTimeout(()=>{if(!onboardingDone)showOnboarding(0);},220);}
  else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
@@ -384,7 +384,8 @@ function showOnboarding(step=0){
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
- const guestTour=entryModeNow()==='guest';
+ const temporaryTour=tourReturnMode!==null;
+ const guestTour=entryModeNow()==='guest'||temporaryTour;
  const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
@@ -395,8 +396,9 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
- if(guestTour&&!completedMuraPractice){current='home';history.replaceState(null,'','#/home');render();}
- if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));document.body.classList.remove('network-login-open','guest-preview-open');current='me';history.replaceState(null,'','#/me');render();document.body.classList.remove('network-login-open','guest-preview-open');globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
+ const returnTarget=temporaryTour&&tourReturnMode==='account'?'account':'local';
+ if(guestTour&&!completedMuraPractice){if(temporaryTour)window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:true}}));current='home';history.replaceState(null,'','#/home');render();tourReturnMode=null;}
+ if(completedMuraPractice){try{if(returnTarget==='account')sessionStorage.setItem(ENTRY_KEY,'account');else sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:temporaryTour}}));document.body.classList.remove('network-login-open','guest-preview-open');current='me';history.replaceState(null,'','#/me');render();document.body.classList.remove('network-login-open','guest-preview-open');globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');tourReturnMode=null;setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
@@ -543,12 +545,14 @@ function startFullIntroduction(){
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
  helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
+ tourReturnMode=entryModeNow()||'local';
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:true,temporary:true}}));
  if(globalThis.FolkoopGuide){
   globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  }else showOnboarding(0);
 }
 function startFirstVisit(){
- onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=true;
+ onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=true;tourReturnMode=null;
  if(globalThis.FolkoopGuide)globalThis.FolkoopGuide.showLanguageGate(C.LANGS,I.NAMES,lang);
  else showEntryGate();
 }
