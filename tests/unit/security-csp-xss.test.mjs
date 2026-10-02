@@ -10,11 +10,11 @@ for(const path of shells)test(path+' ships a restrictive CSP',async()=>{
  assert.match(csp,/script-src 'self'/);
  assert.match(csp,/object-src 'none'/);
  assert.match(csp,/base-uri 'none'/);
- assert.match(csp,/frame-ancestors 'none'/);
  assert.match(csp,/worker-src 'self'/);
  assert.match(csp,/connect-src[^;]*cwvhkdqsrbllsykhccmb\.supabase\.co/);
  assert.doesNotMatch(csp,/script-src[^;]*'unsafe-inline'/);
  assert.doesNotMatch(csp,/script-src[^;]*'unsafe-eval'/);
+ assert.doesNotMatch(csp,/frame-ancestors/,'frame-ancestors is ignored in meta CSP; enforce it with an HTTP header when hosting supports headers');
 });
 
 test('OAuth callback remains stricter than the main application shell',async()=>{
