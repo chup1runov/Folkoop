@@ -31,7 +31,7 @@ async def main():
   await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
   await expect(page.locator('#entryGateBody')).to_contain_text('позволь Муре показать, как работает FOLKOOP')
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
-  await expect(page.locator('[data-entry="guest"]')).to_have_text('Посмотреть как гость')
+  await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
   passed.append('First visit is language -> account choice, not language -> long tutorial/form')
 
