@@ -51,7 +51,7 @@ async def mobile_flow(browser,passed):
 
  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page.locator('#entryGateTitle')).to_contain_text('Mura')
+ await expect(page.locator('#entryGateTitle')).to_have_text('Привет! Я Мура')
  await expect(page.locator('.entry-mura img')).to_be_visible()
  assert await page.locator('[data-entry-language]').count()==11
  passed.append('First contact unifies Mura welcome, language and path choice on one surface')
