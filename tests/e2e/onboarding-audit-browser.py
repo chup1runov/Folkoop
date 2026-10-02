@@ -76,8 +76,10 @@ async def main():
      await page.keyboard.press('Shift+Tab')
      if not await page.evaluate("!!document.activeElement.closest('.onboarding-card')"):
       failures.append(f'{width}: tour leaks keyboard focus')
-    if index in (0,2,6,7) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
-     await page.screenshot(path=str(OUT/f'audit-tour-{width}-{index+1}.png'))
+    # Retain the complete 390x844 physical-iPhone review set; other viewports
+    # keep representative/problem screenshots to limit artifact size.
+    if (width==390 and height==844) or index in (0,2,6,7) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
+     await page.screenshot(path=str(OUT/f'audit-tour-{width}x{height}-{index+1}.png'))
     await page.locator('#onboardingBody').evaluate('e=>e.scrollTop=e.scrollHeight')
     await page.click('[data-onboarding="next"]')
     if index in (2,3,4):
