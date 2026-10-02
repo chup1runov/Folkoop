@@ -4053,14 +4053,14 @@ const homeDailyCopy={
 for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
 
 const guestDemoCopy={
- es:{demoBadge:'DEMO',demoText:"DEMO. Todas las personas, mensajes, proyectos y actividades que ves aquí son ejemplos ficticios; no se muestran participantes reales de FOLKOOP.",demoCta:'Inicia sesión para participar',demoLocked:'Inicia sesión para crear, unirte, enviar o cambiar datos.',demoExit:'Salir del demo'},
- uk:{demoBadge:'ДЕМО',demoText:"ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади; реальних учасників FOLKOOP тут не показано.",demoCta:'Увійти, щоб брати участь',demoLocked:'Увійди, щоб створювати, приєднуватися, надсилати або змінювати дані.',demoExit:'Вийти з демо'},
- fi:{demoBadge:'DEMO',demoText:"DEMO. Kaikki täällä näkyvät ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä; oikeita FOLKOOP-osallistujia ei näytetä.",demoCta:'Kirjaudu osallistuaksesi',demoLocked:'Kirjaudu luodaksesi, liittyäksesi, lähettääksesi tai muuttaaksesi tietoja.',demoExit:'Poistu demosta'},
- bs:{demoBadge:'DEMO',demoText:"DEMO. Sve osobe, poruke, projekti i aktivnosti ovdje su izmišljeni primjeri; stvarni učesnici FOLKOOP-a nisu prikazani.",demoCta:'Prijavi se za učešće',demoLocked:'Prijavi se za kreiranje, pridruživanje, slanje ili izmjene.',demoExit:'Izađi iz demoa'},
- ar:{demoBadge:'تجريبي',demoText:"تجريبي. جميع الأشخاص والرسائل والمشاريع والأنشطة المعروضة هنا أمثلة خيالية؛ لا يتم عرض مشاركين حقيقيين في FOLKOOP.",demoCta:'سجّل الدخول للمشاركة',demoLocked:'سجّل الدخول للإنشاء أو الانضمام أو الإرسال أو التعديل.',demoExit:'الخروج من العرض'},
- fa:{demoBadge:'دمو',demoText:"دمو. همهٔ افراد، پیام‌ها، پروژه‌ها و فعالیت‌های اینجا نمونه‌های ساختگی‌اند؛ هیچ شرکت‌کنندهٔ واقعی FOLKOOP نمایش داده نمی‌شود.",demoCta:'برای مشارکت وارد شوید',demoLocked:'برای ساختن، پیوستن، ارسال یا تغییر داده وارد شوید.',demoExit:'خروج از دمو'},
- so:{demoBadge:'DEMO',demoText:"DEMO. Dhammaan dadka, fariimaha, mashaariicda iyo hawlaha halkan ka muuqda waa tusaalooyin la sameeyay; ka-qaybgalayaal dhab ah oo FOLKOOP ah lama muujinayo.",demoCta:'Soo gal si aad uga qaybqaadato',demoLocked:'Soo gal si aad u samayso, ugu biirto, u dirto ama u beddesho xogta.',demoExit:'Ka bax demada'},
- ku:{demoBadge:'DEMO',demoText:"DEMO. Hemû mirov, peyam, proje û çalakiyên li vir nimûneyên çêkirî ne; beşdarên rastîn ên FOLKOOP nayên nîşandan.",demoCta:'Ji bo beşdarbûnê têkevî',demoLocked:'Ji bo çêkirin, tevlêbûn, şandin an guhartinê têkevî.',demoExit:'Ji demoyê derkeve'}
+ es:{demoBadge:'Espacio de Mura · ejemplo guiado',demoText:'Estás visitando el espacio guiado de Mura.',demoCta:'Crear mi propio espacio',demoLocked:'Estás de visita con Mura. Inicia sesión para hacerlo en tu propio espacio.',demoExit:'Salir del espacio de Mura'},
+ uk:{demoBadge:'Місце Мури · навчальний приклад',demoText:'Ти в гостях у навчальному просторі Мури.',demoCta:'Створити своє місце',demoLocked:'Зараз ти в гостях у Мури. Увійди, щоб зробити це у своєму місці.',demoExit:'Вийти з гостей'},
+ fi:{demoBadge:'Muran paikka · oppimisesimerkki',demoText:'Olet vierailulla Muran ohjatussa paikassa.',demoCta:'Luo oma paikkani',demoLocked:'Olet Muran vieraana. Kirjaudu tehdäksesi tämän omassa paikassasi.',demoExit:'Poistu Muran paikalta'},
+ bs:{demoBadge:'Murino mjesto · primjer za učenje',demoText:'U gostima si u Murinom vođenom prostoru.',demoCta:'Napravi svoje mjesto',demoLocked:'U gostima si kod Mure. Prijavi se da ovo uradiš u svom mjestu.',demoExit:'Napusti Murino mjesto'},
+ ar:{demoBadge:'مساحة مورا · مثال تعليمي',demoText:'أنت تزور مساحة مورا التعليمية الموجهة.',demoCta:'إنشاء مساحتي',demoLocked:'أنت في زيارة عند مورا. سجّل الدخول لتفعل ذلك في مساحتك.',demoExit:'مغادرة مساحة مورا'},
+ fa:{demoBadge:'جای مورا · نمونهٔ آموزشی',demoText:'مهمان فضای آموزشی مورا هستی.',demoCta:'جای خودم را بسازم',demoLocked:'مهمان مورا هستی. برای انجام این کار در جای خودت وارد شو.',demoExit:'ترک جای مورا'},
+ so:{demoBadge:'Meesha Mura · tusaale waxbarasho',demoText:'Waxaad marti ku tahay meesha hagidda ee Mura.',demoCta:'Samee meeshayda',demoLocked:'Waxaad marti u tahay Mura. Soo gal si aad tan uga samayso meeshaada.',demoExit:'Ka bax meesha Mura'},
+ ku:{demoBadge:'Cihê Mura · nimûneya hînbûnê',demoText:'Tu li cihê hînbûnê yê rêberkirî yê Mura mêvan î.',demoCta:'Cihê xwe çêke',demoLocked:'Tu mêvanê Mura yî. Ji bo ku vê li cihê xwe bikî, têkevî.',demoExit:'Ji cihê Mura derkeve'}
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 

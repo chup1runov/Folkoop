@@ -33,9 +33,9 @@ const activityCopy={
  sv:{activity:'Aktivitet',notifications:'Aktivitetsnotiser',workChat:'Arbetschatt',linkedChat:'Kopplad till detta samarbete',managedChat:'Chattmedlemskapet styrs av samarbetets deltagare.',unread:'oläst',noActivity:'Ingen aktivitet ännu.',recentActivity:'Senaste aktivitet',created:'skapade samarbetet',member_joined:'gick med',member_left:'lämnade',cooperation_status:'ändrade status',update_posted:'lade till en uppdatering',task_created:'skapade en uppgift',task_updated:'ändrade en uppgift',task_deleted:'raderade en uppgift',purchase_stage:'ändrade köpsteget',offer_changed:'ändrade ett leverantörserbjudande',confirmation_changed:'ändrade köpbekräftelsen',collection_changed:'ändrade hämtningsstatus',openActivity:'Öppna',messagesUnread:'Olästa meddelanden'}
 };
 const homeCopy={
- en:{title:'Home',subtitle:'Start with what you need, can offer or want to do. FOLKOOP helps you find relevant people or resources and a next step — before there is even a group chat.',attention:'Needs your attention',nothingUrgent:'Nothing urgent right now.',messages:'Unread messages',invitations:'Chat invitations',task:'Task assigned to you',confirmation:'Confirm your purchase quantity',activity:'Unread cooperation activity',deadline:'Deadline',open:'Open',feed:'What is happening',communityPost:'Community publication',quick:'Do something together',need:'I need something',offer:'I can help',purchase:'Buy together',project:'Start a project',community:'Create a community',city:'Open my city',myWork:'My active cooperation',noFeed:'No shared activity yet. Start with a real need or project.',from:'from',assigned:'Assigned',pending:'Pending',why:'Home is intentionally action-first, not an endless engagement feed.',daily:'Today',nextStep:'One useful next step',caughtUp:'You’re caught up. Nothing needs your attention right now.',feedEnd:'You’re caught up · this feed ends here.',demoBadge:'DEMO',demoText:'DEMO. Every person, message, project and activity shown here is fictional example data — no real FOLKOOP participant is being shown.',demoCta:'Sign in to participate',demoLocked:'Sign in to create, join, send or change anything.',demoExit:'Leave demo'},
- ru:{title:'Главная',subtitle:'Начни с того, что тебе нужно, что можешь предложить или что хочешь сделать. FOLKOOP помогает найти людей или ресурсы и следующий шаг — ещё до того, как появился групповой чат.',attention:'Требует внимания',nothingUrgent:'Сейчас ничего срочного.',messages:'Непрочитанные сообщения',invitations:'Приглашения в чаты',task:'Задача назначена тебе',confirmation:'Подтверди количество в закупке',activity:'Непрочитанная активность',deadline:'Срок',open:'Открыть',feed:'Что происходит',communityPost:'Публикация сообщества',quick:'Сделать вместе',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',project:'Создать проект',community:'Создать сообщество',city:'Открыть мой город',myWork:'Мои активные дела',noFeed:'Общей активности пока нет. Начни с реальной потребности или проекта.',from:'от',assigned:'Назначено',pending:'Ожидается',why:'Главная специально построена вокруг действий, а не бесконечной ленты ради вовлечения.',daily:'Сегодня',nextStep:'Один полезный следующий шаг',caughtUp:'Всё просмотрено. Сейчас ничего не требует твоего внимания.',feedEnd:'Всё просмотрено · лента заканчивается здесь.',demoBadge:'ДЕМО',demoText:'ДЕМО. Все люди, сообщения, проекты и действия здесь — вымышленные примеры; реальные участники FOLKOOP здесь не показаны.',demoCta:'Войти, чтобы участвовать',demoLocked:'Войди в аккаунт, чтобы создавать, вступать, отправлять и менять данные.',demoExit:'Выйти из демо'},
- sv:{title:'Hem',subtitle:'Börja med det du behöver, kan erbjuda eller vill göra. FOLKOOP hjälper dig hitta människor eller resurser och nästa steg — innan det ens finns en gruppchatt.',attention:'Behöver din uppmärksamhet',nothingUrgent:'Inget brådskande just nu.',messages:'Olästa meddelanden',invitations:'Chattinbjudningar',task:'Uppgift tilldelad dig',confirmation:'Bekräfta din köpvolym',activity:'Oläst samarbetsaktivitet',deadline:'Sista tid',open:'Öppna',feed:'Vad händer',communityPost:'Publikation i gemenskap',quick:'Gör något tillsammans',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',project:'Starta projekt',community:'Skapa gemenskap',city:'Öppna min stad',myWork:'Mina aktiva samarbeten',noFeed:'Ingen gemensam aktivitet ännu. Börja med ett verkligt behov eller projekt.',from:'från',assigned:'Tilldelad',pending:'Väntar',why:'Hem är medvetet handlingsorienterat, inte en oändlig engagemangsfeed.',daily:'Idag',nextStep:'Ett användbart nästa steg',caughtUp:'Du är ikapp. Inget behöver din uppmärksamhet just nu.',feedEnd:'Du är ikapp · flödet slutar här.',demoBadge:'DEMO',demoText:'DEMO. Alla personer, meddelanden, projekt och aktiviteter här är fiktiva exempeldata — inga riktiga FOLKOOP-deltagare visas.',demoCta:'Logga in för att delta',demoLocked:'Logga in för att skapa, gå med, skicka eller ändra något.',demoExit:'Lämna demo'}
+ en:{title:'Home',subtitle:'Start with what you need, can offer or want to do. FOLKOOP helps you find relevant people or resources and a next step — before there is even a group chat.',attention:'Needs your attention',nothingUrgent:'Nothing urgent right now.',messages:'Unread messages',invitations:'Chat invitations',task:'Task assigned to you',confirmation:'Confirm your purchase quantity',activity:'Unread cooperation activity',deadline:'Deadline',open:'Open',feed:'What is happening',communityPost:'Community publication',quick:'Do something together',need:'I need something',offer:'I can help',purchase:'Buy together',project:'Start a project',community:'Create a community',city:'Open my city',myWork:'My active cooperation',noFeed:'No shared activity yet. Start with a real need or project.',from:'from',assigned:'Assigned',pending:'Pending',why:'Home is intentionally action-first, not an endless engagement feed.',daily:'Today',nextStep:'One useful next step',caughtUp:'You’re caught up. Nothing needs your attention right now.',feedEnd:'You’re caught up · this feed ends here.',demoBadge:"Mura's place · learning example",demoText:"You're visiting Mura's guided place.",demoCta:'Create my own place',demoLocked:"You're visiting Mura. Sign in to do this in your own place.",demoExit:"Leave Mura's place"},
+ ru:{title:'Главная',subtitle:'Начни с того, что тебе нужно, что можешь предложить или что хочешь сделать. FOLKOOP помогает найти людей или ресурсы и следующий шаг — ещё до того, как появился групповой чат.',attention:'Требует внимания',nothingUrgent:'Сейчас ничего срочного.',messages:'Непрочитанные сообщения',invitations:'Приглашения в чаты',task:'Задача назначена тебе',confirmation:'Подтверди количество в закупке',activity:'Непрочитанная активность',deadline:'Срок',open:'Открыть',feed:'Что происходит',communityPost:'Публикация сообщества',quick:'Сделать вместе',need:'Мне нужно',offer:'Я могу помочь',purchase:'Купить вместе',project:'Создать проект',community:'Создать сообщество',city:'Открыть мой город',myWork:'Мои активные дела',noFeed:'Общей активности пока нет. Начни с реальной потребности или проекта.',from:'от',assigned:'Назначено',pending:'Ожидается',why:'Главная специально построена вокруг действий, а не бесконечной ленты ради вовлечения.',daily:'Сегодня',nextStep:'Один полезный следующий шаг',caughtUp:'Всё просмотрено. Сейчас ничего не требует твоего внимания.',feedEnd:'Всё просмотрено · лента заканчивается здесь.',demoBadge:'Место Муры · учебный пример',demoText:'Ты в гостях в учебном пространстве Муры.',demoCta:'Создать своё место',demoLocked:'Сейчас ты в гостях у Муры. Войди, чтобы сделать это в своём месте.',demoExit:'Выйти из гостей'},
+ sv:{title:'Hem',subtitle:'Börja med det du behöver, kan erbjuda eller vill göra. FOLKOOP hjälper dig hitta människor eller resurser och nästa steg — innan det ens finns en gruppchatt.',attention:'Behöver din uppmärksamhet',nothingUrgent:'Inget brådskande just nu.',messages:'Olästa meddelanden',invitations:'Chattinbjudningar',task:'Uppgift tilldelad dig',confirmation:'Bekräfta din köpvolym',activity:'Oläst samarbetsaktivitet',deadline:'Sista tid',open:'Öppna',feed:'Vad händer',communityPost:'Publikation i gemenskap',quick:'Gör något tillsammans',need:'Jag behöver',offer:'Jag kan hjälpa',purchase:'Köp tillsammans',project:'Starta projekt',community:'Skapa gemenskap',city:'Öppna min stad',myWork:'Mina aktiva samarbeten',noFeed:'Ingen gemensam aktivitet ännu. Börja med ett verkligt behov eller projekt.',from:'från',assigned:'Tilldelad',pending:'Väntar',why:'Hem är medvetet handlingsorienterat, inte en oändlig engagemangsfeed.',daily:'Idag',nextStep:'Ett användbart nästa steg',caughtUp:'Du är ikapp. Inget behöver din uppmärksamhet just nu.',feedEnd:'Du är ikapp · flödet slutar här.',demoBadge:'Muras plats · lärexempel',demoText:'Du hälsar på i Muras guidade plats.',demoCta:'Skapa min egen plats',demoLocked:'Du hälsar på hos Mura. Logga in för att göra detta på din egen plats.',demoExit:'Lämna Muras plats'}
 };
 const baseCopy={sv,en,ru};
 const extraCopy=globalThis.FolkoopExtraCopy?.languages||{};
@@ -62,15 +62,16 @@ const demoLocaleCopy={
  ru:{
   'Photography · neighbourhood help':'Фотография · помощь по соседству',
   'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'Помощница FOLKOOP. Учебный профиль и примеры, показывающие, как работает кооперация.',
+  'FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.':'Помощница FOLKOOP. Добро пожаловать ко мне — здесь я показываю, как работает кооперация.',
   'Plant and seed exchange':'Обмен растениями и семенами по соседству',
   'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Организовать небольшой обмен растениями и семенами с ролями, задачами и рабочим чатом.',
   'Borrow a tile cutter for the weekend':'Одолжить плиткорез на выходные',
   'Need a tile cutter for a small room repair over one weekend.':'Нужен плиткорез для небольшого ремонта комнаты на выходные.',
   'I can help with photography':'Могу помочь с фотографией',
   'Can help photograph an item, a small event or a neighbourhood project.':'Могу помочь сфотографировать вещь, небольшое мероприятие или местный проект.',
-  'Alex · Demo':'Alex · Демо',
+  'Alex · Example':'Alex · Пример',
   'Repair · coordination':'Ремонт · координация',
-  'Guest preview profile. Sample data only.':'Гостевой демонстрационный профиль. Только пример данных.',
+  'Learning-space profile. Example data only.':'Учебный профиль. Только пример данных.',
   'Carpentry · reuse':'Столярные работы · повторное использование',
   'Interested in neighbourhood repair and shared tools.':'Интересуется ремонтом по соседству и общими инструментами.',
   'Logistics · Swedish/Arabic':'Логистика · шведский/арабский',
@@ -78,9 +79,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Дизайн · организация групп',
   'Runs small community workshops.':'Организует небольшие общественные мастерские.',
   'Olofstorp neighbours':'Соседи Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Демонстрационное местное сообщество для взаимопомощи и совместных дел.',
+  'Sample local community for shared help and practical coordination.':'Пример местного сообщества для взаимопомощи и совместных дел.',
   'Göteborg language exchange':'Языковой обмен Göteborg',
-  'Sample group for informal language practice and meetups.':'Демонстрационная группа для языковой практики и встреч.',
+  'Sample group for informal language practice and meetups.':'Пример группы для языковой практики и встреч.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
   'Neighbourhood repair café':'Ремонтное кафе по соседству',
@@ -107,7 +108,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
   'Can collect after work':'Могу забрать после работы',
   'Need delivery help':'Нужна помощь с доставкой',
-  'Sample supplier offer for the demo.':'Демонстрационное предложение поставщика.',
+  'Example supplier offer.':'Пример предложения поставщика.',
   'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
   'Entrance sign ready':'Табличка для входа готова',
   'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
@@ -115,15 +116,16 @@ const demoLocaleCopy={
  sv:{
   'Photography · neighbourhood help':'Fotografering · hjälp i grannskapet',
   'FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.':'FOLKOOP-guide. Ett lärande exempel som visar hur samarbete fungerar.',
+  'FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.':'FOLKOOP-guide. Välkommen hem till mig — här visar jag hur samarbete fungerar.',
   'Plant and seed exchange':'Växt- och fröbyte i grannskapet',
   'Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.':'Ordna ett litet växt- och fröbyte med roller, uppgifter och en arbetschatt.',
   'Borrow a tile cutter for the weekend':'Låna en kakelskärare över helgen',
   'Need a tile cutter for a small room repair over one weekend.':'Behöver en kakelskärare för en liten rumsrenovering över helgen.',
   'I can help with photography':'Jag kan hjälpa till med fotografering',
   'Can help photograph an item, a small event or a neighbourhood project.':'Kan hjälpa till att fotografera en sak, ett litet evenemang eller ett lokalt projekt.',
-  'Alex · Demo':'Alex · Demo',
+  'Alex · Example':'Alex · Exempel',
   'Repair · coordination':'Reparation · samordning',
-  'Guest preview profile. Sample data only.':'Gästprofil för demo. Endast exempeldata.',
+  'Learning-space profile. Example data only.':'Lärprofil. Endast exempeldata.',
   'Carpentry · reuse':'Snickeri · återbruk',
   'Interested in neighbourhood repair and shared tools.':'Intresserad av lokal reparation och delade verktyg.',
   'Logistics · Swedish/Arabic':'Logistik · svenska/arabiska',
@@ -160,7 +162,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
   'Can collect after work':'Kan hämta efter jobbet',
   'Need delivery help':'Behöver hjälp med leverans',
-  'Sample supplier offer for the demo.':'Exempel på leverantörserbjudande.',
+  'Example supplier offer.':'Exempel på leverantörserbjudande.',
   'todo · Confirm the room':'Att göra · Bekräfta lokalen',
   'Entrance sign ready':'Entréskylten är klar',
   'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.'
@@ -175,7 +177,7 @@ function demoSnapshot(){
  const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Мура',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Illustrative profile and examples for learning how cooperation works.'),listed:true},
+  {id:DEMO_UID,name:'Мура',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.'),listed:true},
   {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),listed:true},
   {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),listed:true},
   {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),listed:true}
@@ -228,7 +230,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
   {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Sample supplier offer for the demo.')}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Example supplier offer.')}];
  const activity=[
   {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
   {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
@@ -264,8 +266,9 @@ function demoSnapshot(){
  };
 }
 function guestRequireAccount(){
- notice=ht('demoLocked');
- window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action'}}));
+ const note=ht('demoLocked');
+ notice=note;
+ window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action',note}}));
  render();
 }
 
@@ -624,7 +627,7 @@ function render(){
    html+=`<form id="netGroup" class="editor card"><h3>${esc(t('newGroup'))}</h3>${field('name','name',groupDraft.name||'',80)}${field('description','description',groupDraft.description||'',1000,true)}<button class="button">${esc(t('create'))}</button></form><div class="draft-grid">${data.groups.map(g=>`<article class="card"><h3>${esc(g.name)}</h3><p>${esc(g.description)}</p>${btn('open','open',g.id)}</article>`).join('')||esc(t('empty'))}</div>`;
   }
  }
- const demoBanner=guestDemo?`<aside class="notice guest-demo-banner" role="note"><strong>${esc(ht('demoBadge'))}</strong><p>${esc(ht('demoText'))}</p></aside>`:'';
+ const demoBanner='';
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.classList.toggle('guest-demo',guestDemo);
  if(guestDemo){

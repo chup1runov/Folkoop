@@ -1,4 +1,4 @@
-"""FOLKOOP v0.38 first-entry + read-only guest preview browser contract.
+"""FOLKOOP Mura visit + read-only guided-space browser contract.
 No live accounts and no external API requests.
 """
 import asyncio,json,os,shutil
@@ -25,15 +25,15 @@ async def main():
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE)
 
-  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
-  await page.click('[data-folkoop-guide-lang="ru"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateTitle')).to_have_text('Как хочешь начать?')
-  await expect(page.locator('#entryGateBody')).to_contain_text('позволь Муре показать, как работает FOLKOOP')
-  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти по почте')
-  await expect(page.locator('[data-entry="guest"]')).to_have_text('Мура покажет')
+  assert await page.locator('[data-entry-language]').count()==11
+  await page.click('[data-entry-language="ru"]')
+  await expect(page.locator('#entryGateTitle')).to_have_text('Привет! Я Мура')
+  await expect(page.locator('#entryGateBody')).to_contain_text('Заходи ко мне в гости')
+  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти / зарегистрироваться')
+  await expect(page.locator('[data-entry="guest"]')).to_have_text('Зайти к Муре в гости')
   await page.screenshot(path=str(OUT/'folkoop-v037-entry-choice-mobile.png'),full_page=True)
-  passed.append('First visit is language -> account choice, not language -> long tutorial/form')
+  passed.append('First visit is one Mura welcome with language and visit/account choice')
 
   await page.click('[data-entry="guest"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
@@ -41,34 +41,40 @@ async def main():
   await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
   await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
-  passed.append('Guest first session receives the short value-first product tour')
+  passed.append('Visiting Mura always launches the guided value-first tour')
   await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
-  await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
+  await page.evaluate("localStorage.setItem('folkoop-onboarding-v3','done');window.dispatchEvent(new CustomEvent('folkoop:open-entry'))")
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
+  await page.click('[data-onboarding="skip"]')
+  await expect(page.locator('#networkPanel')).to_be_visible()
+  passed.append('Explicit visit to Mura restarts her tour even when onboarding was completed before')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('.home-subtitle')).to_contain_text('до того, как появился групповой чат')
-  await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('реальные участники FOLKOOP здесь не показаны')
+  assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
+  visible_guest_text=(await page.locator('body').inner_text()).lower()
+  assert 'demo' not in visible_guest_text and 'демо' not in visible_guest_text
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
-  passed.append('Guest sees the real Home renderer with local sample data and makes no Supabase request')
+  passed.append('Mura visit uses the real Home renderer with local learning data and no Supabase request')
   assert await page.locator('#mobilePrimaryNav a').count()==6
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
-  await expect(page.locator('.mobile-demo-popover')).to_contain_text('примеры, а не утверждения о реальных участниках')
+  await expect(page.locator('.mobile-demo-popover')).to_contain_text('учебное пространство')
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Guest limitations live in a compact expandable bottom DEMO chip')
+  passed.append('Mura visit context is available without a DEMO label or stale DEMO wording')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
-  await expect(page.locator('.guest-demo-banner')).to_be_visible()
-  await expect(page.locator('.guest-demo-banner')).to_contain_text('вымышленные примеры')
-  await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
-  passed.append('Guest can browse real People UI using clearly synthetic demo profiles')
+  assert await page.locator('.guest-demo-banner').count()==0
+  passed.append('Mura visit can browse the real People UI without persistent DEMO chrome')
 
   for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
@@ -79,9 +85,8 @@ async def main():
    else:
     await page.click(f'#mobilePrimaryNav [data-mobile-nav="{route_name}"]')
    await expect(page.locator('#networkPanel')).to_contain_text(expected)
-   await expect(page.locator('.guest-demo-banner')).to_be_visible()
-   await expect(page.locator('#mobileContextDock [data-mobile-action="demo"]')).to_be_visible()
-  passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
+   assert await page.locator('.guest-demo-banner').count()==0
+   passed.append('Guest can browse Communities, Messages and Cooperation through the real navigation')
   await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="center"]')).to_be_visible()
   await page.click('#mobileContextDock [data-mobile-subnav="center"]')
@@ -120,8 +125,9 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('[data-home="createCoop"][data-kind="project"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('Войди, чтобы участвовать самому')
-  passed.append('A real mutation attempt opens the account choice instead of changing demo state')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Сейчас ты в гостях у Муры')
+  await expect(page.locator('#entryGateNote')).to_contain_text('Войди')
+  passed.append('A real mutation attempt explains the Mura visit boundary and opens account choice')
 
   await page.click('[data-entry="email"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
@@ -129,12 +135,38 @@ async def main():
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='account'")
   passed.append('Guest can switch directly to the real email sign-in flow')
 
+
+  # Regression: a returning browser may already have completed onboarding, but an explicit
+  # invitation to visit Mura must still launch the full tour.
+  await context.close()
+  context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
+  await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false});localStorage.setItem('folkoop-language','ru');localStorage.setItem('folkoop-language-choice-v1','done');localStorage.setItem('folkoop-onboarding-v3','done');sessionStorage.clear();")
+  await context.route('**/*',route)
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  await page.goto(BASE)
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Explicit visit to Mura restarts the tour even when onboarding was completed before')
+
+  # Regression: an explicit visit to Mura must start the tour even when this
+  # browser has completed onboarding before.
+  await page.evaluate("localStorage.setItem('folkoop-onboarding-v3','done');sessionStorage.removeItem('folkoop-entry-mode-v1')")
+  await page.reload()
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
+  passed.append('Explicitly visiting Mura always starts her tour even after onboarding was completed earlier')
+  await page.click('[data-onboarding="skip"]')
+
   assert not errors,errors
   await context.close();await browser.close()
 
  OUT.joinpath('guest-demo-results.json').write_text(json.dumps({
   'passed':passed,
-  'limits':['Demo data are local samples, never evidence of real participants or activity','Guest cannot mutate network state']
+  'limits':['Mura learning data are local examples, never evidence of real participants or activity','A visitor cannot mutate network state']
  },ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
