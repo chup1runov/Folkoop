@@ -14,16 +14,16 @@ const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0;
 const onboardingSteps=[
- {id:'welcome',route:'home',target:'.brand',motion:'point',pose:'please'},
- {id:'home',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
- {id:'together',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'},
- {id:'projects',route:'home',target:'[data-intent="offer"]',motion:'point',pose:'idea'},
- {id:'people',route:'home',target:'[data-intent="project"]',motion:'point',pose:'point'},
- {id:'city',route:'home',target:'#mobilePrimaryNav [data-mobile-nav="messages"], #nav a[href="#/messages"]',motion:'point',pose:'point'},
- {id:'center',route:'home',target:'#nav a[href="#/home"]',motion:'point',pose:'point'},
- {id:'quick',route:'home',target:'[data-intent="need"]',motion:'point',pose:'point'}
+ {id:'welcome',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
+ {id:'home',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'},
+ {id:'together',route:'together',target:'[data-demo-story="need"]',motion:'point',pose:'point'},
+ {id:'projects',route:'together',target:'[data-demo-story="offer"]',motion:'point',pose:'point'},
+ {id:'people',route:'projects',target:'[data-demo-story="project"]',motion:'point',pose:'point'},
+ {id:'city',route:'people',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'center',route:'messages',target:'#networkPanel',motion:'point',pose:'point'},
+ {id:'quick',route:'me',target:'.demo-profile-card',motion:'point',pose:'point'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -118,45 +118,45 @@ function cityShell(){
 
 const tutorialCopy={
  en:{
-  welcome:'FOLKOOP starts with something real: what you need, what you can offer, or what you want to do with other people. It helps you find relevant people or resources and a concrete next step — before a group chat is needed.',
-  home:'You only need to choose how you want to start. There are three main paths: I need something, I can help, or I want to do something together.',
-  together:'Choose this when you need help, a thing, a skill or another resource. Describe the real need; FOLKOOP can then look for a relevant person, resource or next step.',
-  projects:'Choose this when you can help or offer a skill, thing or resource. A useful offer gives other people something concrete to respond to.',
-  people:'Choose this when you have an idea or want to make something happen with other people. Start small; a project can grow into people, roles, tasks and a work chat.',
-  city:'After you start, FOLKOOP connects the intent to relevant people, resources or opportunities. When people have found one another, messages and work chat are for coordination — the chat is not the starting point.',
-  center:'Home is where you return to see what needs your attention: replies, messages, tasks, confirmations and project steps. When there is nothing useful to do, you are caught up.',
-  quick:'That is enough to begin. Pick one real thing now: something you need, something you can offer, or something you want to do together. City and the other sections are there when they become useful.'
+  welcome:"Hi, I'm Mura, FOLKOOP's guide. I'll show you my space and use examples to explain how things work here.",
+  home:"This is my place. I keep a short line about myself, what I can offer and the things I have started. Your own place can grow from your real activity instead of a long profile form.",
+  together:"For example, I am fixing up a room and need a tile cutter for one weekend. I can post that need instead of buying a tool I may use once.",
+  projects:"I can also give something back. I know basic photography, so I can offer to help a neighbour photograph an item, a small event or a community project.",
+  people:"One example project in my space is a small plant-and-seed exchange. An idea can become people, roles, tasks and a work chat instead of disappearing in a group conversation.",
+  city:"People and communities help me find others around a practical interest — gardening, cycling, fixing things or helping locally. The point is not followers; it is finding someone to do something with.",
+  center:"Messages are where we coordinate after we have a reason to talk. City helps with local information and official routes; Center is a future physical layer and is not open yet.",
+  quick:"That's my space in FOLKOOP. Yours starts empty on purpose. Begin with one real thing: something you need, something you can offer, or something you want to make happen with other people."
  },
  ru:{
-  welcome:'FOLKOOP начинается с чего-то реального: что тебе нужно, что ты можешь предложить или что хочешь сделать вместе с другими. Он помогает найти подходящих людей или ресурсы и конкретный следующий шаг — ещё до группового чата.',
-  home:'Сначала нужно выбрать только одно из трёх: «Мне нужно», «Я могу помочь» или «Хочу сделать что-то вместе». Этого достаточно, чтобы начать.',
-  together:'Выбери «Мне нужно», если нужна помощь, вещь, навык или другой ресурс. Опиши реальную потребность — дальше FOLKOOP помогает найти подходящего человека, ресурс или следующий шаг.',
-  projects:'Выбери «Я могу помочь», если можешь предложить навык, вещь, ресурс или своё время. Конкретное предложение даёт другим понятный повод откликнуться.',
-  people:'Выбери «Хочу сделать что-то вместе», если есть идея или хочется что-то организовать с другими. Начать можно с малого; затем появятся люди, роли, задачи и рабочий чат.',
-  city:'После первого действия FOLKOOP связывает намерение с подходящими людьми, ресурсами или возможностями. Когда люди уже нашли друг друга, сообщения и рабочий чат помогают договориться — чат не является началом.',
-  center:'На Главную ты возвращаешься за тем, что требует внимания: ответами, сообщениями, задачами, подтверждениями и шагами проектов. Если полезных действий нет — ты всё просмотрел.',
-  quick:'Этого достаточно. Выбери сейчас одну реальную вещь: что тебе нужно, что можешь предложить или что хочешь сделать вместе. Город и остальные разделы пригодятся тогда, когда понадобятся.'
+  welcome:"Привет, я Мура, помощница FOLKOOP. Покажу тебе своё пространство и на примерах объясню, как здесь всё работает.",
+  home:"Это моё место. Здесь я показываю немного о себе, чем могу помочь и что уже начинала. Твоё место тоже может постепенно складываться из реальных дел, а не из длинной анкеты.",
+  together:"Например, я делаю небольшой ремонт и мне нужен плиткорез всего на выходные. Здесь я могу попросить инструмент, а не покупать вещь ради одного раза.",
+  projects:"Но я не только прошу. Я немного умею фотографировать и могу помочь соседу снять вещь для объявления, небольшое мероприятие или местный проект.",
+  people:"Один из проектов-примеров в моём пространстве — небольшой обмен растениями и семенами. Идея может превратиться в людей, роли, задачи и рабочий чат, а не потеряться в общей переписке.",
+  city:"Люди и сообщества помогают мне находить тех, кому тоже интересны сад, велосипед, ремонт или помощь рядом. Смысл не в подписчиках, а в людях, с которыми реально можно что-то сделать.",
+  center:"В Сообщениях мы договариваемся уже после того, как появился повод общаться. Город помогает с местной информацией и официальными маршрутами; Центр — будущая физическая часть и пока не открыт.",
+  quick:"Вот так выглядит моё пространство в FOLKOOP. Твоё специально начинается пустым. Начни с одной реальной вещи: что тебе нужно, чем можешь помочь или что хочешь сделать вместе с другими."
  },
  sv:{
-  welcome:'FOLKOOP börjar med något verkligt: vad du behöver, vad du kan erbjuda eller vad du vill göra tillsammans med andra. Det hjälper dig hitta relevanta människor eller resurser och ett konkret nästa steg — innan en gruppchatt behövs.',
-  home:'Först behöver du bara välja ett av tre sätt att börja: Jag behöver, Jag kan hjälpa eller Jag vill göra något tillsammans.',
-  together:'Välj detta när du behöver hjälp, en sak, en färdighet eller en annan resurs. Beskriv det verkliga behovet; FOLKOOP kan sedan hjälpa dig hitta en relevant person, resurs eller nästa steg.',
-  projects:'Välj detta när du kan hjälpa eller erbjuda en färdighet, sak, resurs eller din tid. Ett konkret erbjudande ger andra något tydligt att svara på.',
-  people:'Välj detta när du har en idé eller vill få något att hända tillsammans med andra. Börja smått; ett projekt kan växa till människor, roller, uppgifter och en arbetschatt.',
-  city:'Efter första steget kopplar FOLKOOP din avsikt till relevanta människor, resurser eller möjligheter. När människor har hittat varandra används meddelanden och arbetschatt för samordning — chatten är inte början.',
-  center:'Till Hem återvänder du för sådant som behöver din uppmärksamhet: svar, meddelanden, uppgifter, bekräftelser och projektsteg. När inget nyttigt återstår är du ikapp.',
-  quick:'Det räcker för att börja. Välj en verklig sak nu: något du behöver, något du kan erbjuda eller något du vill göra tillsammans. Stad och de andra delarna finns när de blir användbara.'
+  welcome:"Hej, jag är Mura, FOLKOOPs guide. Jag visar dig min plats och förklarar med exempel hur allt fungerar här.",
+  home:"Det här är min plats. Här visar jag lite om mig själv, vad jag kan erbjuda och sådant jag har startat. Din egen plats kan växa ur verkliga handlingar i stället för ett långt profilformulär.",
+  together:"Till exempel håller jag på att fixa ett rum och behöver en kakelskärare över en helg. Här kan jag fråga efter verktyget i stället för att köpa något jag kanske använder en gång.",
+  projects:"Jag kan också bidra. Jag kan lite fotografering och kan erbjuda hjälp med att fotografera en sak, ett litet evenemang eller ett lokalt projekt.",
+  people:"Ett exempelprojekt på min plats är ett litet växt- och fröbyte. En idé kan bli människor, roller, uppgifter och en arbetschatt i stället för att försvinna i en gruppkonversation.",
+  city:"Människor och gemenskaper hjälper mig hitta andra kring praktiska intressen — odling, cykling, att laga saker eller hjälpa till lokalt. Poängen är inte följare utan människor att faktiskt göra något med.",
+  center:"I Meddelanden samordnar vi när det redan finns en anledning att prata. Stad hjälper med lokal information och officiella vägar; Center är ett framtida fysiskt lager och är inte öppet ännu.",
+  quick:"Det här är min plats i FOLKOOP. Din börjar tom med flit. Börja med en verklig sak: något du behöver, kan erbjuda eller vill få gjort tillsammans med andra."
  }
 };
 const tutorialTitles={
- en:{welcome:'What FOLKOOP does',home:'Three ways to start',together:'1 · I need something',projects:'2 · I can help',people:'3 · I want to do something together',city:'What happens next',center:'Where you return',quick:'Now start with one real thing'},
- ru:{welcome:'Что делает FOLKOOP',home:'Три способа начать',together:'1 · Мне нужно',projects:'2 · Я могу помочь',people:'3 · Хочу сделать что-то вместе',city:'Что произойдёт дальше',center:'Куда возвращаться',quick:'Теперь начни с одной реальной вещи'},
- sv:{welcome:'Vad FOLKOOP gör',home:'Tre sätt att börja',together:'1 · Jag behöver',projects:'2 · Jag kan hjälpa',people:'3 · Jag vill göra något tillsammans',city:'Vad händer sedan',center:'Hit återvänder du',quick:'Börja nu med en verklig sak'}
+ en:{welcome:"Hi, I'm Mura",home:'This is my place',together:'A tool I need',projects:'What I can offer',people:'A project I started',city:'How I find people',center:'Where we coordinate',quick:'Now make your place yours'},
+ ru:{welcome:'Привет, я Мура',home:'Это моё место',together:'Что мне понадобилось',projects:'Чем я могу помочь',people:'Проект, который я начала',city:'Как я нахожу людей',center:'Где мы договариваемся',quick:'Теперь сделай своё место своим'},
+ sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Där vi samordnar',quick:'Gör nu din plats till din'}
 };
 const entryCopy={
- en:{title:'How do you want to enter?',body:"FOLKOOP starts with something you need, can offer or want to do, then helps you find relevant people or resources and a concrete next step. Sign in to participate, or explore the demo.",email:'Continue with email',guest:'Explore as guest',guestNote:"Guest mode is a DEMO. All people, messages, projects and activity are fictional examples, not real participants. You can browse, but creating, joining, sending or changing anything requires sign-in.",back:'Back to language'},
- ru:{title:'Как хочешь войти?',body:"FOLKOOP начинается с того, что тебе нужно, что ты можешь предложить или что хочешь сделать, и помогает найти подходящих людей или ресурсы и конкретный следующий шаг. Войди для участия или посмотри демо.",email:'Войти по почте',guest:'Посмотреть как гость',guestNote:"Гостевой режим — ДЕМО. Все люди, сообщения, проекты и действия здесь — вымышленные примеры, а не реальные участники. Смотреть можно без входа; создавать, вступать, отправлять и менять данные — только после входа.",back:'Назад к языку'},
- sv:{title:'Hur vill du gå in?',body:"FOLKOOP börjar med något du behöver, kan erbjuda eller vill göra och hjälper dig hitta relevanta människor eller resurser och ett konkret nästa steg. Logga in för att delta eller utforska demon.",email:'Fortsätt med e-post',guest:'Utforska som gäst',guestNote:"Gästläget är en DEMO. Alla personer, meddelanden, projekt och aktiviteter är fiktiva exempel, inte riktiga deltagare. Du kan titta runt, men för att skapa, gå med, skicka eller ändra något måste du logga in.",back:'Tillbaka till språk'},
+ en:{title:'How do you want to start?',body:"Sign in to participate, or let Mura show you how FOLKOOP works first.",email:'Continue with email',guest:'Let Mura show me',muraRole:'FOLKOOP guide',guestNote:"Mura uses illustrative people, messages, projects and activity to explain FOLKOOP. They are examples, not claims about real participants or events. Sign in to participate yourself.",back:'Back to language'},
+ ru:{title:'Как хочешь начать?',body:"Войди, чтобы участвовать, или сначала позволь Муре показать, как работает FOLKOOP.",email:'Войти по почте',guest:'Мура покажет',muraRole:'Помощница FOLKOOP',guestNote:"Мура использует примеры людей, сообщений, проектов и действий, чтобы объяснить FOLKOOP. Это примеры, а не утверждения о реальных участниках или событиях. Войди, чтобы участвовать самому.",back:'Назад к языку'},
+ sv:{title:'Hur vill du börja?',body:"Logga in för att delta, eller låt Mura först visa hur FOLKOOP fungerar.",email:'Fortsätt med e-post',guest:'Låt Mura visa',muraRole:'FOLKOOP-guide',guestNote:"Mura använder exempel på människor, meddelanden, projekt och aktivitet för att förklara FOLKOOP. De är exempel, inte påståenden om riktiga deltagare eller händelser. Logga in för att delta själv.",back:'Tillbaka till språk'},
  es:{title:'¿Cómo quieres entrar?',body:"FOLKOOP empieza con algo que necesitas, puedes ofrecer o quieres hacer y te ayuda a encontrar personas o recursos relevantes y un siguiente paso concreto. Inicia sesión para participar o explora el demo.",email:'Continuar con correo',guest:'Explorar como invitado',guestNote:"El modo invitado es un DEMO. Todas las personas, mensajes, proyectos y actividades son ejemplos ficticios, no participantes reales. Puedes explorar, pero para crear, unirte, enviar o cambiar algo debes iniciar sesión.",back:'Volver al idioma'},
  uk:{title:'Як хочеш увійти?',body:"FOLKOOP починається з того, що тобі потрібно, що можеш запропонувати або що хочеш зробити, і допомагає знайти потрібних людей чи ресурси та конкретний наступний крок. Увійди для участі або переглянь демо.",email:'Продовжити з e-mail',guest:'Переглянути як гість',guestNote:"Гостьовий режим — ДЕМО. Усі люди, повідомлення, проєкти й активність тут — вигадані приклади, а не реальні учасники. Переглядати можна без входу; створювати, приєднуватися, надсилати чи змінювати — лише після входу.",back:'Назад до мови'},
  fi:{title:'Miten haluat jatkaa?',body:"FOLKOOP alkaa siitä, mitä tarvitset, voit tarjota tai haluat tehdä, ja auttaa löytämään sopivia ihmisiä tai resursseja sekä konkreettisen seuraavan askeleen. Kirjaudu osallistuaksesi tai tutustu demoon.",email:'Jatka sähköpostilla',guest:'Tutustu vieraana',guestNote:"Vierastila on DEMO. Kaikki ihmiset, viestit, projektit ja toiminta ovat kuvitteellisia esimerkkejä, eivät oikeita osallistujia. Voit selata, mutta luominen, liittyminen, lähettäminen ja muuttaminen vaativat kirjautumisen.",back:'Takaisin kieleen'},
@@ -314,7 +314,7 @@ function onboardingTarget(step){
 function positionOnboarding(step){
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
- if(!target){spot.hidden=true;dialog.dataset.noTarget='1';return;}
+ if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';return;}
  if(step.id!=='helper')target.classList.add('tutorial-target');
  if(step.id!=='helper'){
   // WebKit may ignore scrollIntoView() for a target inside content that is
@@ -352,12 +352,24 @@ function updateOnboardingScrollCue(){
  const atEnd=copy.scrollTop+copy.clientHeight>=copy.scrollHeight-3;
  cue.hidden=!overflow||atEnd;
 }
+function muraPracticeForStep(step){return step===2?1:step===3?2:step===4?3:0;}
+function updateMuraPractice(){
+ const dialog=ensureOnboarding(),box=dialog.querySelector('#muraPractice');if(!box)return;
+ box.hidden=muraPracticeStep===0&&onboardingStep<2;
+ dialog.querySelector('#muraPracticeStars').textContent=[0,1,2].map(i=>i<muraPracticeStep?'★':'○').join(' ');
+ dialog.querySelector('#muraPracticeXp').textContent=muraPracticeXp+' XP';
+}
+function completeMuraPractice(step){
+ const n=muraPracticeForStep(step);if(!n||n<=muraPracticeStep)return;
+ muraPracticeStep=n;muraPracticeXp=Math.min(15,n*5);updateMuraPractice();
+ globalThis.FolkoopGuide?.react?.('done');
+}
 function showOnboarding(step=0){
  onboardingOpen=true;
  onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
  const item=onboardingSteps[onboardingStep],dialog=ensureOnboarding(),source=helperSource();
  dialog.hidden=false;
- if(current!==item.route){location.hash='#/'+item.route;return;}
+ if(current!==item.route){current=item.route;history.replaceState(null,'','#/'+item.route);render();return;}
  dialog.querySelector('#onboardingProgress').textContent=t('tutorialProgress')+' '+(onboardingStep+1)+' / '+onboardingSteps.length;
  dialog.querySelector('#onboardingGuideName').textContent=source.name+' · '+source.label;
  dialog.querySelector('#onboardingTitle').textContent=tutorialTitle(item);
@@ -366,11 +378,14 @@ function showOnboarding(step=0){
  requestAnimationFrame(updateOnboardingScrollCue);
  dialog.querySelector('[data-onboarding="skip"]').textContent=t('tutorialSkip');
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=t('tutorialBack');back.disabled=onboardingStep===0;
- dialog.querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');
+ const next=dialog.querySelector('[data-onboarding="next"]');next.textContent=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep)?(lang==='ru'?'Помочь Муре':lang==='sv'?'Hjälp Mura':'Help Mura'):(onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext'));
+ updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
+ const guestTour=entryModeNow()==='guest';
+ const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
  dialog.querySelector('#onboardingSpotlight').hidden=true;
@@ -380,6 +395,8 @@ function finishOnboarding(){
  globalThis.FolkoopGuide?.react?.('done');
  try{storage?.setItem(ONBOARDING_KEY,'done');}catch{}
  onboardingDone=true;
+ if(guestTour&&!completedMuraPractice){current='home';history.replaceState(null,'','#/home');render();}
+ if(completedMuraPractice){try{sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false}}));document.body.classList.remove('network-login-open','guest-preview-open');location.hash='#/me';render();globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
@@ -474,7 +491,11 @@ document.addEventListener('click',e=>{
   const action=onboarding.dataset.onboarding;
   if(action==='skip'){finishOnboarding();return;}
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
-  if(action==='next'){if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;}
+  if(action==='next'){
+   const task=muraPracticeForStep(onboardingStep);
+   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?`Спасибо! +5 учебных XP. ${muraPracticeStep===3?'Три звезды собраны — теперь ты знаешь основные действия FOLKOOP.':'Звезда получена. Продолжим?'}`:lang==='sv'?`Tack! +5 övnings-XP. ${muraPracticeStep===3?'Tre stjärnor är klara — nu kan du de viktigaste handlingarna i FOLKOOP.':'En stjärna klar. Fortsätter vi?'}`:`Thanks! +5 practice XP. ${muraPracticeStep===3?'All three stars are complete — you now know FOLKOOP’s core actions.':'One star earned. Ready to continue?'}`);ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?t('tutorialDone'):t('tutorialNext');return;}
+   if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
+  }
  }
  const navLink=e.target.closest('#nav a');if(navLink){closeMenu();return;}
  const target=e.target.closest('button');if(!target)return;
@@ -484,11 +505,11 @@ document.addEventListener('click',e=>{
  if(target.dataset.delete&&confirm(t('confirmDelete'))){status(store.remove(target.dataset.delete));render();return;}
  const action=target.dataset.action;
  if(action==='cancel'){formKind=null;scratch={};render();}
+ if(action==='tutorial'){startFullIntroduction();return;}
  if(action==='toggle-my-place-editor'){
   const panel=$('#myPlaceEditorPanel'),open=panel?.hidden!==false;if(!panel)return;panel.hidden=!open;target.setAttribute('aria-expanded',String(open));
   if(open){panel.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});setTimeout(()=>panel.querySelector('input,textarea,button')?.focus({preventScroll:true}),reducedMotion?0:220);}return;
  }
- if(action==='tutorial'){startFullIntroduction();return;}
  if(action==='clear'&&confirm(t('confirmClear'))){if(store.clear()){scratch={};profileScratch=null;render();$('#status').textContent=t('deleted');}else status(false);}
  if(action==='export'){
   capture();const file=new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(file);const link=document.createElement('a');link.href=url;link.download='folkoop-my-data.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
