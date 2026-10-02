@@ -341,3 +341,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 }
 .button.intent-project:not(.quick){background:var(--intent-project);border-color:var(--intent-project)}
 .button.intent-project:not(.quick):hover{background:#435A60;border-color:#435A60}
+
+/* City belongs to the same FOLKOOP shell; the iframe is a civic boundary, not a second app card. */
+#cityWorkspace{margin-top:12px}
+#cityFrame{
+  border-color:var(--line);
+  border-radius:20px;
+  box-shadow:0 12px 34px #1F29330A
+}
+@media(max-width:760px){
+  #cityWorkspace{margin-inline:-10px}
+  #cityFrame{border-radius:16px}
+}
+
