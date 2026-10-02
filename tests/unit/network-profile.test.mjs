@@ -14,7 +14,8 @@ const escape=value=>String(value??'').replace(/[&<>"']/g,ch=>({
 
 function fixture(){
  const data={
-  profile:{name:'Alice <b>x</b>',skills:'Design <script>x</script>',about:'About <img src=x>',listed:true},
+  profile:{name:'Alice <b>x</b>',city:'Göteborg',skills:'Design <script>x</script>',about:'About <img src=x>',listed:true},
+  localDrafts:[{id:'d1',kind:'need',title:'Borrow <b>drill</b>',body:'Need <script>x</script>',done:false}],
   blocks:[{target_id:'blocked-user'}]
  };
  const labels=key=>({
@@ -24,12 +25,13 @@ function fixture(){
   unblock:'Unblock',localTitle:'Local workspace'
  })[key]||key;
  const home=key=>({demoBadge:"Mura's place · learning example",demoCta:'Create my own place'})[key]||key;
+ const shell=key=>({cityProfile:'My city',drafts:'My drafts',need:'Need',local:'Private draft'})[key]||key;
  const field=(name,label,value,max,area=false)=>area
   ?`<label>${escape(labels(label))}<textarea name="${name}" maxlength="${max}">${escape(value)}</textarea></label>`
   :`<label>${escape(labels(label))}<input name="${name}" maxlength="${max}" value="${escape(value)}"></label>`;
  const button=(action,key,id='')=>`<button data-net="${action}" data-id="${escape(id)}">${escape(labels(key))}</button>`;
  const renderActivityNotifications=()=>'<section data-activity>ACTIVITY</section>';
- return {data,labels,home,field,button,renderActivityNotifications};
+ return {data,labels,home,shell,field,button,renderActivityNotifications};
 }
 
 function domain(f){
@@ -38,6 +40,7 @@ function domain(f){
   getData:()=>f.data,
   text:f.labels,
   homeText:f.home,
+  shellText:f.shell,
   field:f.field,
   button:f.button,
   renderActivityNotifications:f.renderActivityNotifications
@@ -82,6 +85,11 @@ test('guest profile renders the learning card without server mutation controls',
  assert(html.includes('data-demo="register"'));
  assert(html.includes('data-net="logout"'));
  assert(html.includes('data-activity'));
+ assert(html.includes('My city'));
+ assert(html.includes('Göteborg'));
+ assert(html.includes('My drafts'));
+ assert(html.includes('Borrow &lt;b&gt;drill&lt;/b&gt;'));
+ assert(html.includes('Need &lt;script&gt;x&lt;/script&gt;'));
  assert(!html.includes('id="netProfile"'));
  assert(!html.includes('data-net="deleteProfile"'));
  assert(!html.includes('data-net="export"'));
