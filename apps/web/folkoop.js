@@ -176,11 +176,11 @@ function ensureEntryGate(){
  gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
-function showEntryGate(){
+function showEntryGate(noteOverride=''){
  const gate=ensureEntryGate(),x=entrySource(),choices=gate.querySelector('#entryLanguageChoices');
  gate.querySelector('#entryGateTitle').textContent=x.title;
  gate.querySelector('#entryGateBody').textContent=x.body;
- gate.querySelector('#entryGateNote').textContent=x.guestNote;
+ gate.querySelector('#entryGateNote').textContent=noteOverride||x.guestNote;
  gate.querySelector('#entryLanguageLabel').textContent=x.language;
  gate.querySelector('[data-entry="email"]').textContent=x.email;
  gate.querySelector('[data-entry="guest"]').textContent=x.guest;
@@ -459,7 +459,7 @@ window.addEventListener('folkoop:language-picked',e=>{
  changeLanguage(value);
  languageOnlyFlow=false;firstVisitFlow=false;
 });
-window.addEventListener('folkoop:open-entry',()=>showEntryGate());
+window.addEventListener('folkoop:open-entry',e=>showEntryGate(e.detail?.note||''));
 window.addEventListener('folkoop:network-rendered',()=>{if(onboardingOpen)requestAnimationFrame(()=>positionOnboarding(onboardingSteps[onboardingStep]));});
 window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),120);});
 window.addEventListener('folkoop:helper-toggle',()=>{
