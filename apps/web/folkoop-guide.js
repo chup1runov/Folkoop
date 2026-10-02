@@ -1,17 +1,21 @@
 /* Lightweight local FOLKOOP guide presence for FOLKOOP. No network/API calls. */
 (() => {
 'use strict';
-const CANONICAL_MURA='./folkoop-guide-please.webp';
+const CANONICAL_MURA='./folkoop-guide-confident.webp';
 const ASSETS=Object.freeze({
- welcome:CANONICAL_MURA,
+ welcome:'./folkoop-guide-wink.webp',
  idle:CANONICAL_MURA,
- idea:CANONICAL_MURA,
- wink:CANONICAL_MURA,
- 'point-left':CANONICAL_MURA,
- 'point-right':CANONICAL_MURA,
- 'point-up':CANONICAL_MURA,
- 'point-down':CANONICAL_MURA,
- 'sit-edge':CANONICAL_MURA
+ confident:'./folkoop-guide-confident.webp',
+ inspect:'./folkoop-guide-inspect.webp',
+ searching:'./folkoop-guide-searching.webp',
+ 'lean-in':'./folkoop-guide-lean-in.webp',
+ idea:'./folkoop-guide-idea.webp',
+ wink:'./folkoop-guide-wink.webp',
+ 'point-left':'./folkoop-guide-point-left.png',
+ 'point-right':'./folkoop-guide-point-right.png',
+ 'point-up':'./folkoop-guide-point-up.png',
+ 'point-down':'./folkoop-guide-point-down.png',
+ 'sit-edge':'./folkoop-guide-sit-edge.png'
 });
 // v0.29 consumes the exact 192x208 RGBA pose assets accepted into the pre-unification guide asset baseline.
 // Pointing is body artwork, not a DOM/CSS arm.
