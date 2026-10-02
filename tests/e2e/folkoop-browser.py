@@ -113,7 +113,11 @@ async def main():
   offline=await browser.new_context(service_workers='allow',locale='en-US')
   await offline.add_init_script("localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-workspace-v1',JSON.stringify({version:1,profile:{name:'Offline',city:'Göteborg',skills:'',about:''},drafts:[]}))")
   op=await offline.new_page();await op.goto(BASE)
-  await op.evaluate('navigator.serviceWorker.ready');await op.wait_for_function('!!navigator.serviceWorker.controller')
+  await op.evaluate('navigator.serviceWorker.ready')
+  for _ in range(50):
+   if await op.evaluate('navigator.serviceWorker.controller !== null'): break
+   await asyncio.sleep(.1)
+  else: raise AssertionError('service worker did not take control')
   await offline.set_offline(True);await op.reload()
   await expect(op.locator('#mobilePrimaryNav a')).to_have_count(6)
   await op.click('#mobilePrimaryNav a[href="#/city"]')
