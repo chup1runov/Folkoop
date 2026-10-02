@@ -80,7 +80,7 @@ async def main():
         await page.locator('#mobilePrimaryNav [data-mobile-nav="together"]').click()
         dock=page.locator('#mobileContextDock')
         await expect(dock).to_be_visible()
-        assert await dock.get_attribute('data-parent-section')=='together'
+        await expect(dock).to_have_attribute('data-parent-section','together')
         primary_box=await page.locator('#mobilePrimaryNav').bounding_box()
         dock_box=await dock.bounding_box()
         assert primary_box and dock_box and abs(dock_box['y']+dock_box['height']-primary_box['y'])<2,(dock_box,primary_box)
