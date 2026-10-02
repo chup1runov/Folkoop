@@ -796,9 +796,14 @@ window.addEventListener('message',e=>{
 });
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:guest-demo',e=>{
- guestDemo=e.detail?.enabled!==false;
- if(!guestDemo){showLocalGuest=true;document.body.classList.remove('guest-preview-open','network-login-open');}
- try{if(guestDemo)sessionStorage.setItem('folkoop-entry-mode-v1','guest');else if(sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');}catch{}
+ const detail=e.detail||{},temporary=detail.temporary===true;
+ guestDemo=detail.enabled!==false;
+ if(!guestDemo){showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');}
+ try{
+  if(guestDemo&&!temporary)sessionStorage.setItem('folkoop-entry-mode-v1','guest');
+  else if(!guestDemo&&detail.target==='account')sessionStorage.setItem('folkoop-entry-mode-v1','account');
+  else if(!guestDemo&&sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');
+ }catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
  if(guestDemo){showLocalGuest=false;load().then(()=>{navigateNetwork('#/home');render();}).catch(()=>render());}else render();
 });
