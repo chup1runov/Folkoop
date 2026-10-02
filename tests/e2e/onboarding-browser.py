@@ -49,16 +49,17 @@ async def mobile_flow(browser,passed):
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE)
 
- await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
- await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page.locator('#folkoopGuideLanguageTitle')).to_have_text('Hej! · Hi! · Привет!')
- await expect(page.locator('.folkoop-guide-language-character img')).to_be_visible()
- assert await page.locator('[data-folkoop-guide-lang]').count()==11
- passed.append('First contact is FOLKOOP guide plus language selection before the site tour')
-
- await page.click('[data-folkoop-guide-lang="ru"]')
- await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+ await expect(page.locator('#onboarding')).to_be_hidden()
+ await expect(page.locator('#entryGateTitle')).to_contain_text('Mura')
+ await expect(page.locator('.entry-mura img')).to_be_visible()
+ assert await page.locator('[data-entry-language]').count()==11
+ passed.append('First contact unifies Mura welcome, language and path choice on one surface')
+
+ await page.click('[data-entry-language="ru"]')
+ await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+ await expect(page.locator('#entryGateTitle')).to_have_text('Привет! Я Мура')
+ await expect(page.locator('[data-entry="guest"]')).to_have_text('Зайти к Муре в гости')
  await page.click('[data-entry="guest"]')
  await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
@@ -67,7 +68,7 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
- passed.append('Chosen language leads to explicit Guest choice before Mura opens her Mura’s space')
+ passed.append('Chosen language stays on Mura welcome and visit launches her guided place')
 
  titles=[
   'Привет, я Мура',
@@ -135,8 +136,9 @@ async def mobile_flow(browser,passed):
  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
  await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
  await page.click('[data-action=tutorial]')
- await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
- passed.append('Replay from Settings restarts from language, preserving the language-first contract')
+ await expect(page.locator('#onboarding')).to_be_visible()
+ await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
+ passed.append('Replay from Settings starts Mura visit directly in the current language')
  await page.keyboard.press('Escape')
  await page.screenshot(path=str(OUT/'folkoop-v029-directional-folkoop-guide-mobile.png'),full_page=True)
  assert errors==[],errors
@@ -147,10 +149,6 @@ async def desktop_flow(browser,passed):
  await local_only_factory(context)
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
- await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
- card=await page.locator('.folkoop-guide-language-card').bounding_box()
- assert card and card['width']>700 and card['height']<900,card
- await page.click('[data-folkoop-guide-lang="en"]')
  await expect(page.locator('#onboarding')).to_be_visible()
  await page.click('[data-onboarding=next]')
  await settled_actor(page)
@@ -158,7 +156,7 @@ async def desktop_flow(browser,passed):
  assert actor and actor['x']>=0 and actor['x']+actor['width']<=1366 and actor['y']>=0 and actor['y']+actor['height']<=900,actor
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
- passed.append('Desktop language gate, spotlight and animated FOLKOOP guide stay inside the viewport')
+ passed.append('Desktop replay, spotlight and animated FOLKOOP guide stay inside the viewport')
  await page.click('[data-onboarding=skip]')
  assert errors==[],errors
  await context.close()
