@@ -50,6 +50,16 @@ async def audit(browser,width,height):
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
+
+ # The embedded City keeps its civic routes but must not present a second FOLKOOP shell.
+ await page.goto(BASE+'city.html?embedded=1')
+ await expect(page.locator('html')).to_have_attribute('data-folkoop-embedded-city','1')
+ await expect(page.locator('.topbar')).to_be_hidden()
+ await expect(page.locator('.bottom-nav')).to_be_visible()
+ await expect(page.locator('.bottom-nav button')).to_have_count(4)
+ teal=(await page.locator('html').evaluate("el => getComputedStyle(el).getPropertyValue('--teal').trim()")).lower()
+ assert teal=='#176b6b', teal
+ await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city-embedded.png'),full_page=True)
  await context.close()
 
 async def main():
