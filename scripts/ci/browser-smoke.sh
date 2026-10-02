@@ -22,5 +22,6 @@ python3 tests/e2e/activity-chat-browser.py
 python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/home-browser.py
 python3 tests/e2e/home-welcome-browser.py
+python3 tests/e2e/security-csp-browser.py
 python3 tests/e2e/entry-welcome-audit-browser.py
 python3 tests/e2e/onboarding-audit-browser.py
