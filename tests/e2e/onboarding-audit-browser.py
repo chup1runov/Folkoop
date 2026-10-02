@@ -56,6 +56,8 @@ async def main():
    errors = []
    page.on('pageerror',lambda error:errors.append(str(error)))
    await page.goto(BASE+'?intro=1')
+   sw_version=await page.evaluate("""async()=>{const r=await fetch('./sw.js',{cache:'no-store'});const x=await r.text();return x.match(/const VERSION='([^']+)'/)?.[1]||''}""")
+   if sw_version!='0.40.0': failures.append(f'{width}: production shell version is {sw_version or "missing"}, expected 0.40.0')
    await expect(page.locator('#onboarding')).to_be_visible()
    await page.wait_for_timeout(220)
    for index in range(8):
