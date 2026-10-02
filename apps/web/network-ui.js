@@ -69,9 +69,9 @@ const demoLocaleCopy={
   'Need a tile cutter for a small room repair over one weekend.':'Нужен плиткорез для небольшого ремонта комнаты на выходные.',
   'I can help with photography':'Могу помочь с фотографией',
   'Can help photograph an item, a small event or a neighbourhood project.':'Могу помочь сфотографировать вещь, небольшое мероприятие или местный проект.',
-  'Alex · Demo':'Alex · Демо',
+  'Alex · Example':'Alex · Пример',
   'Repair · coordination':'Ремонт · координация',
-  'Guest preview profile. Sample data only.':'Гостевой демонстрационный профиль. Только пример данных.',
+  'Learning-space profile. Example data only.':'Учебный профиль. Только пример данных.',
   'Carpentry · reuse':'Столярные работы · повторное использование',
   'Interested in neighbourhood repair and shared tools.':'Интересуется ремонтом по соседству и общими инструментами.',
   'Logistics · Swedish/Arabic':'Логистика · шведский/арабский',
@@ -108,7 +108,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
   'Can collect after work':'Могу забрать после работы',
   'Need delivery help':'Нужна помощь с доставкой',
-  'Sample supplier offer for the demo.':'Пример предложения поставщика.',
+  'Example supplier offer.':'Пример предложения поставщика.',
   'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
   'Entrance sign ready':'Табличка для входа готова',
   'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
@@ -123,9 +123,9 @@ const demoLocaleCopy={
   'Need a tile cutter for a small room repair over one weekend.':'Behöver en kakelskärare för en liten rumsrenovering över helgen.',
   'I can help with photography':'Jag kan hjälpa till med fotografering',
   'Can help photograph an item, a small event or a neighbourhood project.':'Kan hjälpa till att fotografera en sak, ett litet evenemang eller ett lokalt projekt.',
-  'Alex · Demo':'Alex · Demo',
+  'Alex · Example':'Alex · Exempel',
   'Repair · coordination':'Reparation · samordning',
-  'Guest preview profile. Sample data only.':'Gästprofil för demo. Endast exempeldata.',
+  'Learning-space profile. Example data only.':'Lärprofil. Endast exempeldata.',
   'Carpentry · reuse':'Snickeri · återbruk',
   'Interested in neighbourhood repair and shared tools.':'Intresserad av lokal reparation och delade verktyg.',
   'Logistics · Swedish/Arabic':'Logistik · svenska/arabiska',
@@ -162,7 +162,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
   'Can collect after work':'Kan hämta efter jobbet',
   'Need delivery help':'Behöver hjälp med leverans',
-  'Sample supplier offer for the demo.':'Exempel på leverantörserbjudande.',
+  'Example supplier offer.':'Exempel på leverantörserbjudande.',
   'todo · Confirm the room':'Att göra · Bekräfta lokalen',
   'Entrance sign ready':'Entréskylten är klar',
   'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.'
@@ -230,7 +230,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
   {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Sample supplier offer for the demo.')}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Example supplier offer.')}];
  const activity=[
   {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
   {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
