@@ -22,7 +22,7 @@ test('Göteborg open-plan section tolerates markup and entities inside headings'
   const items = parsePlans(section, '2099-01-01');
   assert.equal(items.length, 1);
   assert.equal(items[0].deadline, '2099-12-31');
-  assert.match(items[0].sourceUrl, /goteborg\\.se\\/plan\\/example/);
+  assert.ok(items[0].sourceUrl.includes('goteborg.se/plan/example'));
 });
 
 test('Göteborg open-plan section still accepts plain-text headings', () => {
