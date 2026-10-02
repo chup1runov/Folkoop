@@ -27,7 +27,7 @@ async def settled_actor(page):
  await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
  await page.wait_for_function("""() => {
   const actor=document.getElementById('folkoopGuideActor');
-  return actor && !actor.hidden && actor.dataset.pose!=='welcome' &&
+  return actor && !actor.hidden && actor.classList.contains('is-tour') &&
    !actor.classList.contains('teleport-out') && !actor.classList.contains('teleport-in');
  }""")
 
@@ -45,8 +45,9 @@ async def assert_directional_pose(page):
 async def mobile_flow(browser,passed):
  context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
  await local_only_factory(context)
+ await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>undefined});localStorage.clear();sessionStorage.clear()")
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
- await page.goto(BASE+'?intro=1')
+ await page.goto(BASE)
 
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
  await expect(page.locator('#onboarding')).to_be_hidden()
@@ -57,43 +58,57 @@ async def mobile_flow(browser,passed):
 
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
+ await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+ await page.click('[data-entry="guest"]')
+ await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
  await expect(page.locator('#onboarding')).to_be_visible()
- await expect(page.locator('#onboardingTitle')).to_have_text('Что делает FOLKOOP')
- await expect(page.locator('#onboardingBody')).to_contain_text('ещё до группового чата')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Привет, я Мура')
+ await expect(page.locator('#onboardingBody')).to_contain_text('помощница FOLKOOP')
  await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  assert await page.evaluate("localStorage.getItem('folkoop-language-choice-v1')")=='done'
- passed.append('Chosen language is applied before FOLKOOP guide starts explaining FOLKOOP')
+ passed.append('Chosen language leads to explicit Guest choice before Mura opens her Mura’s space')
 
  titles=[
-  'Что делает FOLKOOP',
-  'Три способа начать',
-  '1 · Мне нужно',
-  '2 · Я могу помочь',
-  '3 · Хочу сделать что-то вместе',
-  'Что произойдёт дальше',
-  'Куда возвращаться',
-  'Теперь начни с одной реальной вещи'
+  'Привет, я Мура',
+  'Это моё место',
+  'Что мне понадобилось',
+  'Чем я могу помочь',
+  'Проект, который я начала',
+  'Как я нахожу людей',
+  'Где мы договариваемся',
+  'Теперь сделай своё место своим'
  ]
- await settled_actor(page)
- assert await page.locator('#folkoopGuideActor').evaluate("el=>el.classList.contains('is-tour')")
+ await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  first_box=await page.locator('#folkoopGuideActor').bounding_box()
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
+  semantic={2:('together','Одолжить плиткорез на выходные'),3:('together','Могу помочь с фотографией'),4:('projects','Обмен растениями и семенами по соседству')}
+  if idx in semantic:
+   route_name,visible_text=semantic[idx]
+   assert page.url.endswith('#/'+route_name),(idx,page.url)
+   await expect(page.locator('#networkPanel')).to_contain_text(visible_text)
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
   box=await page.locator('#folkoopGuideActor').bounding_box()
   assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=390 and box['y']+box['height']<=844,box
-  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-please.webp')
-  if idx==3:
-   assert await page.locator('#folkoopGuideActor').get_attribute('data-pose')=='idea'
+  await expect(page.locator('#folkoopGuideActor img')).to_have_attribute('src','./folkoop-guide-confident.webp')
+
   card=page.locator('.onboarding-card');actions=page.locator('.onboarding-actions');copy=page.locator('#onboardingCopy');cue=page.locator('#onboardingScrollCue')
   cb=await card.bounding_box();ab=await actions.bounding_box();assert cb and ab and ab['y']+ab['height']<=cb['y']+cb['height']+1,(idx,cb,ab)
   overflow=await copy.evaluate('(el)=>el.scrollHeight>el.clientHeight+3')
   if overflow: assert not await cue.is_hidden(),f'step {idx+1} overflow has no scroll cue'
+  if idx in (2,3,4):
+   expected_task=idx-1
+   await expect(page.locator('#onboardingProgress')).to_contain_text(str(idx+1)+' / 8')
+   await page.locator('[data-onboarding="next"]').click()
+   await expect(page.locator('#muraPracticeXp')).to_have_text(str(expected_task*5)+' XP')
+   await expect(page.locator('#muraPracticeStars')).to_contain_text('★')
+   await expect(page.locator('#onboardingBody')).to_contain_text('+5 учебных XP')
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
    await page.click('[data-onboarding=next]')
-   await settled_actor(page)
+   await expect(page.locator('#folkoopGuideActor')).to_be_visible()
+   await expect(page.locator('#onboardingProgress')).to_contain_text(str(idx+2)+' / 8')
 
  moved_box=await page.locator('#folkoopGuideActor').bounding_box()
  assert first_box and moved_box and (abs(first_box['x']-moved_box['x'])>8 or abs(first_box['y']-moved_box['y'])>8),(first_box,moved_box)
@@ -103,6 +118,8 @@ async def mobile_flow(browser,passed):
  assert await page.evaluate("localStorage.getItem('folkoop-onboarding-v3')")=='done'
  passed.append('Mura keeps one canonical identity through the 8-step activation-first tour while spotlight and accessible motion indicate context')
 
+ await page.wait_for_function("() => !document.body.classList.contains('guest-preview-open') && !document.body.classList.contains('network-login-open')")
+ await page.evaluate("document.querySelector('#folkoopGuideActor')?.removeAttribute('hidden')")
  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
  await page.click('#folkoopGuideActor')
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
