@@ -509,6 +509,7 @@ const profileDomain=globalThis.FolkoopNetworkProfile.create({
 const communitiesDomain=globalThis.FolkoopNetworkCommunities.create({
  escape:esc,
  getData:()=>data,
+ getProfile:profileFor,
  text:t,
  field,
  button:btn
