@@ -22,7 +22,7 @@ filled or verified:
 - the final Auth route and two-account technical test pass.
 
 The controller adopted the working legal-basis model below for this pilot scope
-on 29 September 2026. Supabase/GitHub service review is recorded in
+on 29 September 2026. Supabase/GitHub/PostHog service review is recorded in
 `SERVICE_DPA_REVIEW.md`. Box is excluded from real participant personal-data
 storage unless a later DPA review explicitly changes that decision.
 
@@ -108,6 +108,7 @@ pilot, not the future end of FOLKOOP as a project.
 | Communities/group conversations/cooperations owned by closing participant | While active | Do **not** blind-cascade. Transfer ownership to a consenting remaining participant when shared and still needed; otherwise delete after reviewing effects |
 | Project tasks | While active | Delete creator-owned rows; assignments may be cleared/pseudonymised according to the schema; verify no shared object is unintentionally lost |
 | Cooperation activity | Through pilot + 90 days for outcome analysis | Clear/detach actor identity where supported; delete coded event-level data by pilot + 90 days after producing irreversible aggregate statistics |
+| PostHog Product Analytics events, **only if separately activated** | Through pilot + 90 days maximum for the row-level pilot dataset | Use explicit PostHog deletion tooling/process; do not rely on the provider's longer plan-level event-retention window. If this deletion path is not operationally verified, keep PostHog disabled |
 | Moderation reports | Until case closed + 180 days | Retain only the minimum needed for safety/accountability; then delete or irreversibly anonymise. Extend only for a documented legal hold/active claim |
 | Separate participant/contact register outside Supabase | **Not approved for this pilot** | Do not create unless a reviewed processor/storage path is added |
 | Separate outcome/interview notes outside Supabase | **Not approved for this pilot** | Use app-native data / aggregate analysis only unless reviewed storage is added |
@@ -231,6 +232,35 @@ is actually configured and enabled. Before enabling:
 - verify the applicable Google privacy/transfer information;
 - update the participant notice.
 
+### PostHog Cloud EU — prepared but analytics remains disabled
+
+Use, only if activated: narrow product analytics for the controlled core-loop
+evaluation.
+
+Current status checked 3 October 2026:
+- connected project is on PostHog EU;
+- IP anonymisation is enabled at project level;
+- session recording is disabled;
+- no event has been ingested;
+- the FOLKOOP application analytics configuration remains disabled.
+
+The prepared event model uses the authenticated FOLKOOP UUID as a pseudonymous
+`distinct_id` and an allowlist of meaningful cooperation events. It deliberately
+excludes names, email, free text, messages, titles/descriptions, page views,
+autocapture and session replay, and sets `$process_person_profile=false`.
+
+Decision:
+- PostHog is **not required** to admit participants or run the pilot;
+- keep it disabled unless the PostHog DPA/processor review, current subprocessor
+  review, participant-notice update and pilot-end deletion procedure are all
+  complete;
+- if activated, use it only for the already-adopted narrow core-loop evaluation
+  purpose under the existing Art. 6(1)(f) safeguards;
+- explicitly delete row-level analytics by pilot end + 90 days; PostHog's normal
+  plan retention is longer and is not a deletion mechanism.
+
+See `SERVICE_DPA_REVIEW.md` and `PILOT_ANALYTICS_EVENT_TAXONOMY.md`.
+
 ## DPIA / high-risk screening
 
 Current pilot characteristics do **not**, on the information presently
@@ -258,6 +288,7 @@ processing begins.
 - [x] Box excluded from participant personal-data flow unless separately reviewed
 - [x] GitHub Pages hosting disclosure confirmed
 - [ ] Google Auth section updated if provider enabled
+- [ ] PostHog disclosure/DPA/deletion gate completed **only if analytics will be activated**; otherwise PostHog remains disabled
 - [ ] Participant privacy notice completed
 - [ ] Rights/incident runbook approved
 - [ ] Account closure procedure tested with synthetic/developer users
