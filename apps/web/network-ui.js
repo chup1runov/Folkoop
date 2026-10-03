@@ -70,7 +70,7 @@ function currentSubsection(parent){
  return parent==='home'?'home-overview':parent==='projects'?'projects-overview':'messages-chats';
 }
 
-const t=k=>muraText('base',k)??baseCopy[lang()]?.[k]||en[k]||k;
+const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
@@ -438,12 +438,12 @@ function guestRequireAccount(){
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
-const mt=k=>muraText('chat',k)??chatCopy[lang()][k]||chatCopy.en[k]||k;
-const ct=k=>muraText('coop',k)??coopCopy[lang()][k]||coopCopy.en[k]||k;
-const ot=k=>muraText('offer',k)??offerCopy[lang()][k]||offerCopy.en[k]||k;
+const mt=k=>muraText('chat',k)??(chatCopy[lang()][k]||chatCopy.en[k]||k);
+const ct=k=>muraText('coop',k)??(coopCopy[lang()][k]||coopCopy.en[k]||k);
+const ot=k=>muraText('offer',k)??(offerCopy[lang()][k]||offerCopy.en[k]||k);
 const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
 const at=k=>activityCopy[lang()][k]||activityCopy.en[k]||k;
-const ht=k=>muraText('home',k)??homeCopy[lang()][k]||homeCopy.en[k]||k;
+const ht=k=>muraText('home',k)??(homeCopy[lang()][k]||homeCopy.en[k]||k);
 const st=k=>globalThis.FolkoopCopy?.COPY?.[lang()]?.[k]||globalThis.FolkoopCopy?.COPY?.en?.[k]||k;
 const abtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(at(key))}</button>`;
 
