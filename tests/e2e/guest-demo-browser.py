@@ -303,6 +303,27 @@ async def main():
   await expect(page.locator('.mura-home')).to_be_visible()
   passed.append('Implicit browser language is accepted when entering Mura and reload does not reopen first contact')
 
+  # Regression: Mura keeps her in-memory Göteborg context when browser Storage is unavailable.
+  await context.close()
+  context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
+  await context.add_init_script("""Object.defineProperty(navigator,'webdriver',{get:()=>false});
+    for(const proto of [Storage.prototype]){
+      proto.getItem=function(){throw new DOMException('blocked','SecurityError')};
+      proto.setItem=function(){throw new DOMException('blocked','SecurityError')};
+      proto.removeItem=function(){throw new DOMException('blocked','SecurityError')};
+    }""")
+  await context.route('**/*',route)
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  await page.goto(BASE)
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await page.click('[data-onboarding="skip"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
+  await expect(page.locator('#cityWorkspace')).to_be_visible()
+  assert 'Укажи свой город' not in await page.locator('body').inner_text()
+  passed.append('Mura retains Göteborg in memory when Storage access is blocked')
+
   assert not errors,errors
   await context.close();await browser.close()
 
