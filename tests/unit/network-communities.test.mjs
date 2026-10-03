@@ -109,3 +109,18 @@ test('banned membership renders no join/leave/post controls',()=>{
  assert(!html.includes('data-net="leave"'));
  assert(!html.includes('id="netPost"'));
 });
+
+
+test('Mura communities stay read-only and omit creation/moderation chrome',()=>{
+ const f=fixture(),d=domain(f);
+ const list=d.render({id:'me'},{guestDemo:true});
+ assert(!list.includes('id="netGroup"'));
+ assert(!list.includes('data-net="logout"'));
+ assert(!list.includes('data-net="refresh"'));
+ assert(list.includes('data-net="open"'));
+ const selected=d.render({id:'me'},{selected:'g1',guestDemo:true});
+ assert(!selected.includes('id="netPost"'));
+ assert(!selected.includes('data-net="deleteGroup"'));
+ assert(!selected.includes('data-net="deletePost"'));
+ assert(selected.includes('My &lt;img src=x&gt; post'));
+});
