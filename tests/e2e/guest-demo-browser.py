@@ -108,6 +108,16 @@ async def main():
   await assert_mura_immersed(page,'#networkPanel')
   passed.append('Mura People shows relationships rather than a generic directory')
 
+  # Physical-iPhone regression: route tabs must follow the actual route, not a stale virtual subsection.
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="people"]')).to_have_attribute('aria-current','page')
+  await page.click('#mobileContextDock [data-mobile-subnav="communities"]')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="communities"]')).to_have_attribute('aria-current','page')
+  assert await page.locator('#mobileContextDock [data-mobile-subnav="people"][aria-current="page"]').count()==0
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="together"]')).to_have_attribute('aria-current','page')
+  passed.append('Mobile route tabs track Together, People and Communities without stale selection')
+
+
   for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
     await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
@@ -216,8 +226,12 @@ async def main():
   await page.click('[data-entry="email"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await expect(page.locator('#netLogin')).to_be_visible()
+  await expect(page.locator('.pilot-login-shell h2')).to_have_text('Создать своё место в FOLKOOP')
+  await expect(page.locator('.pilot-login-intro')).to_contain_text('своими людьми, идеями и реальными делами')
+  assert await page.locator('.pilot-login-shell').get_by_text('Вход в пилот',exact=True).count()==0
+  await expect(page.locator('.folkoop-guide-actor')).to_be_hidden()
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='account'")
-  passed.append('Guest can switch directly to the real email sign-in flow')
+  passed.append('Leaving Mura creates a clear account boundary without pilot copy or Mura character')
 
 
   # Regression: a returning browser may already have completed onboarding, but an explicit

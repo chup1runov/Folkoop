@@ -71,6 +71,13 @@ function currentSubsection(parent){
 }
 
 const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
+const accountEntryCopy={
+ en:{login:'Create or enter your FOLKOOP place',invite:'Continue with your own people, ideas and real things you want to do.',email:'Email',send:'Continue',localContinue:'Continue locally without an account'},
+ ru:{login:'Создать своё место в FOLKOOP',invite:'Продолжи уже со своими людьми, идеями и реальными делами.',email:'Электронная почта',send:'Продолжить',localContinue:'Продолжить локально без аккаунта'},
+ sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'}
+};
+const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
+
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
@@ -763,16 +770,18 @@ function render(){
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
  if(!u){
+  const accountEntry=sessionStorage.getItem('folkoop-entry-mode-v1')==='account';
+  const loginText=k=>accountEntry?accountEntryText(k):t(k);
   const termsUrl=lang()==='sv'?api.policy.termsUrlSv:api.policy.termsUrlEn;
   const policyBlock=`<div class="pilot-policy"><label class="checkbox policy-consent"><input type="checkbox" name="policyAccepted"${policyAccepted?' checked':''}><span>${esc(t('policyAccept'))}</span></label><p class="pilot-policy-links"><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(termsUrl)}">${esc(t('termsLink'))}</a><span aria-hidden="true">·</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(api.policy.privacyUrl)}">${esc(t('privacyLink'))}</a><span class="policy-version">v1 · 29.09.2026</span></p></div>`;
   const inviteField=`<label>${esc(t('inviteCode'))}<input name="inviteCode" autocomplete="off" minlength="0" maxlength="120" value="${esc(pilotInvite)}" aria-describedby="pilotInviteHint"></label><p id="pilotInviteHint" class="meta pilot-field-hint">${esc(t('inviteCodeHint'))}</p>`;
-  const emailStart=`<label>${esc(t('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="${codeRequested?'button secondary':'button'}">${esc(t(codeRequested?'resend':'send'))}</button>`;
+  const emailStart=`<label>${esc(loginText('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="${codeRequested?'button secondary':'button'}">${esc(codeRequested?t('resend'):loginText('send'))}</button>`;
   const emailCodeOnly=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label><button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
   const emailFinish=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label>${inviteField}${policyBlock}<button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
   if(api.googleOAuthEnabled){
-   html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2><p class="pilot-login-intro">${esc(t('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${inviteField}${policyBlock}<button type="button" class="button pilot-google" data-auth="google">${esc(t('google'))}</button><details class="pilot-alt-auth"${codeRequested?' open':''}><summary>${esc(t('email'))}</summary><div class="pilot-alt-auth-body">${emailStart}${codeRequested?emailCodeOnly:''}</div></details></form></section>`;
+   html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${inviteField}${policyBlock}<button type="button" class="button pilot-google" data-auth="google">${esc(t('google'))}</button><details class="pilot-alt-auth"${codeRequested?' open':''}><summary>${esc(t('email'))}</summary><div class="pilot-alt-auth-body">${emailStart}${codeRequested?emailCodeOnly:''}</div></details></form></section>`;
   }else{
-   html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2><p class="pilot-login-intro">${esc(t('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(t('localContinue'))}</button></section>`;
+   html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
   }
  }
  else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):renderHome(u);}
