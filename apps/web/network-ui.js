@@ -770,7 +770,7 @@ function render(){
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
  if(!u){
-  const accountEntry=sessionStorage.getItem('folkoop-entry-mode-v1')==='account';
+  let accountEntry=false;try{accountEntry=sessionStorage.getItem('folkoop-entry-mode-v1')==='account';}catch{}
   const loginText=k=>accountEntry?accountEntryText(k):t(k);
   const termsUrl=lang()==='sv'?api.policy.termsUrlSv:api.policy.termsUrlEn;
   const policyBlock=`<div class="pilot-policy"><label class="checkbox policy-consent"><input type="checkbox" name="policyAccepted"${policyAccepted?' checked':''}><span>${esc(t('policyAccept'))}</span></label><p class="pilot-policy-links"><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(termsUrl)}">${esc(t('termsLink'))}</a><span aria-hidden="true">·</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(api.policy.privacyUrl)}">${esc(t('privacyLink'))}</a><span class="policy-version">v1 · 29.09.2026</span></p></div>`;
