@@ -123,7 +123,9 @@ async def main():
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="communities"]')
-  assert await page.locator('.mura-community-card').count()==4
+  if await page.locator('[data-net="back"]').count():
+   await page.locator('[data-net="back"]').first.click()
+  await expect(page.locator('.mura-community-card')).to_have_count(4)
   await expect(page.locator('#networkPanel')).to_contain_text('Ремонт и повторное использование')
   await expect(page.locator('#networkPanel')).to_contain_text('Воскресная прогулка и уборка')
   passed.append('Mura Communities contains four lived-in places with current activity')
