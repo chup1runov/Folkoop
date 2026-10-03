@@ -160,8 +160,9 @@ async def main():
   assert await page.locator('#folkoopEntryGate').is_hidden()
   passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
 
-  await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  await page.click('[data-mobile-action="exitmura"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await expect(page.locator('[data-net="logout"]')).to_have_text('Выйти из аккаунта Муры')
+  await page.click('[data-net="logout"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
   await expect(page.locator('[data-entry="email"]')).to_have_text('Войти / зарегистрироваться')
   passed.append('Registration appears only after the visitor explicitly leaves Mura')
