@@ -89,7 +89,8 @@ function renderMobileChrome(){
  dock.dataset.parentSection=active;
  const subLabel=k=>SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
- const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&subsection===k);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const isVirtualSubsection=k=>subsectionParent(k)!=='';
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':'Leave Mura\'s account';
@@ -552,7 +553,8 @@ $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
 document.addEventListener('click',e=>{
  const link=e.target.closest?.('[data-subsection]');if(!link)return;
- const key=link.dataset.subsection,parent=subsectionParent(key);if(!parent)return;
+ const key=link.dataset.subsection,parent=subsectionParent(key);
+ if(!parent)return; // Real route tabs (Together / People / Communities etc.) use normal hash navigation.
  e.preventDefault();subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
  if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
  render();
@@ -606,7 +608,12 @@ document.addEventListener('click',e=>{
    }
    setEntryMode('guest');return;
   }
-  if(action==='email'){setEntryMode('account');return;}
+  if(action==='email'){
+   // Crossing from Mura into account access is a hard shell boundary: remove the
+   // character/context immediately so sign-in cannot look like part of Mura's account.
+   globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');
+   setEntryMode('account');return;
+  }
  }
  const helper=e.target.closest('[data-helper]');
  if(helper){
