@@ -24,7 +24,7 @@ function create({
     const membership=memberships.find(item=>item.community_id===selected);
     const member=membership&&!membership.banned;
     const guestIntro=guestDemo
-      ? (document?.documentElement?.lang==='ru'?'Места, куда я возвращаюсь: соседи, язык, ремонт и идеи, которые становятся общими делами.':document?.documentElement?.lang==='sv'?'Platser jag återkommer till: grannar, språk, reparation och idéer som blir gemensamma saker.':'Places I return to: neighbours, language, repair and ideas that turn into shared things.')
+      ? (globalThis.document?.documentElement?.lang==='ru'?'Места, куда я возвращаюсь: соседи, язык, ремонт и идеи, которые становятся общими делами.':document?.documentElement?.lang==='sv'?'Platser jag återkommer till: grannar, språk, reparation och idéer som blir gemensamma saker.':'Places I return to: neighbours, language, repair and ideas that turn into shared things.')
       : text('desc');
 
     let html=`<div class="row"><h2>${escape(text('groups'))}</h2>${guestDemo?'':`<div>${button('refresh','refresh')}${button('logout','out')}</div>`}</div><p>${escape(guestIntro)}</p>`;
