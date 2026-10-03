@@ -366,7 +366,9 @@ function demoSnapshot(){
   {cooperation_id:TOOLS,user_id:D,role:'member',joined_at:'2026-09-30T16:30:00Z'},
   {cooperation_id:TOOLS,user_id:A,role:'member',joined_at:'2026-09-30T17:00:00Z'},
   {cooperation_id:LADDER,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-22T09:00:00Z'},
-  {cooperation_id:LADDER,user_id:D,role:'member',joined_at:'2026-09-22T09:10:00Z'}
+  {cooperation_id:LADDER,user_id:D,role:'member',joined_at:'2026-09-22T09:10:00Z'},
+  {cooperation_id:PHOTO,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-27T16:00:00Z'},
+  {cooperation_id:PHOTO,user_id:F,role:'member',joined_at:'2026-09-27T16:10:00Z'}
  ];
  const chats=[
   {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Plant exchange · work chat'),created_at:'2026-09-28T10:00:00Z'},
@@ -407,7 +409,9 @@ function demoSnapshot(){
   {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the exchange table'),details:demoText('Check that the exchange table is available on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
   {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'},
   {id:'00000000-0000-4000-8000-000000000403',cooperation_id:TOOLS,creator_id:DEMO_UID,assignee_id:D,title:demoText('Label the first ten tools'),details:demoText('Start with the tools people already said they are willing to share.'),status:'doing',created_at:'2026-09-30T17:00:00Z',updated_at:'2026-10-01T07:10:00Z'},
-  {id:'00000000-0000-4000-8000-000000000404',cooperation_id:TOOLS,creator_id:DEMO_UID,assignee_id:A,title:demoText('Write borrowing rules in plain language'),details:demoText('Keep it short: who has the key, how long, and what to do if something breaks.'),status:'todo',created_at:'2026-09-30T17:05:00Z',updated_at:'2026-10-01T07:00:00Z'}
+  {id:'00000000-0000-4000-8000-000000000404',cooperation_id:TOOLS,creator_id:DEMO_UID,assignee_id:A,title:demoText('Write borrowing rules in plain language'),details:demoText('Keep it short: who has the key, how long, and what to do if something breaks.'),status:'todo',created_at:'2026-09-30T17:05:00Z',updated_at:'2026-10-01T07:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000405',cooperation_id:REPAIR,creator_id:D,assignee_id:DEMO_UID,title:demoText('Set up the repair tables'),details:demoText('Create three simple stations for electrical, textile and general repair.'),status:'done',created_at:'2026-09-27T12:00:00Z',updated_at:'2026-09-27T13:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000406',cooperation_id:REPAIR,creator_id:DEMO_UID,assignee_id:DEMO_UID,title:demoText('Photograph the repaired items for the recap'),details:demoText('Take a few before/after pictures without photographing people unless they ask.'),status:'done',created_at:'2026-09-27T13:10:00Z',updated_at:'2026-09-27T17:20:00Z'}
  ];
  const commitments=[
   {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:demoText('Can collect after work')},
@@ -419,19 +423,24 @@ function demoSnapshot(){
   {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
   {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'},
   {cooperation_id:TOOLS,cooperation_kind:'project',cooperation_title:demoText('Neighbourhood tool shelf'),unread_count:1,last_activity_at:'2026-10-01T07:20:00Z',last_event_type:'update_posted',last_actor_id:DEMO_UID,last_label:demoText('First shelf sketch ready')},
-  {cooperation_id:REPAIR,cooperation_kind:'project',cooperation_title:demoText('Repair café afternoon'),unread_count:0,last_activity_at:'2026-09-27T17:30:00Z',last_event_type:'update_posted',last_actor_id:D,last_label:demoText('Repair café result: 11 fixed, 3 diagnosed.')}
+  {cooperation_id:REPAIR,cooperation_kind:'project',cooperation_title:demoText('Repair café afternoon'),unread_count:0,last_activity_at:'2026-09-27T17:30:00Z',last_event_type:'update_posted',last_actor_id:D,last_label:demoText('Repair café result: 11 fixed, 3 diagnosed.')},
+  {cooperation_id:PHOTO,cooperation_kind:'offer',cooperation_title:demoText('Photographed the repair café'),unread_count:0,last_activity_at:'2026-09-27T20:00:00Z',last_event_type:'update_posted',last_actor_id:DEMO_UID,last_label:demoText('Photo recap published')}
  ];
  const coopActivity=[
   {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the exchange table'),created_at:'2026-09-30T08:30:00Z'},
   {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:demoText('Entrance sign ready'),created_at:'2026-09-29T18:00:00Z'},
   {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'},
   {cooperation_id:TOOLS,event_type:'update_posted',actor_id:DEMO_UID,label:demoText('First shelf sketch ready'),created_at:'2026-10-01T07:20:00Z'},
-  {cooperation_id:REPAIR,event_type:'update_posted',actor_id:D,label:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'}
+  {cooperation_id:REPAIR,event_type:'update_posted',actor_id:D,label:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'},
+  {cooperation_id:REPAIR,event_type:'update_posted',actor_id:F,label:demoText('Coffee table was ready'),created_at:'2026-09-27T13:15:00Z'},
+  {cooperation_id:PHOTO,event_type:'update_posted',actor_id:DEMO_UID,label:demoText('Photo recap published'),created_at:'2026-09-27T20:00:00Z'}
  ];
  const updates=[
   {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:demoText('Entrance sign is ready. I will bring tape and markers.'),created_at:'2026-09-29T18:00:00Z'},
   {id:'00000000-0000-4000-8000-000000000802',cooperation_id:TOOLS,author_id:DEMO_UID,body:demoText('I drew a simple shelf layout and marked the first tool categories.'),created_at:'2026-10-01T07:20:00Z'},
-  {id:'00000000-0000-4000-8000-000000000803',cooperation_id:REPAIR,author_id:D,body:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'}
+  {id:'00000000-0000-4000-8000-000000000803',cooperation_id:REPAIR,author_id:D,body:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'},
+  {id:'00000000-0000-4000-8000-000000000804',cooperation_id:REPAIR,author_id:F,body:demoText('Fatima set up coffee and cups before the first visitors arrived.'),created_at:'2026-09-27T13:15:00Z'},
+  {id:'00000000-0000-4000-8000-000000000805',cooperation_id:PHOTO,author_id:DEMO_UID,body:demoText('I selected six before/after pictures and shared them with the repair circle.'),created_at:'2026-09-27T20:00:00Z'}
  ];
   const localDrafts=[
    {id:'mura-draft-need',kind:'need',title:demoText('Borrow a drill for one evening'),body:demoText('Need a normal drill for two wall plugs.'),done:false},
