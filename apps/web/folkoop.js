@@ -74,7 +74,7 @@ function renderMobileChrome(){
  document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
- const context=MOBILE_CONTEXT[active]||[],guest=entryModeNow()==='guest';
+ const guest=entryModeNow()==='guest',context=guest&&active==='home'?[]:(MOBILE_CONTEXT[active]||[]);
  dock.dataset.parentSection=active;
  const subLabel=k=>SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
