@@ -24,7 +24,7 @@ function fixture(){
   accountDelete:'Account deletion note',exportNote:'Export note',blocks:'Hidden participants',
   unblock:'Unblock',localTitle:'Local workspace'
  })[key]||key;
- const home=key=>({demoBadge:"Mura's place · learning example",demoCta:'Create my own place'})[key]||key;
+ const home=key=>({demoBadge:'Mura · Göteborg',demoCta:'Create my own place'})[key]||key;
  const shell=key=>({cityProfile:'My city',drafts:'My drafts',need:'Need',local:'Private draft'})[key]||key;
  const field=(name,label,value,max,area=false)=>area
   ?`<label>${escape(labels(label))}<textarea name="${name}" maxlength="${max}">${escape(value)}</textarea></label>`
@@ -77,12 +77,13 @@ test('profile draft overrides loaded profile without mutating source state',()=>
  assert.equal(f.data.profile.name,'Alice <b>x</b>');
 });
 
-test('guest profile renders the learning card without server mutation controls',()=>{
+test('guest profile renders Mura life without signup or server mutation controls',()=>{
  const f=fixture(),d=domain(f);
  const html=d.render({id:'demo'},{guestDemo:true});
  assert(html.includes('demo-profile-card'));
- assert(html.includes('Mura&#39;s place · learning example'));
+ assert(html.includes('Mura · Göteborg'));
  assert(!html.includes('data-demo="register"'));
+ assert(!/learning example|sign in|register/i.test(html));
  assert(html.includes('data-net="logout"'));
  assert(html.includes('data-activity'));
  assert(html.includes('My city'));
