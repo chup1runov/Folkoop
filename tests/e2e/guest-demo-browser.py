@@ -162,8 +162,8 @@ async def main():
   await expect(page.locator('.mura-drafts')).to_contain_text('Одолжить дрель на вечер')
   await expect(page.locator('.mura-drafts')).to_contain_text('Могу проверить резюме')
   assert await page.locator('#netLogin').count()==0
-  assert await page.locator('#mobileContextDock [data-mobile-subnav="settings"]').count()==0
-  assert await page.locator('#mobileContextDock [data-mobile-subnav="about"]').count()==0
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="settings"]')).to_have_count(0)
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="about"]')).to_have_count(0)
   await expect(page.locator('#mobileContextDock [data-mobile-action="language"]')).to_be_visible()
   await expect(page.locator('.mura-drafts')).to_contain_text('Попробовать ежемесячный обмен навыками')
   assert await page.locator('.mura-draft-card').count()==6
