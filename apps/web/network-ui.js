@@ -98,9 +98,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Дизайн · организация групп',
   'Runs small community workshops.':'Организует небольшие общественные мастерские.',
   'Olofstorp neighbours':'Соседи Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Пример местного сообщества для взаимопомощи и совместных дел.',
+  'Local neighbours sharing help, tools and practical coordination.':'Соседи, которые делятся помощью, инструментами и решают практические вопросы вместе.',
   'Göteborg language exchange':'Языковой обмен Göteborg',
-  'Sample group for informal language practice and meetups.':'Пример группы для языковой практики и встреч.',
+  'Informal language practice, conversation tables and meetups.':'Неформальная языковая практика, разговорные столы и встречи.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
   'Neighbourhood repair café':'Ремонтное кафе по соседству',
@@ -127,7 +127,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
   'Can collect after work':'Могу забрать после работы',
   'Need delivery help':'Нужна помощь с доставкой',
-  'Example supplier offer.':'Пример предложения поставщика.',
+  'Delivery after 17:00 works for our group.':'Доставка после 17:00 подходит нашей группе.',
   'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
   'Entrance sign ready':'Табличка для входа готова',
   'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.',
@@ -198,9 +198,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Design · facilitering',
   'Runs small community workshops.':'Ordnar små lokala workshops.',
   'Olofstorp neighbours':'Grannar i Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Exempel på lokal gemenskap för hjälp och praktisk samordning.',
+  'Local neighbours sharing help, tools and practical coordination.':'Grannar som delar hjälp, verktyg och praktisk samordning.',
   'Göteborg language exchange':'Språkutbyte Göteborg',
-  'Sample group for informal language practice and meetups.':'Exempelgrupp för informell språkträning och träffar.',
+  'Informal language practice, conversation tables and meetups.':'Informell språkträning, samtalsbord och träffar.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'Reparationscafé på lördag — ta med en liten sak så försöker vi laga den tillsammans.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Söker två personer till ett svensk-ryskt samtalsbord nästa vecka.',
   'Neighbourhood repair café':'Lokalt reparationscafé',
@@ -227,7 +227,7 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
   'Can collect after work':'Kan hämta efter jobbet',
   'Need delivery help':'Behöver hjälp med leverans',
-  'Example supplier offer.':'Exempel på leverantörserbjudande.',
+  'Delivery after 17:00 works for our group.':'Leverans efter 17:00 passar vår grupp.',
   'todo · Confirm the room':'Att göra · Bekräfta lokalen',
   'Entrance sign ready':'Entréskylten är klar',
   'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.',
@@ -290,15 +290,15 @@ function demoSnapshot(){
  const profiles=[
   {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('I like turning small neighbourhood ideas into things people can actually do together.'),connection:'',listed:true},
   {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
-  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true},
+  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),connection:demoText('We met through the firewood purchase and a language exchange; Omar is good at making logistics simple.'),listed:true},
   {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
   {id:D,name:'Johan',skills:demoText('Bikes · practical repair'),about:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),connection:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),listed:true},
   {id:E,name:'Sara',skills:demoText('Gardening · seed saving'),about:demoText('She came to the first plant exchange and now helps me think one season ahead.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
   {id:F,name:'Fatima',skills:demoText('Cooking · neighbourhood events'),about:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true}
  ];
  const groups=[
-  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Sample local community for shared help and practical coordination.')},
-  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')},
+  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Local neighbours sharing help, tools and practical coordination.')},
+  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Informal language practice, conversation tables and meetups.')},
   {id:G3,owner_id:D,name:demoText('Repair and reuse circle'),description:demoText('People who repair small things, share tools and teach each other.')},
   {id:G4,owner_id:E,name:demoText('Sunday walk and litter pick'),description:demoText('A low-key walk where we also collect litter along the path.')}
  ];
@@ -381,7 +381,7 @@ function demoSnapshot(){
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
   {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Example supplier offer.')}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Delivery after 17:00 works for our group.')}];
  const activity=[
   {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
   {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'},
