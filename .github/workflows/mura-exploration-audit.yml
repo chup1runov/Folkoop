@@ -1,0 +1,59 @@
+name: Mura exploration audit (no deploy)
+on:
+  push:
+    branches: [qa/mura-systematic-20261003]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mura-exploration-audit-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  audit:
+    name: Audit ${{ matrix.engine }}
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser runtime
+        run: |
+          python -m pip install 'playwright==1.57.0'
+          python -m playwright install --with-deps ${{ matrix.engine }}
+      - name: Build unchanged runtime from the audited baseline
+        run: |
+          python -m py_compile tests/audit/systematic_mura.py
+          node scripts/build/build-site.mjs
+      - name: Exercise only the isolated local build
+        env:
+          BROWSER_ENGINE: ${{ matrix.engine }}
+          BASE_URL: http://127.0.0.1:4173/Folkoop/
+          QA_OUTPUT: qa-audit
+        run: |
+          mkdir -p /tmp/folkoop-audit-root
+          ln -s "$PWD/_site" /tmp/folkoop-audit-root/Folkoop
+          python -m http.server 4173 --bind 127.0.0.1 --directory /tmp/folkoop-audit-root > /tmp/folkoop-audit-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS "$BASE_URL" >/dev/null; then break; fi
+            sleep 1
+          done
+          python tests/audit/systematic_mura.py
+      - name: Retain complete audit matrix and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mura-systematic-${{ matrix.engine }}
+          path: qa-audit/${{ matrix.engine }}/
+          retention-days: 14
+          if-no-files-found: warn
