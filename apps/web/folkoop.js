@@ -67,6 +67,7 @@ const SUBNAV_LABELS={
 const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
 
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
+const isMuraVisit=()=>entryModeNow()==='guest'||document.body.classList.contains('guest-preview-open');
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
@@ -74,7 +75,7 @@ function renderMobileChrome(){
  document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
- const guest=entryModeNow()==='guest';
+ const guest=isMuraVisit();
  const guestContext={
   home:[],
   together:['together','people','communities'],
@@ -319,16 +320,16 @@ for(const code of C.LANGS){
  if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
  if(x?.helper)helperCopy[code]=x.helper;
 }
-function tutorialSource(){if(entryModeNow()==='guest'||tourReturnMode!==null)return muraTutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
+function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
- const titles=(entryModeNow()==='guest'||tourReturnMode!==null)?(muraTutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
+ const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
-function helperSource(){if(entryModeNow()==='guest')return muraHelperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
+function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
 function helperTip(route=current){
  const source=helperSource();
  return source.tips[route]||helperCopy.en.tips[route]||source.intro;
@@ -460,8 +461,8 @@ function showOnboarding(step=0){
 }
 function finishOnboarding(){
  const temporaryTour=tourReturnMode!==null;
- const explicitMuraVisit=entryModeNow()==='guest'&&!temporaryTour;
- const guestTour=entryModeNow()==='guest'||temporaryTour;
+ const explicitMuraVisit=isMuraVisit()&&!temporaryTour;
+ const guestTour=isMuraVisit()||temporaryTour;
  const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
@@ -506,14 +507,14 @@ function closeMenu(){
 function showCity(){
  if(!citySupported(selectedCity())){$('#cityWorkspace').hidden=true;sendCity();return;}
  $('#cityWorkspace').hidden=false;
- const mura=entryModeNow()==='guest';
+ const mura=isMuraVisit();
  if(frame&&frame.dataset.mura!==String(mura)){frame.remove();frame=null;}
  if(!frame){frame=document.createElement('iframe');frame.id='cityFrame';frame.dataset.mura=String(mura);frame.title=t('city');frame.setAttribute('allow','geolocation');frame.referrerPolicy='no-referrer';frame.src='./city.html?embedded=1'+(mura?'&mura=1':'')+'#'+initialCityHash;frame.addEventListener('load',()=>sendCity());$('#cityWorkspace').append(frame);}
  sendCity();
 }
 function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,visible:current==='city'&&citySupported(selectedCity())},location.origin);}
 function render(focus=false){
- if(entryModeNow()==='guest'&&['center','settings','about'].includes(current)){current=current==='center'?'city':'me';history.replaceState(null,'','#/'+current);}
+ if(isMuraVisit()&&['center','settings','about'].includes(current)){current=current==='center'?'city':'me';history.replaceState(null,'','#/'+current);}
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML='';
  renderMobileChrome();
