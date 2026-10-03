@@ -1,5 +1,7 @@
 # FOLKOOP — current handoff
 
+> **Current continuation:** see `docs/HANDOFF_20261003.md`. The material below is retained as a historical pre-pilot snapshot and is not the current execution state.
+
 > Chat-continuity snapshot: see `docs/CHAT_HANDOFF_20260930.md` for the 30 September UX/product decisions, completed releases, open PR stack, cooperation-value research conclusions and exact continuation order.
 
 1 October 2026.
