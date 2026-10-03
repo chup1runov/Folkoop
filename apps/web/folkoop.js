@@ -67,7 +67,8 @@ const SUBNAV_LABELS={
 const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
 
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
-const isMuraVisit=()=>entryModeNow()==='guest'||document.body.classList.contains('guest-preview-open');
+let muraVisitActive=entryModeNow()==='guest';
+const isMuraVisit=()=>muraVisitActive||entryModeNow()==='guest'||document.body.classList.contains('guest-preview-open');
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
@@ -564,6 +565,10 @@ document.addEventListener('click',e=>{
  const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});
 });
 
+window.addEventListener('folkoop:guest-demo',e=>{
+ muraVisitActive=!!e.detail?.enabled;
+ renderMobileChrome();
+});
 window.addEventListener('folkoop:language-picked',e=>{
  const value=e.detail?.language;
  if(!C.LANGS.includes(value))return;
