@@ -25,9 +25,18 @@ function create({
 
     if(guestDemo){
       const city=profile.city||'';
-      const draftCards=localDrafts.map(draft=>`<article class="card mura-draft-card"><div class="row"><span class="badge">${escape(shellText(draft.kind))}</span><span class="meta">${escape(shellText('local'))}</span></div><h3>${escape(draft.title||'')}</h3><p>${escape(draft.body||'')}</p></article>`).join('');
+      const lang=globalThis.document?.documentElement?.lang||'en';
+      const privateDraft=lang==='ru'?'Личный черновик':lang==='sv'?'Privat utkast':'Private draft';
+      const lifeTitle=lang==='ru'?'Что у меня здесь живёт':lang==='sv'?'Det som händer hos mig':'What lives here';
+      const projectLabel=lang==='ru'?'дел и проектов':lang==='sv'?'saker och projekt':'things and projects';
+      const chatLabel=lang==='ru'?'разговоров':lang==='sv'?'samtal':'conversations';
+      const groupLabel=lang==='ru'?'сообществ':lang==='sv'?'gemenskaper':'communities';
+      const projects=(data.cooperations||[]).filter(item=>item.owner_id===user.id||['project','need','offer'].includes(item.kind)).length;
+      const chats=(data.chats||[]).length;
+      const groups=(data.memberships||[]).filter(item=>!item.banned).length;
+      const draftCards=localDrafts.map(draft=>`<article class="card mura-draft-card"><div class="row"><span class="badge">${escape(shellText(draft.kind))}</span><span class="meta">${escape(privateDraft)}</span></div><h3>${escape(draft.title||'')}</h3><p>${escape(draft.body||'')}</p></article>`).join('');
       const drafts=`<section class="mura-drafts"><div class="row"><h3>${escape(shellText('drafts'))}</h3><span class="meta">${escape(String(localDrafts.length))}</span></div><div class="draft-grid">${draftCards}</div></section>`;
-      return `<div class="row mura-profile-toolbar"><div><p class="eyebrow">MURA / FOLKOOP</p><h2>${escape(text('profile'))}</h2></div>${button('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${escape(homeText('demoBadge'))}</span><div class="mura-profile-head"><div><h2>${escape(profile.name||'')}</h2>${city?`<p class="meta"><strong>${escape(shellText('cityProfile'))}:</strong> ${escape(city)}</p>`:''}</div></div><p><strong>${escape(text('skills'))}:</strong> ${escape(profile.skills||'')}</p><p>${escape(profile.about||'')}</p><p class="meta">${escape(text('listed'))}</p></article>${drafts}${renderActivityNotifications(user)}`;
+      return `<div class="row mura-profile-toolbar"><div><p class="eyebrow">MURA / FOLKOOP</p><h2>${escape(text('profile'))}</h2></div>${button('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${escape(homeText('demoBadge'))}</span><div class="mura-profile-head"><div><h2>${escape(profile.name||'')}</h2>${city?`<p class="meta"><strong>${escape(shellText('cityProfile'))}:</strong> ${escape(city)}</p>`:''}</div></div><p><strong>${escape(text('skills'))}:</strong> ${escape(profile.skills||'')}</p><p>${escape(profile.about||'')}</p><p class="meta">${escape(text('listed'))}</p><div class="mura-profile-stats" aria-label="${escape(lifeTitle)}"><span><strong>${projects}</strong>${escape(projectLabel)}</span><span><strong>${chats}</strong>${escape(chatLabel)}</span><span><strong>${groups}</strong>${escape(groupLabel)}</span></div></article>${drafts}${renderActivityNotifications(user)}`;
     }
 
     const blockRows=blocks
