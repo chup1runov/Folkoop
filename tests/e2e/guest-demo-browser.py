@@ -73,8 +73,10 @@ async def main():
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
   await expect(page.locator('.mobile-demo-popover')).to_contain_text('учебное пространство')
+  await expect(page.locator('[data-mobile-action="exitmura"]')).to_have_text('Выйти из аккаунта Муры')
+  assert await page.locator('[data-mobile-action="signin"]').count()==0
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Mura visit context is available without a DEMO label or stale DEMO wording')
+  passed.append('Mura visit context has an explicit exit and no registration CTA inside the account')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
@@ -148,12 +150,17 @@ async def main():
   passed.append('Guest project view shows process/state without duplicate local workspace or mutation clutter')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
-  await page.click('[data-subsection="home-actions"]')
-  await page.click('[data-home="createCoop"][data-kind="project"]')
+  await expect(page.locator('.mura-home')).to_be_visible()
+  assert await page.locator('[data-home="createCoop"]').count()==0
+  assert await page.locator('[data-demo="register"]').count()==0
+  assert await page.locator('#folkoopEntryGate').is_hidden()
+  passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
+
+  await page.click('#mobileContextDock [data-mobile-action="demo"]')
+  await page.click('[data-mobile-action="exitmura"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('Сейчас ты в гостях у Муры')
-  await expect(page.locator('#entryGateNote')).to_contain_text('Войди')
-  passed.append('A real mutation attempt explains the Mura visit boundary and opens account choice')
+  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти / зарегистрироваться')
+  passed.append('Registration appears only after the visitor explicitly leaves Mura')
 
   await page.click('[data-entry="email"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
