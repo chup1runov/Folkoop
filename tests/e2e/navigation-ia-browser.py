@@ -28,33 +28,34 @@ async def audit(browser,width,height):
  await expect(page.locator('.mura-home')).to_be_visible()
 
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
- await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(4)
+ await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(3)
  await page.click('#mobileContextDock [data-subsection="projects-tasks"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
 
  await page.click('#mobilePrimaryNav a[href="#/messages"]')
- await expect(page.locator('#mobileContextDock [data-subsection^="messages-"]')).to_have_count(4)
+ await expect(page.locator('#mobileContextDock [data-subsection^="messages-"]')).to_have_count(3)
  await page.click('#mobileContextDock [data-subsection="messages-direct"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Личный разговор')
  await page.click('#mobileContextDock [data-subsection="messages-groups"]')
- await expect(page.locator('#networkPanel')).to_contain_text('Создать групповой разговор')
- await page.click('#mobileContextDock [data-subsection="messages-invites"]')
- await expect(page.locator('#networkPanel')).to_contain_text('Приглашения')
+ await expect(page.locator('#networkPanel')).to_contain_text('Групповой чат')
+ assert await page.locator('#mobileContextDock [data-subsection="messages-invites"]').count()==0
 
  await page.click('#mobilePrimaryNav a[href="#/city"]')
- await expect(page.locator('#mobileContextDock a')).to_have_count(2)
- assert await page.locator('a[href="#/center"]').count()==1
- await expect(page.locator('#mobileContextDock a[href="#/center"]')).to_be_visible()
+ await expect(page.locator('#mobileContextDock a')).to_have_count(1)
+ assert await page.locator('#mobileContextDock a[href="#/center"]').count()==0
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
 
  # The embedded City keeps its civic routes but must not present a second FOLKOOP shell.
- await page.goto(BASE+'city.html?embedded=1')
+ await page.goto(BASE+'city.html?embedded=1&mura=1')
  await expect(page.locator('html')).to_have_attribute('data-folkoop-embedded-city','1')
  await expect(page.locator('.topbar')).to_be_hidden()
  await expect(page.locator('.bottom-nav')).to_be_visible()
  await expect(page.locator('.bottom-nav button')).to_have_count(4)
+ city_text=(await page.locator('body').inner_text()).lower()
+ for banned in ['демо','пилот','прототип']:
+  assert banned not in city_text,(banned,city_text[:500])
  teal=(await page.locator('html').evaluate("el => getComputedStyle(el).getPropertyValue('--teal').trim()")).lower()
  assert teal=='#176b6b', teal
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city-embedded.png'),full_page=True)
@@ -68,6 +69,6 @@ async def main():
   await browser.close()
  print('PASS one six-item bottom navigation is shared by mobile and desktop')
  print('PASS Mura Home stays immersive while Projects and Messages second-level tabs control real content')
- print('PASS Center is reachable only through City -> Center')
+ print('PASS Mura City omits the future Center route and prototype/demo chrome')
 
 asyncio.run(main())
