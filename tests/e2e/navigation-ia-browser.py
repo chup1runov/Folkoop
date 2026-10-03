@@ -24,10 +24,8 @@ async def audit(browser,width,height):
  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(6)
  await expect(page.locator('.sidebar')).to_be_hidden()
  assert await page.locator('#mobilePrimaryNav a[href="#/center"]').count()==0
- await expect(page.locator('#mobileContextDock [data-subsection^="home-"]')).to_have_count(4)
-
- await page.click('#mobileContextDock [data-subsection="home-attention"]')
- await expect(page.locator('.home-dashboard')).to_have_attribute('data-home-view','home-attention')
+ await expect(page.locator('#mobileContextDock [data-subsection^="home-"]')).to_have_count(0)
+ await expect(page.locator('.mura-home')).to_be_visible()
 
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
  await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(4)
@@ -69,7 +67,7 @@ async def main():
   await audit(browser,1366,900)
   await browser.close()
  print('PASS one six-item bottom navigation is shared by mobile and desktop')
- print('PASS Home, Projects and Messages second-level tabs control real content')
+ print('PASS Mura Home stays immersive while Projects and Messages second-level tabs control real content')
  print('PASS Center is reachable only through City -> Center')
 
 asyncio.run(main())

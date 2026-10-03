@@ -52,8 +52,12 @@ async def main():
   await page.click('[data-onboarding="skip"]')
   await expect(page.locator('#networkPanel')).to_be_visible()
   passed.append('Explicit visit to Mura restarts her tour even when onboarding was completed before')
-  await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
-  await expect(page.locator('.home-subtitle')).to_contain_text('до того, как появился групповой чат')
+  await expect(page.locator('.mura-home')).to_be_visible()
+  await expect(page.locator('.mura-hero')).to_contain_text('FOLKOOP МУРЫ')
+  await expect(page.locator('.mura-hero')).to_contain_text('Живая жизнь внутри FOLKOOP')
+  await expect(page.locator('.mura-story-grid')).to_contain_text('Обмен растениями и семенами по соседству')
+  await expect(page.locator('.mura-conversation-list')).to_contain_text('Omar')
+  await expect(page.locator('.mura-note-grid')).to_contain_text('Одолжить дрель на вечер')
   assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   visible_guest_text=(await page.locator('body').inner_text()).lower()
@@ -73,8 +77,10 @@ async def main():
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
   await expect(page.locator('.mobile-demo-popover')).to_contain_text('учебное пространство')
+  await expect(page.locator('[data-mobile-action="exitmura"]')).to_have_text('Выйти из аккаунта Муры')
+  assert await page.locator('[data-mobile-action="signin"]').count()==0
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
-  passed.append('Mura visit context is available without a DEMO label or stale DEMO wording')
+  passed.append('Mura visit context has an explicit exit and no registration CTA inside the account')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
@@ -148,12 +154,18 @@ async def main():
   passed.append('Guest project view shows process/state without duplicate local workspace or mutation clutter')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
-  await page.click('[data-subsection="home-actions"]')
-  await page.click('[data-home="createCoop"][data-kind="project"]')
+  await expect(page.locator('.mura-home')).to_be_visible()
+  assert await page.locator('[data-home="createCoop"]').count()==0
+  assert await page.locator('[data-demo="register"]').count()==0
+  assert await page.locator('#folkoopEntryGate').is_hidden()
+  passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await expect(page.locator('[data-net="logout"]')).to_have_text('Выйти из аккаунта Муры')
+  await page.click('[data-net="logout"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
-  await expect(page.locator('#entryGateNote')).to_contain_text('Сейчас ты в гостях у Муры')
-  await expect(page.locator('#entryGateNote')).to_contain_text('Войди')
-  passed.append('A real mutation attempt explains the Mura visit boundary and opens account choice')
+  await expect(page.locator('[data-entry="email"]')).to_have_text('Войти / зарегистрироваться')
+  passed.append('Registration appears only after the visitor explicitly leaves Mura')
 
   await page.click('[data-entry="email"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
