@@ -313,15 +313,27 @@ function demoSnapshot(){
   {id:PURCHASE,owner_id:A,kind:'purchase',title:demoText('Dry firewood together'),description:demoText('Combine a small group order and coordinate pickup.'),location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
   {id:NEED,owner_id:DEMO_UID,kind:'need',title:demoText('Borrow a tile cutter for the weekend'),description:demoText('Need a tile cutter for a small room repair over one weekend.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
   {id:OFFER,owner_id:DEMO_UID,kind:'offer',title:demoText('I can help with photography'),description:demoText('Can help photograph an item, a small event or a neighbourhood project.'),location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
-  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
+  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'},
+  {id:REPAIR,owner_id:D,kind:'project',title:demoText('Repair café afternoon'),description:demoText('A small repair afternoon that ended with 11 items fixed, 3 diagnosed and a list of tools to share next time.'),location_text:'Olofstorp',status:'done',target_quantity:null,unit:'',created_at:'2026-09-20T10:00:00Z',updated_at:'2026-09-27T17:30:00Z'},
+  {id:TOOLS,owner_id:DEMO_UID,kind:'project',title:demoText('Neighbourhood tool shelf'),description:demoText('Turn a messy pile of rarely used tools into a labelled shelf people can actually borrow from.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-30T16:00:00Z',updated_at:'2026-10-01T07:20:00Z'},
+  {id:LADDER,owner_id:DEMO_UID,kind:'need',title:demoText('Borrowed a folding ladder'),description:demoText('Needed it for one afternoon; Johan lent one and I returned it the same evening.'),location_text:'Olofstorp',status:'done',target_quantity:null,unit:'',created_at:'2026-09-22T09:00:00Z',updated_at:'2026-09-22T19:00:00Z'}
  ];
  const coopMembers=[
   {cooperation_id:PROJECT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z'},
   {cooperation_id:PROJECT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z'},
   {cooperation_id:PROJECT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z'},
+  {cooperation_id:PROJECT,user_id:E,role:'member',joined_at:'2026-09-29T09:00:00Z'},
   {cooperation_id:PURCHASE,user_id:A,role:'owner',joined_at:'2026-09-27T09:00:00Z'},
   {cooperation_id:PURCHASE,user_id:DEMO_UID,role:'member',joined_at:'2026-09-27T10:00:00Z'},
-  {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
+  {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'},
+  {cooperation_id:REPAIR,user_id:D,role:'owner',joined_at:'2026-09-20T10:00:00Z'},
+  {cooperation_id:REPAIR,user_id:DEMO_UID,role:'member',joined_at:'2026-09-20T10:20:00Z'},
+  {cooperation_id:REPAIR,user_id:F,role:'member',joined_at:'2026-09-20T10:30:00Z'},
+  {cooperation_id:TOOLS,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-30T16:00:00Z'},
+  {cooperation_id:TOOLS,user_id:D,role:'member',joined_at:'2026-09-30T16:30:00Z'},
+  {cooperation_id:TOOLS,user_id:A,role:'member',joined_at:'2026-09-30T17:00:00Z'},
+  {cooperation_id:LADDER,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-22T09:00:00Z'},
+  {cooperation_id:LADDER,user_id:D,role:'member',joined_at:'2026-09-22T09:10:00Z'}
  ];
  const chats=[
   {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Plant exchange · work chat'),created_at:'2026-09-28T10:00:00Z'},
