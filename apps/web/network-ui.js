@@ -337,19 +337,38 @@ function demoSnapshot(){
  ];
  const chats=[
   {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Plant exchange · work chat'),created_at:'2026-09-28T10:00:00Z'},
-  {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
+  {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'},
+  {id:DIRECT_A,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-22T08:50:00Z'},
+  {id:WALK_CHAT,kind:'group',owner_id:E,title:demoText('Sunday walk and litter pick'),created_at:'2026-10-01T07:45:00Z'},
+  {id:TOOL_CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Tool shelf · work chat'),created_at:'2026-09-30T16:00:00Z'}
  ];
  const chatMembers=[
   {conversation_id:CHAT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z',last_read_at:'2026-09-30T07:00:00Z'},
   {conversation_id:CHAT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z',last_read_at:'2026-09-30T07:20:00Z'},
   {conversation_id:CHAT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z',last_read_at:'2026-09-30T07:10:00Z'},
   {conversation_id:DIRECT,user_id:DEMO_UID,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'},
-  {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'}
+  {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'},
+  {conversation_id:DIRECT_A,user_id:DEMO_UID,role:'member',joined_at:'2026-09-22T08:50:00Z',last_read_at:'2026-09-22T18:40:00Z'},
+  {conversation_id:DIRECT_A,user_id:D,role:'member',joined_at:'2026-09-22T08:50:00Z',last_read_at:'2026-09-22T18:40:00Z'},
+  {conversation_id:WALK_CHAT,user_id:DEMO_UID,role:'member',joined_at:'2026-10-01T07:45:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:WALK_CHAT,user_id:E,role:'owner',joined_at:'2026-10-01T07:45:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:WALK_CHAT,user_id:F,role:'member',joined_at:'2026-10-01T07:50:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-30T16:00:00Z',last_read_at:'2026-10-01T07:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:D,role:'member',joined_at:'2026-09-30T16:30:00Z',last_read_at:'2026-10-01T07:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:A,role:'member',joined_at:'2026-09-30T17:00:00Z',last_read_at:'2026-10-01T07:10:00Z'}
  ];
  const allMessages=[
   {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:demoText('I can bring hand tools and a folding table.'),created_at:'2026-09-30T07:20:00Z'},
   {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:demoText('I made a simple sign for the entrance. We still need someone for coffee.'),created_at:'2026-09-30T07:45:00Z'},
-  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'}
+  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'},
+  {id:'00000000-0000-4000-8000-000000000704',conversation_id:DIRECT_A,author_id:D,body:demoText('I left the ladder by your gate. No rush — tonight is fine.'),created_at:'2026-09-22T09:05:00Z'},
+  {id:'00000000-0000-4000-8000-000000000705',conversation_id:DIRECT_A,author_id:DEMO_UID,body:demoText('Got it, thanks. I will return it after I clean the gutter.'),created_at:'2026-09-22T09:12:00Z'},
+  {id:'00000000-0000-4000-8000-000000000706',conversation_id:WALK_CHAT,author_id:E,body:demoText('Sunday 10:30 works for me. I can bring two grabbers for litter.'),created_at:'2026-10-01T07:50:00Z'},
+  {id:'00000000-0000-4000-8000-000000000707',conversation_id:WALK_CHAT,author_id:DEMO_UID,body:demoText('Great. I will bring bags and coffee.'),created_at:'2026-10-01T08:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000708',conversation_id:TOOL_CHAT,author_id:D,body:demoText('We should keep the first shelf tiny and learn from actual borrowing.'),created_at:'2026-09-30T17:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000709',conversation_id:TOOL_CHAT,author_id:DEMO_UID,body:demoText('Agreed. Ten tools first, then we expand only if people use them.'),created_at:'2026-09-30T17:28:00Z'},
+  {id:'00000000-0000-4000-8000-000000000710',conversation_id:CHAT,author_id:E,body:demoText('Can you save me a few tomato seed envelopes?'),created_at:'2026-09-30T08:05:00Z'},
+  {id:'00000000-0000-4000-8000-000000000711',conversation_id:CHAT,author_id:DEMO_UID,body:demoText('Yes, and I will bring labels too.'),created_at:'2026-09-30T08:12:00Z'}
  ];
  const tasks=[
   {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the exchange table'),details:demoText('Check that the exchange table is available on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
