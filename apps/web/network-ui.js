@@ -523,6 +523,17 @@ const muraHomeDomain=globalThis.FolkoopMuraHome.create({
  formatWhen
 });
 
+function renderMuraPeople(u){
+ const people=data.directory.filter(p=>p.id!==u.id);
+ const card=p=>{
+  const coopTitles=data.coopMembers.filter(m=>m.user_id===p.id).map(m=>data.cooperations.find(x=>x.id===m.cooperation_id)?.title).filter(Boolean).slice(0,2);
+  const chatTitles=data.chatMembers.filter(m=>m.user_id===p.id).map(m=>data.chats.find(x=>x.id===m.conversation_id)).filter(Boolean).map(chat=>chat.kind==='direct'?mt('direct'):chat.title).slice(0,1);
+  return `<article class="card mura-person-page-card" data-demo-story="person"><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div></article>`;
+ };
+ const intro=lang()==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':lang()==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':'Not a contact list: people I already share a project, place or conversation with.';
+ return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA / PEOPLE</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
+}
+
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -587,6 +598,8 @@ function renderHome(u){
 }
 
 function renderMessages(u){
+ const rawView=currentSubsection('messages');
+ const view=guestDemo&&rawView==='messages-invites'?'messages-chats':rawView;
  return messagingDomain.render(u,{
   selectedChat,
   directTarget,
@@ -594,7 +607,7 @@ function renderMessages(u){
   inviteTarget,
   messageDrafts,
   guestDemo,
-  view:currentSubsection('messages')
+  view
  });
 }
 
@@ -790,9 +803,10 @@ function render(){
  else if(r==='me'){
   html=profileDomain.render(u,{profileDraft,guestDemo});
  }else if(r==='people'){
-  html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"${guestDemo?' data-demo-story="person"':''}><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
+  html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
-  html=communitiesDomain.render(u,{selected,groupDraft,postDrafts});
+  html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
+
  }
   const demoBanner='';
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
@@ -800,9 +814,10 @@ function render(){
  if(guestDemo){
   host.querySelectorAll('form').forEach(form=>{form.hidden=true;form.setAttribute('aria-hidden','true');});
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
-  host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-demo],[data-home="openCoop"],[data-home="openCommunity"],[data-home="createCoop"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="refresh"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
-  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.closest('.demo-banner'))b.hidden=true;});
+  host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
+  host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
+  const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
  }
  host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
  syncBadges();
