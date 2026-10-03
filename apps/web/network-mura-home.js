@@ -1,164 +1,60 @@
-/* Immersive read-only Home for Mura's account.
-   Uses only the local illustrative account snapshot; no RPCs, mutation or signup CTA. */
+/* Immersive read-only Home for Mura's account. */
 (() => {
 'use strict';
 
-function create({
-  escape,
-  getData,
-  getProfile,
-  copy,
-  kindLabel,
-  statusLabel,
-  formatWhen
-}){
-  if(typeof escape!=='function'||typeof getData!=='function'||typeof copy!=='function'){
-    throw new Error('FOLKOOP_MURA_HOME_DEPENDENCIES');
-  }
+function create({escape,getData,getProfile,kindLabel,statusLabel,formatWhen}){
+ if(typeof escape!=='function'||typeof getData!=='function')throw new Error('FOLKOOP_MURA_HOME_DEPENDENCIES');
+ const copy={
+  en:{eyebrow:"MURA'S FOLKOOP",lead:"A living FOLKOOP account: neighbours, ideas, shared work, conversations, the city and unfinished thoughts.",active:"active things",people:"people nearby",unread:"unread",drafts:"private drafts",today:"TODAY",continue:"Open project",storyEyebrow:"MY LIFE IN FOLKOOP",storyTitle:"Small ideas that became real cooperation",storyText:"Open anything. Inside are people, tasks, decisions, messages and a next step.",peopleEyebrow:"PEOPLE AROUND ME",peopleTitle:"People I can actually do something with",seePeople:"See everyone",chatEyebrow:"CONVERSATIONS",chatTitle:"Chats where things move forward",allMessages:"Open Messages",sparkEyebrow:"THINGS THAT SPARK IDEAS",sparkTitle:"One discovery and suddenly there are three more ideas",sparkText:"A resource, a community or a local connection can become the next thing you want to do.",draftEyebrow:"NOT READY YET",draftTitle:"My private drafts",openProfile:"Open my profile",cityTitle:"My city is part of my account",cityText:"Göteborg is not a separate portal here. I move from people and projects straight into useful local information.",cityCta:"Explore Göteborg",neighbourhood:"NEIGHBOURHOOD PULSE",roamTitle:"This is not a signup funnel.",roamText:"Stay as long as you want. Open chats, projects, people, communities, drafts and the city. Registration appears only after you leave Mura.",openStory:"Open story",next:"Next step",myPart:"My part",resourceSpark:"Something useful already exists nearby",communitySpark:"People are already gathering around this place",languageSpark:"A small social idea can become a regular habit",openConversation:"Open conversation",participant:"Participant"},
+  ru:{eyebrow:"FOLKOOP МУРЫ",lead:"Живая жизнь внутри FOLKOOP: соседи, идеи, совместные дела, переписки, город и вещи, которые я ещё не успела довести до конца.",active:"активных дел",people:"людей рядом",unread:"непрочитано",drafts:"личных черновика",today:"СЕГОДНЯ",continue:"Открыть проект",storyEyebrow:"МОЯ ЖИЗНЬ В FOLKOOP",storyTitle:"Маленькие идеи, которые превратились в реальные дела",storyText:"Открой что угодно. Внутри — люди, решения, задачи, переписки и следующий шаг.",peopleEyebrow:"ЛЮДИ ВОКРУГ МЕНЯ",peopleTitle:"Люди, с которыми реально можно что-то сделать",seePeople:"Посмотреть всех",chatEyebrow:"ПЕРЕПИСКИ",chatTitle:"Чаты, где дела двигаются дальше",allMessages:"Открыть сообщения",sparkEyebrow:"ТО, ИЗ ЧЕГО РОЖДАЮТСЯ ИДЕИ",sparkTitle:"Одна находка — и уже хочется придумать ещё три дела",sparkText:"Ресурс, сообщество или соседская связь легко превращаются в следующую идею.",draftEyebrow:"ЕЩЁ НЕ ГОТОВО",draftTitle:"Мои личные черновики",openProfile:"Открыть мой профиль",cityTitle:"Мой город — часть моего аккаунта",cityText:"Göteborg здесь не отдельный портал: от людей и проектов я сразу перехожу к полезной городской информации.",cityCta:"Исследовать Göteborg",neighbourhood:"ЧТО ПРОИСХОДИТ РЯДОМ",roamTitle:"Здесь нет воронки регистрации.",roamText:"Сиди сколько хочешь. Открывай чаты, проекты, людей, сообщества, черновики и город. Регистрация появится только после выхода из аккаунта Муры.",openStory:"Открыть историю",next:"Следующий шаг",myPart:"Моя часть",resourceSpark:"Полезная вещь уже есть рядом",communitySpark:"Люди уже собираются вокруг этого места",languageSpark:"Небольшая идея может стать регулярной привычкой",openConversation:"Открыть переписку",participant:"Участник"},
+  sv:{eyebrow:"MURAS FOLKOOP",lead:"Ett levande FOLKOOP-konto: grannar, idéer, gemensamt arbete, samtal, staden och sådant jag ännu inte hunnit avsluta.",active:"aktiva saker",people:"personer nära",unread:"olästa",drafts:"privata utkast",today:"IDAG",continue:"Öppna projektet",storyEyebrow:"MITT LIV I FOLKOOP",storyTitle:"Små idéer som blev verkligt samarbete",storyText:"Öppna vad du vill. Där finns människor, beslut, uppgifter, meddelanden och ett nästa steg.",peopleEyebrow:"MÄNNISKOR RUNT MIG",peopleTitle:"Människor jag faktiskt kan göra något med",seePeople:"Se alla",chatEyebrow:"SAMTAL",chatTitle:"Chattar där saker går framåt",allMessages:"Öppna Meddelanden",sparkEyebrow:"SAKER SOM GER NYA IDÉER",sparkTitle:"En upptäckt och plötsligt finns tre nya idéer",sparkText:"En resurs, gemenskap eller lokal kontakt kan bli nästa sak du vill göra.",draftEyebrow:"INTE KLART ÄN",draftTitle:"Mina privata utkast",openProfile:"Öppna min profil",cityTitle:"Min stad är en del av mitt konto",cityText:"Göteborg är inte en separat portal här. Från människor och projekt går jag direkt till användbar lokal information.",cityCta:"Utforska Göteborg",neighbourhood:"I NÄROMRÅDET",roamTitle:"Det här är ingen registreringstratt.",roamText:"Stanna så länge du vill. Öppna chattar, projekt, människor, gemenskaper, utkast och staden. Registrering visas först när du lämnar Mura.",openStory:"Öppna berättelsen",next:"Nästa steg",myPart:"Min del",resourceSpark:"Något användbart finns redan i närheten",communitySpark:"Människor samlas redan kring den här platsen",languageSpark:"En liten idé kan bli en återkommande vana",openConversation:"Öppna samtalet",participant:"Deltagare"}
+ };
+ const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
+ const tx=k=>copy[lang()]?.[k]||copy.en[k]||k;
+ const e=v=>escape(v??'');
+ const pname=id=>getProfile(id)?.name||tx('participant');
+ const coopCard=(coop,extra)=>coop?'<article class="mura-story-card mura-story-'+e(coop.kind)+'"><div class="mura-card-top"><span class="badge">'+e(kindLabel(coop.kind))+'</span><span class="mura-status">'+e(statusLabel(coop.status))+'</span></div><h3>'+e(coop.title)+'</h3><p>'+e(coop.description||'')+'</p>'+(extra||'')+'<button class="mura-deep-link" type="button" data-home="openCoop" data-id="'+e(coop.id)+'">'+e(tx('openStory'))+'<span aria-hidden="true">→</span></button></article>':'';
 
-  const e=value=>escape(value??'');
-  const profileName=id=>getProfile(id)?.name||copy('participant');
+ function render(user){
+  const data=getData()||{},profile=data.profile||{},coops=Array.isArray(data.cooperations)?data.cooperations:[];
+  const project=coops.find(x=>x.kind==='project'&&x.owner_id===user.id)||coops.find(x=>x.kind==='project');
+  const purchase=coops.find(x=>x.kind==='purchase');
+  const need=coops.find(x=>x.kind==='need'&&x.owner_id===user.id)||coops.find(x=>x.kind==='need');
+  const offer=coops.find(x=>x.kind==='offer'&&x.owner_id===user.id)||coops.find(x=>x.kind==='offer');
+  const resource=coops.find(x=>x.kind==='resource');
+  const task=(data.assignedTasks||[]).find(x=>x.status!=='done');
+  const projectPeople=(data.coopMembers||[]).filter(x=>x.cooperation_id===project?.id).map(m=>getProfile(m.user_id)).filter(Boolean).filter(p=>p.id!==user.id);
+  const unread=(data.chatInbox||[]).reduce((sum,x)=>sum+Number(x.unread_count||0),0);
+  const active=coops.filter(x=>['open','active'].includes(x.status)).length;
+  const drafts=Array.isArray(data.localDrafts)?data.localDrafts:[];
+  const chats=Array.isArray(data.chats)?data.chats:[];
+  const direct=chats.find(x=>x.kind==='direct'),groupChat=chats.find(x=>x.kind==='group');
+  const messages=Array.isArray(data.chatMessages)?data.chatMessages:[];
+  const directPreview=messages.find(x=>x.conversation_id===direct?.id);
+  const groupPreview=[...messages].reverse().find(x=>x.conversation_id===groupChat?.id);
+  const groups=Array.isArray(data.groups)?data.groups:[],localGroup=groups[0],languageGroup=groups[1];
+  const latestPost=(data.homePosts||[])[0];
+  const confirmation=(data.myConfirmations||[]).find(x=>x.cooperation_id===purchase?.id);
+  const projectMeta=task?'<div class="mura-next-step"><span>'+e(tx('next'))+'</span><strong>'+e(task.title)+'</strong></div>':'';
+  const purchaseMeta=confirmation?'<div class="mura-mini-progress"><span>'+e(tx('myPart'))+'</span><strong>'+e(String(confirmation.quantity||0))+' '+e(purchase?.unit||'')+'</strong></div>':'';
+  const peopleCards=(data.directory||[]).filter(p=>p.id!==user.id).slice(0,3).map(p=>'<article class="mura-person-card"><div class="mura-avatar" aria-hidden="true">'+e((p.name||'?').slice(0,1))+'</div><div><strong>'+e(p.name)+'</strong><p>'+e(p.skills||'')+'</p></div></article>').join('');
+  const draftCards=drafts.map(d=>'<article class="mura-note"><span class="badge">'+e(kindLabel(d.kind))+'</span><strong>'+e(d.title)+'</strong><p>'+e(d.body||'')+'</p></article>').join('');
+  const otherDirect=(data.chatMembers||[]).find(m=>m.conversation_id===direct?.id&&m.user_id!==user.id)?.user_id;
+  const conversations=(groupChat?'<button class="mura-conversation" type="button" data-net="openChat" data-id="'+e(groupChat.id)+'"><span class="mura-conversation-icon">#</span><span><strong>'+e(groupChat.title)+'</strong><small>'+e(groupPreview?.body||tx('openConversation'))+'</small></span><span aria-hidden="true">→</span></button>':'')+(direct?'<button class="mura-conversation" type="button" data-net="openChat" data-id="'+e(direct.id)+'"><span class="mura-conversation-icon">@</span><span><strong>'+e(pname(otherDirect))+'</strong><small>'+e(directPreview?.body||tx('openConversation'))+'</small></span><span aria-hidden="true">→</span></button>':'');
+  const sparks=(resource?'<button class="mura-spark-card" type="button" data-home="openCoop" data-id="'+e(resource.id)+'"><span>+</span><strong>'+e(resource.title)+'</strong><small>'+e(tx('resourceSpark'))+'</small></button>':'')+(localGroup?'<button class="mura-spark-card" type="button" data-home="openCommunity" data-id="'+e(localGroup.id)+'"><span>*</span><strong>'+e(localGroup.name)+'</strong><small>'+e(tx('communitySpark'))+'</small></button>':'')+(languageGroup?'<button class="mura-spark-card" type="button" data-home="openCommunity" data-id="'+e(languageGroup.id)+'"><span>o</span><strong>'+e(languageGroup.name)+'</strong><small>'+e(tx('languageSpark'))+'</small></button>':'');
 
-  function coopCard(coop,extra=''){
-    if(!coop)return '';
-    return `<article class="mura-story-card mura-story-${e(coop.kind)}">
-      <div class="mura-card-top"><span class="badge">${e(kindLabel(coop.kind))}</span><span class="mura-status">${e(statusLabel(coop.status))}</span></div>
-      <h3>${e(coop.title)}</h3>
-      <p>${e(coop.description||'')}</p>
-      ${extra}
-      <button class="mura-deep-link" type="button" data-home="openCoop" data-id="${e(coop.id)}">${e(copy('openStory'))}<span aria-hidden="true">&rarr;</span></button>
-    </article>`;
-  }
-
-  function render(user){
-    const data=getData()||{};
-    const profile=data.profile||{};
-    const cooperations=Array.isArray(data.cooperations)?data.cooperations:[];
-    const project=cooperations.find(x=>x.kind==='project'&&x.owner_id===user.id)||cooperations.find(x=>x.kind==='project');
-    const purchase=cooperations.find(x=>x.kind==='purchase');
-    const need=cooperations.find(x=>x.kind==='need'&&x.owner_id===user.id)||cooperations.find(x=>x.kind==='need');
-    const offer=cooperations.find(x=>x.kind==='offer'&&x.owner_id===user.id)||cooperations.find(x=>x.kind==='offer');
-    const resource=cooperations.find(x=>x.kind==='resource');
-    const task=(data.assignedTasks||[]).find(x=>x.status!=='done');
-    const projectMembers=(data.coopMembers||[]).filter(x=>x.cooperation_id===project?.id);
-    const people=projectMembers.map(m=>getProfile(m.user_id)).filter(Boolean);
-    const unread=(data.chatInbox||[]).reduce((sum,x)=>sum+Number(x.unread_count||0),0);
-    const active=cooperations.filter(x=>['open','active'].includes(x.status)).length;
-    const drafts=Array.isArray(data.localDrafts)?data.localDrafts:[];
-    const chats=Array.isArray(data.chats)?data.chats:[];
-    const direct=chats.find(x=>x.kind==='direct');
-    const groupChat=chats.find(x=>x.kind==='group');
-    const messages=Array.isArray(data.chatMessages)?data.chatMessages:[];
-    const directPreview=messages.find(x=>x.conversation_id===direct?.id);
-    const groupPreview=[...messages].reverse().find(x=>x.conversation_id===groupChat?.id);
-    const groups=Array.isArray(data.groups)?data.groups:[];
-    const localGroup=groups[0], languageGroup=groups[1];
-    const posts=Array.isArray(data.homePosts)?data.homePosts:[];
-    const latestPost=posts[0];
-
-    const peopleNames=people.filter(p=>p.id!==user.id).map(p=>p.name).slice(0,3);
-    const projectMeta=task
-      ? `<div class="mura-next-step"><span>${e(copy('next'))}</span><strong>${e(task.title)}</strong></div>`
-      : '';
-    const purchaseCommit=(data.myConfirmations||[]).find(x=>x.cooperation_id===purchase?.id);
-    const purchaseMeta=purchaseCommit
-      ? `<div class="mura-mini-progress"><span>${e(copy('myPart'))}</span><strong>${e(String(purchaseCommit.quantity||0))} ${e(purchase?.unit||'')}</strong></div>`
-      : '';
-
-    const peopleCards=(data.directory||[]).filter(p=>p.id!==user.id).slice(0,3).map(p=>`
-      <article class="mura-person-card">
-        <div class="mura-avatar" aria-hidden="true">${e((p.name||'?').slice(0,1))}</div>
-        <div><strong>${e(p.name)}</strong><p>${e(p.skills||'')}</p></div>
-      </article>`).join('');
-
-    const draftCards=drafts.map(d=>`
-      <article class="mura-note">
-        <span class="badge">${e(kindLabel(d.kind))}</span>
-        <strong>${e(d.title)}</strong>
-        <p>${e(d.body||'')}</p>
-      </article>`).join('');
-
-    const conversationCards=[
-      groupChat?`<button class="mura-conversation" type="button" data-net="openChat" data-id="${e(groupChat.id)}">
-        <span class="mura-conversation-icon">#</span><span><strong>${e(groupChat.title)}</strong><small>${e(groupPreview?.body||copy('openConversation'))}</small></span><span aria-hidden="true">&rarr;</span>
-      </button>`:'',
-      direct?`<button class="mura-conversation" type="button" data-net="openChat" data-id="${e(direct.id)}">
-        <span class="mura-conversation-icon">@</span><span><strong>${e(profileName((data.chatMembers||[]).find(m=>m.conversation_id===direct.id&&m.user_id!==user.id)?.user_id))}</strong><small>${e(directPreview?.body||copy('openConversation'))}</small></span><span aria-hidden="true">&rarr;</span>
-      </button>`:''
-    ].join('');
-
-    const sparkCards=[
-      resource?`<button class="mura-spark-card" type="buton" data-home="openCoop" data-id="${e(resource.id)}"><span>+</span><strong>${e(resource.title)}</strong><small>${e(copy('resourceSpark'))}</small></button>`:'',
-      localGroup?`<button class="mura-spark-card" type="button" data-home="openCommunity" data-id="${e(localGroup.id)}"><span>*</span><strong>${e(localGroup.name)}</strong><small>${e(copy('communitySpark'))}</small></button>`:'',
-      languageGroup?`<button class="mura-spark-card" type="buton" data-home="openCommunity" data-id="${e(languageGroup.id)}"><span>o</span><strong>${e(languageGroup.name)}</strong><small>${e(copy('languageSpark'))}</small></button>`:''
-    ].join('');
-
-    return `<section class="mura-home">
-      <header class="mura-hero">
-        <div class="mura-hero-copy">
-          <p class="eyebrow">${e(copy('eyebrow'))}</p>
-          <div class="mura-identity-line"><h1>${e(profile.name||'Mura')}</h1><span class="mura-city-pill">${e(profile.city||'Goteborg')}</span></div>
-          <p class="mura-hero-lead">${e(copy('lead'))}</p>
-          <div class="mura-stat-row">
-            <div><strong>${active}</strong><span>${e(copy('active'))}</span></div>
-            <div><strong>${peopleNames.length}</strong><span>${e(copy('people'))}</span></div>
-            <div><strong>${unread}</strong><span>${e(copy('unread'))}</span></div>
-            <div><strong>${drafts.length}</strong><span>${e(copy('drafts'))}</span></div>
-          </div>
-        </div>
-        <aside class="mura-now-card">
-          <span class="mura-live-dot"></span><span class="mura-now-label">${e(copy('today')}</span>
-          <h2>${e(task?.title||project?.title||copy('caughtUp'))}</h2>
-          <p>${e(project?.title||copy('nothingUrgent'))}</p>
-          ${project?`<button class="button" type="button" data-home="openCoop" data-id="${e(project.id)}">${e(copy('continue'))}</button>`:''}
-        </aside>
-      </header>
-
-      <section class="mura-section mura-story">
-        <div class="mura-section-head"><div><p class="eyebrow">${e(copy('storyEyebrow'))}</p><h2>${e(copy('storyTitle'))}</h2></div><p>${e(copy('storyText'))}</p></div>
-        <div class="mura-story-grid">
-          ${coopCard(project,projectMeta)}
-          ${coopCard(purchase,purchaseMeta)}
-          ${coopCard(need)}
-          ${coopCard(offer)}
-        </div>
-      </section>
-
-      <section class="mura-section mura-people-zone">
-        <div class="mura-section-head"><div><p class="eyebrow">${e(copy('peopleEyebrow'))}</p><h2>${e(copy('peopleTitle'))}</h2></div><a class="mura-text-link" href="#/people">${e(copy('seePeople')} &rarr;</a></div>
-        <div class="mura-people-grid">${peopleCards}</div>
-      </section>
-
-      <section class="mura-section mura-conversations-zone">
-        <div class="mura-section-head"><div><p class="eyebrow">${e(copy('chatEyebrow'))}</p><h2>${e(copy('chatTitle'))}</h2></div><a class="mura-text-link" href="#/messages">${e(copy('allMessages'))} &rarr;</a></div>
-        <div class="mura-conversation-list">${conversationCards}</div>
-      </section>
-
-      <section class="mura-section mura-spark-s-zone">
-        <div class="mura-section-head"><div><p class="eyebrow">${e(copy('sparkEyebrow'))}</p><h2>${e(copy('sparkTitle'))}</h2></div><p>${e(copy('sparkText'))}</p></div>
-        <div class="mura-spark-grid">${sparkCards}</div>
-      </section>
-
-      <section class="mura-section mura-drafts-zone">
-        <div class="mura-section-head"><div><p class="eyebrow">${e(copy('draftEyebrow'))}</p><h2>${e(copy('draftTitle'))}</h2></div><a class="mura-text-link" href="#/me">${e(copy('openProfile'))} &rarr;</a></div>
-        <div class="mura-note-grid">${draftCards}</div>
-      </section>
-
-      <section class="mura-section mura-city-zone">
-        <div class="mura-city-callout">
-          <div><p class="eyebrow">GOTEBORG</p><h2>${e(copy('cityTitle'))}</h2><p>${e(copy('cityText'))}</p></div>
-          <a class="button secondary" href="#/city">${e(copy('cityCta'))} &rarr;</a>
-        </div>
-        ${latestPost?`<article class="mura-neighbourhood-pulse"><span class="badge">${e(copy('neighbourhood'))}</span><strong>${e(localGroup?.name||'')}</strong><p>${e(latestPost.body)}</p><small>${e(formatWhen(latestPost.created_at))}</small></article>`:''}
-      </section>
-
-      <footer class="mura-roam-note">
-        <span aria-hidden="true">*</span><p><strong>${e(copy('roamTitle'))}</strong> ${e(copy('roamText'))}</p>
-      </footer>
-    </section>`;
-  }
-
-  return Object.freeze({render});
+  return '<section class="mura-home">'+
+   '<header class="mura-hero"><div class="mura-hero-copy"><p class="eyebrow">'+e(tx('eyebrow'))+'</p><div class="mura-identity-line"><h1>'+e(profile.name||'Mura')+'</h1><span class="mura-city-pill">'+e(profile.city||'Göteborg')+'</span></div><p class="mura-hero-lead">'+e(tx('lead'))+'</p><div class="mura-stat-row"><div><strong>'+active+'</strong><span>'+e(tx('active'))+'</span></div><div><strong>'+projectPeople.length+'</strong><span>'+e(tx('people'))+'</span></div><div><strong>'+unread+'</strong><span>'+e(tx('unread'))+'</span></div><div><strong>'+drafts.length+'</strong><span>'+e(tx('drafts'))+'</span></div></div></div><div class="mura-hero-character"><img src="./folkoop-guide-confident.webp" alt="" width="220" height="240"></div><aside class="mura-now-card"><span class="mura-now-label">'+e(tx('today'))+'</span><h2>'+e(task?.title||project?.title||'')+'</h2><p>'+e(project?.title||'')+'</p>'+(project?'<button class="button" type="button" data-home="openCoop" data-id="'+e(project.id)+'">'+e(tx('continue'))+'</button>':'')+'</aside></header>'+
+   '<section class="mura-section"><div class="mura-section-head"><div><p class="eyebrow">'+e(tx('storyEyebrow'))+'</p><h2>'+e(tx('storyTitle'))+'</h2></div><p>'+e(tx('storyText'))+'</p></div><div class="mura-story-grid">'+coopCard(project,projectMeta)+coopCard(purchase,purchaseMeta)+coopCard(need)+coopCard(offer)+'</div></section>'+
+   '<section class="mura-section"><div class="mura-section-head"><div><p class="eyebrow">'+e(tx('peopleEyebrow'))+'</p><h2>'+e(tx('peopleTitle'))+'</h2></div><a class="mura-text-link" href="#/people">'+e(tx('seePeople'))+' →</a></div><div class="mura-people-grid">'+peopleCards+'</div></section>'+
+   '<section class="mura-section"><div class="mura-section-head"><div><p class="eyebrow">'+e(tx('chatEyebrow'))+'</p><h2>'+e(tx('chatTitle'))+'</h2></div><a class="mura-text-link" href="#/messages">'+e(tx('allMessages'))+' →</a></div><div class="mura-conversation-list">'+conversations+'</div></section>'+
+   '<section class="mura-section"><div class="mura-section-head"><div><p class="eyebrow">'+e(tx('sparkEyebrow'))+'</p><h2>'+e(tx('sparkTitle'))+'</h2></div><p>'+e(tx('sparkText'))+'</p></div><div class="mura-spark-grid">'+sparks+'</div></section>'+
+   '<section class="mura-section"><div class="mura-section-head"><div><p class="eyebrow">'+e(tx('draftEyebrow'))+'</p><h2>'+e(tx('draftTitle'))+'</h2></div><a class="mura-text-link" href="#/me">'+e(tx('openProfile'))+' →</a></div><div class="mura-note-grid">'+draftCards+'</div></section>'+
+   '<section class="mura-section mura-city-zone"><div class="mura-city-callout"><div><p class="eyebrow">GÖTEBORG</p><h2>'+e(tx('cityTitle'))+'</h2><p>'+e(tx('cityText'))+'</p></div><a class="button secondary" href="#/city">'+e(tx('cityCta'))+' →</a></div>'+(latestPost?'<article class="mura-neighbourhood-pulse"><span class="badge">'+e(tx('neighbourhood'))+'</span><strong>'+e(localGroup?.name||'')+'</strong><p>'+e(latestPost.body)+'</p><small>'+e(formatWhen(latestPost.created_at))+'</small></article>':'')+'</section>'+
+   '<footer class="mura-roam-note"><span aria-hidden="true">*</span><p><strong>'+e(tx('roamTitle'))+'</strong> '+e(tx('roamText'))+'</p></footer>'+
+   '</section>';
+ }
+ return Object.freeze({render});
 }
 globalThis.FolkoopMuraHome=Object.freeze({create});
 })();
