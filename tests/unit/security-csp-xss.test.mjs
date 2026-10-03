@@ -34,7 +34,8 @@ test('network renderers retain explicit HTML escaping at their sink boundaries',
   'apps/web/network-profile.js',
   'apps/web/network-communities.js',
   'apps/web/network-mura-home.js',
-  'apps/web/network-purchase-lifecycle.js'
+  'apps/web/network-purchase-lifecycle.js',
+  'apps/web/network-home.js'
  ];
  const sources=await Promise.all(files.map(path=>readFile(path,'utf8')));
  const ui=sources[0];

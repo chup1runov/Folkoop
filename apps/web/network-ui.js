@@ -578,6 +578,21 @@ const purchaseLifecycleDomain=globalThis.FolkoopNetworkPurchaseLifecycle.create(
  button:cbtn
 });
 
+const homeDomain=globalThis.FolkoopNetworkHome.create({
+ escape:esc,
+ getData:()=>data,
+ getProfile:profileFor,
+ generalText:t,
+ cooperationText:ct,
+ homeText:ht,
+ activityLabel,
+ kindLabel,
+ statusLabel,
+ formatWhen,
+ button:btn,
+ getView:()=>currentSubsection('home')
+});
+
 
 function renderMuraPeople(u){
  const people=data.directory.filter(p=>p.id!==u.id);
@@ -588,69 +603,6 @@ function renderMuraPeople(u){
  };
  const intro=lang()==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':lang()==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':'Not a contact list: people I already share a project, place or conversation with.';
  return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA / PEOPLE</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
-}
-
-function renderHome(u){
- const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
- const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
- const pendingConfirmations=data.myConfirmations.filter(x=>x.decision==='pending').map(x=>({confirmation:x,process:data.allProcesses.find(p=>p.cooperation_id===x.cooperation_id),coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.process?.stage==='confirming'&&x.coop);
- const assigned=data.assignedTasks.filter(x=>x.status!=='done').map(x=>({...x,coop:data.cooperations.find(c=>c.id===x.cooperation_id)})).filter(x=>x.coop);
- const unreadActivity=data.activityInbox.filter(x=>Number(x.unread_count||0)>0);
- const attention=[];
- pendingConfirmations.forEach(x=>attention.push({type:'confirmation',title:x.coop.title,meta:(x.process.confirmation_deadline?ht('deadline')+': '+formatWhen(x.process.confirmation_deadline):'')+' · '+x.confirmation.quantity+' '+(x.coop.unit||''),coop:x.coop}));
- assigned.slice(0,5).forEach(x=>attention.push({type:'task',title:x.title,meta:x.coop.title+' · '+ct(x.status),coop:x.coop}));
- if(unreadMessages)attention.push({type:'messages',title:ht('messages')+' · '+unreadMessages,meta:'',route:'messages'});
- if(invites)attention.push({type:'invitations',title:ht('invitations')+' · '+invites,meta:'',route:'messages'});
- unreadActivity.slice(0,4).forEach(x=>attention.push({type:'activity',title:x.cooperation_title,meta:ht('activity')+' · '+x.unread_count,coop:data.cooperations.find(c=>c.id===x.cooperation_id)}));
-
- const memberIds=new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id));
- const unreadByCoop=new Map(data.activityInbox.map(x=>[x.cooperation_id,Number(x.unread_count||0)]));
- const active=data.cooperations
-  .filter(x=>memberIds.has(x.id)&&['open','active'].includes(x.status))
-  .sort((a,b)=>(unreadByCoop.get(b.id)||0)-(unreadByCoop.get(a.id)||0)||Date.parse(b.updated_at||b.created_at||0)-Date.parse(a.updated_at||a.created_at||0))
-  .slice(0,8);
-
- const feed=[];
- data.activityInbox.filter(x=>x.last_activity_at).forEach(x=>feed.push({kind:'activity',time:x.last_activity_at,coop:data.cooperations.find(c=>c.id===x.cooperation_id),title:x.cooperation_title,event:x}));
- data.homePosts.forEach(p=>feed.push({kind:'post',time:p.created_at,post:p,group:data.groups.find(g=>g.id===p.community_id)}));
- feed.sort((a,b)=>Date.parse(b.time||0)-Date.parse(a.time||0));
-
- const actionCard=item=>{
-  if(item.route)return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<a class="button secondary" href="#/${item.route}">${esc(ht('open'))}</a></article>`;
-  const coop=item.coop;
-  if(!coop)return '';
-  return `<article class="card home-attention-card"><span class="badge">${esc(ht(item.type))}</span><h3>${esc(item.title)}</h3>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<button class="button secondary" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button></article>`;
- };
- const focusCard=item=>{
-  if(!item)return `<article class="card home-daily-focus home-daily-clear"><span class="badge">${esc(ht('daily'))}</span><h2>${esc(ht('caughtUp'))}</h2><p class="meta">${esc(ht('why'))}</p></article>`;
-  if(item.route)return `<article class="card home-daily-focus"><div class="row"><span class="badge">${esc(ht('daily'))}</span><span class="meta">${esc(ht('nextStep'))}</span></div><h2>${esc(item.title)}</h2>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<a class="button" href="#/${item.route}">${esc(ht('open'))}</a></article>`;
-  const coop=item.coop;
-  if(!coop)return '';
-  return `<article class="card home-daily-focus"><div class="row"><span class="badge">${esc(ht('daily'))}</span><span class="meta">${esc(ht('nextStep'))}</span></div><h2>${esc(item.title)}</h2>${item.meta?`<p class="meta">${esc(item.meta)}</p>`:''}<button class="button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button></article>`;
- };
- const feedCard=item=>{
-  if(item.kind==='post'){
-   const author=profileFor(item.post.author_id)?.name||t('by');
-   return `<article class="card home-feed-card"><span class="badge">${esc(ht('communityPost'))}</span><h3>${esc(item.group?.name||t('groups'))}</h3><p style="white-space:pre-wrap">${esc(item.post.body)}</p><p class="meta">${esc(ht('from'))} ${esc(author)} · ${esc(formatWhen(item.post.created_at))}</p>${item.group?`<button class="text-button" type="button" data-home="openCommunity" data-id="${esc(item.group.id)}">${esc(ht('open'))}</button>`:''}</article>`;
-  }
-  const e=item.event,coop=item.coop;
-  const line=activityLabel({actor_id:e.last_actor_id,event_type:e.last_event_type,label:e.last_label},u);
-  return `<article class="card home-feed-card"><span class="badge">${esc(coop?kindLabel(coop.kind):ht('activity'))}</span><h3>${esc(item.title)}</h3><p>${esc(line)}</p><p class="meta">${esc(formatWhen(e.last_activity_at))}</p>${coop?`<button class="text-button" type="button" data-home="openCoop" data-id="${esc(coop.id)}">${esc(ht('open'))}</button>`:''}</article>`;
- };
-
- const primary=attention[0]||(active[0]?{type:'activity',title:active[0].title,meta:statusLabel(active[0].status),coop:active[0]}:null);
- const remainingAttention=attention.slice(primary&&attention[0]===primary?1:0);
- const feedItems=feed.slice(0,12);
-
- const view=currentSubsection('home');
- const header=`<div class="row"><div><p class="eyebrow">FOLKOOP</p><h1>${esc(ht('title'))}</h1><p class="home-subtitle">${esc(ht('subtitle'))}</p></div>${btn('refresh','refresh')}</div>`;
- const overview=`<section class="home-daily">${focusCard(primary)}</section><section class="home-section"><h2>${esc(ht('myWork'))}</h2><div class="draft-grid">${active.map(x=>`<article class="card"><span class="badge">${esc(kindLabel(x.kind))}</span><h3>${esc(x.title)}</h3><p class="meta">${esc(statusLabel(x.status))} · ${esc(x.location_text||'')}</p><button class="text-button" type="button" data-home="openCoop" data-id="${esc(x.id)}">${esc(ht('open'))}</button></article>`).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div></section>`;
- const attentionItems=attention.length?attention:[];
- const attentionView=`<section class="home-section"><div class="row"><h2>${esc(ht('attention'))}</h2><span class="meta">${esc(ht('why'))}</span></div><div class="home-attention-grid">${attentionItems.map(actionCard).join('')||`<div class="empty"><p>${esc(ht('nothingUrgent'))}</p></div>`}</div></section>`;
- const actionsView=`<section class="home-section"><h2>${esc(ht('quick'))}</h2><div class="quick-grid home-quick"><button class="quick" type="button" data-home="createCoop" data-kind="need">${esc(ht('need'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="offer">${esc(ht('offer'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="purchase">${esc(ht('purchase'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="project">${esc(ht('project'))}<span aria-hidden="true">＋</span></button><a class="quick" href="#/communities">${esc(ht('community'))}<span aria-hidden="true">→</span></a><a class="quick" href="#/city">${esc(ht('city'))}<span aria-hidden="true">→</span></a></div></section>`;
- const feedView=`<section class="home-section"><h2>${esc(ht('feed'))}</h2><div class="home-feed">${feedItems.map(feedCard).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div>${feedItems.length?`<p class="home-feed-end">${esc(ht('feedEnd'))}</p>`:''}</section>`;
- const body=view==='home-attention'?attentionView:view==='home-feed'?feedView:view==='home-actions'?actionsView:overview;
- return `<section class="home-dashboard" data-home-view="${esc(view)}">${header}${body}</section>`;
 }
 
 function renderMessages(u){
@@ -775,7 +727,7 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2><p class="pilot-login-intro">${esc(t('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(t('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):renderHome(u);}
+ else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):homeDomain.render(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
