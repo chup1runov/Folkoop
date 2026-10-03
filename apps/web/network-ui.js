@@ -280,9 +280,7 @@ function demoSnapshot(){
  };
 }
 function guestRequireAccount(){
- const note=ht('demoLocked');
- notice=note;
- window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-action',note}}));
+ notice=ht('demoText');
  render();
 }
 
@@ -363,6 +361,15 @@ const communitiesDomain=globalThis.FolkoopNetworkCommunities.create({
  text:t,
  field,
  button:btn
+});
+
+const muraHomeDomain=globalThis.FolkoopMuraHome.create({
+ escape:esc,
+ getData:()=>data,
+ getProfile:profileFor,
+ kindLabel,
+ statusLabel,
+ formatWhen
 });
 
 function renderHome(u){
@@ -626,7 +633,7 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2><p class="pilot-login-intro">${esc(t('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(t('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'){html=renderHome(u);}
+ else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):renderHome(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
