@@ -218,7 +218,7 @@ async def main():
   home_chat=page.locator('[data-home="openChat"]').first
   chat_id=await home_chat.get_attribute('data-id')
   await home_chat.click()
-  await expect(page).to_have_url(lambda url: url.endswith('#/messages'))
+  await page.wait_for_url('**#/messages')
   await expect(page.locator('[data-net="backChats"]')).to_be_visible()
   assert await page.locator('[data-net="openChat"][data-id="'+chat_id+'"]').count()==0
   passed.append('Mura Home conversation preview opens the selected conversation')
