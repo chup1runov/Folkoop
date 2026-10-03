@@ -406,3 +406,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .mura-profile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px;padding-top:14px;border-top:1px solid #ECE7E2}.mura-profile-stats span{display:flex;flex-direction:column;gap:2px;color:var(--muted);font-size:.7rem}.mura-profile-stats strong{font-size:1.05rem;color:var(--ink)}
 @media(max-width:700px){.mura-people-page-grid,.mura-community-grid,.mura-chat-grid{grid-template-columns:1fr}.mura-profile-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.mura-person-page-card{padding:14px}}
 
+
+.mura-outcome-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mura-outcomes .mura-story-card{background:linear-gradient(160deg,#F8FBF9,#FFFFFF);border-color:#CFE0D5}
+.mura-outcomes .mura-story-card::after{background:#2F6F4E0A}
+@media(max-width:900px){.mura-outcome-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.mura-outcome-grid{grid-template-columns:1fr}}
