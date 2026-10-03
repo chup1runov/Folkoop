@@ -82,7 +82,7 @@ test('guest profile renders the learning card without server mutation controls',
  const html=d.render({id:'demo'},{guestDemo:true});
  assert(html.includes('demo-profile-card'));
  assert(html.includes('Mura&#39;s place · learning example'));
- assert(html.includes('data-demo="register"'));
+ assert(!html.includes('data-demo="register"'));
  assert(html.includes('data-net="logout"'));
  assert(html.includes('data-activity'));
  assert(html.includes('My city'));
