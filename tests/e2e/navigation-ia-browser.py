@@ -35,7 +35,7 @@ async def audit(browser,width,height):
  await page.click('#mobilePrimaryNav a[href="#/messages"]')
  await expect(page.locator('#mobileContextDock [data-subsection^="messages-"]')).to_have_count(3)
  await page.click('#mobileContextDock [data-subsection="messages-direct"]')
- await expect(page.locator('#networkPanel')).to_contain_text('Личный разговор')
+ await expect(page.locator('#networkPanel')).to_contain_text('Личная переписка')
  await page.click('#mobileContextDock [data-subsection="messages-groups"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Групповой чат')
  assert await page.locator('#mobileContextDock [data-subsection="messages-invites"]').count()==0
