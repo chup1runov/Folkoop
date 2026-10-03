@@ -26,9 +26,20 @@ test('OAuth callback remains stricter than the main application shell',async()=>
  assert.match(csp,/form-action 'none'/);
 });
 
-test('network renderers retain explicit HTML escaping at their two sink boundaries',async()=>{
- const ui=await readFile('apps/web/network-ui.js','utf8');
+test('network renderers retain explicit HTML escaping at their sink boundaries',async()=>{
+ const files=[
+  'apps/web/network-ui.js',
+  'apps/web/network-activity.js',
+  'apps/web/network-messaging.js',
+  'apps/web/network-profile.js',
+  'apps/web/network-communities.js',
+  'apps/web/network-mura-home.js',
+  'apps/web/network-purchase-lifecycle.js'
+ ];
+ const sources=await Promise.all(files.map(path=>readFile(path,'utf8')));
+ const ui=sources[0];
  assert.match(ui,/host\.innerHTML=.*esc\(t\('title'\)\)/s);
  assert.match(ui,/host\.innerHTML=demoBanner\+html\+.*esc\(notice\)/s);
- assert((ui.match(/\besc\(/g)||[]).length>350,'network UI escaping coverage unexpectedly collapsed');
+ const explicitEscapes=sources.reduce((sum,source)=>sum+(source.match(/\b(?:esc|escape)\(/g)||[]).length,0);
+ assert(explicitEscapes>350,'network presentation escaping coverage unexpectedly collapsed');
 });

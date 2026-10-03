@@ -15,7 +15,7 @@ export const BUILD_FILES=Object.freeze([
   
   'folkoop-city.js','folkoop-mark.png',
   'folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-ui.js','auth-callback.html',
+  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-ui.js','auth-callback.html',
   'auth-callback-core.mjs','auth-callback.mjs','home-welcome.js'
 ]);
 
@@ -31,5 +31,5 @@ export const PRECACHE_PATHS=Object.freeze([
   
   'folkoop-city.js',
   'folkoop-mark.png','folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-ui.js','home-welcome.js'
+  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-ui.js','home-welcome.js'
 ]);
