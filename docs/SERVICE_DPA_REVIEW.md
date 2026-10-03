@@ -1,6 +1,6 @@
-# FOLKOOP Service / DPA Review v1.0
+# FOLKOOP Service / DPA Review v1.1
 
-29 September 2026.
+3 October 2026.
 
 Status: **pilot service decision record**.
 
@@ -115,6 +115,75 @@ Primary references:
 - https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
 - https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
+## PostHog Cloud EU — PREPARED, NOT ACTIVE; CONDITIONAL PILOT APPROVAL
+
+Planned use:
+- narrow product analytics for the controlled Göteborg core-loop pilot;
+- measure meaningful cooperation events and outcomes, not attention/time-on-app.
+
+Current connected project checked 3 October 2026:
+- active PostHog project is on the EU instance (`eu.posthog.com`);
+- project-level IP anonymisation is enabled;
+- session recording is disabled;
+- no event has been ingested;
+- FOLKOOP application instrumentation remains disabled and has no committed
+  project token/CSP permission for PostHog ingestion.
+
+Current PostHog documentation states:
+- PostHog Cloud EU is hosted in AWS `eu-central-1`, Frankfurt, Germany;
+- for PostHog Cloud, PostHog acts as data processor and the customer acts as
+  controller;
+- a self-service DPA is available;
+- PostHog Cloud EU can still involve subprocessors outside the EU and support
+  access from outside the EU; the applicable transfer mechanism in the DPA may
+  include adequacy decisions, the EU-US Data Privacy Framework or EU Standard
+  Contractual Clauses;
+- standard Product Analytics event retention is plan-dependent: currently one
+  year on Free and seven years on paid cloud plans;
+- the normal retention window is not a deletion mechanism; explicit data
+  deletion tools are required when data must be removed earlier.
+
+FOLKOOP's prepared instrumentation is intentionally narrower than the default
+PostHog browser SDK pattern:
+- authenticated FOLKOOP UUID only as `distinct_id`;
+- allowlisted meaningful-action events only;
+- only the structured `cooperation_kind` property where needed;
+- `$process_person_profile=false` on every prepared event;
+- no names, email addresses, free-text messages, cooperation titles/descriptions,
+  task text, location text, moderation text or interview notes;
+- no page-view tracking;
+- no autocapture;
+- no session replay.
+
+Pilot decision:
+**PostHog remains disabled until the conditions below are completed. It is not a
+launch blocker: if those conditions are not complete, the pilot uses the
+existing minimal/manual core-loop measurement protocol without PostHog.**
+
+Conditions before activation:
+1. execute/confirm the applicable PostHog DPA for the controller account;
+2. review the then-current PostHog subprocessor/transfer information;
+3. update and version the participant Privacy Notice before participant event
+   collection starts;
+4. keep analytics limited to the already-adopted narrow core-loop evaluation
+   purpose and its working Art. 6(1)(f) safeguards;
+5. establish an operator deletion procedure so row-level analytics data are
+   deleted by pilot end + 90 days rather than relying on PostHog's longer
+   plan-level event retention;
+6. keep session replay, autocapture and free-text properties disabled;
+7. only then add the public project token and EU ingestion host to the app/CSP;
+8. verify one synthetic event and inspect its stored properties before ordinary
+   participant analytics is allowed.
+
+Primary references:
+- https://posthog.com/docs/privacy
+- https://posthog.com/docs/privacy/gdpr-compliance
+- https://posthog.com/docs/privacy/data-storage
+- https://posthog.com/docs/data/events-retention
+- https://posthog.com/dpa
+- https://posthog.com/subprocessors
+- https://trust.posthog.com
+
 ## Google Auth — DEFERRED / NOT ACTIVE
 
 Google OAuth is not active in the current production configuration.
@@ -210,10 +279,14 @@ Still open before ordinary participants:
 - final participant privacy notice approval after Auth configuration;
 - explicit authorization to distribute ordinary participant invites.
 
+Optional analytics activation remains a separate gate: PostHog may stay disabled
+through the pilot if its DPA/notice/deletion conditions are not completed.
+
 ## Change-control triggers
 
 Repeat this review before:
 - storing real participant personal data in Box or another new provider;
+- activating PostHog or another analytics provider outside the reviewed minimal event model;
 - adding minors;
 - adding payments/escrow;
 - adding precise location history;
