@@ -81,7 +81,8 @@ function renderMobileChrome(){
  const items=context.map(k=>{const target=virtualTarget(k);const selected=(target===current&&subsection===k);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
- const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button" type="button" data-mobile-action="signin">'+esc(entrySource().email)+'</button></aside>':'';
+ const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':'Leave Mura\'s account';
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>'+esc(entrySource().guest)+'</strong><p>'+esc(entrySource().guestNote)+'</p><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
