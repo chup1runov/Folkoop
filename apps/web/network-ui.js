@@ -176,6 +176,22 @@ const demoLocaleCopy={
   'Agreed. Ten tools first, then we expand only if people use them.':'Согласна. Сначала десять инструментов, а расширяться будем только если ими пользуются.',
   'Can you save me a few tomato seed envelopes?':'Можешь отложить мне несколько конвертов с семенами томатов?',
   'Yes, and I will bring labels too.':'Да, и ещё принесу этикетки.'
+,
+  'Photography, neighbourhood projects, repair cafés and too many unfinished ideas.':'Фотография, соседские проекты, ремонтные кафе и слишком много незаконченных идей.',
+  'A local place for neighbours to exchange practical help, tools and small ideas.':'Место, где соседи обмениваются практической помощью, инструментами и небольшими идеями.',
+  'Informal language practice, conversation tables and small meetups.':'Неформальная языковая практика, разговорные столы и небольшие встречи.',
+  'We met through the firewood purchase; Omar makes pickup logistics feel simple.':'Мы познакомились через совместную закупку дров; с Omar логистика получения становится простой.',
+  'Photographed the repair café':'Сфотографировала ремонтное кафе',
+  'Made a small photo story from the repair café so the community could see what was fixed and who helped.':'Сделала небольшую фотоисторию о ремонтном кафе, чтобы сообщество увидело, что починили и кто помог.',
+  'Set up the repair tables':'Подготовить столы для ремонта',
+  'Create three simple stations for electrical, textile and general repair.':'Сделать три простые зоны: электрика, текстиль и общий ремонт.',
+  'Photograph the repaired items for the recap':'Сфотографировать починенные вещи для итогов',
+  'Take a few before/after pictures without photographing people unless they ask.':'Сделать несколько кадров до/после, не фотографируя людей без их просьбы.',
+  'Coffee table was ready':'Стол с кофе был готов',
+  'Fatima set up coffee and cups before the first visitors arrived.':'Fatima подготовила кофе и чашки до прихода первых посетителей.',
+  'Photo recap published':'Фотоотчёт опубликован',
+  'I selected six before/after pictures and shared them with the repair circle.':'Я выбрала шесть фотографий до/после и поделилась ими с ремонтным сообществом.',
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.'
 
  },
  sv:{
@@ -276,6 +292,22 @@ const demoLocaleCopy={
   'Agreed. Ten tools first, then we expand only if people use them.':'Håller med. Tio verktyg först, sedan bygger vi ut om folk använder dem.',
   'Can you save me a few tomato seed envelopes?':'Kan du lägga undan några tomatfrökuvert åt mig?',
   'Yes, and I will bring labels too.':'Ja, och jag tar med etiketter också.'
+,
+  'Photography, neighbourhood projects, repair cafés and too many unfinished ideas.':'Fotografering, grannskapsprojekt, reparationscaféer och alldeles för många ofärdiga idéer.',
+  'A local place for neighbours to exchange practical help, tools and small ideas.':'En lokal plats där grannar byter praktisk hjälp, verktyg och små idéer.',
+  'Informal language practice, conversation tables and small meetups.':'Informell språkträning, samtalsbord och små träffar.',
+  'We met through the firewood purchase; Omar makes pickup logistics feel simple.':'Vi lärde känna varandra genom vedköpet; Omar gör hämtningslogistiken enkel.',
+  'Photographed the repair café':'Fotograferade reparationscafét',
+  'Made a small photo story from the repair café so the community could see what was fixed and who helped.':'Gjorde en liten fotoberättelse från reparationscafét så gemenskapen kunde se vad som lagades och vem som hjälpte till.',
+  'Set up the repair tables':'Ställ i ordning reparationsborden',
+  'Create three simple stations for electrical, textile and general repair.':'Skapa tre enkla stationer för el, textil och allmän reparation.',
+  'Photograph the repaired items for the recap':'Fotografera de lagade sakerna till sammanfattningen',
+  'Take a few before/after pictures without photographing people unless they ask.':'Ta några före/efter-bilder utan att fotografera människor om de inte ber om det.',
+  'Coffee table was ready':'Kaffebordet var klart',
+  'Fatima set up coffee and cups before the first visitors arrived.':'Fatima ordnade kaffe och koppar innan de första besökarna kom.',
+  'Photo recap published':'Fotosammanfattningen publicerad',
+  'I selected six before/after pictures and shared them with the repair circle.':'Jag valde sex före/efter-bilder och delade dem med reparationsgruppen.',
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.'
 
  }
 };
