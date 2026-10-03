@@ -35,6 +35,8 @@ Use these documents for the current pilot:
   `PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md`;
 - account closure:
   `ACCOUNT_CLOSURE_RUNBOOK.md`;
+- real iPhone Safari + VoiceOver acceptance:
+  `IPHONE_SAFARI_VOICEOVER_GATE.md`;
 - Google Auth configuration, if Google becomes the active route:
   `AUTH_GOOGLE_PILOT.md`;
 - optional PostHog instrumentation:
@@ -55,7 +57,7 @@ Ordinary invitations remain blocked until every mandatory gate is complete.
 | Two independent real-account technical test | A03 / `GOTEBORG_PILOT_OPERATOR_RUNBOOK.md` | **NOT DONE** |
 | Account-closure rehearsal on a developer/test identity | A04 / `ACCOUNT_CLOSURE_RUNBOOK.md` | **NOT DONE** |
 | Participant Privacy Notice aligned with services actually active | A05 | **NOT DONE** |
-| Real iPhone Safari + VoiceOver acceptance | A06 | **NOT DONE** |
+| Real iPhone Safari + VoiceOver acceptance | A06 / `IPHONE_SAFARI_VOICEOVER_GATE.md` | **NOT DONE** |
 | Terms/Privacy versions shown at onboarding match server acceptance versions | hosted verification | **NOT FINAL** |
 | Operator safety/privacy contact route works | current privacy runbook | prepared; recheck before launch |
 | Explicit invite-distribution authorization | final section of this pack | **NOT AUTHORIZED** |
