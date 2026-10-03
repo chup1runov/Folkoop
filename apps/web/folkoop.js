@@ -353,7 +353,7 @@ function ensureOnboarding(){
  dialog.id='onboarding';
  dialog.className='onboarding';
  dialog.hidden=true;
- dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="onboarding-head"><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div id="muraPractice" class="mura-practice" hidden><span id="muraPracticeStars" aria-label="Mura practice stars">○ ○ ○</span><strong id="muraPracticeXp">0 XP</strong></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><span id="onboardingProgress" class="onboarding-progress"></span><button type="button" class="button" data-onboarding="next"></button></div></section>';
+ dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="onboarding-head"><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div id="muraPractice" class="mura-practice" hidden><span id="muraPracticeStars" aria-label="Mura tour progress">○ ○ ○</span><strong id="muraPracticeXp">0 / 3</strong></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><span id="onboardingProgress" class="onboarding-progress"></span><button type="button" class="button" data-onboarding="next"></button></div></section>';
  document.body.append(dialog);
  return dialog;
 }
@@ -420,7 +420,7 @@ function muraPracticeForStep(step){return step===2?1:step===3?2:step===4?3:0;}
 function updateMuraPractice(){
  const dialog=ensureOnboarding(),box=dialog.querySelector('#muraPractice');if(!box)return;
  box.hidden=muraPracticeStep===0&&onboardingStep<2;
- dialog.querySelector('#muraPracticeStars').textContent=[0,1,2].map(i=>i<muraPracticeStep?'★':'○').join(' ');
+ dialog.querySelector('#muraPracticeStars').textContent=[0,1,2].map(i=>i<muraPracticeStep?'●':'○').join(' ');
  dialog.querySelector('#muraPracticeXp').textContent=muraPracticeStep+' / 3';
 }
 function completeMuraPractice(step){
