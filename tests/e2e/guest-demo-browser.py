@@ -150,9 +150,9 @@ async def main():
   assert 'Укажи свой город' not in await page.locator('body').inner_text()
   assert await page.locator('#mobileContextDock [data-mobile-subnav="center"]').count()==0
   frame=page.frame_locator('#cityFrame')
-  await expect(frame.locator('body')).not_to_contain_text('ДЕМО')
-  await expect(frame.locator('body')).not_to_contain_text('ПИЛОТ')
-  await expect(frame.locator('body')).not_to_contain_text('прототип')
+  city_text=(await frame.locator('body').inner_text()).lower()
+  for banned in ('демо','пилот','прототип','demo','pilot','prototype','feedback'):
+   assert banned not in city_text,(banned,city_text[:1000])
   await assert_mura_immersed(page)
   passed.append('Mura City opens Göteborg official-source tools without Center or prototype/demo chrome')
 
