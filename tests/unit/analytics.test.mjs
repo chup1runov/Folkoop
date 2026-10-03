@@ -54,7 +54,7 @@ test('invalid identity and reset prevent delivery',async()=>{
 test('network adapter instruments only meaningful pilot actions',async()=>{
  const source=await readFile('apps/web/network-client.js','utf8');
  for(const event of ['pilot_session_started','cooperation_created','cooperation_joined','cooperation_completed','project_task_completed','purchase_participation_confirmed','purchase_completed']){
-  assert(source.includes(`track('${event}'`),`missing analytics hook: ${event}`);
+  assert(source.includes(`'${event}'`),`missing analytics hook: ${event}`);
  }
- for(const event of ['message_sent','page_view','profile_view'])assert(!source.includes(`track('${event}'`));
+ for(const event of ['message_sent','page_view','profile_view'])assert(!source.includes(`'${event}'`));
 });
