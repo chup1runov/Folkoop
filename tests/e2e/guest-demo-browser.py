@@ -131,7 +131,7 @@ async def main():
   passed.append('Mura Communities contains four lived-in places with current activity')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
-  assert await page.locator('.mura-chat-card').count()==5
+  await expect(page.locator('.mura-chat-card')).to_have_count(5)
   await expect(page.locator('#networkPanel')).to_contain_text('Johan')
   await expect(page.locator('#networkPanel')).to_contain_text('Воскресная прогулка и уборка')
   passed.append('Mura Messages contains five conversations tied to different parts of her life')
