@@ -755,7 +755,7 @@ function renderCooperation(u,r){
   return html;
  }
  if(projectMode){
-  const view=currentSubsection('projects');
+   const rawView=currentSubsection('projects'),view=guestDemo&&rawView==='projects-mine'?'projects-overview':rawView;
   if(view==='projects-tasks'){
    const tasks=data.assignedTasks.filter(x=>x.status!=='done');
    html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${tasks.map(task=>{const project=data.cooperations.find(x=>x.id===task.cooperation_id);return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`;
