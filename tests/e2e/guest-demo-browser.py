@@ -7,7 +7,7 @@ from playwright.async_api import async_playwright,expect
 
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/Folkoop/')
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
-BANNED_MURA=('пилот','демо','учебн','регистрац','войти','электронная почта','e-mail','сервер','прототип','не зашифрован','не подключено')
+BANNED_MURA=('пилот','демо','учебн','пример','регистрац','войти','электронная почта','e-mail','сервер','локальная рабочая','прототип','не зашифрован','не подключено','pilot','demo','learning example','register','sign in','server-backed','prototype','not encrypted','local workspace')
 
 async def assert_mura_immersed(page,scope='body'):
  text=(await page.locator(scope).inner_text()).lower()
@@ -66,6 +66,11 @@ async def main():
   await expect(page.locator('.mura-story-grid')).to_contain_text('Обмен растениями и семенами по соседству')
   await expect(page.locator('.mura-conversation-list')).to_contain_text('Omar')
   await expect(page.locator('.mura-note-grid')).to_contain_text('Одолжить дрель на вечер')
+  await expect(page.locator('.mura-outcome-grid')).to_be_visible()
+  assert await page.locator('.mura-outcome-grid .mura-story-card').count()==3
+  await expect(page.locator('.mura-outcome-grid')).to_contain_text('Соседское ремонтное кафе')
+  await expect(page.locator('.mura-outcome-grid')).to_contain_text('Одолжила складную лестницу')
+  await expect(page.locator('.mura-outcome-grid')).to_contain_text('Сфотографировала ремонтное кафе')
   assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Купить сухие дрова вместе')
   visible_guest_text=(await page.locator('body').inner_text()).lower()
@@ -96,6 +101,9 @@ async def main():
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
   assert await page.locator('.guest-demo-banner').count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Johan')
+  await expect(page.locator('#networkPanel')).to_contain_text('Sara')
+  await expect(page.locator('#networkPanel')).to_contain_text('Fatima')
+  assert await page.locator('.mura-person-page-card').count()==6
   await expect(page.locator('#networkPanel')).to_contain_text('связывает дело, место или разговор')
   await assert_mura_immersed(page,'#networkPanel')
   passed.append('Mura People shows relationships rather than a generic directory')
@@ -112,6 +120,19 @@ async def main():
    assert await page.locator('.guest-demo-banner').count()==0
    await assert_mura_immersed(page,'#networkPanel')
    passed.append('Mura can browse Communities, Messages and Cooperation without product-meta chrome')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="communities"]')
+  assert await page.locator('.mura-community-card').count()==4
+  await expect(page.locator('#networkPanel')).to_contain_text('Ремонт и повторное использование')
+  await expect(page.locator('#networkPanel')).to_contain_text('Воскресная прогулка и уборка')
+  passed.append('Mura Communities contains four lived-in places with current activity')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
+  assert await page.locator('.mura-chat-card').count()==5
+  await expect(page.locator('#networkPanel')).to_contain_text('Johan')
+  await expect(page.locator('#networkPanel')).to_contain_text('Воскресная прогулка и уборка')
+  passed.append('Mura Messages contains five conversations tied to different parts of her life')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   assert await page.locator('#netLogin').count()==0
@@ -145,6 +166,7 @@ async def main():
   assert await page.locator('#mobileContextDock [data-mobile-subnav="about"]').count()==0
   await expect(page.locator('#mobileContextDock [data-mobile-action="language"]')).to_be_visible()
   await expect(page.locator('.mura-drafts')).to_contain_text('Попробовать ежемесячный обмен навыками')
+  assert await page.locator('.mura-draft-card').count()==6
   await assert_mura_immersed(page,'#networkPanel')
   passed.append('Mura Profile is a personal life map with drafts, Göteborg and no Settings/About detour')
 
@@ -226,7 +248,7 @@ async def main():
 
  OUT.joinpath('guest-demo-results.json').write_text(json.dumps({
   'passed':passed,
-  'limits':['Mura learning data are local examples, never evidence of real participants or activity','A visitor cannot mutate network state']
+  'limits':['Mura and her circle are fictional local story data, never evidence of real participants or activity','A visitor cannot mutate network state','Chromium emulation is not physical iPhone Safari acceptance']
  },ensure_ascii=False,indent=2))
  print('\n'.join('PASS '+x for x in passed))
 
