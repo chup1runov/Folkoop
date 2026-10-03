@@ -288,7 +288,7 @@ function demoSnapshot(){
  const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305',REPAIR='00000000-0000-4000-8000-000000000306',TOOLS='00000000-0000-4000-8000-000000000307',LADDER='00000000-0000-4000-8000-000000000308';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.'),connection:'',listed:true},
+  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('I like turning small neighbourhood ideas into things people can actually do together.'),connection:'',listed:true},
   {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
   {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true},
   {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
