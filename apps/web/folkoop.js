@@ -484,6 +484,12 @@ function finishOnboarding(){
   tourReturnMode=null;
   return;
  }
+ if(temporaryTour&&tourReturnMode==='guest'){
+  current='home';history.replaceState(null,'','#/home');render();
+  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
+  tourReturnMode=null;
+  return;
+ }
 
  const returnTarget=temporaryTour&&tourReturnMode==='account'?'account':'local';
  if(guestTour&&!completedMuraPractice){if(temporaryTour)window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:true}}));current='home';history.replaceState(null,'','#/home');render();tourReturnMode=null;}
