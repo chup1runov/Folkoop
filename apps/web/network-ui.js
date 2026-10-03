@@ -907,6 +907,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
  });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
   if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
+  if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
@@ -968,11 +969,19 @@ window.addEventListener('message',e=>{
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
-window.addEventListener('folkoop:subsection',()=>{render();});
+window.addEventListener('folkoop:subsection',e=>{
+ const parent=e.detail?.parent;
+ if(parent==='projects')selectedCoop=null;
+ if(parent==='messages')selectedChat=null;
+ render();
+});
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
  guestDemo=detail.enabled!==false;
- if(!guestDemo){showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');}
+ if(!guestDemo){
+  showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
+  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};
+ }
  try{
   if(guestDemo&&!temporary)sessionStorage.setItem('folkoop-entry-mode-v1','guest');
   else if(!guestDemo&&detail.target==='account')sessionStorage.setItem('folkoop-entry-mode-v1','account');
