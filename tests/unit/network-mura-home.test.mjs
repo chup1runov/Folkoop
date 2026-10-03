@@ -34,7 +34,10 @@ function fixture(){
    {id:'buy',owner_id:'a',kind:'purchase',title:'Дрова вместе',description:'Закупка',status:'active',unit:'m³'},
    {id:'n',owner_id:'me',kind:'need',title:'Нужен плиткорез',description:'Нужен инструмент',status:'open'},
    {id:'o',owner_id:'me',kind:'offer',title:'Помогу с фото',description:'Сфотографирую',status:'open'},
-   {id:'r',owner_id:'a',kind:'resource',title:'Грузовой велосипед',description:'Ресурс',status:'open'}
+   {id:'r',owner_id:'a',kind:'resource',title:'Грузовой велосипед',description:'Ресурс',status:'open'},
+   {id:'done1',owner_id:'a',kind:'project',title:'Ремонтное кафе',description:'11 вещей починили',status:'done'},
+   {id:'done2',owner_id:'me',kind:'need',title:'Вернула лестницу',description:'Одолжила и вернула',status:'done'},
+   {id:'done3',owner_id:'me',kind:'offer',title:'Фотоотчёт',description:'Сделала фотоисторию',status:'done'}
   ],
   coopMembers:[
    {cooperation_id:'p',user_id:'me'},
@@ -87,6 +90,11 @@ test('Mura Home is immersive, read-only and contains no registration CTA',()=>{
  assert(html.includes('Одолжить дрель'));
  assert(html.includes('Проверить резюме'));
  assert(html.includes('Göteborg'));
+ assert(html.includes('Дела, которые дошли до реального результата'));
+ assert(html.includes('Ремонтное кафе'));
+ assert(html.includes('Вернула лестницу'));
+ assert(html.includes('Фотоотчёт'));
+ assert.equal((html.match(/mura-outcome-mark/g)||[]).length,3);
  assert(!html.includes('register'));
  assert(!html.includes('signup'));
  assert(!html.includes('createCoop'));

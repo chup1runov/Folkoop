@@ -8,6 +8,7 @@ const closeLanguageButton = document.getElementById('closeLanguageButton');
 const languageBackdrop = document.getElementById('languageBackdrop');
 let deferredPrompt;
 let currentScreen = 'home';
+const MURA_MODE = new URL(location.href).searchParams.get('mura') === '1';
 
 const supportedLanguages = ['sv', 'en', 'ar', 'so', 'fa', 'fi', 'bs', 'ku', 'es', 'ru', 'uk'];
 const rtlLanguages = new Set(['ar', 'fa']);
@@ -545,7 +546,16 @@ function detectInitialLanguage() {
 
 let currentLanguage = detectInitialLanguage();
 
+const muraCityCopy={
+  en:{pilot:'',eyebrow:'Göteborg · Mura',status:'Official sources and useful local routes',responsibilityHelp:'Describe the issue in ordinary words. Use the official source before submitting anything.',demoNotVerified:'Preliminary route — verify it in the official source.',addPhoto:'Add photo',noRealReport:'Nothing is submitted automatically.',earlyPrototype:'FOLKOOP helps prepare the route; the official service handles the actual case.',nearHelp:'Open local plans and official information around Göteborg.',demoLiveLater:'Reference information',demo:'Reference',nationalDecisionSource:'Sveriges riksdag'},
+  sv:{pilot:'',eyebrow:'Göteborg · Mura',status:'Officiella källor och användbara lokala vägar',responsibilityHelp:'Beskriv problemet med vanliga ord. Kontrollera den officiella källan innan du skickar något.',demoNotVerified:'Preliminär väg — kontrollera i den officiella källan.',addPhoto:'Lägg till foto',noRealReport:'Inget skickas automatiskt.',earlyPrototype:'FOLKOOP hjälper till att förbereda vägen; det officiella systemet hanterar ärendet.',nearHelp:'Öppna lokala planer och officiell information runt Göteborg.',demoLiveLater:'Referensinformation',demo:'Referens',nationalDecisionSource:'Sveriges riksdag'},
+  ru:{pilot:'',eyebrow:'Göteborg · Мура',status:'Официальные источники и полезные городские маршруты',responsibilityHelp:'Опиши проблему обычными словами. Перед отправкой проверь официальный источник.',demoNotVerified:'Предварительный маршрут — проверь его в официальном источнике.',addPhoto:'Добавить фото',noRealReport:'Ничего не отправляется автоматически.',earlyPrototype:'FOLKOOP помогает подготовить маршрут; само обращение оформляется в официальном сервисе.',nearHelp:'Открытые планы и официальная информация по Göteborg.',demoLiveLater:'Справочная информация',demo:'Справочно',nationalDecisionSource:'Sveriges riksdag'}
+};
 function t(key) {
+  if(MURA_MODE){
+    const mura=muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key];
+    if(mura!==undefined)return mura;
+  }
   return messages[currentLanguage][key] || messages.sv[key] || key;
 }
 
@@ -686,7 +696,7 @@ function isIOSDevice() {
 }
 
 function installCardMarkup() {
-  if (isStandaloneMode()) return '';
+  if (MURA_MODE || isStandaloneMode()) return '';
 
   if (isIOSDevice()) {
     return `<section class="install-card ios-install-card" data-ios-install="true">
@@ -736,6 +746,7 @@ const languageCodes = {sv:'SV',en:'EN',ar:'AR',so:'SO',fa:'FA',fi:'FI',bs:'BHS',
 
 function screenFromHash() {
   const value = location.hash.replace(/^#\/?/, '');
+  if(MURA_MODE&&value==='om')return 'home';
   return ['ansvar','rapportera','nara','beslut','om'].includes(value) ? value : 'home';
 }
 
@@ -758,6 +769,7 @@ function applyLanguage(language) {
   const description = document.querySelector('meta[name="description"]');
   if (description) description.setAttribute('content', t('heroText'));
   aboutButton.setAttribute('aria-label', pmt('aboutLabel'));
+  if(MURA_MODE)aboutButton.hidden=true;
   document.getElementById('bottomNav').setAttribute('aria-label', mainMenuLabels[currentLanguage] || mainMenuLabels.en);
   const closeLabel = closeLanguageLabels[currentLanguage] || closeLanguageLabels.en;
   closeLanguageButton.setAttribute('aria-label', closeLabel);

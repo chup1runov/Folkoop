@@ -6,6 +6,11 @@ const esc=globalThis.FolkoopCore.escape;
 const en={title:'Network account',off:'The server is not connected yet. Local drafts below remain on your device.',login:'Pilot sign-in',invite:'Invite-only pilot · 18+ · free. New participants need an invitation code. Local drafts stay on this device.',email:'Email',code:'Code from email',inviteCode:'Pilot invitation code',inviteCodeHint:'Only needed on first admission; returning pilot members may leave it blank.',inviteRequired:'A valid unused pilot invitation code is required for first admission.',localContinue:'Use locally without signing in',policyAccept:'I accept the Pilot Terms and confirm that I have read the Privacy Notice.',termsLink:'Pilot Terms',privacyLink:'Privacy Notice',policyRequired:'Accept the current Pilot Terms and acknowledge the Privacy Notice before entering the pilot.',google:'Continue with Google',oauthWaiting:'Complete Google sign-in in the popup.',oauthFailed:'Google sign-in was not completed.',popupBlocked:'The sign-in popup was blocked by the browser.',send:'Request code',resend:'Send code again',verify:'Sign in',sent:'If this email is enabled for the current pilot, the one-time code is on its way. Check your inbox.',out:'Sign out',profile:'Network profile',private:'Visible only to you unless you enable the directory. Group publications are visible to that group’s members.',name:'Name or nickname',skills:'Skills',about:'About me',listed:'Show this profile to other pilot participants',save:'Save on server',saved:'Saved on server.',groups:'Communities',desc:'Any pilot participant can discover and join these communities. Publications are visible to current members. This is not a private encrypted chat.',newGroup:'Create community',description:'Description',create:'Create',join:'Join',leave:'Leave',open:'Open',back:'All communities',refresh:'Refresh',post:'New publication',publish:'Publish to members',empty:'Nothing here yet.',delete:'Delete',confirm:'Delete? This cannot be undone.',ownerDelete:'Delete my community and all its publications',report:'Report',reason:'Reason for the report (do not include sensitive personal information)',reported:'Report stored for operator review. No automatic verdict has been made.',block:'Hide this participant',ban:'Ban from my community',unblock:'Unhide',blocks:'Hidden participants',deleteProfile:'Delete my network profile',profileDeleted:'Network profile deleted. This does not delete the Auth account or past publications.',accountDelete:'Full account deletion is handled by the pilot operator until the account-deletion endpoint is implemented.',export:'Export visible records',exportNote:'Export can be limited by server row limits and access permissions; request a complete export from the operator.',loading:'Loading…',members:'Members’ publications',by:'Participant',own:'You',directory:'People who opted into discovery',banned:'Access to this community is unavailable.',busy:'Working…',auth:'Sign in again.',error:'Request failed. No successful change is confirmed. Check the connection and try again.',denied:'Access denied. Pilot access or membership may be missing.',limit:'Too many requests. Try again later.',invalid:'Check the entered values.',stale:'Session changed. Reload the section.',localTitle:'Local workspace below — separate from your network account.'};
 const ru={...en,title:'Сетевой аккаунт',off:'Сервер ещё не подключён. Личные черновики ниже остаются на твоём устройстве.',login:'Вход в пилот',invite:'Пилот по приглашению · 18+ · бесплатно. При первом входе нужен код приглашения. Локальные черновики остаются на этом устройстве.',email:'Электронная почта',code:'Код из письма',inviteCode:'Код приглашения в пилот',inviteCodeHint:'Нужен только при первом входе; затем поле можно оставить пустым.',inviteRequired:'Для первого допуска нужен действующий неиспользованный код приглашения.',localContinue:'Использовать локально без входа',policyAccept:'Я принимаю условия пилота и подтверждаю, что прочитал уведомление о конфиденциальности.',termsLink:'Условия пилота',privacyLink:'Уведомление о конфиденциальности',policyRequired:'Перед входом в пилот прими текущие условия и подтверди ознакомление с уведомлением о конфиденциальности.',google:'Продолжить с Google',oauthWaiting:'Заверши вход Google во всплывающем окне.',oauthFailed:'Вход через Google не завершён.',popupBlocked:'Браузер заблокировал окно входа.',send:'Получить код',resend:'Отправить код ещё раз',verify:'Войти',sent:'Если этот e-mail допущен к текущему пилоту, одноразовый код отправлен. Проверь почту.',out:'Выйти',profile:'Сетевой профиль',private:'Профиль виден только тебе, пока ты не включишь показ в каталоге. Публикации в группе видят её участники.',name:'Имя или псевдоним',skills:'Навыки',about:'О себе',listed:'Показывать профиль другим участникам пилота',save:'Сохранить на сервере',saved:'Сохранено на сервере.',groups:'Сообщества',desc:'Любой участник пилота может найти сообщество и вступить. Публикации видны действующим участникам группы. Это не закрытый зашифрованный чат.',newGroup:'Создать сообщество',description:'Описание',create:'Создать',join:'Вступить',leave:'Выйти из группы',open:'Открыть',back:'Все сообщества',refresh:'Обновить',post:'Новая публикация',publish:'Опубликовать для участников',empty:'Здесь пока пусто.',delete:'Удалить',confirm:'Удалить? Отменить это действие нельзя.',ownerDelete:'Удалить моё сообщество со всеми публикациями',report:'Пожаловаться',reason:'Причина жалобы (без чувствительных персональных данных)',reported:'Жалоба сохранена для проверки оператором. Автоматический вердикт не вынесен.',block:'Скрыть участника',ban:'Запретить доступ в мою группу',unblock:'Снять скрытие',blocks:'Скрытые участники',deleteProfile:'Удалить сетевой профиль',profileDeleted:'Сетевой профиль удалён. Аккаунт входа и прежние публикации этим не удаляются.',accountDelete:'Полное удаление аккаунта пока выполняет оператор пилота: отдельный сервис удаления ещё не подключён.',export:'Выгрузить доступные записи',exportNote:'Выгрузка ограничена правами доступа и лимитами сервера; полную копию можно запросить у оператора.',loading:'Загрузка…',members:'Публикации участников',by:'Участник',own:'Ты',directory:'Люди, включившие показ профиля',banned:'Доступ в это сообщество недоступен.',busy:'Выполняется…',auth:'Войди заново.',error:'Запрос не выполнен. Успешное изменение не подтверждено. Проверь связь и повтори.',denied:'Нет доступа. Возможно, не выдано приглашение в пилот или нет членства в группе.',limit:'Слишком много запросов. Повтори позже.',invalid:'Проверь введённые данные.',stale:'Сессия изменилась. Обнови раздел.',localTitle:'Ниже — локальная рабочая область, отдельно от сетевого аккаунта.'};
 const sv={...en,title:'Nätverkskonto',off:'Servern är inte ansluten ännu. Dina lokala utkast nedan stannar på enheten.',login:'Logga in i piloten',invite:'Piloten är endast för inbjudna · 18+ · kostnadsfri. Vid första inloggningen behövs en inbjudningskod. Lokala utkast stannar på den här enheten.',email:'E-post',code:'Kod från e-post',inviteCode:'Inbjudningskod till piloten',inviteCodeHint:'Behövs bara vid första inloggningen; därefter kan fältet lämnas tomt.',inviteRequired:'En giltig oanvänd pilotkod krävs för första tillträdet.',localContinue:'Använd lokalt utan att logga in',policyAccept:'Jag godkänner pilotvillkoren och bekräftar att jag har läst integritetsinformationen.',termsLink:'Pilotvillkor',privacyLink:'Integritetsinformation',policyRequired:'Godkänn de aktuella pilotvillkoren och bekräfta integritetsinformationen innan du går in i piloten.',google:'Fortsätt med Google',oauthWaiting:'Slutför Google-inloggningen i popup-fönstret.',oauthFailed:'Google-inloggningen slutfördes inte.',popupBlocked:'Webbläsaren blockerade inloggningsfönstret.',send:'Begär kod',resend:'Skicka koden igen',verify:'Logga in',sent:'Om e-postadressen är aktiverad för piloten skickas engångskoden nu. Kontrollera inkorgen.',out:'Logga ut',profile:'Nätverksprofil',private:'Endast du ser profilen tills du aktiverar katalogen. Gruppinlägg visas för gruppens medlemmar.',name:'Namn eller smeknamn',skills:'Färdigheter',about:'Om mig',listed:'Visa profilen för andra pilotdeltagare',save:'Spara på servern',saved:'Sparat på servern.',groups:'Gemenskaper',desc:'Alla pilotdeltagare kan hitta och gå med i grupperna. Inlägg visas för aktuella medlemmar. Detta är inte en privat krypterad chatt.',newGroup:'Skapa grupp',description:'Beskrivning',create:'Skapa',join:'Gå med',leave:'Lämna gruppen',open:'Öppna',back:'Alla grupper',refresh:'Uppdatera',post:'Nytt inlägg',publish:'Publicera för medlemmar',empty:'Här är det tomt ännu.',delete:'Ta bort',confirm:'Ta bort? Detta går inte att ångra.',ownerDelete:'Radera min grupp och alla dess inlägg',report:'Rapportera',reason:'Orsak till rapporten (inga känsliga personuppgifter)',reported:'Rapporten sparades för granskning. Inget automatiskt beslut har fattats.',block:'Dölj deltagaren',ban:'Stäng av från min grupp',unblock:'Visa igen',blocks:'Dolda deltagare',deleteProfile:'Radera nätverksprofilen',profileDeleted:'Nätverksprofilen raderades. Inloggningskontot och tidigare inlägg raderas inte av detta.',accountDelete:'Pilotoperatören hanterar fullständig kontoradering tills en separat raderingstjänst finns.',export:'Exportera synliga poster',exportNote:'Export begränsas av behörighet och servergränser; begär en fullständig kopia från operatören.',loading:'Laddar…',members:'Medlemmarnas inlägg',by:'Deltagare',own:'Du',directory:'Personer som valt synlighet',banned:'Denna grupp är inte tillgänglig.',busy:'Arbetar…',auth:'Logga in igen.',error:'Begäran misslyckades. Ingen lyckad ändring är bekräftad. Kontrollera anslutningen och försök igen.',denied:'Åtkomst nekad. Pilotbehörighet eller medlemskap kan saknas.',limit:'För många förfrågningar. Försök senare.',invalid:'Kontrollera värdena.',stale:'Sessionen ändrades. Uppdatera delen.',localTitle:'Lokal arbetsyta nedan — separat från nätverkskontot.'};
+const muraGuestCopy={
+ en:{base:{profile:'Mura',listed:'Open to discovery',groups:"Mura's communities",desc:"Places I return to because people, interests and practical things keep connecting there.",directory:"People around Mura",own:'Mura',out:"Leave Mura's account",by:'From',empty:'Nothing here right now.'},chat:{messagesTitle:"Mura's conversations",messagesDesc:"Personal conversations, groups and work chats — each tied to something happening in my life.",conversation:'My conversations',direct:'Direct',groupChat:'Group chat',membersList:'People in this conversation',notEncrypted:'',you:'Mura',noPeople:'No new conversation here right now.'},coop:{togetherTitle:'Together',projectsTitle:"Mura's projects",networkDesc:"What I need, what I can offer, shared resources and things we are doing together.",projectDesc:"Ideas that already have people, tasks, updates and a work chat around them.",localBelow:'',memberOnly:"I'm not part of this one yet."},offer:{offerHelp:"We compare terms and coordinate here. Payment and the actual order stay outside FOLKOOP.",notOrder:"The selected option is a shared reference for the group; payment and ordering stay outside FOLKOOP."},activity:{activity:"What changed",notifications:"Recent changes",workChat:"Project chat",linkedChat:"Connected to this project",managedChat:"",unread:"unread",noActivity:"No new activity yet.",recentActivity:"Latest changes",openActivity:"Open"},home:{demoBadge:'Mura · Göteborg',demoText:"This is Mura's account. Explore freely; changes are simply turned off.",demoExit:"Leave Mura's account"}},
+ ru:{base:{profile:'Мура',listed:'Меня можно найти в «Людях»',groups:'Сообщества Муры',desc:'Места, куда я возвращаюсь, потому что там пересекаются люди, интересы и реальные дела.',directory:'Люди вокруг Муры',own:'Мура',out:'Выйти из аккаунта Муры',by:'От',empty:'Сейчас здесь ничего нет.'},chat:{messagesTitle:'Переписки Муры',messagesDesc:'Личные разговоры, группы и рабочие чаты — каждый связан с чем-то, что происходит в моей жизни.',conversation:'Мои разговоры',direct:'Личная переписка',groupChat:'Групповой чат',membersList:'Кто в этом разговоре',notEncrypted:'',you:'Мура',noPeople:'Сейчас здесь нет нового разговора.'},coop:{togetherTitle:'Вместе',projectsTitle:'Проекты Муры',networkDesc:'Что мне нужно, чем я могу помочь, чем мы делимся и что делаем вместе.',projectDesc:'Идеи, которые уже обросли людьми, задачами, обновлениями и рабочими чатами.',localBelow:'',memberOnly:'Я пока не участвую в этом деле.'},offer:{offerHelp:'Здесь мы сравниваем условия и договариваемся. Оплата и сам заказ происходят вне FOLKOOP.',notOrder:'Выбранный вариант — общий ориентир для группы; оплата и оформление заказа остаются вне FOLKOOP.'},activity:{activity:'Что изменилось',notifications:'Последние изменения',workChat:'Чат проекта',linkedChat:'Связан с этим проектом',managedChat:'',unread:'непрочитано',noActivity:'Пока без новых событий.',recentActivity:'Последние изменения',openActivity:'Открыть'},home:{demoBadge:'Мура · Göteborg',demoText:'Это аккаунт Муры. Здесь можно всё исследовать; изменения просто отключены.',demoExit:'Выйти из аккаунта Муры'}},
+ sv:{base:{profile:'Mura',listed:'Jag går att hitta under Människor',groups:'Muras gemenskaper',desc:'Platser jag återkommer till eftersom människor, intressen och praktiska saker möts där.',directory:'Människor runt Mura',own:'Mura',out:'Lämna Muras konto',by:'Från',empty:'Här finns inget just nu.'},chat:{messagesTitle:'Muras samtal',messagesDesc:'Personliga samtal, grupper och arbetschattar — alla kopplade till något som händer i mitt liv.',conversation:'Mina samtal',direct:'Direkt',groupChat:'Gruppchatt',membersList:'Personer i samtalet',notEncrypted:'',you:'Mura',noPeople:'Ingen ny konversation här just nu.'},coop:{togetherTitle:'Tillsammans',projectsTitle:'Muras projekt',networkDesc:'Det jag behöver, kan erbjuda, delar med andra och gör tillsammans.',projectDesc:'Idéer som redan har människor, uppgifter, uppdateringar och en arbetschatt omkring sig.',localBelow:'',memberOnly:'Jag är inte med i den här ännu.'},offer:{offerHelp:'Här jämför vi villkor och samordnar. Betalning och själva beställningen sker utanför FOLKOOP.',notOrder:'Det valda alternativet är gruppens gemensamma referens; betalning och beställning sker utanför FOLKOOP.'},activity:{activity:'Vad som ändrats',notifications:'Senaste ändringar',workChat:'Projektchatt',linkedChat:'Kopplad till projektet',managedChat:'',unread:'oläst',noActivity:'Inga nya händelser ännu.',recentActivity:'Senaste ändringar',openActivity:'Öppna'},home:{demoBadge:'Mura · Göteborg',demoText:'Det här är Muras konto. Utforska fritt; ändringar är bara avstängda.',demoExit:'Lämna Muras konto'}}
+};
 let api,configError=false;try{api=FolkoopNetwork.client(globalThis.FolkoopNetworkConfig);}catch{configError=true;}
 const chatCopy={
  en:{messagesTitle:'Messages',messagesDesc:'Direct and group conversations for pilot participants. Messages are stored on the server, use manual refresh and are not end-to-end encrypted.',direct:'Direct conversation',startDirect:'Start conversation',choosePerson:'Choose a person',groupChat:'Group conversation',newGroupChat:'Create group conversation',groupTitle:'Conversation name',chooseMembers:'Invite people',invitations:'Invitations',accept:'Accept',decline:'Decline',conversation:'Conversation',sendMessage:'Send',message:'Message',noChats:'No conversations yet.',backChats:'All conversations',invite:'Invite',leaveChat:'Leave conversation',deleteChat:'Delete group conversation',removeMember:'Remove',membersList:'Participants',manual:'Refresh',notEncrypted:'Manual refresh · not end-to-end encrypted',you:'You',reportMessage:'Report message',deletedMessage:'Message deleted.',invitePending:'Invitation pending',noPeople:'No discoverable pilot profiles are available yet.'},
@@ -51,6 +56,10 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
  if(n.home)homeCopy[code]=n.home;
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
+const muraText=(section,key)=>{
+ const pack=muraGuestCopy[lang()]||muraGuestCopy.en;
+ return guestDemo?pack?.[section]?.[key]:undefined;
+};
 const SUBSECTION_KEY='folkoop-subsection-v1';
 function currentSubsection(parent){
  let key=document.documentElement.dataset.folkoopSubsection||'';
@@ -61,7 +70,7 @@ function currentSubsection(parent){
  return parent==='home'?'home-overview':parent==='projects'?'projects-overview':'messages-chats';
 }
 
-const t=k=>baseCopy[lang()]?.[k]||en[k]||k;
+const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
 let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
@@ -89,9 +98,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Дизайн · организация групп',
   'Runs small community workshops.':'Организует небольшие общественные мастерские.',
   'Olofstorp neighbours':'Соседи Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Пример местного сообщества для взаимопомощи и совместных дел.',
+  'Local neighbours sharing help, tools and practical coordination.':'Соседи, которые делятся помощью, инструментами и решают практические вопросы вместе.',
   'Göteborg language exchange':'Языковой обмен Göteborg',
-  'Sample group for informal language practice and meetups.':'Пример группы для языковой практики и встреч.',
+  'Informal language practice, conversation tables and meetups.':'Неформальная языковая практика, разговорные столы и встречи.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'В субботу ремонтное кафе — принеси одну небольшую вещь, попробуем починить её вместе.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Ищем двух человек для шведско-русского разговорного стола на следующей неделе.',
   'Neighbourhood repair café':'Ремонтное кафе по соседству',
@@ -118,10 +127,72 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Простая табличка A4 для входа.',
   'Can collect after work':'Могу забрать после работы',
   'Need delivery help':'Нужна помощь с доставкой',
-  'Example supplier offer.':'Пример предложения поставщика.',
+  'Delivery after 17:00 works for our group.':'Доставка после 17:00 подходит нашей группе.',
   'todo · Confirm the room':'Нужно сделать · Подтвердить помещение',
   'Entrance sign ready':'Табличка для входа готова',
-  'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.'
+  'Entrance sign is ready. I will bring tape and markers.':'Табличка для входа готова. Я принесу скотч и маркеры.',
+  'Bikes · practical repair':'Велосипеды · практический ремонт',
+  'We met at the repair café; he usually knows who has the right tool nearby.':'Познакомились на ремонтном кафе; он обычно знает, у кого поблизости найдётся нужный инструмент.',
+  'Gardening · seed saving':'Сад · сохранение семян',
+  'She came to the first plant exchange and now helps me think one season ahead.':'Она пришла на первый обмен растениями и теперь помогает мне думать на сезон вперёд.',
+  'Cooking · neighbourhood events':'Еда · соседские встречи',
+  'We met through Olofstorp neighbours; she volunteered coffee for the repair café.':'Мы познакомились через «Соседи Olofstorp»; она взяла на себя кофе для ремонтного кафе.',
+  'Repair and reuse circle':'Ремонт и повторное использование',
+  'People who repair small things, share tools and teach each other.':'Люди, которые чинят небольшие вещи, делятся инструментами и учат друг друга.',
+  'Sunday walk and litter pick':'Воскресная прогулка и уборка',
+  'A low-key walk where we also collect litter along the path.':'Спокойная прогулка, во время которой мы заодно собираем мусор вдоль тропы.',
+  'The kettle is fixed. Next time I can bring a multimeter and spare plugs.':'Чайник починен. В следующий раз могу принести мультиметр и запасные вилки.',
+  'Anyone up for a short walk around Delsjön on Sunday morning?':'Кто хочет короткую прогулку вокруг Delsjön в воскресенье утром?',
+  'Repair café afternoon':'Соседское ремонтное кафе',
+  'A small repair afternoon that ended with 11 items fixed, 3 diagnosed and a list of tools to share next time.':'Небольшое ремонтное кафе: 11 вещей починили, 3 продиагностировали и составили список инструментов на следующий раз.',
+  'Neighbourhood tool shelf':'Полка общих инструментов',
+  'Turn a messy pile of rarely used tools into a labelled shelf people can actually borrow from.':'Превратить хаотичную стопку редко используемых инструментов в подписанную полку, откуда их реально можно брать.',
+  'Borrowed a folding ladder':'Одолжила складную лестницу',
+  'Needed it for one afternoon; Johan lent one and I returned it the same evening.':'Она понадобилась на один день; Johan одолжил свою, и вечером я её вернула.',
+  'Label the first ten tools':'Подписать первые десять инструментов',
+  'Start with the tools people already said they are willing to share.':'Начать с инструментов, которыми люди уже готовы делиться.',
+  'Write borrowing rules in plain language':'Написать простые правила пользования',
+  'Keep it short: who has the key, how long, and what to do if something breaks.':'Коротко: у кого ключ, на какой срок можно брать и что делать, если что-то сломалось.',
+  'Tool shelf · work chat':'Полка инструментов · рабочий чат',
+  'I can bring the repaired kettle photos for the recap.':'Я могу принести фотографии починенного чайника для итогового поста.',
+  'I have a spare label maker we can use for the shelf.':'У меня есть запасной принтер этикеток — можем использовать для полки.',
+  'The shelf can fit by the entrance if we keep it under 90 cm wide.':'Полка поместится у входа, если сделать её уже 90 см.',
+  'Repair café result: 11 fixed, 3 diagnosed.':'Итог ремонтного кафе: 11 вещей починили, 3 продиагностировали.',
+  'First shelf sketch ready':'Первый эскиз полки готов',
+  'I drew a simple shelf layout and marked the first tool categories.':'Я набросала простую схему полки и первые категории инструментов.',
+  'Map a quiet walking route':'Набросать спокойный маршрут прогулки',
+  'A route with one easy meeting point and no need for a car.':'Маршрут с простой точкой встречи и без необходимости ехать на машине.',
+  'Ask Sara about seed envelopes':'Спросить Sara про конверты для семян',
+  'She had a neat system at the last exchange.':'На прошлом обмене у неё была удобная система.',
+  'Photograph the repaired items':'Сфотографировать починенные вещи',
+  'Could become a small before/after story for the community.':'Можно сделать небольшую историю «до/после» для сообщества.',
+  'Try a monthly skill swap':'Попробовать ежемесячный обмен навыками',
+  'One evening where everyone brings one thing they can teach or need help with.':'Один вечер, где каждый приносит один навык, которому может научить, или задачу, с которой нужна помощь.',
+  'I left the ladder by your gate. No rush — tonight is fine.':'Я оставил лестницу у твоих ворот. Не спеши — вечером нормально.',
+  'Got it, thanks. I will return it after I clean the gutter.':'Забрала, спасибо. Верну после того, как прочищу желоб.',
+  'Sunday 10:30 works for me. I can bring two grabbers for litter.':'Воскресенье 10:30 мне подходит. Могу взять два захвата для мусора.',
+  'Great. I will bring bags and coffee.':'Отлично. Я возьму пакеты и кофе.',
+  'We should keep the first shelf tiny and learn from actual borrowing.':'Я бы сделал первую полку маленькой и посмотрел, чем люди реально пользуются.',
+  'Agreed. Ten tools first, then we expand only if people use them.':'Согласна. Сначала десять инструментов, а расширяться будем только если ими пользуются.',
+  'Can you save me a few tomato seed envelopes?':'Можешь отложить мне несколько конвертов с семенами томатов?',
+  'Yes, and I will bring labels too.':'Да, и ещё принесу этикетки.'
+,
+  'Photography, neighbourhood projects, repair cafés and too many unfinished ideas.':'Фотография, соседские проекты, ремонтные кафе и слишком много незаконченных идей.',
+  'A local place for neighbours to exchange practical help, tools and small ideas.':'Место, где соседи обмениваются практической помощью, инструментами и небольшими идеями.',
+  'Informal language practice, conversation tables and small meetups.':'Неформальная языковая практика, разговорные столы и небольшие встречи.',
+  'We met through the firewood purchase; Omar makes pickup logistics feel simple.':'Мы познакомились через совместную закупку дров; с Omar логистика получения становится простой.',
+  'Photographed the repair café':'Сфотографировала ремонтное кафе',
+  'Made a small photo story from the repair café so the community could see what was fixed and who helped.':'Сделала небольшую фотоисторию о ремонтном кафе, чтобы сообщество увидело, что починили и кто помог.',
+  'Set up the repair tables':'Подготовить столы для ремонта',
+  'Create three simple stations for electrical, textile and general repair.':'Сделать три простые зоны: электрика, текстиль и общий ремонт.',
+  'Photograph the repaired items for the recap':'Сфотографировать починенные вещи для итогов',
+  'Take a few before/after pictures without photographing people unless they ask.':'Сделать несколько кадров до/после, не фотографируя людей без их просьбы.',
+  'Coffee table was ready':'Стол с кофе был готов',
+  'Fatima set up coffee and cups before the first visitors arrived.':'Fatima подготовила кофе и чашки до прихода первых посетителей.',
+  'Photo recap published':'Фотоотчёт опубликован',
+  'I selected six before/after pictures and shared them with the repair circle.':'Я выбрала шесть фотографий до/после и поделилась ими с ремонтным сообществом.',
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.'
+
  },
  sv:{
   'Photography · neighbourhood help':'Fotografering · hjälp i grannskapet',
@@ -143,9 +214,9 @@ const demoLocaleCopy={
   'Design · facilitation':'Design · facilitering',
   'Runs small community workshops.':'Ordnar små lokala workshops.',
   'Olofstorp neighbours':'Grannar i Olofstorp',
-  'Sample local community for shared help and practical coordination.':'Exempel på lokal gemenskap för hjälp och praktisk samordning.',
+  'Local neighbours sharing help, tools and practical coordination.':'Grannar som delar hjälp, verktyg och praktisk samordning.',
   'Göteborg language exchange':'Språkutbyte Göteborg',
-  'Sample group for informal language practice and meetups.':'Exempelgrupp för informell språkträning och träffar.',
+  'Informal language practice, conversation tables and meetups.':'Informell språkträning, samtalsbord och träffar.',
   'Repair café this Saturday — bring one small item and we will try to fix it together.':'Reparationscafé på lördag — ta med en liten sak så försöker vi laga den tillsammans.',
   'Looking for two people for a Swedish–Russian conversation table next week.':'Söker två personer till ett svensk-ryskt samtalsbord nästa vecka.',
   'Neighbourhood repair café':'Lokalt reparationscafé',
@@ -172,95 +243,217 @@ const demoLocaleCopy={
   'Simple A4 entrance sign.':'Enkel A4-skylt till entrén.',
   'Can collect after work':'Kan hämta efter jobbet',
   'Need delivery help':'Behöver hjälp med leverans',
-  'Example supplier offer.':'Exempel på leverantörserbjudande.',
+  'Delivery after 17:00 works for our group.':'Leverans efter 17:00 passar vår grupp.',
   'todo · Confirm the room':'Att göra · Bekräfta lokalen',
   'Entrance sign ready':'Entréskylten är klar',
-  'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.'
+  'Entrance sign is ready. I will bring tape and markers.':'Entréskylten är klar. Jag tar med tejp och pennor.',
+  'Bikes · practical repair':'Cyklar · praktisk reparation',
+  'We met at the repair café; he usually knows who has the right tool nearby.':'Vi träffades på reparationscafét; han vet ofta vem som har rätt verktyg i närheten.',
+  'Gardening · seed saving':'Odling · fröer',
+  'She came to the first plant exchange and now helps me think one season ahead.':'Hon kom till första växtbytet och hjälper mig nu att tänka en säsong framåt.',
+  'Cooking · neighbourhood events':'Mat · grannträffar',
+  'We met through Olofstorp neighbours; she volunteered coffee for the repair café.':'Vi träffades genom Olofstorp-grannarna; hon tog hand om kaffet till reparationscafét.',
+  'Repair and reuse circle':'Reparation och återbruk',
+  'People who repair small things, share tools and teach each other.':'Människor som lagar småsaker, delar verktyg och lär av varandra.',
+  'Sunday walk and litter pick':'Söndagspromenad och skräpplock',
+  'A low-key walk where we also collect litter along the path.':'En lugn promenad där vi samtidigt plockar skräp längs vägen.',
+  'The kettle is fixed. Next time I can bring a multimeter and spare plugs.':'Vattenkokaren är lagad. Nästa gång kan jag ta med multimeter och extra kontakter.',
+  'Anyone up for a short walk around Delsjön on Sunday morning?':'Någon som vill ta en kort promenad runt Delsjön på söndag morgon?',
+  'Repair café afternoon':'Grannskapets reparationscafé',
+  'A small repair afternoon that ended with 11 items fixed, 3 diagnosed and a list of tools to share next time.':'En liten reparationsdag som slutade med 11 lagade saker, 3 diagnostiserade och en lista på verktyg att dela nästa gång.',
+  'Neighbourhood tool shelf':'Gemensam verktygshylla',
+  'Turn a messy pile of rarely used tools into a labelled shelf people can actually borrow from.':'Gör en rörig hög sällan använda verktyg till en märkt hylla som folk faktiskt kan låna från.',
+  'Borrowed a folding ladder':'Lånade en hopfällbar stege',
+  'Needed it for one afternoon; Johan lent one and I returned it the same evening.':'Behövde den en eftermiddag; Johan lånade ut sin och jag lämnade tillbaka den samma kväll.',
+  'Label the first ten tools':'Märk de första tio verktygen',
+  'Start with the tools people already said they are willing to share.':'Börja med verktygen som folk redan sagt att de vill dela.',
+  'Write borrowing rules in plain language':'Skriv enkla låneregler',
+  'Keep it short: who has the key, how long, and what to do if something breaks.':'Kort: vem har nyckeln, hur länge och vad gör vi om något går sönder.',
+  'Tool shelf · work chat':'Verktygshylla · arbetschatt',
+  'I can bring the repaired kettle photos for the recap.':'Jag kan ta med bilder på den lagade vattenkokaren till sammanfattningen.',
+  'I have a spare label maker we can use for the shelf.':'Jag har en extra etikettskrivare vi kan använda till hyllan.',
+  'The shelf can fit by the entrance if we keep it under 90 cm wide.':'Hyllan får plats vid entrén om vi håller den under 90 cm bred.',
+  'Repair café result: 11 fixed, 3 diagnosed.':'Resultat från reparationscafét: 11 lagade, 3 diagnostiserade.',
+  'First shelf sketch ready':'Första skissen till hyllan är klar',
+  'I drew a simple shelf layout and marked the first tool categories.':'Jag ritade en enkel hyllskiss och markerade de första verktygskategorierna.',
+  'Map a quiet walking route':'Skissa en lugn promenadrutt',
+  'A route with one easy meeting point and no need for a car.':'En rutt med en enkel mötesplats och inget behov av bil.',
+  'Ask Sara about seed envelopes':'Fråga Sara om frökuvert',
+  'She had a neat system at the last exchange.':'Hon hade ett smart system vid förra bytet.',
+  'Photograph the repaired items':'Fotografera de lagade sakerna',
+  'Could become a small before/after story for the community.':'Kan bli en liten före/efter-berättelse för gemenskapen.',
+  'Try a monthly skill swap':'Testa ett månatligt kunskapsbyte',
+  'One evening where everyone brings one thing they can teach or need help with.':'En kväll där alla tar med något de kan lära ut eller behöver hjälp med.',
+  'I left the ladder by your gate. No rush — tonight is fine.':'Jag ställde stegen vid din grind. Ingen brådska — ikväll går bra.',
+  'Got it, thanks. I will return it after I clean the gutter.':'Tack, jag har den. Jag lämnar tillbaka den efter att jag rensat rännan.',
+  'Sunday 10:30 works for me. I can bring two grabbers for litter.':'Söndag 10:30 passar mig. Jag kan ta med två skräpplockare.',
+  'Great. I will bring bags and coffee.':'Bra. Jag tar med påsar och kaffe.',
+  'We should keep the first shelf tiny and learn from actual borrowing.':'Vi borde hålla första hyllan liten och lära oss av verkliga lån.',
+  'Agreed. Ten tools first, then we expand only if people use them.':'Håller med. Tio verktyg först, sedan bygger vi ut om folk använder dem.',
+  'Can you save me a few tomato seed envelopes?':'Kan du lägga undan några tomatfrökuvert åt mig?',
+  'Yes, and I will bring labels too.':'Ja, och jag tar med etiketter också.'
+,
+  'Photography, neighbourhood projects, repair cafés and too many unfinished ideas.':'Fotografering, grannskapsprojekt, reparationscaféer och alldeles för många ofärdiga idéer.',
+  'A local place for neighbours to exchange practical help, tools and small ideas.':'En lokal plats där grannar byter praktisk hjälp, verktyg och små idéer.',
+  'Informal language practice, conversation tables and small meetups.':'Informell språkträning, samtalsbord och små träffar.',
+  'We met through the firewood purchase; Omar makes pickup logistics feel simple.':'Vi lärde känna varandra genom vedköpet; Omar gör hämtningslogistiken enkel.',
+  'Photographed the repair café':'Fotograferade reparationscafét',
+  'Made a small photo story from the repair café so the community could see what was fixed and who helped.':'Gjorde en liten fotoberättelse från reparationscafét så gemenskapen kunde se vad som lagades och vem som hjälpte till.',
+  'Set up the repair tables':'Ställ i ordning reparationsborden',
+  'Create three simple stations for electrical, textile and general repair.':'Skapa tre enkla stationer för el, textil och allmän reparation.',
+  'Photograph the repaired items for the recap':'Fotografera de lagade sakerna till sammanfattningen',
+  'Take a few before/after pictures without photographing people unless they ask.':'Ta några före/efter-bilder utan att fotografera människor om de inte ber om det.',
+  'Coffee table was ready':'Kaffebordet var klart',
+  'Fatima set up coffee and cups before the first visitors arrived.':'Fatima ordnade kaffe och koppar innan de första besökarna kom.',
+  'Photo recap published':'Fotosammanfattningen publicerad',
+  'I selected six before/after pictures and shared them with the repair circle.':'Jag valde sex före/efter-bilder och delade dem med reparationsgruppen.',
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.'
+
  }
 };
 const demoText=value=>demoLocaleCopy[lang()]?.[value]||value;
 
 function demoSnapshot(){
- const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004';
- const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102';
- const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202';
- const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
+ const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004',D='00000000-0000-4000-8000-000000000005',E='00000000-0000-4000-8000-000000000006',F='00000000-0000-4000-8000-000000000007';
+ const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102',G3='00000000-0000-4000-8000-000000000103',G4='00000000-0000-4000-8000-000000000104';
+ const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202',DIRECT_A='00000000-0000-4000-8000-000000000203',WALK_CHAT='00000000-0000-4000-8000-000000000204',TOOL_CHAT='00000000-0000-4000-8000-000000000205';
+ const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305',REPAIR='00000000-0000-4000-8000-000000000306',TOOLS='00000000-0000-4000-8000-000000000307',LADDER='00000000-0000-4000-8000-000000000308',PHOTO='00000000-0000-4000-8000-000000000309';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.'),listed:true},
-  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),listed:true},
-  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),listed:true},
-  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),listed:true}
+  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('I like turning small neighbourhood ideas into things people can actually do together.'),connection:'',listed:true},
+  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),connection:demoText('We met through the firewood purchase and a language exchange; Omar is good at making logistics simple.'),listed:true},
+  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:D,name:'Johan',skills:demoText('Bikes · practical repair'),about:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),connection:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),listed:true},
+  {id:E,name:'Sara',skills:demoText('Gardening · seed saving'),about:demoText('She came to the first plant exchange and now helps me think one season ahead.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:F,name:'Fatima',skills:demoText('Cooking · neighbourhood events'),about:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true}
  ];
  const groups=[
-  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Sample local community for shared help and practical coordination.')},
-  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')}
+  {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Local neighbours sharing help, tools and practical coordination.')},
+  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Informal language practice, conversation tables and meetups.')},
+  {id:G3,owner_id:D,name:demoText('Repair and reuse circle'),description:demoText('People who repair small things, share tools and teach each other.')},
+  {id:G4,owner_id:E,name:demoText('Sunday walk and litter pick'),description:demoText('A low-key walk where we also collect litter along the path.')}
  ];
  const allPosts=[
   {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:demoText('Repair café this Saturday — bring one small item and we will try to fix it together.'),created_at:'2026-09-30T07:30:00Z'},
-  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'}
+  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000603',community_id:G3,author_id:D,body:demoText('The kettle is fixed. Next time I can bring a multimeter and spare plugs.'),created_at:'2026-09-30T19:10:00Z'},
+  {id:'00000000-0000-4000-8000-000000000604',community_id:G4,author_id:E,body:demoText('Anyone up for a short walk around Delsjön on Sunday morning?'),created_at:'2026-10-01T07:40:00Z'}
  ];
  const cooperations=[
   {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:demoText('Plant and seed exchange'),description:demoText('Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
   {id:PURCHASE,owner_id:A,kind:'purchase',title:demoText('Dry firewood together'),description:demoText('Combine a small group order and coordinate pickup.'),location_text:'Göteborg',status:'active',target_quantity:10,unit:'m³',created_at:'2026-09-27T09:00:00Z',updated_at:'2026-09-30T08:15:00Z'},
   {id:NEED,owner_id:DEMO_UID,kind:'need',title:demoText('Borrow a tile cutter for the weekend'),description:demoText('Need a tile cutter for a small room repair over one weekend.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T15:00:00Z',updated_at:'2026-09-29T15:00:00Z'},
   {id:OFFER,owner_id:DEMO_UID,kind:'offer',title:demoText('I can help with photography'),description:demoText('Can help photograph an item, a small event or a neighbourhood project.'),location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at:'2026-09-29T12:00:00Z',updated_at:'2026-09-29T12:00:00Z'},
-  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'}
+  {id:RESOURCE,owner_id:A,kind:'resource',title:demoText('Shared cargo bike'),description:demoText('Available for short local borrowing by arrangement.'),location_text:'Olofstorp',status:'open',target_quantity:null,unit:'',created_at:'2026-09-28T16:00:00Z',updated_at:'2026-09-29T11:00:00Z'},
+  {id:REPAIR,owner_id:D,kind:'project',title:demoText('Repair café afternoon'),description:demoText('A small repair afternoon that ended with 11 items fixed, 3 diagnosed and a list of tools to share next time.'),location_text:'Olofstorp',status:'done',target_quantity:null,unit:'',created_at:'2026-09-20T10:00:00Z',updated_at:'2026-09-27T17:30:00Z'},
+  {id:TOOLS,owner_id:DEMO_UID,kind:'project',title:demoText('Neighbourhood tool shelf'),description:demoText('Turn a messy pile of rarely used tools into a labelled shelf people can actually borrow from.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-30T16:00:00Z',updated_at:'2026-10-01T07:20:00Z'},
+  {id:LADDER,owner_id:DEMO_UID,kind:'need',title:demoText('Borrowed a folding ladder'),description:demoText('Needed it for one afternoon; Johan lent one and I returned it the same evening.'),location_text:'Olofstorp',status:'done',target_quantity:null,unit:'',created_at:'2026-09-22T09:00:00Z',updated_at:'2026-09-22T19:00:00Z'},
+  {id:PHOTO,owner_id:DEMO_UID,kind:'offer',title:demoText('Photographed the repair café'),description:demoText('Made a small photo story from the repair café so the community could see what was fixed and who helped.'),location_text:'Olofstorp',status:'done',target_quantity:null,unit:'',created_at:'2026-09-27T16:00:00Z',updated_at:'2026-09-27T20:00:00Z'}
  ];
  const coopMembers=[
   {cooperation_id:PROJECT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z'},
   {cooperation_id:PROJECT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z'},
   {cooperation_id:PROJECT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z'},
+  {cooperation_id:PROJECT,user_id:E,role:'member',joined_at:'2026-09-29T09:00:00Z'},
   {cooperation_id:PURCHASE,user_id:A,role:'owner',joined_at:'2026-09-27T09:00:00Z'},
   {cooperation_id:PURCHASE,user_id:DEMO_UID,role:'member',joined_at:'2026-09-27T10:00:00Z'},
-  {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'}
+  {cooperation_id:PURCHASE,user_id:B,role:'member',joined_at:'2026-09-27T10:30:00Z'},
+  {cooperation_id:REPAIR,user_id:D,role:'owner',joined_at:'2026-09-20T10:00:00Z'},
+  {cooperation_id:REPAIR,user_id:DEMO_UID,role:'member',joined_at:'2026-09-20T10:20:00Z'},
+  {cooperation_id:REPAIR,user_id:F,role:'member',joined_at:'2026-09-20T10:30:00Z'},
+  {cooperation_id:TOOLS,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-30T16:00:00Z'},
+  {cooperation_id:TOOLS,user_id:D,role:'member',joined_at:'2026-09-30T16:30:00Z'},
+  {cooperation_id:TOOLS,user_id:A,role:'member',joined_at:'2026-09-30T17:00:00Z'},
+  {cooperation_id:LADDER,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-22T09:00:00Z'},
+  {cooperation_id:LADDER,user_id:D,role:'member',joined_at:'2026-09-22T09:10:00Z'},
+  {cooperation_id:PHOTO,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-27T16:00:00Z'},
+  {cooperation_id:PHOTO,user_id:F,role:'member',joined_at:'2026-09-27T16:10:00Z'}
  ];
  const chats=[
   {id:CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Plant exchange · work chat'),created_at:'2026-09-28T10:00:00Z'},
-  {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'}
+  {id:DIRECT,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-29T14:00:00Z'},
+  {id:DIRECT_A,kind:'direct',owner_id:DEMO_UID,title:'',created_at:'2026-09-22T08:50:00Z'},
+  {id:WALK_CHAT,kind:'group',owner_id:E,title:demoText('Sunday walk and litter pick'),created_at:'2026-10-01T07:45:00Z'},
+  {id:TOOL_CHAT,kind:'group',owner_id:DEMO_UID,title:demoText('Tool shelf · work chat'),created_at:'2026-09-30T16:00:00Z'}
  ];
  const chatMembers=[
   {conversation_id:CHAT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-28T10:00:00Z',last_read_at:'2026-09-30T07:00:00Z'},
   {conversation_id:CHAT,user_id:A,role:'member',joined_at:'2026-09-28T11:00:00Z',last_read_at:'2026-09-30T07:20:00Z'},
   {conversation_id:CHAT,user_id:C,role:'member',joined_at:'2026-09-28T12:00:00Z',last_read_at:'2026-09-30T07:10:00Z'},
   {conversation_id:DIRECT,user_id:DEMO_UID,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'},
-  {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'}
+  {conversation_id:DIRECT,user_id:B,role:'member',joined_at:'2026-09-29T14:00:00Z',last_read_at:'2026-09-29T14:10:00Z'},
+  {conversation_id:DIRECT_A,user_id:DEMO_UID,role:'member',joined_at:'2026-09-22T08:50:00Z',last_read_at:'2026-09-22T18:40:00Z'},
+  {conversation_id:DIRECT_A,user_id:D,role:'member',joined_at:'2026-09-22T08:50:00Z',last_read_at:'2026-09-22T18:40:00Z'},
+  {conversation_id:WALK_CHAT,user_id:DEMO_UID,role:'member',joined_at:'2026-10-01T07:45:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:WALK_CHAT,user_id:E,role:'owner',joined_at:'2026-10-01T07:45:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:WALK_CHAT,user_id:F,role:'member',joined_at:'2026-10-01T07:50:00Z',last_read_at:'2026-10-01T08:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:DEMO_UID,role:'owner',joined_at:'2026-09-30T16:00:00Z',last_read_at:'2026-10-01T07:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:D,role:'member',joined_at:'2026-09-30T16:30:00Z',last_read_at:'2026-10-01T07:10:00Z'},
+  {conversation_id:TOOL_CHAT,user_id:A,role:'member',joined_at:'2026-09-30T17:00:00Z',last_read_at:'2026-10-01T07:10:00Z'}
  ];
  const allMessages=[
   {id:'00000000-0000-4000-8000-000000000701',conversation_id:CHAT,author_id:A,body:demoText('I can bring hand tools and a folding table.'),created_at:'2026-09-30T07:20:00Z'},
   {id:'00000000-0000-4000-8000-000000000702',conversation_id:CHAT,author_id:C,body:demoText('I made a simple sign for the entrance. We still need someone for coffee.'),created_at:'2026-09-30T07:45:00Z'},
-  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'}
+  {id:'00000000-0000-4000-8000-000000000703',conversation_id:DIRECT,author_id:B,body:demoText('I can help collect the firewood if the pickup is after 17:00.'),created_at:'2026-09-29T14:12:00Z'},
+  {id:'00000000-0000-4000-8000-000000000704',conversation_id:DIRECT_A,author_id:D,body:demoText('I left the ladder by your gate. No rush — tonight is fine.'),created_at:'2026-09-22T09:05:00Z'},
+  {id:'00000000-0000-4000-8000-000000000705',conversation_id:DIRECT_A,author_id:DEMO_UID,body:demoText('Got it, thanks. I will return it after I clean the gutter.'),created_at:'2026-09-22T09:12:00Z'},
+  {id:'00000000-0000-4000-8000-000000000706',conversation_id:WALK_CHAT,author_id:E,body:demoText('Sunday 10:30 works for me. I can bring two grabbers for litter.'),created_at:'2026-10-01T07:50:00Z'},
+  {id:'00000000-0000-4000-8000-000000000707',conversation_id:WALK_CHAT,author_id:DEMO_UID,body:demoText('Great. I will bring bags and coffee.'),created_at:'2026-10-01T08:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000708',conversation_id:TOOL_CHAT,author_id:D,body:demoText('We should keep the first shelf tiny and learn from actual borrowing.'),created_at:'2026-09-30T17:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000709',conversation_id:TOOL_CHAT,author_id:DEMO_UID,body:demoText('Agreed. Ten tools first, then we expand only if people use them.'),created_at:'2026-09-30T17:28:00Z'},
+  {id:'00000000-0000-4000-8000-000000000710',conversation_id:CHAT,author_id:E,body:demoText('Can you save me a few tomato seed envelopes?'),created_at:'2026-09-30T08:05:00Z'},
+  {id:'00000000-0000-4000-8000-000000000711',conversation_id:CHAT,author_id:DEMO_UID,body:demoText('Yes, and I will bring labels too.'),created_at:'2026-09-30T08:12:00Z'}
  ];
  const tasks=[
   {id:TASK,cooperation_id:PROJECT,creator_id:A,assignee_id:DEMO_UID,title:demoText('Confirm the exchange table'),details:demoText('Check that the exchange table is available on Saturday 13:00–16:00.'),status:'todo',created_at:'2026-09-29T08:00:00Z',updated_at:'2026-09-30T08:00:00Z'},
-  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'}
+  {id:'00000000-0000-4000-8000-000000000402',cooperation_id:PROJECT,creator_id:DEMO_UID,assignee_id:C,title:demoText('Prepare a small sign'),details:demoText('Simple A4 entrance sign.'),status:'done',created_at:'2026-09-28T14:00:00Z',updated_at:'2026-09-29T18:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000403',cooperation_id:TOOLS,creator_id:DEMO_UID,assignee_id:D,title:demoText('Label the first ten tools'),details:demoText('Start with the tools people already said they are willing to share.'),status:'doing',created_at:'2026-09-30T17:00:00Z',updated_at:'2026-10-01T07:10:00Z'},
+  {id:'00000000-0000-4000-8000-000000000404',cooperation_id:TOOLS,creator_id:DEMO_UID,assignee_id:A,title:demoText('Write borrowing rules in plain language'),details:demoText('Keep it short: who has the key, how long, and what to do if something breaks.'),status:'todo',created_at:'2026-09-30T17:05:00Z',updated_at:'2026-10-01T07:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000405',cooperation_id:REPAIR,creator_id:D,assignee_id:DEMO_UID,title:demoText('Set up the repair tables'),details:demoText('Create three simple stations for electrical, textile and general repair.'),status:'done',created_at:'2026-09-27T12:00:00Z',updated_at:'2026-09-27T13:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000406',cooperation_id:REPAIR,creator_id:DEMO_UID,assignee_id:DEMO_UID,title:demoText('Photograph the repaired items for the recap'),details:demoText('Take a few before/after pictures without photographing people unless they ask.'),status:'done',created_at:'2026-09-27T13:10:00Z',updated_at:'2026-09-27T17:20:00Z'}
  ];
  const commitments=[
   {cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,note:demoText('Can collect after work')},
   {cooperation_id:PURCHASE,user_id:A,quantity:4,note:''},
   {cooperation_id:PURCHASE,user_id:B,quantity:2,note:demoText('Need delivery help')}
  ];
- const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Example supplier offer.')}];
+ const purchaseOffers=[{id:POFFER,cooperation_id:PURCHASE,provider_id:B,unit_price:820,currency:'SEK',min_quantity:5,available_quantity:12,delivery_mode:'delivery',delivery_fee:450,lead_time_days:3,valid_until:'2026-10-04',note:demoText('Dry birch. Delivery works once the group reaches 5 m³.')}];
  const activity=[
   {cooperation_id:PROJECT,cooperation_kind:'project',cooperation_title:demoText('Plant and seed exchange'),unread_count:2,last_activity_at:'2026-09-30T08:30:00Z',last_event_type:'task_updated',last_actor_id:A,last_label:demoText('todo · Confirm the exchange table')},
-  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'}
+  {cooperation_id:PURCHASE,cooperation_kind:'purchase',cooperation_title:demoText('Dry firewood together'),unread_count:1,last_activity_at:'2026-09-30T08:15:00Z',last_event_type:'confirmation_changed',last_actor_id:A,last_label:'confirmed'},
+  {cooperation_id:TOOLS,cooperation_kind:'project',cooperation_title:demoText('Neighbourhood tool shelf'),unread_count:1,last_activity_at:'2026-10-01T07:20:00Z',last_event_type:'update_posted',last_actor_id:DEMO_UID,last_label:demoText('First shelf sketch ready')},
+  {cooperation_id:REPAIR,cooperation_kind:'project',cooperation_title:demoText('Repair café afternoon'),unread_count:0,last_activity_at:'2026-09-27T17:30:00Z',last_event_type:'update_posted',last_actor_id:D,last_label:demoText('Repair café result: 11 fixed, 3 diagnosed.')},
+  {cooperation_id:PHOTO,cooperation_kind:'offer',cooperation_title:demoText('Photographed the repair café'),unread_count:0,last_activity_at:'2026-09-27T20:00:00Z',last_event_type:'update_posted',last_actor_id:DEMO_UID,last_label:demoText('Photo recap published')}
  ];
  const coopActivity=[
   {cooperation_id:PROJECT,event_type:'task_updated',actor_id:A,label:demoText('todo · Confirm the exchange table'),created_at:'2026-09-30T08:30:00Z'},
   {cooperation_id:PROJECT,event_type:'update_posted',actor_id:C,label:demoText('Entrance sign ready'),created_at:'2026-09-29T18:00:00Z'},
-  {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'}
+  {cooperation_id:PURCHASE,event_type:'confirmation_changed',actor_id:A,label:'confirmed',created_at:'2026-09-30T08:15:00Z'},
+  {cooperation_id:TOOLS,event_type:'update_posted',actor_id:DEMO_UID,label:demoText('First shelf sketch ready'),created_at:'2026-10-01T07:20:00Z'},
+  {cooperation_id:REPAIR,event_type:'update_posted',actor_id:D,label:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'},
+  {cooperation_id:REPAIR,event_type:'update_posted',actor_id:F,label:demoText('Coffee table was ready'),created_at:'2026-09-27T13:15:00Z'},
+  {cooperation_id:PHOTO,event_type:'update_posted',actor_id:DEMO_UID,label:demoText('Photo recap published'),created_at:'2026-09-27T20:00:00Z'}
  ];
  const updates=[
-  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:demoText('Entrance sign is ready. I will bring tape and markers.'),created_at:'2026-09-29T18:00:00Z'}
+  {id:'00000000-0000-4000-8000-000000000801',cooperation_id:PROJECT,author_id:C,body:demoText('Entrance sign is ready. I will bring tape and markers.'),created_at:'2026-09-29T18:00:00Z'},
+  {id:'00000000-0000-4000-8000-000000000802',cooperation_id:TOOLS,author_id:DEMO_UID,body:demoText('I drew a simple shelf layout and marked the first tool categories.'),created_at:'2026-10-01T07:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000803',cooperation_id:REPAIR,author_id:D,body:demoText('Repair café result: 11 fixed, 3 diagnosed.'),created_at:'2026-09-27T17:30:00Z'},
+  {id:'00000000-0000-4000-8000-000000000804',cooperation_id:REPAIR,author_id:F,body:demoText('Fatima set up coffee and cups before the first visitors arrived.'),created_at:'2026-09-27T13:15:00Z'},
+  {id:'00000000-0000-4000-8000-000000000805',cooperation_id:PHOTO,author_id:DEMO_UID,body:demoText('I selected six before/after pictures and shared them with the repair circle.'),created_at:'2026-09-27T20:00:00Z'}
  ];
   const localDrafts=[
    {id:'mura-draft-need',kind:'need',title:demoText('Borrow a drill for one evening'),body:demoText('Need a normal drill for two wall plugs.'),done:false},
-   {id:'mura-draft-offer',kind:'offer',title:demoText('I can review a CV'),body:demoText('Can give one round of feedback in Swedish or English.'),done:false}
+   {id:'mura-draft-offer',kind:'offer',title:demoText('I can review a CV'),body:demoText('Can give one round of feedback in Swedish or English.'),done:false},
+   {id:'mura-draft-walk',kind:'project',title:demoText('Map a quiet walking route'),body:demoText('A route with one easy meeting point and no need for a car.'),done:false},
+   {id:'mura-draft-seeds',kind:'need',title:demoText('Ask Sara about seed envelopes'),body:demoText('She had a neat system at the last exchange.'),done:false},
+   {id:'mura-draft-photo',kind:'offer',title:demoText('Photograph the repaired items'),body:demoText('Could become a small before/after story for the community.'),done:false},
+   {id:'mura-draft-skill',kind:'project',title:demoText('Try a monthly skill swap'),body:demoText('One evening where everyone brings one thing they can teach or need help with.'),done:false}
   ];
  const base={
-  profile:profiles[0],localDrafts,directory:profiles,chatProfiles:profiles,groups,memberships:[{community_id:G,user_id:DEMO_UID,banned:false},{community_id:G2,user_id:DEMO_UID,banned:false}],blocks:[],
-  chats,chatMembers,chatInvites:[],chatInbox:[{conversation_id:CHAT,unread_count:2,last_message_at:'2026-09-30T07:45:00Z',linked_cooperation_id:PROJECT},{conversation_id:DIRECT,unread_count:1,last_message_at:'2026-09-29T14:12:00Z',linked_cooperation_id:null}],
-  cooperations,coopMembers,coopChats:[{cooperation_id:PROJECT,conversation_id:CHAT,created_at:'2026-09-28T10:00:00Z'}],activityInbox:activity,
+  profile:profiles[0],localDrafts,directory:profiles,chatProfiles:profiles,groups,memberships:[{community_id:G,user_id:DEMO_UID,banned:false},{community_id:G2,user_id:DEMO_UID,banned:false},{community_id:G3,user_id:DEMO_UID,banned:false},{community_id:G4,user_id:DEMO_UID,banned:false}],blocks:[],
+  chats,chatMembers,chatInvites:[],chatInbox:[{conversation_id:CHAT,unread_count:2,last_message_at:'2026-09-30T08:12:00Z',linked_cooperation_id:PROJECT},{conversation_id:DIRECT,unread_count:1,last_message_at:'2026-09-29T14:12:00Z',linked_cooperation_id:null},{conversation_id:DIRECT_A,unread_count:0,last_message_at:'2026-09-22T09:12:00Z',linked_cooperation_id:null},{conversation_id:WALK_CHAT,unread_count:1,last_message_at:'2026-10-01T08:00:00Z',linked_cooperation_id:null},{conversation_id:TOOL_CHAT,unread_count:1,last_message_at:'2026-09-30T17:28:00Z',linked_cooperation_id:TOOLS}],
+  cooperations,coopMembers,coopChats:[{cooperation_id:PROJECT,conversation_id:CHAT,created_at:'2026-09-28T10:00:00Z'},{cooperation_id:TOOLS,conversation_id:TOOL_CHAT,created_at:'2026-09-30T16:00:00Z'}],activityInbox:activity,
   homePosts:allPosts,assignedTasks:tasks.filter(x=>x.assignee_id===DEMO_UID&&x.status!=='done'),
   myConfirmations:[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'}],
   allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:'2026-10-01T18:00:00Z',external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
@@ -287,12 +480,12 @@ function guestRequireAccount(){
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
-const mt=k=>chatCopy[lang()][k]||chatCopy.en[k]||k;
-const ct=k=>coopCopy[lang()][k]||coopCopy.en[k]||k;
-const ot=k=>offerCopy[lang()][k]||offerCopy.en[k]||k;
+const mt=k=>muraText('chat',k)??(chatCopy[lang()][k]||chatCopy.en[k]||k);
+const ct=k=>muraText('coop',k)??(coopCopy[lang()][k]||coopCopy.en[k]||k);
+const ot=k=>muraText('offer',k)??(offerCopy[lang()][k]||offerCopy.en[k]||k);
 const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
-const at=k=>activityCopy[lang()][k]||activityCopy.en[k]||k;
-const ht=k=>homeCopy[lang()][k]||homeCopy.en[k]||k;
+const at=k=>muraText('activity',k)??(activityCopy[lang()][k]||activityCopy.en[k]||k);
+const ht=k=>muraText('home',k)??(homeCopy[lang()][k]||homeCopy.en[k]||k);
 const st=k=>globalThis.FolkoopCopy?.COPY?.[lang()]?.[k]||globalThis.FolkoopCopy?.COPY?.en?.[k]||k;
 const abtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(at(key))}</button>`;
 
@@ -358,6 +551,7 @@ const profileDomain=globalThis.FolkoopNetworkProfile.create({
 const communitiesDomain=globalThis.FolkoopNetworkCommunities.create({
  escape:esc,
  getData:()=>data,
+ getProfile:profileFor,
  text:t,
  field,
  button:btn
@@ -371,6 +565,17 @@ const muraHomeDomain=globalThis.FolkoopMuraHome.create({
  statusLabel,
  formatWhen
 });
+
+function renderMuraPeople(u){
+ const people=data.directory.filter(p=>p.id!==u.id);
+ const card=p=>{
+  const coopTitles=data.coopMembers.filter(m=>m.user_id===p.id).map(m=>data.cooperations.find(x=>x.id===m.cooperation_id)?.title).filter(Boolean).slice(0,2);
+  const chatTitles=data.chatMembers.filter(m=>m.user_id===p.id).map(m=>data.chats.find(x=>x.id===m.conversation_id)).filter(Boolean).map(chat=>chat.kind==='direct'?mt('direct'):chat.title).slice(0,1);
+  return `<article class="card mura-person-page-card" data-demo-story="person"><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div></article>`;
+ };
+ const intro=lang()==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':lang()==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':'Not a contact list: people I already share a project, place or conversation with.';
+ return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA / PEOPLE</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
+}
 
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
@@ -436,6 +641,8 @@ function renderHome(u){
 }
 
 function renderMessages(u){
+ const rawView=currentSubsection('messages');
+ const view=guestDemo&&rawView==='messages-invites'?'messages-chats':rawView;
  return messagingDomain.render(u,{
   selectedChat,
   directTarget,
@@ -443,7 +650,7 @@ function renderMessages(u){
   inviteTarget,
   messageDrafts,
   guestDemo,
-  view:currentSubsection('messages')
+  view
  });
 }
 
@@ -534,7 +741,7 @@ function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
  const coop=list.find(x=>x.id===selectedCoop);
- let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div>`;
+ let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div>${guestDemo?'':`<div>${btn('refresh','refresh')}${btn('logout','out')}</div>`}</div>`;
  if(coop){
   const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
   const member=!!membership,owner=coop.owner_id===u.id;
@@ -550,7 +757,7 @@ function renderCooperation(u,r){
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
   if(myNextTask)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
-  if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}<span class="meta">${esc(at('managedChat'))}</span></div>`;
+  if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
    const editBody=`<form id="netCoopEdit" class="editor card"><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<div class="actions"><button class="button">${esc(t('save'))}</button>${cbtn('delete','delete',coop.id)}</div></form>`;
@@ -590,7 +797,7 @@ function renderCooperation(u,r){
   return html;
  }
  if(projectMode){
-  const view=currentSubsection('projects');
+   const rawView=currentSubsection('projects'),view=guestDemo&&rawView==='projects-mine'?'projects-overview':rawView;
   if(view==='projects-tasks'){
    const tasks=data.assignedTasks.filter(x=>x.status!=='done');
    html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${tasks.map(task=>{const project=data.cooperations.find(x=>x.id===task.cooperation_id);return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`;
@@ -603,10 +810,11 @@ function renderCooperation(u,r){
   }
  }
  const kind=projectMode?'project':coopDraft.kind;
- const view=projectMode?currentSubsection('projects'):'';
+ const rawListView=projectMode?currentSubsection('projects'):'',view=guestDemo&&rawListView==='projects-mine'?'projects-overview':rawListView;
  const memberIds=projectMode?new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id)) : new Set();
  const displayList=projectMode&&view==='projects-mine'?list.filter(x=>x.owner_id===u.id||memberIds.has(x.id)):list;
- html+=`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form><h3>${esc(projectMode?ct('projectsTitle'):ct('togetherTitle'))}</h3><div class="draft-grid">${displayList.map(x=>{const unread=Number(data.activityInbox.find(a=>a.cooperation_id===x.id)?.unread_count||0);return `<article class="card"${guestDemo&&['need','offer','project'].includes(x.kind)?` data-demo-story="${esc(x.kind)}"`:''}><div class="row"><span><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span></span>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><p class="meta">${esc(ct('localBelow'))}</p>`;
+ const createForm=guestDemo?'':`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form>`;
+ html+=createForm+`<h3>${esc(projectMode?ct('projectsTitle'):ct('togetherTitle'))}</h3><div class="draft-grid">${displayList.map(x=>{const unread=Number(data.activityInbox.find(a=>a.cooperation_id===x.id)?.unread_count||0);return `<article class="card"${guestDemo&&['need','offer','project'].includes(x.kind)?` data-demo-story="${esc(x.kind)}"`:''}><div class="row"><span><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span></span>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`+(guestDemo?'':`<p class="meta">${esc(ct('localBelow'))}</p>`);
  return html;
 }
 
@@ -639,9 +847,9 @@ function render(){
  else if(r==='me'){
   html=profileDomain.render(u,{profileDraft,guestDemo});
  }else if(r==='people'){
-  html=`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"${guestDemo?' data-demo-story="person"':''}><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
+  html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
-  html=communitiesDomain.render(u,{selected,groupDraft,postDrafts});
+  html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
  }
   const demoBanner='';
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
@@ -649,9 +857,10 @@ function render(){
  if(guestDemo){
   host.querySelectorAll('form').forEach(form=>{form.hidden=true;form.setAttribute('aria-hidden','true');});
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
-  host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-demo],[data-home="openCoop"],[data-home="openCommunity"],[data-home="createCoop"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="refresh"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
-  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.closest('.demo-banner'))b.hidden=true;});
+  host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
+  host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
+  const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
  }
  host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
  syncBadges();

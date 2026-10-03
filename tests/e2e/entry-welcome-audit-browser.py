@@ -38,7 +38,7 @@ GEOMETRY="""() => {
   currentCount:document.querySelectorAll('[data-entry-language][aria-pressed="true"]').length,
   languagesClipped:!!q('#entryLanguageChoices')&&q('#entryLanguageChoices').scrollHeight>q('#entryLanguageChoices').clientHeight+1,
   card,mura,title,body,langs,guest,email,note,
-  horizontalInside:[mura,title,body,langs,guest,email,note].every(inside),
+  horizontalInside:[mura,title,body,langs,guest,note].every(inside),
   cardOutside:!card||card.x<-.5||card.y<-.5||card.x+card.w>innerWidth+.5||card.y+card.h>innerHeight+.5,
   horizontalOverflow:q('#folkoopEntryGate').scrollWidth>q('#folkoopEntryGate').clientWidth+1,
   guestVisible:visible(guest),emailVisible:visible(email),titleVisible:visible(title),muraVisible:visible(mura),
@@ -79,11 +79,9 @@ async def main():
     if not record['horizontalInside']: failures.append(f'{width}x{height} {code}: welcome content exceeds card horizontally')
     if record['horizontalOverflow']: failures.append(f'{width}x{height} {code}: document has horizontal overflow')
     if width>=390 and height>=800 and record['languagesClipped']: failures.append(f'{width}x{height} {code}: not all 11 language choices are exposed')
-    if width>=390 and height>=800 and (not record['guestVisible'] or not record['emailVisible'] or not record['titleVisible'] or not record['muraVisible']):
-     failures.append(f'{width}x{height} {code}: primary welcome content or CTA not initially visible')
-    # On short screens scrolling is acceptable, but both CTA must be reachable.
-    await page.locator('[data-entry="email"]').scroll_into_view_if_needed()
-    if not await page.locator('[data-entry="email"]').is_visible(): failures.append(f'{width}x{height} {code}: account CTA is not reachable')
+    if width>=390 and height>=800 and (not record['guestVisible'] or not record['titleVisible'] or not record['muraVisible']):
+     failures.append(f'{width}x{height} {code}: Mura welcome or visit CTA not initially visible')
+    if record['emailVisible']: failures.append(f'{width}x{height} {code}: registration CTA leaked into first contact')
     await page.locator('#entryGateTitle').scroll_into_view_if_needed()
    # Keep a small, reviewable screenshot set rather than 44 nearly identical images.
    for code in ['ru','ar','ku']:
@@ -104,8 +102,8 @@ async def main():
    'All 11 language choices remain available with one selected state and are exposed on normal-height mobile/desktop',
    'Arabic and Persian are RTL while Latin-script Kurdish remains LTR',
    'No horizontal overflow appears in the welcome surface',
-   'Both start paths remain reachable on short screens',
-   'Primary welcome content and both CTA are initially visible at 390x844 and desktop',
+   'Registration stays hidden until an explicit exit from Mura',
+   'Mura welcome and visit CTA are initially visible at 390x844 and desktop',
    'Fresh first contact starts at the top instead of auto-scrolling to a CTA',
    'Keyboard focus remains inside the welcome dialog',
    'No page errors in the audited first-contact flow'

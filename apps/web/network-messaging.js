@@ -52,11 +52,11 @@ function create({
     const linked=chat&&coopChats.find(item=>item.conversation_id===chat.id);
     const discoverable=directory.filter(profile=>profile.id!==user.id);
 
-    let html=`<div class="row"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div><div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div></div>`;
+    let html=`<div class="row"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div>${guestDemo?'':`<div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div>`}</div>`;
 
     if(chat){
-      html+=`${networkButton('backChats','back','')}<article class="card"><div class="row"><h2>${escape(chatLabel(chat,user))}</h2>${linked?`<span class="badge">${escape(activityText('workChat'))}</span>`:''}</div><p class="meta">${escape(chatText('notEncrypted'))}</p>`;
-      if(linked)html+=`<p class="meta">${escape(activityText('managedChat'))}</p><div class="actions">${activityButton('openNotify','openActivity',linked.cooperation_id)}</div>`;
+      html+=`${networkButton('backChats','back','')}<article class="card"><div class="row"><h2>${escape(chatLabel(chat,user))}</h2>${linked?`<span class="badge">${escape(activityText('workChat'))}</span>`:''}</div>${!guestDemo&&chatText('notEncrypted')?`<p class="meta">${escape(chatText('notEncrypted'))}</p>`:''}`;
+      if(linked)html+=`${guestDemo?'':`<p class="meta">${escape(activityText('managedChat'))}</p>`}<div class="actions">${activityButton('openNotify','openActivity',linked.cooperation_id)}</div>`;
       if(ownInvite&&!ownMember){
         html+=`<div class="actions">${networkButton('acceptChat','accept',chat.id)}${networkButton('declineChat','decline',chat.id)}</div></article>`;
         return html;
@@ -75,7 +75,7 @@ function create({
         return `<div class="row"><span>${escape(name)}</span>${remove}</div>`;
       }).join('')}</div></article>`;
 
-      if(!linked&&chat.kind==='group'&&chat.owner_id===user.id){
+      if(!guestDemo&&!linked&&chat.kind==='group'&&chat.owner_id===user.id){
         const existing=new Set(members.map(member=>member.user_id).concat(
           chatInvites.filter(invite=>invite.conversation_id===chat.id).map(invite=>invite.user_id)
         ));
@@ -90,8 +90,8 @@ function create({
         return `<article class="card"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
       }).join('')||`<div class="empty"><p>${escape(generalText('empty'))}</p></div>`}</section>`;
 
-      html+=`<form id="netMessage" class="editor card"><label>${escape(chatText('message'))}<textarea name="body" maxlength="4000" rows="3" required>${escape(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${escape(chatText('sendMessage'))}</button></form>`;
-      if(!linked&&chat.kind==='group'){
+      if(!guestDemo)html+=`<form id="netMessage" class="editor card"><label>${escape(chatText('message'))}<textarea name="body" maxlength="4000" rows="3" required>${escape(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${escape(chatText('sendMessage'))}</button></form>`;
+      if(!guestDemo&&!linked&&chat.kind==='group'){
         html+=`<div class="actions">${chat.owner_id===user.id?networkButton('deleteChat','deleteChat',chat.id):networkButton('leaveChat','leaveChat',chat.id)}</div>`;
       }
       return html;
@@ -109,13 +109,18 @@ function create({
 
     const invitationView=`<h3>${escape(chatText('invitations'))}</h3><div class="draft-grid">${invitations.map(chatItem=>`<article class="card"><h3>${escape(chatLabel(chatItem,user))}</h3><span class="badge">${escape(chatText('invitePending'))}</span><div class="actions">${networkButton('openChat','open',chatItem.id)}${networkButton('acceptChat','accept',chatItem.id)}${networkButton('declineChat','decline',chatItem.id)}</div></article>`).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
-    const cards=list=>`<h3>${escape(chatText('conversation'))}</h3><div class="draft-grid">${list.map(chatItem=>{
+    const cards=list=>`<h3>${escape(chatText('conversation'))}</h3><div class="draft-grid mura-chat-grid">${list.map(chatItem=>{
       const unread=Number(chatInbox.find(item=>item.conversation_id===chatItem.id)?.unread_count||0);
       const link=coopChats.find(item=>item.conversation_id===chatItem.id);
-      return `<article class="card"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${networkButton('openChat','open',chatItem.id)}</article>`;
+      const preview=[...chatMessages].filter(message=>message.conversation_id===chatItem.id).sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0))[0];
+      return `<article class="card mura-chat-card"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${guestDemo&&preview?`<p class="mura-chat-preview">${escape(preview.body)}</p>`:''}${networkButton('openChat','open',chatItem.id)}</article>`;
     }).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
-    if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='direct'));
+    if(guestDemo){
+      if(view==='messages-direct')html+=cards(joined.filter(chatItem=>chatItem.kind==='direct'));
+      else if(view==='messages-groups')html+=cards(joined.filter(chatItem=>chatItem.kind==='group'));
+      else html+=cards(joined);
+    }else if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='direct'));
     else if(view==='messages-groups')html+=`<div class="profile-grid">${groupForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='group'));
     else if(view==='messages-invites')html+=invitationView;
     else html+=`<div class="profile-grid">${directForm}${groupForm}</div>`+(invitations.length?invitationView:'')+cards(joined);

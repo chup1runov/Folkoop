@@ -127,3 +127,18 @@ test('guest demo marker stays limited to linked cooperation chats',()=>{
  const matches=[...html.matchAll(/data-demo-story="chat"/g)];
  assert.equal(matches.length,1);
 });
+
+
+test('Mura messaging omits technical and creation chrome while keeping conversations explorable',()=>{
+ const f=fixture(),d=domain(f);
+ const list=d.render(f.user,{view:'messages-chats',guestDemo:true});
+ assert(!list.includes('id="netDirect"'));
+ assert(!list.includes('id="netNewChat"'));
+ assert(!list.includes('Not encrypted'));
+ assert(list.includes('data-net="openChat"'));
+ const chat=d.render(f.user,{selectedChat:'w1',guestDemo:true});
+ assert(!chat.includes('Not encrypted'));
+ assert(!chat.includes('Managed chat'));
+ assert(!chat.includes('id="netMessage"'));
+ assert(chat.includes('data-coop="openNotify"'));
+});

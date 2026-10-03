@@ -85,7 +85,7 @@ async def main():
     await page.locator('#onboardingBody').evaluate('e=>e.scrollTop=e.scrollHeight')
     await page.click('[data-onboarding="next"]')
     if index in (2,3,4):
-     await expect(page.locator('#muraPracticeXp')).to_have_text(str((index-1)*5)+' XP')
+     await expect(page.locator('#muraPracticeXp')).to_have_text(str(index-1)+' / 3')
      await page.click('[data-onboarding="next"]')
     await page.wait_for_timeout(220)
    await expect(page.locator('#onboarding')).to_be_hidden()
@@ -102,7 +102,7 @@ async def main():
    await context.close()
   await browser.close()
  if not failures:
-  passed=['Normal iPhone-sized tour copy needs no internal scrolling and the card stays under 48% of viewport height', 'Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No page errors in tested guest flows']
+  passed=['Normal iPhone-sized tour copy needs no internal scrolling and the card stays under 48% of viewport height', 'Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'All 8 value-tour targets and the character remain unobscured at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No XP/signup language leaks into the Mura tour', 'No page errors in tested guest flows']
  result={'passed':passed,'failures':failures,'geometry':records,'limits':[('WebKit engine on Linux; real iOS Safari and physical devices not tested' if ENGINE=='webkit' else 'Chromium emulation only; real iOS Safari and physical devices not tested'),'No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  print('ENGINE '+ENGINE)
