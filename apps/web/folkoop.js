@@ -569,7 +569,8 @@ document.addEventListener('click',e=>{
  if(mobileAction){
   const action=mobileAction.dataset.mobileAction;
   if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
-  if(action==='signin'){closeMobileDemo();showEntryGate();return;}
+  if(action==='exitmura'){closeMobileDemo();entryGateAfterMuraExit=true;showEntryGate('',true);return;}
+  if(action==='signin'){closeMobileDemo();showEntryGate('',true);return;}
   if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
  }
  const entryLanguage=e.target.closest('[data-entry-language]');
@@ -577,7 +578,14 @@ document.addEventListener('click',e=>{
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
-  if(action==='guest'){setEntryMode('guest');return;}
+  if(action==='guest'){
+   if(entryGateAfterMuraExit){
+    entryGateAfterMuraExit=false;hideEntryGate();
+    try{sessionStorage.setItem(ENTRY_KEY,'guest');}catch{}
+    current='home';history.replaceState(null,'','#/home');render();return;
+   }
+   setEntryMode('guest');return;
+  }
   if(action==='email'){setEntryMode('account');return;}
  }
  const helper=e.target.closest('[data-helper]');
