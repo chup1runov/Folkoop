@@ -282,24 +282,31 @@ const demoLocaleCopy={
 const demoText=value=>demoLocaleCopy[lang()]?.[value]||value;
 
 function demoSnapshot(){
- const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004';
- const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102';
- const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202';
- const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305';
+ const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004',D='00000000-0000-4000-8000-000000000005',E='00000000-0000-4000-8000-000000000006',F='00000000-0000-4000-8000-000000000007';
+ const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102',G3='00000000-0000-4000-8000-000000000103',G4='00000000-0000-4000-8000-000000000104';
+ const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202',DIRECT_A='00000000-0000-4000-8000-000000000203',WALK_CHAT='00000000-0000-4000-8000-000000000204',TOOL_CHAT='00000000-0000-4000-8000-000000000205';
+ const PROJECT='00000000-0000-4000-8000-000000000301',PURCHASE='00000000-0000-4000-8000-000000000302',NEED='00000000-0000-4000-8000-000000000303',OFFER='00000000-0000-4000-8000-000000000304',RESOURCE='00000000-0000-4000-8000-000000000305',REPAIR='00000000-0000-4000-8000-000000000306',TOOLS='00000000-0000-4000-8000-000000000307',LADDER='00000000-0000-4000-8000-000000000308';
  const TASK='00000000-0000-4000-8000-000000000401',POFFER='00000000-0000-4000-8000-000000000501';
  const profiles=[
-  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.'),listed:true},
-  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),listed:true},
-  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),listed:true},
-  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),listed:true}
+  {id:DEMO_UID,name:'Мура',city:'Göteborg',skills:demoText('Photography · neighbourhood help'),about:demoText('FOLKOOP guide. Welcome to my place — I use it to show how cooperation works.'),connection:'',listed:true},
+  {id:A,name:'Anna',skills:demoText('Carpentry · reuse'),about:demoText('Interested in neighbourhood repair and shared tools.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:B,name:'Omar',skills:demoText('Logistics · Swedish/Arabic'),about:demoText('Can help with delivery planning and language exchange.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true},
+  {id:C,name:'Linnea',skills:demoText('Design · facilitation'),about:demoText('Runs small community workshops.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:D,name:'Johan',skills:demoText('Bikes · practical repair'),about:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),connection:demoText('We met at the repair café; he usually knows who has the right tool nearby.'),listed:true},
+  {id:E,name:'Sara',skills:demoText('Gardening · seed saving'),about:demoText('She came to the first plant exchange and now helps me think one season ahead.'),connection:demoText('She came to the first plant exchange and now helps me think one season ahead.'),listed:true},
+  {id:F,name:'Fatima',skills:demoText('Cooking · neighbourhood events'),about:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),connection:demoText('We met through Olofstorp neighbours; she volunteered coffee for the repair café.'),listed:true}
  ];
  const groups=[
   {id:G,owner_id:A,name:demoText('Olofstorp neighbours'),description:demoText('Sample local community for shared help and practical coordination.')},
-  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')}
+  {id:G2,owner_id:C,name:demoText('Göteborg language exchange'),description:demoText('Sample group for informal language practice and meetups.')},
+  {id:G3,owner_id:D,name:demoText('Repair and reuse circle'),description:demoText('People who repair small things, share tools and teach each other.')},
+  {id:G4,owner_id:E,name:demoText('Sunday walk and litter pick'),description:demoText('A low-key walk where we also collect litter along the path.')}
  ];
  const allPosts=[
   {id:'00000000-0000-4000-8000-000000000601',community_id:G,author_id:A,body:demoText('Repair café this Saturday — bring one small item and we will try to fix it together.'),created_at:'2026-09-30T07:30:00Z'},
-  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'}
+  {id:'00000000-0000-4000-8000-000000000602',community_id:G2,author_id:C,body:demoText('Looking for two people for a Swedish–Russian conversation table next week.'),created_at:'2026-09-29T18:20:00Z'},
+  {id:'00000000-0000-4000-8000-000000000603',community_id:G3,author_id:D,body:demoText('The kettle is fixed. Next time I can bring a multimeter and spare plugs.'),created_at:'2026-09-30T19:10:00Z'},
+  {id:'00000000-0000-4000-8000-000000000604',community_id:G4,author_id:E,body:demoText('Anyone up for a short walk around Delsjön on Sunday morning?'),created_at:'2026-10-01T07:40:00Z'}
  ];
  const cooperations=[
   {id:PROJECT,owner_id:DEMO_UID,kind:'project',title:demoText('Plant and seed exchange'),description:demoText('Organize a small neighbourhood exchange of plants and seeds with roles, tasks and a work chat.'),location_text:'Olofstorp',status:'active',target_quantity:null,unit:'',created_at:'2026-09-28T10:00:00Z',updated_at:'2026-09-30T08:30:00Z'},
