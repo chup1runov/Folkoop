@@ -836,18 +836,24 @@
     {
       "id": "city_process",
       "label": "City Process",
-      "status": "approved_target",
+      "status": "partial_representation",
       "domain": "target_city_bridge",
       "storage": [],
       "evidence": [
-        "docs/FOUNDATION_CHARTER.md#8"
+        "docs/FOUNDATION_CHARTER.md#8",
+        "apps/web/app.js",
+        "apps/web/folkoop.js"
       ],
       "requirements": [
         "FO-04",
         "IN-01",
         "SV-12"
       ],
-      "gap": "Current CivicItem runtime records are not yet connected first-class processes."
+      "gap": "No first-class persisted City Process object or stored source→cooperation/project relation yet; NVDB/report-draft bridge and outcome tracking remain later work.",
+      "representation": [
+        "Current CivicItem/source runtime models",
+        "Ephemeral same-origin City → Online Center source-context handoff for normalized Göteborg open plans and Riksdagen documents"
+      ]
     },
     {
       "id": "center",
@@ -1992,7 +1998,7 @@
     },
     {
       "id": "gap-city-cooperation-bridge",
-      "summary": "Connect source-first City records/processes to explicit next actions in cooperation/projects while preserving authority/source boundaries.",
+      "summary": "City → Cooperation v0 now provides an explicit source-preserving in-memory handoff from normalized Göteborg open plans/Riksdagen records to Online Center and existing People/Communities/Together/Projects routes. First-class City Process persistence, source-linked cooperation records, NVDB/report-draft coverage and outcome tracking remain open.",
       "objects": [
         "civic_item",
         "city_process",
