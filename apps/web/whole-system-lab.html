@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8f6">
+<title>FOLKOOP — Whole-System Visual Prototype v0.1</title>
+<link rel="icon" href="./folkoop-mark.png" type="image/png">
+<link rel="stylesheet" href="./whole-system-lab.css">
+</head>
+<body>
+<div class="lab-banner"><strong>Visual Prototype v0.1</strong><span>Работает · Прототип · Планируется</span><button id="toggleLayers" type="button">Слои системы</button></div>
+<header class="topbar">
+  <a class="brand" href="#home"><img src="./folkoop-mark.png" alt="" width="44" height="44"><span>FOLKOOP</span></a>
+  <nav class="primary" aria-label="Основная навигация">
+    <button data-screen="home" class="active">Мой FOLKOOP</button>
+    <button data-screen="together">Вместе</button>
+    <button data-screen="city">Город</button>
+    <button data-screen="center">Центр</button>
+    <button data-screen="messages">Сообщения</button>
+  </nav>
+</header>
+
+<main>
+<section id="screen-home" class="screen active">
+  <div class="hero">
+    <p class="eyebrow">Один FOLKOOP</p>
+    <h1>Что вы хотите сделать?</h1>
+    <p class="lead">Начните с намерения. Люди, ресурсы, сообщества, организации и городской маршрут подключаются дальше — только если они действительно нужны.</p>
+    <div class="intent-grid">
+      <button class="intent need" data-jump="together"><span class="ico">↘</span><strong>Мне что-то нужно</strong><small>Человек, навык, вещь, помощь</small></button>
+      <button class="intent offer" data-jump="together"><span class="ico">↗</span><strong>Я могу помочь</strong><small>Навык, ресурс, время, место</small></button>
+      <button class="intent project" data-jump="together"><span class="ico">◎</span><strong>Хочу сделать вместе</strong><small>Идея → команда → проект</small></button>
+      <button class="intent nearby" data-jump="city"><span class="ico">⌖</span><strong>Что есть рядом?</strong><small>Город, организации, события</small></button>
+    </div>
+  </div>
+
+  <div class="mura-card">
+    <div class="mura-head">
+      <div class="avatar">М</div>
+      <div><p class="eyebrow">Мура · Гётеборг</p><h2>Посмотреть FOLKOOP как связанную жизнь</h2></div>
+      <span class="state live">РАБОТАЕТ</span>
+    </div>
+    <p>Мура хочет провести день ремонта и обмена навыками. Ниже — не список функций, а одна история, проходящая через весь FOLKOOP.</p>
+    <ol class="journey">
+      <li><button data-jump="center"><b>1</b><span><strong>Разговор в локальном сообществе</strong><small>Центр · ГБГ-контекст · обычное общение</small></span></button></li>
+      <li><button data-jump="center"><b>2</b><span><strong>Host помогает уточнить следующий шаг</strong><small>Приватная навигация · согласие · варианты</small></span><em class="state planned">ПЛАН</em></button></li>
+      <li><button data-jump="city"><b>3</b><span><strong>Находится подходящее место и городской ресурс</strong><small>Источник · условия · доступность · маршрут</small></span></button></li>
+      <li><button data-jump="together"><b>4</b><span><strong>Люди, навыки, инструменты и закупка</strong><small>Need · Offer · Resource · Shared Purchase</small></span></button></li>
+      <li><button data-jump="together"><b>5</b><span><strong>Проект, роли, задачи и экономический поток</strong><small>Project · Economic Flow · Fulfilment</small></span></button></li>
+      <li><button data-jump="together"><b>6</b><span><strong>Решение, соглашение и результат</strong><small>SDCF · Agreement · Outcome · Evidence</small></span><em class="state prototype">ПРОТОТИП</em></button></li>
+    </ol>
+  </div>
+
+  <div class="today-grid">
+    <article><span class="state live">РАБОТАЕТ</span><h3>Что требует внимания</h3><p>Ответ по вашему проекту, новая заявка на участие, сохранённый городской срок.</p></article>
+    <article><span class="state live">РАБОТАЕТ</span><h3>Ваши активные дела</h3><p>Проекты, запросы, предложения, общие покупки и связанные разговоры.</p></article>
+    <article><span class="state planned">ПЛАН</span><h3>Следующий полезный шаг</h3><p>Объяснимая рекомендация, а не бесконечная лента.</p></article>
+  </div>
+</section>
+
+<section id="screen-together" class="screen">
+  <header class="section-head"><p class="eyebrow">Вместе</p><h1>От намерения к общей работе</h1><p>Один рабочий слой для запроса, предложения, ресурса, проекта, закупки и экономической координации.</p></header>
+  <div class="workspace-layout">
+    <aside class="subnav">
+      <button class="active" data-panel="intent">Намерение</button>
+      <button data-panel="people">Люди и навыки</button>
+      <button data-panel="resources">Ресурсы</button>
+      <button data-panel="project">Проект</button>
+      <button data-panel="economy">Экономика</button>
+      <button data-panel="decisions">Решения</button>
+      <button data-panel="outcome">Результат</button>
+      <button data-panel="trust">Доверие</button>
+    </aside>
+    <div class="panel-stack">
+      <article class="panel active" data-panel-id="intent"><span class="state live">РАБОТАЕТ</span><h2>Намерение</h2><p>Мне нужно / я могу / хочу сделать — без знания внутренней архитектуры.</p><div class="chips"><span>Need</span><span>Offer</span><span>Project</span><span>Shared Purchase</span></div></article>
+      <article class="panel" data-panel-id="people"><span class="state prototype">ПРОТОТИП</span><h2>Люди и навыки</h2><p>Кто может помочь, кто хочет участвовать, какие навыки нужны и кто уже в контексте.</p><div class="person-row"><i>АК</i><span><strong>Анна · ремонт электроники</strong><small>Участвует в двух похожих проектах</small></span></div><div class="person-row"><i>ЮН</i><span><strong>Юхан · организатор</strong><small>Может помочь с площадкой</small></span></div></article>
+      <article class="panel" data-panel-id="resources"><span class="state prototype">ПРОТОТИП</span><h2>Ресурсы</h2><p>Инструменты, помещения и общие вещи как связанные объекты, а не только текст объявлений.</p><div class="resource-card"><strong>Набор инструментов</strong><span>доступен в субботу · проект Repair Day</span></div></article>
+      <article class="panel" data-panel-id="project"><span class="state live">РАБОТАЕТ</span><h2>Проект</h2><p>Команда, задачи, updates и рабочий чат уже существуют. Целевой workspace объединяет их с остальными слоями.</p><div class="progress"><span style="width:68%"></span></div><small>4 из 6 задач закрыты</small></article>
+      <article class="panel" data-panel-id="economy"><span class="state prototype">ПРОТОТИП</span><h2>Экономический поток</h2><p>Спрос → закупка → производство/услуга → распределение/продажа → fulfilment. Без попытки стать банком или бухгалтерией.</p><div class="flow"><span>Закупка</span><b>→</b><span>Подготовка</span><b>→</b><span>Передача</span></div></article>
+      <article class="panel" data-panel-id="decisions"><span class="state planned">ПЛАН</span><h2>Решения и соглашения</h2><p>Варианты, полномочия, выбранное решение, ответственное действие. SDCF работает внутри, не как пользовательский жаргон.</p></article>
+      <article class="panel" data-panel-id="outcome"><span class="state planned">ПЛАН</span><h2>Результат</h2><p><code>done</code> ≠ подтверждённый результат. Отдельно: сообщение участника, подтверждение второй стороны, внешний документ.</p></article>
+      <article class="panel" data-panel-id="trust"><span class="state planned">ПЛАН</span><h2>Доверие и переносимость</h2><p>Credentials, attestations, federation и blockchain появляются только там, где независимая проверяемость действительно нужна.</p><div class="trust-row"><span>Host credential</span><span>Agreement integrity</span><span>Portable role</span></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="screen-city" class="screen">
+  <header class="section-head"><p class="eyebrow">Город</p><h1>Не «какое ведомство?», а «что мне нужно сделать?»</h1><p>Sverinav + City OS: официальный маршрут и общественные возможности в одном месте, но с разной природой источников.</p></header>
+  <div class="city-grid">
+    <article class="city-card official"><span class="state live">РАБОТАЕТ</span><h3>Официальный городской процесс</h3><p><strong>Ремонт общественного пространства</strong></p><dl><dt>Кто отвечает</dt><dd>Источник: Göteborgs Stad</dd><dt>Следующий шаг</dt><dd>Открыть официальный маршрут</dd><dt>Актуальность</dt><dd>Проверено сегодня</dd></dl><button>Посмотреть маршрут</button></article>
+    <article class="city-card opportunity"><span class="state prototype">ПРОТОТИП</span><h3>Возможность рядом</h3><p><strong>Мастерская / помещение</strong></p><dl><dt>Кто предоставляет</dt><dd>Организация / партнёр</dd><dt>Условия</dt><dd>Стоимость · доступность · язык</dd><dt>Связать</dt><dd>с проектом Repair Day</dd></dl><button>Добавить в проект</button></article>
+    <article class="city-card bridge"><span class="state prototype">ПРОТОТИП</span><h3>От информации к действию</h3><p>Спросить сообщество, обратиться к Host, создать Need/Project или перейти в официальный сервис.</p><div class="bridge-actions"><button data-jump="center">Спросить Center</button><button data-jump="together">Создать действие</button></div></article>
+  </div>
+</section>
+
+<section id="screen-center" class="screen">
+  <header class="section-head"><p class="eyebrow">Центр</p><h1>Люди, сообщество и человеческая навигация</h1><p>Online / physical / hybrid. Для Göteborg — локальный контекст ГБГ Форума без автоматического импорта участников или переписки.</p></header>
+  <div class="center-grid">
+    <article><span class="state live">РАБОТАЕТ</span><h3>Локальное сообщество</h3><p>Обычные разговоры, темы, взаимопомощь и переход к совместным делам.</p><div class="topic">Ищу помощь с ремонтом</div><div class="topic">Кто идёт на встречу в субботу?</div></article>
+    <article><span class="state planned">ПЛАН</span><h3>Host</h3><p>Человек помогает уточнить цель, найти 1–3 подходящих варианта и сделать warm referral. Не принимает решение за пользователя.</p><button>Попросить навигацию</button></article>
+    <article><span class="state planned">ПЛАН</span><h3>Места и активности</h3><p>Partner place · Pop-up · Inside · Node · Meetup · Activity · оборудование.</p><div class="chips"><span>Quiet</span><span>Repair</span><span>Maker</span><span>Family</span></div></article>
+  </div>
+</section>
+
+<section id="screen-messages" class="screen">
+  <header class="section-head"><p class="eyebrow">Сообщения</p><h1>Разговор остаётся разговором</h1><p>Обычные личные и групповые чаты плюс рабочие разговоры, связанные с конкретным делом. Не каждое сообщение превращается в задачу.</p></header>
+  <div class="messages-shell">
+    <aside><button class="active"><b>Repair Day</b><span>Анна: я принесу паяльник</span></button><button><b>Юхан</b><span>Посмотрю площадку</span></button><button><b>Локальный чат</b><span>8 новых сообщений</span></button></aside>
+    <article><h3>Repair Day · рабочий чат</h3><div class="bubble other">Я могу принести два набора инструментов.</div><div class="bubble me">Отлично. Я связал это с ресурсом проекта.</div><div class="context-link">↗ Связано с задачей «Инструменты»</div></article>
+  </div>
+</section>
+</main>
+
+<aside id="layers" class="layers" hidden>
+  <button id="closeLayers" type="button">×</button>
+  <p class="eyebrow">Только для проектирования</p>
+  <h2>Откуда пришли слои</h2>
+  <ul>
+    <li><b>City</b><span>Sverinav + FOLKUNO City OS</span></li>
+    <li><b>Center</b><span>FOLKUNO + ГБГ Форум</span></li>
+    <li><b>Cooperation</b><span>текущий FOLKOOP + кооперативная соцсеть</span></li>
+    <li><b>Economy</b><span>кооперативная сеть + идеи КООПСЕТИ</span></li>
+    <li><b>Mura</b><span>объясняет всё через связанную жизнь</span></li>
+    <li><b>SDCF</b><span>цели · решения · полномочия · learning</span></li>
+    <li><b>Web3/Web4</b><span>identity · credentials · agents · federation · physical links</span></li>
+    <li><b>Blockchain</b><span>точечная независимая проверяемость</span></li>
+  </ul>
+  <p class="layer-note">Эта панель не предназначена обычному пользователю. В финальном продукте он видит один FOLKOOP.</p>
+</aside>
+
+<footer><img src="./folkoop-mark.png" alt="" width="30" height="30"><span>Whole-System Visual Prototype v0.1 · только для обсуждения архитектуры</span></footer>
+<script src="./whole-system-lab.js"></script>
+</body>
+</html>
