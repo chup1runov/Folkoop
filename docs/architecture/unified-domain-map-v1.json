@@ -51,7 +51,7 @@
       "public.fk_purchase_process",
       "public.fk_reports"
     ],
-    "note": "auth.users/auth.sessions are Supabase Auth infrastructure and are outside this 27-table FOLKOOP application/private-schema inventory."
+    "note": "auth.users/auth.sessions are Supabase Auth infrastructure and are outside this 29-table FOLKOOP application/private-schema inventory."
   },
   "current_cooperation_contract": {
     "table": "public.fk_cooperations",
@@ -2101,7 +2101,7 @@
     },
     {
       "id": "gap-cooperative-economy",
-      "summary": "Economic Flow v0 is now a hosted backend slice for Project/Shared Purchase economic purpose and participant roles. Remaining work is generic fulfilment/logistics/returns, first-class Resource/Organisation links, Agreement/Decision, Outcome/Evidence and specialist integrations.",
+      "summary": "Economic Flow v0 is now a hosted backend slice for Project/Shared Purchase economic purpose and participant roles. Formal production planning and sales fulfilment are still not implemented; generic fulfilment/logistics/returns, first-class Resource/Organisation links, Agreement/Decision, Outcome/Evidence and specialist integrations also remain open.",
       "objects": [
         "economic_coordination",
         "economic_flow",
