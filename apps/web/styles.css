@@ -578,6 +578,8 @@ html[dir="rtl"] .svg-icon,html[dir="rtl"] .bottom-nav svg{direction:ltr}
 .action[disabled]{opacity:.58;cursor:wait}
 
 .plan-list{display:grid;gap:11px;margin-top:14px}
+.city-source-bridge{display:grid;gap:7px}
+.city-folkoop-handoff{justify-self:start;min-height:40px;padding:9px 12px;font-size:12px}
 .plan-card{
   display:grid;
   grid-template-columns:auto 1fr;
