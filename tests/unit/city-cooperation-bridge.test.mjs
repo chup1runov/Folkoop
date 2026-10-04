@@ -7,6 +7,8 @@ const shell=await readFile('apps/web/folkoop.js','utf8');
 
 test('embedded City exposes an explicit secondary FOLKOOP handoff for source-backed items',()=>{
   assert(city.includes("const EMBEDDED_MODE = params.get('embedded') === '1'"));
+  assert(city.includes('parent===window'));
+  assert.match(city,/aria-label=.*continueFolkoop.*attrs\.title/);
   assert(city.includes('data-folkoop-handoff'));
   assert(city.includes("type:'folkoop:city-handoff'"));
   assert(city.includes("kind:'planning'"));
@@ -53,4 +55,14 @@ test('accepted handoff is session-memory navigation only and never auto-publishe
 
 test('Göteborg-local source context cannot be surfaced under another selected city',()=>{
   assert(shell.includes("!cityHandoff.sourceId.includes('goteborg_')||goteborg"));
+});
+
+
+test('City handoff context is cleared at the Mura/account boundary and its badge is localized',()=>{
+  const start=shell.indexOf("window.addEventListener('folkoop:guest-demo'");
+  const end=shell.indexOf("window.addEventListener('folkoop:language-picked'",start);
+  assert(start>=0&&end>start);
+  const boundary=shell.slice(start,end);
+  assert(boundary.includes('cityHandoff=null'));
+  assert(shell.includes("<span class=\"badge\">${esc(t('city'))} → FOLKOOP</span>"));
 });
