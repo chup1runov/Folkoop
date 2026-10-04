@@ -925,6 +925,10 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
+ });return;}const eb=e.target.closest('[data-economic]');if(eb){if(guestDemo){guestRequireAccount();return;}const a=eb.dataset.economic,flow=eb.dataset.flow;run(async()=>{
+  if(a==='deleteFlow'){if(!confirm(t('confirm')))return;await api.deleteEconomicFlow(flow);delete economicFlowEditDrafts[flow];delete economicRoleDrafts[flow];}
+  if(a==='removeRole'){if(!confirm(t('confirm')))return;await api.removeEconomicFlowRole(flow,eb.dataset.user,eb.dataset.role);}
+  await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
   if(a==='open')selectedCoop=id;
