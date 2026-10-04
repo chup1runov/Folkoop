@@ -167,7 +167,7 @@ function myPage(){
 }
 function center(){
  const city=selectedCity(),goteborg=citySupported(city),mura=isMuraVisit();
- const handoff=cityHandoff&&(!cityHandoff.sourceId.includes('goteborg_')||goteborg)?`<article class="card" data-center-story="city-handoff"><span class="badge">City → FOLKOOP</span><h2>${esc(cityHandoff.title)}</h2><p class="meta">${esc(cityHandoff.sourceName)}</p><p>${esc(t('centerCityText'))}</p><p><a class="text-link" href="${esc(cityHandoff.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(cityHandoff.sourceName)} ↗</a></p><div class="actions">${a('communities','communities','text-link')}${a('people','people','text-link')}${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article>`:'';
+ const handoff=cityHandoff&&(!cityHandoff.sourceId.includes('goteborg_')||goteborg)?`<article class="card" data-center-story="city-handoff"><span class="badge">${esc(t('city'))} → FOLKOOP</span><h2>${esc(cityHandoff.title)}</h2><p class="meta">${esc(cityHandoff.sourceName)}</p><p>${esc(t('centerCityText'))}</p><p><a class="text-link" href="${esc(cityHandoff.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(cityHandoff.sourceName)} ↗</a></p><div class="actions">${a('communities','communities','text-link')}${a('people','people','text-link')}${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article>`:'';
  const routeCard=(route,iconKey,titleKey,textKey,labelKey)=>`<article class="card" data-center-route="${esc(route)}"><span class="small-icon">${icon(iconKey)}</span><h2>${esc(t(titleKey))}</h2><p>${esc(t(textKey))}</p>${a(route,labelKey,'text-link')}</article>`;
  const local=goteborg
   ?`<article class="card" data-center-story="local"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><h2>${esc(t('centerLocalTitle'))}</h2><p>${esc(t('centerLocalText'))}</p>${mura?`<p class="meta">${esc(t('centerLocalIllustrative'))}</p>`:`<p class="meta">${esc(t('centerLocalExternalNote'))}</p><p><a class="text-link" href="${GOTEBORG_FORUM_URL}" target="_blank" rel="noopener noreferrer">${esc(t('centerLocalExternal'))} ↗</a></p>`}</article>`
@@ -604,6 +604,7 @@ document.addEventListener('click',e=>{
 });
 
 window.addEventListener('folkoop:guest-demo',e=>{
+ cityHandoff=null;
  muraVisitActive=!!e.detail?.enabled;
  if(!muraVisitActive)document.body.classList.remove('guest-preview-open');
  renderMobileChrome();
