@@ -1,6 +1,6 @@
 # FOLKOOP pre-pilot Auth readiness audit
 
-30 September 2026.
+4 October 2026.
 
 Status: **database/admission/privacy/security hardening is live; ordinary-participant Auth is not activated yet.**
 
@@ -29,16 +29,21 @@ Current hosted aggregate state:
 
 | Check | Result |
 |---|---:|
-| Auth users | 0 |
-| Auth sessions | 0 |
+| Auth users | 2 |
+| Auth sessions | 2 |
 | Enabled pilot users | 0 |
 | Profiles | 0 |
 | Cooperations | 0 |
 | Pilot invite rows | 4 |
 | Usable single-use invite slots | 4 |
-| Remaining invite uses | 4 |
 
-P01–P04 remain unconsumed.
+The two existing Auth identities use the email provider, are email-confirmed and
+have signed in previously. No identity is currently admitted to the FOLKOOP
+pilot, and all four invite slots remain unconsumed.
+
+This is a clean admission state, but the existing Auth identities must not be
+turned into pilot members by direct SQL merely to satisfy the technical gate.
+A03 must exercise the supported admission path.
 
 ## Versioned policy acceptance — LIVE
 
@@ -56,7 +61,7 @@ The current five-argument invite-claim RPC enforces the active versions before f
 
 Existing admitted users can re-enter without reusing a code while still passing the current admission/policy contract.
 
-No hosted user has been created during readiness/security verification.
+No FOLKOOP pilot admission has been created during this readiness refresh.
 
 ## Private-schema RLS — LIVE
 
@@ -158,6 +163,38 @@ Current expected blockers:
 - `hosted_google_provider_disabled`;
 - `app_google_oauth_flag_disabled`.
 
+### Email OTP is not automatically a participant-ready fallback
+
+The hosted email provider is enabled and existing developer/test email identities
+can authenticate, but that fact alone does **not** make email OTP a general
+participant route.
+
+Current Supabase guidance states that the built-in SMTP service is intended for
+development/testing and only sends to pre-authorized project-team addresses.
+Ordinary participant email OTP therefore requires a verified custom SMTP
+configuration (or another deliberately selected production Auth route).
+
+Do not:
+- treat `emailProviderEnabled=true` as proof that arbitrary participant
+  addresses can receive OTP;
+- weaken confirmation/admission rules to bypass email delivery;
+- create pilot admissions directly in SQL to avoid the Auth gate.
+
+If email OTP is later selected instead of Google for the controlled pilot:
+1. verify/configure production-capable custom SMTP;
+2. run a real delivery test to non-team test identities;
+3. update the participant Privacy Notice/service review for the actually active
+   provider path;
+4. revise the A03 runbook and launch pack explicitly rather than silently
+   substituting Auth routes.
+
+Until that decision is made, Google remains the planned ordinary-participant
+Auth route and email remains a developer/test capability.
+
+Current Supabase reference:
+- https://supabase.com/docs/guides/auth/auth-smtp
+- https://supabase.com/docs/guides/deployment/going-into-prod
+
 Before relying on this snapshot after any provider-side change, rerun:
 
 ```bash
@@ -197,6 +234,7 @@ Current gate:
 hosted migrations through private-table RLS     PASS
 policy acceptance DB contract                   PASS
 policy acceptance browser contract              PASS
+two confirmed email developer identities        PRESENT / not pilot-admitted
 four unused hosted invite slots                 PASS
 public-table RLS / RPC CI                       PASS
 private-table RLS defense in depth              PASS
@@ -237,4 +275,4 @@ Those are closed only by `docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md`.
 10. Finalize the participant Privacy Notice for the active Auth provider.
 11. Explicitly authorize ordinary participant invite distribution.
 
-Do not add another Auth system, custom SMTP, passwords, BankID or paid infrastructure merely to avoid this gate.
+Do not add another Auth system, passwords, BankID or paid infrastructure merely to avoid this gate. Custom SMTP is justified only if email OTP is deliberately selected as the participant Auth route; it is not a shortcut to bypass A03.
