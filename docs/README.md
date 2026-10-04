@@ -25,6 +25,7 @@ Research and old release notes do not silently override current product policy. 
 
 Start with:
 - `FOUNDATION_CHARTER.md` — four-origin full-scope charter, preservation rules, Mura and blockchain.
+- `MURA_WHOLE_SYSTEM_STORY_MAP.md` / `mura-whole-system-story-map-v1.json` — seven connected current/target Mura stories spanning the integrated product without pretending future capabilities are live.
 - `NO_LOSS_REQUIREMENTS_REGISTER.md` / `.json` — canonical stable-ID source/no-loss recovery register; missing original fields remain explicit gaps rather than inferred facts.
 - `UNIFICATION.md` — single product identity and source relationship.
 - `PRODUCT_CONCEPT.md` — cooperation thesis and loop, with scope amendments in the charter.
