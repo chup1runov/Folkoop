@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readdir,readFile} from 'node:fs/promises';
 import {extname,relative} from 'node:path';
+import {allowsOriginReference} from '../support/origin-provenance-policy.mjs';
 
 const forbidden=[
   ['Sver','inav'].join(''),
@@ -25,7 +26,7 @@ async function walk(dir='.'){
 test('current tree exposes only the FOLKOOP project identity',async()=>{
   const violations=[];
   for(const path of await walk('.')){
-    const name=relative('.',path);
+    const name=relative('.',path).replaceAll('\\','/');
     if(name.startsWith('docs/history/')||/^docs\/CHAT_HANDOFF_[^/]+\.md$/.test(name)) continue;
     for(const word of forbidden) if(name.toLowerCase().includes(word.toLowerCase())) violations.push(`path: ${name}`);
     if(!textExt.has(extname(path)) && !['LICENSE','README','CONTRIBUTING'].includes(name)) continue;
@@ -33,7 +34,7 @@ test('current tree exposes only the FOLKOOP project identity',async()=>{
     try{text=await readFile(path,'utf8');}catch{continue;}
     for(const word of forbidden){
       const re=new RegExp(word,'i');
-      if(re.test(text)) violations.push(`content: ${name} -> ${word}`);
+      if(re.test(text) && !allowsOriginReference(name,word)) violations.push(`content: ${name} -> ${word}`);
     }
   }
   assert.deepEqual(violations,[]);

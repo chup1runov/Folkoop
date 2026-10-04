@@ -2,32 +2,39 @@
 
 This directory separates current product decisions from pilot operations, engineering architecture, research and historical records.
 
+## Start here — foundation decision, 4 October 2026
+
+`FOUNDATION_CHARTER.md` is the controlling owner-approved product-scope contract (FK-FOUNDATION-2026-10-04). It requires integration of the existing code and FOUR origins, online/physical Center with the Göteborg forum, whole-system Mura, and a required scoped blockchain workstream. `architecture/adr/ADR-002-four-origin-foundation.md` records exact partial supersessions of older documents. A narrow pilot is not permission to reduce the full product scope. Scope decisions and implemented behavior must be reported separately.
+
 ## Authority order
 
 When documents disagree, use this order unless a more specific current document explicitly says otherwise:
 
-1. current code, database migrations and automated tests for implemented behavior;
-2. `PRODUCT_CONCEPT.md` and `PRODUCT_DECISION_POLICY.md` for product direction;
-3. `GOTEBORG_CORE_LOOP_PILOT.md` for the protected first-pilot scope;
+1. current code, database migrations and automated tests for implemented behavior, not as a ceiling on future scope;
+2. `FOUNDATION_CHARTER.md` and ADR-002 for the owner's latest full product scope and no-loss requirement; `PRODUCT_CONCEPT.md` and `PRODUCT_DECISION_POLICY.md` remain applicable where not superseded;
+3. `GOTEBORG_CORE_LOOP_PILOT.md` for the protected first-pilot scope, which is a validation slice only;
 4. current privacy/security and operator documents for their specific domain;
-5. `STATUS.md` and `PROJECT_HANDOFF.md` for current-state orientation;
-6. `WORK_PLAN_20261001.md` for execution sequencing and mini-project dependencies;
-7. research documents as inputs to future decisions;
+5. `STATUS.md`, `PROJECT_HANDOFF.md` and latest dated handoff for current-state orientation;
+6. `WORK_PLAN_20261001.md` for execution sequencing and mini-project dependencies, subject to the newer foundation scope;
+7. research documents as inputs and traceable source requirements;
 8. `history/` and documents explicitly marked superseded only as historical evidence.
 
-Research and old release notes do not silently override current product policy.
+Research and old release notes do not silently override current product policy. Equally, old pilot restrictions must not silently override the new owner-approved foundation scope. Missing originals, deferred work and contradictions must remain visible.
 
 ## Current product and pilot
 
 Start with:
-- `PRODUCT_CONCEPT.md` — canonical product thesis and cooperation loop.
-- `PRODUCT_DECISION_POLICY.md` — feature gate and sequencing rules.
+- `FOUNDATION_CHARTER.md` — four-origin full-scope charter, preservation rules, Mura and blockchain.
+- `UNIFICATION.md` — single product identity and source relationship.
+- `PRODUCT_CONCEPT.md` — cooperation thesis and loop, with scope amendments in the charter.
+- `PRODUCT_DECISION_POLICY.md` — feature gate and sequencing rules where not superseded.
 - `GOTEBORG_CORE_LOOP_PILOT.md` — first human-pilot scope.
-- `PROJECT_HANDOFF.md` — detailed current implementation and launch-gate state.
+- `PROJECT_HANDOFF.md` — implementation orientation; follow its latest dated handoff pointer.
+- `HANDOFF_20261003.md` — current Mura/runtime handoff at the foundation baseline; planned Center changes are governed by the new charter.
 - `STATUS.md` — short current-state pointer.
-- `WORK_PLAN_20261001.md` — canonical mini-project execution plan and dependency graph.
+- `WORK_PLAN_20261001.md` — mini-project execution plan and dependency graph.
 - `FREE_ONLY.md` — zero-cost infrastructure policy.
-- `ROADMAP.md`, `VALUE_ROADMAP.md`, `MVP.md`, `USER_FLOWS.md` — supporting product direction.
+- `ROADMAP.md`, `VALUE_ROADMAP.md`, `MVP.md`, `USER_FLOWS.md` — historical/supporting product direction.
 
 ## Architecture and data
 
@@ -37,9 +44,10 @@ Start with:
 - `SOURCE_REGISTRY.json` — source registry.
 - `architecture/OUTCOME_INTEGRITY.md` — outcome/provenance integrity contract.
 - `architecture/outcome-integrity-v1.json` — machine-readable integrity profile.
-- `architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md` — approved future architecture for trust, portable identity, agents, federation and physical-world integration; non-runtime until evidence gates are met.
-- `architecture/WEB3_WEB4_ROADMAP.md` — evidence-gated implementation sequence for those future layers.
-- `architecture/adr/ADR-001-web3-web4-direction.md` — durable decision: FOLKOOP is not crypto-first; Web3 mechanisms are limited to trust/identity/portability and Web4 mechanisms to agents/physical-world integration unless a later explicit ADR changes that direction.
+- `architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md` — future trust, portable identity, agents, federation and physical-world integration architecture; read with ADR-002's blockchain-scope amendment.
+- `architecture/WEB3_WEB4_ROADMAP.md` — earlier evidence-gated implementation sequence; blockchain may not be silently dropped after ADR-002.
+- `architecture/adr/ADR-001-web3-web4-direction.md` — earlier direction; partly superseded by ADR-002, with privacy/database/no mandatory crypto UX safeguards retained.
+- `architecture/adr/ADR-002-four-origin-foundation.md` — explicit foundation supersessions and blockchain acceptance requirement.
 - `architecture/adr/` — durable engineering decisions.
 - `history/architecture/` — superseded architecture proposals.
 
@@ -77,23 +85,23 @@ The deep dives cover Hylo, Karrot, Decidim, Open Collective, Loomio, Nextdoor, B
 
 ### First-contact user feedback
 
-`research/user-feedback/2026-10-01/FIRST_CONTACT_SYNTHESIS.md` records the anonymized repeated comprehension signal from four informal external reviews. It is product evidence, not a formal user study, and does not override the protected pilot decision process.
+`research/user-feedback/2026-10-01/FIRST_CONTACT_SYNTHESIS.md` records the anonymized repeated comprehension signal from four informal external reviews. It is product evidence, not a formal user study, and does not override the protected pilot decision process or full foundation scope.
 
 ### Source research
 
-`research/sources/` contains source-specific research and review-status material. It preserves attribution and evidence but does not define current product policy.
+`research/sources/` contains source-specific research and review-status material. It preserves attribution and evidence. Map source functions into the foundation no-loss register; do not invent source completeness or third-party rights.
 
 ## History
 
-`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence. `history/CHAT_PUBLIC_HANDOFF_20261001.md` preserves the mid-session public-safe continuity record. `history/CHAT_PUBLIC_HANDOFF_20261001_FINAL.md` is the earlier final deletion-time handoff, while `history/CHAT_PUBLIC_HANDOFF_20261001_FINAL_V2.md` is the latest public-safe deletion-time continuity pointer.
+`history/releases/` contains version-specific implementation and release notes that are no longer current specifications. `history/REPOSITORY_RESTRUCTURE_HANDOFF_20261001.md` records the completed repository-structure cleanup and the remaining maintainability sequence. `history/CHAT_PUBLIC_HANDOFF_20261001.md` preserves the mid-session public-safe continuity record. `history/CHAT_PUBLIC_HANDOFF_20261001_FINAL.md` and `history/CHAT_PUBLIC_HANDOFF_20261001_FINAL_V2.md` preserve the earlier deletion-time continuity records.
 
 `history/architecture/` contains superseded architecture descriptions.
 
-Other historical records should stay under `history/` when historical terminology or provenance must be preserved accurately.
+Other historical records should stay under `history/` when historical terminology or provenance must be preserved accurately. Origin names are allowed in current source mapping; they do not create competing product brands.
 
 ## Proposals
 
-`proposals/` contains drafts or decision records that are not automatically operative. For rights and licensing, the root `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md` are authoritative.
+`proposals/` contains drafts or decision records that are not automatically operative. For rights and licensing, the root `LICENSE`, `LICENSING.md`, `THIRD_PARTY_NOTICES.md` and `CONTRIBUTING.md` are authoritative. The foundation decision does not transfer external code, forum messages or member data.
 
 ## Superseded planning documents
 
@@ -104,4 +112,4 @@ The following root-level docs are retained for historical/product provenance but
 - `VALUE_ROADMAP.md` — early value/retention roadmap;
 - `PILOT_GUIDE.md` — earlier civic usability pilot.
 
-Use `WORK_PLAN_20261001.md` plus `GOTEBORG_CORE_LOOP_PILOT.md` for current work.
+Use the foundation charter for full scope, the current execution plan for sequencing, and the applicable pilot/security documents for actual launch gates. A source requirement can remain pending without being erased.

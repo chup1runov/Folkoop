@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readdir,readFile,stat} from 'node:fs/promises';
 import path from 'node:path';
+import {allowsOriginReference,originProvenanceDocuments} from '../support/origin-provenance-policy.mjs';
 
 const forbidden=[
   {name:'legacy civic brand', pattern:new RegExp('sveri'+'nav','i')},
@@ -38,9 +39,39 @@ test('FOLKOOP is the only current project brand',async()=>{
     lines.forEach((line,index)=>{
       for(const rule of forbidden){
         rule.pattern.lastIndex=0;
-        if(rule.pattern.test(line))offenders.push(normalized+':'+(index+1)+' ['+rule.name+'] '+line.trim().slice(0,180));
+        const match=line.match(rule.pattern);
+        if(match && !allowsOriginReference(normalized,match[0]))offenders.push(normalized+':'+(index+1)+' ['+rule.name+'] '+line.trim().slice(0,180));
       }
     });
   }
-  assert.deepEqual(offenders,[], 'Legacy project names remain in the current tree:\n'+offenders.join('\n'));
+  assert.deepEqual(offenders,[], 'Legacy project names remain outside approved provenance content:\n'+offenders.join('\n'));
+});
+
+test('origin attribution exceptions cover only the four approved documents',async()=>{
+  assert.deepEqual(originProvenanceDocuments,[
+    'AGENTS.md',
+    'docs/FOUNDATION_CHARTER.md',
+    'docs/UNIFICATION.md',
+    'docs/architecture/adr/ADR-002-four-origin-foundation.md'
+  ]);
+  assert.equal(Object.isFrozen(originProvenanceDocuments),true);
+  for(const file of originProvenanceDocuments){
+    assert.equal(path.extname(file),'.md');
+    assert.equal((await stat(file)).isFile(),true);
+    for(const rule of forbidden)assert.equal(allowsOriginReference(file,rule.pattern.source),true);
+    assert.equal(allowsOriginReference(file,['SD','CF'].join('')),false);
+  }
+});
+
+test('origin attribution cannot exempt runtime, arbitrary docs or lookalike paths',()=>{
+  const forbiddenPaths=[
+    'apps/web/app.js','apps/web/folkoop.html','package.json','README.md',
+    'docs/README.md','docs/another.md','docs/FOUNDATION_CHARTER.md.js',
+    'docs/nested/FOUNDATION_CHARTER.md','./AGENTS.md','AGENTS.md/extra'
+  ];
+  for(const file of forbiddenPaths){
+    for(const rule of forbidden)assert.equal(allowsOriginReference(file,rule.pattern.source),false,file);
+  }
+  assert.equal(allowsOriginReference(null,'name'),false);
+  assert.equal(allowsOriginReference('AGENTS.md',null),false);
 });
