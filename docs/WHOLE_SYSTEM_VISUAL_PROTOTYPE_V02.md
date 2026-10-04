@@ -18,10 +18,10 @@ These are not three applications or registration modes. A person may move freely
 The lab keeps all ten components represented in a hidden design-only coverage map:
 
 1. current FOLKOOP implementation base;
-2. Sverinav;
-3. FOLKUNO online + physical/hybrid;
+2. civic/public-infrastructure origin;
+3. community/Center origin, online + physical/hybrid;
 4. owner's cooperative social-network concept;
-5. attributed Tokarenko/KООПСЕТЬ research ideas;
+5. attributed external cooperative-economy research ideas;
 6. ГБГ Форум;
 7. Mura;
 8. SDCF;
