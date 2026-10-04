@@ -299,6 +299,18 @@ async def main():
   await page.click('[data-onboarding="skip"]')
   await expect(page.locator('.mura-home')).to_be_visible()
   await page.reload()
+  reload_state=await page.evaluate("""() => ({
+    hash: location.hash,
+    mode: (()=>{try{return sessionStorage.getItem('folkoop-entry-mode-v1')}catch{return 'blocked'}})(),
+    languageDone: (()=>{try{return localStorage.getItem('folkoop-language-choice-v1')}catch{return 'blocked'}})(),
+    onboardingDone: (()=>{try{return localStorage.getItem('folkoop-onboarding-v3')}catch{return 'blocked'}})(),
+    entryHidden: document.querySelector('#folkoopEntryGate')?.hidden,
+    networkHidden: document.querySelector('#networkPanel')?.hidden,
+    networkClass: document.querySelector('#networkPanel')?.className,
+    workspaceHidden: document.querySelector('#workspace')?.hidden,
+    bodyClass: document.body.className
+  })""")
+  print('MURA_RELOAD_STATE',json.dumps(reload_state,ensure_ascii=False))
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await page.wait_for_url('**#/home')
   await expect(page.locator('#networkPanel')).to_be_visible()
