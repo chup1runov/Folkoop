@@ -17,8 +17,10 @@ test('Economic Flow client exposes only the reviewed v0 RPC surface',()=>{
 });
 
 test('Economic Flow list loads newest records before applying the history cap',()=>{
- assert(client.includes("&order=created_at.desc&limit=100"));
- assert(!client.includes("&order=created_at.asc&limit=100"));
+ const method=client.match(/economicFlows\(cid\)\{return rows\('([^']+)'\);\}/);
+ assert(method,'economicFlows client method');
+ assert.match(method[1],/order=created_at\.desc&limit=100/);
+ assert.doesNotMatch(method[1],/order=created_at\.asc/);
 });
 
 test('Economic Flow UI clears cooperation-scoped state before direct context switches',()=>{
