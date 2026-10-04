@@ -47,11 +47,13 @@ test('FOLKOOP is the only current project brand',async()=>{
   assert.deepEqual(offenders,[], 'Legacy project names remain outside approved provenance content:\n'+offenders.join('\n'));
 });
 
-test('origin attribution exceptions cover only the four approved documents',async()=>{
+test('origin attribution exceptions cover only the approved provenance documents',async()=>{
   assert.deepEqual(originProvenanceDocuments,[
     'AGENTS.md',
     'docs/FOUNDATION_CHARTER.md',
     'docs/UNIFICATION.md',
+    'docs/NO_LOSS_REQUIREMENTS_REGISTER.md',
+    'docs/NO_LOSS_REQUIREMENTS_REGISTER.json',
     'docs/architecture/adr/ADR-002-four-origin-foundation.md'
   ]);
   assert.equal(Object.isFrozen(originProvenanceDocuments),true);
@@ -67,7 +69,8 @@ test('origin attribution cannot exempt runtime, arbitrary docs or lookalike path
   const forbiddenPaths=[
     'apps/web/app.js','apps/web/folkoop.html','package.json','README.md',
     'docs/README.md','docs/another.md','docs/FOUNDATION_CHARTER.md.js',
-    'docs/nested/FOUNDATION_CHARTER.md','./AGENTS.md','AGENTS.md/extra'
+    'docs/nested/FOUNDATION_CHARTER.md','docs/NO_LOSS_REQUIREMENTS_REGISTER.md.js',
+    'docs/nested/NO_LOSS_REQUIREMENTS_REGISTER.json','./AGENTS.md','AGENTS.md/extra'
   ];
   for(const file of forbiddenPaths){
     for(const rule of forbidden)assert.equal(allowsOriginReference(file,rule.pattern.source),false,file);
