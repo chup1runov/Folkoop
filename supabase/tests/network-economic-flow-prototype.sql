@@ -602,7 +602,7 @@ select fk_economic_test.ok(
 
 -- RPCs are authenticated-only and pin an empty search_path.
 select fk_economic_test.ok(
-  not has_function_privilege('PUBLIC','public.fk_create_economic_flow(uuid,text,text)','EXECUTE')
+  not has_function_privilege('public','public.fk_create_economic_flow(uuid,text,text)','EXECUTE')
   and not has_function_privilege('anon','public.fk_create_economic_flow(uuid,text,text)','EXECUTE')
   and has_function_privilege('authenticated','public.fk_create_economic_flow(uuid,text,text)','EXECUTE'),
   'mutation RPC execute privileges are authenticated-only'
