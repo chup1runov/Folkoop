@@ -200,6 +200,7 @@ async def main():
   await expect(page).to_have_url(BASE+'#/center')
   await expect(page.locator('[data-center-story="city-handoff"]')).to_be_visible()
   await expect(page.locator('[data-center-story="city-handoff"] a[href*="goteborg.se"]')).to_have_count(1)
+  await expect(page.locator('[data-center-story="city-handoff"] .badge')).to_have_text('Город → FOLKOOP')
   assert await page.locator('#workspace a[href*="t.me"]').count()==0
   await assert_mura_immersed(page,'#workspace')
   assert not [u for u in external if 'supabase.co' in u],external
@@ -308,7 +309,10 @@ async def main():
   assert await page.locator('.mobile-demo-chip').count()==0
   assert await page.locator('#mobilePrimaryNav .net-count').count()==0
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='account'")
-  passed.append('Leaving Mura creates a clear account boundary without pilot copy, Mura chip or demo badges')
+  await page.evaluate("location.hash='#/center'")
+  await page.wait_for_timeout(120)
+  assert await page.locator('[data-center-story="city-handoff"]').count()==0
+  passed.append('Leaving Mura creates a clear account boundary without pilot copy, Mura chip, demo badges or City handoff state')
 
 
   # Regression: a returning browser may already have completed onboarding, but an explicit
