@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/supabase-migration-tooling.yml'
       - 'supabase/migrations/**'
+      - 'supabase/migration-history-baseline.json'
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,14 +25,37 @@ jobs:
           test "$(supabase --version)" = "2.117.0"
           supabase migration --help >/dev/null
           supabase migration new --help >/dev/null
-      - name: Verify committed E01 migration uses a CLI timestamp
+      - name: Verify local migration history is CLI-compatible
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t committed < <(find supabase/migrations -maxdepth 1 -type f -name '*_folkoop_economic_flow_v0.sql' -printf '%f\n')
-          test "${#committed[@]}" -eq 1
-          [[ "${committed[0]}" =~ ^[0-9]{14}_folkoop_economic_flow_v0\.sql$ ]]
-          echo "E01_MIGRATION=${committed[0]}"
+          node <<'NODE'
+          const fs=require('node:fs');
+          const path=require('node:path');
+          const baseline=JSON.parse(fs.readFileSync('supabase/migration-history-baseline.json','utf8'));
+          const dir='supabase/migrations';
+          const files=fs.readdirSync(dir).filter(x=>x.endsWith('.sql')).sort();
+          if(!files.length) throw new Error('No migration files found');
+          for(const file of files){
+            if(!/^[0-9]{14}_[a-z0-9_]+\.sql$/.test(file)){
+              throw new Error('Non-CLI migration filename: '+file);
+            }
+          }
+          const timestamps=files.map(x=>x.slice(0,14));
+          if(new Set(timestamps).size!==timestamps.length) throw new Error('Duplicate migration timestamp');
+          for(const entry of baseline.entries){
+            if(entry.filename!==entry.version+'_'+entry.name+'.sql'){
+              throw new Error('Baseline filename/version/name mismatch: '+entry.filename);
+            }
+            if(!files.includes(entry.filename)){
+              throw new Error('Missing hosted-baseline migration: '+entry.filename);
+            }
+          }
+          const e01=files.filter(x=>x.endsWith('_folkoop_economic_flow_v0.sql'));
+          if(e01.length!==1) throw new Error('Expected exactly one E01 migration');
+          console.log('Verified migration filenames:',files.length);
+          console.log('E01_MIGRATION='+e01[0]);
+          NODE
       - name: Probe migration generation without touching repository history
         shell: bash
         run: |
