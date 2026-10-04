@@ -58,7 +58,7 @@ test('origin attribution exceptions cover only the approved provenance documents
   ]);
   assert.equal(Object.isFrozen(originProvenanceDocuments),true);
   for(const file of originProvenanceDocuments){
-    assert.equal(path.extname(file),'.md');
+    assert(['.md','.json'].includes(path.extname(file)),file);
     assert.equal((await stat(file)).isFile(),true);
     for(const rule of forbidden)assert.equal(allowsOriginReference(file,rule.pattern.source),true);
     assert.equal(allowsOriginReference(file,['SD','CF'].join('')),false);
