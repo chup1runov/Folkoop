@@ -47,7 +47,8 @@ These are **not** equivalent to:
 
 ### economy-1-flow-intent — Economic Flow / role graph
 
-Status: `next_design_and_runtime_slice`.  
+Status: `hosted_backend_v0`.  
+Hosted evidence: migration `20261004194921_folkoop_economic_flow_v0` with `public.fk_economic_flows` + `public.fk_economic_flow_roles`; participant-facing UI is not yet shipped.  
 Goal: Represent why a cooperation/project is producing, procuring, selling, distributing or servicing something, and which parties/resources/roles participate, without replacing the parent cooperation/project.
 
 Candidate objects: `economic_flow`, `economic_flow_participant_role`, `economic_flow_resource_link`.  
@@ -64,7 +65,8 @@ Explicit non-goals:
 
 ### economy-2-fulfilment-logistics — Fulfilment / logistics milestones
 
-Status: `after_economy_1`.  
+Status: `next_disposable_runtime_prototype`.  
+Design contract: `FULFILMENT_LOGISTICS_V0_DESIGN.md`.  
 Goal: Coordinate storage, handoff, transport, distribution and returns as explicit milestones/evidence-bearing events rather than one generic done flag.
 
 Candidate objects: `fulfilment_plan`, `fulfilment_milestone`, `handoff_or_return_record`.
