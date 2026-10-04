@@ -1,0 +1,690 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-04",
+  "controlling_decision": "FK-FOUNDATION-2026-10-04",
+  "purpose": "Seven optional connected Mura stories that reveal the whole FOLKOOP system without making future or external capabilities look shipped.",
+  "story_status_vocabulary": {
+    "current_partial": "Current authored fixture/capabilities cover part of the chain; missing links remain explicit.",
+    "current_slice": "A meaningful current slice exists, but the full target/outcome chain is incomplete.",
+    "target_bridge_with_current_city": "Current City runtime exists; cross-domain next-action bridge is target work.",
+    "approved_target": "Owner-approved target story with current supporting surfaces but no end-to-end runtime.",
+    "approved_target_future_prototype": "Approved target story whose technical proof is explicitly future work."
+  },
+  "experience_rules": [
+    "Stories are optional and cross-linked; they must not become one enormous mandatory tour.",
+    "Mura stays read-only and does not mutate real account/network state.",
+    "Mura and her circle are authored illustrative data.",
+    "System/privacy/source facts remain system voice rather than Mura pretending to be policy documentation.",
+    "Shipped, illustrative and target steps must be visibly distinguishable.",
+    "No signup pressure appears until explicit Mura exit.",
+    "Every implemented user-facing cluster eventually needs at least one linked Mura story and one real-user acceptance scenario.",
+    "A story may use truthful official City sources while the personal narrative around them remains illustrative."
+  ],
+  "current_contract_conflict": {
+    "existing_contract": "MURA_ACCEPTANCE_CONTRACT.md currently hides Center in Mura navigation.",
+    "controlling_target": "Foundation Charter §9 now requires Mura to include Center and the Göteborg local-community context as that slice becomes available.",
+    "handling": "Do not fake Center now. Keep the runtime limitation visible, then update the acceptance contract and runtime together in the Online Center Göteborg vertical slice."
+  },
+  "stories": [
+    {
+      "id": "mura-01-need-resource-return",
+      "title": "A concrete Need becomes a useful borrowed resource",
+      "status": "current_partial",
+      "question": "I need a tool for one real task. Can FOLKOOP connect the need to a person/resource and show what happened next?",
+      "origin_coverage": [
+        "origin-b-center-methodology",
+        "origin-c-cooperative-network",
+        "current-folkoop"
+      ],
+      "requirements": [
+        "FN-08",
+        "KP-02",
+        "FX-06",
+        "W34-14",
+        "MU-01",
+        "MU-04"
+      ],
+      "domain_objects": [
+        "person",
+        "intent",
+        "need",
+        "resource_cooperation",
+        "resource",
+        "conversation",
+        "outcome",
+        "evidence_artifact"
+      ],
+      "current_fixture_evidence": [
+        "apps/web/network-ui.js: open illustrative Need 'Borrow a tile cutter for the weekend'",
+        "apps/web/network-ui.js: completed illustrative Need 'Borrowed a folding ladder'"
+      ],
+      "current_gap": "The fixture shows an open tool need and a separate completed borrowing story, but not yet one continuous Need → matched Resource/Person → coordination → independently classified Outcome chain.",
+      "entry_points": [
+        "home",
+        "together",
+        "people",
+        "messages",
+        "me"
+      ],
+      "steps": [
+        {
+          "stage": "intent",
+          "status": "current_illustrative",
+          "description": "Mura has a concrete short-lived tool need."
+        },
+        {
+          "stage": "publish_need",
+          "status": "current_illustrative",
+          "description": "The need exists as a Need cooperation object with place/context."
+        },
+        {
+          "stage": "match_resource_person",
+          "status": "target_connection",
+          "description": "Show the relevant resource and the person/steward who can make the next step possible."
+        },
+        {
+          "stage": "coordinate",
+          "status": "current_capability_target_story",
+          "description": "Use the linked work chat/updates where membership permits; do not invent a chat if the fixture does not contain one."
+        },
+        {
+          "stage": "real_action",
+          "status": "illustrative_narrative",
+          "description": "Tool is borrowed and returned outside the app."
+        },
+        {
+          "stage": "outcome",
+          "status": "target_first_class",
+          "description": "Represent the useful result separately from cooperation status and attach evidence/confirmation level."
+        }
+      ],
+      "truth_boundary": [
+        "A current done status is not a confirmed real-world Outcome.",
+        "The visitor must understand that Mura and the lender are authored illustrative people.",
+        "No real inventory availability is implied."
+      ],
+      "acceptance": [
+        "Visitor can explain why a Need is more useful than an unstructured post.",
+        "Visitor can follow the story from need to person/resource to coordination.",
+        "Visitor can distinguish a completed UI state from confirmed real-world outcome evidence."
+      ],
+      "cross_links": [
+        "mura-06-online-center-host",
+        "mura-07-agreement-decision-evidence"
+      ]
+    },
+    {
+      "id": "mura-02-offer-help-repair-outcome",
+      "title": "An Offer becomes useful help in another person's project",
+      "status": "current_partial",
+      "question": "I can help with photography. How does that become useful work instead of a profile claim?",
+      "origin_coverage": [
+        "origin-b-center-methodology",
+        "origin-c-cooperative-network",
+        "current-folkoop"
+      ],
+      "requirements": [
+        "FN-08",
+        "KP-02",
+        "FN-09",
+        "FX-06",
+        "MU-01",
+        "MU-04"
+      ],
+      "domain_objects": [
+        "person",
+        "skill",
+        "offer",
+        "project",
+        "project_task",
+        "community",
+        "conversation",
+        "outcome",
+        "evidence_artifact"
+      ],
+      "current_fixture_evidence": [
+        "apps/web/network-ui.js: Mura Offer 'I can help with photography'",
+        "apps/web/network-ui.js: completed 'Repair café afternoon'",
+        "apps/web/network-ui.js: completed 'Photographed the repair café'",
+        "apps/web/network-ui.js: completed repair-café photography task"
+      ],
+      "current_gap": "The ingredients exist and completed states are visible, but the UI does not yet expose a first-class Outcome/evidence chain tying the Offer to the project result.",
+      "entry_points": [
+        "me",
+        "together",
+        "projects",
+        "people",
+        "communities"
+      ],
+      "steps": [
+        {
+          "stage": "offer",
+          "status": "current_illustrative",
+          "description": "Mura exposes a concrete photography Offer."
+        },
+        {
+          "stage": "match_project",
+          "status": "current_illustrative_partial_link",
+          "description": "A neighbourhood repair project needs useful contribution."
+        },
+        {
+          "stage": "task",
+          "status": "current_illustrative",
+          "description": "Photography becomes a concrete project task rather than a generic profile skill."
+        },
+        {
+          "stage": "action",
+          "status": "current_illustrative",
+          "description": "The task is completed and project narrative records real-world work."
+        },
+        {
+          "stage": "outcome",
+          "status": "target_first_class",
+          "description": "Future story links contribution to an Outcome with confirmation/evidence level."
+        }
+      ],
+      "truth_boundary": [
+        "Completed fixture text is an authored story, not evidence about real participants.",
+        "Skill text and Offer are not credentials or proof of competence.",
+        "No public photo-consent claim is implied by completing a photography task."
+      ],
+      "acceptance": [
+        "Visitor can explain the difference between having a skill and contributing it to a real project.",
+        "Visitor can navigate Offer → Project → Task without treating people as followers.",
+        "Visitor understands that outcome evidence needs a separate confirmation layer."
+      ],
+      "cross_links": [
+        "mura-03-project-plant-exchange",
+        "mura-06-online-center-host"
+      ]
+    },
+    {
+      "id": "mura-03-project-plant-exchange",
+      "title": "A small idea grows into a project with people, tasks and a work chat",
+      "status": "current_slice",
+      "question": "I have a small local idea. How does it gain people and next actions without disappearing in a feed?",
+      "origin_coverage": [
+        "origin-b-center-methodology",
+        "origin-c-cooperative-network",
+        "current-folkoop"
+      ],
+      "requirements": [
+        "FN-09",
+        "FN-11",
+        "FX-01",
+        "GBG-03",
+        "MU-01",
+        "MU-04"
+      ],
+      "domain_objects": [
+        "project",
+        "project_task",
+        "person",
+        "community",
+        "conversation",
+        "activity",
+        "outcome"
+      ],
+      "current_fixture_evidence": [
+        "apps/web/network-ui.js: active illustrative Project 'Plant and seed exchange'",
+        "apps/web/network-ui.js: project tasks, updates, participants and linked work chat",
+        "apps/web/network-ui.js: completed 'Prepare a small sign' task"
+      ],
+      "current_gap": "The project workspace exists, but the story is active rather than independently outcome-classified and is not yet linked to Center/Activity as a first-class object.",
+      "entry_points": [
+        "home",
+        "projects",
+        "people",
+        "messages",
+        "communities"
+      ],
+      "steps": [
+        {
+          "stage": "idea",
+          "status": "current_illustrative",
+          "description": "Mura starts with a concrete neighbourhood exchange idea."
+        },
+        {
+          "stage": "project",
+          "status": "current_illustrative",
+          "description": "The idea becomes a Project with stated purpose."
+        },
+        {
+          "stage": "people",
+          "status": "current_illustrative",
+          "description": "Specific people are connected because of roles/contributions, not follower count."
+        },
+        {
+          "stage": "tasks_chat_updates",
+          "status": "current_illustrative",
+          "description": "Tasks, updates and work chat turn the idea into coordinated next actions."
+        },
+        {
+          "stage": "activity_place",
+          "status": "target_connection",
+          "description": "Future Center/Activity/Place objects make the real gathering and partner location explicit."
+        },
+        {
+          "stage": "outcome_repeat",
+          "status": "target_first_class",
+          "description": "Record the event outcome and whether participants continue into another cooperation."
+        }
+      ],
+      "truth_boundary": [
+        "A Project card is not 'launched' merely because it exists.",
+        "Physical venue availability must not be invented.",
+        "Participant-led activity does not imply a formal legal organisation."
+      ],
+      "acceptance": [
+        "Visitor can follow Project → Person → Task → Chat/Update.",
+        "Visitor can identify the next unfinished task.",
+        "Visitor understands that a real gathering/outcome happens outside the coordination UI."
+      ],
+      "cross_links": [
+        "mura-02-offer-help-repair-outcome",
+        "mura-06-online-center-host",
+        "mura-07-agreement-decision-evidence"
+      ]
+    },
+    {
+      "id": "mura-04-shared-purchase-firewood",
+      "title": "A group purchase coordinates demand, supplier terms and pickup without pretending to be checkout",
+      "status": "current_slice",
+      "question": "Several people need the same thing. Can they coordinate quantities, supplier terms and pickup without FOLKOOP pretending to hold money or place the legal order?",
+      "origin_coverage": [
+        "origin-c-cooperative-network",
+        "current-folkoop"
+      ],
+      "requirements": [
+        "KP-03",
+        "KP-04",
+        "KP-05",
+        "KP-06",
+        "IN-02",
+        "MU-01",
+        "MU-04"
+      ],
+      "domain_objects": [
+        "shared_purchase",
+        "purchase_commitment",
+        "supplier_offer",
+        "supplier_offer_choice",
+        "purchase_process",
+        "purchase_confirmation",
+        "conversation",
+        "economic_coordination",
+        "outcome"
+      ],
+      "current_fixture_evidence": [
+        "apps/web/network-ui.js: active illustrative Shared Purchase 'Dry firewood together'",
+        "apps/web/network-ui.js: purchase confirmation state and Omar logistics relationship",
+        "current DB: purchase commitments/offers/choice/process/confirmations"
+      ],
+      "current_gap": "The shared-purchase slice is implemented, but the broader preserved economic cycle—production, sales, storage, logistics/returns and specialist accounting/payment integrations—is not complete.",
+      "entry_points": [
+        "home",
+        "together",
+        "messages",
+        "people"
+      ],
+      "steps": [
+        {
+          "stage": "aggregate_demand",
+          "status": "current_illustrative",
+          "description": "Participants state quantities for a shared purchase."
+        },
+        {
+          "stage": "supplier_coordination",
+          "status": "current_capability",
+          "description": "Supplier offers can be compared and one can be selected as a coordination preference."
+        },
+        {
+          "stage": "confirmation",
+          "status": "current_illustrative",
+          "description": "Participants confirm/decline frozen quantities before external order."
+        },
+        {
+          "stage": "external_order",
+          "status": "current_capability",
+          "description": "Organizer records that an order was placed outside FOLKOOP; FOLKOOP does not send or verify the order."
+        },
+        {
+          "stage": "delivery_pickup",
+          "status": "current_capability",
+          "description": "Delivery/pickup and participant collection can be coordinated."
+        },
+        {
+          "stage": "outcome_economy",
+          "status": "target_connection",
+          "description": "Outcome/evidence and the wider production/sale/logistics cycle remain future slices."
+        }
+      ],
+      "truth_boundary": [
+        "No checkout, escrow, payment custody or binding supplier order is created by current FOLKOOP.",
+        "Organizer delivery/order notes are self-reported unless separately evidenced.",
+        "Price/offer data does not certify supplier identity or qualification."
+      ],
+      "acceptance": [
+        "Visitor can explain the difference between coordination and payment/order execution.",
+        "Visitor can see why frozen confirmation exists before an external order marker.",
+        "Visitor can identify the path from group demand to pickup and a later Outcome."
+      ],
+      "cross_links": [
+        "mura-06-online-center-host",
+        "mura-07-agreement-decision-evidence"
+      ]
+    },
+    {
+      "id": "mura-05-city-to-action",
+      "title": "An official City question leads to a human or cooperative next step",
+      "status": "target_bridge_with_current_city",
+      "question": "I have a city question or problem. Can I find the authoritative route and then connect it to people/resources/projects without FOLKOOP pretending to be the authority?",
+      "origin_coverage": [
+        "origin-a-city",
+        "origin-b-center-methodology",
+        "current-folkoop"
+      ],
+      "requirements": [
+        "SV-01",
+        "SV-02",
+        "SV-03",
+        "SV-04",
+        "SV-05",
+        "SV-10",
+        "SV-12",
+        "FO-04",
+        "IN-01",
+        "FN-02",
+        "MU-03"
+      ],
+      "domain_objects": [
+        "civic_feed",
+        "civic_item",
+        "source_provenance",
+        "city_process",
+        "organisation",
+        "service",
+        "need",
+        "project",
+        "center",
+        "outcome"
+      ],
+      "current_fixture_evidence": [
+        "docs/DATA_MODEL.md: source-first CivicFeedEnvelope/CivicItem",
+        "apps/web/app.js: Göteborg City routing and official-source handoffs",
+        "Mura City mode may read truthful public/official sources"
+      ],
+      "current_gap": "City runtime exists, but a CivicItem/City Process does not yet become a first-class connected next action in Together/Projects/Center.",
+      "entry_points": [
+        "city",
+        "home",
+        "projects",
+        "together"
+      ],
+      "steps": [
+        {
+          "stage": "question",
+          "status": "current_runtime",
+          "description": "Mura starts from a concrete city question, not an agency name."
+        },
+        {
+          "stage": "source_route",
+          "status": "current_runtime",
+          "description": "FOLKOOP shows source/provenance and the authoritative route/responsible actor when available."
+        },
+        {
+          "stage": "choose_next_step",
+          "status": "target_bridge",
+          "description": "User can choose official handoff, ask a community/Host, find a service/organisation, or create a Need/Project."
+        },
+        {
+          "stage": "coordinate",
+          "status": "target_bridge",
+          "description": "The selected cooperative path stays linked to the originating City context without making FOLKOOP the authority."
+        },
+        {
+          "stage": "outcome",
+          "status": "target_first_class",
+          "description": "Record whether the official/community/project next step was actually useful."
+        }
+      ],
+      "truth_boundary": [
+        "source != claim; fetched/derived data must remain distinguishable from an authority decision.",
+        "FOLKOOP must not claim that an official report was submitted unless the official system confirms it.",
+        "Mura may use real public source data, but her personal story around it remains illustrative."
+      ],
+      "acceptance": [
+        "Visitor can identify the original official source.",
+        "Visitor can distinguish FOLKOOP guidance from public authority.",
+        "Visitor can name at least two possible next-action routes after seeing a City item."
+      ],
+      "cross_links": [
+        "mura-03-project-plant-exchange",
+        "mura-06-online-center-host"
+      ]
+    },
+    {
+      "id": "mura-06-online-center-host",
+      "title": "Online Center Göteborg connects ordinary community life, Host navigation and city/partner opportunities",
+      "status": "approved_target",
+      "question": "I arrive with a vague question or simply want local community. Can I enter an online/hybrid Center, talk normally, and get a useful human next step without being forced into a task workflow?",
+      "origin_coverage": [
+        "origin-b-center-methodology",
+        "origin-d-goteborg-community"
+      ],
+      "requirements": [
+        "FN-01",
+        "FN-02",
+        "FN-03",
+        "FN-04",
+        "FN-05",
+        "FN-06",
+        "FN-07",
+        "FN-10",
+        "FN-11",
+        "GBG-01",
+        "GBG-02",
+        "GBG-03",
+        "GBG-04",
+        "GBG-05",
+        "GBG-06",
+        "GBG-07",
+        "GBG-08",
+        "IN-04",
+        "MU-03"
+      ],
+      "domain_objects": [
+        "center",
+        "host",
+        "referral",
+        "community",
+        "person",
+        "service",
+        "organisation",
+        "place",
+        "activity",
+        "need",
+        "offer",
+        "project",
+        "outcome"
+      ],
+      "current_fixture_evidence": [
+        "current runtime has Communities/People/City and a Center information surface",
+        "Box Center master spec: Host flow Welcome → Consent → Need → Match → Handoff → Follow-up",
+        "Box Göteborg forum source preserves ordinary topical conversation, peer support, moderators, meetings/services/exchange"
+      ],
+      "current_gap": "No operational Online Center/Host/referral object or live forum integration exists. Current Mura navigation hides Center and current UI text still frames Center mainly as a future physical place.",
+      "entry_points": [
+        "center",
+        "communities",
+        "people",
+        "city",
+        "home"
+      ],
+      "steps": [
+        {
+          "stage": "local_context",
+          "status": "target",
+          "description": "Visitor explicitly selects Göteborg context; do not infer precise residence."
+        },
+        {
+          "stage": "ordinary_community",
+          "status": "target",
+          "description": "Show authored illustrative local conversation/community context where ordinary discussion remains valid and not every message becomes a task."
+        },
+        {
+          "stage": "consent",
+          "status": "target_human_operation",
+          "description": "Host asks whether the person wants navigation/help before matching."
+        },
+        {
+          "stage": "clarify",
+          "status": "target_human_operation",
+          "description": "Clarify the person's question/need without profiling by appearance/background."
+        },
+        {
+          "stage": "route",
+          "status": "target",
+          "description": "Offer a small set of People, City, Project, community or partner/service options."
+        },
+        {
+          "stage": "handoff",
+          "status": "target",
+          "description": "Warm referral has a concrete next step and preserves source/provider identity."
+        },
+        {
+          "stage": "follow_up",
+          "status": "target",
+          "description": "Ask whether the referral/connection was used/useful without surveillance."
+        }
+      ],
+      "truth_boundary": [
+        "Do not claim a physical Center venue is open.",
+        "Do not claim a live Telegram/forum integration exists.",
+        "Do not import/copy/link real forum members, identities or messages without separate authorization.",
+        "Use authored illustrative people/messages for Mura's local Center story.",
+        "No contact sharing without consent and no unsolicited matching pressure.",
+        "Ordinary community conversation remains valid; FOLKOOP must not force every interaction into a Need/Project."
+      ],
+      "acceptance": [
+        "Visitor can explain what an online/hybrid Center adds beyond a forum and beyond a directory.",
+        "Visitor understands Host as connector, not salesperson/authority.",
+        "Visitor can follow one referral from vague need to concrete external/community/project next step.",
+        "Visitor can distinguish ordinary conversation from structured cooperation objects."
+      ],
+      "cross_links": [
+        "mura-01-need-resource-return",
+        "mura-03-project-plant-exchange",
+        "mura-05-city-to-action"
+      ]
+    },
+    {
+      "id": "mura-07-agreement-decision-evidence",
+      "title": "A shared decision becomes an authorised action with evidence and an independently checkable integrity anchor",
+      "status": "approved_target_future_prototype",
+      "question": "When several people or organisations make a consequential shared decision, can FOLKOOP show what version was agreed, who had authority, what action followed and what evidence exists—without putting personal data on a blockchain?",
+      "origin_coverage": [
+        "origin-c-cooperative-network",
+        "sdcf",
+        "web3-web4"
+      ],
+      "requirements": [
+        "KP-07",
+        "KP-08",
+        "SDCF-07",
+        "SDCF-08",
+        "SDCF-09",
+        "SDCF-12",
+        "BC-01",
+        "BC-02",
+        "BC-03",
+        "BC-04",
+        "BC-05",
+        "BC-06",
+        "BC-07",
+        "BC-08",
+        "W34-18"
+      ],
+      "domain_objects": [
+        "agreement",
+        "decision_record",
+        "project",
+        "outcome",
+        "evidence_artifact",
+        "attestation",
+        "passport_credential",
+        "node"
+      ],
+      "sdcf_concepts": [
+        "decision_semantic",
+        "plan",
+        "controlled_action",
+        "claim_evidence"
+      ],
+      "current_fixture_evidence": [
+        "docs/FOUNDATION_CHARTER.md: blockchain required as a scoped workstream",
+        "docs/architecture/SDCF_INTEGRATION.md: decision/plan/action/evidence distinctions",
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md: operational DB remains source of truth"
+      ],
+      "current_gap": "No Agreement/Decision/Outcome/Attestation first-class runtime and no blockchain testnet proof are shipped.",
+      "entry_points": [
+        "projects",
+        "communities",
+        "center"
+      ],
+      "steps": [
+        {
+          "stage": "alternatives",
+          "status": "target",
+          "description": "People see the objective, constraints and alternatives before a consequential group decision."
+        },
+        {
+          "stage": "decision_authority",
+          "status": "target",
+          "description": "Record selected alternative, purpose, authority/participants and version."
+        },
+        {
+          "stage": "agreement_version",
+          "status": "target",
+          "description": "Store the actual agreement/decision document off-chain with explicit versioning."
+        },
+        {
+          "stage": "plan_action",
+          "status": "target",
+          "description": "Trace a plan and authorised controlled action back to the decision."
+        },
+        {
+          "stage": "outcome_evidence",
+          "status": "target",
+          "description": "Separate participant claims, multi-party confirmations and external evidence."
+        },
+        {
+          "stage": "testnet_anchor",
+          "status": "future_prototype",
+          "description": "Anchor only an appropriately designed commitment/hash in a real testnet transaction and independently verify it."
+        },
+        {
+          "stage": "correction_revocation",
+          "status": "future_prototype",
+          "description": "Corrections/revocations create new traceable state; immutable anchor does not make an incorrect claim true."
+        }
+      ],
+      "truth_boundary": [
+        "No profile, private message, home address, forum membership or sensitive request goes onto a public immutable ledger.",
+        "Hashing alone is not assumed to anonymise personal data.",
+        "No simulated receipt may be presented as an actual blockchain transaction.",
+        "No mandatory wallet, seed phrase, token, NFT or crypto payment for ordinary users.",
+        "Blockchain integrity does not prove real-world truth, valid authority or legal validity."
+      ],
+      "acceptance": [
+        "Visitor can distinguish Agreement, Decision, Action, Outcome, Evidence and Integrity Anchor.",
+        "A specialist can independently verify the testnet anchor from public chain data when the prototype exists.",
+        "Ordinary FOLKOOP use remains available when the chain is unavailable."
+      ],
+      "cross_links": [
+        "mura-03-project-plant-exchange",
+        "mura-04-shared-purchase-firewood"
+      ]
+    }
+  ]
+}
