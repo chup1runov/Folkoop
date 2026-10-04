@@ -907,7 +907,6 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
  });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
   if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
-  if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
@@ -936,7 +935,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='logout'&&guestDemo){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-exit'}}));notice='';return;}
   if(a==='logout'){await api.logout();notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
-  if(a==='backChats')selectedChat=null;if(a==='openChat')selectedChat=id;
+  if(a==='backChats')selectedChat=null;if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='acceptChat')await api.acceptChat(id);
   if(a==='declineChat'){await api.declineChat(id);if(selectedChat===id)selectedChat=null;}
   if(a==='leaveChat'){if(!confirm(t('confirm')))return;await api.leaveChat(id);selectedChat=null;}
