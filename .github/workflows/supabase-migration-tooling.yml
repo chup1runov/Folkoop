@@ -5,8 +5,6 @@ on:
     paths:
       - '.github/workflows/supabase-migration-tooling.yml'
       - 'supabase/migrations/**'
-      - 'supabase/tests/network-economic-flow-prototype.sql'
-      - 'supabase/tests/network-economic-flow-migration.sql'
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,15 +24,22 @@ jobs:
           test "$(supabase --version)" = "2.117.0"
           supabase migration --help >/dev/null
           supabase migration new --help >/dev/null
-      - name: Generate E01 migration filename with the CLI
+      - name: Verify committed E01 migration uses a CLI timestamp
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t committed < <(find supabase/migrations -maxdepth 1 -type f -name '*_folkoop_economic_flow_v0.sql' -printf '%f\n')
+          test "${#committed[@]}" -eq 1
+          [[ "${committed[0]}" =~ ^[0-9]{14}_folkoop_economic_flow_v0\.sql$ ]]
+          echo "E01_MIGRATION=${committed[0]}"
+      - name: Probe migration generation without touching repository history
         shell: bash
         run: |
           set -euo pipefail
           tmp="$(mktemp -d)"
           mkdir -p "$tmp/supabase/migrations"
           cd "$tmp"
-          supabase migration new folkoop_economic_flow_v0
-          mapfile -t generated < <(find supabase/migrations -maxdepth 1 -type f -name '*_folkoop_economic_flow_v0.sql' -printf '%f\n')
+          supabase migration new cli_contract_probe
+          mapfile -t generated < <(find supabase/migrations -maxdepth 1 -type f -name '*_cli_contract_probe.sql' -printf '%f\n')
           test "${#generated[@]}" -eq 1
-          [[ "${generated[0]}" =~ ^[0-9]{14}_folkoop_economic_flow_v0\.sql$ ]]
-          echo "CLI_GENERATED_MIGRATION=${generated[0]}"
+          [[ "${generated[0]}" =~ ^[0-9]{14}_cli_contract_probe\.sql$ ]]
