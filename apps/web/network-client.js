@@ -70,6 +70,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function kind(value){if(!['need','offer','purchase','resource','project'].includes(value))throw fail('INVALID_INPUT');return value;}
  function status(value){if(!['open','active','done','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
  function taskStatus(value){if(!['todo','doing','done'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicKind(value){if(!['procurement','production','sale','service','distribution'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicStage(value){if(!['planning','active','closed','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicRole(value){if(!['coordinator','contributor','producer','buyer','seller','logistics'].includes(value))throw fail('INVALID_INPUT');return value;}
  function quantity(value,{allowZero=false}={}){const n=Number(value);if(!Number.isFinite(n)||(allowZero?n<0:n<=0)||n>1000000000)throw fail('INVALID_INPUT');return n;}
  function currency(value){const v=text(value,3,3).toUpperCase();if(!/^[A-Z]{3}$/.test(v))throw fail('INVALID_INPUT');return v;}
  function deliveryMode(value){if(!['pickup','delivery','both'].includes(value))throw fail('INVALID_INPUT');return value;}
