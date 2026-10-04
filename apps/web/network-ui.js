@@ -967,7 +967,7 @@ window.addEventListener('message',e=>{
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
-window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';selected=null;selectedChat=null;selectedCoop=null;version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:subsection',e=>{
  const parent=e.detail?.parent;
  if(parent==='projects')selectedCoop=null;
