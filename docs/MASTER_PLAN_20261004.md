@@ -795,7 +795,7 @@ Design rule:
 **the full depth lives in connected objects and contextual tools; the participant-facing surface speaks in human actions.**
 
 The lab keeps a design-only coverage map for:
-current FOLKOOP, Sverinav, FOLKUNO, owner cooperative-social-network work, attributed KООПСЕТЬ research, ГБГ Форум, Mura, SDCF, Web3/Web4 and blockchain.
+current FOLKOOP implementation, civic/public-infrastructure origin, community/Center origin, owner cooperative-social-network work, attributed cooperative-economy research, ГБГ Форум, Mura, SDCF, Web3/Web4 and blockchain.
 
 No lab interaction is production truth. Promotion requires owner review plus production/security/privacy/permission mapping and appropriate evidence.
 
