@@ -268,7 +268,7 @@ async def main():
 
   await page.locator('#skip').focus()
   await page.keyboard.press('Enter')
-  assert await page.evaluate("document.activeElement?.id")==='networkPanel'
+  assert await page.evaluate("document.activeElement?.id")=='networkPanel'
   passed.append('Skip link targets the visible Mura content surface')
 
   # Regression: Home conversation previews must open the selected conversation.
