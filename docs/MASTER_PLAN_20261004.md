@@ -422,7 +422,7 @@ Next connected slice after the first-contact/pilot-critical gates:
 - outcome assertions attributed;
 - later Evidence/Attestation can strengthen the record without rewriting history.
 
-This program connects FOLKUNO + GBG Forum + Sverinav/City + current Cooperation without defining the whole product.
+This program connects Center/community + GBG Forum + City/public-infrastructure + current Cooperation without defining the whole product.
 
 ---
 
@@ -534,7 +534,7 @@ Do not make users learn SDCF terminology.
 
 ---
 
-# 12. PROGRAM CITY — Sverinav completeness
+# 12. PROGRAM CITY — civic/public-infrastructure completeness
 
 Current City/source layer exists, and City ↔ Cooperation bridge exists.
 
@@ -555,7 +555,7 @@ expand City when a real local user journey or pilot bottleneck requires it. Do n
 
 ---
 
-# 13. PROGRAM CENTER — FOLKUNO / GBG Forum / physical layer
+# 13. PROGRAM CENTER — community/opportunity + GBG Forum / physical layer
 
 ## Current
 - Online Center route exists;
