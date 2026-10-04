@@ -153,7 +153,7 @@ function center(){
  return head('centerOnlineTitle','centerOnlineText')
   +`<div class="row"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><span class="meta">${esc(city||'FOLKOOP')}</span></div>`
   +`<div class="feature-grid">${routeCard('people','people','centerPeopleTitle','centerPeopleText','people')}${routeCard('communities','communities','centerCommunityTitle','centerCommunityText','communities')}${routeCard('city','city','centerCityTitle','centerCityText','openCity')}<article class="card" data-center-route="action"><span class="small-icon">${icon('project')}</span><h2>${esc(t('centerProjectTitle'))}</h2><p>${esc(t('centerProjectText'))}</p><div class="actions">${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article></div>`
-  +`<div class="feature-grid">${local}<article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerHostTitle'))}</h2><p>${esc(t('centerHostText'))}</p></article><article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerPhysicalTitle'))}</h2><p>${esc(t('centerPhysicalText'))}</p></article></div>`;
+  +`<div class="feature-grid">${local}${mura?'':`<article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerHostTitle'))}</h2><p>${esc(t('centerHostText'))}</p></article><article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerPhysicalTitle'))}</h2><p>${esc(t('centerPhysicalText'))}</p></article>`}</div>`;
 }
 
 function settingsPage(){
