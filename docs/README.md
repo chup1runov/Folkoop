@@ -42,6 +42,7 @@ Start with:
 
 - `ARCHITECTURE.md` — architecture that exists in the current pilot line.
 - `architecture/UNIFIED_DOMAIN_MAP.md` / `unified-domain-map-v1.json` — current operational objects, runtime/local models, variants, target domain objects and cross-cutting SDCF semantics in one map.
+- `architecture/COOPERATIVE_ECONOMY_V1_SCOPE.md` / `cooperative-economy-v1-scope.json` — staged expansion from Shared Purchase into production/sales/logistics/agreement coordination while keeping payments/accounting/KYC/legal voting in specialist systems.
 - `DATA_MODEL.md` — product data-model notes.
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.
 - `SOURCE_REGISTRY.json` — external/public civic source registry.
