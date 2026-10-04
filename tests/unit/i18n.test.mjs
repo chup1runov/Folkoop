@@ -97,11 +97,11 @@ function coreBundle(lang){
 const bundle=lang=>CORE.includes(lang)?coreBundle(lang):extra[lang];
 
 test('versioned schema is the single explicit interface-key contract',()=>{
- assert.equal(FOLKOOP_I18N_SCHEMA_VERSION,1);
+ assert.equal(FOLKOOP_I18N_SCHEMA_VERSION,2);
  assert.deepEqual(FOLKOOP_I18N_GROUPS,['auth','helper','homeWelcome','network','shell','tutorial','tutorialTitles']);
  const englishPaths=[...flattenI18n(bundle('en')).keys()].sort();
  assert.deepEqual(englishPaths,FOLKOOP_I18N_PATHS);
- assert.equal(FOLKOOP_I18N_PATHS.length,486);
+ assert.equal(FOLKOOP_I18N_PATHS.length,509);
 });
 
 test('language registry and runtime shell advertise the same eleven languages',()=>{
