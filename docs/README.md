@@ -17,7 +17,7 @@ When documents disagree, use this order unless a more specific current document 
 3. `GOTEBORG_CORE_LOOP_PILOT.md` for the protected first-pilot scope, which is a validation slice only;
 4. current privacy/security and operator documents for their specific domain;
 5. `STATUS.md`, `PROJECT_HANDOFF.md` and latest dated handoff for current-state orientation;
-6. `WORK_PLAN_20261001.md` for execution sequencing and mini-project dependencies, subject to the newer foundation scope;
+6. `MASTER_PLAN_20261004.md` for current execution sequencing and ranked dependencies; `WORK_PLAN_20261001.md` is retained as historical execution detail;
 7. research documents as inputs and traceable source requirements;
 8. `history/` and documents explicitly marked superseded only as historical evidence.
 
@@ -36,7 +36,8 @@ Start with:
 - `PROJECT_HANDOFF.md` — implementation orientation; follow its latest dated handoff pointer.
 - `HANDOFF_20261003.md` — current Mura/runtime handoff at the foundation baseline; planned Center changes are governed by the new charter.
 - `STATUS.md` — short current-state pointer.
-- `WORK_PLAN_20261001.md` — mini-project execution plan and dependency graph.
+- `MASTER_PLAN_20261004.md` — current ranked execution index across product, pilot, economy, organisation and long-term architecture.
+- `WORK_PLAN_20261001.md` — historical mini-project execution detail; superseded as the current queue by the 4 October master plan.
 - `FREE_ONLY.md` — zero-cost infrastructure policy.
 - `ROADMAP.md`, `VALUE_ROADMAP.md`, `MVP.md`, `USER_FLOWS.md` — historical/supporting product direction.
 

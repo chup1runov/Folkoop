@@ -2,7 +2,7 @@
 
 **Different people. Common ground.** A cooperation network that turns **I need / I can / I want to do** into people, resources and a concrete next action.
 
-Current execution plan: [`docs/WORK_PLAN_20261001.md`](docs/WORK_PLAN_20261001.md). Current priority remains Google Auth gate → two-account technical gate → account-closure rehearsal → controlled Göteborg core-loop pilot.
+Current execution plan: [`docs/MASTER_PLAN_20261004.md`](docs/MASTER_PLAN_20261004.md). Current P0 order starts with first-contact clarity v2 and physical iPhone/Safari/VoiceOver acceptance, then participant Google Auth → two-account technical gate → account-closure/privacy/launch authorization → controlled Göteborg core-loop pilot. [`docs/WORK_PLAN_20261001.md`](docs/WORK_PLAN_20261001.md) is retained as historical execution detail, not a competing current queue.
 
 ## Current pilot state — v0.39.1
 
