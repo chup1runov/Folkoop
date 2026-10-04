@@ -21,9 +21,9 @@
     "A story may use truthful official City sources while the personal narrative around them remains illustrative."
   ],
   "current_contract_conflict": {
-    "existing_contract": "MURA_ACCEPTANCE_CONTRACT.md currently hides Center in Mura navigation.",
-    "controlling_target": "Foundation Charter §9 now requires Mura to include Center and the Göteborg local-community context as that slice becomes available.",
-    "handling": "Do not fake Center now. Keep the runtime limitation visible, then update the acceptance contract and runtime together in the Online Center Göteborg vertical slice."
+    "existing_contract": "Before Online Center Göteborg v0, MURA_ACCEPTANCE_CONTRACT.md hid Center in Mura navigation.",
+    "controlling_target": "Foundation Charter §9 requires Mura to include Center and the Göteborg local-community context as that slice becomes available.",
+    "handling": "Resolved for v0: runtime and acceptance contract now allow an authored read-only Online Center Göteborg story. Staffed Host/referral operation, live forum synchronization and physical venue claims remain explicitly unimplemented."
   },
   "stories": [
     {
@@ -466,7 +466,7 @@
     {
       "id": "mura-06-online-center-host",
       "title": "Online Center Göteborg connects ordinary community life, Host navigation and city/partner opportunities",
-      "status": "approved_target",
+      "status": "current_v0_partial",
       "question": "I arrive with a vague question or simply want local community. Can I enter an online/hybrid Center, talk normally, and get a useful human next step without being forced into a task workflow?",
       "origin_coverage": [
         "origin-b-center-methodology",
@@ -509,11 +509,13 @@
         "outcome"
       ],
       "current_fixture_evidence": [
-        "current runtime has Communities/People/City and a Center information surface",
+        "apps/web/folkoop.js: Online Center Göteborg v0 connects People, Communities, City, Together and Projects",
+        "apps/web/folkoop.js: Mura can open Center under the City context",
+        "apps/web/folkoop-copy.js: Göteborg external-community context is labelled as non-synchronized",
         "Box Center master spec: Host flow Welcome → Consent → Need → Match → Handoff → Follow-up",
         "Box Göteborg forum source preserves ordinary topical conversation, peer support, moderators, meetings/services/exchange"
       ],
-      "current_gap": "No operational Online Center/Host/referral object or live forum integration exists. Current Mura navigation hides Center and current UI text still frames Center mainly as a future physical place.",
+      "current_gap": "Online Center v0 now provides connected self-service routes and an authored Mura Göteborg context. Staffed Host consent/clarification, warm referral/follow-up, live forum synchronization, first-class Center/Place/Activity objects and any physical venue remain unimplemented.",
       "entry_points": [
         "center",
         "communities",
@@ -524,38 +526,38 @@
       "steps": [
         {
           "stage": "local_context",
-          "status": "target",
-          "description": "Visitor explicitly selects Göteborg context; do not infer precise residence."
+          "status": "current_v0",
+          "description": "Selected Göteborg context can expose the local Center surface; another city does not receive fabricated Göteborg community context."
         },
         {
           "stage": "ordinary_community",
-          "status": "target",
-          "description": "Show authored illustrative local conversation/community context where ordinary discussion remains valid and not every message becomes a task."
+          "status": "current_v0_illustrative",
+          "description": "Mura shows authored local-community context; signed-in Göteborg users may open the external community via a plain outbound link with no data synchronization."
         },
         {
           "stage": "consent",
           "status": "target_human_operation",
-          "description": "Host asks whether the person wants navigation/help before matching."
+          "description": "A future staffed Host asks whether the person wants navigation/help before matching."
         },
         {
           "stage": "clarify",
           "status": "target_human_operation",
-          "description": "Clarify the person's question/need without profiling by appearance/background."
+          "description": "A future Host clarifies the person's question/need without profiling by appearance/background."
         },
         {
           "stage": "route",
-          "status": "target",
-          "description": "Offer a small set of People, City, Project, community or partner/service options."
+          "status": "current_v0_self_service",
+          "description": "Center offers current routes to People, Communities, City, Together and Projects; it does not pretend a human referral occurred."
         },
         {
           "stage": "handoff",
-          "status": "target",
-          "description": "Warm referral has a concrete next step and preserves source/provider identity."
+          "status": "target_human_operation",
+          "description": "Future warm referral has a concrete next step and preserves source/provider identity."
         },
         {
           "stage": "follow_up",
-          "status": "target",
-          "description": "Ask whether the referral/connection was used/useful without surveillance."
+          "status": "target_human_operation",
+          "description": "Future follow-up asks whether the referral/connection was used/useful without surveillance."
         }
       ],
       "truth_boundary": [
@@ -568,9 +570,10 @@
       ],
       "acceptance": [
         "Visitor can explain what an online/hybrid Center adds beyond a forum and beyond a directory.",
-        "Visitor understands Host as connector, not salesperson/authority.",
-        "Visitor can follow one referral from vague need to concrete external/community/project next step.",
-        "Visitor can distinguish ordinary conversation from structured cooperation objects."
+        "Visitor can move from Center to People, Communities, City, Together or Projects without encountering a fake Host workflow.",
+        "Visitor understands that staffed Host/referral/follow-up is not operating in v0.",
+        "Göteborg visitor can distinguish the external local-community link from FOLKOOP-synchronized data.",
+        "Mura visitor understands that local people/messages are authored illustration rather than copied forum content."
       ],
       "cross_links": [
         "mura-01-need-resource-return",
