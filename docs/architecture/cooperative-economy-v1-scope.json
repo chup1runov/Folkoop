@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-04",
+  "controlling_decision": "FK-FOUNDATION-2026-10-04",
+  "purpose": "Define the smallest coherent expansion from current Shared Purchase into broader cooperative economic coordination without duplicating project truth or taking custody of regulated money/accounting.",
+  "current_baseline": {
+    "implemented": [
+      "Need / Offer / Resource / Shared Purchase / Project as cooperation variants",
+      "Project tasks, assignees, updates and linked work chat",
+      "Shared-purchase quantity commitments",
+      "Supplier coordination offers",
+      "Supplier offer choice",
+      "Participant quantity confirmation",
+      "External-order marker",
+      "Delivery / pickup coordination",
+      "Participant collection state",
+      "Self-reported purchase completion note"
+    ],
+    "not_equivalent_to": [
+      "checkout or payment execution",
+      "supplier identity verification",
+      "accounting",
+      "regulated financial custody",
+      "formal production planning",
+      "sales fulfilment",
+      "inventory/storage management",
+      "returns management",
+      "legally significant voting"
+    ]
+  },
+  "domain_principles": [
+    "Cooperation expresses human intent/coordination; it is not automatically an accounting transaction.",
+    "Project remains the coordination container for multi-step work; do not create a second project system for economic activity.",
+    "Economic Flow should reference Projects, Resources, Organisations/Services, Agreements/Decisions and Outcomes rather than duplicate their truth.",
+    "Payments, KYC, bookkeeping, tax invoices and regulated custody remain specialist integrations unless a future legal/technical review explicitly changes that boundary.",
+    "A selected supplier offer is coordination state, not proof of a contract, payment or delivery.",
+    "Production and sales must support partial/failure/cancelled states and cannot be inferred from a final UI status.",
+    "Source/provenance and participant assertions remain distinguishable from external evidence."
+  ],
+  "v1_slices": [
+    {
+      "id": "economy-1-flow-intent",
+      "title": "Economic Flow / role graph",
+      "status": "next_design_and_runtime_slice",
+      "goal": "Represent why a cooperation/project is producing, procuring, selling, distributing or servicing something, and which parties/resources/roles participate, without replacing the parent cooperation/project.",
+      "candidate_objects": [
+        "economic_flow",
+        "economic_flow_participant_role",
+        "economic_flow_resource_link"
+      ],
+      "candidate_flow_kinds": [
+        "procurement",
+        "production",
+        "sale",
+        "service",
+        "distribution"
+      ],
+      "dependencies": [
+        "project",
+        "shared_purchase",
+        "resource",
+        "organisation"
+      ],
+      "requirements": [
+        "FO-06",
+        "KP-05",
+        "KP-06",
+        "IN-02"
+      ],
+      "explicit_non_goals": [
+        "payment",
+        "invoice ledger",
+        "tax/accounting",
+        "inventory valuation"
+      ]
+    },
+    {
+      "id": "economy-2-fulfilment-logistics",
+      "title": "Fulfilment / logistics milestones",
+      "status": "after_economy_1",
+      "goal": "Coordinate storage, handoff, transport, distribution and returns as explicit milestones/evidence-bearing events rather than one generic done flag.",
+      "candidate_objects": [
+        "fulfilment_plan",
+        "fulfilment_milestone",
+        "handoff_or_return_record"
+      ],
+      "dependencies": [
+        "economic_flow",
+        "place",
+        "resource",
+        "outcome"
+      ],
+      "requirements": [
+        "KP-06",
+        "IN-02",
+        "FX-06"
+      ],
+      "explicit_non_goals": [
+        "carrier marketplace",
+        "automatic route optimization",
+        "warehouse management system"
+      ]
+    },
+    {
+      "id": "economy-3-agreement-decision-trail",
+      "title": "Agreement / Decision / execution trail",
+      "status": "after_economy_1",
+      "goal": "Record what participants agreed, which alternative was selected, by whom/with what authority, and which later actions/outcomes derive from that decision.",
+      "candidate_objects": [
+        "agreement",
+        "decision_record",
+        "controlled_action"
+      ],
+      "dependencies": [
+        "economic_flow",
+        "SDCF decision semantics",
+        "outcome/evidence"
+      ],
+      "requirements": [
+        "KP-07",
+        "KP-08",
+        "SDCF-07",
+        "SDCF-08",
+        "BC-01"
+      ],
+      "explicit_non_goals": [
+        "legally binding e-signature by default",
+        "DAO governance",
+        "public blockchain storage of participant data"
+      ]
+    }
+  ],
+  "specialist_handoffs": [
+    {
+      "capability": "payments_and_money_custody",
+      "route": "external regulated/payment provider",
+      "reason": "Do not make FOLKOOP a payment institution by accident."
+    },
+    {
+      "capability": "bookkeeping_and_tax",
+      "route": "accounting/invoicing system",
+      "reason": "Specialist legal/accounting truth should remain in the proper system."
+    },
+    {
+      "capability": "KYC_or_formal_identity",
+      "route": "appropriate identity/regulated provider",
+      "reason": "Verification strength proportional to action; minimise personal data."
+    },
+    {
+      "capability": "legally_significant_voting",
+      "route": "authorised governance/legal system where required",
+      "reason": "Community decisions in FOLKOOP must not silently become legal corporate votes."
+    }
+  ],
+  "migration_gate": {
+    "before_sql": [
+      "name the first concrete user journey",
+      "identify current parent cooperation/project records",
+      "prove the new record does not duplicate existing truth",
+      "define RLS/RPC ownership and visibility",
+      "define cancellation/correction lifecycle",
+      "define Outcome/evidence relation",
+      "add Mura story",
+      "add real-user acceptance scenario",
+      "run privacy/security review"
+    ],
+    "rule": "No new economic table is approved by this scope document alone."
+  },
+  "first_acceptance_journey": {
+    "id": "ECON-J1",
+    "scenario": "A neighbourhood group decides to produce and distribute a small batch of a non-regulated item/service using an existing Project. Participants contribute skills/resources, choose a procurement/sale/logistics plan, perform work, distribute results, and record a qualified outcome. Any payment/accounting step hands off explicitly to the appropriate external system.",
+    "must_show": [
+      "people and roles",
+      "project/tasks",
+      "resources",
+      "economic flow kind and stage",
+      "decision/agreement provenance",
+      "fulfilment/logistics milestone",
+      "qualified outcome/evidence",
+      "external specialist boundary for money/accounting"
+    ]
+  }
+}
