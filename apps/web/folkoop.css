@@ -105,7 +105,7 @@
  .layout{display:block;min-height:calc(100vh - 58px)}
  .content{padding:18px 15px calc(92px + env(safe-area-inset-bottom))}
  .mobile-context-visible .content{padding-bottom:calc(138px + env(safe-area-inset-bottom))}
- .mobile-primary-nav{position:fixed;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));left:0;right:0;bottom:0;z-index:90;min-height:64px;padding:5px 4px calc(5px + env(safe-area-inset-bottom));background:#fffefdf2;border-top:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:0 -8px 28px #0000000b}
+ .mobile-primary-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));left:0;right:0;bottom:0;z-index:90;min-height:64px;padding:5px 4px calc(5px + env(safe-area-inset-bottom));background:#fffefdf2;border-top:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:0 -8px 28px #0000000b}
  .mobile-primary-nav a{position:relative;display:flex;min-width:0;min-height:52px;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);text-decoration:none;border-radius:10px;font-size:.61rem;font-weight:650;line-height:1.05}
  .mobile-primary-nav a svg{width:19px;height:19px}
  .mobile-primary-nav a span:not(.net-count){max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

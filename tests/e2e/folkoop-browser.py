@@ -17,7 +17,7 @@ async def main():
   page=await context.new_page();errors=[]
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
-  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(6)
+  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(5)
   await page.select_option('#language','ru')
   await expect(page.locator('h1')).to_contain_text('Что-то нужно? Можешь помочь?')
   await expect(page.locator('.hero p').nth(1)).to_contain_text('Групповой чат начинается, когда люди уже нашли друг друга')
@@ -149,7 +149,7 @@ async def main():
    controlled=await op.evaluate('navigator.serviceWorker.controller !== null')
   assert controlled
   await offline.set_offline(True);await op.reload()
-  await expect(op.locator('#mobilePrimaryNav a')).to_have_count(6)
+  await expect(op.locator('#mobilePrimaryNav a')).to_have_count(5)
   await op.click('#mobilePrimaryNav a[href="#/city"]')
   await expect(op.frame_locator('#cityFrame').locator('#view')).not_to_be_empty()
   results.append('Installed shell and embedded City entry load offline; no fabricated source success')
