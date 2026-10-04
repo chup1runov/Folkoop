@@ -46,10 +46,13 @@ test('four origin families are represented without making legacy source names pr
   for(const id of ['origin-a-city','origin-b-center-methodology','origin-c-cooperative-network','origin-d-goteborg-community'])assert(origins.has(id),id);
 });
 
-test('Online Center story remains target work and forbids invented venue/forum integration',()=>{
+test('Online Center story records v0 self-service coverage without pretending staffed/live/physical integration',()=>{
   const story=stories.stories.find(x=>x.id==='mura-06-online-center-host');
-  assert.equal(story.status,'approved_target');
-  assert.match(story.current_gap,/No operational Online Center/i);
+  assert.equal(story.status,'current_v0_partial');
+  assert.match(story.current_gap,/connected self-service routes/i);
+  assert.match(story.current_gap,/Staffed Host/i);
+  assert(story.steps.some(x=>x.stage==='route'&&x.status==='current_v0_self_service'));
+  assert(story.steps.some(x=>x.stage==='consent'&&x.status==='target_human_operation'));
   assert(story.truth_boundary.some(x=>/Do not claim a physical Center venue is open/i.test(x)));
   assert(story.truth_boundary.some(x=>/Do not claim a live Telegram\/forum integration exists/i.test(x)));
   assert(story.truth_boundary.some(x=>/Do not import\/copy\/link real forum members/i.test(x)));
@@ -74,8 +77,10 @@ test('blockchain story is future-only and preserves privacy/independent-verifica
   assert(story.truth_boundary.some(x=>/does not prove real-world truth/i.test(x)));
 });
 
-test('current Center acceptance conflict is explicit rather than silently rewritten',()=>{
-  assert.match(stories.current_contract_conflict.existing_contract,/currently hides Center/i);
+test('Center acceptance contract and runtime are aligned for v0 while later operations remain explicit gaps',()=>{
+  assert.match(stories.current_contract_conflict.existing_contract,/Before Online Center Göteborg v0.*hid Center/i);
   assert.match(stories.current_contract_conflict.controlling_target,/Foundation Charter.*requires Mura to include Center/i);
-  assert.match(stories.current_contract_conflict.handling,/Do not fake Center now/i);
+  assert.match(stories.current_contract_conflict.handling,/Resolved for v0/i);
+  assert.match(stories.current_contract_conflict.handling,/Staffed Host\/referral operation/i);
+  assert.match(stories.current_contract_conflict.handling,/live forum synchronization/i);
 });

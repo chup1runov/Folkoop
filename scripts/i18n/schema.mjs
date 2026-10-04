@@ -1,7 +1,7 @@
 // Versioned localization contract for FOLKOOP.
 // This file is intentionally runtime-neutral: it gives tests and future language-pack
 // tooling one explicit source of truth without forcing a broad module migration.
-export const FOLKOOP_I18N_SCHEMA_VERSION=1;
+export const FOLKOOP_I18N_SCHEMA_VERSION=2;
 export const FOLKOOP_LANGUAGES=Object.freeze(["sv","en","ar","so","fa","fi","bs","ku","es","ru","uk"]);
 export const FOLKOOP_RTL_LANGUAGES=Object.freeze(["ar","fa"]);
 export const FOLKOOP_I18N_GROUPS=Object.freeze(["auth","helper","homeWelcome","network","shell","tutorial","tutorialTitles"]);
@@ -358,6 +358,29 @@ export const FOLKOOP_I18N_PATHS=Object.freeze([
   "shell.centerCard2Text",
   "shell.centerCard3",
   "shell.centerCard3Text",
+  "shell.centerCityText",
+  "shell.centerCityTitle",
+  "shell.centerCommunityText",
+  "shell.centerCommunityTitle",
+  "shell.centerHostText",
+  "shell.centerHostTitle",
+  "shell.centerLocalExternal",
+  "shell.centerLocalExternalNote",
+  "shell.centerLocalIllustrative",
+  "shell.centerLocalText",
+  "shell.centerLocalTitle",
+  "shell.centerMuraStatus",
+  "shell.centerOnlineStatus",
+  "shell.centerOnlineText",
+  "shell.centerOnlineTitle",
+  "shell.centerOtherCityText",
+  "shell.centerOtherCityTitle",
+  "shell.centerPeopleText",
+  "shell.centerPeopleTitle",
+  "shell.centerPhysicalText",
+  "shell.centerPhysicalTitle",
+  "shell.centerProjectText",
+  "shell.centerProjectTitle",
   "shell.centerText",
   "shell.centerTitle",
   "shell.centreStatus",

@@ -190,7 +190,7 @@ This is a target domain map, not a migration instruction and not a reason to int
 
 | Object | Status | Current representation / storage | Gap or invariant | Requirements |
 |---|---|---|---|---|
-| `center` — Center | `approved_target` | — | Current UI copy still presents Center mainly as a future physical layer; Charter requires ONLINE, PHYSICAL or HYBRID and Göteborg forum context. | `FN-01`, `FN-03`, `FN-16`, `GBG-01`, `GBG-02`, `IN-04` |
+| `center` — Center | `partial_representation` | apps/web/folkoop.js: Online Center Göteborg v0 connected route hub | Online Center v0 connects current routes and authored local context; staffed Host/referral, live forum synchronization, first-class Center/Place/Activity records and a physical venue remain unimplemented. | `FN-01`, `FN-03`, `FN-16`, `GBG-01`, `GBG-02`, `IN-04` |
 | `place` — Place | `approved_target` | — | — | `FX-07`, `IN-04`, `W34-14` |
 | `activity` — Activity / Meetup / Meeting | `approved_target` | — | — | `FN-11`, `FX-07`, `GBG-03` |
 | `host` — Host / human navigator | `approved_target` | — | — | `FN-01`, `FN-06`, `FN-10` |
@@ -277,7 +277,7 @@ SDCF is not a competing product taxonomy. It supplies semantic discipline across
 
 ### gap-online-center
 
-Create Online/Hybrid Center Göteborg domain journey and connect Göteborg local community context without importing identities/messages.
+Online Center Göteborg v0 now connects self-service routes and authored Göteborg local-community context. Remaining work: staffed Host/referral operations, first-class Center/Place/Activity records and any separately authorized forum integration.
 
 Objects: `center`, `community`, `host`, `referral`, `place`, `activity`.  
 Requirements: `GBG-01`, `GBG-02`, `GBG-07`, `GBG-08`, `FN-01`, `IN-04`.
@@ -310,9 +310,9 @@ Extend Mura from the current story set to the whole-system map, including Center
 Objects: `mura_illustrative_account`, `center`, `civic_item`, `project`, `outcome`.  
 Requirements: `MU-01`, `MU-03`, `MU-04`, `MU-05`.
 
-## Current Center/Mura mismatch
+## Current Center/Mura v0 boundary
 
-The current shell still describes Center mainly as a future physical place, while the 4 October Charter requires Center to support **ONLINE, PHYSICAL or HYBRID** operation with the Göteborg local-community context. Current Mura routing also redirects a Center route away during Mura visits. Therefore Center/GBG coverage is an explicit implementation gap, not something this map marks as shipped.
+Online Center Göteborg v0 now provides a connected runtime route between People, Communities, City, Together and Projects, and Mura can open an authored Göteborg-local Center story. This is a **partial representation**, not a first-class Center service: there is no staffed Host/referral operation, no live forum synchronization, no imported forum identities/messages, no first-class Center/Place/Activity records and no physical FOLKOOP venue claimed open.
 
 ## Current City boundary
 

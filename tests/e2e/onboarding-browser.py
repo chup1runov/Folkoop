@@ -43,7 +43,7 @@ async def mobile_flow(browser,passed):
   'Чем я могу помочь',
   'Идея, которая выросла',
   'Люди вокруг меня',
-  'Где мы договариваемся',
+  'Мой локальный Центр',
   'Теперь исследуй сам'
  ]
  semantic={
@@ -63,6 +63,10 @@ async def mobile_flow(browser,passed):
    await page.click('[data-onboarding="next"]')
    await expect(page.locator('#muraPracticeXp')).to_have_text(f'{idx-1} / 3')
    assert 'XP' not in await page.locator('#onboarding').inner_text()
+  if idx==6:
+   assert page.url.endswith('#/center'),page.url
+   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
+   assert await page.locator('#workspace a[href*="t.me"]').count()==0
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
    await page.click('[data-onboarding="next"]')

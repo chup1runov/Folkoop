@@ -25,13 +25,13 @@ Each story explicitly separates what exists now from what is only illustrative o
 - Every implemented user-facing cluster eventually needs at least one linked Mura story and one real-user acceptance scenario.
 - A story may use truthful official City sources while the personal narrative around them remains illustrative.
 
-## Current Center-contract conflict
+## Online Center v0 contract alignment
 
-MURA_ACCEPTANCE_CONTRACT.md currently hides Center in Mura navigation.
+Before Online Center Göteborg v0, `MURA_ACCEPTANCE_CONTRACT.md` hid Center in Mura navigation.
 
-Foundation Charter §9 now requires Mura to include Center and the Göteborg local-community context as that slice becomes available.
+Foundation Charter §9 requires Mura to include Center and the Göteborg local-community context as that slice becomes available.
 
-Resolution rule: Do not fake Center now. Keep the runtime limitation visible, then update the acceptance contract and runtime together in the Online Center Göteborg vertical slice.
+The v0 slice now aligns runtime and acceptance: Mura can open an authored read-only Center story and real users get connected self-service routes. Staffed Host/referral operation, live forum synchronization and physical venue claims remain explicitly unimplemented.
 
 ## Seven canonical stories
 
@@ -230,7 +230,7 @@ Cross-links: `mura-03-project-plant-exchange`, `mura-06-online-center-host`.
 
 ### mura-06-online-center-host — Online Center Göteborg connects ordinary community life, Host navigation and city/partner opportunities
 
-**Status:** `approved_target`  
+**Status:** `current_v0_partial`  
 **Question:** I arrive with a vague question or simply want local community. Can I enter an online/hybrid Center, talk normally, and get a useful human next step without being forced into a task workflow?
 
 **Entry points:** `center`, `communities`, `people`, `city`, `home`  
@@ -238,23 +238,25 @@ Cross-links: `mura-03-project-plant-exchange`, `mura-06-online-center-host`.
 **Requirements:** `FN-01`, `FN-02`, `FN-03`, `FN-04`, `FN-05`, `FN-06`, `FN-07`, `FN-10`, `FN-11`, `GBG-01`, `GBG-02`, `GBG-03`, `GBG-04`, `GBG-05`, `GBG-06`, `GBG-07`, `GBG-08`, `IN-04`, `MU-03`
 
 Current fixture/evidence:
-- current runtime has Communities/People/City and a Center information surface
+- `apps/web/folkoop.js`: Online Center Göteborg v0 connects People, Communities, City, Together and Projects
+- `apps/web/folkoop.js`: Mura can open Center under the City context
+- `apps/web/folkoop-copy.js`: Göteborg external-community context is labelled as non-synchronized
 - Box Center master spec: Host flow Welcome → Consent → Need → Match → Handoff → Follow-up
 - Box Göteborg forum source preserves ordinary topical conversation, peer support, moderators, meetings/services/exchange
 
-Current gap: **No operational Online Center/Host/referral object or live forum integration exists. Current Mura navigation hides Center and current UI text still frames Center mainly as a future physical place.**
+Current gap: **Online Center v0 now provides connected self-service routes and an authored Mura Göteborg context. Staffed Host consent/clarification, warm referral/follow-up, live forum synchronization, first-class Center/Place/Activity objects and any physical venue remain unimplemented.**
 
 Story path:
 
 | Stage | Status | What the visitor should understand |
 |---|---|---|
-| `local_context` | `target` | Visitor explicitly selects Göteborg context; do not infer precise residence. |
-| `ordinary_community` | `target` | Show authored illustrative local conversation/community context where ordinary discussion remains valid and not every message becomes a task. |
-| `consent` | `target_human_operation` | Host asks whether the person wants navigation/help before matching. |
-| `clarify` | `target_human_operation` | Clarify the person's question/need without profiling by appearance/background. |
-| `route` | `target` | Offer a small set of People, City, Project, community or partner/service options. |
-| `handoff` | `target` | Warm referral has a concrete next step and preserves source/provider identity. |
-| `follow_up` | `target` | Ask whether the referral/connection was used/useful without surveillance. |
+| `local_context` | `current_v0` | Selected Göteborg context can expose the local Center surface; another city does not receive fabricated Göteborg community context. |
+| `ordinary_community` | `current_v0_illustrative` | Mura shows authored local-community context; signed-in Göteborg users may open the external community through a plain outbound link with no data synchronization. |
+| `consent` | `target_human_operation` | A future staffed Host asks whether the person wants navigation/help before matching. |
+| `clarify` | `target_human_operation` | A future Host clarifies the person's question/need without profiling by appearance/background. |
+| `route` | `current_v0_self_service` | Center offers current routes to People, Communities, City, Together and Projects; it does not pretend a human referral occurred. |
+| `handoff` | `target_human_operation` | Future warm referral has a concrete next step and preserves source/provider identity. |
+| `follow_up` | `target_human_operation` | Future follow-up asks whether the referral/connection was used/useful without surveillance. |
 
 Truth boundaries:
 - Do not claim a physical Center venue is open.
@@ -266,9 +268,10 @@ Truth boundaries:
 
 Acceptance questions:
 - Visitor can explain what an online/hybrid Center adds beyond a forum and beyond a directory.
-- Visitor understands Host as connector, not salesperson/authority.
-- Visitor can follow one referral from vague need to concrete external/community/project next step.
-- Visitor can distinguish ordinary conversation from structured cooperation objects.
+- Visitor can move from Center to People, Communities, City, Together or Projects without encountering a fake Host workflow.
+- Visitor understands that staffed Host/referral/follow-up is not operating in v0.
+- Göteborg visitor can distinguish the external local-community link from FOLKOOP-synchronized data.
+- Mura visitor understands that local people/messages are authored illustration rather than copied forum content.
 
 Cross-links: `mura-01-need-resource-return`, `mura-03-project-plant-exchange`, `mura-05-city-to-action`.
 

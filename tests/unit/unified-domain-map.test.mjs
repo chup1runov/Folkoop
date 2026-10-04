@@ -70,10 +70,13 @@ test('private local state and Mura stay outside shared operational truth',()=>{
   assert.match(mura.invariant,/Illustrative data never proves/i);
 });
 
-test('Center and City bridge gaps remain explicit rather than being marked implemented',()=>{
+test('Online Center v0 is a partial representation while staffed/live/physical gaps remain explicit',()=>{
   const center=map.objects.find(x=>x.id==='center');
-  assert.equal(center.status,'approved_target');
-  assert.match(center.current_gap,/ONLINE, PHYSICAL or HYBRID/i);
+  assert.equal(center.status,'partial_representation');
+  assert(center.representation.some(x=>/Online Center Göteborg v0/i.test(x)));
+  assert.match(center.current_gap,/Staffed Host\/referral operations/i);
+  assert.match(center.current_gap,/live forum synchronization/i);
+  assert.match(center.current_gap,/physical venue/i);
   const city=map.objects.find(x=>x.id==='city_process');
   assert.equal(city.status,'approved_target');
   assert.match(city.gap,/not yet connected first-class processes/i);

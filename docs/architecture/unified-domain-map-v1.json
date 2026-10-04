@@ -852,12 +852,14 @@
     {
       "id": "center",
       "label": "Center",
-      "status": "approved_target",
+      "status": "partial_representation",
       "domain": "target_center",
       "storage": [],
       "evidence": [
         "docs/FOUNDATION_CHARTER.md#5,#7,#8",
-        "apps/web/folkoop-copy.js"
+        "apps/web/folkoop.js",
+        "apps/web/folkoop-copy.js",
+        "docs/MURA_ACCEPTANCE_CONTRACT.md"
       ],
       "requirements": [
         "FN-01",
@@ -867,7 +869,10 @@
         "GBG-02",
         "IN-04"
       ],
-      "current_gap": "Current UI copy still presents Center mainly as a future physical layer; Charter requires ONLINE, PHYSICAL or HYBRID and Göteborg forum context."
+      "current_gap": "Online Center Göteborg v0 connects People, Communities, City, Together and Projects and exposes an authored Mura local-community story. Staffed Host/referral operations, live forum synchronization, first-class Center/Place/Activity records and any physical venue remain unimplemented.",
+      "representation": [
+        "apps/web/folkoop.js: Online Center Göteborg v0 connected route hub"
+      ]
     },
     {
       "id": "place",
@@ -1954,8 +1959,8 @@
     "Need, Offer, Resource-sharing, Shared Purchase and Project are current cooperation variants, not separate operational databases.",
     "Local private drafts never become shared network records automatically.",
     "Mura is illustrative authored data and cannot prove live external services, participants or blockchain transactions.",
-    "Center is not yet an operating first-class object/venue; current UI presentation lags the Charter's online/physical/hybrid target.",
-    "Current Mura routing does not yet expose the Charter-required Center/GBG Forum story; this is an implementation gap.",
+    "Center has an Online Göteborg v0 runtime representation, but is not a first-class stored object, staffed Host service, live forum synchronization or operating physical venue.",
+    "Mura now exposes an authored Online Center Göteborg story; it still must not import real forum members/messages or imply an operating physical venue.",
     "Skill is currently profile text, not a first-class skill object.",
     "Current resource cooperation is not yet the first-class interoperable Resource target.",
     "CivicItem/source provenance is implemented runtime semantics, but City Process ↔ cooperation/project bridges are not first-class yet.",
@@ -1967,7 +1972,7 @@
   "priority_gaps": [
     {
       "id": "gap-online-center",
-      "summary": "Create Online/Hybrid Center Göteborg domain journey and connect Göteborg local community context without importing identities/messages.",
+      "summary": "Online Center Göteborg v0 now connects self-service routes and authored Göteborg local-community context. Remaining work: staffed Host/referral operations, first-class Center/Place/Activity records and any separately authorized forum integration.",
       "objects": [
         "center",
         "community",

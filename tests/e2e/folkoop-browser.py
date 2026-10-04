@@ -71,9 +71,30 @@ async def main():
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
   await page.evaluate("location.hash='#/center'")
-  await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP Center is open yet')
+  await expect(page.locator('#workspace')).to_contain_text('Online Center · people, city and projects in one route')
+  await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP venue is claimed open')
+  await expect(page.locator('#workspace')).to_contain_text('no FOLKOOP account or data synchronization')
+  await expect(page.locator('#workspace a[href*="t.me"]')).to_have_count(1)
+
+  # A different selected city must not inherit Göteborg's external-community context.
+  await page.evaluate("location.hash='#/me'")
+  await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click()
+  await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()
+  await page.fill('[name="city"]','Stockholm')
+  await page.click('#profileForm button[type="submit"]')
+  await page.evaluate("location.hash='#/center'")
+  await expect(page.locator('#workspace')).to_contain_text('Stockholm')
+  assert await page.locator('#workspace a[href*="t.me"]').count()==0
+  assert 'ГБГ Форум' not in await page.locator('#workspace').inner_text()
+
+  # Restore the original test city for the remaining shell regression.
+  await page.evaluate("location.hash='#/me'")
+  await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click()
+  await page.fill('[name="city"]','Göteborg')
+  await page.click('#profileForm button[type="submit"]')
+
   await page.click('#mobilePrimaryNav a[href="#/messages"]');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
-  results.append('No fictitious venue, members, payments or message delivery')
+  results.append('Online Center connects current routes without fictitious venue, synchronized forum data, payments or message delivery, and never fabricates Göteborg context for another city')
   await page.evaluate("location.hash='#/about'")
   await expect(page.locator('#futureArchitectureTitle')).to_contain_text('Where FOLKOOP can go next')
   await expect(page.locator('.future-architecture .card')).to_have_count(4)
