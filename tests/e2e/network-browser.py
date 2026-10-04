@@ -352,7 +352,7 @@ async def main():
   await edit.get_by_role('button',name='Сохранить поток',exact=True).click()
   _,update_payload=await wait_request(state,'/fk_update_economic_flow',flow_updates)
   assert update_payload['p_stage']=='active' and update_payload['p_flow']==FLOW,update_payload
-  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('В работе')
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"] .badge.muted-badge')).to_have_text('В работе')
 
   role_form=page.locator('.netEconomicRoleAdd[data-flow="'+FLOW+'"]')
   await page.select_option('.netEconomicRoleAdd[data-flow="'+FLOW+'"] [name=user]',UID)
