@@ -895,6 +895,8 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
   if(f.id==='netEconomicFlowCreate'){await api.createEconomicFlow(selectedCoop,{kind:values.kind,summary:values.summary});economicFlowDraft={kind:'service',summary:''};}
   if(f.id==='netPurchaseOffer'){await api.savePurchaseOffer(selectedCoop,{unitPrice:values.unitPrice,currency:values.currency,minQuantity:values.minQuantity,availableQuantity:values.availableQuantity,deliveryMode:values.deliveryMode,deliveryFee:values.deliveryFee,leadTimeDays:values.leadTimeDays,validUntil:values.validUntil,note:values.note});offerDraft=null;}
+  if(f.classList.contains('netEconomicFlowEdit')){await api.updateEconomicFlow(f.dataset.flow,{stage:values.stage,summary:values.summary});delete economicFlowEditDrafts[f.dataset.flow];}
+  if(f.classList.contains('netEconomicRoleAdd')){await api.addEconomicFlowRole(f.dataset.flow,values.user,values.role);delete economicRoleDrafts[f.dataset.flow];}
   if(f.id==='netPurchaseStart'){await api.startPurchaseConfirmation(selectedCoop,values.deadline);delete lifecycleDrafts.netPurchaseStart;}
   if(f.id==='netPurchaseConfirm'){await api.confirmPurchaseParticipation(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseConfirm;}
   if(f.id==='netPurchaseOrdered'){await api.markPurchaseOrdered(selectedCoop,{reference:values.reference,expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseOrdered;}
