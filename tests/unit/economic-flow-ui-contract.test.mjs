@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 
 const client=await readFile('apps/web/network-client.js','utf8');
 const ui=await readFile('apps/web/network-ui.js','utf8');
-const module=await readFile('apps/web/network-economic-flow.js','utf8');
+const module=await readFile('apps/web/network-purchase-lifecycle.js','utf8');
 
 test('Economic Flow client exposes only the reviewed v0 RPC surface',()=>{
  for(const name of [
