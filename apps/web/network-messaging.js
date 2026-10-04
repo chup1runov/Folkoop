@@ -55,7 +55,7 @@ function create({
     let html=`<div class="row"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div>${guestDemo?'':`<div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div>`}</div>`;
 
     if(chat){
-      html+=`${networkButton('backChats','back','')}<article class="card"><div class="row"><h2>${escape(chatLabel(chat,user))}</h2>${linked?`<span class="badge">${escape(activityText('workChat'))}</span>`:''}</div>${!guestDemo&&chatText('notEncrypted')?`<p class="meta">${escape(chatText('notEncrypted'))}</p>`:''}`;
+      html+=`<button class="button secondary" type="button" data-net="backChats">${escape(chatText('conversation'))}</button><article class="card"><div class="row"><h2>${escape(chatLabel(chat,user))}</h2>${linked?`<span class="badge">${escape(activityText('workChat'))}</span>`:''}</div>${!guestDemo&&chatText('notEncrypted')?`<p class="meta">${escape(chatText('notEncrypted'))}</p>`:''}`;
       if(linked)html+=`${guestDemo?'':`<p class="meta">${escape(activityText('managedChat'))}</p>`}<div class="actions">${activityButton('openNotify','openActivity',linked.cooperation_id)}</div>`;
       if(ownInvite&&!ownMember){
         html+=`<div class="actions">${networkButton('acceptChat','accept',chat.id)}${networkButton('declineChat','decline',chat.id)}</div></article>`;
@@ -109,7 +109,7 @@ function create({
 
     const invitationView=`<h3>${escape(chatText('invitations'))}</h3><div class="draft-grid">${invitations.map(chatItem=>`<article class="card"><h3>${escape(chatLabel(chatItem,user))}</h3><span class="badge">${escape(chatText('invitePending'))}</span><div class="actions">${networkButton('openChat','open',chatItem.id)}${networkButton('acceptChat','accept',chatItem.id)}${networkButton('declineChat','decline',chatItem.id)}</div></article>`).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
-    const cards=list=>`<h3>${escape(chatText('conversation'))}</h3><div class="draft-grid mura-chat-grid">${list.map(chatItem=>{
+    const cards=list=>`${guestDemo?'':`<h3>${escape(chatText('conversation'))}</h3>`}<div class="draft-grid mura-chat-grid">${list.map(chatItem=>{
       const unread=Number(chatInbox.find(item=>item.conversation_id===chatItem.id)?.unread_count||0);
       const link=coopChats.find(item=>item.conversation_id===chatItem.id);
       const preview=[...chatMessages].filter(message=>message.conversation_id===chatItem.id).sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0))[0];
