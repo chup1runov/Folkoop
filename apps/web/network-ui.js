@@ -935,7 +935,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='logout'&&guestDemo){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-exit'}}));notice='';return;}
   if(a==='logout'){await api.logout();notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
-  if(a==='backChats')selectedChat=null;if(a==='openChat')selectedChat=id;
+  if(a==='backChats')selectedChat=null;if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='acceptChat')await api.acceptChat(id);
   if(a==='declineChat'){await api.declineChat(id);if(selectedChat===id)selectedChat=null;}
   if(a==='leaveChat'){if(!confirm(t('confirm')))return;await api.leaveChat(id);selectedChat=null;}
@@ -967,12 +967,20 @@ window.addEventListener('message',e=>{
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
-window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
-window.addEventListener('folkoop:subsection',()=>{render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('folkoop:subsection',e=>{
+ const parent=e.detail?.parent;
+ if(parent==='projects')selectedCoop=null;
+ if(parent==='messages')selectedChat=null;
+ render();
+});
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
  guestDemo=detail.enabled!==false;
- if(!guestDemo){showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');}
+ if(!guestDemo){
+  showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
+  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};
+ }
  try{
   if(guestDemo&&!temporary)sessionStorage.setItem('folkoop-entry-mode-v1','guest');
   else if(!guestDemo&&detail.target==='account')sessionStorage.setItem('folkoop-entry-mode-v1','account');

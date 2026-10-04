@@ -33,7 +33,7 @@ const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project
 const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8 12 3 3 5-6M4 5h16v14H4Z',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
-const selectedCity=()=>{try{if(sessionStorage.getItem(ENTRY_KEY)==='guest')return 'Göteborg';}catch{}return store.get().profile.city||'';};
+const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
@@ -66,7 +66,9 @@ const SUBNAV_LABELS={
 };
 const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
 
-const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||'';}catch{return '';}};
+let entryModeMemory='';
+const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||entryModeMemory;}catch{return entryModeMemory;}};
+entryModeMemory=entryModeNow();
 let muraVisitActive=entryModeNow()==='guest';
 const isMuraVisit=()=>muraVisitActive||entryModeNow()==='guest'||document.body.classList.contains('guest-preview-open');
 function renderMobileChrome(){
@@ -252,8 +254,8 @@ function hideEntryGate(){
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
 function setEntryMode(mode){
- entryGateAfterMuraExit=false;
- try{sessionStorage.setItem(ENTRY_KEY,mode);}catch{}
+ entryGateAfterMuraExit=false;entryModeMemory=mode;
+ try{sessionStorage.setItem(ENTRY_KEY,mode);if(mode==='guest')storage?.setItem(LANGUAGE_KEY,'done');}catch{}
  hideEntryGate();
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?'tour':mode}}));
  if(mode==='guest'){muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);}
@@ -569,6 +571,7 @@ document.addEventListener('click',e=>{
 
 window.addEventListener('folkoop:guest-demo',e=>{
  muraVisitActive=!!e.detail?.enabled;
+ if(!muraVisitActive)document.body.classList.remove('guest-preview-open');
  renderMobileChrome();
 });
 window.addEventListener('folkoop:language-picked',e=>{

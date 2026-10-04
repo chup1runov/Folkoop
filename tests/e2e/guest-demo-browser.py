@@ -214,6 +214,31 @@ async def main():
   assert await page.locator('#folkoopEntryGate').is_hidden()
   passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
 
+  # Regression: Home conversation previews must open the selected conversation.
+  home_chat=page.locator('.mura-conversation-list [data-net="openChat"]').first
+  chat_id=await home_chat.get_attribute('data-id')
+  await home_chat.click()
+  await page.wait_for_url('**#/messages')
+  await expect(page.locator('[data-net="backChats"]')).to_be_visible()
+  assert await page.locator('[data-net="openChat"][data-id="'+chat_id+'"]').count()==0
+  passed.append('Mura Home conversation preview opens the selected conversation')
+
+  # Regression: changing a virtual subtab must leave an open entity detail.
+  await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="projects-overview"]')
+  await page.locator('[data-coop="open"]').first.click()
+  await expect(page.locator('[data-coop="back"]')).to_be_visible()
+  await page.click('#mobileContextDock [data-mobile-subnav="projects-tasks"]')
+  assert await page.locator('[data-coop="back"]').count()==0
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="projects-tasks"]')).to_have_attribute('aria-current','page')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
+  await page.locator('[data-net="openChat"]').first.click()
+  await expect(page.locator('[data-net="backChats"]')).to_be_visible()
+  await page.click('#mobileContextDock [data-mobile-subnav="messages-groups"]')
+  assert await page.locator('[data-net="backChats"]').count()==0
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="messages-groups"]')).to_have_attribute('aria-current','page')
+  passed.append('Project and message subtabs clear stale open entity details')
+
   await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
   await expect(page.locator('[data-net="logout"]')).to_have_text('Выйти из аккаунта Муры')
   await page.click('[data-net="logout"]')
@@ -230,8 +255,10 @@ async def main():
   await expect(page.locator('.pilot-login-intro')).to_contain_text('своими людьми, идеями и реальными делами')
   assert await page.locator('.pilot-login-shell').get_by_text('Вход в пилот',exact=True).count()==0
   await expect(page.locator('.folkoop-guide-actor')).to_be_hidden()
+  assert await page.locator('.mobile-demo-chip').count()==0
+  assert await page.locator('#mobilePrimaryNav .net-count').count()==0
   assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='account'")
-  passed.append('Leaving Mura creates a clear account boundary without pilot copy or Mura character')
+  passed.append('Leaving Mura creates a clear account boundary without pilot copy, Mura chip or demo badges')
 
 
   # Regression: a returning browser may already have completed onboarding, but an explicit
@@ -258,6 +285,47 @@ async def main():
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Explicitly visiting Mura always starts her tour even after onboarding was completed earlier')
   await page.click('[data-onboarding="skip"]')
+
+  # Regression: accepting the implicit browser language by entering Mura must survive reload.
+  await context.close()
+  context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
+  await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false})")
+  await context.route('**/*',route)
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  await page.goto(BASE)
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await page.click('[data-onboarding="skip"]')
+  await expect(page.locator('.mura-home')).to_be_visible()
+  await page.reload()
+  await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
+  await page.wait_for_url('**#/home')
+  await expect(page.locator('#networkPanel')).to_be_visible()
+  await expect(page.locator('#networkPanel')).to_contain_text('Мура')
+  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
+  passed.append('Implicit browser language is accepted when entering Mura and reload does not reopen first contact')
+
+  # Regression: Mura keeps her in-memory Göteborg context when browser Storage is unavailable.
+  await context.close()
+  context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
+  await context.add_init_script("""Object.defineProperty(navigator,'webdriver',{get:()=>false});
+    for(const proto of [Storage.prototype]){
+      proto.getItem=function(){throw new DOMException('blocked','SecurityError')};
+      proto.setItem=function(){throw new DOMException('blocked','SecurityError')};
+      proto.removeItem=function(){throw new DOMException('blocked','SecurityError')};
+    }""")
+  await context.route('**/*',route)
+  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  await page.goto(BASE)
+  await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+  await page.click('[data-entry="guest"]')
+  await expect(page.locator('#onboarding')).to_be_visible()
+  await page.click('[data-onboarding="skip"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
+  await expect(page.locator('#cityWorkspace')).to_be_visible()
+  assert 'Укажи свой город' not in await page.locator('body').inner_text()
+  passed.append('Mura retains Göteborg in memory when Storage access is blocked')
 
   assert not errors,errors
   await context.close();await browser.close()
