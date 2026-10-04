@@ -8,13 +8,16 @@ const closeLanguageButton = document.getElementById('closeLanguageButton');
 const languageBackdrop = document.getElementById('languageBackdrop');
 let deferredPrompt;
 let currentScreen = 'home';
-const MURA_MODE = new URL(location.href).searchParams.get('mura') === '1';
+const params = new URL(location.href).searchParams;
+const MURA_MODE = params.get('mura') === '1';
+const EMBEDDED_MODE = params.get('embedded') === '1';
 
 const supportedLanguages = ['sv', 'en', 'ar', 'so', 'fa', 'fi', 'bs', 'ku', 'es', 'ru', 'uk'];
 const rtlLanguages = new Set(['ar', 'fa']);
 
 const messages = {
   sv: {
+    continueFolkoop:"Fortsätt i FOLKOOP",
     tagline:'Samhället. Enklare.', pilot:'PILOT', language:'Språk',
     eyebrow:'Göteborg · tidig prototyp', heroTitle:'Vad behöver du hjälp med?',
     heroText:'Hitta rätt väg i det offentliga Sverige utan att först behöva förstå organisationen bakom.',
@@ -54,6 +57,7 @@ const messages = {
     localDecisionText:'Här kan användaren senare se kommunala beslut som berör det valda området.'
   },
   en: {
+    continueFolkoop:"Continue in FOLKOOP",
     tagline:'Society. Simpler.', pilot:'PILOT', language:'Language',
     eyebrow:'Gothenburg · early prototype', heroTitle:'What do you need help with?',
     heroText:'Find the right path through Sweden’s public sector without first having to understand which organisation is responsible.',
@@ -93,6 +97,7 @@ const messages = {
     localDecisionText:'Later, users will be able to see municipal decisions affecting the selected area.'
   },
   ar: {
+    continueFolkoop:"تابع في FOLKOOP",
     tagline:'المجتمع. ببساطة.', pilot:'تجريبي', language:'اللغة',
     eyebrow:'غوتنبرغ · نموذج أولي مبكر', heroTitle:'ما الذي تحتاج إلى مساعدة بشأنه؟',
     heroText:'اعثر على الطريق الصحيح في القطاع العام السويدي دون الحاجة أولاً إلى معرفة الجهة المسؤولة.',
@@ -132,6 +137,7 @@ const messages = {
     localDecisionText:'سيتمكن المستخدم لاحقاً من رؤية قرارات البلدية التي تؤثر في المنطقة المختارة.'
   },
   so: {
+    continueFolkoop:"Ku sii wad FOLKOOP",
     tagline:'Bulshada. Si fudud.', pilot:'TIJAABO', language:'Luqad',
     eyebrow:'Göteborg · nooc tijaabo hore', heroTitle:'Maxaad u baahan tahay in lagaa caawiyo?',
     heroText:'Hel jidka saxda ah ee adeegyada dadweynaha Sweden adigoon marka hore garanayn hay’adda masuulka ka ah.',
@@ -171,6 +177,7 @@ const messages = {
     localDecisionText:'Mustaqbalka isticmaaluhu wuxuu arki karaa go’aannada degmada ee saameeya aagga la doortay.'
   },
   fa: {
+    continueFolkoop:"ادامه در FOLKOOP",
     tagline:'جامعه. ساده‌تر.', pilot:'آزمایشی', language:'زبان',
     eyebrow:'یوتبری · نمونه اولیه', heroTitle:'در چه موردی به کمک نیاز دارید؟',
     heroText:'بدون اینکه ابتدا ساختار سازمان‌های دولتی سوئد را بشناسید، مسیر درست را پیدا کنید.',
@@ -210,6 +217,7 @@ const messages = {
     localDecisionText:'بعداً کاربر می‌تواند تصمیم‌های شهرداری را که بر منطقه انتخاب‌شده اثر می‌گذارند ببیند.'
   },
   fi: {
+    continueFolkoop:"Jatka FOLKOOPissa",
     tagline:'Yhteiskunta. Helpommin.', pilot:'PILOTTI', language:'Kieli',
     eyebrow:'Göteborg · varhainen prototyyppi', heroTitle:'Missä tarvitset apua?',
     heroText:'Löydä oikea reitti Ruotsin julkisissa palveluissa ilman että sinun täytyy ensin tuntea vastuussa oleva organisaatio.',
@@ -249,6 +257,7 @@ const messages = {
     localDecisionText:'Myöhemmin käyttäjä voi nähdä valittua aluetta koskevia kunnallisia päätöksiä.'
   },
   bs: {
+    continueFolkoop:"Nastavi u FOLKOOP-u",
     tagline:'Društvo. Jednostavnije.', pilot:'PILOT', language:'Jezik',
     eyebrow:'Göteborg · rani prototip', heroTitle:'Kako vam možemo pomoći?',
     heroText:'Pronađite pravi put kroz švedske javne službe bez potrebe da unaprijed znate koja je institucija nadležna.',
@@ -288,6 +297,7 @@ const messages = {
     localDecisionText:'Kasnije će korisnik moći vidjeti odluke općine/grada koje se odnose na odabrano područje.'
   },
   ku: {
+    continueFolkoop:"Di FOLKOOP de bidomîne",
     tagline:'Civak. Hêsantir.', pilot:'PÎLOT', language:'Ziman',
     eyebrow:'Göteborg · prototîpa destpêkê', heroTitle:'Hûn di çi mijarê de alîkariyê dixwazin?',
     heroText:'Bê ku pêşî hûn sazûmana berpirsiyar nas bikin, di xizmetên giştî yên Swêdê de rêya rast bibînin.',
@@ -327,6 +337,7 @@ const messages = {
     localDecisionText:'Paşê bikarhêner dikare biryarên şaredariyê yên ku bandorê li herêma hilbijartî dikin bibîne.'
   },
   es: {
+    continueFolkoop:"Continuar en FOLKOOP",
     tagline:'La sociedad. Más fácil.', pilot:'PILOTO', language:'Idioma',
     eyebrow:'Gotemburgo · prototipo inicial', heroTitle:'¿En qué necesitas ayuda?',
     heroText:'Encuentra el camino correcto por los servicios públicos de Suecia sin tener que saber de antemano qué organismo es responsable.',
@@ -366,6 +377,7 @@ const messages = {
     localDecisionText:'Más adelante se podrán ver las decisiones municipales que afectan a la zona seleccionada.'
   },
   ru: {
+    continueFolkoop:"Продолжить в FOLKOOP",
     tagline:'Общество. Проще.', pilot:'ПИЛОТ', language:'Язык',
     eyebrow:'Гётеборг · ранний прототип', heroTitle:'С чем вам нужна помощь?',
     heroText:'Найдите нужный путь в системе государственных и муниципальных услуг Швеции, не разбираясь заранее, кто именно отвечает за вопрос.',
@@ -405,6 +417,7 @@ const messages = {
     localDecisionText:'Позже пользователь сможет видеть муниципальные решения, которые затрагивают выбранную территорию.'
   },
   uk: {
+    continueFolkoop:"Продовжити у FOLKOOP",
     tagline:'Суспільство. Простіше.', pilot:'ПІЛОТ', language:'Мова',
     eyebrow:'Гетеборг · ранній прототип', heroTitle:'З чим вам потрібна допомога?',
     heroText:'Знайдіть правильний шлях у системі державних і муніципальних послуг Швеції, не з’ясовуючи заздалегідь, яка саме установа відповідає за питання.',
@@ -1254,6 +1267,25 @@ function nearbyItems() {
 
 function safeGoteborgUrl(value) { return FolkoopCityCore.officialUrl(value,['goteborg.se','www.goteborg.se']); }
 
+function cityHandoffButton({kind,title,sourceId,sourceName,sourceUrl}) {
+  if (!EMBEDDED_MODE || !title || !sourceUrl) return '';
+  const attrs = {
+    kind:String(kind || '').slice(0,24),
+    title:String(title || '').slice(0,180),
+    sourceId:String(sourceId || '').slice(0,80),
+    sourceName:String(sourceName || '').slice(0,120),
+    sourceUrl:String(sourceUrl || '').slice(0,500)
+  };
+  return `<button class="action secondary city-folkoop-handoff" type="button"
+    data-folkoop-handoff
+    data-kind="${escapeHtml(attrs.kind)}"
+    data-title="${escapeHtml(attrs.title)}"
+    data-source-id="${escapeHtml(attrs.sourceId)}"
+    data-source-name="${escapeHtml(attrs.sourceName)}"
+    data-source-url="${escapeHtml(attrs.sourceUrl)}">${t('continueFolkoop')}</button>`;
+}
+
+
 function formatPlanDate(value) {
   if (!value) return '';
   const date = new Date(`${value}T12:00:00`);
@@ -1270,15 +1302,19 @@ function formatPlanDate(value) {
 function planCardMarkup(item) {
   const href=safeGoteborgUrl(item.sourceUrl);
   if (!href) return '';
-  return `<a class="plan-card" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
-    <span class="item-icon">${icon('consult')}</span>
-    <span class="plan-copy">
-      <strong>${escapeHtml(item.title)}</strong>
-      ${item.area ? `<span class="plan-meta"><span>${pt('area')}: ${escapeHtml(item.area)}</span></span>` : ''}
-      <span class="plan-deadline">${pt('deadline')}: ${formatPlanDate(item.deadline)}</span>
-      <span class="plan-source"><span class="live-dot"></span>${pt('source')} ↗</span>
-    </span>
-  </a>`;
+  const sourceName=item.sourceName || 'Göteborgs Stad';
+  return `<div class="city-source-bridge">
+    <a class="plan-card" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+      <span class="item-icon">${icon('consult')}</span>
+      <span class="plan-copy">
+        <strong>${escapeHtml(item.title)}</strong>
+        ${item.area ? `<span class="plan-meta"><span>${pt('area')}: ${escapeHtml(item.area)}</span></span>` : ''}
+        <span class="plan-deadline">${pt('deadline')}: ${formatPlanDate(item.deadline)}</span>
+        <span class="plan-source"><span class="live-dot"></span>${pt('source')} ↗</span>
+      </span>
+    </a>
+    ${cityHandoffButton({kind:'planning',title:item.title,sourceId:item.sourceId || 'goteborg_open_plans',sourceName,sourceUrl:href})}
+  </div>`;
 }
 
 function planLoadingMarkup() {
@@ -1365,14 +1401,17 @@ function liveDecisionMarkup(item) {
     formatDecisionDate(item.decisionDate || item.publishedDate)
   ].filter(Boolean).map(value => `<span>${escapeHtml(value)}</span>`).join('');
 
-  return `<a class="item decision-live-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
-    <span class="item-icon">${icon('file')}</span>
-    <span class="item-content">
-      <strong>${escapeHtml(item.title)}</strong>
-      <span class="decision-meta">${meta}</span>
-      <span class="live-badge"><span class="live-dot"></span>Sveriges riksdag ↗</span>
-    </span>
-  </a>`;
+  return `<div class="city-source-bridge">
+    <a class="item decision-live-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">
+      <span class="item-icon">${icon('file')}</span>
+      <span class="item-content">
+        <strong>${escapeHtml(item.title)}</strong>
+        <span class="decision-meta">${meta}</span>
+        <span class="live-badge"><span class="live-dot"></span>Sveriges riksdag ↗</span>
+      </span>
+    </a>
+    ${cityHandoffButton({kind:'decision',title:item.title,sourceId:item.sourceId || 'riksdagen_open_data',sourceName:item.sourceName || 'Sveriges riksdag',sourceUrl:href})}
+  </div>`;
 }
 
 async function hydrateDecisionScreen(container, {limit = null} = {}) {
@@ -1583,6 +1622,24 @@ window.addEventListener('hashchange', () => {
 
 document.addEventListener('click', async event => {
   if (event.target.closest('.skip-link')) { event.preventDefault(); view.focus(); return; }
+
+  const handoff = event.target.closest('[data-folkoop-handoff]');
+  if (handoff) {
+    event.preventDefault();
+    if (parent !== window) {
+      parent.postMessage({
+        type:'folkoop:city-handoff',
+        context:{
+          kind:handoff.dataset.kind || '',
+          title:handoff.dataset.title || '',
+          sourceId:handoff.dataset.sourceId || '',
+          sourceName:handoff.dataset.sourceName || '',
+          sourceUrl:handoff.dataset.sourceUrl || ''
+        }
+      }, location.origin);
+    }
+    return;
+  }
   if (event.target.closest('#languageButton')) {
     openLanguageSheet();
     return;
