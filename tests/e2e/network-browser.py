@@ -376,10 +376,13 @@ async def main():
 
   await page.select_option('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=stage]','closed')
   await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация завершена; результат отдельно не подтверждён')
+  close_updates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_update_economic_flow'))
   await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').get_by_role('button',name='Сохранить поток',exact=True).click()
-  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Закрыт')
+  _,close_payload=await wait_request(state,'/fk_update_economic_flow',close_updates)
+  assert close_payload['p_stage']=='closed' and close_payload['p_flow']==FLOW,close_payload
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"] .badge.muted-badge')).to_have_text('Закрыт')
   await expect(economy).to_contain_text('не означает оплату')
-  assert await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').count()==0
+  await expect(page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]')).to_have_count(0)
   passed.append('Economic Flow UI uses reviewed RPCs for create/lifecycle/roles and keeps closed distinct from Outcome/payment truth')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
