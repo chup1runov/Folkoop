@@ -476,6 +476,8 @@ function demoSnapshot(){
   purchaseChoice:chosen===PURCHASE?[{cooperation_id:PURCHASE,offer_id:POFFER,selected_by:A,selected_at:'2026-09-30T07:50:00Z'}]:[],
   purchaseProcess:chosen===PURCHASE?[base.allProcesses[0]]:[],
   purchaseConfirmations:chosen===PURCHASE?[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'},{cooperation_id:PURCHASE,user_id:A,quantity:4,decision:'confirmed',note:'',decided_at:'2026-09-30T08:05:00Z',collected_at:null,collected_note:'',updated_at:'2026-09-30T08:05:00Z'}]:[],
+  economicFlows:chosen===PURCHASE?[{id:'mura-firewood-flow',cooperation_id:PURCHASE,kind:'procurement',stage:'active',summary:demoText('Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.'),created_by:A,created_at:'2026-09-27T09:05:00Z',updated_at:'2026-09-30T08:00:00Z'}]:[],
+  economicFlowRoles:chosen===PURCHASE?[{flow_id:'mura-firewood-flow',user_id:A,role:'coordinator',created_at:'2026-09-27T09:05:00Z'},{flow_id:'mura-firewood-flow',user_id:DEMO_UID,role:'buyer',created_at:'2026-09-27T10:05:00Z'},{flow_id:'mura-firewood-flow',user_id:B,role:'logistics',created_at:'2026-09-27T10:35:00Z'}]:[],
   coopActivity:coopActivity.filter(x=>!chosen||x.cooperation_id===chosen)
  };
 }
