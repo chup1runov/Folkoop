@@ -7,7 +7,7 @@ const text=await readFile('docs/architecture/ECONOMIC_FLOW_V0_DESIGN.md','utf8')
 test('Economic Flow design is review-ready but does not authorize SQL',()=>{
   assert.match(text,/DESIGN REVIEW READY/i);
   assert.match(text,/NO MIGRATION AUTHORISED UNTIL THIS DESIGN IS REVIEWED\/MERGED/i);
-  assert.match(text,/do not authorize production SQL/i);
+  assert.match(text,/not authorize production SQL[\s\S]*reviewed\/merged/i);
 });
 
 test('flow authorization derives from parent cooperation',()=>{
@@ -33,9 +33,9 @@ test('v0 decisions constrain parent kinds, cardinality and deletion',()=>{
   assert.match(text,/maximum \*\*20 non-terminal flows per parent Cooperation\*\*/i);
   assert.match(text,/hard delete is allowed only while.*planning/is);
   assert.match(text,/Shared Purchase parent allows only.*procurement.*distribution/is);
-  assert.match(text,/Project parent allows.*procurement.*production.*sale.*service.*distribution/is);
+  assert.match(text,/Project parent allows[\s\S]*procurement[\s\S]*production[\s\S]*sale[\s\S]*service[\s\S]*distribution/i);
   assert.match(text,/Project may contain \*\*multiple\*\* economic flows/i);
-  assert.match(text,/cooperation_id.*must not be UNIQUE/i);
+  assert.match(text,/cooperation_id[\s\S]*must not be UNIQUE/i);
 });
 
 test('first migration intentionally adds no economic activity event types',()=>{
