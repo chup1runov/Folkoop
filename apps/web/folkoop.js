@@ -123,6 +123,7 @@ function renderMobileChrome(){
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
+ requestAnimationFrame(()=>globalThis.FolkoopGuide?.refresh?.());
 }
 function closeMobileDemo(){
  const dock=$('#mobileContextDock'),pop=dock?.querySelector('.mobile-demo-popover'),button=dock?.querySelector('[data-mobile-action="demo"]');
