@@ -60,6 +60,7 @@ test('Economic Flow renderer gives owners lifecycle/role controls and keeps Mura
  assert.match(ownerHtml,/netEconomicFlowEdit/);
  assert.match(ownerHtml,/netEconomicRoleAdd/);
  for(const kind of ['procurement','production','sale','service','distribution'])assert(ownerHtml.includes('value="'+kind+'"'),kind);
+ for(const role of ['coordinator','contributor','producer','buyer','seller','logistics'])assert(ownerHtml.includes('value="'+role+'"'),role);
  const muraHtml=domain.render({user:{id:'u1'},coop:project,owner:true,members,flows:[flow],flowRoles:roles,createDraft:{},editDrafts:{},roleDrafts:{},readOnly:true});
  assert(!muraHtml.includes('<form'));
  assert(!muraHtml.includes('data-economic='));
