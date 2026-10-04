@@ -215,7 +215,7 @@ async def main():
   passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
 
   # Regression: Home conversation previews must open the selected conversation.
-  home_chat=page.locator('[data-home="openChat"]').first
+  home_chat=page.locator('.mura-conversation-list [data-net="openChat"]').first
   chat_id=await home_chat.get_attribute('data-id')
   await home_chat.click()
   await page.wait_for_url('**#/messages')
