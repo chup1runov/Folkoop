@@ -44,7 +44,7 @@
 .folkoop-guide-actor.teleport-out .folkoop-guide-puff{opacity:1;animation:folkoop-guide-puff .28s ease-out both}
 .folkoop-guide-actor.teleport-in{animation:folkoop-guide-pop .38s cubic-bezier(.15,.9,.25,1.25)}
 .folkoop-guide-actor.is-tour{pointer-events:none}
-.folkoop-guide-actor.is-home{z-index:72}
+.folkoop-guide-actor.is-home{z-index:72;transition:filter .2s,opacity .2s,transform .2s}
 .folkoop-helper-shell{position:fixed;right:18px;bottom:18px;z-index:71;width:0;height:0;pointer-events:none}
 .folkoop-helper-panel{pointer-events:auto;right:0;bottom:112px}
 .onboarding-guide-mark{display:none}
