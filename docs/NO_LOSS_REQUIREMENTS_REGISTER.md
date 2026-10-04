@@ -1,186 +1,60 @@
-# FOLKOOP Complete Source & No-Loss Register v1
+# FOLKOOP Complete Source & No-Loss Register v1 — recovery update
 
-Date: 4 October 2026.
+Date: 4 October 2026. Controlling decision: **FK-FOUNDATION-2026-10-04**.
+Recovery/design baseline: `f77ebdafbca62501d51145e546bcce4508ff0e2a`.
 
-Controlling decision: **FK-FOUNDATION-2026-10-04**. Baseline main: `eea958c59b178deb3bf4a312310ed287ab3aab28`.
+## Canonical data and preservation
 
-## Status
+The full current machine-readable register is [NO_LOSS_REQUIREMENTS_REGISTER.json](NO_LOSS_REQUIREMENTS_REGISTER.json): **132 stable IDs, 131 requirement rows and one explicit cross-reference, W34-18**. These are not 132 independent delivered features. Composite capabilities, safeguards and source-recovery tasks remain distinct.
 
-This is the canonical public recovery register for stable requirement IDs currently evidenced by preserved artifacts. It contains **132 stable IDs**: **131 requirement rows** plus **1 explicit cross-reference** (`W34-18`).
+All original IDs, their order, source summaries, domains, record types and traceability fields are preserved. The only per-row change in this recovery update is the source-recovery status of the 99 earlier rows. A fixed-digest regression compares all protected row content to the exact preceding Git blob after reversing that one authorised field change.
 
-It is **not** the missing full 91,268-byte JSON and does not pretend to restore fields that are not recoverable from preserved evidence. The earlier compact Box projection explicitly says the full JSON existed, gives its SHA-256, but does not prove the file was stored in Box. Missing source wording/code/test fields therefore remain blank in the machine-readable register until recovered or freshly evidenced.
+The previous long Markdown index is preserved byte-for-byte at [the historical snapshot](history/requirements/NO_LOSS_REGISTER_PRE_RECOVERY_20261004.md), Git blob `d07deb84d4a484a08d05fc2aedbb4312b9a0cf08`. Its missing-file statements describe the earlier search, not current recovery status. This page is the updated entry point; the JSON remains the complete editable register. No requirement is deleted by changing this rendered entry point.
 
-## Preserved provenance
+## Source recovery result
 
-- Box `2505260605777` — `FOLKOOP_NO_LOSS_COVERAGE_INDEX_99_2026-10-04_RU.md`, SHA-1 `0643669a3027281c58295e042b19312043d3c657`; 99-entry compact projection (63 prior + 36 additions).
-- Box `2505682453769` — `FOLKOOP_NO_LOSS_ADDENDUM_SDCF_WEB3_WEB4_2026-10-04.md`, SHA-1 `b821471fd39b74490d652d3763c04431d94f3557`; 14 SDCF + 19 Web3/Web4 IDs.
-- Missing full JSON expected SHA-256: `34c9e1a63cbd4e7e3e23d8fa5b8f86d44d732a6053f64fb763f106546c763e70`; expected size 91,268 bytes; not found in the Box search used for this recovery pass.
-- Prior 63-item source hash preserved in Box projection: `93f4a89619b4df8030344132d3fd7182bab3342aa0a6a636d9e17f8971ea236b`.
+The exact prior synthesized register was recovered from a conversation attachment archive:
 
-## Prefix inventory
+- prior 99-record file: **91,268 bytes**, SHA-256 `34c9e1a63cbd4e7e3e23d8fa5b8f86d44d732a6053f64fb763f106546c763e70`;
+- prior 63-record audit: **37,651 bytes**, SHA-256 `93f4a89619b4df8030344132d3fd7182bab3342aa0a6a636d9e17f8971ea236b`;
+- all 63 nested original audit records compare equal; the prior99 ID order matches the current first99.
 
-| Prefix | Count | Meaning |
+See [the recovery receipt](requirements/SOURCE_RECOVERY_20261004.json) for hashes, scope, private restoration-part IDs and the original search status. Full private originals remain in private archival storage; this public repository contains references and verification metadata, not private chat or founder negotiations.
+
+The historical `missing_full_json` key is retained for compatibility, with `status=recovered_exact_bytes_2026-10-04` and `previous_status` preserved. For the first99, source status is now `prior_register_recovered; compact_projection_preserved; primary_sources_incomplete`.
+
+This closes **one byte-recovery gap**. It does not prove complete recovery of operational protocols, online-model originals, method routing/learning loops or external cooperative-platform source material. Nor does it make any feature implemented. The earlier audit itself sometimes paraphrased primary specifications; an exact audit record is not automatically a verbatim primary-source quotation.
+
+## Inventory retained
+
+| Prefix | Rows | Coverage |
 |---|---:|---|
-| ID | 2 | Identity/integration |
-| SV | 12 | Sverinav |
-| FN | 21 | FOLKUNO |
-| KP | 12 | Cooperative-network/KООПСЕТЬ |
-| FX | 11 | Existing FOLKOOP/cross-cutting |
-| AR | 9 | Archive/source recovery |
-| FO | 6 | Foundation |
-| GBG | 8 | ГБГ Форум |
+| ID | 2 | Identity and integration |
+| SV | 12 | Public/civic navigation |
+| FN | 21 | Human/community/opportunity mechanisms |
+| KP | 12 | Cooperative social and economic organisation |
+| FX | 11 | Existing application and cross-cutting capabilities |
+| AR | 9 | Archive and source recovery |
+| FO | 6 | Foundation scope |
+| GBG | 8 | Local forum/community |
 | MU | 5 | Mura |
-| BC | 8 | Blockchain |
-| IN | 5 | Cross-origin integration |
-| SDCF | 14 | SDCF |
-| W34 | 19 | Web3/Web4 |
+| BC | 8 | Blockchain trust workstream |
+| IN | 5 | Cross-domain integration |
+| SDCF | 14 | Systems, decisions, evidence and learning |
+| W34 | 19 | Web3/Web4, including the W34-18 cross-reference |
 
-## Completion rule
+## First connected delivery contract
 
-A row is not fully integrated until it has: source/version + original wording, destination, current code/operation evidence, implementation status, delivery route, dependencies, Mura scenario, real-user acceptance test, privacy/rights constraints, and supersession decision where applicable. A blank field means **work/recovery required**, not “not needed”.
+[FK-S01: Online Center → Host → city resource → joint action → outcome](contracts/ONLINE_CENTER_HOST_CITY_ACTION_OUTCOME_v0.1.md) and its [machine-readable manifest](contracts/online-center-host-city-action-outcome-v0.1.json) reference 41 existing IDs without changing them. The 24 acceptance cases are **planned, not executed user tests**.
 
-## Stable-ID coverage index
+Online Center v0 navigation already exists at the recovery baseline. S01 defines the missing operational link: private request, optional authorised Host, versioned sourced capability, recipient-specific handoff, deliberate cooperation link and attributed outcome/follow-up. It preserves current five-item mobile primary navigation and Mura's read-only/explicit-exit boundaries.
 
-| ID | Domain | Preserved summary | Provenance | Recovery status |
-|---|---|---|---|---|
-| ID-01 | identity_and_integration | Один продукт и бренд FOLKOOP. ЗАКРЕПЛЕНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| ID-02 | identity_and_integration | Общие связи людей, намерений, ресурсов, проектов и города. ЧАСТИЧНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-01 | sverinav | Начинать с вопроса человека, а не названия ведомства. СОХРАНЕНО В КОНЦЕПЦИИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-02 | sverinav | Vem ansvarar? — определение ответственного. ЧАСТИЧНО / ИСТОРИЧЕСКИЙ КОД. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-03 | sverinav | Rapportera — подготовка и направление обращения. ЧАСТИЧНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-04 | sverinav | Nära mig / повседневные сведения рядом. ЧАСТИЧНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-05 | sverinav | Beslut / документы / обсуждения / сроки. ЧАСТИЧНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-06 | sverinav | Реальные отправления с выбранной остановки. ОТЛОЖЕННОЕ ТРЕБОВАНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-07 | sverinav | Сохранённые сроки и календарь. ОТЛОЖЕННОЕ ТРЕБОВАНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-08 | sverinav | Место проблемы отдельно от GPS телефона. ОТЛОЖЕННОЕ ТРЕБОВАНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-09 | sverinav | Уведомления только о значимых изменениях по явной настройке. ОТЛОЖЕНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-10 | sverinav | Источник, ответственный, дата и неопределённость. КОНТРАКТ СОХРАНЁН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-11 | sverinav | Базовая общественная информация без партийного профилирования. ПРИНЦИП СОХРАНЁН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SV-12 | sverinav | Идея → материалы → рабочая группа → предложение → решение. ИСТОРИЧЕСКАЯ ОПЦИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-01 | folkuno | Человеческая навигация Host. МЕТОДОЛОГИЯ СОХРАНЕНА; ПЕРЕНОС НЕПОЛОН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-02 | folkuno | Добровольный ритуал 1+1. МЕТОДОЛОГИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-03 | folkuno | City OS: ресурсы, услуги, события, eligibility, cost, accessibility. ПЕРЕНОС ТРЕБУЕТ ПРОВЕРКИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-04 | folkuno | FREE TODAY / полезное на неделе. МЕТОДОЛОГИЯ / ПЛАН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-05 | folkuno | Partner Capability Profiles / Self-Service. МЕТОДОЛОГИЯ / БУДУЩЕЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-06 | folkuno | Warm handoff: представить / направить / помочь сделать шаг. МЕТОДОЛОГИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-07 | folkuno | Referral issued / used / useful + follow-up. МЕТОДОЛОГИЯ; НЕ РАВНО done. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-08 | folkuno | Обмен навыками I CAN / I NEED. ЧАСТИЧНО РЕАЛИЗОВАНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-09 | folkuno | Project Wall / участники создают инициативы. ЧАСТИЧНО РЕАЛИЗОВАНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-10 | folkuno | Делегирование, обучение Hosts, независимость от founder. МЕТОДОЛОГИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-11 | folkuno | Знакомства и принадлежность без обязательной задачи. КОНЦЕПЦИЯ СОХРАНЕНА. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-12 | folkuno | Начало через существующий ГБГ Форум. ДОКУМЕНТИРОВАННЫЙ ПОВОРОТ; СТЫК НЕ РАЗМЕЧЕН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-13 | folkuno | #ищу / #могу / #идея в обычных темах. СОХРАНЕНО В HANDOFF. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-14 | folkuno | Польза до переименования существующего форума. СОХРАНЕНО В HANDOFF. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-15 | folkuno | Telegram — интерфейс, структурированные данные отдельно. НАПРАВЛЕНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-16 | folkuno | Node / Inside / Pop-up и партнёрские площадки. БУДУЩЕЕ / ОПЦИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-17 | folkuno | Quiet / stage / studio / maker / kitchen. МОДУЛИ, НЕ ТЕКУЩИЙ CORE. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-18 | folkuno | 24/7 / Night Mode / Access Pass. ОТЛОЖЕНО / НЕ ONLINE CORE. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-19 | folkuno | Passport / переносимость между городами. ЧАСТИЧНЫЙ ПРОФИЛЬ, ПЕРЕНОСИМОСТЬ — БУДУЩЕЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-20 | folkuno | Spark Fund / микрогранты участникам. БУДУЩИЙ МОДУЛЬ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FN-21 | folkuno | Обязательные цены Access Pass / языковые квоты / доля доходов. ПЕРЕСМОТРЕНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-01 | cooperative_network | Профили, группы, общение, публикации. РЕАЛИЗОВАНА БАЗА ПО ДОКУМЕНТАМ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-02 | cooperative_network | Потребности, предложения, общие ресурсы. КОД ПОДТВЕРЖДЁН ЧАСТИЧНО. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-03 | cooperative_network | Совместные закупки и количества. РЕАЛИЗОВАНА КООРДИНАЦИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-04 | cooperative_network | Предложения поставщиков, заказ/выдача/получение. РЕАЛИЗОВАНА КООРДИНАЦИЯ ПО ДОКУМЕНТАМ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-05 | cooperative_network | Совместные продажи / производство / прямые поставки. ВНЕШНИЙ ИСТОЧНИК; ПЕРЕНОС ЧАСТИЧНЫЙ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-06 | cooperative_network | Логистика, хранение, снижение потерь. ИССЛЕДОВАТЕЛЬСКИЙ ИСТОЧНИК. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-07 | cooperative_network | Документы сообщества: уставы, сметы, протоколы, отчёты. НЕ ПОДТВЕРЖДЕНО КАК РЕАЛИЗОВАННОЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-08 | cooperative_network | Коллективные решения и ответственность за исполнение. БУДУЩАЯ АРХИТЕКТУРА. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-09 | cooperative_network | Взносы, сметы, бухгалтерия, платежи. ВНЕШНИЕ СПЕЦИАЛИЗИРОВАННЫЕ СИСТЕМЫ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-10 | cooperative_network | Территории / карты / общее имущество / локальные задачи. ИСТОЧНИК + БУДУЩИЕ МОДЕЛИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-11 | cooperative_network | Обучение координаторов / Academy. НЕ ПОДТВЕРЖДЕНО КАК РЕАЛИЗОВАННОЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| KP-12 | cooperative_network | Происхождение концепции отдельно от прав на чужой код. ИСТОЧНИК ВДОХНОВЕНИЯ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-01 | existing_folkoop_cross_cutting | Проекты, задачи, исполнители, рабочий чат. БАЗА РЕАЛИЗОВАНА. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-02 | existing_folkoop_cross_cutting | Локальные личные черновики и профиль. КОД ПРОЧИТАН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-03 | existing_folkoop_cross_cutting | 11 языков и мобильный интерфейс. БАЗА ЕСТЬ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-04 | existing_folkoop_cross_cutting | Мура как демонстрация связанной повседневной жизни. АКТУАЛЬНЫЙ UX-КОНТРАКТ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-05 | existing_folkoop_cross_cutting | Проводник / будущая помощь действием. DETERMINISTIC СЕЙЧАС; АГЕНТЫ БУДУЩЕЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-06 | existing_folkoop_cross_cutting | Различать done, подтверждение, внешнее доказательство. АРХИТЕКТУРНЫЙ КОНТРАКТ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-07 | existing_folkoop_cross_cutting | Общие типы Place / Meetup / Activity / Meeting / Decision. ПЛАН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-08 | existing_folkoop_cross_cutting | Репутация в контексте и вклад. ПЛАН С ОГРАНИЧЕНИЯМИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-09 | existing_folkoop_cross_cutting | Межгородская сеть / переносимость / interoperability. ДОЛГОСРОЧНОЕ НАПРАВЛЕНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-10 | existing_folkoop_cross_cutting | Оплата труда основателя и устойчивая организация. ОТКРЫТЫЕ СЦЕНАРИИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FX-11 | existing_folkoop_cross_cutting | Контролируемый пилот, настоящие аккаунты, закрытие аккаунта. НЕ ПОДТВЕРЖДЕНО ЗАВЕРШЕНИЕ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-01 | archive_and_source_recovery | Оригиналы v3 ONLINE / Telegram Zero / transition plan. ОРИГИНАЛЫ НЕ ПОДТВЕРЖДЕНЫ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-02 | archive_and_source_recovery | K7–K12 / IP / brand / consultant originals. НЕПОЛНЫЙ АРХИВ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-03 | archive_and_source_recovery | Полный дословный ChatGPT export. НЕ ГАРАНТИРОВАН. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-04 | archive_and_source_recovery | Sverinav baseline / air-quality experiment. ЕСТЬ МАНИФЕСТ И ЗАПИСИ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-05 | archive_and_source_recovery | Согласованность version / handoff / naming. ОБНАРУЖЕНА НЕСОГЛАСОВАННОСТЬ. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-01 | foundation | Четыре источника + текущий код = один FOLKOOP; без потери функций. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-02 | foundation | Полный замысел обязателен; узкий пилот не вправе отменять функциональные направления. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-03 | foundation | Расширять существующую реализацию, не заменять её другим проектом. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-04 | foundation | Sverinav: общественная инфраструктура и официальный следующий шаг. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-05 | foundation | FOLKUNO: онлайн и физическая модели обе сохранены. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| FO-06 | foundation | Экономическая кооперация включает спрос, труд, производство, закупки, продажи и решения. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-01 | gbg_forum | ГБГ Форум — четвёртый источник и местная часть Center. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-02 | gbg_forum | Center поддерживает онлайн, физический и гибридный формат. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-03 | gbg_forum | Сохранить обычное общение, привычные темы, знания и взаимопомощь. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-04 | gbg_forum | Сохранить модерацию, нормы, эскалацию и участие сообщества в изменениях. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-05 | gbg_forum | Сохранить #ищу/#могу/#идея в естественных темах и человеческую навигацию. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-06 | gbg_forum | Развести форумное общение и редакционный канал/дайджест. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-07 | gbg_forum | Не переименовывать и не переносить участников/сообщения автоматически. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| GBG-08 | gbg_forum | Для других городов не выдавать ГБГ Форум за их местную сеть. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| MU-01 | mura | Мура иллюстрирует всю объединённую систему, включая четыре источника. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| MU-02 | mura | Регистрация отделена от пребывания в аккаунте Муры. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| MU-03 | mura | В Center аккаунта Муры показать ГБГ Форум для Гётеборга. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| MU-04 | mura | Не подменять реализованную функцию историей или макетом. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| MU-05 | mura | Мура показывает связи и результаты через несколько необязательных сюжетов. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-01 | blockchain | Блокчейн — обязательное направление интегрированного продукта. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-02 | blockchain | Определить конкретную задачу доверия, участников и независимую проверку. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-03 | blockchain | Операционная база не заменяется блокчейном. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-04 | blockchain | Не публиковать личные данные/сообщения/членство/чувствительные запросы в публичном реестре. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-05 | blockchain | Без обязательной криптовалюты, seed phrase, кошелька, NFT или DAO. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-06 | blockchain | Запись в блокчейне не доказывает истинность реального события. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-07 | blockchain | Ключи, восстановление, отзыв, споры, исправления, финальность и отказоустойчивость. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| BC-08 | blockchain | Конкретная сеть, расходы и mainnet не утверждены этим решением. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| IN-01 | cross_origin_integration | Единые связи между официальным процессом, ресурсом партнёра, форумом и проектом. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| IN-02 | cross_origin_integration | Связать производство, продажи, ресурсы, решения и логистику. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| IN-03 | cross_origin_integration | Принадлежность и общение без обязательной экономической полезности. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| IN-04 | cross_origin_integration | Физическая/партнёрская точка связывается с цифровым запросом и результатом. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| IN-05 | cross_origin_integration | Не терять одиннадцать языков, мобильность, доступность и приватные черновики. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-06 | archive_and_source_recovery | Каждая исходная функция получает ID, источник, назначение, статус и проверку. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-07 | archive_and_source_recovery | Противоречащие старые решения не исправлять молча. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-08 | archive_and_source_recovery | Восстановленные оригиналы не подменять пересказом. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| AR-09 | archive_and_source_recovery | Ни одна тема не отменяется только потому, что не вошла в MVP. | box_coverage_99 | full_original_json_not_found; compact_projection_preserved |
-| SDCF-01 | sdcf | Preserve SDCF as the owner's cross-cutting systems/decision/control methodology; not a separate consumer product. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-02 | sdcf | Preserve explicit System/Scope/Agent/State semantics. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-03 | sdcf | Preserve Objective/Criterion/Constraint semantics and evaluable operational objectives. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-04 | sdcf | Preserve Observation provenance and separation of observation from interpretation. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-05 | sdcf | Preserve Model purpose/scope/validity/version/status/provenance. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-06 | sdcf | Preserve Prediction assumptions, horizon, support state and uncertainty. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-07 | sdcf | Preserve Decision alternatives, selection, objective, authority and timestamp. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-08 | sdcf | Preserve Plan/ControlledAction traceability to decision/plan/controller. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-09 | sdcf | Preserve Claim/Evidence support/challenge state and do not flatten evidence into truth. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-10 | sdcf | Preserve feedback/learning and model-updating without rewriting history. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-11 | sdcf | Recover prior Method Router/method-selection source before normative implementation. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-12 | sdcf | Recover prior explicit learning-loop source before normative implementation. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-13 | sdcf | Apply SDCF semantics to City/Center/Projects/economy/outcomes/agents without turning recommendations into authority. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| SDCF-14 | sdcf | Do not claim universal/empirical validation solely from formal/synthetic SDCF validation. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-01 | web3_web4 | Stable portable first-class object identity while UUID/PostgreSQL remain operational identity/truth. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-02 | web3_web4 | Derived Action/Cooperation Graph over normalized relational data with provenance. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-03 | web3_web4 | Verifiable Credentials for portable roles/entitlements where justified. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-04 | web3_web4 | Selective disclosure / minimum-attribute proofs. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-05 | web3_web4 | Cryptographic attestations typed separately from real-world truth. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-06 | web3_web4 | DID/EUDI/external-wallet adapters only for concrete identity/eligibility use cases. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-07 | web3_web4 | Federation between independently operated FOLKOOP Nodes/partners with explicit trust policy. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-08 | web3_web4 | Selected ActivityPub/public social federation if a concrete public interoperability use case exists. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-09 | web3_web4 | FOLKOOP Action-Agent layer over reviewed APIs/RPCs. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-10 | web3_web4 | MCP controlled tool surface. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-11 | web3_web4 | A2A inter-agent interoperability. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-12 | web3_web4 | Consequential agent actions require explicit authorization proportional to risk. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-13 | web3_web4 | Agents never receive arbitrary SQL/service-role bypass. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-14 | web3_web4 | Place and Resource are interoperable first-class objects. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-15 | web3_web4 | QR/NFC can link explicit physical interactions to Places/Resources. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-16 | web3_web4 | Digital-twin state is allowed for real operational Place/Resource needs. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-17 | web3_web4 | Later IoT/access integration preserves proportional authorization and safety. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-18 | web3_web4 | External integrity anchoring/blockchain remains a required scoped workstream under ADR-002. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
-| W34-19 | web3_web4 | Optional external Web3/Web4 systems must fail gracefully; basic civic/community use must remain available where possible. | box_sdcf_web3_web4_addendum | preserved_box_addendum |
+The remaining 91 IDs stay in this same register. S01 does not cancel production/sales/logistics, wider governance, physical/hybrid formats, international participation, full SDCF or Web3/Web4/blockchain. Some capabilities need later implementation slices; some requirements need a different form of verification, not a Mura story.
 
-## Next pass
+## Completion and evidence rules
 
-1. Recover/source-link original wording for the first 63 rows where possible.
-2. Expand summary rows into atomic testable sub-requirements without reusing IDs.
-3. Map each row to current code/operations and regression evidence.
-4. Add destination/domain links and permission/source-of-truth semantics.
-5. Add one linked Mura scenario and one real-user acceptance scenario for every implemented user-facing cluster.
-6. Report requirement completeness separately from implementation completeness.
+A requirement is not fully integrated until it has source/version and appropriate original wording, destination, actual code/operation evidence, status, delivery route, dependencies, applicable Mura coverage, real-user acceptance, privacy/rights constraints and any explicit supersession decision.
+
+Empty fields remain work gaps. New engineering proposals belong in a labelled contract or proposal field; do not fill original-source or passed-test fields with design aspirations. A document, mock, passing schema test, internal done flag or external hyperlink alone is not end-to-end proof.
+
+Report source recovery, accepted scope, design, runtime implementation, CI, deployment and observed human outcomes separately. The fixed-row preservation check protects this targeted update; future substantive row changes require their own reviewed evidence and an explicit update to the preservation baseline.
