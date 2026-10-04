@@ -1,0 +1,31 @@
+{
+  "id": "FK-SOURCE-RECOVERY-20261004",
+  "date": "2026-10-04",
+  "baseline_main_sha": "f77ebdafbca62501d51145e546bcce4508ff0e2a",
+  "baseline_register_blob": "16b0db68e7cdd40e1e205c6dbb85d7e91a05a518",
+  "baseline_entries_json_sha256": "758242773cb238d5eb5ef3b1f4caa925fe938d09314592ef7236ed0d60b542a7",
+  "scope": "Exact prior-register recovery only; not complete primary-source recovery or implementation evidence.",
+  "artifacts": [
+    {"id":"prior99","name":"FOLKOOP_NO_LOSS_REGISTER_2026-10-04.json","bytes":91268,"sha256":"34c9e1a63cbd4e7e3e23d8fa5b8f86d44d732a6053f64fb763f106546c763e70","record_count":99},
+    {"id":"prior63","name":"FOLKOOP_Requirements_Traceability_2026-10-03.json","bytes":37651,"sha256":"93f4a89619b4df8030344132d3fd7182bab3342aa0a6a636d9e17f8971ea236b","record_count":63}
+  ],
+  "checks": {
+    "bytes_sha256_verified": true,
+    "nested63_records_deep_equal": true,
+    "original99_ids_match_current_first99": true,
+    "all132_ids_order_and_meaning_preserved": true
+  },
+  "private_recovery_parts": {
+    "meta_box_id": "2505815593498",
+    "legacy63_box_id": "2505812217223",
+    "new36_box_id": "2505815324451",
+    "restore_script_box_id": "2505820347942",
+    "note": "Private data stays in Box. These ordinary JSON parts plus the script restore both exact prior files; they are not public copies of source documents."
+  },
+  "lookup_rule": "For an existing ID among the first 99, match requirements[].id in prior99. For the first 63, original_audit_record retains the earlier audit statement, not a verbatim primary-specification quotation.",
+  "previous_row_source_status": "full_original_json_not_found; compact_projection_preserved",
+  "current_row_source_status": "prior_register_recovered; compact_projection_preserved; primary_sources_incomplete",
+  "unresolved_primary_sources": ["operating-protocol originals","online-model originals","method-routing and learning-loop originals","external cooperative-platform primary materials"],
+  "runtime_tests_performed_by_this_recovery": false,
+  "private_originals_published": false
+}
