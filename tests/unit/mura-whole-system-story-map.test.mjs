@@ -59,12 +59,15 @@ test('Online Center story records v0 self-service coverage without pretending st
   assert(story.truth_boundary.some(x=>/not force every interaction into a Need\/Project/i.test(x)));
 });
 
-test('City story preserves authority/source boundary while requiring a cooperation bridge',()=>{
+test('City story records the v0 source-preserving bridge without upgrading it to first-class process truth',()=>{
   const story=stories.stories.find(x=>x.id==='mura-05-city-to-action');
-  assert.equal(story.status,'target_bridge_with_current_city');
+  assert.equal(story.status,'current_v0_partial');
   assert(story.truth_boundary.some(x=>/source != claim/i.test(x)));
   assert(story.truth_boundary.some(x=>/must not claim.*official report was submitted/i.test(x)));
-  assert(story.steps.some(x=>x.stage==='choose_next_step'&&x.status==='target_bridge'));
+  assert(story.truth_boundary.some(x=>/never auto-publishes/i.test(x)));
+  assert(story.steps.some(x=>x.stage==='choose_next_step'&&x.status==='current_v0'));
+  assert(story.steps.some(x=>x.stage==='coordinate'&&x.status==='current_v0_navigation'));
+  assert.match(story.current_gap,/does not persist a first-class City Process/i);
 });
 
 test('blockchain story is future-only and preserves privacy/independent-verification safeguards',()=>{

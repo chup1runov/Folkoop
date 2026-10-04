@@ -184,7 +184,7 @@ This is a target domain map, not a migration instruction and not a reason to int
 
 | Object | Status | Current representation / storage | Gap or invariant | Requirements |
 |---|---|---|---|---|
-| `city_process` — City Process | `approved_target` | — | Current CivicItem runtime records are not yet connected first-class processes. | `FO-04`, `IN-01`, `SV-12` |
+| `city_process` — City Process | `partial_representation` | Current CivicItem/source runtime models; ephemeral same-origin City → Online Center source-context handoff for normalized Göteborg open plans and Riksdagen documents | No first-class persisted City Process object or stored source→cooperation/project relation yet; NVDB/report-draft bridge and outcome tracking remain later work. | `FO-04`, `IN-01`, `SV-12` |
 
 ### target_center
 
@@ -267,7 +267,7 @@ SDCF is not a competing product taxonomy. It supplies semantic discipline across
 - Current Mura routing does not yet expose the Charter-required Center/GBG Forum story; this is an implementation gap.
 - Skill is currently profile text, not a first-class skill object.
 - Current resource cooperation is not yet the first-class interoperable Resource target.
-- CivicItem/source provenance is implemented runtime semantics, but City Process ↔ cooperation/project bridges are not first-class yet.
+- CivicItem/source provenance is implemented runtime semantics. City → FOLKOOP v0 now has an explicit source-preserving in-memory handoff to Online Center, but a persisted first-class City Process ↔ cooperation/project relation does not exist yet.
 - done != confirmed real-world Outcome.
 - Evidence, attestation, cryptographic integrity and authority decision remain distinct.
 - No mandatory wallet/token/NFT/seed phrase is implied by the blockchain/Web3 workstream.
@@ -284,7 +284,7 @@ Requirements: `GBG-01`, `GBG-02`, `GBG-07`, `GBG-08`, `FN-01`, `IN-04`.
 
 ### gap-city-cooperation-bridge
 
-Connect source-first City records/processes to explicit next actions in cooperation/projects while preserving authority/source boundaries.
+Connect source-first City → Cooperation v0 now provides an explicit source-preserving in-memory handoff from normalized Göteborg open plans/Riksdagen records to Online Center and existing People/Communities/Together/Projects routes. First-class City Process persistence, source-linked cooperation records, NVDB/report-draft coverage and outcome tracking remain open.
 
 Objects: `civic_item`, `city_process`, `need`, `project`, `organisation`, `service`.  
 Requirements: `IN-01`, `FO-04`, `SV-10`.
@@ -316,7 +316,7 @@ Online Center Göteborg v0 now provides a connected runtime route between People
 
 ## Current City boundary
 
-City already has normalized source-first runtime records and provenance. What is missing is the first-class bridge from an authoritative/derived City item or process into a FOLKOOP next action such as a Need, Project, relevant organisation/service or Center/Host referral. That bridge must preserve `source != claim` and must not make FOLKOOP the public authority.
+City already has normalized source-first runtime records and provenance. City → FOLKOOP v0 adds an explicit secondary handoff for normalized Göteborg open plans and Riksdagen documents: the official source remains primary, while the user may carry a bounded source context into Online Center and choose Communities, People, Together or Projects. The bridge is in-memory only, creates no cooperation automatically and does not claim official submission. A first-class persisted City Process, source-linked cooperation record, NVDB/report-draft bridge and outcome evidence remain future work.
 
 ## Current economy boundary
 

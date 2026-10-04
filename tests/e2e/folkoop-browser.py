@@ -70,7 +70,35 @@ async def main():
   await expect(city.locator('html')).to_have_attribute('lang','en')
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
-  await page.evaluate("location.hash='#/center'")
+
+  # Explicit City -> FOLKOOP bridge: browser regression tests the shell boundary
+  # deterministically. Unit coverage separately proves real source-backed plan/decision
+  # cards receive this control, so the browser test must not depend on today's feed.
+  workspace_before_bridge=await page.evaluate("localStorage.getItem('folkoop-workspace-v1')")
+  await page.evaluate("""() => {
+   const doc=document.querySelector('#cityFrame').contentDocument;
+   const button=doc.createElement('button');
+   button.type='button';
+   button.textContent='Continue in FOLKOOP';
+   button.dataset.folkoopHandoff='';
+   button.dataset.kind='planning';
+   button.dataset.title='Source-backed planning test item';
+   button.dataset.sourceId='goteborg_open_plans';
+   button.dataset.sourceName='Untrusted iframe label';
+   button.dataset.sourceUrl='https://goteborg.se/wps/portal/start/byggande--lantmateri-och-planarbete/stadsutveckling-och-planering';
+   doc.querySelector('#view').prepend(button);
+  }""")
+  await expect(city.locator('[data-folkoop-handoff]').first).to_be_visible()
+  await expect(city.locator('[data-folkoop-handoff]').first).to_have_text('Continue in FOLKOOP')
+  await city.locator('[data-folkoop-handoff]').first.click()
+  await expect(page).to_have_url(BASE+'#/center')
+  await expect(page.locator('[data-center-story="city-handoff"]')).to_be_visible()
+  await expect(page.locator('[data-center-story="city-handoff"] a[href*="goteborg.se"]')).to_have_count(1)
+  for center_route in ['communities','people','together','projects']:
+   await expect(page.locator(f'[data-center-story="city-handoff"] a[href="#/{center_route}"]')).to_be_visible()
+  assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')")==workspace_before_bridge
+  results.append('City source can continue into FOLKOOP with its official link and cooperative routes without auto-publishing')
+
   await expect(page.locator('#workspace')).to_contain_text('Online Center · people, city and projects in one route')
   await expect(page.locator('#workspace')).to_contain_text('No FOLKOOP venue is claimed open')
   await expect(page.locator('#workspace')).to_contain_text('no FOLKOOP account or data synchronization')

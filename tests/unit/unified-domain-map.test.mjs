@@ -78,8 +78,10 @@ test('Online Center v0 is a partial representation while staffed/live/physical g
   assert.match(center.current_gap,/live forum synchronization/i);
   assert.match(center.current_gap,/physical venue/i);
   const city=map.objects.find(x=>x.id==='city_process');
-  assert.equal(city.status,'approved_target');
-  assert.match(city.gap,/not yet connected first-class processes/i);
+  assert.equal(city.status,'partial_representation');
+  assert(city.representation.some(x=>/City → Online Center/i.test(x)));
+  assert.match(city.gap,/No first-class persisted City Process/i);
+  assert.match(city.gap,/NVDB\/report-draft bridge/i);
 });
 
 test('every requirement reference resolves to the canonical no-loss register',()=>{

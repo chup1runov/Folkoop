@@ -192,7 +192,7 @@ Cross-links: `mura-06-online-center-host`, `mura-07-agreement-decision-evidence`
 
 ### mura-05-city-to-action — An official City question leads to a human or cooperative next step
 
-**Status:** `target_bridge_with_current_city`  
+**Status:** `current_v0_partial`  
 **Question:** I have a city question or problem. Can I find the authoritative route and then connect it to people/resources/projects without FOLKOOP pretending to be the authority?
 
 **Entry points:** `city`, `home`, `projects`, `together`  
@@ -200,11 +200,12 @@ Cross-links: `mura-06-online-center-host`, `mura-07-agreement-decision-evidence`
 **Requirements:** `SV-01`, `SV-02`, `SV-03`, `SV-04`, `SV-05`, `SV-10`, `SV-12`, `FO-04`, `IN-01`, `FN-02`, `MU-03`
 
 Current fixture/evidence:
-- docs/DATA_MODEL.md: source-first CivicFeedEnvelope/CivicItem
-- apps/web/app.js: Göteborg City routing and official-source handoffs
+- `docs/DATA_MODEL.md`: source-first CivicFeedEnvelope/CivicItem
+- `apps/web/app.js`: Göteborg City routing and official-source handoffs
+- `apps/web/app.js` + `apps/web/folkoop.js`: explicit same-origin source-context handoff to Online Center v0 for normalized Göteborg open plans and Riksdagen documents
 - Mura City mode may read truthful public/official sources
 
-Current gap: **City runtime exists, but a CivicItem/City Process does not yet become a first-class connected next action in Together/Projects/Center.**
+Current gap: **City → FOLKOOP v0 now carries a bounded, allowlisted official source context into Online Center and exposes current People/Communities/Together/Projects routes. It does not persist a first-class City Process, auto-create cooperation, bridge NVDB/report drafts yet, or preserve the source as a stored relation after a later cooperation is created.**
 
 Story path:
 
@@ -212,21 +213,24 @@ Story path:
 |---|---|---|
 | `question` | `current_runtime` | Mura starts from a concrete city question, not an agency name. |
 | `source_route` | `current_runtime` | FOLKOOP shows source/provenance and the authoritative route/responsible actor when available. |
-| `choose_next_step` | `target_bridge` | User can choose official handoff, ask a community/Host, find a service/organisation, or create a Need/Project. |
-| `coordinate` | `target_bridge` | The selected cooperative path stays linked to the originating City context without making FOLKOOP the authority. |
+| `choose_next_step` | `current_v0` | For normalized Göteborg open plans and Riksdagen documents, the user may explicitly continue into Online Center while retaining the official source link, then choose Communities, People, Together or Projects. |
+| `coordinate` | `current_v0_navigation` | The source context stays visible in the in-memory Center handoff card while the user chooses an existing cooperative route; no cooperation is auto-created and the context is not yet persisted into a first-class City Process relation. |
 | `outcome` | `target_first_class` | Record whether the official/community/project next step was actually useful. |
 
 Truth boundaries:
 - source != claim; fetched/derived data must remain distinguishable from an authority decision.
 - FOLKOOP must not claim that an official report was submitted unless the official system confirms it.
+- The bridge never auto-publishes a Need/Project or submits an official case.
 - Mura may use real public source data, but her personal story around it remains illustrative.
 
 Acceptance questions:
-- Visitor can identify the original official source.
+- Visitor can identify and reopen the original official source after entering FOLKOOP.
 - Visitor can distinguish FOLKOOP guidance from public authority.
-- Visitor can name at least two possible next-action routes after seeing a City item.
+- Visitor can choose at least two cooperative next-action routes without an automatic post/project being created.
+- Mura can use the same bridge read-only without turning public source data into a claim about her real activity.
 
 Cross-links: `mura-03-project-plant-exchange`, `mura-06-online-center-host`.
+
 
 ### mura-06-online-center-host — Online Center Göteborg connects ordinary community life, Host navigation and city/partner opportunities
 

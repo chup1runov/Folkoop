@@ -42,6 +42,7 @@ While Mura Mode is active:
 - Product-development narration such as pilot/demo/server/local-workspace/not-connected copy must not dominate visible Mura surfaces.
 - Privacy/security/source truth remains available through explicit information surfaces; it must not be disguised as Mura's personal speech.
 - City may read truthful public/official sources. The invariant is no account mutation, not “no network request of any kind”.
+- A source-backed City item may hand off into Mura's authored Center context only after an explicit visitor action; the official source must remain visible and the handoff must not create a shared network record.
 - Leaving Mura is the explicit transition to account/sign-in choices.
 
 ## Story model

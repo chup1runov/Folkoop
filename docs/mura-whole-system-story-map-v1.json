@@ -377,7 +377,7 @@
     {
       "id": "mura-05-city-to-action",
       "title": "An official City question leads to a human or cooperative next step",
-      "status": "target_bridge_with_current_city",
+      "status": "current_v0_partial",
       "question": "I have a city question or problem. Can I find the authoritative route and then connect it to people/resources/projects without FOLKOOP pretending to be the authority?",
       "origin_coverage": [
         "origin-a-city",
@@ -412,9 +412,10 @@
       "current_fixture_evidence": [
         "docs/DATA_MODEL.md: source-first CivicFeedEnvelope/CivicItem",
         "apps/web/app.js: Göteborg City routing and official-source handoffs",
+        "apps/web/app.js + apps/web/folkoop.js: explicit same-origin source-context handoff to Online Center v0 for normalized Göteborg open plans and Riksdagen documents",
         "Mura City mode may read truthful public/official sources"
       ],
-      "current_gap": "City runtime exists, but a CivicItem/City Process does not yet become a first-class connected next action in Together/Projects/Center.",
+      "current_gap": "City → FOLKOOP v0 now carries a bounded, allowlisted official source context into Online Center and exposes current People/Communities/Together/Projects routes. It does not persist a first-class City Process, auto-create cooperation, bridge NVDB/report drafts yet, or preserve the source as a stored relation after a later cooperation is created.",
       "entry_points": [
         "city",
         "home",
@@ -434,13 +435,13 @@
         },
         {
           "stage": "choose_next_step",
-          "status": "target_bridge",
-          "description": "User can choose official handoff, ask a community/Host, find a service/organisation, or create a Need/Project."
+          "status": "current_v0",
+          "description": "For normalized Göteborg open plans and Riksdagen documents, the user may explicitly continue into Online Center while retaining the official source link, then choose Communities, People, Together or Projects."
         },
         {
           "stage": "coordinate",
-          "status": "target_bridge",
-          "description": "The selected cooperative path stays linked to the originating City context without making FOLKOOP the authority."
+          "status": "current_v0_navigation",
+          "description": "The source context remains visible in the in-memory Center handoff card while the user chooses an existing cooperative route; no cooperation is auto-created and the context is not yet persisted into a first-class City Process relation."
         },
         {
           "stage": "outcome",
@@ -451,12 +452,14 @@
       "truth_boundary": [
         "source != claim; fetched/derived data must remain distinguishable from an authority decision.",
         "FOLKOOP must not claim that an official report was submitted unless the official system confirms it.",
+        "The bridge never auto-publishes a Need/Project or submits an official case.",
         "Mura may use real public source data, but her personal story around it remains illustrative."
       ],
       "acceptance": [
-        "Visitor can identify the original official source.",
+        "Visitor can identify and reopen the original official source after entering FOLKOOP.",
         "Visitor can distinguish FOLKOOP guidance from public authority.",
-        "Visitor can name at least two possible next-action routes after seeing a City item."
+        "Visitor can choose at least two cooperative next-action routes without an automatic post/project being created.",
+        "Mura can use the same bridge read-only without turning public source data into a claim about her real activity."
       ],
       "cross_links": [
         "mura-03-project-plant-exchange",

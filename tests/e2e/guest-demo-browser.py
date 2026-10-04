@@ -179,6 +179,32 @@ async def main():
   await assert_mura_immersed(page)
   passed.append('Mura City opens Göteborg official-source tools with Center available as a separate context route')
 
+  # Mura may carry truthful public source context into her authored Center story, but remains read-only.
+  # Inject an allowlisted source context deterministically; unit tests separately prove
+  # real City source cards receive the same production handoff control.
+  await page.evaluate("""() => {
+   const doc=document.querySelector('#cityFrame').contentDocument;
+   const button=doc.createElement('button');
+   button.type='button';
+   button.textContent='Continue in FOLKOOP';
+   button.dataset.folkoopHandoff='';
+   button.dataset.kind='planning';
+   button.dataset.title='Mura source-backed planning example';
+   button.dataset.sourceId='goteborg_open_plans';
+   button.dataset.sourceName='Untrusted iframe label';
+   button.dataset.sourceUrl='https://goteborg.se/wps/portal/start/byggande--lantmateri-och-planarbete/stadsutveckling-och-planering';
+   doc.querySelector('#view').prepend(button);
+  }""")
+  await expect(frame.locator('[data-folkoop-handoff]').first).to_be_visible()
+  await frame.locator('[data-folkoop-handoff]').first.click()
+  await expect(page).to_have_url(BASE+'#/center')
+  await expect(page.locator('[data-center-story="city-handoff"]')).to_be_visible()
+  await expect(page.locator('[data-center-story="city-handoff"] a[href*="goteborg.se"]')).to_have_count(1)
+  assert await page.locator('#workspace a[href*="t.me"]').count()==0
+  await assert_mura_immersed(page,'#workspace')
+  assert not [u for u in external if 'supabase.co' in u],external
+  passed.append('Mura City source can continue read-only into authored Center context with the official source preserved')
+
   await page.click('#mobileContextDock [data-mobile-subnav="center"]')
   await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')

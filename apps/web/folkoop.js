@@ -6,7 +6,7 @@ let storage;try{storage=localStorage;}catch{/* Memory-only mode. */}
 const store=C.workspace(storage);
 let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
 if(!C.LANGS.includes(lang))lang='sv';
-let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
+let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null, cityHandoff=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const NAV_ORDER=['home','together','projects','city','messages'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
@@ -36,6 +36,20 @@ function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg ar
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
+const CITY_HANDOFF_SOURCES=Object.freeze({
+ goteborg_open_plans:Object.freeze({kind:'planning',name:'Göteborgs Stad',hosts:Object.freeze(['goteborg.se','www.goteborg.se'])}),
+ riksdagen_open_data:Object.freeze({kind:'decision',name:'Sveriges riksdag',hosts:Object.freeze(['data.riksdagen.se'])})
+});
+function normalizeCityHandoff(value){
+ if(!value||typeof value!=='object')return null;
+ const sourceId=String(value.sourceId||'').trim().slice(0,80),source=CITY_HANDOFF_SOURCES[sourceId];
+ if(!source)return null;
+ const title=String(value.title||'').trim().slice(0,180);
+ if(!title)return null;
+ let url;try{url=new URL(String(value.sourceUrl||''));}catch{return null;}
+ if(url.protocol!=='https:'||url.username||url.password||!source.hosts.includes(url.hostname))return null;
+ return Object.freeze({kind:source.kind,title,sourceId,sourceName:source.name,sourceUrl:url.href});
+}
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
@@ -153,12 +167,14 @@ function myPage(){
 }
 function center(){
  const city=selectedCity(),goteborg=citySupported(city),mura=isMuraVisit();
+ const handoff=cityHandoff&&(!cityHandoff.sourceId.includes('goteborg_')||goteborg)?`<article class="card" data-center-story="city-handoff"><span class="badge">City → FOLKOOP</span><h2>${esc(cityHandoff.title)}</h2><p class="meta">${esc(cityHandoff.sourceName)}</p><p>${esc(t('centerCityText'))}</p><p><a class="text-link" href="${esc(cityHandoff.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(cityHandoff.sourceName)} ↗</a></p><div class="actions">${a('communities','communities','text-link')}${a('people','people','text-link')}${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article>`:'';
  const routeCard=(route,iconKey,titleKey,textKey,labelKey)=>`<article class="card" data-center-route="${esc(route)}"><span class="small-icon">${icon(iconKey)}</span><h2>${esc(t(titleKey))}</h2><p>${esc(t(textKey))}</p>${a(route,labelKey,'text-link')}</article>`;
  const local=goteborg
   ?`<article class="card" data-center-story="local"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><h2>${esc(t('centerLocalTitle'))}</h2><p>${esc(t('centerLocalText'))}</p>${mura?`<p class="meta">${esc(t('centerLocalIllustrative'))}</p>`:`<p class="meta">${esc(t('centerLocalExternalNote'))}</p><p><a class="text-link" href="${GOTEBORG_FORUM_URL}" target="_blank" rel="noopener noreferrer">${esc(t('centerLocalExternal'))} ↗</a></p>`}</article>`
   :`<article class="card" data-center-story="local"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerOtherCityTitle'))}</h2><p>${esc(t('centerOtherCityText'))}</p>${city?'':a('me','profileLink','text-link')}</article>`;
  return head('centerOnlineTitle','centerOnlineText')
   +`<div class="row"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><span class="meta">${esc(city||'FOLKOOP')}</span></div>`
+  +handoff
   +`<div class="feature-grid">${routeCard('people','people','centerPeopleTitle','centerPeopleText','people')}${routeCard('communities','communities','centerCommunityTitle','centerCommunityText','communities')}${routeCard('city','city','centerCityTitle','centerCityText','openCity')}<article class="card" data-center-route="action"><span class="small-icon">${icon('project')}</span><h2>${esc(t('centerProjectTitle'))}</h2><p>${esc(t('centerProjectText'))}</p><div class="actions">${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article></div>`
   +`<div class="feature-grid">${local}${mura?'':`<article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerHostTitle'))}</h2><p>${esc(t('centerHostText'))}</p></article><article class="card"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerPhysicalTitle'))}</h2><p>${esc(t('centerPhysicalText'))}</p></article>`}</div>`;
 }
@@ -687,8 +703,19 @@ document.addEventListener('submit',e=>{
  formKind=null;scratch={};render();status(result.saved);
 });
 window.addEventListener('message',e=>{
- if(!frame||e.origin!==location.origin||e.source!==frame.contentWindow||e.data?.type!=='folkoop:city-language')return;
- if(C.LANGS.includes(e.data.language)&&e.data.language!==lang)changeLanguage(e.data.language);
+ if(!frame||e.origin!==location.origin||e.source!==frame.contentWindow)return;
+ if(e.data?.type==='folkoop:city-language'){
+  if(C.LANGS.includes(e.data.language)&&e.data.language!==lang)changeLanguage(e.data.language);
+  return;
+ }
+ if(e.data?.type==='folkoop:city-handoff'){
+  const handoff=normalizeCityHandoff(e.data.context);
+  if(!handoff)return;
+  cityHandoff=handoff;
+  current='center';
+  history.replaceState(null,'','#/center');
+  render(true);
+ }
 });
 $('#skip').addEventListener('click',e=>{e.preventDefault();$('#workspace').focus();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!ensureEntryGate().hidden){const mode=sessionStorage.getItem(ENTRY_KEY);if(mode)hideEntryGate();return;}if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
