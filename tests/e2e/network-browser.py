@@ -349,7 +349,7 @@ async def main():
   await page.select_option('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=stage]','active')
   await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация тестовой партии активна')
   flow_updates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_update_economic_flow'))
-  await edit.locator('button.button').click()
+  await edit.get_by_role('button',name='Сохранить поток',exact=True).click()
   _,update_payload=await wait_request(state,'/fk_update_economic_flow',flow_updates)
   assert update_payload['p_stage']=='active' and update_payload['p_flow']==FLOW,update_payload
   await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('В работе')
@@ -373,7 +373,7 @@ async def main():
 
   await page.select_option('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=stage]','closed')
   await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация завершена; результат отдельно не подтверждён')
-  await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"] button.button').click()
+  await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').get_by_role('button',name='Сохранить поток',exact=True).click()
   await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Закрыт')
   await expect(economy).to_contain_text('не означает оплату')
   assert await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').count()==0
