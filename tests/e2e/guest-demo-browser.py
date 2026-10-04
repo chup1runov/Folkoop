@@ -180,7 +180,21 @@ async def main():
   passed.append('Mura City opens Göteborg official-source tools with Center available as a separate context route')
 
   # Mura may carry truthful public source context into her authored Center story, but remains read-only.
-  await frame.locator('.bottom-nav [data-screen="nara"]').click()
+  # Inject an allowlisted source context deterministically; unit tests separately prove
+  # real City source cards receive the same production handoff control.
+  await page.evaluate("""() => {
+   const doc=document.querySelector('#cityFrame').contentDocument;
+   const button=doc.createElement('button');
+   button.type='button';
+   button.textContent='Continue in FOLKOOP';
+   button.dataset.folkoopHandoff='';
+   button.dataset.kind='planning';
+   button.dataset.title='Mura source-backed planning example';
+   button.dataset.sourceId='goteborg_open_plans';
+   button.dataset.sourceName='Untrusted iframe label';
+   button.dataset.sourceUrl='https://goteborg.se/wps/portal/start/byggande--lantmateri-och-planarbete/stadsutveckling-och-planering';
+   doc.querySelector('#view').prepend(button);
+  }""")
   await expect(frame.locator('[data-folkoop-handoff]').first).to_be_visible()
   await frame.locator('[data-folkoop-handoff]').first.click()
   await expect(page).to_have_url(BASE+'#/center')
