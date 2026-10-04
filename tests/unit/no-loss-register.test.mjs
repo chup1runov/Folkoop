@@ -53,7 +53,7 @@ test('recovery receipt records exact prior-register hashes and retains the old s
   // These checks validate the receipt, not remote private artifact bytes.
 });
 
-test('only source recovery status changed in any of the 132 protected rows',()=>{
+test('only source recovery plus reviewed E01 traceability changed in protected rows',()=>{
   const original=structuredClone(entries);
   let changed=0;
   for(const row of original){
@@ -64,6 +64,23 @@ test('only source recovery status changed in any of the 132 protected rows',()=>
     }
   }
   assert.equal(changed,99);
+
+  const e01={
+    'FO-06':{status:'partial_backend_economic_flow_only',evidence:['supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql']},
+    'KP-05':{status:'partial_backend_flow_roles_only_production_and_sales_fulfilment_pending',evidence:['supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql']},
+    'KP-06':{status:'design_only_not_runtime',evidence:['docs/architecture/FULFILMENT_LOGISTICS_V0_DESIGN.md (design only; no runtime)']},
+    'IN-02':{status:'partial_backend_economic_flow_only_logistics_and_decision_links_pending',evidence:['supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql','docs/architecture/FULFILMENT_LOGISTICS_V0_DESIGN.md (design only; no runtime)']},
+    'FX-06':{status:'partial_runtime_boundary_closed_is_not_confirmed_outcome',evidence:['supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql','tests/database/network-economic-flow-migration.sql']}
+  };
+  for(const [id,expected] of Object.entries(e01)){
+    const row=original.find(x=>x.id===id);
+    assert(row,id);
+    assert.equal(row.implementation_status,expected.status,id);
+    assert.deepEqual(row.code_evidence,expected.evidence,id);
+    row.implementation_status=null;
+    row.code_evidence=[];
+  }
+
   assert.equal(createHash('sha256').update(JSON.stringify(original),'utf8').digest('hex'),ORIGINAL_ENTRIES_SHA256,
     'IDs, order, statements, types or other original row fields changed outside the authorised recovery edit');
 });
@@ -75,11 +92,17 @@ test('W34-18 remains a cross-reference rather than duplicate blockchain scope',(
   assert.match(row.preserved_summary,/blockchain|integrity anchoring/i);
 });
 
-test('blank traceability fields remain work gaps, not fabricated runtime evidence',()=>{
+test('blank traceability fields remain work gaps except the reviewed E01 partial evidence',()=>{
+  const e01Ids=new Set(['FO-06','KP-05','KP-06','IN-02','FX-06']);
   for(const row of entries){
     assert.equal(row.destination,null);
-    assert.deepEqual(row.code_evidence,[]);
-    assert.equal(row.implementation_status,null);
+    if(!e01Ids.has(row.id)){
+      assert.deepEqual(row.code_evidence,[]);
+      assert.equal(row.implementation_status,null);
+    }else{
+      assert(row.code_evidence.length>0,row.id);
+      assert(row.implementation_status,row.id);
+    }
     assert.equal(row.acceptance_test,null);
   }
 });
