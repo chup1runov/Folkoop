@@ -160,13 +160,24 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
   await expect(page.locator('#cityWorkspace')).to_be_visible()
   assert 'Укажи свой город' not in await page.locator('body').inner_text()
-  assert await page.locator('#mobileContextDock [data-mobile-subnav="center"]').count()==0
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="center"]')).to_be_visible()
   frame=page.frame_locator('#cityFrame')
   city_text=(await frame.locator('body').inner_text()).lower()
   for banned in ('демо','пилот','прототип','demo','pilot','prototype','feedback'):
    assert banned not in city_text,(banned,city_text[:1000])
   await assert_mura_immersed(page)
-  passed.append('Mura City opens Göteborg official-source tools without Center or prototype/demo chrome')
+  passed.append('Mura City opens Göteborg official-source tools with Center available as a separate context route')
+
+  await page.click('#mobileContextDock [data-mobile-subnav="center"]')
+  await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
+  await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
+  await expect(page.locator('#workspace')).to_contain_text('специально созданных персонажей')
+  for route in ('people','communities','city','action'):
+   await expect(page.locator(f'#workspace [data-center-route="{route}"]')).to_be_visible()
+  assert await page.locator('#workspace a[href*="t.me"]').count()==0
+  assert 'физический центр folkoop уже открыт' not in (await page.locator('#workspace').inner_text()).lower()
+  await assert_mura_immersed(page,'#workspace')
+  passed.append('Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
   await expect(page.locator('.demo-profile-card')).to_contain_text('Мура')
