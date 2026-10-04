@@ -452,6 +452,7 @@
       "truth_boundary": [
         "source != claim; fetched/derived data must remain distinguishable from an authority decision.",
         "FOLKOOP must not claim that an official report was submitted unless the official system confirms it.",
+        "The bridge never auto-publishes a Need/Project or submits an official case.",
         "Mura may use real public source data, but her personal story around it remains illustrative."
       ],
       "acceptance": [
