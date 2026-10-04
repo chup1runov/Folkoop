@@ -40,6 +40,7 @@ Start with:
 ## Architecture and data
 
 - `ARCHITECTURE.md` — architecture that exists in the current pilot line.
+- `architecture/UNIFIED_DOMAIN_MAP.md` / `unified-domain-map-v1.json` — current operational objects, runtime/local models, variants, target domain objects and cross-cutting SDCF semantics in one map.
 - `DATA_MODEL.md` — product data-model notes.
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.
 - `SOURCE_REGISTRY.json` — external/public civic source registry.

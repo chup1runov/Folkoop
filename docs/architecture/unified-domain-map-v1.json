@@ -1,0 +1,2057 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-04",
+  "controlling_decision": "FK-FOUNDATION-2026-10-04",
+  "baseline_main_sha": "fa8df8daecd5b2c84ec06468a9fccd4c7bca416c",
+  "purpose": "One domain vocabulary that distinguishes current operational truth from runtime models, variants, local/illustrative state and approved target architecture.",
+  "status_vocabulary": {
+    "implemented_first_class": "Current first-class operational record.",
+    "implemented_relation": "Current stored relationship/state between first-class records.",
+    "implemented_variant": "Current semantic variant of a broader stored record; not a separate table/entity.",
+    "implemented_runtime_model": "Current runtime/normalized model outside shared relational application storage.",
+    "implemented_local_only": "Current browser-local/private model that is not silently published.",
+    "implemented_operational_control": "Current private operational control, not a participant-facing product domain object.",
+    "illustrative_only": "Authored learning/story data, never operational truth.",
+    "partial_representation": "Concept exists only as a scalar/variant/slice; target first-class semantics are incomplete.",
+    "approved_target": "Required/accepted target object or layer with no current first-class implementation.",
+    "approved_semantic_layer": "Accepted cross-cutting semantic concept; runtime enforcement/mapping incomplete."
+  },
+  "verified_database": {
+    "project_ref": "cwvhkdqsrbllsykhccmb",
+    "verified_at": "2026-10-04",
+    "application_table_count": 27,
+    "tables": [
+      "folkoop_private.pilot_invites",
+      "folkoop_private.pilots",
+      "folkoop_private.write_budgets",
+      "public.fk_blocks",
+      "public.fk_communities",
+      "public.fk_conversation_invites",
+      "public.fk_conversation_members",
+      "public.fk_conversations",
+      "public.fk_cooperation_activity",
+      "public.fk_cooperation_chats",
+      "public.fk_cooperation_members",
+      "public.fk_cooperation_reads",
+      "public.fk_cooperation_updates",
+      "public.fk_cooperations",
+      "public.fk_memberships",
+      "public.fk_message_reports",
+      "public.fk_messages",
+      "public.fk_posts",
+      "public.fk_profiles",
+      "public.fk_project_tasks",
+      "public.fk_purchase_commitments",
+      "public.fk_purchase_confirmations",
+      "public.fk_purchase_offer_choice",
+      "public.fk_purchase_offer_reports",
+      "public.fk_purchase_offers",
+      "public.fk_purchase_process",
+      "public.fk_reports"
+    ],
+    "note": "auth.users/auth.sessions are Supabase Auth infrastructure and are outside this 27-table FOLKOOP application/private-schema inventory."
+  },
+  "current_cooperation_contract": {
+    "table": "public.fk_cooperations",
+    "kinds": [
+      "need",
+      "offer",
+      "purchase",
+      "resource",
+      "project"
+    ],
+    "statuses": [
+      "open",
+      "active",
+      "done",
+      "cancelled"
+    ],
+    "invariant": "A cooperation status, including done, is not by itself a real-world Outcome."
+  },
+  "current_conversation_contract": {
+    "table": "public.fk_conversations",
+    "kinds": [
+      "direct",
+      "group"
+    ]
+  },
+  "current_project_task_contract": {
+    "table": "public.fk_project_tasks",
+    "statuses": [
+      "todo",
+      "doing",
+      "done"
+    ]
+  },
+  "current_purchase_contract": {
+    "process_stages": [
+      "collecting",
+      "offer_selected",
+      "confirming",
+      "ordered",
+      "delivered",
+      "distributing",
+      "done",
+      "cancelled"
+    ],
+    "confirmation_decisions": [
+      "pending",
+      "confirmed",
+      "declined"
+    ]
+  },
+  "objects": [
+    {
+      "id": "person",
+      "label": "Person / authenticated identity",
+      "status": "implemented_first_class",
+      "domain": "identity",
+      "storage": [
+        "auth.users"
+      ],
+      "evidence": [
+        "live_db: auth.users foreign-key target for current network records",
+        "docs/ARCHITECTURE.md#authentication-and-admission"
+      ],
+      "requirements": [
+        "KP-01",
+        "ID-02"
+      ],
+      "privacy": "personal_data"
+    },
+    {
+      "id": "profile",
+      "label": "Network profile",
+      "status": "implemented_first_class",
+      "domain": "people",
+      "storage": [
+        "public.fk_profiles"
+      ],
+      "evidence": [
+        "live_db: public.fk_profiles",
+        "apps/web/network-client.js"
+      ],
+      "requirements": [
+        "KP-01",
+        "FX-02"
+      ],
+      "privacy": "participant_controlled"
+    },
+    {
+      "id": "skill",
+      "label": "Skill",
+      "status": "partial_representation",
+      "domain": "people",
+      "storage": [],
+      "evidence": [
+        "live_db: fk_profiles.skills is text"
+      ],
+      "requirements": [
+        "FN-08"
+      ],
+      "representation": [
+        "public.fk_profiles.skills text"
+      ],
+      "gap": "Not a first-class Skill record yet."
+    },
+    {
+      "id": "community",
+      "label": "Community",
+      "status": "implemented_first_class",
+      "domain": "community",
+      "storage": [
+        "public.fk_communities"
+      ],
+      "evidence": [
+        "live_db: public.fk_communities"
+      ],
+      "requirements": [
+        "KP-01",
+        "GBG-03"
+      ]
+    },
+    {
+      "id": "community_membership",
+      "label": "Community membership",
+      "status": "implemented_relation",
+      "domain": "community",
+      "storage": [
+        "public.fk_memberships"
+      ],
+      "evidence": [
+        "live_db: public.fk_memberships"
+      ],
+      "requirements": [
+        "KP-01",
+        "GBG-03"
+      ]
+    },
+    {
+      "id": "community_post",
+      "label": "Community post",
+      "status": "implemented_first_class",
+      "domain": "community",
+      "storage": [
+        "public.fk_posts"
+      ],
+      "evidence": [
+        "live_db: public.fk_posts"
+      ],
+      "requirements": [
+        "KP-01",
+        "GBG-03"
+      ]
+    },
+    {
+      "id": "conversation",
+      "label": "Conversation",
+      "status": "implemented_first_class",
+      "domain": "messaging",
+      "storage": [
+        "public.fk_conversations"
+      ],
+      "evidence": [
+        "live_db: kinds direct|group"
+      ],
+      "requirements": [
+        "KP-01"
+      ]
+    },
+    {
+      "id": "conversation_membership",
+      "label": "Conversation membership",
+      "status": "implemented_relation",
+      "domain": "messaging",
+      "storage": [
+        "public.fk_conversation_members"
+      ],
+      "evidence": [
+        "live_db: public.fk_conversation_members"
+      ],
+      "requirements": [
+        "KP-01"
+      ]
+    },
+    {
+      "id": "conversation_invite",
+      "label": "Conversation invitation",
+      "status": "implemented_relation",
+      "domain": "messaging",
+      "storage": [
+        "public.fk_conversation_invites"
+      ],
+      "evidence": [
+        "live_db: public.fk_conversation_invites"
+      ],
+      "requirements": [
+        "KP-01"
+      ]
+    },
+    {
+      "id": "message",
+      "label": "Message",
+      "status": "implemented_first_class",
+      "domain": "messaging",
+      "storage": [
+        "public.fk_messages"
+      ],
+      "evidence": [
+        "live_db: public.fk_messages"
+      ],
+      "requirements": [
+        "KP-01"
+      ],
+      "privacy": "workspace_content"
+    },
+    {
+      "id": "cooperation",
+      "label": "Cooperation",
+      "status": "implemented_first_class",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperations"
+      ],
+      "evidence": [
+        "live_db: kind check need|offer|purchase|resource|project",
+        "live_db: status check open|active|done|cancelled"
+      ],
+      "requirements": [
+        "KP-02",
+        "ID-02"
+      ]
+    },
+    {
+      "id": "cooperation_membership",
+      "label": "Cooperation membership",
+      "status": "implemented_relation",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperation_members"
+      ],
+      "evidence": [
+        "live_db: public.fk_cooperation_members"
+      ],
+      "requirements": [
+        "KP-02"
+      ]
+    },
+    {
+      "id": "cooperation_update",
+      "label": "Cooperation update",
+      "status": "implemented_first_class",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperation_updates"
+      ],
+      "evidence": [
+        "live_db: public.fk_cooperation_updates"
+      ],
+      "requirements": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "cooperation_activity",
+      "label": "Cooperation activity record",
+      "status": "implemented_first_class",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperation_activity"
+      ],
+      "evidence": [
+        "live_db: public.fk_cooperation_activity"
+      ],
+      "requirements": [
+        "FX-01",
+        "FX-06"
+      ]
+    },
+    {
+      "id": "cooperation_read_state",
+      "label": "Cooperation read state",
+      "status": "implemented_relation",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperation_reads"
+      ],
+      "evidence": [
+        "live_db: public.fk_cooperation_reads"
+      ],
+      "requirements": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "cooperation_chat_link",
+      "label": "Cooperation ↔ work-chat link",
+      "status": "implemented_relation",
+      "domain": "cooperation",
+      "storage": [
+        "public.fk_cooperation_chats"
+      ],
+      "evidence": [
+        "live_db: FKs to fk_cooperations and fk_conversations"
+      ],
+      "requirements": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "need",
+      "label": "Need",
+      "status": "implemented_variant",
+      "domain": "cooperation",
+      "storage": [],
+      "evidence": [
+        "live_db: cooperation kind check"
+      ],
+      "requirements": [
+        "KP-02",
+        "FN-08",
+        "GBG-05"
+      ],
+      "representation": [
+        "public.fk_cooperations.kind='need'"
+      ]
+    },
+    {
+      "id": "offer",
+      "label": "Offer",
+      "status": "implemented_variant",
+      "domain": "cooperation",
+      "storage": [],
+      "evidence": [
+        "live_db: cooperation kind check"
+      ],
+      "requirements": [
+        "KP-02",
+        "FN-08",
+        "GBG-05"
+      ],
+      "representation": [
+        "public.fk_cooperations.kind='offer'"
+      ]
+    },
+    {
+      "id": "resource_cooperation",
+      "label": "Resource-sharing cooperation",
+      "status": "implemented_variant",
+      "domain": "cooperation",
+      "storage": [],
+      "evidence": [
+        "live_db: cooperation kind check"
+      ],
+      "requirements": [
+        "KP-02",
+        "IN-02"
+      ],
+      "representation": [
+        "public.fk_cooperations.kind='resource'"
+      ],
+      "gap": "This is a cooperation kind, not yet the first-class interoperable Resource object required by W34-14."
+    },
+    {
+      "id": "shared_purchase",
+      "label": "Shared Purchase",
+      "status": "implemented_variant",
+      "domain": "cooperative_economy",
+      "storage": [],
+      "evidence": [
+        "live_db: cooperation kind check and purchase quantity/unit constraint"
+      ],
+      "requirements": [
+        "KP-03",
+        "KP-04"
+      ],
+      "representation": [
+        "public.fk_cooperations.kind='purchase'"
+      ]
+    },
+    {
+      "id": "project",
+      "label": "Project",
+      "status": "implemented_variant",
+      "domain": "projects",
+      "storage": [],
+      "evidence": [
+        "live_db: cooperation kind check"
+      ],
+      "requirements": [
+        "FN-09",
+        "FX-01"
+      ],
+      "representation": [
+        "public.fk_cooperations.kind='project'"
+      ]
+    },
+    {
+      "id": "project_task",
+      "label": "Project task",
+      "status": "implemented_first_class",
+      "domain": "projects",
+      "storage": [
+        "public.fk_project_tasks"
+      ],
+      "evidence": [
+        "live_db: statuses todo|doing|done"
+      ],
+      "requirements": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "purchase_commitment",
+      "label": "Purchase quantity commitment",
+      "status": "implemented_relation",
+      "domain": "cooperative_economy",
+      "storage": [
+        "public.fk_purchase_commitments"
+      ],
+      "evidence": [
+        "live_db: public.fk_purchase_commitments"
+      ],
+      "requirements": [
+        "KP-03"
+      ]
+    },
+    {
+      "id": "supplier_offer",
+      "label": "Supplier coordination offer",
+      "status": "implemented_first_class",
+      "domain": "cooperative_economy",
+      "storage": [
+        "public.fk_purchase_offers"
+      ],
+      "evidence": [
+        "live_db: price/currency/quantity/delivery fields"
+      ],
+      "requirements": [
+        "KP-04"
+      ]
+    },
+    {
+      "id": "supplier_offer_choice",
+      "label": "Selected supplier offer",
+      "status": "implemented_relation",
+      "domain": "cooperative_economy",
+      "storage": [
+        "public.fk_purchase_offer_choice"
+      ],
+      "evidence": [
+        "live_db: FKs cooperation + offer + selected_by"
+      ],
+      "requirements": [
+        "KP-04"
+      ]
+    },
+    {
+      "id": "purchase_process",
+      "label": "Shared-purchase lifecycle state",
+      "status": "implemented_first_class",
+      "domain": "cooperative_economy",
+      "storage": [
+        "public.fk_purchase_process"
+      ],
+      "evidence": [
+        "live_db: collecting|offer_selected|confirming|ordered|delivered|distributing|done|cancelled"
+      ],
+      "requirements": [
+        "KP-04"
+      ]
+    },
+    {
+      "id": "purchase_confirmation",
+      "label": "Participant purchase confirmation",
+      "status": "implemented_relation",
+      "domain": "cooperative_economy",
+      "storage": [
+        "public.fk_purchase_confirmations"
+      ],
+      "evidence": [
+        "live_db: pending|confirmed|declined plus collection state"
+      ],
+      "requirements": [
+        "KP-04"
+      ]
+    },
+    {
+      "id": "block_relation",
+      "label": "Participant block relation",
+      "status": "implemented_relation",
+      "domain": "safety",
+      "storage": [
+        "public.fk_blocks"
+      ],
+      "evidence": [
+        "live_db: user_id and target_id reference auth.users"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "safety_state"
+    },
+    {
+      "id": "post_report",
+      "label": "Post moderation report",
+      "status": "implemented_first_class",
+      "domain": "safety",
+      "storage": [
+        "public.fk_reports"
+      ],
+      "evidence": [
+        "live_db: public.fk_reports"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "moderation_data"
+    },
+    {
+      "id": "message_report",
+      "label": "Message moderation report",
+      "status": "implemented_first_class",
+      "domain": "safety",
+      "storage": [
+        "public.fk_message_reports"
+      ],
+      "evidence": [
+        "live_db: public.fk_message_reports"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "moderation_data"
+    },
+    {
+      "id": "supplier_offer_report",
+      "label": "Supplier-offer moderation report",
+      "status": "implemented_first_class",
+      "domain": "safety",
+      "storage": [
+        "public.fk_purchase_offer_reports"
+      ],
+      "evidence": [
+        "live_db: public.fk_purchase_offer_reports"
+      ],
+      "requirements": [
+        "KP-04"
+      ],
+      "privacy": "moderation_data"
+    },
+    {
+      "id": "civic_feed",
+      "label": "Civic feed envelope",
+      "status": "implemented_runtime_model",
+      "domain": "city",
+      "storage": [],
+      "evidence": [
+        "docs/DATA_MODEL.md",
+        "apps/web/app.js"
+      ],
+      "requirements": [
+        "SV-01",
+        "SV-04",
+        "SV-05",
+        "SV-10",
+        "FO-04"
+      ],
+      "representation": [
+        "docs/DATA_MODEL.md::CivicFeedEnvelope"
+      ]
+    },
+    {
+      "id": "civic_item",
+      "label": "Civic item / current City record",
+      "status": "implemented_runtime_model",
+      "domain": "city",
+      "storage": [],
+      "evidence": [
+        "docs/DATA_MODEL.md",
+        "apps/web/app.js"
+      ],
+      "requirements": [
+        "SV-02",
+        "SV-03",
+        "SV-04",
+        "SV-05",
+        "SV-10",
+        "FO-04"
+      ],
+      "representation": [
+        "docs/DATA_MODEL.md::CivicItem"
+      ],
+      "gap": "Not yet a shared relational City Process connected to cooperation objects."
+    },
+    {
+      "id": "source_provenance",
+      "label": "External-source provenance",
+      "status": "implemented_runtime_model",
+      "domain": "city",
+      "storage": [],
+      "evidence": [
+        "docs/DATA_MODEL.md",
+        "docs/architecture/OUTCOME_INTEGRITY.md"
+      ],
+      "requirements": [
+        "SV-10",
+        "SDCF-04",
+        "SDCF-09"
+      ],
+      "representation": [
+        "sourceId/sourceUrl/fetchedAt/adapterVersion plus source version/time when available"
+      ]
+    },
+    {
+      "id": "local_private_profile",
+      "label": "Local private profile",
+      "status": "implemented_local_only",
+      "domain": "local_workspace",
+      "storage": [],
+      "evidence": [
+        "apps/web/folkoop.js"
+      ],
+      "requirements": [
+        "FX-02",
+        "IN-05"
+      ],
+      "representation": [
+        "browser-local/memory profile in apps/web/folkoop.js"
+      ],
+      "privacy": "device_local"
+    },
+    {
+      "id": "local_private_draft",
+      "label": "Local private draft",
+      "status": "implemented_local_only",
+      "domain": "local_workspace",
+      "storage": [],
+      "evidence": [
+        "apps/web/folkoop.js"
+      ],
+      "requirements": [
+        "FX-02",
+        "IN-05"
+      ],
+      "representation": [
+        "browser-local/memory drafts in apps/web/folkoop.js"
+      ],
+      "privacy": "device_local",
+      "invariant": "Never silently uploaded into shared network state."
+    },
+    {
+      "id": "pilot_admission",
+      "label": "Pilot admission",
+      "status": "implemented_operational_control",
+      "domain": "pilot_operations",
+      "storage": [
+        "folkoop_private.pilots"
+      ],
+      "evidence": [
+        "live_db: folkoop_private.pilots"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "operational_private"
+    },
+    {
+      "id": "pilot_invite",
+      "label": "Pilot invitation slot",
+      "status": "implemented_operational_control",
+      "domain": "pilot_operations",
+      "storage": [
+        "folkoop_private.pilot_invites"
+      ],
+      "evidence": [
+        "live_db: folkoop_private.pilot_invites"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "operational_private"
+    },
+    {
+      "id": "write_budget",
+      "label": "Write-rate budget",
+      "status": "implemented_operational_control",
+      "domain": "pilot_operations",
+      "storage": [
+        "folkoop_private.write_budgets"
+      ],
+      "evidence": [
+        "live_db: folkoop_private.write_budgets"
+      ],
+      "requirements": [
+        "FX-11"
+      ],
+      "privacy": "operational_private"
+    },
+    {
+      "id": "mura_illustrative_account",
+      "label": "Mura illustrative account/story layer",
+      "status": "illustrative_only",
+      "domain": "experience",
+      "storage": [],
+      "evidence": [
+        "docs/MURA_ACCEPTANCE_CONTRACT.md",
+        "apps/web/folkoop.js",
+        "apps/web/network-ui.js"
+      ],
+      "requirements": [
+        "FX-04",
+        "MU-01",
+        "MU-02",
+        "MU-04",
+        "MU-05"
+      ],
+      "representation": [
+        "authored deterministic fixture and navigation layer"
+      ],
+      "invariant": "Illustrative data never proves live external services or participant activity."
+    },
+    {
+      "id": "intent",
+      "label": "Intent",
+      "status": "partial_representation",
+      "domain": "target_core",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "ID-02",
+        "FO-01"
+      ],
+      "representation": [
+        "Need/Offer/Resource/Project/Purchase cooperation kinds express intent today"
+      ],
+      "gap": "No first-class Intent record independent of cooperation kind."
+    },
+    {
+      "id": "resource",
+      "label": "Resource",
+      "status": "approved_target",
+      "domain": "target_core",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8",
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "KP-02",
+        "W34-14",
+        "IN-02"
+      ],
+      "gap": "Current 'resource' is a cooperation kind; interoperable Resource identity/state is not yet implemented."
+    },
+    {
+      "id": "organisation",
+      "label": "Organisation",
+      "status": "approved_target",
+      "domain": "target_core",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "FN-05",
+        "IN-01"
+      ]
+    },
+    {
+      "id": "service",
+      "label": "Service / partner capability",
+      "status": "approved_target",
+      "domain": "target_core",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#8"
+      ],
+      "requirements": [
+        "FN-03",
+        "FN-05",
+        "IN-01"
+      ]
+    },
+    {
+      "id": "city_process",
+      "label": "City Process",
+      "status": "approved_target",
+      "domain": "target_city_bridge",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "FO-04",
+        "IN-01",
+        "SV-12"
+      ],
+      "gap": "Current CivicItem runtime records are not yet connected first-class processes."
+    },
+    {
+      "id": "center",
+      "label": "Center",
+      "status": "approved_target",
+      "domain": "target_center",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#7,#8",
+        "apps/web/folkoop-copy.js"
+      ],
+      "requirements": [
+        "FN-01",
+        "FN-03",
+        "FN-16",
+        "GBG-01",
+        "GBG-02",
+        "IN-04"
+      ],
+      "current_gap": "Current UI copy still presents Center mainly as a future physical layer; Charter requires ONLINE, PHYSICAL or HYBRID and Göteborg forum context."
+    },
+    {
+      "id": "place",
+      "label": "Place",
+      "status": "approved_target",
+      "domain": "target_center",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8",
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "FX-07",
+        "IN-04",
+        "W34-14"
+      ]
+    },
+    {
+      "id": "activity",
+      "label": "Activity / Meetup / Meeting",
+      "status": "approved_target",
+      "domain": "target_center",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#8"
+      ],
+      "requirements": [
+        "FN-11",
+        "FX-07",
+        "GBG-03"
+      ]
+    },
+    {
+      "id": "host",
+      "label": "Host / human navigator",
+      "status": "approved_target",
+      "domain": "target_center",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5"
+      ],
+      "requirements": [
+        "FN-01",
+        "FN-06",
+        "FN-10"
+      ]
+    },
+    {
+      "id": "referral",
+      "label": "Warm referral + follow-up",
+      "status": "approved_target",
+      "domain": "target_center",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5"
+      ],
+      "requirements": [
+        "FN-06",
+        "FN-07"
+      ]
+    },
+    {
+      "id": "agreement",
+      "label": "Agreement / community document",
+      "status": "approved_target",
+      "domain": "target_governance",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#6,#8,#10"
+      ],
+      "requirements": [
+        "KP-07",
+        "KP-08",
+        "BC-01"
+      ]
+    },
+    {
+      "id": "decision_record",
+      "label": "Decision",
+      "status": "approved_target",
+      "domain": "target_governance",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#6,#8",
+        "docs/architecture/SDCF_INTEGRATION.md"
+      ],
+      "requirements": [
+        "KP-08",
+        "SDCF-07",
+        "BC-01"
+      ]
+    },
+    {
+      "id": "economic_coordination",
+      "label": "Economic Coordination",
+      "status": "partial_representation",
+      "domain": "target_economy",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#6"
+      ],
+      "requirements": [
+        "FO-06",
+        "KP-03",
+        "KP-04",
+        "KP-05",
+        "KP-06",
+        "IN-02"
+      ],
+      "representation": [
+        "Shared Purchase slice implements demand/offer/order/distribution coordination only"
+      ],
+      "gap": "Production, sales, broader logistics/storage/returns and accounting integrations are not one complete first-class model."
+    },
+    {
+      "id": "outcome",
+      "label": "Outcome",
+      "status": "approved_target",
+      "domain": "target_integrity",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8",
+        "docs/architecture/OUTCOME_INTEGRITY.md",
+        "docs/architecture/SDCF_INTEGRATION.md"
+      ],
+      "requirements": [
+        "FX-06",
+        "SDCF-13"
+      ],
+      "invariant": "fk_cooperations.status='done' is not a confirmed real-world outcome."
+    },
+    {
+      "id": "evidence_artifact",
+      "label": "Evidence artifact / provenance-backed evidence",
+      "status": "partial_representation",
+      "domain": "target_integrity",
+      "storage": [],
+      "evidence": [
+        "docs/architecture/OUTCOME_INTEGRITY.md"
+      ],
+      "requirements": [
+        "FX-06",
+        "SDCF-09",
+        "W34-05"
+      ],
+      "representation": [
+        "City source provenance exists; general cooperation evidence object does not"
+      ]
+    },
+    {
+      "id": "attestation",
+      "label": "Attestation",
+      "status": "approved_target",
+      "domain": "target_integrity",
+      "storage": [],
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-05",
+        "BC-02",
+        "BC-06"
+      ]
+    },
+    {
+      "id": "passport_credential",
+      "label": "Passport / portable credential",
+      "status": "approved_target",
+      "domain": "target_trust",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5",
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "FN-19",
+        "W34-03",
+        "W34-04",
+        "W34-06"
+      ]
+    },
+    {
+      "id": "node",
+      "label": "FOLKOOP Node / partner node",
+      "status": "approved_target",
+      "domain": "target_network",
+      "storage": [],
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5",
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "FN-16",
+        "FX-09",
+        "W34-07"
+      ]
+    },
+    {
+      "id": "action_graph",
+      "label": "Derived Action / Cooperation Graph",
+      "status": "approved_target",
+      "domain": "target_network",
+      "storage": [],
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "ID-02",
+        "W34-02"
+      ],
+      "invariant": "Derived from normalized relational truth; no new graph database is required."
+    },
+    {
+      "id": "software_agent",
+      "label": "FOLKOOP action agent",
+      "status": "approved_target",
+      "domain": "target_agents",
+      "storage": [],
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md",
+        "docs/architecture/SDCF_INTEGRATION.md"
+      ],
+      "requirements": [
+        "FX-05",
+        "W34-09",
+        "W34-10",
+        "W34-11",
+        "W34-12",
+        "W34-13"
+      ],
+      "invariant": "No arbitrary SQL/service-role bypass; consequential actions require proportional explicit authorization."
+    }
+  ],
+  "relations": [
+    {
+      "id": "person_profile",
+      "from": "person",
+      "predicate": "has_profile",
+      "to": "profile",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_profiles.id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_community_membership",
+      "from": "person",
+      "predicate": "member_of",
+      "to": "community",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_memberships.user_id/community_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "community_posts",
+      "from": "community",
+      "predicate": "contains",
+      "to": "community_post",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_posts.community_id -> fk_communities.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_authors_post",
+      "from": "person",
+      "predicate": "authors",
+      "to": "community_post",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_posts.author_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_conversation_membership",
+      "from": "person",
+      "predicate": "member_of",
+      "to": "conversation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_conversation_members.user_id/conversation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "conversation_messages",
+      "from": "conversation",
+      "predicate": "contains",
+      "to": "message",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_messages.conversation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_authors_message",
+      "from": "person",
+      "predicate": "authors",
+      "to": "message",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_messages.author_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "conversation_invites_person",
+      "from": "conversation_invite",
+      "predicate": "invites",
+      "to": "person",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_conversation_invites"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_owns_community",
+      "from": "person",
+      "predicate": "owns",
+      "to": "community",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_communities.owner_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_owns_cooperation",
+      "from": "person",
+      "predicate": "owns",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.owner_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_cooperation_membership",
+      "from": "person",
+      "predicate": "participates_in",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperation_members"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "cooperation_updates",
+      "from": "cooperation",
+      "predicate": "has_update",
+      "to": "cooperation_update",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperation_updates.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "cooperation_activity_records",
+      "from": "cooperation",
+      "predicate": "has_activity",
+      "to": "cooperation_activity",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperation_activity.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "cooperation_read_states",
+      "from": "cooperation",
+      "predicate": "has_read_state",
+      "to": "cooperation_read_state",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperation_reads.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "cooperation_linked_chat",
+      "from": "cooperation",
+      "predicate": "linked_to",
+      "to": "conversation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperation_chats"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "need_variant",
+      "from": "need",
+      "predicate": "is_variant_of",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.kind='need'"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "offer_variant",
+      "from": "offer",
+      "predicate": "is_variant_of",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.kind='offer'"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "resource_variant",
+      "from": "resource_cooperation",
+      "predicate": "is_variant_of",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.kind='resource'"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_variant",
+      "from": "shared_purchase",
+      "predicate": "is_variant_of",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.kind='purchase'"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "project_variant",
+      "from": "project",
+      "predicate": "is_variant_of",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_cooperations.kind='project'"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "project_tasks",
+      "from": "project",
+      "predicate": "has_task",
+      "to": "project_task",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_project_tasks.cooperation_id; application constrains use to project cooperations"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_assigned_task",
+      "from": "person",
+      "predicate": "assigned_to",
+      "to": "project_task",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_project_tasks.assignee_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_commitments",
+      "from": "shared_purchase",
+      "predicate": "has_commitment",
+      "to": "purchase_commitment",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_commitments.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_supplier_offers",
+      "from": "shared_purchase",
+      "predicate": "has_supplier_offer",
+      "to": "supplier_offer",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_offers.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_provider_offer",
+      "from": "person",
+      "predicate": "provides",
+      "to": "supplier_offer",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_offers.provider_id -> auth.users.id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_offer_choice",
+      "from": "shared_purchase",
+      "predicate": "selects",
+      "to": "supplier_offer_choice",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_offer_choice"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_lifecycle",
+      "from": "shared_purchase",
+      "predicate": "has_process",
+      "to": "purchase_process",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_process.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "purchase_confirmations",
+      "from": "shared_purchase",
+      "predicate": "has_confirmation",
+      "to": "purchase_confirmation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_confirmations.cooperation_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_blocks_person",
+      "from": "person",
+      "predicate": "blocks",
+      "to": "person",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_blocks user_id/target_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "post_reports_post",
+      "from": "post_report",
+      "predicate": "reports",
+      "to": "community_post",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_reports.post_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "message_reports_message",
+      "from": "message_report",
+      "predicate": "reports",
+      "to": "message",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_message_reports.message_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "offer_reports_offer",
+      "from": "supplier_offer_report",
+      "predicate": "reports",
+      "to": "supplier_offer",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_purchase_offer_reports.offer_id"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "civic_feed_items",
+      "from": "civic_feed",
+      "predicate": "contains",
+      "to": "civic_item",
+      "status": "implemented_runtime",
+      "evidence": [
+        "docs/DATA_MODEL.md"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "civic_item_provenance",
+      "from": "civic_item",
+      "predicate": "has_provenance",
+      "to": "source_provenance",
+      "status": "implemented_runtime",
+      "evidence": [
+        "docs/DATA_MODEL.md"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "identity_admission",
+      "from": "person",
+      "predicate": "admitted_by",
+      "to": "pilot_admission",
+      "status": "implemented_control",
+      "evidence": [
+        "folkoop_private.pilots"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "invite_admission",
+      "from": "pilot_invite",
+      "predicate": "can_create",
+      "to": "pilot_admission",
+      "status": "implemented_control",
+      "evidence": [
+        "invite claim RPC / folkoop_private tables"
+      ],
+      "requirements": []
+    },
+    {
+      "id": "person_expresses_intent",
+      "from": "person",
+      "predicate": "expresses",
+      "to": "intent",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "ID-02"
+      ]
+    },
+    {
+      "id": "intent_need",
+      "from": "intent",
+      "predicate": "may_become",
+      "to": "need",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "ID-02"
+      ]
+    },
+    {
+      "id": "intent_offer",
+      "from": "intent",
+      "predicate": "may_become",
+      "to": "offer",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "ID-02"
+      ]
+    },
+    {
+      "id": "person_skill",
+      "from": "person",
+      "predicate": "has_skill",
+      "to": "skill",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "FN-08"
+      ]
+    },
+    {
+      "id": "project_skill_resource",
+      "from": "project",
+      "predicate": "uses_or_needs",
+      "to": "resource",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "IN-02"
+      ]
+    },
+    {
+      "id": "organisation_service",
+      "from": "organisation",
+      "predicate": "provides",
+      "to": "service",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "FN-05"
+      ]
+    },
+    {
+      "id": "city_process_responsibility",
+      "from": "city_process",
+      "predicate": "handled_by",
+      "to": "organisation",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "IN-01"
+      ]
+    },
+    {
+      "id": "city_process_to_project",
+      "from": "city_process",
+      "predicate": "can_lead_to",
+      "to": "project",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "IN-01"
+      ]
+    },
+    {
+      "id": "city_process_to_need",
+      "from": "city_process",
+      "predicate": "can_lead_to",
+      "to": "need",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "IN-01"
+      ]
+    },
+    {
+      "id": "center_community",
+      "from": "center",
+      "predicate": "connects",
+      "to": "community",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#7,#8"
+      ],
+      "requirements": [
+        "GBG-01",
+        "GBG-02"
+      ]
+    },
+    {
+      "id": "center_place",
+      "from": "center",
+      "predicate": "operates_through",
+      "to": "place",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#8"
+      ],
+      "requirements": [
+        "FN-16",
+        "IN-04"
+      ]
+    },
+    {
+      "id": "center_activity",
+      "from": "center",
+      "predicate": "hosts_or_routes",
+      "to": "activity",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#8"
+      ],
+      "requirements": [
+        "FN-11",
+        "GBG-03"
+      ]
+    },
+    {
+      "id": "center_host",
+      "from": "center",
+      "predicate": "has_host_role",
+      "to": "host",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5"
+      ],
+      "requirements": [
+        "FN-01",
+        "FN-10"
+      ]
+    },
+    {
+      "id": "host_referral",
+      "from": "host",
+      "predicate": "issues_or_supports",
+      "to": "referral",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5"
+      ],
+      "requirements": [
+        "FN-06",
+        "FN-07"
+      ]
+    },
+    {
+      "id": "referral_to_service",
+      "from": "referral",
+      "predicate": "routes_to",
+      "to": "service",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#5,#8"
+      ],
+      "requirements": [
+        "FN-06",
+        "IN-01"
+      ]
+    },
+    {
+      "id": "agreement_decision",
+      "from": "agreement",
+      "predicate": "records_or_frames",
+      "to": "decision_record",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#6,#10"
+      ],
+      "requirements": [
+        "KP-08",
+        "BC-01"
+      ]
+    },
+    {
+      "id": "decision_outcome",
+      "from": "decision_record",
+      "predicate": "authorizes_action_toward",
+      "to": "outcome",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/SDCF_INTEGRATION.md"
+      ],
+      "requirements": [
+        "SDCF-07",
+        "SDCF-08"
+      ]
+    },
+    {
+      "id": "economic_coordination_project",
+      "from": "economic_coordination",
+      "predicate": "coordinates",
+      "to": "project",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#6"
+      ],
+      "requirements": [
+        "FO-06",
+        "IN-02"
+      ]
+    },
+    {
+      "id": "cooperation_outcome",
+      "from": "cooperation",
+      "predicate": "may_produce",
+      "to": "outcome",
+      "status": "approved_target",
+      "evidence": [
+        "docs/FOUNDATION_CHARTER.md#8"
+      ],
+      "requirements": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "outcome_evidence",
+      "from": "outcome",
+      "predicate": "supported_by",
+      "to": "evidence_artifact",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/OUTCOME_INTEGRITY.md"
+      ],
+      "requirements": [
+        "FX-06",
+        "SDCF-09"
+      ]
+    },
+    {
+      "id": "attestation_evidence",
+      "from": "attestation",
+      "predicate": "attests_to",
+      "to": "evidence_artifact",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-05"
+      ]
+    },
+    {
+      "id": "credential_person",
+      "from": "passport_credential",
+      "predicate": "describes_entitlement_of",
+      "to": "person",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "FN-19",
+        "W34-03"
+      ]
+    },
+    {
+      "id": "node_credentials",
+      "from": "node",
+      "predicate": "may_recognize",
+      "to": "passport_credential",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-07"
+      ]
+    },
+    {
+      "id": "action_graph_derivation",
+      "from": "action_graph",
+      "predicate": "derived_from",
+      "to": "cooperation",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-02"
+      ]
+    },
+    {
+      "id": "agent_action_graph",
+      "from": "software_agent",
+      "predicate": "reads_through",
+      "to": "action_graph",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-09"
+      ]
+    },
+    {
+      "id": "agent_action_authorization",
+      "from": "software_agent",
+      "predicate": "acts_with_authorization_for",
+      "to": "person",
+      "status": "approved_target",
+      "evidence": [
+        "docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md"
+      ],
+      "requirements": [
+        "W34-12",
+        "W34-13"
+      ]
+    }
+  ],
+  "sdcf_semantics": [
+    {
+      "id": "system_scope",
+      "label": "System / SystemScope",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-01",
+      "meaning": "scope of a project, community, Center operation, purchase, City process or Place"
+    },
+    {
+      "id": "agent_semantic",
+      "label": "Agent",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-02",
+      "meaning": "participant, organisation, Host, operator, authority or software agent"
+    },
+    {
+      "id": "state_property",
+      "label": "State / Property",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-02",
+      "meaning": "operational state without implying external truth"
+    },
+    {
+      "id": "objective",
+      "label": "Objective",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-03",
+      "meaning": "what the scoped system tries to achieve"
+    },
+    {
+      "id": "criterion",
+      "label": "Criterion",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-03",
+      "meaning": "how an objective is evaluated"
+    },
+    {
+      "id": "constraint",
+      "label": "Constraint",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-03",
+      "meaning": "law, budget, eligibility, time, capacity, safety, privacy"
+    },
+    {
+      "id": "observation",
+      "label": "Observation",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-04",
+      "meaning": "source-bound observation separated from interpretation"
+    },
+    {
+      "id": "model",
+      "label": "Model / Assumption / Uncertainty",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-05",
+      "meaning": "purpose/scope/version/validity/provenance"
+    },
+    {
+      "id": "prediction",
+      "label": "Prediction",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-06",
+      "meaning": "assumptions, horizon, support state and uncertainty"
+    },
+    {
+      "id": "decision_semantic",
+      "label": "Decision",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-07",
+      "meaning": "selected alternative, objective, authority and timestamp"
+    },
+    {
+      "id": "plan",
+      "label": "Plan",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-08",
+      "meaning": "traceable plan implementing a decision"
+    },
+    {
+      "id": "controlled_action",
+      "label": "ControlledAction",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-08",
+      "meaning": "action traceable to plan/decision/controller"
+    },
+    {
+      "id": "claim_evidence",
+      "label": "Claim / Evidence",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-09",
+      "meaning": "support/challenge state; evidence is not flattened into truth"
+    },
+    {
+      "id": "feedback_learning",
+      "label": "Feedback / Learning",
+      "status": "approved_semantic_layer",
+      "requirement": "SDCF-10",
+      "meaning": "learning updates models without rewriting history"
+    }
+  ],
+  "architectural_invariants": [
+    "PostgreSQL/Supabase remains operational truth; the Action Graph is derived.",
+    "Need, Offer, Resource-sharing, Shared Purchase and Project are current cooperation variants, not separate operational databases.",
+    "Local private drafts never become shared network records automatically.",
+    "Mura is illustrative authored data and cannot prove live external services, participants or blockchain transactions.",
+    "Center is not yet an operating first-class object/venue; current UI presentation lags the Charter's online/physical/hybrid target.",
+    "Current Mura routing does not yet expose the Charter-required Center/GBG Forum story; this is an implementation gap.",
+    "Skill is currently profile text, not a first-class skill object.",
+    "Current resource cooperation is not yet the first-class interoperable Resource target.",
+    "CivicItem/source provenance is implemented runtime semantics, but City Process ↔ cooperation/project bridges are not first-class yet.",
+    "done != confirmed real-world Outcome.",
+    "Evidence, attestation, cryptographic integrity and authority decision remain distinct.",
+    "No mandatory wallet/token/NFT/seed phrase is implied by the blockchain/Web3 workstream.",
+    "Formal legal membership is distinct from account, community membership and pilot admission."
+  ],
+  "priority_gaps": [
+    {
+      "id": "gap-online-center",
+      "summary": "Create Online/Hybrid Center Göteborg domain journey and connect Göteborg local community context without importing identities/messages.",
+      "objects": [
+        "center",
+        "community",
+        "host",
+        "referral",
+        "place",
+        "activity"
+      ],
+      "requirements": [
+        "GBG-01",
+        "GBG-02",
+        "GBG-07",
+        "GBG-08",
+        "FN-01",
+        "IN-04"
+      ]
+    },
+    {
+      "id": "gap-city-cooperation-bridge",
+      "summary": "Connect source-first City records/processes to explicit next actions in cooperation/projects while preserving authority/source boundaries.",
+      "objects": [
+        "civic_item",
+        "city_process",
+        "need",
+        "project",
+        "organisation",
+        "service"
+      ],
+      "requirements": [
+        "IN-01",
+        "FO-04",
+        "SV-10"
+      ]
+    },
+    {
+      "id": "gap-cooperative-economy",
+      "summary": "Expand the implemented purchase slice to the preserved broader economic cycle: work/production/sales/logistics/returns plus specialist integrations.",
+      "objects": [
+        "economic_coordination",
+        "shared_purchase",
+        "resource",
+        "organisation",
+        "agreement",
+        "decision_record"
+      ],
+      "requirements": [
+        "FO-06",
+        "KP-05",
+        "KP-06",
+        "KP-08",
+        "IN-02"
+      ]
+    },
+    {
+      "id": "gap-outcome-evidence",
+      "summary": "Introduce separate Outcome/Evidence/Attestation semantics without treating internal completion state as truth.",
+      "objects": [
+        "outcome",
+        "evidence_artifact",
+        "attestation"
+      ],
+      "requirements": [
+        "FX-06",
+        "SDCF-09",
+        "W34-05",
+        "BC-06"
+      ]
+    },
+    {
+      "id": "gap-mura-whole-system",
+      "summary": "Extend Mura from the current story set to the whole-system map, including Center/GBG context and later implemented vertical slices.",
+      "objects": [
+        "mura_illustrative_account",
+        "center",
+        "civic_item",
+        "project",
+        "outcome"
+      ],
+      "requirements": [
+        "MU-01",
+        "MU-03",
+        "MU-04",
+        "MU-05"
+      ]
+    }
+  ]
+}
