@@ -3,7 +3,7 @@
 Date: 4 October 2026.  
 Status: **HOSTED BACKEND V0 — migration `20261004194921_folkoop_economic_flow_v0` applied and verified; participant-facing UI / Outcome semantics are not shipped**.  
 Issue: #212.  
-Authority when unblocked: `COOPERATIVE_ECONOMY_V1_SCOPE.md` + Foundation Charter.
+Authority: `COOPERATIVE_ECONOMY_V1_SCOPE.md` + Foundation Charter.
 
 ## Current implementation state
 
@@ -296,11 +296,11 @@ Additional lifecycle decisions:
 - flow-role rows carry coordination semantics only, not employment, qualification,
   contractual authority or verified commercial status.
 
-These decisions make the design concrete enough for migration review. They still do
-not authorize production SQL until this design PR is reviewed/merged and the required
-security/test plan is implemented.
+These decisions formed the reviewed v0 migration contract. The migration and required
+security/test plan have now been applied and verified; later changes still require a
+new reviewed migration rather than silently extending this v0 contract.
 
-## 12. Required verification if implementation proceeds
+## 12. Verification completed for the hosted v0 implementation
 
 - disposable migration test;
 - RLS cross-account tests;
