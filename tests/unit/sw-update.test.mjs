@@ -24,3 +24,10 @@ test('both public shells use the shared update-aware registration runtime',async
  assert.doesNotMatch(city,/navigator\.serviceWorker\.register/);
  assert.doesNotMatch(folkoop,/navigator\.serviceWorker\.register/);
 });
+
+
+test('service-worker cache version matches the packaged release version',async()=>{
+ const [sw,pkg]=await Promise.all([readFile('apps/web/sw.js','utf8'),readFile('package.json','utf8')]);
+ const version=JSON.parse(pkg).version;
+ assert.match(sw,new RegExp("const VERSION='"+version.replace(/[.*+?^$\{\}()|[\]\\]/g,'\\$&')+"'"));
+});
