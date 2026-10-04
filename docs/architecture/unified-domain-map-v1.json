@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "date": "2026-10-04",
   "controlling_decision": "FK-FOUNDATION-2026-10-04",
-  "baseline_main_sha": "fa8df8daecd5b2c84ec06468a9fccd4c7bca416c",
+  "baseline_main_sha": "3b77b78de9f5f2c1bd7c4b001bd1bcca601193d6",
   "purpose": "One domain vocabulary that distinguishes current operational truth from runtime models, variants, local/illustrative state and approved target architecture.",
   "status_vocabulary": {
     "implemented_first_class": "Current first-class operational record.",
@@ -19,7 +19,7 @@
   "verified_database": {
     "project_ref": "cwvhkdqsrbllsykhccmb",
     "verified_at": "2026-10-04",
-    "application_table_count": 27,
+    "application_table_count": 29,
     "tables": [
       "folkoop_private.pilot_invites",
       "folkoop_private.pilots",
@@ -35,6 +35,8 @@
       "public.fk_cooperation_reads",
       "public.fk_cooperation_updates",
       "public.fk_cooperations",
+      "public.fk_economic_flow_roles",
+      "public.fk_economic_flows",
       "public.fk_memberships",
       "public.fk_message_reports",
       "public.fk_messages",
@@ -49,7 +51,7 @@
       "public.fk_purchase_process",
       "public.fk_reports"
     ],
-    "note": "auth.users/auth.sessions are Supabase Auth infrastructure and are outside this 27-table FOLKOOP application/private-schema inventory."
+    "note": "auth.users/auth.sessions are Supabase Auth infrastructure and are outside this 29-table FOLKOOP application/private-schema inventory."
   },
   "current_cooperation_contract": {
     "table": "public.fk_cooperations",
@@ -972,6 +974,47 @@
       ]
     },
     {
+      "id": "economic_flow",
+      "label": "Economic Flow",
+      "status": "implemented_first_class",
+      "domain": "target_economy",
+      "storage": [
+        "public.fk_economic_flows"
+      ],
+      "evidence": [
+        "live_db: public.fk_economic_flows",
+        "migration: 20261004194921_folkoop_economic_flow_v0"
+      ],
+      "requirements": [
+        "FO-06",
+        "KP-05",
+        "KP-06",
+        "IN-02"
+      ],
+      "representation": [
+        "Parent-linked procurement/production/sale/service/distribution coordination for Project; procurement/distribution for Shared Purchase"
+      ],
+      "invariant": "A closed Economic Flow is coordination state, not payment/accounting truth and not a confirmed real-world Outcome."
+    },
+    {
+      "id": "economic_flow_role",
+      "label": "Economic Flow participant role",
+      "status": "implemented_relation",
+      "domain": "target_economy",
+      "storage": [
+        "public.fk_economic_flow_roles"
+      ],
+      "evidence": [
+        "live_db: public.fk_economic_flow_roles",
+        "migration: 20261004194921_folkoop_economic_flow_v0"
+      ],
+      "requirements": [
+        "FO-06",
+        "IN-02"
+      ],
+      "invariant": "Role assignment is coordination metadata only; it is not employment, qualification, contractual authority or verified commercial status."
+    },
+    {
       "id": "economic_coordination",
       "label": "Economic Coordination",
       "status": "partial_representation",
@@ -989,9 +1032,10 @@
         "IN-02"
       ],
       "representation": [
-        "Shared Purchase slice implements demand/offer/order/distribution coordination only"
+        "Shared Purchase implements purchase-specific demand/supplier/order/delivery/pickup coordination",
+        "Hosted Economic Flow v0 represents parent-linked economic purpose, stage and participant roles"
       ],
-      "gap": "Production, sales, broader logistics/storage/returns and accounting integrations are not one complete first-class model."
+      "gap": "Generic fulfilment/logistics, first-class Resource/Organisation links, Agreement/Decision and Outcome/Evidence remain incomplete; payments/accounting/KYC stay specialist boundaries."
     },
     {
       "id": "outcome",
@@ -1858,6 +1902,48 @@
         "W34-12",
         "W34-13"
       ]
+    },
+    {
+      "id": "economic_flow_parent_cooperation",
+      "from": "economic_flow",
+      "predicate": "belongs_to",
+      "to": "cooperation",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_economic_flows.cooperation_id -> fk_cooperations.id; parent-kind matrix enforced by RPC"
+      ],
+      "requirements": [
+        "FO-06",
+        "IN-02"
+      ]
+    },
+    {
+      "id": "economic_flow_roles",
+      "from": "economic_flow",
+      "predicate": "has_role",
+      "to": "economic_flow_role",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_economic_flow_roles.flow_id -> fk_economic_flows.id"
+      ],
+      "requirements": [
+        "FO-06",
+        "IN-02"
+      ]
+    },
+    {
+      "id": "economic_flow_role_person",
+      "from": "economic_flow_role",
+      "predicate": "assigns_coordination_role_to",
+      "to": "person",
+      "status": "implemented",
+      "evidence": [
+        "live_db: fk_economic_flow_roles.user_id -> auth.users.id; RPC requires parent cooperation membership"
+      ],
+      "requirements": [
+        "FO-06",
+        "IN-02"
+      ]
     }
   ],
   "sdcf_semantics": [
@@ -2015,9 +2101,11 @@
     },
     {
       "id": "gap-cooperative-economy",
-      "summary": "Expand the implemented purchase slice to the preserved broader economic cycle: work/production/sales/logistics/returns plus specialist integrations.",
+      "summary": "Economic Flow v0 is now a hosted backend slice for Project/Shared Purchase economic purpose and participant roles. Formal production planning and sales fulfilment are still not implemented; generic fulfilment/logistics/returns, first-class Resource/Organisation links, Agreement/Decision, Outcome/Evidence and specialist integrations also remain open.",
       "objects": [
         "economic_coordination",
+        "economic_flow",
+        "economic_flow_role",
         "shared_purchase",
         "resource",
         "organisation",
@@ -2064,5 +2152,40 @@
         "MU-05"
       ]
     }
-  ]
+  ],
+  "current_economic_flow_contract": {
+    "hosted_migration": "20261004194921_folkoop_economic_flow_v0",
+    "parent_kinds": {
+      "project": [
+        "procurement",
+        "production",
+        "sale",
+        "service",
+        "distribution"
+      ],
+      "purchase": [
+        "procurement",
+        "distribution"
+      ]
+    },
+    "stages": [
+      "planning",
+      "active",
+      "closed",
+      "cancelled"
+    ],
+    "roles": [
+      "coordinator",
+      "contributor",
+      "producer",
+      "buyer",
+      "seller",
+      "logistics"
+    ],
+    "mutation_authority": "parent cooperation owner only in v0",
+    "read_boundary": "authenticated admitted parent cooperation member through RLS",
+    "non_terminal_cap_per_parent": 20,
+    "outcome_boundary": "stage='closed' is coordination state and is not a confirmed real-world Outcome",
+    "participant_facing_ui": "not_yet_shipped"
+  }
 }

@@ -51,6 +51,12 @@ Online Center v0 navigation already exists at the recovery baseline. S01 defines
 
 The remaining 91 IDs stay in this same register. S01 does not cancel production/sales/logistics, wider governance, physical/hybrid formats, international participation, full SDCF or Web3/Web4/blockchain. Some capabilities need later implementation slices; some requirements need a different form of verification, not a Mura story.
 
+## Hosted Economic Flow traceability update
+
+E01 now has a verified hosted backend migration: `20261004194921_folkoop_economic_flow_v0`. The canonical JSON therefore records **partial** implementation evidence for FO-06, KP-05, IN-02 and FX-06, while KP-06 remains explicitly **design-only / not runtime** through the Fulfilment/Logistics v0 contract.
+
+This does **not** mark the broader cooperative-economy requirements complete. Formal production planning, sales fulfilment, generic logistics/storage/returns, Agreement/Decision and first-class Outcome/Evidence remain pending. The update records runtime evidence without converting flow labels or `closed` state into proof that production, sale, delivery or a real-world Outcome occurred.
+
 ## Completion and evidence rules
 
 A requirement is not fully integrated until it has source/version and appropriate original wording, destination, actual code/operation evidence, status, delivery route, dependencies, applicable Mura coverage, real-user acceptance, privacy/rights constraints and any explicit supersession decision.

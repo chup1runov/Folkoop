@@ -45,7 +45,7 @@ Start with:
 - `ARCHITECTURE.md` — architecture that exists in the current pilot line.
 - `architecture/UNIFIED_DOMAIN_MAP.md` / `unified-domain-map-v1.json` — current operational objects, runtime/local models, variants, target domain objects and cross-cutting SDCF semantics in one map.
 - `architecture/COOPERATIVE_ECONOMY_V1_SCOPE.md` / `cooperative-economy-v1-scope.json` — staged expansion from Shared Purchase into production/sales/logistics/agreement coordination while keeping payments/accounting/KYC/legal voting in specialist systems.
-- `architecture/ECONOMIC_FLOW_V0_DESIGN.md` — review-ready design for a parent-linked Economic Flow/role graph; no migration is authorised until the design is merged and security tests exist.
+- `architecture/ECONOMIC_FLOW_V0_DESIGN.md` — hosted Economic Flow / role graph backend v0; migration `20261004194921_folkoop_economic_flow_v0` is applied, while participant-facing UI and Outcome/Evidence remain later slices.
 - `architecture/FULFILMENT_LOGISTICS_V0_DESIGN.md` / `fulfilment-logistics-v0-design.json` — E02 design for Project-owned storage/handoff/transport/distribution/return milestones; Shared Purchase delivery/pickup truth stays authoritative until a separately reviewed bridge.
 - `DATA_MODEL.md` — product data-model notes.
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.

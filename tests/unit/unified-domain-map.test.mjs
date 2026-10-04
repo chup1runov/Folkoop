@@ -19,9 +19,9 @@ test('unified domain map keeps object/relation identities unique and resolvable'
 });
 
 test('all live FOLKOOP/private application tables are accounted for exactly in the verified baseline',()=>{
-  assert.equal(map.verified_database.application_table_count,27);
-  assert.equal(map.verified_database.tables.length,27);
-  assert.equal(new Set(map.verified_database.tables).size,27);
+  assert.equal(map.verified_database.application_table_count,29);
+  assert.equal(map.verified_database.tables.length,29);
+  assert.equal(new Set(map.verified_database.tables).size,29);
   const accounted=new Set(
     map.objects.flatMap(x=>x.storage||[])
       .filter(x=>x.startsWith('public.')||x.startsWith('folkoop_private.'))
@@ -45,6 +45,19 @@ test('current cooperation variants and statuses match the verified database cont
     assert(row.representation.includes(representation),id);
     assert.deepEqual(row.storage,[],id+' must not pretend to be a separate table');
   }
+});
+
+test('Economic Flow v0 is a hosted first-class backend with a separate role relation',()=>{
+  const flow=map.objects.find(x=>x.id==='economic_flow');
+  const role=map.objects.find(x=>x.id==='economic_flow_role');
+  assert.equal(flow.status,'implemented_first_class');
+  assert.deepEqual(flow.storage,['public.fk_economic_flows']);
+  assert.match(flow.invariant,/not a confirmed real-world Outcome/i);
+  assert.equal(role.status,'implemented_relation');
+  assert.deepEqual(role.storage,['public.fk_economic_flow_roles']);
+  assert.equal(map.current_economic_flow_contract.hosted_migration,'20261004194921_folkoop_economic_flow_v0');
+  assert.equal(map.current_economic_flow_contract.participant_facing_ui,'not_yet_shipped');
+  assert.equal(map.current_economic_flow_contract.non_terminal_cap_per_parent,20);
 });
 
 test('target objects do not masquerade as shipped first-class records',()=>{

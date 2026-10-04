@@ -38,6 +38,17 @@ test('scope document alone never authorizes a database migration',()=>{
   assert(scope.migration_gate.before_sql.includes('add real-user acceptance scenario'));
 });
 
+test('Cooperative Economy status advances E01 to hosted backend and E02 to next prototype',()=>{
+  const first=scope.v1_slices.find(x=>x.id==='economy-1-flow-intent');
+  const second=scope.v1_slices.find(x=>x.id==='economy-2-fulfilment-logistics');
+  assert.equal(first.status,'hosted_backend_v0');
+  assert.equal(first.implementation_evidence.migration,'20261004194921_folkoop_economic_flow_v0');
+  assert.deepEqual(first.implementation_evidence.tables,['public.fk_economic_flows','public.fk_economic_flow_roles']);
+  assert.equal(first.implementation_evidence.participant_facing_ui,'not_yet_shipped');
+  assert.equal(second.status,'next_disposable_runtime_prototype');
+  assert.equal(second.design_contract,'docs/architecture/FULFILMENT_LOGISTICS_V0_DESIGN.md');
+});
+
 test('first economic flow candidate does not replace project/cooperation truth',()=>{
   const first=scope.v1_slices[0];
   assert(first.candidate_objects.includes('economic_flow'));

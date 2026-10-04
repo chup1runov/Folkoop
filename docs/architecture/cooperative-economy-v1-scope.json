@@ -41,7 +41,7 @@
     {
       "id": "economy-1-flow-intent",
       "title": "Economic Flow / role graph",
-      "status": "next_design_and_runtime_slice",
+      "status": "hosted_backend_v0",
       "goal": "Represent why a cooperation/project is producing, procuring, selling, distributing or servicing something, and which parties/resources/roles participate, without replacing the parent cooperation/project.",
       "candidate_objects": [
         "economic_flow",
@@ -72,12 +72,21 @@
         "invoice ledger",
         "tax/accounting",
         "inventory valuation"
-      ]
+      ],
+      "implementation_evidence": {
+        "migration": "20261004194921_folkoop_economic_flow_v0",
+        "tables": [
+          "public.fk_economic_flows",
+          "public.fk_economic_flow_roles"
+        ],
+        "participant_facing_ui": "not_yet_shipped",
+        "outcome_boundary": "closed is not a confirmed real-world Outcome"
+      }
     },
     {
       "id": "economy-2-fulfilment-logistics",
       "title": "Fulfilment / logistics milestones",
-      "status": "after_economy_1",
+      "status": "next_disposable_runtime_prototype",
       "goal": "Coordinate storage, handoff, transport, distribution and returns as explicit milestones/evidence-bearing events rather than one generic done flag.",
       "candidate_objects": [
         "fulfilment_plan",
@@ -99,7 +108,8 @@
         "carrier marketplace",
         "automatic route optimization",
         "warehouse management system"
-      ]
+      ],
+      "design_contract": "docs/architecture/FULFILMENT_LOGISTICS_V0_DESIGN.md"
     },
     {
       "id": "economy-3-agreement-decision-trail",

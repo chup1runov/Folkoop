@@ -25,7 +25,7 @@ The governing rule is: **storage/UI state is not automatically the domain truth 
 
 ## Current operational spine
 
-The shared network currently uses Supabase Auth + PostgreSQL. Live verification on 4 October found **27** FOLKOOP/private application tables. The main current graph is:
+The shared network currently uses Supabase Auth + PostgreSQL. Live verification on 4 October now finds **29** FOLKOOP/private application tables after the hosted Economic Flow v0 migration. The main current graph is:
 
 ```mermaid
 flowchart LR
@@ -45,6 +45,9 @@ flowchart LR
   K --> R[Resource-sharing]
   K --> SP[Shared Purchase]
   K --> PJ[Project]
+  K --> EF[Economic Flow]
+  EF --> EFR[Economic Flow Role]
+  EFR --> P
   K --> UP[Updates / Activity]
   K --> CHAT[Linked work chat]
   PJ --> T[Project Task]
@@ -207,7 +210,9 @@ This is a target domain map, not a migration instruction and not a reason to int
 
 | Object | Status | Current representation / storage | Gap or invariant | Requirements |
 |---|---|---|---|---|
-| `economic_coordination` — Economic Coordination | `partial_representation` | Shared Purchase slice implements demand/offer/order/distribution coordination only | Production, sales, broader logistics/storage/returns and accounting integrations are not one complete first-class model. | `FO-06`, `KP-03`, `KP-04`, `KP-05`, `KP-06`, `IN-02` |
+| `economic_flow` — Economic Flow | `implemented_first_class` | `public.fk_economic_flows` | Parent-linked economic coordination only; `closed` is not payment/accounting truth or confirmed Outcome. | `FO-06`, `KP-05`, `KP-06`, `IN-02` |
+| `economic_flow_role` — Economic Flow participant role | `implemented_relation` | `public.fk_economic_flow_roles` | Coordination metadata only; not employment, qualification, contractual authority or verified commercial status. | `FO-06`, `IN-02` |
+| `economic_coordination` — Economic Coordination | `partial_representation` | Shared Purchase purchase-specific lifecycle + hosted Economic Flow v0 purpose/stage/roles | Generic fulfilment/logistics, Resource/Organisation links, Agreement/Decision and Outcome/Evidence remain incomplete; payments/accounting/KYC stay specialist boundaries. | `FO-06`, `KP-03`, `KP-04`, `KP-05`, `KP-06`, `IN-02` |
 
 ### target_integrity
 
@@ -268,6 +273,7 @@ SDCF is not a competing product taxonomy. It supplies semantic discipline across
 - Skill is currently profile text, not a first-class skill object.
 - Current resource cooperation is not yet the first-class interoperable Resource target.
 - CivicItem/source provenance is implemented runtime semantics. City → FOLKOOP v0 now has an explicit source-preserving in-memory handoff to Online Center, but a persisted first-class City Process ↔ cooperation/project relation does not exist yet.
+- Economic Flow `closed` is a coordination lifecycle state, not payment settlement, delivery proof or a confirmed real-world Outcome.
 - done != confirmed real-world Outcome.
 - Evidence, attestation, cryptographic integrity and authority decision remain distinct.
 - No mandatory wallet/token/NFT/seed phrase is implied by the blockchain/Web3 workstream.
@@ -291,9 +297,9 @@ Requirements: `IN-01`, `FO-04`, `SV-10`.
 
 ### gap-cooperative-economy
 
-Expand the implemented purchase slice to the preserved broader economic cycle: work/production/sales/logistics/returns plus specialist integrations.
+Economic Flow v0 is now a hosted backend slice for Project/Shared Purchase economic purpose and participant roles. Continue with generic fulfilment/logistics/returns, then Agreement/Decision and Outcome/Evidence while keeping specialist integrations explicit.
 
-Objects: `economic_coordination`, `shared_purchase`, `resource`, `organisation`, `agreement`, `decision_record`.  
+Objects: `economic_coordination`, `economic_flow`, `economic_flow_role`, `shared_purchase`, `resource`, `organisation`, `agreement`, `decision_record`.  
 Requirements: `FO-06`, `KP-05`, `KP-06`, `KP-08`, `IN-02`.
 
 ### gap-outcome-evidence
@@ -320,7 +326,7 @@ City already has normalized source-first runtime records and provenance. City �
 
 ## Current economy boundary
 
-Shared Purchase is a real implemented slice with quantity commitments, supplier coordination offers, selection, confirmation, external-order/delivery/pickup states and completion notes. It is **not** the full cooperative-economy target: production, sales, wider logistics/storage/returns, agreements/decisions and specialist accounting/payment integrations remain separate requirements.
+Shared Purchase is a real implemented purchase-specific slice with quantity commitments, supplier coordination offers, selection, confirmation, external-order/delivery/pickup states and completion notes. Hosted Economic Flow v0 now adds parent-linked `procurement / production / sale / service / distribution` purpose/stage and participant-role records. It still has no participant-facing UI and does **not** prove payment, delivery or a real-world Outcome. Generic fulfilment/logistics/returns, first-class Resource/Organisation links, agreements/decisions and specialist accounting/payment integrations remain separate requirements.
 
 ## Outcome boundary
 
@@ -328,7 +334,7 @@ There is no first-class `Outcome` table today. `fk_cooperations.status='done'`, 
 
 ## Verification basis
 
-- live Supabase schema verification: 4 October 2026;
+- live Supabase schema verification: 4 October 2026, including hosted migration `20261004194921_folkoop_economic_flow_v0`;
 - current `docs/ARCHITECTURE.md`, `docs/DATA_MODEL.md` and runtime code;
 - `docs/FOUNDATION_CHARTER.md`;
 - `docs/architecture/SDCF_INTEGRATION.md`;
