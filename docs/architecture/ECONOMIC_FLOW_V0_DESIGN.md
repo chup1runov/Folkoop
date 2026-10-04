@@ -1,9 +1,25 @@
 # Economic Flow / role graph v0 — schema design note
 
 Date: 4 October 2026.  
-Status: **DESIGN REVIEW READY — PR #211 IS MERGED; NO MIGRATION AUTHORISED UNTIL THIS DESIGN IS REVIEWED/MERGED**.  
+Status: **HOSTED BACKEND V0 — migration `20261004194921_folkoop_economic_flow_v0` applied and verified; participant-facing UI / Outcome semantics are not shipped**.  
 Issue: #212.  
 Authority when unblocked: `COOPERATIVE_ECONOMY_V1_SCOPE.md` + Foundation Charter.
+
+## Current implementation state
+
+The design below is now implemented as the first hosted backend slice:
+
+- `public.fk_economic_flows`;
+- `public.fk_economic_flow_roles`;
+- five owner-controlled mutation RPCs;
+- parent-membership RLS read boundary;
+- direct browser DML denied;
+- authenticated-only RPC execution with empty pinned `search_path`;
+- Project/Shared Purchase kind matrix, lifecycle, role vocabulary and 20 non-terminal-flow cap.
+
+Hosted verification after migration found zero Economic Flow/role rows, so applying the schema did not create participant data.
+
+The participant-facing UI is still absent. `stage='closed'` remains coordination state, not payment/accounting truth and not a confirmed real-world Outcome. Candidate/design wording retained below records the rationale that led to the implemented v0 contract.
 
 ## 1. Product problem
 
