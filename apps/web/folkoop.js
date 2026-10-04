@@ -203,9 +203,9 @@ const tutorialCopy={
  }
 };
 const tutorialTitles={
- en:{welcome:"Hi, I'm Mura",home:'This is my place',together:'A tool I need',projects:'What I can offer',people:'A project I started',city:'How I find people',center:'Where we coordinate',quick:'Now make your place yours'},
- ru:{welcome:'Привет, я Мура',home:'Это моё место',together:'Что мне понадобилось',projects:'Чем я могу помочь',people:'Проект, который я начала',city:'Как я нахожу людей',center:'Мой локальный Центр',quick:'Теперь сделай своё место своим'},
- sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Där vi samordnar',quick:'Gör nu din plats till din'}
+ en:{welcome:"Hi, I'm Mura",home:'This is my place',together:'A tool I need',projects:'What I can offer',people:'A project I started',city:'How I find people',center:'Local Center',quick:'Now make your place yours'},
+ ru:{welcome:'Привет, я Мура',home:'Это моё место',together:'Что мне понадобилось',projects:'Чем я могу помочь',people:'Проект, который я начала',city:'Как я нахожу людей',center:'Локальный Центр',quick:'Теперь сделай своё место своим'},
+ sv:{welcome:'Hej, jag är Mura',home:'Det här är min plats',together:'Ett verktyg jag behöver',projects:'Det jag kan erbjuda',people:'Ett projekt jag startade',city:'Så hittar jag människor',center:'Lokalt Center',quick:'Gör nu din plats till din'}
 };
 const entryCopy={
  en:{title:"Hi, I'm Mura",body:"I'm the FOLKOOP guide. FOLKOOP helps turn “I need”, “I can offer” or “I want to do” into relevant people, resources and a concrete next step. Come visit my place and I'll show you how it works — or sign in if you're ready to make your own place.",email:'Sign in / register',guest:"Come visit Mura",guestNote:"Mura's place is a guided learning space. The people and activities you meet there are examples used to teach FOLKOOP, not claims about real participants.",language:'Choose language'},
@@ -320,7 +320,7 @@ const muraTutorialCopy={
 };
 const muraTutorialTitles={
  en:{welcome:"Welcome to my place",home:"What I keep here",together:"Something I need",projects:"Something I can offer",people:"An idea that grew",city:"People around me",center:"My local Center",quick:"Now explore on your own"},
- ru:{welcome:"Добро пожаловать ко мне",home:"Что я храню здесь",together:"Что мне понадобилось",projects:"Чем я могу помочь",people:"Идея, которая выросла",city:"Люди вокруг меня",center:"Где мы договариваемся",quick:"Теперь исследуй сам"},
+ ru:{welcome:"Добро пожаловать ко мне",home:"Что я храню здесь",together:"Что мне понадобилось",projects:"Чем я могу помочь",people:"Идея, которая выросла",city:"Люди вокруг меня",center:"Мой локальный Центр",quick:"Теперь исследуй сам"},
  sv:{welcome:"Välkommen hem till mig",home:"Det jag har här",together:"Något jag behöver",projects:"Något jag kan erbjuda",people:"En idé som växte",city:"Människor runt mig",center:"Mitt lokala Center",quick:"Utforska nu själv"}
 };
 const muraHelperCopy={
