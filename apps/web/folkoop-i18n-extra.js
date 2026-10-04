@@ -175,7 +175,7 @@ languages.es = {
     "projects": "¿Tienes una idea? Conviértela en un equipo: personas, roles, tareas, actualizaciones y un chat de trabajo alrededor de un objetivo real.",
     "people": "Encuentra personas por lo que saben hacer y comunidades por lo que os importa. La meta no son seguidores, sino gente con la que puedas hacer algo de verdad.",
     "city": "Ciudad reúne fuentes y rutas oficiales locales conectadas. No deberías tener que saber de antemano qué autoridad o web buscar para dar el siguiente paso.",
-    "center": "Centro es la futura capa física de FOLKOOP: un lugar para conocer gente, recibir ayuda humana, aprender, trabajar en proyectos y compartir herramientas. Aún no hay un Centro FOLKOOP abierto.",
+    "center": "Centro conecta la comunidad local, las personas, los recursos de Ciudad y los proyectos con siguientes pasos concretos. Esta v0 es online/híbrida; no se afirma que exista un local físico de FOLKOOP abierto.",
     "quick": "Eso basta para empezar. Elige ahora una cosa real: algo que necesitas, algo que puedes ofrecer o algo que quieres hacer juntos. Ciudad y las demás secciones estarán ahí cuando sean útiles."
   },
   "tutorialTitles": {
@@ -204,7 +204,7 @@ languages.es = {
       "together": "Juntos es el núcleo de la cooperación: necesidades, ofertas, recursos compartidos y compras conjuntas.",
       "projects": "Proyectos convierte una idea en un equipo, tareas, roles, actualizaciones y una conversación de trabajo vinculada.",
       "city": "Ciudad te conecta con información cívica y vías oficiales. FOLKOOP no pretende ser la autoridad.",
-      "center": "Centro es la futura capa física: encuentros, aprendizaje, equipamiento y ayuda humana en la vida real.",
+      "center": "Centro conecta la comunidad local, las personas, los recursos de Ciudad y los proyectos con siguientes pasos concretos. Esta v0 es online/híbrida; no se afirma que exista un local físico de FOLKOOP abierto.",
       "settings": "En Ajustes puedes cambiar el idioma y volver a iniciar la introducción.",
       "about": "Acerca de explica el propósito, los límites y el estado actual del piloto de FOLKOOP."
     }
@@ -223,7 +223,7 @@ languages.es = {
     "people": "Personas",
     "communities": "Comunidades",
     "place": "Ciudad y Centro",
-    "placeText": "Elige tu ciudad en Perfil. Las herramientas cívicas locales cubren actualmente Göteborg. Centro es la capa prevista para encuentros y ayuda fuera de línea, no un local cuya apertura esté confirmada.",
+    "placeText": "Centro conecta la comunidad local, las personas, los recursos de Ciudad y los proyectos con siguientes pasos concretos. Esta v0 es online/híbrida; no se afirma que exista un local físico de FOLKOOP abierto.",
     "city": "Ciudad",
     "center": "Centro",
     "note": "El panel personal aparece después de iniciar sesión. Los borradores privados permanecen separados. No hay pagos ni ahorros garantizados."
@@ -701,7 +701,7 @@ languages.uk = {
     "projects": "Є ідея? Перетвори її на команду: люди, ролі, завдання, оновлення та робочий чат навколо реальної мети.",
     "people": "Знаходь людей за тим, що вони вміють, а спільноти — за тим, що для вас важливо. Мета не в підписниках, а в людях, з якими можна щось реально зробити.",
     "city": "Місто збирає підключені офіційні місцеві джерела й маршрути в одному місці. Не потрібно наперед знати, яку установу чи сайт шукати.",
-    "center": "Центр — майбутня фізична частина FOLKOOP: місце для знайомств, людської допомоги, навчання, роботи над проєктами й спільних інструментів. Відкритого Центру FOLKOOP поки немає.",
+    "center": "Центр поєднує локальну спільноту, людей, міські ресурси та проєкти з конкретними наступними кроками. Ця v0 працює онлайн/гібридно; ми не стверджуємо, що фізичний простір FOLKOOP уже відкритий.",
     "quick": "Цього достатньо. Обери зараз одну реальну річ: що тобі потрібно, що можеш запропонувати або що хочеш зробити разом. Місто та інші розділи знадобляться пізніше."
   },
   "tutorialTitles": {
@@ -730,7 +730,7 @@ languages.uk = {
       "together": "Разом — ядро співпраці: потреби, пропозиції, спільні ресурси та спільні закупівлі.",
       "projects": "Проєкти перетворюють ідею на команду, завдання, ролі, оновлення й пов’язаний робочий чат.",
       "city": "Місто пов’язує тебе з громадянською інформацією та офіційними маршрутами. FOLKOOP не видає себе за орган влади.",
-      "center": "Центр — майбутній фізичний рівень: зустрічі, навчання, обладнання й людська допомога в реальному житті.",
+      "center": "Центр поєднує локальну спільноту, людей, міські ресурси та проєкти з конкретними наступними кроками. Ця v0 працює онлайн/гібридно; ми не стверджуємо, що фізичний простір FOLKOOP уже відкритий.",
       "settings": "У Налаштуваннях можна змінити мову й знову запустити вступ.",
       "about": "Розділ «Про FOLKOOP» пояснює мету, межі й поточний стан пілоту."
     }
@@ -749,7 +749,7 @@ languages.uk = {
     "people": "Люди",
     "communities": "Спільноти",
     "place": "Місто й Центр",
-    "placeText": "Обери своє місто у Профілі. Локальні громадянські інструменти зараз працюють для Göteborg. Центр — запланований офлайн-рівень зустрічей і допомоги, а не вже відкрите приміщення.",
+    "placeText": "Центр поєднує локальну спільноту, людей, міські ресурси та проєкти з конкретними наступними кроками. Ця v0 працює онлайн/гібридно; ми не стверджуємо, що фізичний простір FOLKOOP уже відкритий.",
     "city": "Місто",
     "center": "Центр",
     "note": "Персональна головна з’являється після входу. Приватні чернетки залишаються окремими. Платежів і гарантованої економії немає."
@@ -1227,7 +1227,7 @@ languages.fi = {
     "projects": "Onko sinulla idea? Tee siitä tiimi: ihmiset, roolit, tehtävät, päivitykset ja työchat yhden todellisen tavoitteen ympärille.",
     "people": "Löydä ihmiset sen perusteella, mitä he osaavat, ja yhteisöt sen perusteella, mikä teille on tärkeää. Tavoite ei ole seuraajamäärä vaan ihmiset, joiden kanssa voi oikeasti tehdä jotain.",
     "city": "Kaupunki kokoaa yhdistetyt viralliset paikalliset lähteet ja reitit yhteen paikkaan. Sinun ei tarvitse tietää etukäteen, mitä viranomaista tai sivustoa etsiä.",
-    "center": "Center on FOLKOOPin tuleva fyysinen kerros: paikka tavata ihmisiä, saada ihmisen apua, oppia, tehdä projekteja ja jakaa työkaluja. Avointa FOLKOOP Centeriä ei vielä ole.",
+    "center": "Center yhdistää paikallisen yhteisön, ihmiset, kaupungin resurssit ja projektit konkreettisiin seuraaviin askeliin. Tämä v0 on verkossa/hybridi; emme väitä, että fyysinen FOLKOOP-tila olisi avoinna.",
     "quick": "Tämä riittää alkuun. Valitse nyt yksi todellinen asia: jotain mitä tarvitset, voit tarjota tai haluat tehdä yhdessä. Kaupunki ja muut osiot ovat käytettävissä, kun niitä tarvitaan."
   },
   "tutorialTitles": {
@@ -1256,7 +1256,7 @@ languages.fi = {
       "together": "Yhdessä on yhteistyön ydin: tarpeet, tarjoukset, jaetut resurssit ja yhteisostot.",
       "projects": "Projektit muuttaa idean tiimiksi, tehtäviksi, rooleiksi, päivityksiksi ja liitetyksi työchatiksi.",
       "city": "Kaupunki yhdistää sinut yhteiskuntatietoon ja virallisiin palvelureitteihin. FOLKOOP ei esiinny viranomaisena.",
-      "center": "Keskus on tuleva fyysinen taso: tapaamisia, oppimista, välineitä ja ihmisten apua oikeassa elämässä.",
+      "center": "Center yhdistää paikallisen yhteisön, ihmiset, kaupungin resurssit ja projektit konkreettisiin seuraaviin askeliin. Tämä v0 on verkossa/hybridi; emme väitä, että fyysinen FOLKOOP-tila olisi avoinna.",
       "settings": "Asetuksissa voit vaihtaa kieltä ja käynnistää esittelyn uudelleen.",
       "about": "Tietoa-osio selittää FOLKOOPin tarkoituksen, rajat ja pilotin nykyisen tilan."
     }
@@ -1275,7 +1275,7 @@ languages.fi = {
     "people": "Ihmiset",
     "communities": "Yhteisöt",
     "place": "Kaupunki ja Keskus",
-    "placeText": "Valitse kaupunkisi Profiilissa. Paikalliset kansalaistyökalut kattavat nyt Göteborgin. Keskus on suunniteltu offline-taso tapaamisille ja avulle, ei vahvistetusti avoinna oleva tila.",
+    "placeText": "Center yhdistää paikallisen yhteisön, ihmiset, kaupungin resurssit ja projektit konkreettisiin seuraaviin askeliin. Tämä v0 on verkossa/hybridi; emme väitä, että fyysinen FOLKOOP-tila olisi avoinna.",
     "city": "Kaupunki",
     "center": "Keskus",
     "note": "Henkilökohtainen Koti-näkymä tulee näkyviin sisäänkirjautumisen jälkeen. Yksityiset luonnokset pysyvät erillään. Maksuja tai taattuja säästöjä ei ole."
@@ -1753,7 +1753,7 @@ languages.bs = {
     "projects": "Imaš ideju? Pretvori je u tim: ljudi, uloge, zadaci, ažuriranja i radni chat oko stvarnog cilja.",
     "people": "Pronađi ljude po onome što znaju i zajednice po onome što vam je važno. Cilj nisu pratioci nego ljudi s kojima možeš stvarno nešto uraditi.",
     "city": "Grad okuplja povezane službene lokalne izvore i puteve na jednom mjestu. Ne moraš unaprijed znati koju ustanovu ili web-stranicu tražiti.",
-    "center": "Centar je budući fizički sloj FOLKOOP-a: mjesto za upoznavanje, ljudsku pomoć, učenje, projekte i dijeljenje alata. Otvoren FOLKOOP Centar još ne postoji.",
+    "center": "Center povezuje lokalnu zajednicu, ljude, gradske resurse i projekte sa konkretnim sljedećim koracima. Ova v0 je online/hibridna; ne tvrdimo da je fizički prostor FOLKOOP-a otvoren.",
     "quick": "To je dovoljno za početak. Izaberi jednu stvarnu stvar: nešto što ti treba, što možeš ponuditi ili što želiš uraditi zajedno. Grad i ostali dijelovi tu su kada postanu korisni."
   },
   "tutorialTitles": {
@@ -1782,7 +1782,7 @@ languages.bs = {
       "together": "Zajedno je jezgro saradnje: potrebe, ponude, dijeljeni resursi i zajedničke kupovine.",
       "projects": "Projekti pretvaraju ideju u tim, zadatke, uloge, ažuriranja i povezani radni razgovor.",
       "city": "Grad te povezuje s građanskim informacijama i službenim kanalima. FOLKOOP se ne predstavlja kao organ vlasti.",
-      "center": "Centar je budući fizički sloj: susreti, učenje, oprema i ljudska pomoć u stvarnom životu.",
+      "center": "Center povezuje lokalnu zajednicu, ljude, gradske resurse i projekte sa konkretnim sljedećim koracima. Ova v0 je online/hibridna; ne tvrdimo da je fizički prostor FOLKOOP-a otvoren.",
       "settings": "U Postavkama možeš promijeniti jezik i ponovo pokrenuti uvod.",
       "about": "O FOLKOOP-u objašnjava svrhu, granice i trenutno stanje pilota."
     }
@@ -1801,7 +1801,7 @@ languages.bs = {
     "people": "Ljudi",
     "communities": "Zajednice",
     "place": "Grad i Centar",
-    "placeText": "Izaberi svoj grad u Profilu. Lokalni građanski alati trenutno pokrivaju Göteborg. Centar je planirani offline sloj za susrete i pomoć, a ne potvrđeno otvoren prostor.",
+    "placeText": "Center povezuje lokalnu zajednicu, ljude, gradske resurse i projekte sa konkretnim sljedećim koracima. Ova v0 je online/hibridna; ne tvrdimo da je fizički prostor FOLKOOP-a otvoren.",
     "city": "Grad",
     "center": "Centar",
     "note": "Lična početna stranica pojavljuje se nakon prijave. Privatne skice ostaju odvojene. Nema plaćanja ni zagarantovane uštede."
@@ -2279,7 +2279,7 @@ languages.ar = {
     "projects": "لديك فكرة؟ حوّلها إلى فريق: أشخاص وأدوار ومهام وتحديثات ودردشة عمل حول هدف حقيقي.",
     "people": "اعثر على الأشخاص بحسب ما يستطيعون فعله، وعلى المجتمعات بحسب ما يهمكم. الهدف ليس عدد المتابعين، بل أشخاص يمكنك إنجاز شيء حقيقي معهم.",
     "city": "تجمع «المدينة» المصادر والمسارات الرسمية المحلية المتصلة في مكان واحد. لا ينبغي أن تحتاج إلى معرفة الجهة أو الموقع الصحيح مسبقًا.",
-    "center": "المركز هو الطبقة المادية المستقبلية لـ FOLKOOP: مكان للقاء الناس والحصول على مساعدة بشرية والتعلم والعمل على المشاريع ومشاركة الأدوات. لا يوجد مركز FOLKOOP مفتوح حتى الآن.",
+    "center": "يربط المركز المجتمع المحلي والأشخاص وموارد المدينة والمشاريع بخطوات تالية ملموسة. هذه النسخة v0 تعمل عبر الإنترنت/بشكل هجين؛ ولا ندّعي وجود موقع فعلي مفتوح لـ FOLKOOP.",
     "quick": "هذا يكفي للبدء. اختر الآن شيئًا حقيقيًا واحدًا: ما تحتاجه أو ما تستطيع تقديمه أو ما تريد فعله معًا. المدينة والأقسام الأخرى موجودة عندما تصبح مفيدة."
   },
   "tutorialTitles": {
@@ -2308,7 +2308,7 @@ languages.ar = {
       "together": "«معًا» هو جوهر التعاون: احتياجات وعروض وموارد مشتركة ومشتريات جماعية.",
       "projects": "تحول المشاريع الفكرة إلى فريق ومهام وأدوار وتحديثات ومحادثة عمل مرتبطة.",
       "city": "تربطك المدينة بالمعلومات المدنية والقنوات الرسمية. لا يتظاهر FOLKOOP بأنه جهة حكومية.",
-      "center": "المركز هو الطبقة المادية المستقبلية: لقاءات وتعلّم ومعدات ومساعدة بشرية في الحياة الواقعية.",
+      "center": "يربط المركز المجتمع المحلي والأشخاص وموارد المدينة والمشاريع بخطوات تالية ملموسة. هذه النسخة v0 تعمل عبر الإنترنت/بشكل هجين؛ ولا ندّعي وجود موقع فعلي مفتوح لـ FOLKOOP.",
       "settings": "يمكنك في الإعدادات تغيير اللغة وإعادة تشغيل المقدمة.",
       "about": "يشرح «حول FOLKOOP» الغرض من FOLKOOP وحدوده والحالة الحالية للتجربة."
     }
@@ -2327,7 +2327,7 @@ languages.ar = {
     "people": "الأشخاص",
     "communities": "المجتمعات",
     "place": "المدينة والمركز",
-    "placeText": "اختر مدينتك في الملف الشخصي. تغطي الأدوات المدنية المحلية حاليًا Göteborg. المركز هو الطبقة المخطط لها للقاءات والمساعدة خارج الإنترنت، وليس مكانًا مفتوحًا ومؤكدًا.",
+    "placeText": "يربط المركز المجتمع المحلي والأشخاص وموارد المدينة والمشاريع بخطوات تالية ملموسة. هذه النسخة v0 تعمل عبر الإنترنت/بشكل هجين؛ ولا ندّعي وجود موقع فعلي مفتوح لـ FOLKOOP.",
     "city": "المدينة",
     "center": "المركز",
     "note": "تظهر الصفحة الرئيسية الشخصية بعد تسجيل الدخول. تبقى المسودات الخاصة منفصلة. لا توجد مدفوعات أو وفورات مضمونة."
@@ -2805,7 +2805,7 @@ languages.fa = {
     "projects": "ایده داری؟ آن را به یک تیم تبدیل کن: آدم‌ها، نقش‌ها، کارها، به‌روزرسانی‌ها و گفت‌وگوی کاری پیرامون یک هدف واقعی.",
     "people": "آدم‌ها را بر اساس توانایی‌هایشان و جامعه‌ها را بر اساس چیزهایی که برایتان مهم است پیدا کن. هدف دنبال‌کننده نیست، بلکه آدم‌هایی است که واقعاً می‌توانی با آنها کاری انجام دهی.",
     "city": "«شهر» منابع و مسیرهای رسمی محلی متصل را یک‌جا جمع می‌کند. لازم نیست از قبل بدانی باید سراغ کدام اداره یا وب‌سایت بروی.",
-    "center": "مرکز لایهٔ فیزیکی آیندهٔ FOLKOOP است: جایی برای دیدن آدم‌ها، دریافت کمک انسانی، یادگیری، کار روی پروژه‌ها و اشتراک ابزار. هنوز مرکز FOLKOOP بازی وجود ندارد.",
+    "center": "مرکز، جامعه محلی، افراد، منابع شهری و پروژه‌ها را به گام‌های بعدی مشخص وصل می‌کند. این نسخه v0 آنلاین/ترکیبی است؛ ادعا نمی‌شود که مکان فیزیکی FOLKOOP باز است.",
     "quick": "برای شروع همین کافی است. حالا یک چیز واقعی انتخاب کن: چیزی که نیاز داری، می‌توانی ارائه کنی یا می‌خواهی با هم انجام دهید. شهر و بخش‌های دیگر وقتی لازم شوند در دسترس‌اند."
   },
   "tutorialTitles": {
@@ -2834,7 +2834,7 @@ languages.fa = {
       "together": "با هم هستهٔ همکاری است: نیازها، پیشنهادها، منابع مشترک و خریدهای گروهی.",
       "projects": "پروژه‌ها ایده را به تیم، وظایف، نقش‌ها، به‌روزرسانی‌ها و گفت‌وگوی کاریِ متصل تبدیل می‌کند.",
       "city": "شهر تو را به اطلاعات مدنی و مسیرهای رسمی متصل می‌کند. FOLKOOP وانمود نمی‌کند یک نهاد دولتی است.",
-      "center": "مرکز لایهٔ فیزیکی آینده است: دیدار، یادگیری، تجهیزات و کمک انسانی در زندگی واقعی.",
+      "center": "مرکز، جامعه محلی، افراد، منابع شهری و پروژه‌ها را به گام‌های بعدی مشخص وصل می‌کند. این نسخه v0 آنلاین/ترکیبی است؛ ادعا نمی‌شود که مکان فیزیکی FOLKOOP باز است.",
       "settings": "در تنظیمات می‌توانی زبان را تغییر دهی و معرفی را دوباره اجرا کنی.",
       "about": "دربارهٔ FOLKOOP هدف، مرزها و وضعیت فعلی آزمایش FOLKOOP را توضیح می‌دهد."
     }
@@ -2853,7 +2853,7 @@ languages.fa = {
     "people": "افراد",
     "communities": "جوامع",
     "place": "شهر و مرکز",
-    "placeText": "شهرت را در پروفایل انتخاب کن. ابزارهای مدنی محلی فعلاً Göteborg را پوشش می‌دهند. مرکز لایهٔ آفلاینِ برنامه‌ریزی‌شده برای دیدار و کمک است، نه مکانی که باز بودنش تأیید شده باشد.",
+    "placeText": "مرکز، جامعه محلی، افراد، منابع شهری و پروژه‌ها را به گام‌های بعدی مشخص وصل می‌کند. این نسخه v0 آنلاین/ترکیبی است؛ ادعا نمی‌شود که مکان فیزیکی FOLKOOP باز است.",
     "city": "شهر",
     "center": "مرکز",
     "note": "صفحهٔ اصلی شخصی پس از ورود ظاهر می‌شود. پیش‌نویس‌های خصوصی جدا می‌مانند. پرداخت یا صرفه‌جویی تضمین‌شده‌ای وجود ندارد."
@@ -3331,7 +3331,7 @@ languages.so = {
     "projects": "Fikrad ma haysaa? U beddel koox: dad, doorar, hawlo, cusboonaysiin iyo wada-sheekeysi shaqo oo ku wareegsan yool dhab ah.",
     "people": "Dadka ku hel waxa ay qaban karaan, bulshooyinkana ku hel waxa idin muhiimka ah. Ujeeddadu ma aha tiro raacayaal ah, ee waa dad aad wax dhab ah la qaban karto.",
     "city": "Magaaladu waxay isku keentaa ilo rasmi ah iyo waddooyin maxalli ah oo isku xiran. Uma baahnid inaad horay u taqaan hay’adda ama bogga saxda ah.",
-    "center": "Xaruntu waa lakabka jireed ee mustaqbalka ee FOLKOOP: meel lagu kulmo, gargaar bani’aadan laga helo, wax lagu barto, mashruucyo lagu qabto laguna wadaago qalab. Xarun FOLKOOP oo furan weli ma jirto.",
+    "center": "Xaruntu waxay isku xirtaa bulshada deegaanka, dadka, ilaha Magaalada iyo mashaariicda si loo helo tallaabooyin xiga oo cad. v0-kan waa onlayn/isku-dhaf; ma sheeganayno in xarun jireed oo FOLKOOP ahi furan tahay.",
     "quick": "Taas ayaa ku filan bilowga. Hadda dooro hal wax oo dhab ah: waxa aad u baahan tahay, bixin karto ama rabto inaad wada qabataan. Magaalada iyo qaybaha kale way joogaan marka ay faa’iido yeeshaan."
   },
   "tutorialTitles": {
@@ -3360,7 +3360,7 @@ languages.so = {
       "together": "Wadajir waa xudunta iskaashiga: baahiyo, soo-jeedin, kheyraad la wadaago iyo iibsiyo wadajir ah.",
       "projects": "Mashaariicdu fikrad ayay u beddelaan koox, hawlo, doorar, cusboonaysiin iyo wada-hadal shaqo oo ku xiran.",
       "city": "Magaaladu waxay kugu xirtaa macluumaadka bulshada iyo waddooyinka rasmiga ah. FOLKOOP iskama dhigayo hay’ad dowladeed.",
-      "center": "Xaruntu waa lakabka jireed ee mustaqbalka: kulamo, barasho, qalab iyo caawimo bini’aadan nolosha dhabta ah.",
+      "center": "Xaruntu waxay isku xirtaa bulshada deegaanka, dadka, ilaha Magaalada iyo mashaariicda si loo helo tallaabooyin xiga oo cad. v0-kan waa onlayn/isku-dhaf; ma sheeganayno in xarun jireed oo FOLKOOP ahi furan tahay.",
       "settings": "Dejinta waxaad ka beddeli kartaa luqadda oo dib uga bilaabi kartaa hordhaca.",
       "about": "Ku saabsan FOLKOOP wuxuu sharxayaa ujeeddada, xuduudaha iyo xaaladda tijaabada hadda."
     }
@@ -3379,7 +3379,7 @@ languages.so = {
     "people": "Dadka",
     "communities": "Bulshooyinka",
     "place": "Magaalada iyo Xarunta",
-    "placeText": "Magaaladaada ka dooro Profile. Qalabka bulshada ee maxalliga ah hadda wuxuu daboolaa Göteborg. Xaruntu waa lakab offline oo loo qorsheeyey kulamo iyo caawimo, ma aha goob furan oo la xaqiijiyey.",
+    "placeText": "Xaruntu waxay isku xirtaa bulshada deegaanka, dadka, ilaha Magaalada iyo mashaariicda si loo helo tallaabooyin xiga oo cad. v0-kan waa onlayn/isku-dhaf; ma sheeganayno in xarun jireed oo FOLKOOP ahi furan tahay.",
     "city": "Magaalada",
     "center": "Xarunta",
     "note": "Bogga hore ee shaqsiga ah wuxuu soo muuqdaa markaad gasho. Qabyooyinka gaarka ahi way kala go’an yihiin. Ma jiraan lacag-bixin ama kayd lacageed oo la dammaanad qaaday."
@@ -3857,7 +3857,7 @@ languages.ku = {
     "projects": "Fikrek heye? Wê bike tîmek: mirov, rol, peywir, nûvekirin û sohbetek karê li dor armancekî rast.",
     "people": "Mirovan li gorî tiştê ku dikarin bikin û civakan li gorî tiştê ku ji we re girîng e bibîne. Armanc ne hejmarê takipkeran e, lê mirovên ku dikarî bi wan re tiştekî rast bikî.",
     "city": "Bajar çavkaniyên fermî û rêyên herêmî yên girêdayî li cihêkî kom dike. Pêwîst nîne berê bizanî kîjan saziyê an malperê bigerî.",
-    "center": "Navend qata fizîkî ya pêşerojê ya FOLKOOP e: cihê ku mirov hev bibînin, alîkariya mirovan bistînin, hîn bibin, li projeyan bixebitin û amûran parve bikin. Navendek FOLKOOP a vekirî hîn tune ye.",
+    "center": "Center civaka herêmî, mirovan, çavkaniyên Bajêr û projeyan bi gavên paşîn ên konkret ve girêdide. Ev v0 serhêl/hîbrîd e; em nadibêjin ku cihê fizîkî yê FOLKOOP vekirî ye.",
     "quick": "Ji bo destpêkê ev têr e. Niha yek tiştê rast hilbijêre: tiştê ku pêwîst e, dikarî pêşkêş bikî an dixwazî bi hev re bikî. Bajar û beşên din dema ku bikêr bin li wir in."
   },
   "tutorialTitles": {
@@ -3886,7 +3886,7 @@ languages.ku = {
       "together": "Bi hev re navenda hevkariyê ye: pêdivî, pêşniyar, çavkaniyên hevpar û kirînên hevpar.",
       "projects": "Proje fikrê dike tîm, erk, rol, nûkirin û axaftina karê ya girêdayî.",
       "city": "Bajar te bi agahiyên civakî û rêyên fermî ve girêdide. FOLKOOP xwe wek saziya fermî nîşan nade.",
-      "center": "Navend qata fizîkî ya pêşerojê ye: hevdîtin, fêrbûn, amûr û alîkariya mirovî di jiyana rastîn de.",
+      "center": "Center civaka herêmî, mirovan, çavkaniyên Bajêr û projeyan bi gavên paşîn ên konkret ve girêdide. Ev v0 serhêl/hîbrîd e; em nadibêjin ku cihê fizîkî yê FOLKOOP vekirî ye.",
       "settings": "Di Mîhengan de dikarî ziman biguherînî û danasînê dîsa bide destpêkirin.",
       "about": "Derbarê FOLKOOP de armanc, sînor û rewşa niha ya pilotê rave dike."
     }
@@ -3905,7 +3905,7 @@ languages.ku = {
     "people": "Mirov",
     "communities": "Civak",
     "place": "Bajar û Navend",
-    "placeText": "Bajarê xwe di Profîlê de hilbijêre. Amûrên civakî yên herêmî niha Göteborg dihewînin. Navend qata offline ya plankirî ye ji bo hevdîtin û alîkariyê, ne cihê vekirî yê piştrastkirî.",
+    "placeText": "Center civaka herêmî, mirovan, çavkaniyên Bajêr û projeyan bi gavên paşîn ên konkret ve girêdide. Ev v0 serhêl/hîbrîd e; em nadibêjin ku cihê fizîkî yê FOLKOOP vekirî ye.",
     "city": "Bajar",
     "center": "Navend",
     "note": "Destpêka kesane piştî têketinê xuya dibe. Pêşnivîsên taybet cuda dimînin. Dravdan an teserûfa garantîkirî tune."
