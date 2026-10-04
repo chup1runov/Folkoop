@@ -585,6 +585,12 @@ const purchaseLifecycleDomain=globalThis.FolkoopNetworkPurchaseLifecycle.create(
  button:cbtn
 });
 
+const economicFlowDomain=globalThis.FolkoopNetworkEconomicFlow.create({
+ escape:esc,
+ getLanguage:lang,
+ getProfile:coopProfile
+});
+
 
 function renderMuraPeople(u){
  const people=data.directory.filter(p=>p.id!==u.id);
