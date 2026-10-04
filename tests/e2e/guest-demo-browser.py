@@ -175,7 +175,7 @@ async def main():
   for route in ('people','communities','city','action'):
    await expect(page.locator(f'#workspace [data-center-route="{route}"]')).to_be_visible()
   assert await page.locator('#workspace a[href*="t.me"]').count()==0
-  assert 'физический центр folkoop уже открыт' not in (await page.locator('#workspace').inner_text()).lower()
+  await expect(page.locator('#workspace')).to_contain_text('не утверждаем, что физический Центр FOLKOOP уже открыт')
   await assert_mura_immersed(page,'#workspace')
   passed.append('Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims')
 
