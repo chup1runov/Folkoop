@@ -16,6 +16,23 @@ test('Economic Flow client exposes only the reviewed v0 RPC surface',()=>{
  for(const role of ['coordinator','contributor','producer','buyer','seller','logistics'])assert(client.includes(role),role);
 });
 
+test('Economic Flow list loads newest records before applying the history cap',()=>{
+ const start=client.indexOf('economicFlows(cid)');
+ const end=client.indexOf('economicFlowRoles(',start);
+ assert(start>=0&&end>start,'economicFlows client method');
+ const method=client.slice(start,end);
+ assert.match(method,/order=created_at\.desc&limit=100/);
+ assert.doesNotMatch(method,/order=created_at\.asc/);
+});
+
+test('Economic Flow UI clears cooperation-scoped state before direct context switches',()=>{
+ assert.match(ui,/function resetEconomicFlowState\(\)/);
+ assert.match(ui,/openCoop'\)\{if\(selectedCoop!==id\)resetEconomicFlowState\(\)/);
+ assert.match(ui,/openNotify'\)\{if\(selectedCoop!==id\)resetEconomicFlowState\(\)/);
+ assert.match(ui,/if\(a==='open'\)\{if\(selectedCoop!==id\)resetEconomicFlowState\(\)/);
+ assert.match(ui,/createCoop'[\s\S]{0,300}selectedCoop=null;resetEconomicFlowState\(\)/);
+});
+
 test('Economic Flow UI remains a child of Project or Shared Purchase',()=>{
  assert.match(ui,/\['project','purchase'\]\.includes\(coop\.kind\)/);
  assert.match(ui,/economicFlowDomain\.render/);
@@ -46,6 +63,21 @@ test('Economic Flow UI introduces no payment or KYC form fields',()=>{
 });
 
 
+test('Economic Flow has participant-facing copy for all eleven supported languages',()=>{
+ const context={};vm.createContext(context);vm.runInContext(module,context);
+ const escape=v=>String(v??'');
+ const supported=['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'];
+ const english='Economic coordination';
+ for(const language of supported){
+  const domain=context.FolkoopNetworkEconomicFlow.create({escape,getLanguage:()=>language,getProfile:()=>null});
+  assert(domain.text('section').trim(),language+':section');
+  assert(domain.text('truth').trim(),language+':truth');
+  assert(domain.text('you').trim(),language+':you');
+  assert(domain.text('removeRole').trim(),language+':removeRole');
+  if(language!=='en')assert.notEqual(domain.text('section'),english,language+' fell back to English');
+ }
+});
+
 test('Economic Flow renderer gives owners lifecycle/role controls and keeps Mura read-only',()=>{
  const context={};vm.createContext(context);vm.runInContext(module,context);
  const escape=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -54,13 +86,14 @@ test('Economic Flow renderer gives owners lifecycle/role controls and keeps Mura
  const project={id:'p1',owner_id:'u1',kind:'project',status:'active'};
  const members=[{user_id:'u1'},{user_id:'u2'}];
  const flow={id:'f1',cooperation_id:'p1',kind:'production',stage:'planning',summary:'Small batch',created_by:'u1'};
- const roles=[{flow_id:'f1',user_id:'u1',role:'coordinator'}];
+ const roles=[{flow_id:'f1',user_id:'u1',role:'coordinator'},{flow_id:'f1',user_id:'u2',role:'contributor'}];
  const ownerHtml=domain.render({user:{id:'u1'},coop:project,owner:true,members,flows:[flow],flowRoles:roles,createDraft:{kind:'service',summary:''},editDrafts:{},roleDrafts:{},readOnly:false});
  assert.match(ownerHtml,/netEconomicFlowCreate/);
  assert.match(ownerHtml,/netEconomicFlowEdit/);
  assert.match(ownerHtml,/netEconomicRoleAdd/);
  for(const kind of ['procurement','production','sale','service','distribution'])assert(ownerHtml.includes('value="'+kind+'"'),kind);
  for(const role of ['coordinator','contributor','producer','buyer','seller','logistics'])assert(ownerHtml.includes('value="'+role+'"'),role);
+ assert.match(ownerHtml,/aria-label="Remove role: Member · Contributor"/);
  const muraHtml=domain.render({user:{id:'u1'},coop:project,owner:true,members,flows:[flow],flowRoles:roles,createDraft:{},editDrafts:{},roleDrafts:{},readOnly:true});
  assert(!muraHtml.includes('<form'));
  assert(!muraHtml.includes('data-economic='));

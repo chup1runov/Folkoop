@@ -162,7 +162,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   cooperationUpdates(cid){return rows('fk_cooperation_updates?select=id,cooperation_id,author_id,body,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
   projectTasks(cid){return rows('fk_project_tasks?select=id,cooperation_id,creator_id,assignee_id,title,details,status,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=200');},
   purchaseCommitments(cid){return rows('fk_purchase_commitments?select=cooperation_id,user_id,quantity,note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
-  economicFlows(cid){return rows('fk_economic_flows?select=id,cooperation_id,kind,stage,summary,created_by,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  economicFlows(cid){return rows('fk_economic_flows?select=id,cooperation_id,kind,stage,summary,created_by,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.desc&limit=100');},
   economicFlowRoles(flowIds){if(!Array.isArray(flowIds)||!flowIds.length)return Promise.resolve([]);const ids=idList(flowIds,100);return rows('fk_economic_flow_roles?select=flow_id,user_id,role,created_at&flow_id=in.('+ids.join(',')+')&order=created_at.asc&limit=600');},
   createEconomicFlow(cid,v){return rpc('fk_create_economic_flow',{p_cooperation:id(cid),p_kind:economicKind(v.kind),p_summary:text(v.summary,500,1)});},
   updateEconomicFlow(fid,v){return rpc('fk_update_economic_flow',{p_flow:id(fid),p_stage:economicStage(v.stage),p_summary:text(v.summary,500,1)});},
