@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "verified_at": "2026-10-04",
-  "source": "Read-only hosted supabase_migrations.schema_migrations comparison. For the 14 pre-E01 migrations, normalized local SQL matched hosted stored statements 14/14; only filenames were legacy.",
+  "source": "Read-only hosted supabase_migrations.schema_migrations comparison. The 14 pre-E01 migrations matched hosted stored statements 14/14 after normalization; E01 was then applied from merged main and is recorded under the hosted server-generated version 20261004194921.",
   "entries": [
     {
       "version": "20260925111649",
@@ -72,6 +72,11 @@
       "version": "20260930060734",
       "name": "folkoop_private_table_rls",
       "filename": "20260930060734_folkoop_private_table_rls.sql"
+    },
+    {
+      "version": "20261004194921",
+      "name": "folkoop_economic_flow_v0",
+      "filename": "20261004194921_folkoop_economic_flow_v0.sql"
     }
   ]
 }
