@@ -8,7 +8,7 @@ let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
-const NAV_ORDER=['home','together','projects','city','messages','me'];
+const NAV_ORDER=['home','together','projects','city','messages'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -38,14 +38,14 @@ const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').t
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
- home:['home-overview','home-attention','home-feed','home-actions'],
+ home:['home-overview','home-attention','home-feed','home-actions','me'],
  together:['together','people','communities'],
  projects:['projects-overview','projects-mine','projects-tasks','projects-updates'],
  city:['city','center'],
  messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
-const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['settings','about'].includes(route)?'me':route;
+const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['me','settings','about'].includes(route)?'home':route;
 const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
@@ -77,10 +77,11 @@ function renderMobileChrome(){
  if(defaultSubsection[active]&&subsectionParent(subsection)!==active){subsection=defaultSubsection[active];try{sessionStorage.setItem(SUBSECTION_KEY,subsection);}catch{}}
  document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
- primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+icon(k)+'<span>'+esc(k==='city'?t('city'):k==='me'?t('me'):t(k))+'</span></a>').join('');
  const guest=isMuraVisit();
+ const personalPrimaryLabel=guest?'Mura':(lang==='ru'?'Я':lang==='sv'?'Jag':'Me');
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+(k==='home'?icon('me'):icon(k))+'<span>'+esc(k==='home'?personalPrimaryLabel:k==='city'?t('city'):t(k))+'</span></a>').join('');
  const guestContext={
-  home:[],
+  home:['home-overview','me'],
   together:['together','people','communities'],
   projects:['projects-overview','projects-tasks','projects-updates'],
   city:['city'],
@@ -89,11 +90,14 @@ function renderMobileChrome(){
  };
  const context=guest?(guestContext[active]||[]):(MOBILE_CONTEXT[active]||[]);
  dock.dataset.parentSection=active;
- const subLabel=k=>SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
+ const subLabel=k=>{
+  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':'About me';
+  return SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
+ };
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
  const isVirtualSubsection=k=>subsectionParent(k)!=='';
  const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
- const language=active==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
+ const language=current==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':'Leave Mura\'s account';
  const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.";
