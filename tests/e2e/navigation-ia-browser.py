@@ -28,6 +28,13 @@ async def audit(browser,width,height):
  await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Обо мне')
  await expect(page.locator('.mura-home')).to_be_visible()
+ if width<=760:
+  chrome=await page.evaluate("""() => {
+   const primary=document.querySelector('#mobilePrimaryNav').getBoundingClientRect();
+   const dock=document.querySelector('#mobileContextDock').getBoundingClientRect();
+   return {primary:primary.height,dock:dock.height,total:primary.height+dock.height};
+  }""")
+  assert chrome['total']<=100,chrome
  await page.click('#mobileContextDock [data-subsection="me"]')
  await expect(page.locator('.demo-profile-card')).to_be_visible()
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
@@ -38,6 +45,7 @@ async def audit(browser,width,height):
 
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
  await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(3)
+ await expect(page.get_by_role('heading',name='Проекты Муры',exact=True)).to_have_count(1)
  await page.click('#mobileContextDock [data-subsection="projects-tasks"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
 
@@ -77,7 +85,7 @@ async def main():
   await audit(browser,390,844)
   await audit(browser,1366,900)
   await browser.close()
- print('PASS one five-item primary navigation uses a merged personal hub')
+ print('PASS five-item personal navigation keeps stacked mobile chrome within the viewport budget')
  print('PASS Mura Home stays immersive while Projects and Messages second-level tabs control real content')
  print('PASS Mura City omits the future Center route and prototype/demo chrome')
 
