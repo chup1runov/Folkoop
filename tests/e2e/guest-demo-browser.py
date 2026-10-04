@@ -86,7 +86,18 @@ async def main():
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Mura Home is a lived-in account surface with no signup, pilot or technical chrome')
-  assert await page.locator('#mobilePrimaryNav a').count()==6
+  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_contain_text('Mura')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="home-overview"]')).to_have_attribute('aria-current','page')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="me"]')).to_contain_text('Обо мне')
+  await page.click('#mobileContextDock [data-mobile-subnav="me"]')
+  await expect(page.locator('.demo-profile-card')).to_be_visible()
+  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="me"]')).to_have_attribute('aria-current','page')
+  await page.click('#mobileContextDock [data-mobile-subnav="home-overview"]')
+  await expect(page.locator('.mura-home')).to_be_visible()
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="home-overview"]')).to_have_attribute('aria-current','page')
+  passed.append('Mura and Profile are one personal hub with working Overview/About-me secondary navigation')
+  assert await page.locator('#mobilePrimaryNav a').count()==5
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   await expect(page.locator('.mobile-demo-popover')).to_be_visible()
   await expect(page.locator('.mobile-demo-popover')).to_contain_text('Ты внутри моего FOLKOOP')
@@ -168,7 +179,8 @@ async def main():
   await assert_mura_immersed(page)
   passed.append('Mura City opens Göteborg official-source tools without Center or prototype/demo chrome')
 
-  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="me"]')
   await expect(page.locator('.demo-profile-card')).to_contain_text('Мура')
   await expect(page.locator('.demo-profile-card')).to_contain_text('Göteborg')
   await expect(page.locator('.mura-drafts')).to_contain_text('Одолжить дрель на вечер')
@@ -239,7 +251,8 @@ async def main():
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="messages-groups"]')).to_have_attribute('aria-current','page')
   passed.append('Project and message subtabs clear stale open entity details')
 
-  await page.click('#mobilePrimaryNav [data-mobile-nav="me"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="me"]')
   await expect(page.locator('[data-net="logout"]')).to_have_text('Выйти из аккаунта Муры')
   await page.click('[data-net="logout"]')
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
