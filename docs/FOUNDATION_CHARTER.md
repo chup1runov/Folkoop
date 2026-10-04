@@ -140,6 +140,10 @@ Do not put profiles, private messages, identity numbers, home addresses, forum m
 
 ## 11. No-loss register and completion rule
 
+Canonical recovery register:
+- `docs/NO_LOSS_REQUIREMENTS_REGISTER.md` — human-readable stable-ID coverage index and recovery status;
+- `docs/NO_LOSS_REQUIREMENTS_REGISTER.json` — machine-readable register used by regression tests.
+
 Maintain stable requirement IDs with: source/version and original wording; destination(s); present code evidence; implementation status; native/integration/human-operation route; dependencies; Mura scenario; real-user acceptance test; privacy/rights constraints; supersession decision if any.
 
 Keep the prior 63-item audit intact as historical evidence. Its list is not proof of exhaustive coverage. Expand it with the fourth origin, current-code preservation, full Mura scope, SDCF, the retained Web3/Web4 capability family, blockchain and uncovered source details. Missing originals remain visible recovery gaps; reconstructions are labelled as reconstructions.
