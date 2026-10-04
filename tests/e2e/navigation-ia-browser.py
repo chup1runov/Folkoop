@@ -41,8 +41,9 @@ async def audit(browser,width,height):
  assert await page.locator('#mobileContextDock [data-subsection="messages-invites"]').count()==0
 
  await page.click('#mobilePrimaryNav a[href="#/city"]')
- await expect(page.locator('#mobileContextDock a')).to_have_count(1)
- assert await page.locator('#mobileContextDock a[href="#/center"]').count()==0
+ await expect(page.locator('#mobileContextDock a')).to_have_count(2)
+ await expect(page.locator('#mobileContextDock a[href="#/city"]')).to_have_count(1)
+ await expect(page.locator('#mobileContextDock a[href="#/center"]')).to_have_count(1)
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/projects"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
