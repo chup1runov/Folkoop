@@ -357,8 +357,11 @@ async def main():
   role_form=page.locator('.netEconomicRoleAdd[data-flow="'+FLOW+'"]')
   await page.select_option('.netEconomicRoleAdd[data-flow="'+FLOW+'"] [name=user]',UID)
   await page.select_option('.netEconomicRoleAdd[data-flow="'+FLOW+'"] [name=role]','producer')
+  assert await role_form.evaluate('(f)=>f.checkValidity()')
+  assert await role_form.locator('[name=user]').input_value()==UID
+  assert await role_form.locator('[name=role]').input_value()=='producer'
   role_adds=sum(1 for url,_ in state['requests'] if url.endswith('/fk_add_economic_flow_role'))
-  await role_form.locator('button.button').click()
+  await role_form.evaluate('(f)=>f.requestSubmit()')
   _,role_payload=await wait_request(state,'/fk_add_economic_flow_role',role_adds)
   assert role_payload=={'p_flow':FLOW,'p_user':UID,'p_role':'producer'},role_payload
   await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Производитель')
