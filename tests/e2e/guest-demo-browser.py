@@ -289,7 +289,7 @@ async def main():
   # Regression: accepting the implicit browser language by entering Mura must survive reload.
   await context.close()
   context=await browser.new_context(viewport={'width':390,'height':844},locale='ru-RU',service_workers='block')
-  await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false});localStorage.clear();sessionStorage.clear();")
+  await context.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>false})")
   await context.route('**/*',route)
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE)
