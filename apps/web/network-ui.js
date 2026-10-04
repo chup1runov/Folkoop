@@ -1004,7 +1004,8 @@ window.addEventListener('folkoop:guest-demo',e=>{
  guestDemo=detail.enabled!==false;
  if(!guestDemo){
   showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
-  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};
+  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};
+  economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};
  }
  try{
   if(guestDemo&&!temporary)sessionStorage.setItem('folkoop-entry-mode-v1','guest');
