@@ -300,7 +300,10 @@ async def main():
   await expect(page.locator('.mura-home')).to_be_visible()
   await page.reload()
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
-  await expect(page.locator('.mura-home')).to_be_visible()
+  await page.wait_for_url('**#/home')
+  await expect(page.locator('#networkPanel')).to_be_visible()
+  await expect(page.locator('#networkPanel')).to_contain_text('Мура')
+  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
   passed.append('Implicit browser language is accepted when entering Mura and reload does not reopen first contact')
 
   # Regression: Mura keeps her in-memory Göteborg context when browser Storage is unavailable.
