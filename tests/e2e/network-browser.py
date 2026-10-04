@@ -375,7 +375,7 @@ async def main():
   await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация завершена; результат отдельно не подтверждён')
   await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"] button.button').click()
   await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Закрыт')
-  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('не означает оплату')
+  await expect(economy).to_contain_text('не означает оплату')
   assert await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').count()==0
   passed.append('Economic Flow UI uses reviewed RPCs for create/lifecycle/roles and keeps closed distinct from Outcome/payment truth')
 
