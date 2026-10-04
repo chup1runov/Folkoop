@@ -143,6 +143,20 @@ async def main():
    passed.append('Mura can browse Communities, Messages and Cooperation without product-meta chrome')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  firewood=page.locator('article.card').filter(has_text='Купить сухие дрова вместе')
+  await firewood.locator('[data-coop="open"]').click()
+  economy=page.locator('[data-coop-section="economic-flow"]')
+  await expect(economy).to_be_visible()
+  await economy.locator('summary').click()
+  await expect(economy).to_contain_text('Закупка')
+  await expect(economy).to_contain_text('Покупатель')
+  await expect(economy).to_contain_text('Логистика')
+  assert await economy.locator('form').count()==0
+  assert await economy.locator('[data-economic]').count()==0
+  passed.append('Mura firewood story exposes Economic Flow roles read-only')
+  await page.click('[data-coop="back"]')
+
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="communities"]')
   if await page.locator('[data-net="back"]').count():
    await page.locator('[data-net="back"]').first.click()
