@@ -25,7 +25,7 @@ test('v0.2 keeps deep tools contextual rather than global tech tabs',()=>{
 });
 
 test('v0.2 includes explicit design-only coverage of all ten components',()=>{
-  for(const phrase of ['Текущий FOLKOOP','Sverinav','FOLKUNO','Кооперативная соцсеть','КООПСЕТЬ research','ГБГ Форум','Мура','SDCF','Web3/Web4','Blockchain']) assert.ok(html.includes(phrase),phrase);
+  for(const phrase of ['Текущий FOLKOOP','Civic / public-infrastructure origin','Community / Center origin','Кооперативная соцсеть','Attributed cooperative-economy research','ГБГ Форум','Мура','SDCF','Web3/Web4','Blockchain']) assert.ok(html.includes(phrase),phrase);
   assert.ok(css.includes('body.design-mode .dev-only'));
 });
 
