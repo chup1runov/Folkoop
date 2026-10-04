@@ -31,7 +31,8 @@ test('Center runtime is connected navigation, not a hidden Mura route or simulat
   const source=await readFile('apps/web/folkoop.js','utf8');
   assert(source.includes("const GOTEBORG_FORUM_URL='https://t.me/+YlokNMBafp8wM2Vi'"));
   assert(source.includes('data-center-story="local"'));
-  for(const route of ['people','communities','city','action'])assert(source.includes('data-center-route="'+route+'"'),route);
+  for(const route of ['people','communities','city'])assert(source.includes("routeCard('"+route+"'"),route);
+  assert(source.includes('data-center-route="action"'));
   assert(source.includes("city:['city','center']"));
   assert(source.includes("{id:'center',route:'center',target:'[data-center-story=\"local\"] h2'"));
   assert(!source.includes("['center','settings','about'].includes(current)"));
