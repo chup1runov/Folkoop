@@ -88,7 +88,10 @@ function renderMobileChrome(){
   messages:['messages-chats','messages-direct','messages-groups'],
   me:[]
  };
- const context=guest?(guestContext[active]||[]):(MOBILE_CONTEXT[active]||[]);
+ const accountContext=active==='home'&&['me','settings','about'].includes(current)
+  ?['home-overview','me','settings','about']
+  :(MOBILE_CONTEXT[active]||[]);
+ const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
  const subLabel=k=>{
   if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':'About me';
