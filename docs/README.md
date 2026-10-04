@@ -25,6 +25,7 @@ Research and old release notes do not silently override current product policy. 
 
 Start with:
 - `FOUNDATION_CHARTER.md` — four-origin full-scope charter, preservation rules, Mura and blockchain.
+- `NO_LOSS_REQUIREMENTS_REGISTER.md` / `.json` — canonical stable-ID source/no-loss recovery register; missing original fields remain explicit gaps rather than inferred facts.
 - `UNIFICATION.md` — single product identity and source relationship.
 - `PRODUCT_CONCEPT.md` — cooperation thesis and loop, with scope amendments in the charter.
 - `PRODUCT_DECISION_POLICY.md` — feature gate and sequencing rules where not superseded.
@@ -41,7 +42,8 @@ Start with:
 - `ARCHITECTURE.md` — architecture that exists in the current pilot line.
 - `DATA_MODEL.md` — product data-model notes.
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.
-- `SOURCE_REGISTRY.json` — source registry.
+- `SOURCE_REGISTRY.json` — external/public civic source registry.
+- `NO_LOSS_REQUIREMENTS_REGISTER.md` / `.json` — product-origin requirement/source recovery register required by the Foundation Charter.
 - `architecture/OUTCOME_INTEGRITY.md` — outcome/provenance integrity contract.
 - `architecture/SDCF_INTEGRATION.md` — cross-cutting systems/decision/control/evidence mapping for FOLKOOP.
 - `architecture/outcome-integrity-v1.json` — machine-readable integrity profile.
