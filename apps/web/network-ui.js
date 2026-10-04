@@ -79,6 +79,10 @@ const accountEntryCopy={
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
 
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
+function resetEconomicFlowState(){
+ data.economicFlows=[];data.economicFlowRoles=[];
+ economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
+}
 let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
 try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
@@ -927,17 +931,17 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(!popup){notice=t('popupBlocked');return;}
   oauthPopup=popup;notice=t('oauthWaiting');
  });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
-  if(a==='openCoop'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openCoop'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
-  if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
+  if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;resetEconomicFlowState();navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const eb=e.target.closest('[data-economic]');if(eb){if(guestDemo){guestRequireAccount();return;}const a=eb.dataset.economic,flow=eb.dataset.flow;economicSectionOpen=true;run(async()=>{
   if(a==='deleteFlow'){if(!confirm(t('confirm')))return;await api.deleteEconomicFlow(flow);delete economicFlowEditDrafts[flow];delete economicRoleDrafts[flow];}
   if(a==='removeRole'){if(!confirm(t('confirm')))return;await api.removeEconomicFlowRole(flow,eb.dataset.user,eb.dataset.role);}
   await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
-  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;}
-  if(a==='open'){selectedCoop=id;economicSectionOpen=false;}
+  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};resetEconomicFlowState();}
+  if(a==='open'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;economicSectionOpen=false;}
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
   if(a==='delete'){if(!confirm(t('confirm')))return;await api.deleteCooperation(id);selectedCoop=null;}
@@ -953,7 +957,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='blockProvider')await api.block(id);
   if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
   if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
-  if(a==='openNotify'){selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openNotify'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;const guestAllowedNet=new Set(['back','open','backChats','openChat','refresh','logout']);if(guestDemo&&!guestAllowedNet.has(a)){guestRequireAccount();return;}
  run(async()=>{
