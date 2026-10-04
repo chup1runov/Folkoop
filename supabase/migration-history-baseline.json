@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "verified_at": "2026-10-04",
+  "source": "Read-only hosted supabase_migrations.schema_migrations comparison. For the 14 pre-E01 migrations, normalized local SQL matched hosted stored statements 14/14; only filenames were legacy.",
+  "entries": [
+    {
+      "version": "20260925111649",
+      "name": "folkoop_network_v016",
+      "filename": "20260925111649_folkoop_network_v016.sql"
+    },
+    {
+      "version": "20260925111918",
+      "name": "folkoop_first_pilot_bootstrap",
+      "filename": "20260925111918_folkoop_first_pilot_bootstrap.sql"
+    },
+    {
+      "version": "20260925113111",
+      "name": "folkoop_rls_performance",
+      "filename": "20260925113111_folkoop_rls_performance.sql"
+    },
+    {
+      "version": "20260925130711",
+      "name": "folkoop_messaging_v017",
+      "filename": "20260925130711_folkoop_messaging_v017.sql"
+    },
+    {
+      "version": "20260925131111",
+      "name": "folkoop_messaging_indexes_v017",
+      "filename": "20260925131111_folkoop_messaging_indexes_v017.sql"
+    },
+    {
+      "version": "20260925150129",
+      "name": "folkoop_cooperation_v018",
+      "filename": "20260925150129_folkoop_cooperation_v018.sql"
+    },
+    {
+      "version": "20260925153301",
+      "name": "folkoop_purchase_offers_v019",
+      "filename": "20260925153301_folkoop_purchase_offers_v019.sql"
+    },
+    {
+      "version": "20260925160441",
+      "name": "folkoop_purchase_lifecycle_v020",
+      "filename": "20260925160441_folkoop_purchase_lifecycle_v020.sql"
+    },
+    {
+      "version": "20260925163534",
+      "name": "folkoop_activity_chat_v021",
+      "filename": "20260925163534_folkoop_activity_chat_v021.sql"
+    },
+    {
+      "version": "20260928144531",
+      "name": "folkoop_pilot_invites_v024",
+      "filename": "20260928144531_folkoop_pilot_invites_v024.sql"
+    },
+    {
+      "version": "20260928222427",
+      "name": "folkoop_account_lifecycle_trigger",
+      "filename": "20260928222427_folkoop_account_lifecycle_trigger.sql"
+    },
+    {
+      "version": "20260928223902",
+      "name": "folkoop_account_closure_preflight",
+      "filename": "20260928223902_folkoop_account_closure_preflight.sql"
+    },
+    {
+      "version": "20260929112851",
+      "name": "folkoop_pilot_terms_acceptance",
+      "filename": "20260929112851_folkoop_pilot_terms_acceptance.sql"
+    },
+    {
+      "version": "20260930060734",
+      "name": "folkoop_private_table_rls",
+      "filename": "20260930060734_folkoop_private_table_rls.sql"
+    }
+  ]
+}
