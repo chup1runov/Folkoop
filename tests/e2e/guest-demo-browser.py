@@ -153,6 +153,7 @@ async def main():
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('.mura-chat-card')).to_have_count(5)
+  assert await page.get_by_role('heading',name='Мои разговоры',exact=True).count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Johan')
   await expect(page.locator('#networkPanel')).to_contain_text('Воскресная прогулка и уборка')
   passed.append('Mura Messages contains five conversations tied to different parts of her life')
@@ -163,6 +164,8 @@ async def main():
   direct=page.locator('article.card').filter(has_text='Omar')
   await expect(direct).to_be_visible()
   await direct.locator('[data-net="openChat"]').click()
+  await expect(page.locator('[data-net="backChats"]')).to_have_text('Мои разговоры')
+  assert await page.locator('[data-net="backChats"]').get_by_text('Все сообщества',exact=True).count()==0
   await expect(page.locator('#networkPanel')).to_contain_text('Могу помочь забрать дрова')
   await assert_mura_immersed(page,'#networkPanel')
   assert 'без сквозного шифрования' not in (await page.locator('#networkPanel').inner_text()).lower()
@@ -263,6 +266,11 @@ async def main():
   assert await page.locator('[data-demo="register"]').count()==0
   assert await page.locator('#folkoopEntryGate').is_hidden()
   passed.append('Mura Home stays exploratory and does not surface registration or mutation CTAs')
+
+  await page.locator('#skip').focus()
+  await page.keyboard.press('Enter')
+  assert await page.evaluate("document.activeElement?.id")=='networkPanel'
+  passed.append('Skip link targets the visible Mura content surface')
 
   # Regression: Home conversation previews must open the selected conversation.
   home_chat=page.locator('.mura-conversation-list [data-net="openChat"]').first
