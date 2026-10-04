@@ -1268,7 +1268,7 @@ function nearbyItems() {
 function safeGoteborgUrl(value) { return FolkoopCityCore.officialUrl(value,['goteborg.se','www.goteborg.se']); }
 
 function cityHandoffButton({kind,title,sourceId,sourceName,sourceUrl}) {
-  if (!EMBEDDED_MODE || !title || !sourceUrl) return '';
+  if (!EMBEDDED_MODE || parent===window || !title || !sourceUrl) return '';
   const attrs = {
     kind:String(kind || '').slice(0,24),
     title:String(title || '').slice(0,180),
@@ -1277,6 +1277,7 @@ function cityHandoffButton({kind,title,sourceId,sourceName,sourceUrl}) {
     sourceUrl:String(sourceUrl || '').slice(0,500)
   };
   return `<button class="action secondary city-folkoop-handoff" type="button"
+    aria-label="${escapeHtml(`${t('continueFolkoop')}: ${attrs.title}`)}"
     data-folkoop-handoff
     data-kind="${escapeHtml(attrs.kind)}"
     data-title="${escapeHtml(attrs.title)}"
