@@ -44,7 +44,7 @@
 .folkoop-guide-actor.teleport-out .folkoop-guide-puff{opacity:1;animation:folkoop-guide-puff .28s ease-out both}
 .folkoop-guide-actor.teleport-in{animation:folkoop-guide-pop .38s cubic-bezier(.15,.9,.25,1.25)}
 .folkoop-guide-actor.is-tour{pointer-events:none}
-.folkoop-guide-actor.is-home{z-index:72}
+.folkoop-guide-actor.is-home{z-index:72;transition:filter .2s,opacity .2s,transform .2s}
 .folkoop-helper-shell{position:fixed;right:18px;bottom:18px;z-index:71;width:0;height:0;pointer-events:none}
 .folkoop-helper-panel{pointer-events:auto;right:0;bottom:112px}
 .onboarding-guide-mark{display:none}
@@ -278,7 +278,7 @@
 .sidebar,.mobile-menu-toggle{display:none!important}
 .layout{display:block;max-width:1640px;min-height:calc(100vh - 82px)}
 .content{padding-bottom:150px}
-.mobile-primary-nav{position:fixed;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));left:50%;transform:translateX(-50%);bottom:0;z-index:90;width:min(900px,100%);min-height:66px;padding:5px 8px calc(5px + env(safe-area-inset-bottom));background:#fffefdf2;border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;backdrop-filter:blur(18px);box-shadow:0 -8px 28px #00000012}
+.mobile-primary-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));left:50%;transform:translateX(-50%);bottom:0;z-index:90;width:min(900px,100%);min-height:66px;padding:5px 8px calc(5px + env(safe-area-inset-bottom));background:#fffefdf2;border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;backdrop-filter:blur(18px);box-shadow:0 -8px 28px #00000012}
 .mobile-primary-nav a{position:relative;display:flex;min-width:0;min-height:54px;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);text-decoration:none;border-radius:10px;font-size:.68rem;font-weight:650;line-height:1.05}
 .mobile-primary-nav a svg{width:20px;height:20px}.mobile-primary-nav a[aria-current="page"]{color:var(--ink);background:var(--soft)}
 .mobile-context-dock{position:fixed;display:flex;justify-content:center;align-items:center;gap:6px;left:50%;transform:translateX(-50%);bottom:calc(66px + env(safe-area-inset-bottom));z-index:89;width:min(760px,calc(100% - 24px));min-height:48px;padding:6px 8px;border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;background:#f6f3eef5;backdrop-filter:blur(16px);overflow-x:auto;scrollbar-width:none}
@@ -421,16 +421,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .layout{min-height:calc(100vh - 54px)}
  .content{padding:14px 13px calc(78px + env(safe-area-inset-bottom))}
  .mobile-context-visible .content{padding-bottom:calc(116px + env(safe-area-inset-bottom))}
- .mobile-primary-nav{min-height:58px;padding:3px 4px calc(3px + env(safe-area-inset-bottom))}
- .mobile-primary-nav a{min-height:48px;gap:1px;font-size:.66rem}
+ .mobile-primary-nav{height:calc(48px + env(safe-area-inset-bottom));min-height:0;padding:1px 4px calc(1px + env(safe-area-inset-bottom))}
+ .mobile-primary-nav a{height:44px;min-height:44px;gap:1px;font-size:.66rem}
  .mobile-primary-nav a svg{width:18px;height:18px}
- .mobile-context-dock{bottom:calc(58px + env(safe-area-inset-bottom));min-height:38px;padding:3px 8px;gap:4px}
- .mobile-context-dock>a,.mobile-context-dock>button{min-height:32px;padding:4px 8px;font-size:.7rem}
+ .mobile-context-dock{bottom:calc(48px + env(safe-area-inset-bottom));min-height:44px;padding:0 8px;gap:4px}
+ .mobile-context-dock>a,.mobile-context-dock>button{min-height:44px;padding:4px 8px;font-size:.7rem}
  .mobile-demo-popover{bottom:calc(102px + env(safe-area-inset-bottom))}
- .folkoop-helper-shell{right:8px;bottom:calc(64px + env(safe-area-inset-bottom))}
+ .folkoop-helper-shell{right:8px;bottom:calc(60px + env(safe-area-inset-bottom))}
  .mobile-context-visible .folkoop-helper-shell{bottom:calc(104px + env(safe-area-inset-bottom))}
  .folkoop-helper-button{width:48px;height:48px}
- .folkoop-helper-panel{bottom:58px}
+ .folkoop-helper-panel{bottom:56px}
 
  #networkPanel>.row:first-child{margin-bottom:8px}
  #networkPanel>.row:first-child h2{margin-bottom:5px}
@@ -465,12 +465,24 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .mura-people-grid,.mura-spark-grid{gap:8px}
  .mura-person-card,.mura-spark-card{min-width:72vw}
 }
-@media(max-width:760px) and (max-height:480px){
+@media(min-width:761px) and (max-width:900px) and (max-height:480px) and (orientation:landscape){
  .topbar{height:48px}
- .content{padding-top:10px}
- .mobile-primary-nav{min-height:54px}
- .mobile-primary-nav a{min-height:46px}
- .mobile-context-dock{bottom:calc(54px + env(safe-area-inset-bottom));min-height:36px}
- .mobile-context-visible .folkoop-helper-shell{bottom:calc(96px + env(safe-area-inset-bottom))}
+ .layout{min-height:calc(100vh - 48px)}
+ .content{padding:10px 13px calc(108px + env(safe-area-inset-bottom))}
+ .mobile-context-visible .content{padding-bottom:calc(108px + env(safe-area-inset-bottom))}
+ .mobile-primary-nav{height:calc(48px + env(safe-area-inset-bottom));min-height:0;padding:1px 4px calc(1px + env(safe-area-inset-bottom))}
+ .mobile-primary-nav a{height:44px;min-height:44px}
+ .mobile-context-dock{bottom:calc(48px + env(safe-area-inset-bottom));min-height:44px;padding:0 8px;gap:4px}
+ .mobile-context-dock>a,.mobile-context-dock>button{min-height:44px;padding:4px 8px}
+ .mobile-context-visible .folkoop-helper-shell{bottom:calc(104px + env(safe-area-inset-bottom))}
  .folkoop-helper-button{width:44px;height:44px}
+ .mura-hero{grid-template-columns:minmax(0,1.2fr) 76px minmax(210px,.65fr);gap:10px;padding:12px}
+ .mura-hero-character img{width:76px}
+ .mura-hero-lead{font-size:.82rem;line-height:1.4;margin:6px 0 8px}
+ .mura-stat-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ .mura-stat-row>div{padding:5px 6px}
+ .mura-stat-row span{font-size:.6rem}
+ .mura-now-card{grid-column:auto;padding:12px;align-self:stretch}
+ .mura-now-card h2{font-size:1rem;margin-bottom:5px}
+ .mura-now-card p{margin-bottom:8px}
 }
