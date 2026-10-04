@@ -879,6 +879,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
  if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
  if(f.id==='netEconomicFlowCreate')economicFlowDraft={kind:v.kind||'service',summary:v.summary||''};
+ if(f.classList.contains('netEconomicFlowEdit'))economicFlowEditDrafts[f.dataset.flow]={stage:v.stage||'planning',summary:v.summary||''};
  if(f.id==='netPurchaseOffer')offerDraft={cooperationId:selectedCoop,unitPrice:v.unitPrice||'',currency:(v.currency||'').toUpperCase(),minQuantity:v.minQuantity||'',availableQuantity:v.availableQuantity||'',deliveryMode:v.deliveryMode||'pickup',deliveryFee:v.deliveryFee||'0',leadTimeDays:v.leadTimeDays||'0',validUntil:v.validUntil||'',note:v.note||''};
  if(f.id?.startsWith('netPurchase')&&f.id!=='netPurchaseOffer')lifecycleDrafts[f.id]=v;
 });
