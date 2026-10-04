@@ -4,10 +4,12 @@ import {readFile} from 'node:fs/promises';
 
 const text=await readFile('docs/architecture/ECONOMIC_FLOW_V0_DESIGN.md','utf8');
 
-test('Economic Flow design is review-ready but does not authorize SQL',()=>{
-  assert.match(text,/DESIGN REVIEW READY/i);
-  assert.match(text,/NO MIGRATION AUTHORISED UNTIL THIS DESIGN IS REVIEWED\/MERGED/i);
-  assert.match(text,/not authorize production SQL[\s\S]*reviewed\/merged/i);
+test('Economic Flow design records the hosted backend without claiming UI or Outcome',()=>{
+  assert.match(text,/HOSTED BACKEND V0/i);
+  assert.match(text,/20261004194921_folkoop_economic_flow_v0/i);
+  assert.match(text,/participant-facing UI is still absent/i);
+  assert.match(text,/zero Economic Flow\/role rows/i);
+  assert.match(text,/closed.*not.*confirmed real-world Outcome/is);
 });
 
 test('flow authorization derives from parent cooperation',()=>{
