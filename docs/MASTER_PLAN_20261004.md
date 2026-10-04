@@ -767,6 +767,28 @@ Parallel but non-blocking:
 
 ---
 
+# 19A. PARALLEL VISUAL INTEGRATION LAB
+
+This track is explicitly allowed to run in parallel with P0/P1 because its purpose is architectural comprehension, not production rollout.
+
+Goal:
+- visually combine the complete preserved system before every deep capability is production-ready;
+- discuss information architecture screen by screen;
+- test whether radical interface restructuring makes the whole product simpler;
+- never let a visual mock silently become a claim of live capability.
+
+Current lab:
+- `apps/web/whole-system-lab.html`
+- `apps/web/whole-system-lab.css`
+- `apps/web/whole-system-lab.js`
+- `docs/WHOLE_SYSTEM_VISUAL_PROTOTYPE_V01.md`
+
+The lab uses the canonical FOLKOOP brand asset and authored Mura scenarios. Every capability is labelled Live / Prototype / Planned. Successful lab patterns require explicit review before promotion to the production shell.
+
+This parallel track does **not** weaken First-contact clarity, pilot safety, Auth or evidence gates. It exists so the full 132-ID vision remains visually coherent while production delivery stays evidence-gated.
+
+---
+
 # 20. Decision rule for any new task
 
 Before inserting work above the current queue, answer:
