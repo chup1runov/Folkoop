@@ -563,17 +563,13 @@ select fk_economic_test.ok(
 select public.fk_create_cooperation(
   'project','Flow-cap project','Limit test','Göteborg',null,''
 ) as cap_parent_id \gset
-do $$
-declare i integer;
-begin
-  for i in 1..20 loop
-    perform public.fk_create_economic_flow(
-      :'cap_parent_id'::uuid,
-      'service',
-      'Flow '||i
-    );
-  end loop;
-end $$;
+select format(
+  'select public.fk_create_economic_flow(%L,''service'',%L);',
+  :'cap_parent_id',
+  'Flow '||g
+)
+from generate_series(1,20) g
+\gexec
 select fk_economic_test.ok(
   fk_economic_test.rejected(format(
     'select public.fk_create_economic_flow(%L,''service'',''Flow 21'')',:'cap_parent_id'
@@ -613,12 +609,12 @@ select fk_economic_test.ok(
 );
 select fk_economic_test.ok(
   (
-    select proconfig @> array['search_path=']
+    select 'search_path=""'=any(coalesce(proconfig,array[]::text[]))
     from pg_proc
     where oid='public.fk_create_economic_flow(uuid,text,text)'::regprocedure
   )
   and (
-    select proconfig @> array['search_path=']
+    select 'search_path=""'=any(coalesce(proconfig,array[]::text[]))
     from pg_proc
     where oid='public.fk_update_economic_flow(uuid,text,text)'::regprocedure
   ),
