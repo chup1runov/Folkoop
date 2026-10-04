@@ -198,7 +198,8 @@ const demoLocaleCopy={
   'Fatima set up coffee and cups before the first visitors arrived.':'Fatima подготовила кофе и чашки до прихода первых посетителей.',
   'Photo recap published':'Фотоотчёт опубликован',
   'I selected six before/after pictures and shared them with the repair circle.':'Я выбрала шесть фотографий до/после и поделилась ими с ремонтным сообществом.',
-  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.'
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.',
+  'Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.':'Координировать общую закупку дров; оплата и оформление заказа остаются вне FOLKOOP.'
 
  },
  sv:{
@@ -314,7 +315,8 @@ const demoLocaleCopy={
   'Fatima set up coffee and cups before the first visitors arrived.':'Fatima ordnade kaffe och koppar innan de första besökarna kom.',
   'Photo recap published':'Fotosammanfattningen publicerad',
   'I selected six before/after pictures and shared them with the repair circle.':'Jag valde sex före/efter-bilder och delade dem med reparationsgruppen.',
-  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.'
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.',
+  'Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.':'Samordna gruppens vedinköp; betalning och beställning sker utanför FOLKOOP.'
 
  }
 };
