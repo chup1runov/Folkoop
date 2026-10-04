@@ -8,6 +8,7 @@ copyContext.globalThis=copyContext;
 vm.runInContext(await readFile('apps/web/folkoop-i18n-extra.js','utf8'),copyContext);
 vm.runInContext(await readFile('apps/web/folkoop-copy.js','utf8'),copyContext);
 const I=copyContext.FolkoopCopy;
+const extra=copyContext.FolkoopExtraCopy.languages;
 
 test('Online Center v0 copy exists in all eleven shell languages',()=>{
   const keys=[
@@ -54,4 +55,26 @@ test('Mura acceptance contract allows only the authored Online Center story',asy
   assert(contract.includes('must not imply a staffed Host, an open physical venue or live forum data synchronization'));
   assert(contract.includes('visible Center under the City context'));
   assert(contract.includes('hidden Settings/About'));
+});
+
+
+test('Center guidance no longer reverts to physical-only semantics in secondary surfaces',async()=>{
+  for(const lang of ['es','uk','ar','so','fa','fi','bs','ku']){
+    const x=extra[lang];
+    assert.equal(x.tutorial.center,x.shell.centerOnlineText,lang+' tutorial');
+    assert.equal(x.helper.tips.center,x.shell.centerOnlineText,lang+' helper');
+    assert.equal(x.homeWelcome.placeText,x.shell.centerOnlineText,lang+' homeWelcome');
+  }
+  const shell=await readFile('apps/web/folkoop.js','utf8');
+  assert(shell.includes('Center now connects community, people, City and projects as an online/hybrid route.'));
+  assert(shell.includes('Центр теперь связывает сообщества, людей, Город и проекты как онлайн/гибридный маршрут.'));
+  assert(shell.includes('Center kopplar nu samman gemenskaper, människor, Stad och projekt som en online/hybrid väg.'));
+  assert(!shell.includes('Center is the future physical layer: meetings, learning, equipment and human help in real life.'));
+  assert(!shell.includes('Центр — будущий физический слой: встречи, обучение, оборудование и помощь людей в реальном мире.'));
+  assert(!shell.includes('Center är det framtida fysiska lagret: möten, lärande, utrustning och mänsklig hjälp i verkligheten.'));
+
+  const welcome=await readFile('apps/web/home-welcome.js','utf8');
+  assert(welcome.includes('Online Center connects local community, people, City and projects today'));
+  assert(welcome.includes('Онлайн-Центр уже связывает локальное общение, людей, Город и проекты'));
+  assert(welcome.includes('Online Center kopplar redan samman gemenskaper, människor, Stad och projekt'));
 });
