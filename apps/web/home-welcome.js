@@ -7,7 +7,7 @@
    personal:'Your actions', personalText:'Sign in to see your messages, invitations, assigned tasks and purchase confirmations. No personal activity is shown while signed out.', personalAction:'Open Profile / sign in',
    drafts:'Start privately', draftsText:'Describe a need or an idea first. A local draft is not published and is not sent to another person.', draftAction:'Draft a project',
    social:'Find people and communities', socialText:'Discoverable profiles and communities are in separate sections. Network participation is currently limited to the pilot.', people:'People', communities:'Communities',
-   place:'City and Center', placeText:'Choose your city in Profile. Local civic tools currently cover Göteborg. Center is the planned offline meeting-and-help layer, not a confirmed open venue.', city:'City', center:'Center',
+   place:'City and Center', placeText:'Choose your city in Profile. Local civic tools currently cover Göteborg. Online Center connects local community, people, City and projects today; staffed Host and physical partner-place layers remain future work.', city:'City', center:'Center',
    note:'The personal dashboard appears after sign-in. Private drafts stay separate. No payments or guaranteed savings.'
   },
   ru: {
@@ -15,7 +15,7 @@
    personal:'Твои действия', personalText:'После входа здесь появятся твои сообщения, приглашения, задачи и подтверждения закупок. Без входа личная активность не показана.', personalAction:'Открыть профиль / войти',
    drafts:'Начать с личного черновика', draftsText:'Сначала опиши потребность или идею для себя. Локальный черновик не публикуется и не отправляется другим людям.', draftAction:'Набросать проект',
    social:'Найти людей и сообщества', socialText:'Каталог видимых профилей и сообщества находятся в отдельных разделах. Сетевое участие пока ограничено пилотом.', people:'Люди', communities:'Сообщества',
-   place:'Город и Центр', placeText:'Укажи свой город в Профиле. Местные гражданские инструменты пока подключены для Göteborg. Центр — планируемый офлайн-слой встреч и помощи, а не уже открытое помещение.', city:'Город', center:'Центр',
+   place:'Город и Центр', placeText:'Укажи свой город в Профиле. Местные городские инструменты подключены для Göteborg. Онлайн-Центр уже связывает локальное общение, людей, Город и проекты; работающий Host и физические партнёрские площадки остаются будущей работой.', city:'Город', center:'Центр',
    note:'Персональная главная появляется после входа. Личные черновики остаются отдельно. Платежей и гарантии экономии нет.'
   },
   sv: {
@@ -23,7 +23,7 @@
    personal:'Dina nästa steg', personalText:'Logga in för att se dina meddelanden, inbjudningar, tilldelade uppgifter och köpbekräftelser. Ingen personlig aktivitet visas när du är utloggad.', personalAction:'Öppna Profil / logga in',
    drafts:'Börja med ett privat utkast', draftsText:'Beskriv först ett behov eller en idé för dig själv. Ett lokalt utkast publiceras inte och skickas inte till någon annan.', draftAction:'Skissa på ett projekt',
    social:'Hitta människor och gemenskaper', socialText:'Synliga profiler och gemenskaper finns i separata delar. Nätverksdeltagandet är tills vidare begränsat till piloten.', people:'Människor', communities:'Gemenskaper',
-   place:'Stad och Center', placeText:'Välj din stad i Profil. Lokala samhällsverktyg är nu anslutna för Göteborg. Center är det planerade fysiska lagret för möten och hjälp, inte en redan öppen lokal.', city:'Stad', center:'Center',
+   place:'Stad och Center', placeText:'Välj din stad i Profil. Lokala samhällsverktyg är anslutna för Göteborg. Online Center kopplar redan samman gemenskaper, människor, Stad och projekt; bemannad Host och fysiska partnerplatser är framtida arbete.', city:'Stad', center:'Center',
    note:'Den personliga startsidan visas efter inloggning. Privata utkast förblir separata. Inga betalningar eller garanterade besparingar.'
   }
  };
