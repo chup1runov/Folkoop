@@ -41,6 +41,7 @@ Start with:
 
 - `ARCHITECTURE.md` — architecture that exists in the current pilot line.
 - `architecture/UNIFIED_DOMAIN_MAP.md` / `unified-domain-map-v1.json` — current operational objects, runtime/local models, variants, target domain objects and cross-cutting SDCF semantics in one map.
+- `MURA_WHOLE_SYSTEM_STORY_MAP.md` / `mura-whole-system-story-map-v1.json` — seven connected current/target Mura stories spanning the integrated product without pretending future capabilities are live.
 - `DATA_MODEL.md` — product data-model notes.
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.
 - `SOURCE_REGISTRY.json` — external/public civic source registry.
