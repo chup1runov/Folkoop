@@ -71,9 +71,23 @@ async def main():
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
 
-  # Explicit City -> FOLKOOP bridge: official source remains available and no draft/cooperation is created.
+  # Explicit City -> FOLKOOP bridge: browser regression tests the shell boundary
+  # deterministically. Unit coverage separately proves real source-backed plan/decision
+  # cards receive this control, so the browser test must not depend on today's feed.
   workspace_before_bridge=await page.evaluate("localStorage.getItem('folkoop-workspace-v1')")
-  await city.locator('.bottom-nav [data-screen="nara"]').click()
+  await page.evaluate("""() => {
+   const doc=document.querySelector('#cityFrame').contentDocument;
+   const button=doc.createElement('button');
+   button.type='button';
+   button.textContent='Continue in FOLKOOP';
+   button.dataset.folkoopHandoff='';
+   button.dataset.kind='planning';
+   button.dataset.title='Source-backed planning test item';
+   button.dataset.sourceId='goteborg_open_plans';
+   button.dataset.sourceName='Untrusted iframe label';
+   button.dataset.sourceUrl='https://goteborg.se/wps/portal/start/byggande--lantmateri-och-planarbete/stadsutveckling-och-planering';
+   doc.querySelector('#view').prepend(button);
+  }""")
   await expect(city.locator('[data-folkoop-handoff]').first).to_be_visible()
   await expect(city.locator('[data-folkoop-handoff]').first).to_have_text('Continue in FOLKOOP')
   await city.locator('[data-folkoop-handoff]').first.click()
