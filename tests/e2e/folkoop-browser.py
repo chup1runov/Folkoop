@@ -166,8 +166,8 @@ asyncio.run(main())
 ))
   await expect(page.locator('[data-center-story="city-handoff"]')).to_be_visible()
   await expect(page.locator('[data-center-story="city-handoff"] a[href*="goteborg.se"]')).to_have_count(1)
-  for route in ['communities','people','together','projects']:
-   await expect(page.locator(f'[data-center-story="city-handoff"] a[href="#/{route}"]')).to_be_visible()
+  for center_route in ['communities','people','together','projects']:
+   await expect(page.locator(f'[data-center-story="city-handoff"] a[href="#/{center_route}"]')).to_be_visible()
   assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')")==workspace_before_bridge
   results.append('City source can continue into FOLKOOP with its official link and cooperative routes without auto-publishing')
 
