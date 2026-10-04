@@ -45,3 +45,14 @@ test('Mura Home contains outcomes and only safe story navigation hooks',async()=
  for(const hook of ['openCoop','openCommunity','openChat'])assert(source.includes(hook),hook);
  for(const forbidden of ['createCoop','register','signup'])assert(!source.includes('data-home="'+forbidden+'"'),forbidden);
 });
+
+
+test('Mura acceptance now includes authored Online Center without enabling live forum or venue claims',async()=>{
+ const contract=await read('docs/MURA_ACCEPTANCE_CONTRACT.md');
+ assert(contract.includes('Center may appear in Mura only as the authored Online/Hybrid Center Göteborg story'));
+ assert(contract.includes('must not imply a staffed Host, an open physical venue or live forum data synchronization'));
+ const e2e=await read('tests/e2e/guest-demo-browser.py');
+ assert(e2e.includes('Mura Center opens authored Göteborg context without live forum sync'));
+ assert(e2e.includes('[data-center-story="local"]'));
+ assert(e2e.includes('a[href*="t.me"]'));
+});
