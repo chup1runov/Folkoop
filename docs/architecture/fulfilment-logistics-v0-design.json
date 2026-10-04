@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-04",
+  "issue": 222,
+  "dependency_issue": 212,
+  "status": "design_only_no_migration_authorised",
+  "requirements": ["KP-06", "IN-02", "FX-06", "FO-06", "KP-05"],
+  "initial_parent_scope": {
+    "allowed_cooperation_kinds": ["project"],
+    "shared_purchase_policy": "Existing fk_purchase_process/fk_purchase_confirmations delivery, pickup and collection records remain authoritative. Generic fulfilment must not duplicate them until a separately reviewed bridge exists."
+  },
+  "records": {
+    "fk_fulfilment_plans": {
+      "fields": [
+        "id",
+        "economic_flow_id",
+        "stage",
+        "summary",
+        "created_by",
+        "created_at",
+        "updated_at"
+      ],
+      "stages": ["planning", "active", "closed", "cancelled"],
+      "max_non_terminal_per_flow": 10
+    },
+    "fk_fulfilment_milestones": {
+      "fields": [
+        "id",
+        "plan_id",
+        "kind",
+        "status",
+        "sequence_no",
+        "responsible_user_id",
+        "scheduled_at",
+        "completed_at",
+        "note",
+        "supersedes_milestone_id",
+        "created_by",
+        "created_at",
+        "updated_at"
+      ],
+      "kinds": ["storage", "handoff", "transport", "distribution", "return"],
+      "statuses": ["planned", "ready", "in_progress", "completed", "failed", "cancelled"],
+      "max_per_plan": 50
+    }
+  },
+  "deferred_records": [
+    {
+      "name": "handoff_or_return_record",
+      "reason": "Defer until Outcome/Evidence semantics can distinguish participant assertion from attested or external evidence."
+    }
+  ],
+  "lifecycle": {
+    "plan": {
+      "planning": ["planning", "active", "cancelled"],
+      "active": ["active", "closed", "cancelled"],
+      "closed": ["closed"],
+      "cancelled": ["cancelled"]
+    },
+    "milestone": {
+      "planned": ["planned", "ready", "in_progress", "cancelled"],
+      "ready": ["ready", "in_progress", "completed", "cancelled"],
+      "in_progress": ["in_progress", "completed", "failed", "cancelled"],
+      "completed": ["completed"],
+      "failed": ["failed"],
+      "cancelled": ["cancelled"]
+    },
+    "correction_rule": "After a milestone leaves planned state, correction/retry is a new milestone whose supersedes_milestone_id references the earlier milestone in the same plan.",
+    "completion_rule": "completed_at is server-set participant coordination assertion and never independently proves a real-world Outcome."
+  },
+  "authorization": {
+    "read": "inherit readable parent Economic Flow / parent Cooperation membership",
+    "write_v0": "parent Cooperation owner only",
+    "responsible_user_rule": "must already be a parent Cooperation member",
+    "browser_dml": "denied",
+    "rpc_pattern": "SECURITY DEFINER, search_path empty, actor server-derived, explicit validation, PUBLIC/anon execute revoked"
+  },
+  "location_policy": "No new address/GPS/location target field in v0. Reuse parent Cooperation coarse location context; first-class Place linkage waits for the Place contract.",
+  "forbidden_capabilities": [
+    "payment",
+    "money custody",
+    "invoice ledger",
+    "tax/accounting truth",
+    "KYC",
+    "inventory valuation",
+    "carrier marketplace",
+    "route optimization",
+    "warehouse management system",
+    "precise address/GPS",
+    "carrier tracking identifiers",
+    "generic JSON/EAV targets",
+    "verified boolean"
+  ],
+  "truth_boundary": "Fulfilment stage/milestone completion is coordination state. It is not payment settlement, legal transfer, independent delivery proof, quality verification or confirmed Outcome.",
+  "mura_delta": {
+    "story": "mura-03-project-plant-exchange",
+    "target_path": [
+      "Project",
+      "Economic Flow",
+      "Fulfilment Plan",
+      "storage/handoff/distribution milestone",
+      "Outcome/Evidence boundary"
+    ],
+    "rule": "Authored Mura milestones remain illustrative and cannot be presented as real delivery/payment/contract/evidence."
+  },
+  "acceptance_journey": {
+    "id": "E02-J1",
+    "summary": "A Project-owned non-regulated production/distribution flow uses explicit fulfilment milestones, preserves one failed step and its superseding correction, and ends with participant-marked completion while Outcome/Evidence remains separate."
+  },
+  "migration_gate": {
+    "requires_e01_migration": true,
+    "required_checks": [
+      "disposable PostgreSQL DDL/RLS/RPC tests",
+      "authorization matrix",
+      "Project-only parent rejection",
+      "lifecycle/terminal checks",
+      "same-plan supersedes validation",
+      "limits",
+      "account lifecycle",
+      "pilot revocation",
+      "security advisors",
+      "browser DML denial",
+      "forbidden-field proof",
+      "Mura truth-boundary regression"
+    ],
+    "rule": "No database migration is authorised by this design contract."
+  }
+}
