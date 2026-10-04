@@ -26,6 +26,28 @@ The latest relevant runtime work is now in `main`:
   - Tests assert actual content change plus selected state, not highlight alone.
   - Final PR and post-merge Chromium/browser, WebKit, sources, authorization, deploy and production smoke passed.
 
+## Foundation sequence already completed
+
+This handoff sits on top of a broader foundation sequence that is already merged and should not be restarted from stale branches:
+
+- **#201 — Refresh hosted Auth readiness after live verification**
+- **#202 — Establish canonical no-loss requirements register**
+- **#203 — Define unified FOLKOOP domain map v1**
+- **#205 — Define Mura whole-system story map v1**
+- **#206 — Online Center Göteborg v0**
+
+The sequence is therefore **A → B → C → Online Center Göteborg v0**, and it is already implemented through #206. The Mobile Viewport Reclaim Pass below is the next UX/debt pass, not a replacement for that completed product sequence.
+
+Two older branches were explicitly superseded and must not be revived automatically:
+- **#190 — Refactor: extract signed-in Home presentation** — closed, not merged.
+- **#192 — Refresh pre-pilot Auth readiness and OTP fallback constraints** — closed, not merged; its current replacement is #201.
+
+### Online Center Göteborg v0 truth boundary
+
+#206 intentionally exposes Center in the current Mura/City navigation. It is an **online/hybrid route hub**, not a claim that a physical FOLKOOP venue or staffed Host service is operating.
+
+Its current v0 connects People, Communities, City, Together and Projects, and provides authored Göteborg community context. It does **not** import or synchronize real ГБГ Форум participants or messages. Physical/partner-place layers, staffed Host/referral and live forum synchronization remain separate future work.
+
 ## Product contract to preserve
 
 Mura Mode is a read-only illustrative account, not a product-demo shell.
