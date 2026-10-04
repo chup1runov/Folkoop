@@ -37,7 +37,8 @@ While Mura Mode is active:
 - Exploration must not mutate real network state.
 - Registration/sign-in is not surfaced as an action.
 - The registration gate must not appear because of navigation or a blocked mutation.
-- Center, Settings, About, empty Invitations, account editors and admin/debug surfaces are not part of Mura navigation.
+- Settings, About, empty Invitations, account editors and admin/debug surfaces are not part of Mura navigation.
+- Center may appear in Mura only as the authored Online/Hybrid Center Göteborg story: ordinary community context plus routes to People, Communities, City, Together and Projects. It must not imply a staffed Host, an open physical venue or live forum data synchronization.
 - Product-development narration such as pilot/demo/server/local-workspace/not-connected copy must not dominate visible Mura surfaces.
 - Privacy/security/source truth remains available through explicit information surfaces; it must not be disguised as Mura's personal speech.
 - City may read truthful public/official sources. The invariant is no account mutation, not “no network request of any kind”.
@@ -87,7 +88,8 @@ Browser/unit regression coverage must protect at least:
 - no account/network mutation from Mura exploration;
 - no Supabase account requests from the local Mura snapshot;
 - safe deep-navigation only from Mura Home;
-- hidden Center/Settings/About in Mura navigation;
+- visible Center under the City context with authored local-community copy and no live forum synchronization;
+- hidden Settings/About in Mura navigation;
 - City Mura mode without prototype/demo/feedback chrome;
 - People relationship context;
 - Communities current activity;
@@ -107,7 +109,7 @@ Before declaring a Mura UX release accepted:
 3. run a physical iPhone/Safari walkthrough;
 4. test with people who did not build FOLKOOP.
 
-Physical iPhone acceptance should cover first contact, tutorial, Home, Together, People, Communities, Projects, Tasks, Updates, City, Messages, chats, Profile, drafts, explicit exit and post-exit signup.
+Physical iPhone acceptance should cover first contact, tutorial, Home, Together, People, Communities, Projects, Tasks, Updates, City, Center, Messages, chats, Profile, drafts, explicit exit and post-exit signup.
 
 Record clipping, sticky-navigation collisions, weak tap targets, excessive spacing, stale PWA shell/cache behavior, empty/mechanical sections and any product-development copy that leaks back into Mura.
 
