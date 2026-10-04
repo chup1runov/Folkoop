@@ -172,8 +172,8 @@ async def main():
   await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
   await expect(page.locator('#workspace')).to_contain_text('специально созданных персонажей')
-  for route in ('people','communities','city','action'):
-   await expect(page.locator(f'#workspace [data-center-route="{route}"]')).to_be_visible()
+  for center_route in ('people','communities','city','action'):
+   await expect(page.locator(f'#workspace [data-center-route="{center_route}"]')).to_be_visible()
   assert await page.locator('#workspace a[href*="t.me"]').count()==0
   await expect(page.locator('#workspace')).to_contain_text('не утверждаем, что физический Центр FOLKOOP уже открыт')
   await assert_mura_immersed(page,'#workspace')
