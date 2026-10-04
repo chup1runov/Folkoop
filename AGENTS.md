@@ -5,13 +5,20 @@ Before changing product scope or writing a project summary, read:
 1. `docs/FOUNDATION_CHARTER.md` — controlling owner-approved scope, FK-FOUNDATION-2026-10-04.
 2. `docs/architecture/adr/ADR-002-four-origin-foundation.md` — exact supersessions.
 3. `docs/UNIFICATION.md`.
-4. Current code/tests, current handoff, privacy/security contracts and the execution plan for implementation truth.
+4. `docs/architecture/SDCF_INTEGRATION.md` and `docs/architecture/adr/ADR-003-sdcf-web3-web4-layers.md` for the cross-cutting systems/decision/control and Web3/Web4 layers.
+5. Current code/tests, current handoff, privacy/security contracts and the execution plan for implementation truth.
 
 ## Preserve the whole system
 
 FOLKOOP extends the existing implementation and combines FOUR origins: Sverinav, FOLKUNO (online and physical), cooperative-network work informed by attributed KООПСЕТЬ research, and ГБГ Форум as Göteborg-local Center. Do not silently reduce the project to Need/Offer matching, a city directory, only a physical venue, group buying or an ordinary forum.
 
 Full product scope and a small pilot are different. Deferral controls sequencing, not deletion. Material scope reduction needs an explicit recorded owner decision. Preserve source/version traceability, existing features, all eleven languages, privacy, accessibility and regression coverage. Do not declare all originals recovered or all functions implemented without evidence.
+
+## Cross-cutting SDCF and Web3/Web4
+
+Preserve SDCF as an internal systems/decision/control and evidence discipline across City, Center, projects, economic coordination, outcomes and future agents. It is not a new participant-facing brand and must not silently turn model output into authority or truth.
+
+Preserve the accepted Web3/Web4 direction: stable object identities, derived Action Graph, verifiable credentials/selective disclosure, federation, action agents, MCP/A2A, Places/Resources, QR/NFC, digital twins and later IoT/access. Blockchain is the required scoped trust workstream within this wider family. Evidence gating controls implementation order, not whether these accepted capabilities remain traceable.
 
 ## Mura and Center
 

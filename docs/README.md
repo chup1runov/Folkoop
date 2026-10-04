@@ -4,7 +4,7 @@ This directory separates current product decisions from pilot operations, engine
 
 ## Start here — foundation decision, 4 October 2026
 
-`FOUNDATION_CHARTER.md` is the controlling owner-approved product-scope contract (FK-FOUNDATION-2026-10-04). It requires integration of the existing code and FOUR origins, online/physical Center with the Göteborg forum, whole-system Mura, and a required scoped blockchain workstream. `architecture/adr/ADR-002-four-origin-foundation.md` records exact partial supersessions of older documents. A narrow pilot is not permission to reduce the full product scope. Scope decisions and implemented behavior must be reported separately.
+`FOUNDATION_CHARTER.md` is the controlling owner-approved product-scope contract (FK-FOUNDATION-2026-10-04). It requires integration of the existing code and FOUR origins, online/physical Center with the Göteborg forum, whole-system Mura, the SDCF systems/decision/control layer, retained Web3/Web4 capabilities, and a required scoped blockchain workstream. `architecture/adr/ADR-002-four-origin-foundation.md` and `architecture/adr/ADR-003-sdcf-web3-web4-layers.md` record the current scope amendments. A narrow pilot is not permission to reduce the full product scope. Scope decisions and implemented behavior must be reported separately.
 
 ## Authority order
 
@@ -43,11 +43,13 @@ Start with:
 - `INTEGRATIONS_GOTEBORG.md` — Göteborg integration notes.
 - `SOURCE_REGISTRY.json` — source registry.
 - `architecture/OUTCOME_INTEGRITY.md` — outcome/provenance integrity contract.
+- `architecture/SDCF_INTEGRATION.md` — cross-cutting systems/decision/control/evidence mapping for FOLKOOP.
 - `architecture/outcome-integrity-v1.json` — machine-readable integrity profile.
 - `architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md` — future trust, portable identity, agents, federation and physical-world integration architecture; read with ADR-002's blockchain-scope amendment.
 - `architecture/WEB3_WEB4_ROADMAP.md` — earlier evidence-gated implementation sequence; blockchain may not be silently dropped after ADR-002.
 - `architecture/adr/ADR-001-web3-web4-direction.md` — earlier direction; partly superseded by ADR-002, with privacy/database/no mandatory crypto UX safeguards retained.
 - `architecture/adr/ADR-002-four-origin-foundation.md` — explicit foundation supersessions and blockchain acceptance requirement.
+- `architecture/adr/ADR-003-sdcf-web3-web4-layers.md` — preserves SDCF and the broader Web3/Web4 capability family as cross-cutting scope.
 - `architecture/adr/` — durable engineering decisions.
 - `history/architecture/` — superseded architecture proposals.
 

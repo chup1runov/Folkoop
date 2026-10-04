@@ -6,8 +6,7 @@ import {allowsOriginReference} from '../support/origin-provenance-policy.mjs';
 
 const forbidden=[
   ['Sver','inav'].join(''),
-  ['FOLK','UNO'].join(''),
-  ['SD','CF'].join('')
+  ['FOLK','UNO'].join('')
 ];
 const skipDirs=new Set(['.git','node_modules','_site','qa-output','archive']);
 const textExt=new Set(['.md','.txt','.json','.js','.mjs','.cjs','.ts','.tsx','.html','.css','.yml','.yaml','.sql','.toml','.xml','.webmanifest','']);
@@ -23,7 +22,7 @@ async function walk(dir='.'){
   return out;
 }
 
-test('current tree exposes only the FOLKOOP project identity',async()=>{
+test('current tree exposes only FOLKOOP as a product identity while allowing internal framework names',async()=>{
   const violations=[];
   for(const path of await walk('.')){
     const name=relative('.',path).replaceAll('\\','/');
