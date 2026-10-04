@@ -28,13 +28,29 @@ async def audit(browser,width,height):
  await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Обо мне')
  await expect(page.locator('.mura-home')).to_be_visible()
- if width<=760:
+ if width<=760 or (width<=900 and height<=480):
   chrome=await page.evaluate("""() => {
-   const primary=document.querySelector('#mobilePrimaryNav').getBoundingClientRect();
-   const dock=document.querySelector('#mobileContextDock').getBoundingClientRect();
-   return {primary:primary.height,dock:dock.height,total:primary.height+dock.height};
+   const primaryEl=document.querySelector('#mobilePrimaryNav');
+   const dockEl=document.querySelector('#mobileContextDock');
+   const primary=primaryEl.getBoundingClientRect();
+   const dock=dockEl.getBoundingClientRect();
+   const tracks=getComputedStyle(primaryEl).gridTemplateColumns.trim().split(/\\s+/).filter(Boolean).length;
+   const primaryTargets=[...primaryEl.querySelectorAll('a')].map(x=>x.getBoundingClientRect().height);
+   const contextTargets=[...dockEl.querySelectorAll('a,button')].filter(x=>x.getClientRects().length).map(x=>x.getBoundingClientRect().height);
+   return {primary:primary.height,dock:dock.height,total:primary.height+dock.height,tracks,primaryTargets,contextTargets};
   }""")
   assert chrome['total']<=100,chrome
+  assert chrome['tracks']==5,chrome
+  assert min(chrome['primaryTargets'])>=44,chrome
+  assert min(chrome['contextTargets'])>=44,chrome
+ if height<=480:
+  helper=await page.locator('#folkoopGuideActor').evaluate("""el => {
+   const r=el.getBoundingClientRect(),dock=document.querySelector('#mobileContextDock').getBoundingClientRect();
+   const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+   return {bottom:r.bottom,dockTop:dock.top,hitSelf:hit===el||el.contains(hit)};
+  }""")
+  assert helper['bottom']<=helper['dockTop'],helper
+  assert helper['hitSelf'],helper
  await page.click('#mobileContextDock [data-subsection="me"]')
  await expect(page.locator('.demo-profile-card')).to_be_visible()
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
@@ -83,6 +99,7 @@ async def main():
  async with async_playwright() as pw:
   browser=await launch(pw)
   await audit(browser,390,844)
+  await audit(browser,844,390)
   await audit(browser,1366,900)
   await browser.close()
  print('PASS five-item personal navigation keeps stacked mobile chrome within the viewport budget')
