@@ -17,6 +17,7 @@ PROJECT='88888888-8888-4888-8888-888888888888'
 UPDATE='99999999-9999-4999-8999-999999999999'
 TASK='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa'
 OFFER='bbbbbbbb-1111-4111-8111-bbbbbbbbbbbb'
+FLOW='cccccccc-1111-4111-8111-cccccccccccc'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(exist_ok=True)
 async def wait_request(state,suffix,before,timeout=5):
  loop=asyncio.get_running_loop();deadline=loop.time()+timeout
@@ -48,7 +49,7 @@ async def main():
   assert await page.locator('#netLogin').count()==0
   passed.append('Disabled backend does not fake sign-in or interrupt local My page')
   await context.close()
-  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'cooperations':[],'coop_members':[],'coop_updates':[],'tasks':[],'commitments':[],'purchase_offers':[],'purchase_choice':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
+  state={'profile':[],'groups':[],'members':[],'posts':[],'requests':[],'fail_post':False,'chats':[],'chat_members':[],'chat_invites':[],'chat_messages':[],'cooperations':[],'coop_members':[],'coop_updates':[],'tasks':[],'commitments':[],'purchase_offers':[],'purchase_choice':[],'economic_flows':[],'economic_roles':[],'other_profile':{'id':OTHER,'name':'Synthetic Bob','skills':'Design','about':'Pilot tester','listed':True}}
   context=await browser.new_context(service_workers='block',locale='ru-RU',viewport={'width':390,'height':844})
   async def routing(route):
    url=route.request.url
@@ -89,6 +90,25 @@ async def main():
      state['coop_updates'].append({'id':UPDATE,'cooperation_id':payload['p_cooperation'],'author_id':UID,'body':payload['p_body'],'created_at':'2026-09-25T12:02:00Z'});result=UPDATE
     elif url.endswith('/fk_create_project_task'):
      state['tasks'].append({'id':TASK,'cooperation_id':payload['p_cooperation'],'creator_id':UID,'assignee_id':payload['p_assignee'],'title':payload['p_title'],'details':payload['p_details'],'status':'todo','created_at':'2026-09-25T12:03:00Z','updated_at':'2026-09-25T12:03:00Z'});result=TASK
+    elif url.endswith('/fk_create_economic_flow'):
+     state['economic_flows'].append({'id':FLOW,'cooperation_id':payload['p_cooperation'],'kind':payload['p_kind'],'stage':'planning','summary':payload['p_summary'],'created_by':UID,'created_at':'2026-10-04T20:00:00Z','updated_at':'2026-10-04T20:00:00Z'})
+     state['economic_roles'].append({'flow_id':FLOW,'user_id':UID,'role':'coordinator','created_at':'2026-10-04T20:00:00Z'});result=FLOW
+    elif url.endswith('/fk_update_economic_flow'):
+     for flow in state['economic_flows']:
+      if flow['id']==payload['p_flow']:
+       flow['stage']=payload['p_stage'];flow['summary']=payload['p_summary'];flow['updated_at']='2026-10-04T20:01:00Z'
+     result=None
+    elif url.endswith('/fk_delete_economic_flow'):
+     state['economic_flows']=[x for x in state['economic_flows'] if x['id']!=payload['p_flow']]
+     state['economic_roles']=[x for x in state['economic_roles'] if x['flow_id']!=payload['p_flow']]
+     result=None
+    elif url.endswith('/fk_add_economic_flow_role'):
+     row={'flow_id':payload['p_flow'],'user_id':payload['p_user'],'role':payload['p_role'],'created_at':'2026-10-04T20:02:00Z'}
+     if not any(x['flow_id']==row['flow_id'] and x['user_id']==row['user_id'] and x['role']==row['role'] for x in state['economic_roles']):state['economic_roles'].append(row)
+     result=None
+    elif url.endswith('/fk_remove_economic_flow_role'):
+     state['economic_roles']=[x for x in state['economic_roles'] if not (x['flow_id']==payload['p_flow'] and x['user_id']==payload['p_user'] and x['role']==payload['p_role'])]
+     result=None
     elif url.endswith('/fk_set_project_task_status'):
      for task in state['tasks']:
       if task['id']==payload['p_task']:task['status']=payload['p_status']
@@ -130,6 +150,11 @@ async def main():
      result=[x for x in state['commitments'] if target is None or x['cooperation_id']==target]
     elif '/fk_purchase_offers?' in url:result=state['purchase_offers']
     elif '/fk_purchase_offer_choice?' in url:result=state['purchase_choice']
+    elif '/fk_economic_flows?' in url:
+     target=url.split('cooperation_id=eq.')[1].split('&')[0] if 'cooperation_id=eq.' in url else None
+     result=[x for x in state['economic_flows'] if target is None or x['cooperation_id']==target]
+    elif '/fk_economic_flow_roles?' in url:
+     result=state['economic_roles']
     await route.fulfill(body=json.dumps(result),content_type='application/json');return
    await route.continue_()
   await context.route('**/*',routing)
@@ -303,6 +328,63 @@ async def main():
   assert any(url.endswith('/fk_set_purchase_commitment') for url,_ in state['requests'])
   assert any(url.endswith('/fk_create_project_task') for url,_ in state['requests'])
   passed.append('Projects create a shared project and server-backed task')
+
+  economy=page.locator('[data-coop-section="economic-flow"]')
+  await expect(economy).to_be_visible()
+  await economy.locator('summary').click()
+  await expect(page.locator('#netEconomicFlowCreate')).to_be_visible()
+  await page.select_option('#netEconomicFlowCreate [name=kind]','production')
+  await page.fill('#netEconomicFlowCreate [name=summary]','Собрать небольшую тестовую партию без платежей')
+  flow_creates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_create_economic_flow'))
+  await page.click('#netEconomicFlowCreate button.button')
+  _,flow_payload=await wait_request(state,'/fk_create_economic_flow',flow_creates)
+  assert flow_payload=={'p_cooperation':PROJECT,'p_kind':'production','p_summary':'Собрать небольшую тестовую партию без платежей'},flow_payload
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_be_visible()
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Планирование')
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Координатор')
+  assert await page.locator('[data-economic-flow="'+FLOW+'"] [name=amount]').count()==0
+  assert await page.locator('[data-economic-flow="'+FLOW+'"] [name=payment]').count()==0
+
+  edit=page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]')
+  await page.select_option('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=stage]','active')
+  await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация тестовой партии активна')
+  flow_updates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_update_economic_flow'))
+  await edit.get_by_role('button',name='Сохранить поток',exact=True).click()
+  _,update_payload=await wait_request(state,'/fk_update_economic_flow',flow_updates)
+  assert update_payload['p_stage']=='active' and update_payload['p_flow']==FLOW,update_payload
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"] .badge.muted-badge')).to_have_text('В работе')
+
+  role_form=page.locator('.netEconomicRoleAdd[data-flow="'+FLOW+'"]')
+  await page.select_option('.netEconomicRoleAdd[data-flow="'+FLOW+'"] [name=user]',UID)
+  await page.select_option('.netEconomicRoleAdd[data-flow="'+FLOW+'"] [name=role]','producer')
+  assert await role_form.evaluate('(f)=>f.checkValidity()')
+  assert await role_form.locator('[name=user]').input_value()==UID
+  assert await role_form.locator('[name=role]').input_value()=='producer'
+  role_adds=sum(1 for url,_ in state['requests'] if url.endswith('/fk_add_economic_flow_role'))
+  await role_form.evaluate('(f)=>f.requestSubmit()')
+  _,role_payload=await wait_request(state,'/fk_add_economic_flow_role',role_adds)
+  assert role_payload=={'p_flow':FLOW,'p_user':UID,'p_role':'producer'},role_payload
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"]')).to_contain_text('Производитель')
+
+  producer_remove=page.locator('[data-economic="removeRole"][data-flow="'+FLOW+'"][data-role="producer"]')
+  await expect(producer_remove).to_be_visible()
+  page.once('dialog',lambda dialog: asyncio.create_task(dialog.accept()))
+  role_removes=sum(1 for url,_ in state['requests'] if url.endswith('/fk_remove_economic_flow_role'))
+  await producer_remove.click()
+  _,remove_payload=await wait_request(state,'/fk_remove_economic_flow_role',role_removes)
+  assert remove_payload=={'p_flow':FLOW,'p_user':UID,'p_role':'producer'},remove_payload
+
+  await page.select_option('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=stage]','closed')
+  await page.fill('.netEconomicFlowEdit[data-flow="'+FLOW+'"] [name=summary]','Координация завершена; результат отдельно не подтверждён')
+  close_updates=sum(1 for url,_ in state['requests'] if url.endswith('/fk_update_economic_flow'))
+  await page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]').get_by_role('button',name='Сохранить поток',exact=True).click()
+  _,close_payload=await wait_request(state,'/fk_update_economic_flow',close_updates)
+  assert close_payload['p_stage']=='closed' and close_payload['p_flow']==FLOW,close_payload
+  await expect(page.locator('[data-economic-flow="'+FLOW+'"] .badge.muted-badge')).to_have_text('Закрыт')
+  await expect(economy).to_contain_text('не означает оплату')
+  await expect(page.locator('.netEconomicFlowEdit[data-flow="'+FLOW+'"]')).to_have_count(0)
+  passed.append('Economic Flow UI uses reviewed RPCs for create/lifecycle/roles and keeps closed distinct from Outcome/payment truth')
+
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await page.select_option('#netDirect [name=other]',OTHER)

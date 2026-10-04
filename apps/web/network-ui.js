@@ -78,7 +78,7 @@ const accountEntryCopy={
 };
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
 
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={};
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
 let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
 try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
@@ -198,7 +198,8 @@ const demoLocaleCopy={
   'Fatima set up coffee and cups before the first visitors arrived.':'Fatima подготовила кофе и чашки до прихода первых посетителей.',
   'Photo recap published':'Фотоотчёт опубликован',
   'I selected six before/after pictures and shared them with the repair circle.':'Я выбрала шесть фотографий до/после и поделилась ими с ремонтным сообществом.',
-  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.'
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Сухая берёза. Доставка возможна, когда группа набирает 5 м³.',
+  'Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.':'Координировать общую закупку дров; оплата и оформление заказа остаются вне FOLKOOP.'
 
  },
  sv:{
@@ -314,7 +315,8 @@ const demoLocaleCopy={
   'Fatima set up coffee and cups before the first visitors arrived.':'Fatima ordnade kaffe och koppar innan de första besökarna kom.',
   'Photo recap published':'Fotosammanfattningen publicerad',
   'I selected six before/after pictures and shared them with the repair circle.':'Jag valde sex före/efter-bilder och delade dem med reparationsgruppen.',
-  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.'
+  'Dry birch. Delivery works once the group reaches 5 m³.':'Torr björk. Leverans fungerar när gruppen når 5 m³.',
+  'Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.':'Samordna gruppens vedinköp; betalning och beställning sker utanför FOLKOOP.'
 
  }
 };
@@ -476,6 +478,8 @@ function demoSnapshot(){
   purchaseChoice:chosen===PURCHASE?[{cooperation_id:PURCHASE,offer_id:POFFER,selected_by:A,selected_at:'2026-09-30T07:50:00Z'}]:[],
   purchaseProcess:chosen===PURCHASE?[base.allProcesses[0]]:[],
   purchaseConfirmations:chosen===PURCHASE?[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'},{cooperation_id:PURCHASE,user_id:A,quantity:4,decision:'confirmed',note:'',decided_at:'2026-09-30T08:05:00Z',collected_at:null,collected_note:'',updated_at:'2026-09-30T08:05:00Z'}]:[],
+  economicFlows:chosen===PURCHASE?[{id:'mura-firewood-flow',cooperation_id:PURCHASE,kind:'procurement',stage:'active',summary:demoText('Coordinate the group firewood procurement while payment and ordering stay outside FOLKOOP.'),created_by:A,created_at:'2026-09-27T09:05:00Z',updated_at:'2026-09-30T08:00:00Z'}]:[],
+  economicFlowRoles:chosen===PURCHASE?[{flow_id:'mura-firewood-flow',user_id:A,role:'coordinator',created_at:'2026-09-27T09:05:00Z'},{flow_id:'mura-firewood-flow',user_id:DEMO_UID,role:'buyer',created_at:'2026-09-27T10:05:00Z'},{flow_id:'mura-firewood-flow',user_id:B,role:'logistics',created_at:'2026-09-27T10:35:00Z'}]:[],
   coopActivity:coopActivity.filter(x=>!chosen||x.cooperation_id===chosen)
  };
 }
@@ -583,6 +587,12 @@ const purchaseLifecycleDomain=globalThis.FolkoopNetworkPurchaseLifecycle.create(
  formatWhen,
  localDateTime,
  button:cbtn
+});
+
+const economicFlowDomain=globalThis.FolkoopNetworkEconomicFlow.create({
+ escape:esc,
+ getLanguage:lang,
+ getProfile:coopProfile
 });
 
 
@@ -699,6 +709,10 @@ function renderCooperation(u,r){
   if(myNextTask)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
   if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
+  if(member&&['project','purchase'].includes(coop.kind)){
+   const economicBody=economicFlowDomain.render({user:u,coop,owner,members,flows:data.economicFlows,flowRoles:data.economicFlowRoles,createDraft:economicFlowDraft,editDrafts:economicFlowEditDrafts,roleDrafts:economicRoleDrafts,readOnly:guestDemo});
+   html+=coopDisclosure('economic-flow',economicFlowDomain.text('section'),data.economicFlows.length,economicBody,economicSectionOpen);
+  }
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
    const editBody=`<form id="netCoopEdit" class="editor card"><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<div class="actions"><button class="button">${esc(t('save'))}</button>${cbtn('delete','delete',coop.id)}</div></form>`;
@@ -842,7 +856,9 @@ async function load(){
   api.purchaseOffers(selectedCoop),api.purchaseChoice(selectedCoop),api.purchaseProcess(selectedCoop)
  ]):[[],[],[]];
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations};
+ const economicFlows=ownCoopMember&&['project','purchase'].includes(selectedCooperation?.kind)?await api.economicFlows(selectedCoop):[];
+ const economicFlowRoles=economicFlows.length?await api.economicFlowRoles(economicFlows.map(x=>x.id)):[];
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -866,6 +882,9 @@ host.addEventListener('input',e=>{
  if(f.id==='netCoopUpdate')coopUpdateDraft=v.body||'';
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
  if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
+ if(f.id==='netEconomicFlowCreate')economicFlowDraft={kind:v.kind||'service',summary:v.summary||''};
+ if(f.classList.contains('netEconomicFlowEdit'))economicFlowEditDrafts[f.dataset.flow]={stage:v.stage||'planning',summary:v.summary||''};
+ if(f.classList.contains('netEconomicRoleAdd'))economicRoleDrafts[f.dataset.flow]={user:v.user||'',role:v.role||'contributor'};
  if(f.id==='netPurchaseOffer')offerDraft={cooperationId:selectedCoop,unitPrice:v.unitPrice||'',currency:(v.currency||'').toUpperCase(),minQuantity:v.minQuantity||'',availableQuantity:v.availableQuantity||'',deliveryMode:v.deliveryMode||'pickup',deliveryFee:v.deliveryFee||'0',leadTimeDays:v.leadTimeDays||'0',validUntil:v.validUntil||'',note:v.note||''};
  if(f.id?.startsWith('netPurchase')&&f.id!=='netPurchaseOffer')lifecycleDrafts[f.id]=v;
 });
@@ -880,7 +899,10 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netCoopEdit'){const coop=data.cooperations.find(x=>x.id===selectedCoop);await api.updateCooperation(selectedCoop,{kind:coop.kind,title:values.title,description:values.description,location:values.location,status:values.status,targetQuantity:values.targetQuantity,unit:values.unit});coopEditDraft=null;}
   if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
   if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
+  if(f.id==='netEconomicFlowCreate'){economicSectionOpen=true;await api.createEconomicFlow(selectedCoop,{kind:values.kind,summary:values.summary});economicFlowDraft={kind:'service',summary:''};}
   if(f.id==='netPurchaseOffer'){await api.savePurchaseOffer(selectedCoop,{unitPrice:values.unitPrice,currency:values.currency,minQuantity:values.minQuantity,availableQuantity:values.availableQuantity,deliveryMode:values.deliveryMode,deliveryFee:values.deliveryFee,leadTimeDays:values.leadTimeDays,validUntil:values.validUntil,note:values.note});offerDraft=null;}
+  if(f.classList.contains('netEconomicFlowEdit')){economicSectionOpen=true;await api.updateEconomicFlow(f.dataset.flow,{stage:values.stage,summary:values.summary});delete economicFlowEditDrafts[f.dataset.flow];}
+  if(f.classList.contains('netEconomicRoleAdd')){economicSectionOpen=true;await api.addEconomicFlowRole(f.dataset.flow,values.user,values.role);delete economicRoleDrafts[f.dataset.flow];}
   if(f.id==='netPurchaseStart'){await api.startPurchaseConfirmation(selectedCoop,values.deadline);delete lifecycleDrafts.netPurchaseStart;}
   if(f.id==='netPurchaseConfirm'){await api.confirmPurchaseParticipation(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseConfirm;}
   if(f.id==='netPurchaseOrdered'){await api.markPurchaseOrdered(selectedCoop,{reference:values.reference,expectedDelivery:values.expectedDelivery,note:values.note,pickupPlace:values.pickupPlace,pickupStart:values.pickupStart,pickupEnd:values.pickupEnd});delete lifecycleDrafts.netPurchaseOrdered;}
@@ -909,9 +931,13 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};selectedCoop=null;navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
+ });return;}const eb=e.target.closest('[data-economic]');if(eb){if(guestDemo){guestRequireAccount();return;}const a=eb.dataset.economic,flow=eb.dataset.flow;economicSectionOpen=true;run(async()=>{
+  if(a==='deleteFlow'){if(!confirm(t('confirm')))return;await api.deleteEconomicFlow(flow);delete economicFlowEditDrafts[flow];delete economicRoleDrafts[flow];}
+  if(a==='removeRole'){if(!confirm(t('confirm')))return;await api.removeEconomicFlowRole(flow,eb.dataset.user,eb.dataset.role);}
+  await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
-  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};}
-  if(a==='open')selectedCoop=id;
+  if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;}
+  if(a==='open'){selectedCoop=id;economicSectionOpen=false;}
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
   if(a==='delete'){if(!confirm(t('confirm')))return;await api.deleteCooperation(id);selectedCoop=null;}
@@ -960,7 +986,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};render();});
+api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};render();});
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;
@@ -979,7 +1005,8 @@ window.addEventListener('folkoop:guest-demo',e=>{
  guestDemo=detail.enabled!==false;
  if(!guestDemo){
   showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
-  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[]};
+  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};
+  economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
  }
  try{
   if(guestDemo&&!temporary)sessionStorage.setItem('folkoop-entry-mode-v1','guest');

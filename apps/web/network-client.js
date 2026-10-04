@@ -70,6 +70,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function kind(value){if(!['need','offer','purchase','resource','project'].includes(value))throw fail('INVALID_INPUT');return value;}
  function status(value){if(!['open','active','done','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
  function taskStatus(value){if(!['todo','doing','done'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicKind(value){if(!['procurement','production','sale','service','distribution'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicStage(value){if(!['planning','active','closed','cancelled'].includes(value))throw fail('INVALID_INPUT');return value;}
+ function economicRole(value){if(!['coordinator','contributor','producer','buyer','seller','logistics'].includes(value))throw fail('INVALID_INPUT');return value;}
  function quantity(value,{allowZero=false}={}){const n=Number(value);if(!Number.isFinite(n)||(allowZero?n<0:n<=0)||n>1000000000)throw fail('INVALID_INPUT');return n;}
  function currency(value){const v=text(value,3,3).toUpperCase();if(!/^[A-Z]{3}$/.test(v))throw fail('INVALID_INPUT');return v;}
  function deliveryMode(value){if(!['pickup','delivery','both'].includes(value))throw fail('INVALID_INPUT');return value;}
@@ -159,6 +162,13 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   cooperationUpdates(cid){return rows('fk_cooperation_updates?select=id,cooperation_id,author_id,body,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
   projectTasks(cid){return rows('fk_project_tasks?select=id,cooperation_id,creator_id,assignee_id,title,details,status,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=200');},
   purchaseCommitments(cid){return rows('fk_purchase_commitments?select=cooperation_id,user_id,quantity,note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
+  economicFlows(cid){return rows('fk_economic_flows?select=id,cooperation_id,kind,stage,summary,created_by,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  economicFlowRoles(flowIds){if(!Array.isArray(flowIds)||!flowIds.length)return Promise.resolve([]);const ids=idList(flowIds,100);return rows('fk_economic_flow_roles?select=flow_id,user_id,role,created_at&flow_id=in.('+ids.join(',')+')&order=created_at.asc&limit=600');},
+  createEconomicFlow(cid,v){return rpc('fk_create_economic_flow',{p_cooperation:id(cid),p_kind:economicKind(v.kind),p_summary:text(v.summary,500,1)});},
+  updateEconomicFlow(fid,v){return rpc('fk_update_economic_flow',{p_flow:id(fid),p_stage:economicStage(v.stage),p_summary:text(v.summary,500,1)});},
+  deleteEconomicFlow(fid){return rpc('fk_delete_economic_flow',{p_flow:id(fid)});},
+  addEconomicFlowRole(fid,uid,role){return rpc('fk_add_economic_flow_role',{p_flow:id(fid),p_user:id(uid),p_role:economicRole(role)});},
+  removeEconomicFlowRole(fid,uid,role){return rpc('fk_remove_economic_flow_role',{p_flow:id(fid),p_user:id(uid),p_role:economicRole(role)});},
   createCooperation(v){const k=kind(v.kind);const target=k==='purchase'?quantity(v.targetQuantity):null;const unit=k==='purchase'?text(v.unit,30,1):'';return trackedRpc('fk_create_cooperation',{p_kind:k,p_title:text(v.title,120,2),p_description:text(v.description||'',3000),p_location:text(v.location||'',120),p_target_quantity:target,p_unit:unit},'cooperation_created',{cooperation_kind:k});},
   joinCooperation(cid){return trackedRpc('fk_join_cooperation',{p_cooperation:id(cid)},'cooperation_joined');},
   leaveCooperation(cid){return rpc('fk_leave_cooperation',{p_cooperation:id(cid)});},
@@ -198,7 +208,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   finishPurchase(cid,note=''){return trackedRpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)},'purchase_completed');},
   cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -214,9 +224,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_commitments?user_id=eq.'+uid+'&limit=500'),
    rows('fk_purchase_offers?provider_id=eq.'+uid+'&order=updated_at.desc&limit=500'),
    rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500'),
-   rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500')
+   rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
+   rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
+   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }
