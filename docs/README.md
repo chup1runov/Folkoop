@@ -4,6 +4,8 @@ This directory separates current product decisions from pilot operations, engine
 
 ## Start here — foundation decision, 4 October 2026
 
+For current execution order, use **`MASTER_PLAN_20261004.md`**. It consolidates the active pilot, first-contact, connected-product, cooperative-economy, engineering, organisation and long-term Web3/Web4 tracks without reducing the full Foundation scope.
+
 `FOUNDATION_CHARTER.md` is the controlling owner-approved product-scope contract (FK-FOUNDATION-2026-10-04). It requires integration of the existing code and FOUR origins, online/physical Center with the Göteborg forum, whole-system Mura, the SDCF systems/decision/control layer, retained Web3/Web4 capabilities, and a required scoped blockchain workstream. `architecture/adr/ADR-002-four-origin-foundation.md` and `architecture/adr/ADR-003-sdcf-web3-web4-layers.md` record the current scope amendments. A narrow pilot is not permission to reduce the full product scope. Scope decisions and implemented behavior must be reported separately.
 
 ## Authority order
