@@ -12,7 +12,7 @@ Canonical short definition supplied by the owner:
 
 > FOLKOOP — единая сеть повседневной кооперации, которая связывает людей, сообщества, ресурсы, организации и возможности города и помогает им совместно решать задачи, создавать проекты и организовывать общественную и экономическую деятельность.
 
-Expanded working definition (editorial clarification, not a replacement): FOLKOOP connects everyday social, civic and economic life through one cooperation network: people, conversations, communities, skills, resources, organisations, official processes, projects, collective decisions, economic activity, and online/physical places. It supports discovery, coordination, action, belonging and traceable outcomes. Mura illustrates this connected life; a required blockchain workstream supports specifically justified shared-trust functions.
+Expanded working definition (editorial clarification, not a replacement): FOLKOOP connects everyday social, civic and economic life through one cooperation network: people, conversations, communities, skills, resources, organisations, official processes, projects, collective decisions, economic activity, and online/physical places. It supports discovery, coordination, action, belonging and traceable outcomes. Mura illustrates this connected life. SDCF supplies a cross-cutting systems/decision/control discipline. The retained Web3/Web4 direction supplies identity, interoperability, agent and physical-world capabilities; blockchain is the required shared-trust workstream within that broader direction.
 
 ## 2. Authority and preservation
 
@@ -27,6 +27,48 @@ Historical versions, rejected options and contradictions must remain traceable. 
 Extend the current repository incrementally. Do not start a replacement application, erase the current database, rewrite the framework or discard working behavior merely to incorporate the four origins.
 
 Preserve existing profiles/private drafts, People, Communities/publications, messaging/work chats, Need/Offer/Resource/Shared Purchase/Project objects, quantities/supplier coordination, tasks/assignees/updates, activity history, City adapters, Mura, all eleven languages, mobile/PWA behavior, accessibility and account/privacy/security controls. Each preservation claim must ultimately link to current code and regression tests. This document does not claim a fresh full-code audit.
+
+## 3A. SDCF — cross-cutting systems, decision and control layer
+
+SDCF is part of the FOLKOOP foundation as a **method/semantic layer**, not as another consumer-facing product tab or an automatic decision-maker. It is the owner's domain-independent systems/decision/control framework and should remain expressed in mainstream systems-engineering, decision, evidence, risk and learning terminology.
+
+Preserve and map the SDCF kernel concepts across FOLKOOP where they add semantic discipline: System, Agent, Property, State, Event/Process, Objective/Operational Objective, Constraint, Criterion, Claim/Causal Claim, Prediction, Assumption, Model, Observation/Observation Result, Uncertainty Assessment, Plan, Decision, System Scope, Action and Controlled Action.
+
+Required integration principles:
+- objectives are made evaluable through criteria/metrics where appropriate;
+- observations retain what was observed, about what, when and by whom/what;
+- models retain purpose, scope, validity domain, version, status and provenance;
+- predictions retain horizon, assumptions, support/evidence status and uncertainty;
+- decisions retain considered alternatives, selected alternative, objective served, authority and time;
+- controlled actions retain target and provenance to a decision, plan or controller;
+- claims and evidence do not collapse into one truth flag;
+- outcome, evidence and learning can update the system model without rewriting history.
+
+Use SDCF to strengthen City routing/explanations, Center/Host decisions, projects, cooperative-economic coordination, outcome evaluation and future agent reasoning. It must not silently convert recommendations into official authority decisions, operator suggestions into user consent, or model output into verified real-world truth.
+
+Known later SDCF work such as method routing and explicit learning-loop machinery remains in the no-loss source inventory. It becomes normative only after its source/version and acceptance tests are recovered and reviewed. Current SDCF artefacts must not be presented as proof of universal scientific validity merely because local/synthetic validation passes.
+
+## 3B. Web3/Web4 capability family — retained full-scope direction
+
+The already-approved Web3/Web4 architecture is preserved as part of the long-term FOLKOOP scope, subject to concrete product, privacy, security and interoperability triggers. It is infrastructure around the cooperation graph, not a separate product and not a requirement that ordinary participants learn Web3 terminology.
+
+Preserve for future implementation:
+- stable globally portable object identity/URN representation while UUID/PostgreSQL remain operational identity/truth;
+- a derived Action/Cooperation Graph over normalized relational data, with provenance, rather than a premature second operational graph database;
+- verifiable credentials, selective disclosure and cryptographic attestations where portable trust is useful;
+- DID/EUDI or other wallet adapters only where a real identity/eligibility use case requires them;
+- federation between independently operated Nodes/partners and selected public-social federation such as ActivityPub where justified;
+- FOLKOOP Action-Agent tooling over reviewed APIs/RPCs;
+- MCP and A2A interoperability for controlled tool/agent interaction;
+- Place and Resource identities connected to the cooperation graph;
+- QR/NFC for explicit physical-resource/place interactions;
+- digital-twin state for Places/Resources where there is a real operational need;
+- later IoT/access-system integration with proportional authorization;
+- typed outcome/evidence attestations and external integrity anchoring.
+
+Consequential agent actions require explicit authorization proportional to risk. No agent receives arbitrary SQL or service-role bypass. Federation introduces a remote trust/abuse boundary and must begin with explicit trust policy. Web3/Web4 implementation must preserve privacy/data minimisation and graceful operation when optional external trust/agent/physical systems are unavailable.
+
+Blockchain remains governed by section 10 and ADR-002: it is the required design/prototype/integration workstream for a selected genuine shared-trust use case, not a replacement for this wider Web3/Web4 capability family.
 
 ## 4. Origin A — Sverinav: person ↔ public infrastructure
 
@@ -100,7 +142,7 @@ Do not put profiles, private messages, identity numbers, home addresses, forum m
 
 Maintain stable requirement IDs with: source/version and original wording; destination(s); present code evidence; implementation status; native/integration/human-operation route; dependencies; Mura scenario; real-user acceptance test; privacy/rights constraints; supersession decision if any.
 
-Keep the prior 63-item audit intact as historical evidence. Its list is not proof of exhaustive coverage. Expand it with the fourth origin, current-code preservation, full Mura scope, blockchain and uncovered source details. Missing originals remain visible recovery gaps; reconstructions are labelled as reconstructions.
+Keep the prior 63-item audit intact as historical evidence. Its list is not proof of exhaustive coverage. Expand it with the fourth origin, current-code preservation, full Mura scope, SDCF, the retained Web3/Web4 capability family, blockchain and uncovered source details. Missing originals remain visible recovery gaps; reconstructions are labelled as reconstructions.
 
 An origin is not fully integrated until its source inventory is accounted for and each active requirement has tested coverage. A mock, empty tab, draft schema, human promise, external link or passing unit test alone is not evidence of end-to-end delivery. Completeness of requirements and completeness of implementation must be reported separately.
 
@@ -119,10 +161,10 @@ These are proposed test stories implementing the owner's scope, not claims about
 ## 13. Implementation order without scope loss
 
 Stage 1: preserve baseline and source originals; adopt this charter; reconcile conflicting pointers; complete requirement inventory.
-Stage 2: design cross-domain object links and permission contracts; map current implementation and gaps.
+Stage 2: design cross-domain object links, SDCF semantic mappings, stable object identities/derived Action Graph and permission contracts; map current implementation and gaps.
 Stage 3: deliver online Center/forum context, Host/referral and partner-resource connections in vertical slices with Mura counterparts.
 Stage 4: deliver cooperative-economic and governance slices, including sales/production/logistics/document functions and specialist handoffs; retain source-specific pending functions.
-Stage 5: implement the reviewed blockchain trust prototype and then the approved integration; no unsupported decentralisation claims.
+Stage 5: implement evidence-triggered Web3/Web4 slices (credentials/federation/agents/physical links as justified) and the reviewed blockchain trust prototype; no unsupported decentralisation or autonomy claims.
 Stage 6: extend physical/partner formats and cross-city portability with real operators.
 
 This sequence is an engineering proposal, not a new restriction on product scope. Dependencies may change order. Existing Auth, privacy, real-device and human-pilot gates still govern actual participant launch. No automatic Google activation, new subscription or expenditure is authorised.
