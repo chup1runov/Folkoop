@@ -1044,6 +1044,14 @@ window.addEventListener('folkoop:subsection',e=>{
  if(parent==='messages')selectedChat=null;
  render();
 });
+document.addEventListener('click',e=>{
+ const button=e.target.closest?.('[data-message-subsection]');if(!button)return;
+ window.dispatchEvent(new CustomEvent('folkoop:set-subsection',{detail:{key:button.dataset.messageSubsection,parent:'messages'}}));
+});
+document.addEventListener('click',e=>{
+ const button=e.target.closest?.('[data-message-work]');if(!button)return;
+ document.querySelector('#networkPanel [data-message-work-list]')?.scrollIntoView({behavior:'smooth',block:'start'});
+});
 window.addEventListener('folkoop:start-cooperation',e=>{
  const detail=e.detail||{},kind=detail.kind;
  if(guestDemo||!currentUser()||!['need','offer','project','purchase','resource'].includes(kind))return;
