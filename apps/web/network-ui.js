@@ -714,7 +714,7 @@ function coopDisclosure(key,title,count,body,open=false){
 }
 
 function renderCooperation(u,r){
- const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource'];
+ const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource','project'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
  const coop=list.find(x=>x.id===selectedCoop);
  let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div>${guestDemo?'':`<div>${btn('refresh','refresh')}${btn('logout','out')}</div>`}</div>`;
