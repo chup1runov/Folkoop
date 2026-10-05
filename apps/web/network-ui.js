@@ -718,6 +718,25 @@ function renderCooperation(u,r){
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
  const coop=list.find(x=>x.id===selectedCoop);
  let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div>${guestDemo?'':`<div>${btn('refresh','refresh')}${btn('logout','out')}</div>`}</div>`;
+ if(!projectMode){
+  html+=`<section class="together-hub" aria-labelledby="togetherHubTitle">
+   <div class="together-hub-head"><p class="eyebrow">FOLKOOP</p><h3 id="togetherHubTitle">${esc(ct('togetherTitle'))}</h3><p>${esc(ct('networkDesc'))}</p></div>
+   <div class="together-action-grid">
+    <button type="button" data-home="createCoop" data-kind="need"><span aria-hidden="true">↘</span><strong>${esc(homeModeText('needAction'))}</strong></button>
+    <button type="button" data-home="createCoop" data-kind="offer"><span aria-hidden="true">↗</span><strong>${esc(homeModeText('offerAction'))}</strong></button>
+    <button type="button" data-home="createCoop" data-kind="project"><span aria-hidden="true">✦</span><strong>${esc(homeModeText('organizeAction'))}</strong></button>
+    <a href="#/people"><span aria-hidden="true">👥</span><strong>${esc(t('directory'))}</strong></a>
+    <button type="button" data-home="createCoop" data-kind="resource"><span aria-hidden="true">🧰</span><strong>${esc(kindLabel('resource'))}</strong></button>
+    <button type="button" data-home="createCoop" data-kind="purchase"><span aria-hidden="true">🛒</span><strong>${esc(kindLabel('purchase'))}</strong></button>
+   </div>
+   <div class="together-discovery-bar">
+    <label><span class="sr-only">${esc(t('search'))}</span><input id="networkCoopSearch" type="search" autocomplete="off" placeholder="${esc(t('search'))}"></label>
+    <div class="together-filter-row" role="group" aria-label="${esc(ct('kind'))}">
+     ${['need','offer','resource','project','purchase'].map(k=>`<button type="button" data-together-kind="${k}">${esc(kindLabel(k))}</button>`).join('')}
+    </div>
+   </div>
+  </section>`;
+ }
  if(coop){
   const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
   const member=!!membership,owner=coop.owner_id===u.id;
@@ -794,7 +813,7 @@ function renderCooperation(u,r){
  const memberIds=projectMode?new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id)) : new Set();
  const displayList=projectMode&&view==='projects-mine'?list.filter(x=>x.owner_id===u.id||memberIds.has(x.id)):list;
  const createForm=guestDemo?'':`<form id="netCoopCreate" class="editor card"><h3>${esc(ct('newCoop'))}</h3>${projectMode?`<input type="hidden" name="kind" value="project">`:`<label>${esc(ct('kind'))}<select name="kind">${['need','offer','purchase','resource'].map(k=>`<option value="${k}"${kind===k?' selected':''}>${esc(kindLabel(k))}</option>`).join('')}</select></label>`}<label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(coopDraft.title||'')}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(coopDraft.description||'')}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(coopDraft.location||'')}"></label><div data-purchase-fields ${kind==='purchase'?'':'hidden'}><label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" value="${esc(coopDraft.targetQuantity||'')}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" value="${esc(coopDraft.unit||'')}"></label><p class="meta">${esc(ct('purchaseHelp'))}</p></div><button class="button">${esc(ct('newCoop'))}</button></form>`;
- html+=createForm+`<div class="draft-grid">${displayList.map(x=>{const unread=Number(data.activityInbox.find(a=>a.cooperation_id===x.id)?.unread_count||0);return `<article class="card"${guestDemo&&['need','offer','project'].includes(x.kind)?` data-demo-story="${esc(x.kind)}"`:''}><div class="row"><span><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span></span>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`+(guestDemo?'':`<p class="meta">${esc(ct('localBelow'))}</p>`);
+ html+=createForm+`<div class="draft-grid">${displayList.map(x=>{const unread=Number(data.activityInbox.find(a=>a.cooperation_id===x.id)?.unread_count||0);return `<article class="card" data-together-card data-kind="${esc(x.kind)}"${guestDemo&&['need','offer','project'].includes(x.kind)?` data-demo-story="${esc(x.kind)}"`:''}><div class="row"><span><span class="badge">${esc(kindLabel(x.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(x.status))}</span></span>${unread?`<span class="net-count">${esc(String(unread))}</span>`:''}</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><p class="meta">${esc(x.location_text||'')}</p>${cbtn('open','open',x.id)}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`+(guestDemo?'':`<p class="meta">${esc(ct('localBelow'))}</p>`);
  return html;
 }
 
@@ -1024,6 +1043,37 @@ window.addEventListener('folkoop:subsection',e=>{
  if(parent==='projects')selectedCoop=null;
  if(parent==='messages')selectedChat=null;
  render();
+});
+window.addEventListener('folkoop:start-cooperation',e=>{
+ const detail=e.detail||{},kind=detail.kind;
+ if(guestDemo||!currentUser()||!['need','offer','project','purchase','resource'].includes(kind))return;
+ detail.handled=true;
+ coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};
+ selectedCoop=null;resetEconomicFlowState();
+ navigateNetwork(kind==='project'?'#/projects':'#/together');
+});
+document.addEventListener('input',e=>{
+ if(e.target?.id!=='networkCoopSearch')return;
+ const needle=e.target.value.trim().toLocaleLowerCase();
+ document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
+  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
+  card.dataset.searchMatch=matches?'1':'0';
+  const kindMatch=card.dataset.kindMatch!=='0';
+  card.hidden=!(matches&&kindMatch);
+ });
+});
+document.addEventListener('click',e=>{
+ const filter=e.target.closest?.('[data-together-kind]');if(!filter)return;
+ const turnOff=filter.classList.contains('active');
+ document.querySelectorAll('#networkPanel [data-together-kind]').forEach(b=>b.classList.remove('active'));
+ const kind=turnOff?'all':filter.dataset.togetherKind;
+ if(!turnOff)filter.classList.add('active');
+ document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
+  const matches=kind==='all'||card.dataset.kind===kind;
+  card.dataset.kindMatch=matches?'1':'0';
+  const searchMatch=card.dataset.searchMatch!=='0';
+  card.hidden=!(matches&&searchMatch);
+ });
 });
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
