@@ -486,3 +486,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .mura-now-card h2{font-size:1rem;margin-bottom:5px}
  .mura-now-card p{margin-bottom:8px}
 }
+
+/* production shell v0.1 — icon-first global chrome */
+.brand-wordmark{cursor:default}
+.shell-actions{display:flex;align-items:center;gap:7px;margin-inline-start:auto}
+.shell-icon-button{width:44px;height:44px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);padding:0}
+.shell-icon-button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.shell-start-button{background:var(--ink);border-color:var(--ink);color:#fff}
+.mobile-primary-mark{width:28px;height:28px;object-fit:contain;border-radius:7px}
+@media(max-width:760px){
+ .topbar{gap:8px}
+ .shell-actions{margin-inline-start:auto}
+ .top-actions,.location{display:none!important}
+ .brand-wordmark{font-size:1rem}
+ .mobile-primary-nav a{font-size:0}
+ .mobile-primary-nav a>span.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+ .mobile-primary-nav a svg{width:24px;height:24px}
+ .mobile-primary-nav a[aria-current="page"]{background:var(--soft)}
+ .mobile-primary-nav a[aria-current="page"] .mobile-primary-mark{transform:scale(1.08)}
+}
