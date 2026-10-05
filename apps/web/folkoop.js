@@ -638,6 +638,14 @@ document.addEventListener('click',e=>{
  const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});
 });
 
+window.addEventListener('folkoop:set-subsection',e=>{
+ const key=e.detail?.key,parent=e.detail?.parent;
+ if(!key||!parent||subsectionParent(key)!==parent)return;
+ subsection=key;document.documentElement.dataset.folkoopSubsection=key;
+ try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
+ if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
+ render();
+});
 window.addEventListener('folkoop:guest-demo',e=>{
  cityHandoff=null;
  muraVisitActive=!!e.detail?.enabled;
