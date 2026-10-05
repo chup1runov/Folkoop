@@ -73,6 +73,7 @@ async def main():
   await page.fill('#netProfile [name=name]','Synthetic Buyer')
   await page.click('#netProfile button')
   await page.evaluate("location.hash='#/together'")
+  # Together is browse-first: creation appears only after an explicit participant action.
   await page.click('[data-home="createCoop"][data-kind="purchase"]')
   await expect(page.locator('#netCoopCreate')).to_be_visible()
   await expect(page.locator('#netCoopCreate [name=kind]')).to_have_value('purchase')
