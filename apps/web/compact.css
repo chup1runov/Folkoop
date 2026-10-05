@@ -98,4 +98,4 @@ html[dir="rtl"] .compact-service-body>p.daily-note{padding-left:14px;padding-rig
 .city-entry-card>span:last-child{display:flex;min-width:0;flex-direction:column;gap:3px}
 .city-entry-card strong{font-size:.88rem;line-height:1.2}
 .city-entry-card small{color:var(--muted);font-size:.72rem;line-height:1.35}
-@media(max-width:430px){.city-entry-grid{grid-template-columns:1fr}.city-entry-card{min-height:68px}}
+@media(max-width:430px){.city-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:9px 0 11px}.city-entry-card{min-height:56px;padding:8px 9px;gap:8px}.city-entry-icon{width:32px;height:32px}.city-entry-card small{display:none}.city-entry-card strong{font-size:.8rem}}
