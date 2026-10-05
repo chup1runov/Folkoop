@@ -66,8 +66,7 @@ function create({
     const current=counts();
     setCountBadge(documentRef.getElementById('messageLink'),current.messages);
     setCountBadge(documentRef.querySelector('#mobilePrimaryNav a[href="#/messages"]'),current.messages);
-    setCountBadge(documentRef.querySelector('#mobilePrimaryNav a[href="#/together"]'),current.together);
-    setCountBadge(documentRef.querySelector('#mobilePrimaryNav a[href="#/projects"]'),current.projects);
+    setCountBadge(documentRef.querySelector('#mobilePrimaryNav a[href="#/together"]'),current.together+current.projects);
     return current;
   }
 
