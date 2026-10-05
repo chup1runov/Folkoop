@@ -27,7 +27,7 @@ async def main():
   await expect(page.locator('#networkPanel')).to_be_visible()
   await page.screenshot(path=str(OUT/'theme-civic-teal-home-mobile-390x844.png'),full_page=True)
   await page.click('#mobilePrimaryNav a[href="#/together"]')
-   await page.click('#mobileContextDock [data-mobile-subnav="projects-overview"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="projects-overview"]')
   await expect(page.locator('#mobileContextDock')).to_be_visible()
   await page.screenshot(path=str(OUT/'theme-civic-teal-projects-mobile-390x844.png'),full_page=True)
   await mobile.close()
