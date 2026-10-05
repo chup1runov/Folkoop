@@ -8,7 +8,7 @@ let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null, cityHandoff=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
-const NAV_ORDER=['home','together','projects','city','messages'];
+const NAV_ORDER=['home','together','city','center','messages'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -31,7 +31,7 @@ let initialCityHash=legacyRoutes.includes(location.hash.slice(1))?location.hash.
 if(initialCityHash!=='home'){current='city';history.replaceState(null,'','#/city');}
 const GOTEBORG_FORUM_URL='https://t.me/+YlokNMBafp8wM2Vi';
 const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project:'M4 19V5h16v14H4Zm4-7h8M12 8v8',purchase:'M4 6h2l2 9h9l2-6H8M10 20h.01M17 20h.01',resource:'M5 7h14v12H5V7Zm3 0V4h8v3'};
-const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8 12 3 3 5-6M4 5h16v14H4Z',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
+const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8.5 12.5 2.2 2.2a2 2 0 0 0 2.8 0l5.2-5.2a2.8 2.8 0 0 0-4-4l-2 2m3 4-2.2-2.2a2 2 0 0 0-2.8 0l-5.2 5.2a2.8 2.8 0 0 0 4 4l2-2',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
@@ -54,13 +54,13 @@ const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==
 const MOBILE_PRIMARY=NAV_ORDER;
 const MOBILE_CONTEXT={
  home:['home-overview','home-attention','home-feed','home-actions','me'],
- together:['together','people','communities'],
- projects:['projects-overview','projects-mine','projects-tasks','projects-updates'],
- city:['city','center'],
+ together:['together','projects-overview','projects-mine','projects-tasks','projects-updates'],
+ city:[],
+ center:['center','people','communities'],
  messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
-const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['me','settings','about'].includes(route)?'home':route;
+const mobilePrimaryFor=route=>route==='projects'?'together':['people','communities'].includes(route)?'center':['me','settings','about'].includes(route)?'home':route;
 const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
@@ -80,6 +80,9 @@ const SUBNAV_LABELS={
  ku:{'home-overview':'Nêrîna giştî','home-attention':'Pêdivî bi baldarî ye','home-feed':'Çi diqewime','home-actions':'Kiryarên bilez','projects-overview':'Proje','projects-mine':'Yên min','projects-tasks':'Kar','projects-updates':'Nûvekirin','messages-chats':'Peyamdan','messages-direct':'Rasterast','messages-groups':'Kom','messages-invites':'Dawet'}
 };
 const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
+const HOME_PRIMARY_LABEL=Object.freeze({sv:'Mitt',en:'My',ru:'Моё',es:'Lo mío',uk:'Моє',fi:'Oma',bs:'Moje',ar:'لي',fa:'مال من',so:'Kayga',ku:'Ya min'});
+const primaryLabel=k=>k==='home'?(isMuraVisit()?'Mura':(HOME_PRIMARY_LABEL[lang]||t('me'))):t(k);
+const primaryIcon=k=>k==='center'?'<img class="primary-center-mark" src="./folkoop-mark.png" alt="">':icon(k==='home'?'me':k);
 
 let entryModeMemory='';
 const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||entryModeMemory;}catch{return entryModeMemory;}};
@@ -94,12 +97,12 @@ function renderMobileChrome(){
  primary.dataset.activeSection=active;
  const guest=isMuraVisit();
  const personalPrimaryLabel=guest?'Mura':(lang==='ru'?'Я':lang==='sv'?'Jag':'Me');
- primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+(k==='home'?icon('me'):icon(k))+'<span>'+esc(k==='home'?personalPrimaryLabel:k==='city'?t('city'):t(k))+'</span></a>').join('');
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>{const label=k==='home'?personalPrimaryLabel:primaryLabel(k);return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+primaryIcon(k)+'</a>';}).join('');
  const guestContext={
   home:['home-overview','me'],
-  together:['together','people','communities'],
-  projects:['projects-overview','projects-tasks','projects-updates'],
-  city:['city','center'],
+  together:['together','projects-overview','projects-tasks','projects-updates'],
+  city:[],
+  center:['center','people','communities'],
   messages:['messages-chats','messages-direct','messages-groups'],
   me:[]
  };
@@ -129,6 +132,25 @@ function renderMobileChrome(){
 function closeMobileDemo(){
  const dock=$('#mobileContextDock'),pop=dock?.querySelector('.mobile-demo-popover'),button=dock?.querySelector('[data-mobile-action="demo"]');
  if(pop)pop.hidden=true;if(button)button.setAttribute('aria-expanded','false');
+}
+function closeStartMenu(){
+ const menu=$('#globalStartMenu'),button=$('#globalStartButton');
+ if(menu)menu.hidden=true;
+ if(button)button.setAttribute('aria-expanded','false');
+}
+function toggleStartMenu(){
+ const menu=$('#globalStartMenu'),button=$('#globalStartButton');if(!menu||!button)return;
+ const open=menu.hidden;menu.hidden=!open;button.setAttribute('aria-expanded',String(open));
+}
+function openGlobalSearch(){
+ closeStartMenu();capture();current='together';query='';formKind=null;history.pushState(null,'','#/together');render(true);
+ requestAnimationFrame(()=>$('#draftSearch')?.focus({preventScroll:false}));
+}
+function startFromShell(kind){
+ closeStartMenu();
+ if(isMuraVisit()){entryGateAfterMuraExit=true;showEntryGate('',true);return;}
+ capture();formKind=kind;scratch={kind};current=kind==='project'?'projects':'together';history.pushState(null,'','#/'+current);render(true);
+ requestAnimationFrame(()=>$('#draftForm input[name="title"]')?.focus({preventScroll:false}));
 }
 
 const a=(route,label,cls='button')=>`<a class="${cls}" href="#/${route}">${esc(t(label))}${icon('arrow')}</a>`;
@@ -558,7 +580,11 @@ function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML='';
  renderMobileChrome();
- $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
+ $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
+ const searchButton=$('#globalSearchButton'),startButton=$('#globalStartButton');
+ if(searchButton){searchButton.setAttribute('aria-label',t('search'));searchButton.setAttribute('title',t('search'));}
+ if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
+ document.querySelectorAll('[data-shell-label]').forEach(el=>{const key=el.dataset.shellLabel;el.textContent=t(key);});
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
@@ -589,6 +615,10 @@ function render(focus=false){
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
 $('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
+$('#globalSearchButton')?.addEventListener('click',openGlobalSearch);
+$('#globalStartButton')?.addEventListener('click',e=>{e.stopPropagation();toggleStartMenu();});
+$('#globalStartMenu')?.addEventListener('click',e=>{const b=e.target.closest('[data-shell-create]');if(b)startFromShell(b.dataset.shellCreate);});
+document.addEventListener('click',e=>{if(!e.target.closest('#globalStartMenu,#globalStartButton'))closeStartMenu();});
 document.addEventListener('click',e=>{
  const link=e.target.closest?.('[data-subsection]');if(!link)return;
  const key=link.dataset.subsection,parent=subsectionParent(key);
@@ -625,7 +655,7 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
  if(mobileAction){
