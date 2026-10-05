@@ -87,7 +87,7 @@ test('activity renderer escapes server text and keeps the existing action hook',
  assert(html.includes('data-id="n1"'));
 });
 
-test('badge sync writes only the four established navigation badges',()=>{
+test('badge sync writes messages and combined cooperation activity to primary navigation',()=>{
  const {data,profiles,labels}=fixture();
  const made=[];
  const element=()=>({
@@ -95,12 +95,12 @@ test('badge sync writes only the four established navigation badges',()=>{
   querySelectorAll(){return this.badges;},
   append(node){this.badges.push(node);}
  });
- const messageLink=element(),messages=element(),together=element(),projects=element();
+ const messageLink=element(),messages=element(),together=element();
  const documentRef={
   createElement(){const node={className:'',textContent:'',attrs:{},setAttribute(k,v){this.attrs[k]=v;},remove(){}};made.push(node);return node;},
   getElementById(id){return id==='messageLink'?messageLink:null;},
   querySelector(selector){
-   return selector.includes('messages')?messages:selector.includes('together')?together:selector.includes('projects')?projects:null;
+   return selector.includes('messages')?messages:selector.includes('together')?together:null;
   }
  };
  const domain=create({
@@ -113,7 +113,6 @@ test('badge sync writes only the four established navigation badges',()=>{
  assert.equal(counts.messages,4);
  assert.equal(messageLink.badges[0].textContent,'4');
  assert.equal(messages.badges[0].textContent,'4');
- assert.equal(together.badges[0].textContent,'3');
- assert.equal(projects.badges[0].textContent,'4');
- assert.equal(made.length,4);
+ assert.equal(together.badges[0].textContent,'7');
+ assert.equal(made.length,3);
 });
