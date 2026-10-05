@@ -102,6 +102,9 @@ function create({
       .map(invite=>chats.find(chatItem=>chatItem.id===invite.conversation_id))
       .filter(Boolean);
     const joined=chats.filter(chatItem=>chatMembers.some(member=>member.conversation_id===chatItem.id&&member.user_id===user.id));
+    const joinedDirect=joined.filter(chatItem=>chatItem.kind==='direct');
+    const joinedGroups=joined.filter(chatItem=>chatItem.kind==='group');
+    const workChats=joined.filter(chatItem=>coopChats.some(link=>link.conversation_id===chatItem.id));
 
     const directForm=`<form id="netDirect" class="editor card"><h3>${escape(chatText('direct'))}</h3><label>${escape(chatText('choosePerson'))}<select name="other" required><option value="">—</option>${discoverable.map(profile=>`<option value="${escape(profile.id)}"${profile.id===directTarget?' selected':''}>${escape(profile.name)}</option>`).join('')}</select></label><button class="button">${escape(chatText('startDirect'))}</button><p class="meta">${discoverable.length?'':escape(chatText('noPeople'))}</p></form>`;
 
@@ -117,13 +120,25 @@ function create({
     }).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
     if(guestDemo){
-      if(view==='messages-direct')html+=cards(joined.filter(chatItem=>chatItem.kind==='direct'));
-      else if(view==='messages-groups')html+=cards(joined.filter(chatItem=>chatItem.kind==='group'));
+      if(view==='messages-direct')html+=cards(joinedDirect);
+      else if(view==='messages-groups')html+=cards(joinedGroups);
       else html+=cards(joined);
-    }else if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='direct'));
-    else if(view==='messages-groups')html+=`<div class="profile-grid">${groupForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='group'));
+    }else if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joinedDirect);
+    else if(view==='messages-groups')html+=`<div class="profile-grid">${groupForm}</div>`+cards(joinedGroups);
     else if(view==='messages-invites')html+=invitationView;
-    else html+=`<div class="profile-grid">${directForm}${groupForm}</div>`+(invitations.length?invitationView:'')+cards(joined);
+    else {
+      html+=`<section class="messages-hub" aria-label="${escape(chatText('messagesTitle'))}">
+        <div class="messages-hub-grid">
+          <button type="button" data-message-subsection="messages-direct"><span aria-hidden="true">👤</span><strong>${escape(chatText('direct'))}</strong><small>${escape(String(joinedDirect.length))}</small></button>
+          <button type="button" data-message-subsection="messages-groups"><span aria-hidden="true">👥</span><strong>${escape(chatText('groupChat'))}</strong><small>${escape(String(joinedGroups.length))}</small></button>
+          <button type="button" data-message-work><span aria-hidden="true">🧰</span><strong>${escape(activityText('workChat'))}</strong><small>${escape(String(workChats.length))}</small></button>
+          <button type="button" data-message-subsection="messages-invites"><span aria-hidden="true">✉</span><strong>${escape(chatText('invitations'))}</strong><small>${escape(String(invitations.length))}</small></button>
+        </div>
+        <p class="meta messages-hub-note">${escape(chatText('messagesDesc'))}</p>
+      </section>`;
+      if(workChats.length)html+=`<section class="messages-work-section" data-message-work-list><h3>${escape(activityText('workChat'))}</h3>${cards(workChats)}</section>`;
+      html+=cards(joined);
+    }
     return html;
   }
 
