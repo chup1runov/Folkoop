@@ -22,7 +22,7 @@ test('Mura browser acceptance protects the explicit-exit-only account boundary',
   '[data-mobile-action="exitmura"]',
   'form:visible',
   '[data-coop="delete"]:visible',
-  '[data-mobile-subnav="center"]',
+  '[data-mobile-nav="center"]',
   '[data-mobile-subnav="settings"]',
   '[data-mobile-subnav="about"]',
   'mura-outcome-grid'
