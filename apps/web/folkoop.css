@@ -512,3 +512,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .top-actions,.location{display:none!important}
  .shell-start-menu{top:58px;right:10px}
 }
+
+/* v0.42 — My space: three equal ways to use FOLKOOP */
+.home-use-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 24px}
+.home-use-mode{min-width:0;min-height:235px;padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:0 8px 24px #00000008}
+.home-use-mode-social{border-top:4px solid #7569ad}
+.home-use-mode-solve{border-top:4px solid var(--accent)}
+.home-use-mode-organize{border-top:4px solid var(--orange)}
+.home-use-mode-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--paper);font-size:1.25rem}
+.home-use-mode h2{margin:14px 0 7px;font-size:1.15rem}
+.home-use-mode p{margin:0 0 16px;color:var(--muted);line-height:1.48}
+.home-use-mode-action{display:inline-flex;align-items:center;min-height:40px;color:var(--accent);font-weight:700}
+.home-use-mode-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.home-use-mode-buttons button{min-height:42px;padding:8px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-weight:700}
+.home-use-mode-buttons button:hover{background:var(--soft)}
+@media(max-width:860px){.home-use-modes{grid-template-columns:1fr}}
