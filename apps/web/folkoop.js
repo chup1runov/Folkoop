@@ -96,7 +96,7 @@ function renderMobileChrome(){
  document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  const guest=isMuraVisit();
- const personalPrimaryLabel=guest?'Mura':(lang==='ru'?'Я':lang==='sv'?'Jag':'Me');
+ const personalPrimaryLabel=guest?'Mura':(HOME_PRIMARY_LABEL[lang]||t('me'));
  primary.innerHTML=MOBILE_PRIMARY.map(k=>{const label=k==='home'?personalPrimaryLabel:primaryLabel(k);return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+primaryIcon(k)+'</a>';}).join('');
  const guestContext={
   home:['home-overview','me'],
