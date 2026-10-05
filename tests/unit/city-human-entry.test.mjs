@@ -27,7 +27,7 @@ test('City entry does not alter official handoff or source-truth behavior',()=>{
   assert.ok(!today.includes('data-folkoop-handoff'));
 });
 
-test('City entry remains touch-friendly and collapses to one column on narrow screens',()=>{
+test('City entry remains touch-friendly and compact on narrow screens',()=>{
   assert.match(css,/\.city-entry-card\{[^}]*min-height:74px/);
   assert.match(css,/@media\(max-width:430px\)\{\.city-entry-grid\{grid-template-columns:1fr\}/);
 });
