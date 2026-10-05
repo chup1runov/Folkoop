@@ -436,6 +436,9 @@ function onboardingTarget(step){
  // intentionally locks page scrolling. Point at the always-visible Together
  // destination instead: it is the mobile entry point for Need/Offer/Resource/
  // Shared Purchase and preserves the same user action without off-screen geometry.
+ if(mobile&&['welcome','home'].includes(step.id)){
+  return document.querySelector('#mobilePrimaryNav [data-mobile-nav="home"]');
+ }
  if(mobile&&step.id==='quick'){
   return document.querySelector('#mobilePrimaryNav [data-mobile-nav="together"]');
  }
