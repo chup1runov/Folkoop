@@ -107,6 +107,29 @@ test('linked work chat remains visibly linked and cannot render membership manag
  assert(!html.includes('id="netChatInvite"'));
 });
 
+test('default Messages view is browse-first and keeps creation behind explicit modes',()=>{
+ const f=fixture(),d=domain(f);
+ const html=d.render(f.user,{view:'messages-chats'});
+ assert(html.includes('class="messages-hub"'));
+ assert(html.includes('id="networkMessageSearch"'));
+ assert(html.includes('data-message-kind="direct"'));
+ assert(html.includes('data-message-kind="group"'));
+ assert(html.includes('data-message-kind="work"'));
+ assert(!html.includes('id="netDirect"'));
+ assert(!html.includes('id="netNewChat"'));
+ assert(html.includes('data-subsection="messages-direct"'));
+ assert(html.includes('data-subsection="messages-groups"'));
+});
+
+test('message cards expose direct group and linked-work types without changing chat ownership',()=>{
+ const f=fixture(),d=domain(f);
+ const html=d.render(f.user,{view:'messages-chats'});
+ assert(html.includes('data-message-type="direct"'));
+ assert(html.includes('data-message-type="group"'));
+ assert(html.includes('data-message-type="work"'));
+ assert(html.includes('Linked chat'));
+});
+
 test('message subsection rendering preserves direct/groups/invitations separation',()=>{
  const f=fixture(),d=domain(f);
  const direct=d.render(f.user,{view:'messages-direct',directTarget:'other'});
