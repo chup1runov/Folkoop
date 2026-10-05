@@ -34,7 +34,9 @@ test('Center runtime is connected navigation, not a hidden Mura route or simulat
   assert(source.includes('data-center-story="local"'));
   for(const route of ['people','communities','city'])assert(source.includes("routeCard('"+route+"'"),route);
   assert(source.includes('data-center-route="action"'));
-  assert(source.includes("city:['city','center']"));
+  assert(source.includes("center:['center','people','communities']"));
+  assert(source.includes("city:[]"));
+  assert(source.includes("route==='projects'?'together'"));
   assert(source.includes("{id:'center',route:'center',target:'[data-center-story=\"local\"] h2'"));
   assert(!source.includes("['center','settings','about'].includes(current)"));
   assert(source.includes('target="_blank" rel="noopener noreferrer"'));
