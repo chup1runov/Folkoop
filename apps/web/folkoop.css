@@ -505,3 +505,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .mobile-primary-nav a[aria-current="page"]{background:var(--soft)}
  .mobile-primary-nav a[aria-current="page"] .mobile-primary-mark{transform:scale(1.08)}
 }
+
+/* production shell v0.1 — desktop icon rail */
+@media(min-width:761px){
+ .layout{grid-template-columns:82px minmax(0,1fr)}
+ .sidebar{padding:18px 12px;align-items:center}
+ #nav{width:100%;align-items:center;gap:8px}
+ #nav a{width:54px;height:54px;min-height:54px;padding:0;display:grid;place-items:center;border-radius:16px;color:var(--muted)}
+ #nav a[data-nav="messages"],#nav a[data-nav="city"],#nav a[data-nav="me"]{margin-top:0}
+ #nav a svg{width:25px;height:25px}
+ #nav a[aria-current]{background:var(--soft);color:var(--ink)}
+ #nav a[aria-current] svg{color:var(--accent)}
+ #nav .primary-mark{width:30px;height:30px;object-fit:contain;border-radius:8px}
+ #nav a[aria-current] .primary-mark{transform:scale(1.08)}
+ .sidebar-note{display:none}
+ .content{padding-bottom:64px}
+}
+.mobile-primary-nav .primary-mark{width:28px;height:28px;object-fit:contain;border-radius:7px}
