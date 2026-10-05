@@ -389,6 +389,9 @@ async def main():
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
+  await expect(page.locator('#networkMessageSearch')).to_be_visible()
+  await page.click('#mobileContextDock [data-mobile-subnav="messages-direct"]')
+  await expect(page.locator('#netDirect')).to_be_visible()
   await page.select_option('#netDirect [name=other]',OTHER)
   await page.click('#netDirect button')
   await expect(page.locator('#netMessage')).to_be_visible()
