@@ -48,7 +48,7 @@ test('production primary navigation is icon-only and Center uses the canonical F
  const js=await readFile('apps/web/folkoop.js','utf8'),css=await readFile('apps/web/folkoop.css','utf8'),html=await readFile('apps/web/folkoop.html','utf8');
  assert(js.includes('primary-center-mark'));
  assert(js.includes('src="./folkoop-mark.png"'));
- assert(js.includes('aria-label="'+esc(label)+'"'));
+ assert(js.includes("aria-label=\"'+esc(label)+'\""));
  assert.match(css,/\.mobile-primary-nav a\{font-size:0/);
  assert(html.includes('id="globalSearchButton"'));
  assert(html.includes('id="globalStartButton"'));
