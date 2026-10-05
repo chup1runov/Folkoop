@@ -120,6 +120,11 @@ async def scenario(browser, kind, partial):
         if kind != 'project':
             await expect(page.locator('#netCoopCreate [name=kind]')).to_have_value(kind)
 
+        # Wait for the route/action load to settle first. Otherwise the project
+        # route can still have a read in flight when we introduce the controlled
+        # pending read below, making the focus regression nondeterministic.
+        await expect(page.locator('#networkPanel [data-net="refresh"]')).to_be_enabled()
+
         # Preserve the original regression purpose: keep the form in the DOM,
         # start a background server read, then edit while that read is pending.
         state['hold'] = True
