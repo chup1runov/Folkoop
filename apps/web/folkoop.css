@@ -486,3 +486,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .mura-now-card h2{font-size:1rem;margin-bottom:5px}
  .mura-now-card p{margin-bottom:8px}
 }
+
+
+/* v0.41 production shell: icon-first five-space navigation. */
+.shell-actions{margin-inline-start:auto;display:flex;align-items:center;gap:7px}
+.shell-icon-button{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink)}
+.shell-icon-button:hover{background:#fff}
+.shell-start-button{background:var(--accent);border-color:var(--accent);color:#fff}
+.shell-start-button:hover{background:#125959;border-color:#125959}
+.shell-start-menu{position:fixed;top:70px;right:20px;z-index:98;width:min(290px,calc(100vw - 28px));padding:8px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px #0003}
+.shell-start-menu[hidden]{display:none!important}
+.shell-start-menu button{display:flex;width:100%;min-height:44px;align-items:center;padding:9px 11px;border:0;border-radius:10px;background:transparent;color:var(--ink);text-align:start;font-weight:700}
+.shell-start-menu button:hover{background:var(--soft)}
+.mobile-primary-nav a{font-size:0;gap:0}
+.mobile-primary-nav a svg{width:25px;height:25px}
+.mobile-primary-nav a .primary-center-mark{display:block;width:38px;height:38px;border-radius:10px;object-fit:contain}
+.mobile-primary-nav a[data-mobile-nav="center"][aria-current="page"]{background:#f2f4ef}
+.mobile-primary-nav a[data-mobile-nav="center"][aria-current="page"] .primary-center-mark{transform:scale(1.06)}
+.mobile-primary-nav a[aria-current="page"]::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+@media(max-width:760px){
+ .topbar{padding-inline:14px}
+ .brand{font-size:1rem}
+ .shell-actions{margin-inline-start:auto}
+ .shell-icon-button{width:42px;height:42px}
+ .top-actions,.location{display:none!important}
+ .shell-start-menu{top:58px;right:10px}
+}
