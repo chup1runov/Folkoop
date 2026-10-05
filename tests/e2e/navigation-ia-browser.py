@@ -23,8 +23,8 @@ async def audit(browser,width,height):
  await page.goto(BASE+'#/home')
  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(5)
  await expect(page.locator('.sidebar')).to_be_hidden()
- assert await page.locator('#mobilePrimaryNav a[href="#/center"]').count()==0
- await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_contain_text('Mura')
+ await expect(page.locator('#mobilePrimaryNav a[href="#/center"]')).to_have_count(1)
+ await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Mura')
  await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Обо мне')
  await expect(page.locator('.mura-home')).to_be_visible()
@@ -59,8 +59,9 @@ async def audit(browser,width,height):
  await expect(page.locator('.mura-home')).to_be_visible()
  await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
 
- await page.click('#mobilePrimaryNav a[href="#/projects"]')
+ await page.click('#mobilePrimaryNav a[href="#/together"]')
  await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(3)
+ await page.click('#mobileContextDock [data-subsection="projects-overview"]')
  await expect(page.get_by_role('heading',name='Проекты Муры',exact=True)).to_have_count(1)
  await page.click('#mobileContextDock [data-subsection="projects-tasks"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
@@ -74,11 +75,15 @@ async def audit(browser,width,height):
  assert await page.locator('#mobileContextDock [data-subsection="messages-invites"]').count()==0
 
  await page.click('#mobilePrimaryNav a[href="#/city"]')
- await expect(page.locator('#mobileContextDock a')).to_have_count(2)
- await expect(page.locator('#mobileContextDock a[href="#/city"]')).to_have_count(1)
- await expect(page.locator('#mobileContextDock a[href="#/center"]')).to_have_count(1)
+ await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="city"]')).to_have_attribute('aria-current','page')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
- await page.click('#mobilePrimaryNav a[href="#/projects"]')
+ await page.click('#mobilePrimaryNav a[href="#/center"]')
+ await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="center"] img.primary-center-mark')).to_have_count(1)
+ await expect(page.locator('#mobileContextDock a[href="#/people"]')).to_have_count(1)
+ await expect(page.locator('#mobileContextDock a[href="#/communities"]')).to_have_count(1)
+ await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-center.png'),full_page=True)
+ await page.click('#mobilePrimaryNav a[href="#/together"]')
+ await page.click('#mobileContextDock [data-subsection="projects-overview"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
 
  # The embedded City keeps its civic routes but must not present a second FOLKOOP shell.
@@ -102,8 +107,8 @@ async def main():
   await audit(browser,844,390)
   await audit(browser,1366,900)
   await browser.close()
- print('PASS five-item personal navigation keeps stacked mobile chrome within the viewport budget')
- print('PASS Mura Home stays immersive while Projects and Messages second-level tabs control real content')
- print('PASS Mura City omits the future Center route and prototype/demo chrome')
+ print('PASS five-space icon-only navigation keeps stacked chrome within the viewport budget')
+ print('PASS Mura Home stays immersive while Projects remain reachable under Together')
+ print('PASS City and Center are distinct primary spaces without duplicating the underlying routes')
 
 asyncio.run(main())
