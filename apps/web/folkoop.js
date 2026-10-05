@@ -144,7 +144,8 @@ function toggleStartMenu(){
 }
 function openGlobalSearch(){
  closeStartMenu();capture();current='together';query='';formKind=null;history.pushState(null,'','#/together');render(true);
- requestAnimationFrame(()=>($('#networkCoopSearch')||$('#draftSearch'))?.focus({preventScroll:false}));
+ const focusSearch=()=>{const input=$('#networkCoopSearch')||$('#draftSearch');if(!input)return false;input.focus({preventScroll:false});return true;};
+ requestAnimationFrame(()=>{if(!focusSearch())window.addEventListener('folkoop:network-rendered',()=>focusSearch(),{once:true});});
 }
 function startFromShell(kind){
  closeStartMenu();
