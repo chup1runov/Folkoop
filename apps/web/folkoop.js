@@ -144,11 +144,15 @@ function toggleStartMenu(){
 }
 function openGlobalSearch(){
  closeStartMenu();capture();current='together';query='';formKind=null;history.pushState(null,'','#/together');render(true);
- requestAnimationFrame(()=>$('#draftSearch')?.focus({preventScroll:false}));
+ const focusSearch=()=>{const input=$('#networkCoopSearch')||$('#draftSearch');if(!input)return false;input.focus({preventScroll:false});return true;};
+ requestAnimationFrame(()=>{if(!focusSearch())window.addEventListener('folkoop:network-rendered',()=>focusSearch(),{once:true});});
 }
 function startFromShell(kind){
  closeStartMenu();
  if(isMuraVisit()){entryGateAfterMuraExit=true;showEntryGate('',true);return;}
+ const detail={kind,handled:false};
+ window.dispatchEvent(new CustomEvent('folkoop:start-cooperation',{detail}));
+ if(detail.handled)return;
  capture();formKind=kind;scratch={kind};current=kind==='project'?'projects':'together';history.pushState(null,'','#/'+current);render(true);
  requestAnimationFrame(()=>$('#draftForm input[name="title"]')?.focus({preventScroll:false}));
 }

@@ -111,11 +111,25 @@ async def scenario(browser, kind, partial):
                 if(e.target.closest?.('#netCoopCreate'))formEvents.push({type,trusted:e.isTrusted});
             },true);
         }""")
-        state['hold'] = True
         await page.evaluate("location.hash='#/projects'" if kind == 'project' else "location.hash='#/together'")
-        await asyncio.wait_for(read_started.wait(), 5)
         if kind != 'project':
-            await page.select_option('#netCoopCreate [name=kind]', kind)
+            action = page.locator(f'[data-home="createCoop"][data-kind="{kind}"]').first
+            await expect(action).to_be_visible()
+            await action.click()
+        await expect(page.locator('#netCoopCreate')).to_be_visible()
+        if kind != 'project':
+            await expect(page.locator('#netCoopCreate [name=kind]')).to_have_value(kind)
+
+        # Wait for the route/action load to settle first. Otherwise the project
+        # route can still have a read in flight when we introduce the controlled
+        # pending read below, making the focus regression nondeterministic.
+        await expect(page.locator('#networkPanel [data-net="refresh"]')).to_be_enabled()
+
+        # Preserve the original regression purpose: keep the form in the DOM,
+        # start a background server read, then edit while that read is pending.
+        state['hold'] = True
+        await page.click('#networkPanel [data-net="refresh"]')
+        await asyncio.wait_for(read_started.wait(), 5)
         title = page.locator('#netCoopCreate [name=title]')
         await title.click()
         if partial:
