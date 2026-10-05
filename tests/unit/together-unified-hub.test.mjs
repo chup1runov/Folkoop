@@ -9,7 +9,14 @@ const css=await readFile('apps/web/folkoop.css','utf8');
 test('Together lists all five cooperation kinds in one production discovery surface',()=>{
   assert.match(ui,/allowed=projectMode\?\['project'\]:\['need','offer','purchase','resource','project'\]/);
   assert.match(ui,/data-together-card data-kind=/);
-  for(const kind of ['need','offer','resource','project','purchase']) assert.ok(ui.includes('data-together-kind="'+kind+'"'),kind);
+  assert.match(ui,/\['need','offer','resource','project','purchase'\]\.map\(k=>/);
+  assert.match(ui,/data-together-kind="\$\{k\}"/);
+});
+
+test('Together is browse-first and creation is opened only by an explicit action',()=>{
+  assert.match(ui,/coopCreateOpen=false/);
+  assert.match(ui,/guestDemo\|\|\(!projectMode&&!coopCreateOpen\)\?'':/);
+  assert.match(ui,/coopCreateOpen=true/);
 });
 
 test('Together provides human actions backed by existing creation paths',()=>{
