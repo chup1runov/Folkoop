@@ -36,40 +36,32 @@ async def main():
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         await page.goto(BASE+'?intro=0#/home')
-        panel = page.locator('[data-home-welcome]')
-        await expect(panel).to_be_visible()
-        await expect(panel).to_have_count(1)
-        await expect(panel.locator('.card')).to_have_count(4)
-        await expect(panel).to_contain_text('С чего начать')
-        await expect(panel).to_contain_text('После входа')
-        await expect(panel.locator('.net-count')).to_have_count(0)
-        await expect(page.locator('#workspace')).to_be_visible()
         actions = page.locator('.first-actions .first-action')
         await expect(actions).to_have_count(3)
+        await expect(page.locator('.first-actions')).to_contain_text('FOLKOOP')
         assert await page.locator('.first-action[data-intent=need] svg').count()==1
         assert await page.locator('.first-action[data-intent=offer] svg').count()==1
         assert await page.locator('.first-action[data-intent=project] svg').count()==1
         backgrounds = await actions.evaluate_all("els => els.map(el => getComputedStyle(el).backgroundColor)")
         assert len(set(backgrounds))==3, backgrounds
+        await expect(page.locator('#workspace')).to_be_visible()
         passed.append('Public Home leads with three visually distinct, text-and-icon coded cooperation intents')
 
-        # The original shell handles this button. It creates no network object.
-        await panel.locator('[data-create=project]').click()
+        # Project intent creates only the existing local draft until the participant explicitly enters the network.
+        await page.locator('.first-action[data-intent=project]').click()
         await expect(page.locator('#draftForm')).to_be_visible()
         await page.fill('#draftForm [name=title]', 'Private Home draft <safe>')
         await page.fill('#draftForm [name=body]', 'No automatic publication.')
         await page.locator('#draftForm button[type=submit]').click()
         assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')") is None
-        await panel.locator('a[href="#/me"]').click()
+        await page.evaluate("location.hash='#/me'")
         await expect(page.locator('.draft')).to_contain_text('Private Home draft <safe>')
-        await expect(page.locator('[data-home-welcome]')).to_have_count(0)
-        passed.append('Home draft action preserves local-only consent and existing Profile behavior')
-        await page.locator('#brandHome').click()
+        passed.append('Home project intent preserves local-only consent and existing Profile behavior')
+        await page.evaluate("location.hash='#/home'")
 
         for language in ('sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'):
             await page.select_option('#language', language)
-            await expect(panel).to_have_count(1)
-            await expect(panel.locator('.card')).to_have_count(4)
+            await expect(page.locator('.first-actions .first-action')).to_have_count(3)
             for width in (320,390,1280):
                 await page.set_viewport_size({'width':width,'height':960})
                 assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth'), (language,width)
@@ -88,15 +80,6 @@ async def main():
         await page.locator('#mobilePrimaryNav [data-mobile-nav="home"]').click()
         await page.screenshot(path=str(OUT/'folkoop-home-guest-mobile.png'), full_page=True)
 
-        # This enhancement must not unhide a workspace that its owner has hidden.
-        await page.evaluate("""() => {
-            const root=document.getElementById('workspace');
-            root.hidden=true;
-            root.querySelector('[data-home-welcome]').remove();
-        }""")
-        await expect(panel).to_have_count(1)
-        await expect(page.locator('#workspace')).to_be_hidden()
-        passed.append('Home enhancement does not override network renderer visibility')
         assert not errors, errors
         await context.close()
         await browser.close()
