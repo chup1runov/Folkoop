@@ -294,7 +294,7 @@ async def main():
   passed.append('Mura Home conversation preview opens the selected conversation')
 
   # Regression: changing a virtual subtab must leave an open entity detail.
-  await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await page.click('#mobileContextDock [data-mobile-subnav="projects-overview"]')
   await page.locator('[data-coop="open"]').first.click()
   await expect(page.locator('[data-coop="back"]')).to_be_visible()
