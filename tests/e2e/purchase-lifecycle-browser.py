@@ -101,6 +101,8 @@ async def main():
   await page.click('#netProfile button')
 
   await page.evaluate("location.hash='#/together'")
+  await page.click('[data-home="createCoop"][data-kind="purchase"]')
+  await expect(page.locator('#netCoopCreate')).to_be_visible()
   await page.select_option('#netCoopCreate [name=kind]','purchase')
   await page.fill('#netCoopCreate [name=title]','Совместные дрова')
   await page.fill('#netCoopCreate [name=targetQuantity]','10')
