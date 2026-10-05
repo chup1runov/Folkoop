@@ -561,3 +561,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .center-future-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:4px}
 .center-future-card{background:var(--paper);border-style:dashed}
 @media(max-width:760px){.center-home-hero{grid-template-columns:auto 1fr}.center-home-meta{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.center-live-grid,.center-future-grid{grid-template-columns:1fr}}
+
+/* v0.44 — Messages browse-first hub */
+.messages-hub{margin:18px 0 22px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.messages-hub-head h3{margin:4px 0 6px;font-size:1.35rem}
+.messages-hub-head p:not(.eyebrow){margin:0;color:var(--muted);max-width:760px;line-height:1.48}
+.messages-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:15px}
+.messages-action-grid>a{min-height:72px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#fbfcfa;color:var(--ink);text-decoration:none;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center}
+.messages-action-grid>a:hover{background:var(--soft)}
+.messages-action-grid span{grid-row:1 / span 2;font-size:1.2rem}
+.messages-action-grid strong{font-size:.9rem}
+.messages-action-grid small{color:var(--muted);font-size:.75rem}
+.messages-discovery-bar{display:grid;gap:9px;margin-top:15px;padding-top:14px;border-top:1px solid var(--line)}
+.messages-discovery-bar input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#fff;color:var(--ink)}
+.messages-filter-row{display:flex;gap:6px;overflow:auto;scrollbar-width:none}
+.messages-filter-row::-webkit-scrollbar{display:none}
+.messages-filter-row button{flex:0 0 auto;min-height:38px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:.78rem;font-weight:700}
+.messages-filter-row button.active{background:var(--ink);border-color:var(--ink);color:#fff}
+@media(max-width:620px){.messages-action-grid{grid-template-columns:1fr 1fr}.messages-action-grid>a:last-child:nth-child(3){grid-column:1/-1}}
