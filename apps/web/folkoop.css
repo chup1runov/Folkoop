@@ -561,3 +561,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .center-future-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:4px}
 .center-future-card{background:var(--paper);border-style:dashed}
 @media(max-width:760px){.center-home-hero{grid-template-columns:auto 1fr}.center-home-meta{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.center-live-grid,.center-future-grid{grid-template-columns:1fr}}
+
+/* Messages friendly inbox */
+.messages-hub{margin:14px 0 20px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.messages-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.messages-hub-grid button{min-height:86px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fbfcfa;color:var(--ink);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;text-align:start}
+.messages-hub-grid button:hover{background:var(--soft)}
+.messages-hub-grid button>span{font-size:1.25rem}
+.messages-hub-grid button strong{font-size:.9rem}
+.messages-hub-grid button small{min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--soft);display:grid;place-items:center;color:var(--muted);font-weight:800}
+.messages-hub-note{margin:12px 0 0}
+.messages-work-section{margin:18px 0}
+@media(max-width:760px){.messages-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.messages-hub-grid{grid-template-columns:1fr}}
