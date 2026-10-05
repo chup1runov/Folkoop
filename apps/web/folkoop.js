@@ -8,7 +8,7 @@ let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null, cityHandoff=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
-const NAV_ORDER=['home','together','projects','city','messages'];
+const NAV_ORDER=['home','together','city','center','messages'];
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -56,11 +56,12 @@ const MOBILE_CONTEXT={
  home:['home-overview','home-attention','home-feed','home-actions','me'],
  together:['together','people','communities'],
  projects:['projects-overview','projects-mine','projects-tasks','projects-updates'],
- city:['city','center'],
+ city:['city'],
+ center:['center','communities','people'],
  messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
-const mobilePrimaryFor=route=>['people','communities'].includes(route)?'together':route==='center'?'city':['me','settings','about'].includes(route)?'home':route;
+const mobilePrimaryFor=route=>['people','communities','projects'].includes(route)?'together':['me','settings','about'].includes(route)?'home':route;
 const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
@@ -94,7 +95,11 @@ function renderMobileChrome(){
  primary.dataset.activeSection=active;
  const guest=isMuraVisit();
  const personalPrimaryLabel=guest?'Mura':(lang==='ru'?'Я':lang==='sv'?'Jag':'Me');
- primary.innerHTML=MOBILE_PRIMARY.map(k=>'<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'"'+(active===k?' aria-current="page"':'')+'>'+(k==='home'?icon('me'):icon(k))+'<span>'+esc(k==='home'?personalPrimaryLabel:k==='city'?t('city'):t(k))+'</span></a>').join('');
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>{
+  const label=k==='home'?personalPrimaryLabel:t(k);
+  const glyph=k==='center'?'<img class="mobile-primary-mark" src="./folkoop-mark.png" alt="" width="28" height="28">':(k==='home'?icon('me'):icon(k));
+  return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+glyph+'<span class="sr-only">'+esc(label)+'</span></a>';
+ }).join('');
  const guestContext={
   home:['home-overview','me'],
   together:['together','people','communities'],
@@ -558,7 +563,10 @@ function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML='';
  renderMobileChrome();
- $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP · '+t('home'));
+ $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
+ const shellSearch=$('#shellSearch'),shellStart=$('#shellStart');
+ if(shellSearch){shellSearch.setAttribute('aria-label',t('search'));shellSearch.setAttribute('title',t('search'));}
+ if(shellStart){shellStart.setAttribute('aria-label',t('create'));shellStart.setAttribute('title',t('create'));}
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
  $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
@@ -625,6 +633,16 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
+function goTogetherSearch(){
+ capture();current='together';history.replaceState(null,'','#/together');formKind=null;render();
+ requestAnimationFrame(()=>$('#draftSearch')?.focus({preventScroll:false}));
+}
+function goTogetherStart(){
+ capture();current='together';history.replaceState(null,'','#/together');query='';formKind=null;render();
+ requestAnimationFrame(()=>$('#workspace')?.querySelector('.actions button')?.focus({preventScroll:false}));
+}
+$('#shellSearch')?.addEventListener('click',goTogetherSearch);
+$('#shellStart')?.addEventListener('click',goTogetherStart);
 window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
