@@ -86,7 +86,7 @@ async def main():
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Mura Home is a lived-in account surface with no signup, pilot or technical chrome')
-  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_contain_text('Mura')
+  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Mura')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="home-overview"]')).to_have_attribute('aria-current','page')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="me"]')).to_contain_text('Обо мне')
   await page.click('#mobileContextDock [data-mobile-subnav="me"]')
@@ -106,7 +106,7 @@ async def main():
   await page.click('#mobileContextDock [data-mobile-action="demo"]')
   passed.append('Mura visit context has an explicit exit and no registration CTA inside the account')
 
-  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
   await page.click('#mobileContextDock [data-mobile-subnav="people"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Anna')
   await expect(page.locator('#networkPanel')).to_contain_text('Omar')
@@ -126,14 +126,14 @@ async def main():
   assert await page.locator('#mobileContextDock [data-mobile-subnav="people"][aria-current="page"]').count()==0
   await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="together"]')).to_have_attribute('aria-current','page')
-  passed.append('Mobile route tabs track Together, People and Communities without stale selection')
+  passed.append('Mobile route tabs keep Center people/communities separate from Together without stale selection')
 
 
   for route_name,expected in [('communities','Соседи Olofstorp'),('messages','Обмен растениями'),('together','Купить сухие дрова вместе')]:
    if route_name=='together':
     await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
    elif route_name in ('communities',):
-    await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+    await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
     await page.click(f'#mobileContextDock [data-mobile-subnav="{route_name}"]')
    else:
     await page.click(f'#mobilePrimaryNav [data-mobile-nav="{route_name}"]')
@@ -156,7 +156,7 @@ async def main():
   passed.append('Mura firewood story exposes Economic Flow roles read-only')
   await page.click('[data-coop="back"]')
 
-  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
   await page.click('#mobileContextDock [data-mobile-subnav="communities"]')
   if await page.locator('[data-net="back"]').count():
    await page.locator('[data-net="back"]').first.click()
@@ -188,13 +188,13 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="city"]')
   await expect(page.locator('#cityWorkspace')).to_be_visible()
   assert 'Укажи свой город' not in await page.locator('body').inner_text()
-  await expect(page.locator('#mobileContextDock [data-mobile-subnav="center"]')).to_be_visible()
+  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="center"]')).to_be_visible()
   frame=page.frame_locator('#cityFrame')
   city_text=(await frame.locator('body').inner_text()).lower()
   for banned in ('демо','пилот','прототип','demo','pilot','prototype','feedback'):
    assert banned not in city_text,(banned,city_text[:1000])
   await assert_mura_immersed(page)
-  passed.append('Mura City opens Göteborg official-source tools with Center available as a separate context route')
+  passed.append('Mura City opens Göteborg official-source tools with Center available as a separate primary space')
 
   # Mura may carry truthful public source context into her authored Center story, but remains read-only.
   # Emit the production same-origin handoff from the actual City iframe.
@@ -220,7 +220,7 @@ async def main():
   assert not [u for u in external if 'supabase.co' in u],external
   passed.append('Mura City source can continue read-only into authored Center context with the official source preserved')
 
-  await page.click('#mobileContextDock [data-mobile-subnav="center"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
   await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
   await expect(page.locator('#workspace')).to_contain_text('специально созданных персонажей')
@@ -247,7 +247,8 @@ async def main():
   passed.append('Mura Profile is a personal life map with drafts, Göteborg and no Settings/About detour')
 
 
-  await page.click('#mobilePrimaryNav [data-mobile-nav="projects"]')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="together"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="projects-overview"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Обмен растениями и семенами по соседству')
   await page.click('[data-coop="open"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
