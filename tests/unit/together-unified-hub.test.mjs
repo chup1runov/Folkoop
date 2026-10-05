@@ -41,8 +41,8 @@ test('global Search targets the real Together search when the network surface re
 });
 
 test('Together hub keeps search and kind filters client-side and non-mutating',()=>{
-  assert.match(ui,/data\.searchMatch/);
-  assert.match(ui,/data\.kindMatch/);
+  assert.match(ui,/card\.dataset\.searchMatch/);
+  assert.match(ui,/card\.dataset\.kindMatch/);
   assert.match(css,/\.together-action-grid/);
   assert.match(css,/\.together-filter-row button\.active/);
 });
