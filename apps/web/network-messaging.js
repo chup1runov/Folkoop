@@ -109,11 +109,29 @@ function create({
 
     const invitationView=`<h3>${escape(chatText('invitations'))}</h3><div class="draft-grid">${invitations.map(chatItem=>`<article class="card"><h3>${escape(chatLabel(chatItem,user))}</h3><span class="badge">${escape(chatText('invitePending'))}</span><div class="actions">${networkButton('openChat','open',chatItem.id)}${networkButton('acceptChat','accept',chatItem.id)}${networkButton('declineChat','decline',chatItem.id)}</div></article>`).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
+    const messagesHub=guestDemo?'':`<section class="messages-hub" aria-labelledby="messagesHubTitle">
+      <div class="messages-hub-head"><p class="eyebrow">FOLKOOP</p><h3 id="messagesHubTitle">${escape(chatText('messagesTitle'))}</h3><p>${escape(chatText('messagesDesc'))}</p></div>
+      <div class="messages-action-grid">
+        <a href="#/messages" data-subsection="messages-direct"><span aria-hidden="true">👤</span><strong>${escape(chatText('direct'))}</strong><small>${escape(chatText('startDirect'))}</small></a>
+        <a href="#/messages" data-subsection="messages-groups"><span aria-hidden="true">👥</span><strong>${escape(chatText('groupChat'))}</strong><small>${escape(chatText('newGroupChat'))}</small></a>
+        ${invitations.length?`<a href="#/messages" data-subsection="messages-invites"><span aria-hidden="true">✉</span><strong>${escape(chatText('invitations'))}</strong><small>${escape(String(invitations.length))}</small></a>`:''}
+      </div>
+      <div class="messages-discovery-bar">
+        <label><span class="sr-only">${escape(chatText('conversation'))}</span><input id="networkMessageSearch" type="search" autocomplete="off" placeholder="${escape(chatText('conversation'))}"></label>
+        <div class="messages-filter-row" role="group" aria-label="${escape(chatText('conversation'))}">
+          <button type="button" data-message-kind="direct">${escape(chatText('direct'))}</button>
+          <button type="button" data-message-kind="group">${escape(chatText('groupChat'))}</button>
+          <button type="button" data-message-kind="work">${escape(activityText('workChat'))}</button>
+        </div>
+      </div>
+    </section>`;
+
     const cards=list=>`${guestDemo?'':`<h3>${escape(chatText('conversation'))}</h3>`}<div class="draft-grid mura-chat-grid">${list.map(chatItem=>{
       const unread=Number(chatInbox.find(item=>item.conversation_id===chatItem.id)?.unread_count||0);
       const link=coopChats.find(item=>item.conversation_id===chatItem.id);
       const preview=[...chatMessages].filter(message=>message.conversation_id===chatItem.id).sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0))[0];
-      return `<article class="card mura-chat-card"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${guestDemo&&preview?`<p class="mura-chat-preview">${escape(preview.body)}</p>`:''}${networkButton('openChat','open',chatItem.id)}</article>`;
+      const messageType=link?'work':chatItem.kind;
+      return `<article class="card mura-chat-card" data-message-card data-message-type="${escape(messageType)}"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${guestDemo&&preview?`<p class="mura-chat-preview">${escape(preview.body)}</p>`:''}${networkButton('openChat','open',chatItem.id)}</article>`;
     }).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
     if(guestDemo){
@@ -123,7 +141,7 @@ function create({
     }else if(view==='messages-direct')html+=`<div class="profile-grid">${directForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='direct'));
     else if(view==='messages-groups')html+=`<div class="profile-grid">${groupForm}</div>`+cards(joined.filter(chatItem=>chatItem.kind==='group'));
     else if(view==='messages-invites')html+=invitationView;
-    else html+=`<div class="profile-grid">${directForm}${groupForm}</div>`+(invitations.length?invitationView:'')+cards(joined);
+    else html+=messagesHub+(invitations.length?invitationView:'')+cards(joined);
     return html;
   }
 
