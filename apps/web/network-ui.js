@@ -1075,6 +1075,29 @@ document.addEventListener('click',e=>{
   card.hidden=!(matches&&searchMatch);
  });
 });
+document.addEventListener('input',e=>{
+ if(e.target?.id!=='networkMessageSearch')return;
+ const needle=e.target.value.trim().toLocaleLowerCase();
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
+  card.dataset.searchMatch=matches?'1':'0';
+  const kindMatch=card.dataset.kindMatch!=='0';
+  card.hidden=!(matches&&kindMatch);
+ });
+});
+document.addEventListener('click',e=>{
+ const filter=e.target.closest?.('[data-message-kind]');if(!filter)return;
+ const turnOff=filter.classList.contains('active');
+ document.querySelectorAll('#networkPanel [data-message-kind]').forEach(b=>b.classList.remove('active'));
+ const kind=turnOff?'all':filter.dataset.messageKind;
+ if(!turnOff)filter.classList.add('active');
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=kind==='all'||card.dataset.messageType===kind;
+  card.dataset.kindMatch=matches?'1':'0';
+  const searchMatch=card.dataset.searchMatch!=='0';
+  card.hidden=!(matches&&searchMatch);
+ });
+});
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
  guestDemo=detail.enabled!==false;
