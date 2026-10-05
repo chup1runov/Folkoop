@@ -33,6 +33,21 @@ const GOTEBORG_FORUM_URL='https://t.me/+YlokNMBafp8wM2Vi';
 const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project:'M4 19V5h16v14H4Zm4-7h8M12 8v8',purchase:'M4 6h2l2 9h9l2-6H8M10 20h.01M17 20h.01',resource:'M5 7h14v12H5V7Zm3 0V4h8v3'};
 const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8 12 3 3 5-6M4 5h16v14H4Z',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
+function primaryGlyph(k){
+ if(k==='center')return '<img class="primary-mark" src="./folkoop-mark.png" alt="" width="30" height="30">';
+ return k==='home'?icon('me'):icon(k);
+}
+function primaryLabel(k){
+ if(k==='home')return isMuraVisit()?'Mura':(lang==='ru'?'Моё':lang==='sv'?'Mitt':t('me'));
+ return t(k);
+}
+function renderDesktopPrimary(active){
+ const nav=$('#nav');if(!nav)return;
+ nav.innerHTML=NAV_ORDER.map(k=>{
+  const label=primaryLabel(k);
+  return '<a href="#/'+k+'" data-nav="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+primaryGlyph(k)+'<span class="sr-only">'+esc(label)+'</span></a>';
+ }).join('');
+}
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
@@ -97,7 +112,7 @@ function renderMobileChrome(){
  const personalPrimaryLabel=guest?'Mura':(lang==='ru'?'Я':lang==='sv'?'Jag':'Me');
  primary.innerHTML=MOBILE_PRIMARY.map(k=>{
   const label=k==='home'?personalPrimaryLabel:t(k);
-  const glyph=k==='center'?'<img class="mobile-primary-mark" src="./folkoop-mark.png" alt="" width="28" height="28">':(k==='home'?icon('me'):icon(k));
+  const glyph=primaryGlyph(k);
   return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+glyph+'<span class="sr-only">'+esc(label)+'</span></a>';
  }).join('');
  const guestContext={
@@ -561,7 +576,8 @@ function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',langu
 function render(focus=false){
  if(isMuraVisit()&&['settings','about'].includes(current)){current='me';history.replaceState(null,'','#/'+current);}
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
- $('#nav').innerHTML='';
+ const activePrimary=mobilePrimaryFor(current);
+ renderDesktopPrimary(activePrimary);
  renderMobileChrome();
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
  const shellSearch=$('#shellSearch'),shellStart=$('#shellStart');
