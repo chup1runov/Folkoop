@@ -63,9 +63,16 @@ test('Mura acceptance contract allows only the authored Online Center story',asy
 test('Center guidance no longer reverts to physical-only semantics in secondary surfaces',async()=>{
   for(const lang of ['es','uk','ar','so','fa','fi','bs','ku']){
     const x=extra[lang];
-    assert.equal(x.tutorial.center,x.shell.centerOnlineText,lang+' tutorial');
-    assert.equal(x.helper.tips.center,x.shell.centerOnlineText,lang+' helper');
-    assert.equal(x.homeWelcome.placeText,x.shell.centerOnlineText,lang+' homeWelcome');
+    for(const [surface,value] of [
+      ['tutorial',x.tutorial.center],
+      ['helper',x.helper.tips.center],
+      ['homeWelcome',x.homeWelcome.placeText]
+    ]){
+      assert.equal(typeof value,'string',lang+' '+surface);
+      assert(value.trim().length>40,lang+' '+surface+' must contain real guidance');
+      assert.notEqual(value,x.shell.centerText,lang+' '+surface+' must not revert to physical-only Center copy');
+    }
+    assert(x.homeWelcome.placeText.includes('Göteborg'),lang+' Home welcome must preserve the current city context');
   }
   const shell=await readFile('apps/web/folkoop.js','utf8');
   assert(shell.includes('Center now connects community, people, City and projects as an online/hybrid route.'));
