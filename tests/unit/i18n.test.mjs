@@ -190,6 +190,17 @@ test('Mura, account-entry and accessibility routes keep the selected language',a
  assert.deepEqual(Object.keys(contactLabels).sort(),[...FOLKOOP_LANGUAGES].sort());
 });
 
+test('static shell fallback matches its declared Swedish document language',async()=>{
+ const html=await readFile('apps/web/folkoop.html','utf8');
+ assert.match(html,/<html lang="sv" dir="ltr">/);
+ for(const expected of ['aria-label="Sök"','title="Sök"','aria-label="Skapa"','title="Skapa"','>Meny<','aria-label="Navigering"','aria-label="FOLKOOP · Tillsammans"','aria-label="Primär navigering"']){
+  assert(html.includes(expected),expected);
+ }
+ assert(!html.includes('aria-label="Search"'));
+ assert(!html.includes('aria-label="Create"'));
+ assert(!html.includes('aria-label="Primary navigation"'));
+});
+
 test('immersive Mura Home has authored copy for all eleven languages',async()=>{
  const source=await readFile('apps/web/network-mura-home.js','utf8');
  const context=vm.createContext({
