@@ -67,3 +67,15 @@ jobs:
           mapfile -t generated < <(find supabase/migrations -maxdepth 1 -type f -name '*_cli_contract_probe.sql' -printf '%f\n')
           test "${#generated[@]}" -eq 1
           [[ "${generated[0]}" =~ ^[0-9]{14}_cli_contract_probe\.sql$ ]]
+      - name: Generate R1 migration filename with the pinned CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          mkdir -p "$tmp/supabase/migrations"
+          cd "$tmp"
+          supabase migration new folkoop_resource_planning_r1
+          mapfile -t generated < <(find supabase/migrations -maxdepth 1 -type f -name '*_folkoop_resource_planning_r1.sql' -printf '%f\n')
+          test "${#generated[@]}" -eq 1
+          [[ "${generated[0]}" =~ ^[0-9]{14}_folkoop_resource_planning_r1\.sql$ ]]
+          echo "R1_MIGRATION=${generated[0]}"
