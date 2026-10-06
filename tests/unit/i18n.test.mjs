@@ -197,7 +197,7 @@ test('immersive Mura Home has authored copy for all eleven languages',async()=>{
   FolkoopCore:{LANGS:[...FOLKOOP_LANGUAGES]}
  });
  vm.runInContext(source,context);
- const muraHome=vm.runInContext('globalThis.FolkoopNetworkMuraHome',context);
+ const muraHome=vm.runInContext('globalThis.FolkoopMuraHome',context);
  const domain=muraHome.create({
   escape:value=>String(value??''),
   getData:()=>({profile:{name:'Mura',city:'Göteborg'},cooperations:[],assignedTasks:[],directory:[],localDrafts:[],chats:[],chatMessages:[],groups:[],homePosts:[],myConfirmations:[],chatInbox:[],coopMembers:[]}),
