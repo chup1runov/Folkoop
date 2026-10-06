@@ -72,9 +72,10 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
  if(n.home)homeCopy[code]=n.home;
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
+const regularMuraCopy={base:baseCopy,chat:chatCopy,coop:coopCopy,offer:offerCopy,activity:activityCopy,home:homeCopy};
 const muraText=(section,key)=>{
- const pack=muraGuestCopy[lang()]||muraGuestCopy.en;
- return guestDemo?pack?.[section]?.[key]:undefined;
+ const language=lang(),pack=muraGuestCopy[language],regular=regularMuraCopy[section]?.[language];
+ return guestDemo?(pack?.[section]?.[key]??regular?.[key]??muraGuestCopy.en?.[section]?.[key]):undefined;
 };
 const SUBSECTION_KEY='folkoop-subsection-v1';
 function currentSubsection(parent){
@@ -90,7 +91,15 @@ const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
 const accountEntryCopy={
  en:{login:'Create or enter your FOLKOOP place',invite:'Continue with your own people, ideas and real things you want to do.',email:'Email',send:'Continue',localContinue:'Continue locally without an account'},
  ru:{login:'Создать своё место в FOLKOOP',invite:'Продолжи уже со своими людьми, идеями и реальными делами.',email:'Электронная почта',send:'Продолжить',localContinue:'Продолжить локально без аккаунта'},
- sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'}
+ sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'},
+ es:{login:'Crear o entrar en tu espacio FOLKOOP',invite:'Continúa con tu propia gente, tus ideas y las cosas reales que quieres hacer.',email:'Correo electrónico',send:'Continuar',localContinue:'Continuar localmente sin una cuenta'},
+ uk:{login:'Створити або відкрити своє місце у FOLKOOP',invite:'Продовжуй зі своїми людьми, ідеями та реальними справами.',email:'Електронна пошта',send:'Продовжити',localContinue:'Продовжити локально без акаунта'},
+ fi:{login:'Luo oma FOLKOOP-paikkasi tai siirry siihen',invite:'Jatka omien ihmistesi, ideoidesi ja oikeiden tekemistesi kanssa.',email:'Sähköposti',send:'Jatka',localContinue:'Jatka paikallisesti ilman tiliä'},
+ bs:{login:'Napravi ili otvori svoje mjesto u FOLKOOP-u',invite:'Nastavi sa svojim ljudima, idejama i stvarnim stvarima koje želiš uraditi.',email:'E-pošta',send:'Nastavi',localContinue:'Nastavi lokalno bez računa'},
+ ar:{login:'أنشئ مساحتك في FOLKOOP أو ادخل إليها',invite:'تابع مع أشخاصك وأفكارك والأشياء الحقيقية التي تريد القيام بها.',email:'البريد الإلكتروني',send:'متابعة',localContinue:'المتابعة محليًا من دون حساب'},
+ fa:{login:'جای خودت را در FOLKOOP بساز یا وارد آن شو',invite:'با آدم‌ها، ایده‌ها و کارهای واقعی خودت ادامه بده.',email:'ایمیل',send:'ادامه',localContinue:'ادامهٔ محلی بدون حساب'},
+ so:{login:'Samee ama gal meeshaada FOLKOOP',invite:'Ku sii wad dadkaaga, fikradahaaga iyo waxyaabaha dhabta ah ee aad rabto inaad samayso.',email:'Iimayl',send:'Sii wad',localContinue:'Gudaha ku sii wad adigoon akoon lahayn'},
+ ku:{login:'Cihê xwe yê FOLKOOP çêke an têkevê',invite:'Bi mirov, raman û karên rastîn ên xwe bidomîne.',email:'E-peyam',send:'Bidomîne',localContinue:'Bê hesab bi awayek herêmî bidomîne'}
 };
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
 
