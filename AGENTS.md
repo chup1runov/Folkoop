@@ -14,6 +14,8 @@ FOLKOOP extends the existing implementation and combines FOUR origins: Sverinav,
 
 Full product scope and a small pilot are different. Deferral controls sequencing, not deletion. Material scope reduction needs an explicit recorded owner decision. Preserve source/version traceability, existing features, all eleven languages, privacy, accessibility and regression coverage. Do not declare all originals recovered or all functions implemented without evidence.
 
+Eleven-language completeness is a route-level contract, not just a key-count check. A route is incomplete if the selected language silently falls back to another language, uses stale copy from an older product state, or leaves participant-facing/accessibility labels untranslated. Keep CI coverage for shell copy and any route-specific language packs.
+
 ## Cross-cutting SDCF and Web3/Web4
 
 Preserve SDCF as an internal systems/decision/control and evidence discipline across City, Center, projects, economic coordination, outcomes and future agents. It is not a new participant-facing brand and must not silently turn model output into authority or truth.
