@@ -45,6 +45,7 @@ create table public.fk_resource_requirements (
 );
 create index fk_resource_requirements_parent_idx on public.fk_resource_requirements(cooperation_id,created_at,id);
 create index fk_resource_requirements_flow_idx on public.fk_resource_requirements(flow_id) where flow_id is not null;
+create index fk_resource_requirements_created_by_idx on public.fk_resource_requirements(created_by) where created_by is not null;
 
 -- A private owner declaration attached to an existing Resource, NOT stock after reserves.
 create table public.fk_resource_availability (

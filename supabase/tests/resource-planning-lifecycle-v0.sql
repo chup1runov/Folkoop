@@ -27,6 +27,25 @@ select public.fk_save_resource_requirement('75333333-3333-4333-8333-333333333333
 select fk_resource_test.ok(public.fk_resource_availability_revision(:'life_resource')=0,'new resource starts at generation zero');
 select public.fk_save_resource_availability(:'life_resource','consumable',0.3,'kg',null,null,'Owner private availability',0);
 select fk_resource_test.ok(public.fk_resource_availability_revision(:'life_resource')=1,'owner reads active revision');
+reset role;
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{owned_shared,resource_requirements}')::integer=3,
+  'operator closure inventory counts owned R1 requirements'
+);
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{owned_shared,resource_availability}')::integer=1,
+  'operator closure inventory counts owned R1 availability'
+);
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{pseudonymising_set_null,resource_requirements_authored}')::integer=3,
+  'operator closure inventory exposes authored requirement SET NULL provenance'
+);
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{owned_shared,resource_plan_removal_receipts}')::integer=0,
+  'operator closure inventory begins with no R1 removal receipts'
+);
+set local role authenticated;
+select set_config('request.jwt.claim.sub','71111111-1111-4111-8111-111111111111',true);
 
 select public.fk_export_resource_planning('requirements',null,2) as life_page \gset
 select fk_resource_test.ok(jsonb_array_length((:'life_page'::jsonb)->'records')=2,'export page is bounded');
@@ -107,6 +126,15 @@ update folkoop_private.pilots set enabled=true where user_id='72222222-2222-4222
 -- Narrowed parent trigger still rejects privileged relationship corruption.
 select fk_resource_test.fails(format('update public.fk_resource_requirements set cooperation_id=%L where id=''75444444-4444-4444-8444-444444444444''',:'life_resource'),'22023','parent trigger still rejects wrong kind on relationship update');
 select fk_resource_test.fails('update public.fk_resource_requirements set flow_id=''ffffffff-ffff-4fff-8fff-ffffffffffff'' where id=''75444444-4444-4444-8444-444444444444''','22023','parent trigger still rejects invalid flow relationship');
+reset role;
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{owned_shared,resource_requirements}')::integer=1,
+  'closure preflight sees the remaining account-project requirement before Auth deletion'
+);
+select fk_resource_test.ok(
+  (folkoop_private.account_closure_inventory('71111111-1111-4111-8111-111111111111')#>>'{owned_shared,resource_plan_removal_receipts}')::integer=1,
+  'closure preflight sees the availability removal receipt before Auth deletion'
+);
 delete from auth.users where id='71111111-1111-4111-8111-111111111111';
 select fk_resource_test.ok((select count(*)=0 from public.fk_resource_requirements where cooperation_id=:'life_account_project'),'Auth removal erases owned project requirements');
 select fk_resource_test.ok((select count(*)=0 from public.fk_economic_flows where id=:'life_account_flow'),'Auth removal is not blocked by linked flow');

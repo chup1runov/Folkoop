@@ -19,6 +19,8 @@ begin
 end $$;
 grant execute on all functions in schema fk_resource_test to authenticated;
 
+select fk_resource_test.ok(to_regclass('public.fk_resource_requirements_created_by_idx') is not null,'resource requirement creator FK/filter has a covering index');
+
 select fk_resource_test.ok((select bool_and(relrowsecurity) from pg_class where oid in('public.fk_resource_requirements'::regclass,'public.fk_resource_availability'::regclass)),'RLS enabled on both candidate tables');
 select fk_resource_test.ok(not has_table_privilege('anon','public.fk_resource_requirements','SELECT') and not has_table_privilege('anon','public.fk_resource_availability','SELECT'),'anonymous table access denied');
 select fk_resource_test.ok(not has_table_privilege('authenticated','public.fk_resource_requirements','INSERT') and not has_table_privilege('authenticated','public.fk_resource_availability','UPDATE'),'no direct authenticated writes');

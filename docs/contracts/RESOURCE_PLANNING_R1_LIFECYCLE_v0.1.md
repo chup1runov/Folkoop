@@ -67,7 +67,13 @@ by a user and provider backups are outside this candidate's erasure claim.
 
 Deleting a profile remains different from deleting an Auth account. Tests separately
 cover profile-only deletion, complete owned-parent cascades, receipts, linked flows
-and preservation of another owner's data. A simulated Auth row deletion in CI is
+and preservation of another owner's data.
+ The R1 migration also extends the existing operator-only
+account_closure_inventory with counts for requirements, availability, removal
+receipts and authored-requirement SET NULL provenance. This inventory is preflight
+evidence only; it is not exposed to browser roles and is not a deletion procedure.
+The created_by foreign key/filter has a partial covering index so account deletion
+and own-record export do not require a full requirement-table scan. A simulated Auth row deletion in CI is
 not the hosted sign-out/session revocation/account-closure rehearsal. Retention and
 operator procedures still require review before activation. There is no silently
 invented fixed retention period or assertion of full GDPR compliance.
