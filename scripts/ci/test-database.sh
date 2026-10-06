@@ -31,3 +31,13 @@ for file in "${db_tests[@]}"; do
   [[ "$file" == "supabase/tests/network-bootstrap.sql" ]] && continue
   run_sql "$file"
 done
+
+# R1 candidate DDL is NOT in migration history. Test only after the unchanged
+# runtime regression suite, in one disposable transaction that always rolls back.
+echo '==> R1 resource planning proposal (disposable database only)'
+{
+  printf 'begin;\n'
+  cat supabase/proposals/resource-planning-v0.sql
+  cat supabase/tests/resource-planning-v0.sql
+  printf '\nrollback;\n'
+} | psql_ci
