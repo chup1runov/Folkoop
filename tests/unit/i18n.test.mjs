@@ -138,6 +138,92 @@ test('renderers consume the full-language registry rather than three-language fa
  assert(auth.includes('FolkoopExtraCopy?.languages'));
 });
 
+
+const NAV_EXPECTED={
+ sv:{home:'Hem',people:'Människor',communities:'Gemenskaper',together:'Tillsammans',projects:'Projekt',city:'Stad',center:'Center',me:'Profil',messages:'Meddelanden',settings:'Inställningar'},
+ en:{home:'Home',people:'People',communities:'Communities',together:'Together',projects:'Projects',city:'City',center:'Center',me:'Profile',messages:'Messages',settings:'Settings'},
+ ru:{home:'Главная',people:'Люди',communities:'Сообщества',together:'Вместе',projects:'Проекты',city:'Город',center:'Центр',me:'Профиль',messages:'Сообщения',settings:'Настройки'},
+ es:{home:'Inicio',people:'Personas',communities:'Comunidades',together:'Juntos',projects:'Proyectos',city:'Ciudad',center:'Centro',me:'Perfil',messages:'Mensajes',settings:'Ajustes'},
+ uk:{home:'Головна',people:'Люди',communities:'Спільноти',together:'Разом',projects:'Проєкти',city:'Місто',center:'Центр',me:'Профіль',messages:'Повідомлення',settings:'Налаштування'},
+ fi:{home:'Etusivu',people:'Ihmiset',communities:'Yhteisöt',together:'Yhdessä',projects:'Projektit',city:'Kaupunki',center:'Keskus',me:'Profiili',messages:'Viestit',settings:'Asetukset'},
+ bs:{home:'Početna',people:'Ljudi',communities:'Zajednice',together:'Zajedno',projects:'Projekti',city:'Grad',center:'Centar',me:'Profil',messages:'Poruke',settings:'Postavke'},
+ ar:{home:'الرئيسية',people:'الأشخاص',communities:'المجتمعات',together:'معًا',projects:'المشاريع',city:'المدينة',center:'المركز',me:'الملف الشخصي',messages:'الرسائل',settings:'الإعدادات'},
+ fa:{home:'خانه',people:'افراد',communities:'جوامع',together:'با هم',projects:'پروژه‌ها',city:'شهر',center:'مرکز',me:'پروفایل',messages:'پیام‌ها',settings:'تنظیمات'},
+ so:{home:'Bogga hore',people:'Dadka',communities:'Bulshooyinka',together:'Wadajir',projects:'Mashaariic',city:'Magaalada',center:'Xarunta',me:'Borofayl',messages:'Farriimaha',settings:'Dejinta'},
+ ku:{home:'Destpêk',people:'Mirov',communities:'Civak',together:'Bi hev re',projects:'Proje',city:'Bajar',center:'Navend',me:'Profîl',messages:'Peyam',settings:'Mîheng'}
+};
+
+test('route labels are real navigation labels in every supported language',()=>{
+ for(const lang of FOLKOOP_LANGUAGES){
+  const shell=bundle(lang).shell;
+  for(const [key,value] of Object.entries(NAV_EXPECTED[lang])){
+   assert.equal(shell[key],value,lang+' '+key);
+   assert(value.length<=24,lang+' '+key+' must remain a compact navigation label');
+  }
+ }
+});
+
+test('Mura, account-entry and accessibility routes keep the selected language',async()=>{
+ const accountEntry=parseObject(network,'accountEntryCopy');
+ assert.deepEqual(Object.keys(accountEntry).sort(),[...FOLKOOP_LANGUAGES].sort());
+ const accountKeys=Object.keys(accountEntry.en).sort();
+ for(const lang of FOLKOOP_LANGUAGES)assert.deepEqual(Object.keys(accountEntry[lang]).sort(),accountKeys,lang+' account entry');
+
+ const onboardingActions=parseObject(folkoop,'onboardingActionCopy');
+ assert.deepEqual(Object.keys(onboardingActions).sort(),[...FOLKOOP_LANGUAGES].sort());
+
+ assert.match(network,/regularMuraCopy=\{base:baseCopy,chat:chatCopy,coop:coopCopy,offer:offerCopy,activity:activityCopy,home:homeCopy\}/);
+ assert.doesNotMatch(network,/muraGuestCopy\[lang\(\)\]\|\|muraGuestCopy\.en/);
+ assert.match(folkoop,/muraTutorialCopy\[lang\]\|\|tutorialCopy\[lang\]\|\|muraTutorialCopy\.en/);
+ assert.match(folkoop,/muraHelperCopy\[lang\]\|\|helperCopy\[lang\]\|\|muraHelperCopy\.en/);
+ assert.match(folkoop,/mobilePrimary\.setAttribute\('aria-label',t\('select'\)\)/);
+ assert.match(folkoop,/networkPanel\.setAttribute\('aria-label','FOLKOOP · '\+t\('together'\)\)/);
+
+ const city=await readFile('apps/web/app.js','utf8');
+ assert.doesNotMatch(city,/muraCityCopy\[currentLanguage\]\?\.\[key\]\?\?muraCityCopy\.en/);
+
+ const guide=await readFile('apps/web/folkoop-guide.js','utf8');
+ assert.doesNotMatch(guide,/Välj språk · Choose language · Выбери язык/);
+
+ const aboutProject=await readFile('apps/web/about-project.js','utf8');
+ const contactLabels=parseObject(aboutProject,'CONTACT_LABEL');
+ assert.deepEqual(Object.keys(contactLabels).sort(),[...FOLKOOP_LANGUAGES].sort());
+});
+
+test('immersive Mura Home has authored copy for all eleven languages',async()=>{
+ const source=await readFile('apps/web/network-mura-home.js','utf8');
+ const context=vm.createContext({
+  document:{documentElement:{lang:'en'}},
+  FolkoopCore:{LANGS:[...FOLKOOP_LANGUAGES]}
+ });
+ vm.runInContext(source,context);
+ const domain=context.FolkoopNetworkMuraHome.create({
+  escape:value=>String(value??''),
+  getData:()=>({profile:{name:'Mura',city:'Göteborg'},cooperations:[],assignedTasks:[],directory:[],localDrafts:[],chats:[],chatMessages:[],groups:[],homePosts:[],myConfirmations:[],chatInbox:[],coopMembers:[]}),
+  getProfile:()=>null,
+  kindLabel:value=>String(value),
+  statusLabel:value=>String(value),
+  formatWhen:value=>String(value)
+ });
+ const eyebrow={
+  sv:'MURAS FOLKOOP',en:"MURA'S FOLKOOP",ru:'FOLKOOP МУРЫ',es:'FOLKOOP DE MURA',uk:'FOLKOOP МУРИ',
+  fi:'MURAN FOLKOOP',bs:'MURIN FOLKOOP',ar:'FOLKOOP مورا',fa:'FOLKOOP مورا',so:'FOLKOOP-KA MURA',ku:'FOLKOOP-A MURA'
+ };
+ for(const lang of FOLKOOP_LANGUAGES){
+  context.document.documentElement.lang=lang;
+  const html=domain.render({id:'demo-user'});
+  assert(html.includes(eyebrow[lang]),lang+' Mura Home must use authored selected-language copy');
+ }
+});
+
+test('economic coordination is an eleven-language route, not an English island',async()=>{
+ const economic=await readFile('apps/web/network-purchase-lifecycle.js','utf8');
+ const copy=parseObject(economic,'COPY');
+ assert.deepEqual(Object.keys(copy).sort(),[...FOLKOOP_LANGUAGES].sort());
+ const keys=Object.keys(copy.en).sort();
+ for(const lang of FOLKOOP_LANGUAGES)assert.deepEqual(Object.keys(copy[lang]).sort(),keys,lang+' economic flow');
+});
+
 test('RTL contract stays explicit and identical across shell, OAuth and City',async()=>{
  assert.deepEqual(FOLKOOP_RTL_LANGUAGES,['ar','fa']);
  const city=await readFile('apps/web/app.js','utf8');
