@@ -53,7 +53,7 @@ test('reuses existing authenticated HTTP security options',async()=>{
  const {options,url}=h.calls.at(-1);assert.equal(options.headers.Authorization,'Bearer synthetic-test-session');assert.match(url,/quantity::text/);
  assert.equal(options.credentials,'omit');assert.equal(options.cache,'no-store');assert.equal(options.referrerPolicy,'no-referrer');assert.equal(options.redirect,'error');
 });
-for(const [status,code,expected] of [[409,'40001','RESOURCE_CONFLICT'],[404,'PGRST202','RESOURCE_SCHEMA_UNAVAILABLE'],[404,'PGRST205','RESOURCE_SCHEMA_UNAVAILABLE'],[400,'22023','INVALID_INPUT']])test(\`HTTP \${code} has bounded error mapping\`,async()=>{
+for(const [status,code,expected] of [[409,'40001','RESOURCE_CONFLICT'],[404,'PGRST202','RESOURCE_SCHEMA_UNAVAILABLE'],[404,'PGRST205','RESOURCE_SCHEMA_UNAVAILABLE'],[400,'22023','INVALID_INPUT']])test(`HTTP ${code} has bounded error mapping`,async()=>{
  const h=setup();await h.login();h.handle(()=>json({code,message:'sensitive server detail'},status));
  await assert.rejects(h.api.resourcePlanning.requirements(UID),e=>e.code===expected&&!e.message.includes('sensitive'));
 });
