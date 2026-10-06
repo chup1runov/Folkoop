@@ -6,11 +6,11 @@
   const REPOSITORY_CREATED = '2026-09-21';
   const CONTACT = Object.freeze({github:'https://github.com/chup1runov/Folkoop/issues/new?template=contact-author.yml',telegram:'https://t.me/chup1runov'});
   const BIO_SOURCE = 'https://www.mittskifte.org/petitions/infor-tjansten-nattstopp-i-goteborg-for-okad-trygghet-i-kollektivtrafiken';
-  const CONTACT_LABEL = Object.freeze({
+  const CONTACT_LABEL = {
     sv:'Kontakta projektet',en:'Contact the project',ru:'Связаться с проектом',uk:'Зв’язатися з проєктом',
     fi:'Ota yhteyttä projektiin',es:'Contactar con el proyecto',bs:'Kontaktiraj projekat',
     ar:'تواصل مع المشروع',fa:'تماس با پروژه',so:'La xiriir mashruuca',ku:'Bi projeyê re têkilî dayne'
-  });
+  };
   const FAQ_SOURCES = Object.freeze({
     2:['Sveriges riksdag','https://www.riksdagen.se/sv/sa-fungerar-riksdagen/riksdagens-uppgifter/beslutar-om-lagar/'],
     3:['Göteborgs Stad','https://goteborg.se/planochbyggprojekt']
