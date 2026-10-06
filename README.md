@@ -37,7 +37,7 @@ Local drafts are still separate from network objects and are never uploaded auto
 
 The dedicated Supabase backend is on the Free plan and the repository policy is zero-cost infrastructure unless the owner separately approves otherwise. General public onboarding is still limited by the free authentication delivery path. Invite codes control FOLKOOP admission but do not replace Auth delivery; this remains a controlled pilot, not a public launch.
 
-All eleven existing City languages remain. Navigation has eleven languages; detailed new network copy is currently Swedish/English/Russian, with explicit English fallback elsewhere. Native-language review remains necessary.
+All eleven existing City languages remain, and the participant-facing shell, network routes, Mura guest experience, OAuth flow and economic-coordination UI now keep the selected language across all eleven supported languages. Route-level i18n tests guard against silent English fallback and navigation-copy drift. Native-language review remains necessary before treating wording quality as final.
 
 ## Build and test
 
