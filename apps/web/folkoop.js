@@ -360,6 +360,19 @@ const helperCopy={
   about:'Om oss förklarar FOLKOOPs syfte, gränser, pilotens nuvarande läge och riktningen för den framtida arkitekturen.'
  }}
 };
+const onboardingActionCopy={
+ en:{practice:'See it in practice',explore:"Explore Mura's account"},
+ sv:{practice:'Visa i praktiken',explore:'Utforska hos Mura'},
+ ru:{practice:'Посмотреть на деле',explore:'Осмотреться у Муры'},
+ es:{practice:'Verlo en la práctica',explore:'Explorar la cuenta de Mura'},
+ uk:{practice:'Подивитися на практиці',explore:'Оглянути акаунт Мури'},
+ fi:{practice:'Katso käytännössä',explore:'Tutki Muran tiliä'},
+ bs:{practice:'Pogledaj u praksi',explore:'Istraži Murin račun'},
+ ar:{practice:'مشاهدته عمليًا',explore:'استكشف حساب مورا'},
+ fa:{practice:'در عمل ببین',explore:'حساب مورا را بگرد'},
+ so:{practice:'Ku arag sida ay u shaqayso',explore:'Sahami akoonka Mura'},
+ ku:{practice:'Di pratîkê de bibîne',explore:'Hesabê Mura keşf bike'}
+};
 const muraTutorialCopy={
  en:{welcome:"Come in — this is my FOLKOOP. I'll show you what is happening in my life here, then you can roam around on your own.",home:"This is my profile and my unfinished thoughts. Some things are public, some are still private drafts. They are all part of the same place.",together:"I need a tile cutter for one weekend. Instead of posting into a void, I keep the need as a concrete thing that can connect to a person or resource.",projects:"I can help too. Photography is one of the things I offer when a neighbour or project needs it.",people:"This plant-and-seed exchange started as one small idea. Now it has people, tasks, updates and its own work chat.",city:"These are people around me. I don't need followers — I need people whose skills, interests or location cross with something I'm doing.",center:"This is my Göteborg Center story: ordinary local community, people, City and projects connect here. The forum context is illustrative — no real members or messages are copied.",quick:"That's enough instruction. Now just look around my account: open anything that catches your eye and follow the connections."},
  ru:{welcome:"Заходи — это мой FOLKOOP. Я покажу, что здесь происходит в моей жизни, а потом просто походишь сама или сам и посмотришь всё, что захочется.",home:"Это мой профиль и мои незаконченные мысли. Что-то уже стало общим делом, а что-то пока лежит в личных черновиках — всё это живёт в одном месте.",together:"Мне на выходные нужен плиткорез. Вместо сообщения в пустоту я держу потребность как конкретное дело, которое может связаться с человеком или ресурсом.",projects:"А здесь наоборот — я могу помочь сама. Фотография — одна из вещей, которые я предлагаю, когда она нужна соседу или проекту.",people:"Этот обмен растениями начался с маленькой идеи. Теперь здесь есть люди, задачи, обновления и свой рабочий чат.",city:"Это люди вокруг меня. Мне не нужны подписчики — мне нужны те, чьи навыки, интересы или район пересекаются с тем, что я делаю.",center:"Это моя история Центра в Göteborg: здесь связываются обычное локальное общение, люди, Город и проекты. Контекст форума иллюстративный — реальные участники и сообщения не копируются.",quick:"На этом инструкция заканчивается. Теперь просто походи по моему аккаунту: открывай всё, что цепляет, и смотри, куда ведут связи."},
@@ -382,16 +395,16 @@ for(const code of C.LANGS){
  if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
  if(x?.helper)helperCopy[code]=x.helper;
 }
-function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
+function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||tutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
- const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
+ const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||tutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
-function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
+function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||helperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
 function helperTip(route=current){
  const source=helperSource();
  return source.tips[route]||helperCopy.en.tips[route]||source.intro;
@@ -510,6 +523,7 @@ function showOnboarding(step=0){
  if(current!==item.route){current=item.route;history.replaceState(null,'','#/'+item.route);render();}
  dialog.querySelector('#onboardingProgress').textContent=(onboardingStep+1)+' / '+onboardingSteps.length;
  dialog.querySelector('#onboardingGuideName').textContent=source.name+' · '+source.label;
+ dialog.querySelector('#muraPracticeStars')?.setAttribute('aria-label',source.name+' · '+t('tutorialProgress'));
  dialog.querySelector('#onboardingTitle').textContent=tutorialTitle(item);
  dialog.querySelector('#onboardingBody').textContent=tutorialText(item);
  const copy=dialog.querySelector('#onboardingCopy');if(copy){copy.scrollTop=0;copy.onscroll=updateOnboardingScrollCue;}
@@ -519,7 +533,8 @@ function showOnboarding(step=0){
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=onboardingStep===0?t('tutorialBack'):(rtl?'→ ':'← ')+t('tutorialProgress')+' '+onboardingStep;back.disabled=onboardingStep===0;
  const taskPending=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep);
  const next=dialog.querySelector('[data-onboarding="next"]');
- next.textContent=taskPending?(lang==='ru'?'Посмотреть на деле':lang==='sv'?'Visa i praktiken':'See it in practice'):(onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
+ const onboardingAction=onboardingActionCopy[lang]||onboardingActionCopy.en;
+ next.textContent=taskPending?onboardingAction.practice:(onboardingStep===onboardingSteps.length-1?onboardingAction.explore:t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
  updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
@@ -584,6 +599,8 @@ function render(focus=false){
  $('#nav').innerHTML='';
  renderMobileChrome();
  $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
+ const mobilePrimary=$('#mobilePrimaryNav');if(mobilePrimary)mobilePrimary.setAttribute('aria-label',t('select'));
+ const networkPanel=$('#networkPanel');if(networkPanel)networkPanel.setAttribute('aria-label','FOLKOOP · '+t('together'));
  const searchButton=$('#globalSearchButton'),startButton=$('#globalStartButton');
  if(searchButton){searchButton.setAttribute('aria-label',t('search'));searchButton.setAttribute('title',t('search'));}
  if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
