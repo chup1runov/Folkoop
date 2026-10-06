@@ -4237,14 +4237,14 @@ const homeDailyCopy={
 for(const [code,copy] of Object.entries(homeDailyCopy))Object.assign(languages[code].network.home,copy);
 
 const guestDemoCopy={
- es:{demoBadge:'Espacio de Mura · ejemplo guiado',demoText:'Estás visitando el espacio guiado de Mura.',demoCta:'Crear mi propio espacio',demoLocked:'Estás de visita con Mura. Inicia sesión para hacerlo en tu propio espacio.',demoExit:'Salir del espacio de Mura'},
- uk:{demoBadge:'Місце Мури · навчальний приклад',demoText:'Ти в гостях у навчальному просторі Мури.',demoCta:'Створити своє місце',demoLocked:'Зараз ти в гостях у Мури. Увійди, щоб зробити це у своєму місці.',demoExit:'Вийти з гостей'},
- fi:{demoBadge:'Muran paikka · oppimisesimerkki',demoText:'Olet vierailulla Muran ohjatussa paikassa.',demoCta:'Luo oma paikkani',demoLocked:'Olet Muran vieraana. Kirjaudu tehdäksesi tämän omassa paikassasi.',demoExit:'Poistu Muran paikalta'},
- bs:{demoBadge:'Murino mjesto · primjer za učenje',demoText:'U gostima si u Murinom vođenom prostoru.',demoCta:'Napravi svoje mjesto',demoLocked:'U gostima si kod Mure. Prijavi se da ovo uradiš u svom mjestu.',demoExit:'Napusti Murino mjesto'},
- ar:{demoBadge:'مساحة مورا · مثال تعليمي',demoText:'أنت تزور مساحة مورا التعليمية الموجهة.',demoCta:'إنشاء مساحتي',demoLocked:'أنت في زيارة عند مورا. سجّل الدخول لتفعل ذلك في مساحتك.',demoExit:'مغادرة مساحة مورا'},
- fa:{demoBadge:'جای مورا · نمونهٔ آموزشی',demoText:'مهمان فضای آموزشی مورا هستی.',demoCta:'جای خودم را بسازم',demoLocked:'مهمان مورا هستی. برای انجام این کار در جای خودت وارد شو.',demoExit:'ترک جای مورا'},
- so:{demoBadge:'Meesha Mura · tusaale waxbarasho',demoText:'Waxaad marti ku tahay meesha hagidda ee Mura.',demoCta:'Samee meeshayda',demoLocked:'Waxaad marti u tahay Mura. Soo gal si aad tan uga samayso meeshaada.',demoExit:'Ka bax meesha Mura'},
- ku:{demoBadge:'Cihê Mura · nimûneya hînbûnê',demoText:'Tu li cihê hînbûnê yê rêberkirî yê Mura mêvan î.',demoCta:'Cihê xwe çêke',demoLocked:'Tu mêvanê Mura yî. Ji bo ku vê li cihê xwe bikî, têkevî.',demoExit:'Ji cihê Mura derkeve'}
+ es:{demoBadge:"Mura · Göteborg",demoText:"Esta es la cuenta de Mura. Explórala libremente; los cambios están desactivados.",demoCta:'Crear mi propio espacio',demoLocked:'Estás de visita con Mura. Inicia sesión para hacerlo en tu propio espacio.',demoExit:'Salir del espacio de Mura'},
+ uk:{demoBadge:"Мура · Göteborg",demoText:"Це акаунт Мури. Досліджуй вільно; зміни просто вимкнені.",demoCta:'Створити своє місце',demoLocked:'Зараз ти в гостях у Мури. Увійди, щоб зробити це у своєму місці.',demoExit:'Вийти з гостей'},
+ fi:{demoBadge:"Mura · Göteborg",demoText:"Tämä on Muran tili. Tutki vapaasti; muutokset on vain poistettu käytöstä.",demoCta:'Luo oma paikkani',demoLocked:'Olet Muran vieraana. Kirjaudu tehdäksesi tämän omassa paikassasi.',demoExit:'Poistu Muran paikalta'},
+ bs:{demoBadge:"Mura · Göteborg",demoText:"Ovo je Murin račun. Slobodno istražuj; izmjene su samo isključene.",demoCta:'Napravi svoje mjesto',demoLocked:'U gostima si kod Mure. Prijavi se da ovo uradiš u svom mjestu.',demoExit:'Napusti Murino mjesto'},
+ ar:{demoBadge:"مورا · Göteborg",demoText:"هذا حساب مورا. استكشفه بحرية؛ التغييرات معطلة فقط.",demoCta:'إنشاء مساحتي',demoLocked:'أنت في زيارة عند مورا. سجّل الدخول لتفعل ذلك في مساحتك.',demoExit:'مغادرة مساحة مورا'},
+ fa:{demoBadge:"مورا · Göteborg",demoText:"این حساب مورا است. آزادانه بگرد؛ تغییرات فقط غیرفعال شده‌اند.",demoCta:'جای خودم را بسازم',demoLocked:'مهمان مورا هستی. برای انجام این کار در جای خودت وارد شو.',demoExit:'ترک جای مورا'},
+ so:{demoBadge:"Mura · Göteborg",demoText:"Kani waa akoonka Mura. Si xor ah u sahami; wax-ka-beddelku keliya waa xiran yahay.",demoCta:'Samee meeshayda',demoLocked:'Waxaad marti u tahay Mura. Soo gal si aad tan uga samayso meeshaada.',demoExit:'Ka bax meesha Mura'},
+ ku:{demoBadge:"Mura · Göteborg",demoText:"Ev hesabê Mura ye. Bi azadî keşf bike; guhertin tenê neçalak in.",demoCta:'Cihê xwe çêke',demoLocked:'Tu mêvanê Mura yî. Ji bo ku vê li cihê xwe bikî, têkevî.',demoExit:'Ji cihê Mura derkeve'}
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 
