@@ -27,3 +27,7 @@ python3 tests/e2e/home-welcome-browser.py
 python3 tests/e2e/security-csp-browser.py
 python3 tests/e2e/entry-welcome-audit-browser.py
 python3 tests/e2e/onboarding-audit-browser.py
+# R1 integration is source-staged into a sibling test site, not the shipped _site.
+node scripts/ci/stage-resource-planning.mjs
+python3 tests/e2e/resource-planning-component.py
+BASE_URL=http://127.0.0.1:4173/R1/Folkoop/ python3 tests/e2e/resource-planning-browser.py

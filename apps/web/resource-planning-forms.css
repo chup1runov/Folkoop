@@ -1,0 +1,13 @@
+.resource-planning{margin-block:1.2rem;min-width:0;border-block-start:1px solid var(--border,#bbb);padding-block-start:1rem}
+.resource-planning h3,.resource-planning h4{margin-block:.5rem}
+.resource-planning .rp-records{display:grid;gap:.65rem}
+.resource-planning fieldset{border:0;padding:0;margin:0;min-width:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+.resource-planning label{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.resource-planning input,.resource-planning select,.resource-planning textarea{font:inherit;box-sizing:border-box;width:100%;min-width:0;max-width:100%;padding:.65rem}
+.resource-planning input[name=from],.resource-planning input[name=until],.resource-planning input[name=quantity]{direction:ltr;text-align:start}
+.resource-planning .rp-conditions{white-space:pre-wrap;overflow-wrap:anywhere}
+.resource-planning p,.resource-planning code,.resource-planning button{overflow-wrap:anywhere}
+.resource-planning button{min-height:44px;max-width:100%}
+.resource-planning :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.resource-planning [role=status]{min-height:1.5em}
+.resource-planning [disabled]{cursor:not-allowed}

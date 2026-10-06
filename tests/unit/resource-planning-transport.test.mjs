@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+const P='11111111-1111-4111-8111-111111111111',R='22222222-2222-4222-8222-222222222222',I='33333333-3333-4333-8333-333333333333';
+function setup(impl=()=>[]){
+ const box={};for(const f of ['resource-planning-core.js','resource-planning-lifecycle.js','resource-planning-transport.js'])vm.runInNewContext(readFileSync('apps/web/'+f,'utf8'),box);
+ let session={userId:P,epoch:'0:1'};const calls=[];
+ const api=box.FolkoopResourceTransport.create({request:async(path,opts)=>{calls.push({path,opts});return impl(path,opts);},context:()=>session,onChange:()=>()=>{}});
+ return {api,calls,setSession:value=>session=value};
+}
+const row=(v={})=>({id:I,cooperation_id:P,flow_id:null,title:'Material',kind:'consumable',quantity:'0.125',unit:'kg',needed_from:null,needed_until:null,conditions:'<b>plain</b>',revision:1,...v});
+const req=(v={})=>({id:I,projectId:P,title:'Material',kind:'consumable',quantity:'0.125',unit:'kg',from:null,until:null,conditions:'',...v});
+const avail=(v={})=>({resourceId:R,kind:'consumable',quantity:'0.3',unit:'kg',from:null,until:null,conditions:'',...v});
+const rejects=(p,code)=>assert.rejects(p,e=>e.code===code);
+test('only named methods; no arbitrary RPC or raw tokens',()=>{const {api}=setup();assert.ok(Object.isFrozen(api));assert.equal(api.request,undefined);assert.equal(api.token,undefined);});
+test('requirement read casts quantity before JSON and filters parent',async()=>{const {api,calls}=setup(()=>[row()]);const records=await api.requirements(P);assert.equal(records[0].value.quantity,'0.125');assert.match(calls[0].path,/quantity::text/);assert.match(calls[0].path,new RegExp('cooperation_id=eq.'+P));assert.equal(calls[0].opts.resource,true);});
+for(const [label,value] of [['numeric',0.125],['exponent','1e3'],['excess precision','0.0001']])test(`read rejects ${label} quantity`,async()=>{const {api}=setup(()=>[row({quantity:value})]);await rejects(api.requirements(P),'INVALID_RESPONSE');});
+test('reject wrong parent in response',async()=>{const {api}=setup(()=>[row({cooperation_id:R})]);await rejects(api.requirements(P),'INVALID_RESPONSE');});
+test('reject duplicate rows',async()=>{const {api}=setup(()=>[row(),row()]);await rejects(api.requirements(P),'INVALID_RESPONSE');});
+test('bounded requirements never silently truncate',async()=>{const {api}=setup(()=>Array(101).fill(row()));await rejects(api.requirements(P),'INVALID_RESPONSE');});
+test('not signed in sends nothing',async()=>{const {api,calls,setSession}=setup();setSession(null);await rejects(api.requirements(P),'AUTH_REQUIRED');assert.equal(calls.length,0);});
+test('invalid parent sends nothing',async()=>{const {api,calls}=setup();await rejects(api.requirements('other?select=*'),'INVALID_ID');assert.equal(calls.length,0);});
+test('save preserves exact quantity and expected revision',async()=>{const {api,calls}=setup(()=>2);assert.equal(await api.saveRequirement(req(),1),2);assert.equal(calls[0].opts.body.p_quantity,'0.125');assert.equal(calls[0].opts.body.p_expected_revision,1);assert.equal(calls[0].opts.body.p_project,P);assert.equal(calls[0].opts.body.actor,undefined);});
+test('invalid save blocked before network',async()=>{const {api,calls}=setup();await rejects(api.saveRequirement(req({quantity:'1e3'}),0),'INVALID_QUANTITY');assert.equal(calls.length,0);});
+for(const value of [null,{},true,'1',0,1.5])test(`save rejects invalid acknowledgement ${JSON.stringify(value)}`,async()=>{const {api}=setup(()=>value);await rejects(api.saveAvailability(avail(),0),'INVALID_RESPONSE');});
+test('removal uses expected version',async()=>{const {api,calls}=setup(()=>true);assert.equal(await api.removeRequirement(P,I,2),true);assert.equal(calls[0].opts.body.p_expected_revision,2);});
+test('absent removal false is preserved',async()=>{const {api}=setup(()=>false);assert.equal(await api.removeAvailability(R,2),false);});
+test('truthy removal string cannot claim success',async()=>{const {api}=setup(()=>'false');await rejects(api.removeAvailability(R,1),'INVALID_RESPONSE');});
+test('availability missing after erase keeps generation',async()=>{let n=0;const {api,calls}=setup(()=>++n===2?[]:4);const a=await api.availability(R);assert.equal(a.value,null);assert.equal(a.revision,4);assert.equal(calls.length,3);});
+test('availability zero remains a declaration',async()=>{let n=0;const {api}=setup(()=>++n===2?[{resource_id:R,kind:'consumable',quantity:'0',unit:'kg',available_from:null,available_until:null,conditions:'',revision:3}]:3);const a=await api.availability(R);assert.equal(a.value.quantity,'0');});
+test('concurrent availability generation changed rejects snapshot',async()=>{let n=0;const {api}=setup(()=>++n===1?1:n===2?[]:2);await rejects(api.availability(R),'RESOURCE_CONFLICT');});
+test('response after account switch discarded',async()=>{let resolve;const {api,setSession}=setup(()=>new Promise(r=>resolve=r));const pending=api.requirements(P);setSession({userId:R,epoch:'1:2'});resolve([row()]);await rejects(pending,'STALE');});
+test('same user new session still invalidates response',async()=>{let resolve;const {api,setSession}=setup(()=>new Promise(r=>resolve=r));const pending=api.requirements(P);setSession({userId:P,epoch:'0:2'});resolve([row()]);await rejects(pending,'STALE');});
+test('late error is also stale after logout',async()=>{let reject;const {api,setSession}=setup(()=>new Promise((_,r)=>reject=r));const pending=api.requirements(P);setSession(null);reject(Object.assign(new Error('private body'),{code:'REQUEST_FAILED'}));await rejects(pending,'STALE');});
+test('export checks page contract and decimal strings',async()=>{const {api,calls}=setup(()=>({schema_version:1,kind:'requirements',scope:'own_resource_planning_only',snapshot:false,records:[{id:I,quantity:'0.125'}],has_more:false,next_cursor:null}));const page=await api.exportPage('requirements');assert.equal(page.records[0].quantity,'0.125');assert.equal(calls[0].opts.body.p_limit,100);});
+test('export cannot loop backwards',async()=>{const {api}=setup(()=>({schema_version:1,kind:'requirements',scope:'own_resource_planning_only',snapshot:false,records:[{id:I,quantity:'0.125'}],has_more:true,next_cursor:I}));await rejects(api.exportPage('requirements',I),'INVALID_EXPORT_CURSOR');});
