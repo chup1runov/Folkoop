@@ -32,12 +32,15 @@ for file in "${db_tests[@]}"; do
   run_sql "$file"
 done
 
-# R1 candidate DDL is NOT in migration history. Test only after the unchanged
-# runtime regression suite, in one disposable transaction that always rolls back.
-echo '==> R1 resource planning proposal (disposable database only)'
+# No candidate DDL enters hosted migration history. Existing tests run unchanged.
+# A second, whole-catalog audit runs AFTER the entire candidate is installed.
+echo '==> R1 planning + lifecycle + post-candidate security (disposable database only)'
 {
   printf 'begin;\n'
   cat supabase/proposals/resource-planning-v0.sql
+  cat supabase/proposals/resource-planning-lifecycle-v0.sql
   cat supabase/tests/resource-planning-v0.sql
+  cat supabase/tests/resource-planning-lifecycle-v0.sql
+  cat supabase/tests/resource-planning-privileges-v0.sql
   printf '\nrollback;\n'
 } | psql_ci
