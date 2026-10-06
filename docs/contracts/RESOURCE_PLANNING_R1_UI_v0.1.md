@@ -83,3 +83,21 @@ shell hides that control. It now selects the actual control at 1280px, then retu
 to 390px and checks the resource form and overflow in each of the eleven languages,
 following the existing shell regression pattern. No application selector, control,
 assertion, security check or error condition was removed to obtain a pass.
+
+
+## Direct-source promotion checkpoint
+
+2026-10-06. The reviewed R1 hooks are now present in the ordinary application
+sources and public build allowlist. The production public configuration explicitly
+sets resourcePlanningEnabled=false, so signed-in participants do not receive the
+new Project/Resource forms before hosted-schema and pilot activation gates pass.
+The synthetic browser test overrides only that public flag to exercise the real
+built shell. Mura may render the authored read-only planning example and performs
+no resource HTTP request.
+
+The previous source-staging script is retained only as historical implementation
+evidence in this draft PR; browser-smoke no longer executes it and integration tests
+exercise network-client.js, network-ui.js and folkoop.html directly. This checkpoint
+still does NOT authorize a hosted migration, production feature activation, payment,
+reservation or Outcome claim. A CLI-generated migration and hosted multi-account
+verification remain next.

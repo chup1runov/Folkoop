@@ -1,5 +1,5 @@
-"""Full existing FOLKOOP shell with R1 source-staged hooks and synthetic HTTP.
-Not a hosted Auth/PostgREST test, production deployment or real-device acceptance.
+"""Full existing FOLKOOP shell with direct R1 hooks and synthetic HTTP.
+The feature gate is enabled only by this test interceptor. Not hosted acceptance.
 """
 import asyncio,json,os,shutil
 from pathlib import Path
@@ -48,7 +48,7 @@ async def main():
    await route.continue_()
   await context.route('**/*',routing)
   page=await context.new_page();page.on('pageerror',lambda e:errors.append(str(e)));page.on('dialog',lambda d:d.accept())
-  await page.goto(BASE+'folkoop.html#/me')
+  await page.goto(BASE+'#/me')
   await page.fill('#netLogin [name=email]','synthetic@example.test');await page.click('#netLogin [value=code]')
   await page.fill('#netLogin [name=code]','123456');await page.check('#netLogin [name=policyAccepted]');await page.click('#netLogin [value=verify]')
   await expect(page.locator('#netProfile')).to_be_visible()
