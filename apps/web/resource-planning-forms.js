@@ -138,7 +138,7 @@
       root.append(el('p',text(ctx.coop.kind==='project'?'audienceProject':'audienceOwner'),{class:'meta'}));
       root.append(el('p',text('boundary'),{class:'meta'}));
       if(ctx.readOnly){
-        root.append(el('p',text('demo'),{class:'notice'}));
+        // Mura stays in-character: show authored planning data, not demo/meta chrome.
         if(ctx.coop.id===REPAIR){
           const list=el('ul');for(const [k,q,u] of [['equipment','2','piece'],['consumable','5','kg'],['work','4','hour']])list.append(el('li',`${text(k)} — ${q} ${unit(u)}`));root.append(list);
         }else root.append(el('p',text('empty')));
