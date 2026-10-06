@@ -37,22 +37,26 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function notify(){for(const fn of listeners)fn(session?{id:session.id}:null);}
  function clear(){session=null;epoch++;authAttempt++;for(const c of controllers)c.abort();analyticsReset();notify();}
  function user(){if(session&&session.expiresAt<=clock())clear();return session?{id:session.id}:null;}
- async function request(path,{method='GET',body,auth=true,token}={}){
+ async function request(path,{method='GET',body,auth=true,token,resource=false}={}){
   if(!cfg)throw fail('DISABLED');
   if(auth&&!user())throw fail('AUTH_REQUIRED');
-  const version=epoch,controller=new AbortController();controllers.add(controller);
+  const version=epoch,authVersion=authAttempt,controller=new AbortController();controllers.add(controller);
   const timer=setTimeout(()=>controller.abort(),12000);
   const headers={apikey:cfg.key,Accept:'application/json'};
   if(auth||token)headers.Authorization='Bearer '+(token||session.token);
   if(body!==undefined)headers['Content-Type']='application/json';
   try{
    const response=await transport(cfg.url+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',redirect:'error',signal:controller.signal});
-   if(version!==epoch)throw fail('STALE');
+   if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');
    if(!response.ok){
     let detail=null;
     if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
      try{detail=await response.json();}catch{}
     }
+    if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');
+    if(resource&&detail?.code==='40001')throw fail('RESOURCE_CONFLICT');
+    if(resource&&['PGRST202','PGRST205','42P01'].includes(detail?.code))throw fail('RESOURCE_SCHEMA_UNAVAILABLE');
+    if(resource&&detail?.code==='22023')throw fail('INVALID_INPUT');
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
@@ -60,7 +64,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    }
    if(response.status===204)return null;
    if(!/\bjson\b/i.test(response.headers.get('content-type')||''))throw fail('INVALID_RESPONSE');
-   const result=await response.json();if(version!==epoch)throw fail('STALE');return result;
+   const result=await response.json();if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');return result;
   }catch(e){if(e.code)throw e;throw fail('NETWORK');}
   finally{clearTimeout(timer);controllers.delete(controller);}
  }
@@ -93,6 +97,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
+  resourcePlanning:value?.resourcePlanningEnabled===true?globalThis.FolkoopResourceTransport.create({request,context:()=>({userId:user()?.id||null,epoch:String(epoch)+':'+String(authAttempt)}),onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);}}):null,
   enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   googleOAuthUrl(){
    if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');

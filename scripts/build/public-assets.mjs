@@ -14,7 +14,7 @@ export const BUILD_FILES=Object.freeze([
   
   
   'folkoop-city.js','folkoop-mark.png',
-  'folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
+  'folkoop-icon-512.png','resource-planning-core.js','resource-planning-lifecycle.js','resource-planning-transport.js','resource-planning-copy.js','resource-planning-forms.js','resource-planning-forms.css','network-config.js','analytics.js','network-client.js',
   'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-ui.js','auth-callback.html',
   'auth-callback-core.mjs','auth-callback.mjs','home-welcome.js'
 ]);
@@ -30,6 +30,6 @@ export const PRECACHE_PATHS=Object.freeze([
   'folkoop-guide-lean-in.webp','folkoop-guide-wink.webp',
   
   'folkoop-city.js',
-  'folkoop-mark.png','folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
+  'folkoop-mark.png','folkoop-icon-512.png','resource-planning-core.js','resource-planning-lifecycle.js','resource-planning-transport.js','resource-planning-copy.js','resource-planning-forms.js','resource-planning-forms.css','network-config.js','analytics.js','network-client.js',
   'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-ui.js','home-welcome.js'
 ]);
