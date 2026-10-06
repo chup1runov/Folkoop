@@ -34,7 +34,7 @@ function ensureActor(){
  actor.id='folkoopGuideActor';
  actor.className='folkoop-guide-actor is-home';
  actor.type='button';
- actor.setAttribute('aria-label','Mura · FOLKOOP guide');
+ actor.setAttribute('aria-label','Mura · FOLKOOP');
  actor.setAttribute('aria-expanded','false');
  actor.setAttribute('aria-controls','folkoopHelperPanel');
  actor.innerHTML='<span class="folkoop-guide-puff" aria-hidden="true"><i></i><i></i><i></i><i></i></span><img alt="" width="192" height="208" decoding="async">';
@@ -270,7 +270,7 @@ function ensureLanguageGate(){
  gate.setAttribute('role','dialog');
  gate.setAttribute('aria-modal','true');
  gate.setAttribute('aria-labelledby','folkoopGuideLanguageTitle');
- gate.innerHTML='<div class="folkoop-guide-language-backdrop"></div><div class="folkoop-guide-language-card"><div class="folkoop-guide-language-character"><img alt="" width="192" height="208"></div><div class="folkoop-guide-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="folkoopGuideLanguageTitle">Hej! · Hi! · Привет!</h1><p class="folkoop-guide-language-hello">Din FOLKOOP-guide · Your FOLKOOP guide · Помощник FOLKOOP</p><p class="folkoop-guide-language-prompt">Välj språk · Choose language · Выбери язык</p><div id="folkoopGuideLanguageChoices" class="folkoop-guide-language-choices"></div></div></div>';
+ gate.innerHTML='<div class="folkoop-guide-language-backdrop"></div><div class="folkoop-guide-language-card"><div class="folkoop-guide-language-character"><img alt="" width="192" height="208"></div><div class="folkoop-guide-language-copy"><p class="eyebrow">FOLKOOP</p><h1 id="folkoopGuideLanguageTitle">FOLKOOP</h1><p class="folkoop-guide-language-prompt" aria-hidden="true">🌐</p><div id="folkoopGuideLanguageChoices" class="folkoop-guide-language-choices"></div></div></div>';
  document.body.append(gate);
  setArt(gate.querySelector('.folkoop-guide-language-character img'),ASSETS.welcome);
  gate.addEventListener('click',e=>{
