@@ -104,6 +104,9 @@ select set_config('request.jwt.claim.sub','72222222-2222-4222-8222-222222222222'
 select fk_resource_test.fails('select public.fk_export_resource_planning(''availability'')','42501','revocation immediately disables export');
 reset role;
 update folkoop_private.pilots set enabled=true where user_id='72222222-2222-4222-8222-222222222222';
+-- Narrowed parent trigger still rejects privileged relationship corruption.
+select fk_resource_test.fails(format('update public.fk_resource_requirements set cooperation_id=%L where id=''75444444-4444-4444-8444-444444444444''',:'life_resource'),'22023','parent trigger still rejects wrong kind on relationship update');
+select fk_resource_test.fails('update public.fk_resource_requirements set flow_id=''ffffffff-ffff-4fff-8fff-ffffffffffff'' where id=''75444444-4444-4444-8444-444444444444''','22023','parent trigger still rejects invalid flow relationship');
 delete from auth.users where id='71111111-1111-4111-8111-111111111111';
 select fk_resource_test.ok((select count(*)=0 from public.fk_resource_requirements where cooperation_id=:'life_account_project'),'Auth removal erases owned project requirements');
 select fk_resource_test.ok((select count(*)=0 from public.fk_economic_flows where id=:'life_account_flow'),'Auth removal is not blocked by linked flow');

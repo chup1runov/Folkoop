@@ -25,6 +25,11 @@ The Foundation Charter, existing 132 IDs, P0 gates and blockchain workstream rem
 5. The flow FK uses NO ACTION rather than immediate RESTRICT. Direct removal of
    a linked flow is still rejected, but whole-project/Auth cascades may remove both
    child sets in one statement. This is tested against the existing migrations.
+   The first new CI run also caught Auth's created_by SET NULL firing a parent check
+   mid-cascade after its parent disappeared. The requirement trigger now runs on
+   INSERT or UPDATE OF cooperation_id,flow_id: every relationship write is still
+   validated, while FK-driven provenance nulling does not block account deletion.
+   Negative tests retain rejection of privileged wrong-parent and invalid-flow edits.
 6. A whole-catalog privilege check now runs AFTER all candidate objects are present.
    The existing pre-candidate regression/audit file is retained unchanged.
 

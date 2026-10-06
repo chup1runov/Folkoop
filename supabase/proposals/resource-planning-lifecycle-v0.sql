@@ -26,6 +26,13 @@ alter table public.fk_resource_requirements drop constraint fk_resource_requirem
 alter table public.fk_resource_requirements add constraint fk_resource_requirements_flow_id_fkey
   foreign key(flow_id) references public.fk_economic_flows(id) on delete no action;
 
+-- Only relationship writes need parent validation. Auth's created_by SET NULL may
+-- happen while the parent is already being cascaded away in the same statement.
+-- Keep the validator on every insertion and every explicit relationship update.
+create or replace trigger resource_requirement_parent
+before insert or update of cooperation_id,flow_id on public.fk_resource_requirements
+for each row execute function folkoop_private.resource_plan_parent_check();
+
 create function folkoop_private.resource_requirement_not_retired() returns trigger
 language plpgsql set search_path='' as $$
 begin
