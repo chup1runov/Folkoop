@@ -46,8 +46,8 @@ The staging transform is a reviewed bridge, not a substitute for eventual direct
 source integration plus CLI-generated migration, canonical privilege reconciliation
 and hosted multi-account/session/account-lifecycle testing.
 
-The first UI can edit a requirement's existing flow association without dropping
-it, but no new flow picker is implemented in this slice. Unsupported units,
+The first UI can edit a requirement without dropping its existing flow association,
+but no new flow picker is implemented in this slice. Unsupported units,
 resource intervals, offers, agreement versions, atomic reservations and qualified
 fulfilment remain governed by their existing staged contracts, not silently removed.
 No real-device Safari/VoiceOver or native-language review is claimed.
@@ -73,3 +73,13 @@ real three-account/hosted checks, accessibility/device and language review befor
 claiming R1 participant availability. R2 offers, R3 agreements/atomic reservations
 and R4 fulfilment remain distinct work. Preserve code and safe receipts in GitHub;
 private user/assistant records remain outside this public repository.
+
+## First full-shell CI correction
+
+Run 37481516869 on e11cfb7018afcfcf550638b68b35d896daa98356 reached the new
+R1 shell test after all earlier regression and component checks. The new test timed
+out selecting the desktop language control at a 390px viewport where the existing
+shell hides that control. It now selects the actual control at 1280px, then returns
+to 390px and checks the resource form and overflow in each of the eleven languages,
+following the existing shell regression pattern. No application selector, control,
+assertion, security check or error condition was removed to obtain a pass.

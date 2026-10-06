@@ -74,10 +74,15 @@ async def main():
   await expect(page.locator('[data-rp-save]')).to_be_enabled()
   passed.append('HTTP conflict retains draft, locks mutation and requires explicit reload')
   for language in ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']:
+   # The existing shell hides its desktop language selector at mobile widths.
+   await page.set_viewport_size({'width':1280,'height':844})
    await page.locator('#language').select_option(language)
+   await page.set_viewport_size({'width':390,'height':844})
    await expect(page.locator('[data-rp-form=project]')).to_be_visible()
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
+  await page.set_viewport_size({'width':1280,'height':844})
   await page.locator('#language').select_option('ru')
+  await page.set_viewport_size({'width':390,'height':844})
   await page.screenshot(path=str(OUT/'r1-project-in-shell-390.png'),full_page=True)
   passed.append('R1 survives actual shell language rerenders in eleven languages at 390px')
   await page.locator('[data-rp-action=edit]').click();await page.locator('[data-rp-action=remove]').click()
