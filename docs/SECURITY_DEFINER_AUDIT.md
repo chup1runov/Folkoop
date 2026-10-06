@@ -145,6 +145,27 @@ https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticate
 RLS reference:
 https://supabase.com/docs/guides/database/postgres/row-level-security
 
+## R1 repository migration delta — not yet hosted
+
+6 October 2026.
+
+The repository migration `20261006152958_folkoop_resource_planning_r1.sql` extends the reviewed private-helper
+set in disposable CI from the eight hosted RLS helpers above to twelve exact
+`regprocedure` signatures. The four additional R1 helpers are:
+
+- `save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)`
+- `save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)`
+- `remove_resource_plan(text,uuid,uuid,integer)`
+- `resource_availability_revision(uuid)`
+
+The canonical CI privilege test now matches exact signatures, so an unreviewed
+overload is not accepted merely because it shares an approved function name.
+
+This is **repository migration state, not hosted-state evidence**. The hosted
+project still has the eight-helper inventory described above until this migration
+is separately applied and verified. The public resource-planning feature flag
+also remains disabled.
+
 ## Remaining pre-pilot security work
 
 The private-table RLS issue is closed.

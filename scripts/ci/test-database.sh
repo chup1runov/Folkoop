@@ -32,13 +32,11 @@ for file in "${db_tests[@]}"; do
   run_sql "$file"
 done
 
-# No candidate DDL enters hosted migration history. Existing tests run unchanged.
-# A second, whole-catalog audit runs AFTER the entire candidate is installed.
-echo '==> R1 planning + lifecycle + post-candidate security (disposable database only)'
+# R1 DDL is now a normal migration. Exercise its behavior after all migrations
+# have been applied to the disposable database; do not replay proposal DDL.
+echo '==> R1 migration behavior + lifecycle + post-migration privilege contract'
 {
   printf 'begin;\n'
-  cat supabase/proposals/resource-planning-v0.sql
-  cat supabase/proposals/resource-planning-lifecycle-v0.sql
   cat supabase/tests/resource-planning-v0.sql
   cat supabase/tests/resource-planning-lifecycle-v0.sql
   cat supabase/tests/resource-planning-privileges-v0.sql
