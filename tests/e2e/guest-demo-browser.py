@@ -47,7 +47,7 @@ async def main():
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await expect(page.locator('#onboarding')).to_be_visible()
   await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать ко мне')
-  await expect(page.locator('#onboardingBody')).to_contain_text('это мой FOLKOOP')
+  await expect(page.locator('#onboardingBody')).to_contain_text('Я Мура')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Visiting Mura launches an in-character walk through her own account')
   await page.click('[data-onboarding="skip"]')
@@ -229,11 +229,12 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
   await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
-  await expect(page.locator('#workspace')).to_contain_text('специально созданных персонажей')
+  await expect(page.locator('#workspace')).to_contain_text('Мои места и люди в Göteborg')
+  assert 'специально созданных персонажей' not in (await page.locator('#workspace').inner_text()).lower()
   for center_route in ('people','communities','city','action'):
    await expect(page.locator(f'#workspace [data-center-route="{center_route}"]')).to_be_visible()
   assert await page.locator('#workspace a[href*="t.me"]').count()==0
-  await expect(page.locator('#workspace')).to_contain_text('не утверждаем, что физический Центр FOLKOOP уже открыт')
+  assert 'не утверждаем, что физический Центр FOLKOOP уже открыт' not in (await page.locator('#workspace').inner_text()).lower()
   await assert_mura_immersed(page,'#workspace')
   passed.append('Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims')
 

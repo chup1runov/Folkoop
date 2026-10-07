@@ -585,3 +585,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:780px){.mura-life{padding:22px 18px}.mura-life-timeline{grid-template-columns:1fr}.mura-hero{grid-template-columns:minmax(0,1fr) 100px}.mura-now-card{grid-column:1/-1}.mura-hero-character img{width:100px}}
 @media(max-width:390px){.mura-life{padding:18px 11px;border-radius:18px}.mura-life-card{padding:14px 13px 12px 32px}.mura-life-dot{left:11px}.mura-life-voice{font-size:.86rem}.mura-hero{padding:14px}.mura-identity-line h1{font-size:2.3rem}}
 @media(prefers-reduced-motion:reduce){.mura-life-link:hover{transition:none}}
+
+/* Mura's Center is presented as her local life, with source facts still outside her voice. */
+.center-home .badge:empty{display:none}
