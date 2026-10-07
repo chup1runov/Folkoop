@@ -64,3 +64,10 @@ These test assertions are **editorial guardrails**, not proof that every sentenc
 Further gaps outside this review: Mura's authored guest-home narrative has source EN/SV/RU coverage, while the eight extra locales still use generic localized copy for portions of the experience; real sample content and individual nested states need separate editorial work. External policy documents/official-source text may remain in a source language. 121 browser route assertions do not exhaust every modal, backend response, user-generated content item or screen-reader announcement. Physical Safari/VoiceOver review and native-reader comprehension studies are still separate acceptance steps.
 
 **Release rule:** 11/11 route checks are necessary, but must never be described as native-language certification.
+
+## Review sign-off checklist
+
+Human sign-off should capture reviewer language/dialect, date, tested build or commit,
+the exact screens and flows read aloud, any comprehension failures, and accepted
+terminology corrections. Automated tests may only mark technical/editorial guardrails
+as passed; the “native language approved” field stays **pending** without that evidence.
