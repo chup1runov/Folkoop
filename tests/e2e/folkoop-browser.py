@@ -121,7 +121,7 @@ async def main():
   await page.fill('[name="city"]','Göteborg')
   await page.click('#profileForm button[type="submit"]')
 
-  await page.click('#mobilePrimaryNav a[href="#/messages"]');await expect(page.locator('#workspace')).to_contain_text('does not simulate')
+  await page.click('#mobilePrimaryNav a[href="#/messages"]');await expect(page.locator('#workspace')).to_contain_text('In local mode, no messages are sent.');await expect(page.locator('#workspace')).to_contain_text('not end-to-end encrypted')
   results.append('Online Center connects current routes without fictitious venue, synchronized forum data, payments or message delivery, and never fabricates Göteborg context for another city')
   await page.evaluate("location.hash='#/about'")
   await expect(page.locator('#futureArchitectureTitle')).to_contain_text('Where FOLKOOP can go next')
