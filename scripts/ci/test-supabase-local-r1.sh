@@ -16,9 +16,9 @@ cd "$TMP"
 supabase init >/dev/null
 rm -rf supabase/migrations
 cp -R "$ROOT/supabase/migrations" supabase/migrations
-supabase start --exclude studio,mail,storage,realtime,functions,analytics,pooler >/tmp/folkoop-supabase-start.log
+supabase start --exclude studio,mailpit,storage-api,realtime,edge-runtime,logflare,postgres-meta,supavisor,vector,imgproxy >/tmp/folkoop-supabase-start.log
 supabase db reset >/tmp/folkoop-supabase-reset.log
-supabase status --env --output-format text > /tmp/folkoop-supabase.env
+supabase status -o env > /tmp/folkoop-supabase.env
 set -a
 # shellcheck disable=SC1091
 source /tmp/folkoop-supabase.env
