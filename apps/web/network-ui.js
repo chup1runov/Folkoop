@@ -73,7 +73,7 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const muraText=(section,key)=>{
- const pack=muraGuestCopy[lang()]||muraGuestCopy.en;
+ const pack=muraGuestCopy[lang()];
  return guestDemo?pack?.[section]?.[key]:undefined;
 };
 const SUBSECTION_KEY='folkoop-subsection-v1';
@@ -92,7 +92,7 @@ const accountEntryCopy={
  ru:{login:'Создать своё место в FOLKOOP',invite:'Продолжи уже со своими людьми, идеями и реальными делами.',email:'Электронная почта',send:'Продолжить',localContinue:'Продолжить локально без аккаунта'},
  sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'}
 };
-const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
+const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||t(k)||accountEntryCopy.en[k];
 
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
 function resetEconomicFlowState(){
