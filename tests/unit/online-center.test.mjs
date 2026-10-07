@@ -43,12 +43,17 @@ test('Center runtime is connected navigation, not a hidden Mura route or simulat
   assert(!/\bfetch\s*\(/.test(source));
 });
 
-test('Center source keeps the authored/local and external/no-sync concepts distinct',async()=>{
+test('Mura Center tells a personal story while external links retain no-sync boundaries',async()=>{
   const source=await readFile('apps/web/folkoop.js','utf8');
-  for(const key of ['centerLocalIllustrative','centerLocalExternalNote','centerLocalExternal'])assert(source.includes(key),key);
+  for(const key of ['centerLocalExternalNote','centerLocalExternal'])assert(source.includes(key),key);
+  assert(source.includes('FolkoopMuraVoice?.centerCopy(lang)'));
+  assert(source.includes("mura?'':t('centerOnlineStatus')"));
+  assert(!source.includes("mura?"+'`'+'<p class="meta">${esc(t(\'centerLocalIllustrative\'))}</p>'+'`'+":"));
   const copy=await readFile('apps/web/folkoop-copy.js','utf8');
   assert(copy.includes('no FOLKOOP account or data synchronization'));
   assert(copy.includes('Nothing is copied from the real forum'));
+  const contract=await readFile('docs/MURA_ACCEPTANCE_CONTRACT.md','utf8');
+  assert(contract.includes('disclosure remains at the public **entry boundary**'));
 });
 
 test('Mura acceptance contract allows only the authored Online Center story',async()=>{
