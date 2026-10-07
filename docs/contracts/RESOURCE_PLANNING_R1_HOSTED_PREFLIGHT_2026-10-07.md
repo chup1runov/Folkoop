@@ -61,6 +61,18 @@ The ordinary network export remains explicitly partial. R1's own export remains
 separately paginated. Neither is called a complete account export; the operator
 export/retention rehearsal remains an activation gate.
 
+## Local Auth/PostgREST finding added after hosted read-only preflight
+
+A full local Supabase Auth/PostgREST rehearsal demonstrated the platform behavior
+documented by Supabase: logout removed the user's `auth.sessions` row, but the
+unexpired JWT still received HTTP 200 from the original R1 mutation. R1 now checks
+`session_id` against `auth.sessions` for its read/write/export surface. The
+rehearsal is a blocking CI gate and must show the stale token denied before hosted
+application.
+
+This hardening is scoped to R1. Existing unrelated FOLKOOP RPCs retain their
+previous Auth contract and are not silently represented as immediately revoked.
+
 ## Not performed
 
 No hosted DDL, data writes, Auth/session mutation, feature activation, production

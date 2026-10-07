@@ -99,9 +99,13 @@ report.observations.auth_sessions_after_logout=sessionCount;
 check(sessionCount===0,'logout removes the local Auth session row');
 
 const replay=await rpc(a,'fk_save_resource_requirement',{p_id:requirement,p_project:project,p_flow:null,p_title:'Local rehearsal material',p_kind:'consumable',p_quantity:'0.125',p_unit:'kg',p_from:null,p_until:null,p_conditions:'Attempt with logged-out JWT',p_expected_revision:1});
-report.observations.logged_out_jwt_resource_write={status:replay.status,ok:replay.ok,code:replay.data?.code||null};
+report.observations.logged_out_jwt_resource_write={status:replay.status,ok:replay.ok,code:replay.data?.code||null,message:replay.data?.message||null};
 if(replay.ok)report.blockers.push('LOGGED_OUT_JWT_CAN_WRITE_R1');
-else report.checks.push('logged-out JWT cannot mutate R1');
+else check(replay.status===403&&replay.data?.message==='SESSION_REQUIRED','logged-out JWT cannot mutate R1');
+const revokedRead=await rows(a,reqPath);
+check(revokedRead.ok&&Array.isArray(revokedRead.data)&&revokedRead.data.length===0,'logged-out JWT loses R1 table read through RLS');
+const revokedExport=await rpc(a,'fk_export_resource_planning',{p_kind:'requirements',p_after:null,p_limit:100});
+check(!revokedExport.ok&&revokedExport.status===403&&revokedExport.data?.message==='SESSION_REQUIRED','logged-out JWT cannot export R1');
 
 a=await login(A);
 const inventory=JSON.parse(sql(`select folkoop_private.account_closure_inventory(${qid(A.id)})::text`));

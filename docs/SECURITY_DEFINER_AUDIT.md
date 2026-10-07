@@ -150,9 +150,10 @@ https://supabase.com/docs/guides/database/postgres/row-level-security
 6 October 2026.
 
 The repository migration `20261006152958_folkoop_resource_planning_r1.sql` extends the reviewed private-helper
-set in disposable CI from the eight hosted RLS helpers above to twelve exact
-`regprocedure` signatures. The four additional R1 helpers are:
+set in disposable CI from the eight hosted RLS helpers above to thirteen exact
+`regprocedure` signatures. The five additional authenticated R1 helpers are:
 
+- `resource_session_active()`
 - `save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)`
 - `save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)`
 - `remove_resource_plan(text,uuid,uuid,integer)`
@@ -160,6 +161,14 @@ set in disposable CI from the eight hosted RLS helpers above to twelve exact
 
 The canonical CI privilege test now matches exact signatures, so an unreviewed
 overload is not accepted merely because it shares an approved function name.
+
+Local Auth/PostgREST rehearsal on 7 October found that Supabase logout removes the
+`auth.sessions` row while a still-unexpired JWT can otherwise continue to reach
+PostgREST. R1 therefore adds an authenticated RLS helper
+`resource_session_active()`: it validates the JWT `session_id` against
+`auth.sessions` (and `not_after`) before R1 reads, writes, removal, generation
+reads or export. This is deliberately R1-scoped; it does not claim that every
+pre-existing FOLKOOP RPC has been retrofitted with immediate JWT revocation.
 
 This is **repository migration state, not hosted-state evidence**. The hosted
 project still has the eight-helper inventory described above until this migration

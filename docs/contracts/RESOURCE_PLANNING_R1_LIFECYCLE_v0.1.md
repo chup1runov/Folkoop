@@ -65,6 +65,11 @@ parent deletion also removes receipts. These identifiers are NOT declared anonym
 There is no copy of the erased payload in those receipts. Copies previously exported
 by a user and provider backups are outside this candidate's erasure claim.
 
+R1 additionally requires the current JWT `session_id` to resolve to the same user in
+`auth.sessions` and not be past `not_after`. Logout/session revocation therefore
+removes R1 read/write/export access immediately even if the access-token signature
+and `exp` are still valid. This is narrower than a global FOLKOOP Auth redesign.
+
 Deleting a profile remains different from deleting an Auth account. Tests separately
 cover profile-only deletion, complete owned-parent cascades, receipts, linked flows
 and preservation of another owner's data.
