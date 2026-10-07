@@ -14,8 +14,8 @@ test('real-user My overview exposes three equal ways to use FOLKOOP',()=>{
   assert.match(ui,/data-home="createCoop" data-kind="project"/);
 });
 
-test('Mura home stays on the dedicated illustrative renderer',()=>{
-  assert.match(ui,/html=guestDemo\?muraHomeDomain\.render\(u\):renderHome\(u\)/);
+test('Mura home keeps the dedicated illustrative renderer where authored copy exists',()=>{
+  assert.match(ui,/guestDemo&&\['en','sv','ru'\]\.includes\(lang\(\)\)\?muraHomeDomain\.render\(u\):renderHome\(u\)/);
 });
 
 test('three-mode copy is available in all eleven production languages',()=>{
