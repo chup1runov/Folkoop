@@ -94,6 +94,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   return [s,e];
  }
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
+ async function resourceExport(kind){
+  const data=await request('/rest/v1/rpc/fk_export_resource_planning',{method:'POST',body:{p_kind:kind,p_after:null,p_limit:100},resource:true});
+  if(!data||typeof data!=='object'||data.schema_version!==1||data.kind!==kind||data.scope!=='own_resource_planning_only'||data.snapshot!==false||!Array.isArray(data.records)||typeof data.has_more!=='boolean')throw fail('INVALID_RESPONSE');
+  return data;
+ }
  async function trackedRpc(name,args,event,properties){const result=await rpc(name,args);track(event,properties);return result;}
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
@@ -214,7 +219,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   finishPurchase(cid,note=''){return trackedRpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)},'purchase_completed');},
   cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,resourceRequirements,resourceAvailability]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -232,9 +237,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500'),
    rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
    rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
-   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500')
+   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
+   resourceExport('requirements'),
+   resourceExport('availability')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,resourcePlanning:{requirements:resourceRequirements,availability:resourceAvailability},scope:'Visible records only; server limits may truncate. Resource-planning pages expose has_more/next_cursor and are not a complete account snapshot. Request a complete account export from the operator.'};
   }
  });
 }
