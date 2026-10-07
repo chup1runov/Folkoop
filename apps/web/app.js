@@ -566,7 +566,7 @@ const muraCityCopy={
 };
 function t(key) {
   if(MURA_MODE){
-    const mura=muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key];
+    const mura=muraCityCopy[currentLanguage]?.[key];
     if(mura!==undefined)return mura;
   }
   return messages[currentLanguage][key] || messages.sv[key] || key;
