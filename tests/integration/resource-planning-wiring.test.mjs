@@ -57,9 +57,9 @@ for(const [status,code,expected] of [[409,'40001','RESOURCE_CONFLICT'],[404,'PGR
  const h=setup();await h.login();h.handle(()=>json({code,message:'sensitive server detail'},status));
  await assert.rejects(h.api.resourcePlanning.requirements(UID),e=>e.code===expected&&!e.message.includes('sensitive'));
 });
-test('R1 session revocation clears only the matching current client session',async()=>{
+test('R1 session revocation clears current client and stale-marks the completed resource request',async()=>{
  const h=setup();await h.login();h.handle(()=>json({code:'42501',message:'SESSION_REQUIRED'},403));
- await assert.rejects(h.api.resourcePlanning.requirements(UID),e=>e.code==='AUTH_REQUIRED');
+ await assert.rejects(h.api.resourcePlanning.requirements(UID),e=>e.code==='STALE');
  assert.equal(h.api.user(),null);
 });
 test('unknown HTTP failure does not leak raw server detail',async()=>{
