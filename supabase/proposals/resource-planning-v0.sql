@@ -24,6 +24,28 @@ create function folkoop_private.resource_plan_dimensions_valid(
 $$;
 revoke all on function folkoop_private.resource_plan_dimensions_valid(text,numeric,text,timestamptz,timestamptz,boolean) from public,anon,authenticated;
 
+-- R1 treats Auth logout/session revocation as immediately effective instead of
+-- accepting a still-unexpired JWT for private resource reads/writes.
+create function folkoop_private.resource_session_active() returns boolean
+language plpgsql stable security definer set search_path='' as $
+declare sid uuid;
+begin
+  if auth.uid() is null then return false; end if;
+  begin
+    sid:=nullif(auth.jwt()->>'session_id','')::uuid;
+  exception when invalid_text_representation then
+    return false;
+  end;
+  if sid is null then return false; end if;
+  return exists(
+    select 1 from auth.sessions s
+    where s.id=sid and s.user_id=auth.uid()
+      and (s.not_after is null or s.not_after>now())
+  );
+end $;
+revoke all on function folkoop_private.resource_session_active() from public,anon,authenticated;
+grant execute on function folkoop_private.resource_session_active() to authenticated;
+
 create table public.fk_resource_requirements (
   id uuid primary key,
   cooperation_id uuid not null references public.fk_cooperations(id) on delete cascade,
@@ -68,9 +90,9 @@ alter table public.fk_resource_availability enable row level security;
 revoke all on public.fk_resource_requirements,public.fk_resource_availability from public,anon,authenticated;
 grant select on public.fk_resource_requirements,public.fk_resource_availability to authenticated;
 create policy resource_requirements_read on public.fk_resource_requirements for select to authenticated
-using(folkoop_private.coop_member(cooperation_id));
+using(folkoop_private.resource_session_active() and folkoop_private.coop_member(cooperation_id));
 create policy resource_availability_read on public.fk_resource_availability for select to authenticated
-using(folkoop_private.coop_member(resource_id) and exists(
+using(folkoop_private.resource_session_active() and folkoop_private.coop_member(resource_id) and exists(
   select 1 from public.fk_cooperations c where c.id=resource_id and c.owner_id=(select auth.uid())
 ));
 
@@ -101,11 +123,15 @@ create function folkoop_private.save_resource_requirement(
   p_unit text, p_from timestamptz, p_until timestamptz, p_conditions text, p_expected_revision integer
 ) returns integer language plpgsql security definer set search_path='' as $$
 declare
-  uid uuid:=folkoop_private.actor();
+  uid uuid;
   parent public.fk_cooperations;
   previous public.fk_resource_requirements;
   flow_stage text;
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
+  uid:=folkoop_private.actor();
   select * into parent from public.fk_cooperations where id=p_project for update;
   if parent.owner_id is distinct from uid then
     raise insufficient_privilege using message='OWNER_REQUIRED';
@@ -159,10 +185,14 @@ create function folkoop_private.save_resource_availability(
   p_conditions text,p_expected_revision integer
 ) returns integer language plpgsql security definer set search_path='' as $$
 declare
-  uid uuid:=folkoop_private.actor();
+  uid uuid;
   parent public.fk_cooperations;
   previous public.fk_resource_availability;
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
+  uid:=folkoop_private.actor();
   select * into parent from public.fk_cooperations where id=p_resource for update;
   if parent.owner_id is distinct from uid then
     raise insufficient_privilege using message='OWNER_REQUIRED';

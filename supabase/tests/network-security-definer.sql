@@ -67,6 +67,7 @@ with allowed(signature) as (
       ('folkoop_private.shares_chat(uuid)'),
       ('folkoop_private.shares_cooperation(uuid)'),
       ('folkoop_private.selected_purchase_provider(uuid)'),
+      ('folkoop_private.resource_session_active()'),
       ('folkoop_private.save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)'),
       ('folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)'),
       ('folkoop_private.remove_resource_plan(text,uuid,uuid,integer)'),
@@ -113,8 +114,8 @@ select fk_secdef_test.ok(
   where p.prosecdef
     and n.nspname='folkoop_private'
     and has_function_privilege('authenticated',p.oid,'execute')
- )=12,
- 'all twelve reviewed private helpers are explicitly executable by authenticated'
+ )=13,
+ 'all thirteen reviewed private helpers are explicitly executable by authenticated'
 );
 
 rollback;

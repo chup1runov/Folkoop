@@ -53,11 +53,15 @@ create or replace function folkoop_private.save_resource_availability(
   p_conditions text,p_expected_revision integer
 ) returns integer language plpgsql security definer set search_path='' as $$
 declare
-  uid uuid:=folkoop_private.actor();
+  uid uuid;
   parent public.fk_cooperations;
   previous public.fk_resource_availability;
   generation integer;
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
+  uid:=folkoop_private.actor();
   select * into parent from public.fk_cooperations where id=p_resource for update;
   if parent.owner_id is distinct from uid then
     raise insufficient_privilege using message='OWNER_REQUIRED';
@@ -101,11 +105,15 @@ create function folkoop_private.remove_resource_plan(
   p_kind text,p_parent uuid,p_id uuid,p_expected_revision integer
 ) returns boolean language plpgsql security definer set search_path='' as $$
 declare
-  uid uuid:=folkoop_private.actor();
+  uid uuid;
   parent public.fk_cooperations;
   actual_revision integer;
   actual_parent uuid;
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
+  uid:=folkoop_private.actor();
   if p_kind is null or p_kind not in ('requirement','availability') or p_parent is null or p_id is null
     or p_expected_revision is null or p_expected_revision<1 or p_expected_revision>=2147483647 then
     raise exception 'INVALID_RESOURCE_PLAN_INPUT' using errcode='22023';
@@ -159,6 +167,9 @@ $$;
 create function folkoop_private.resource_availability_revision(p_resource uuid)
 returns integer language plpgsql stable security definer set search_path='' as $$
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
   if auth.uid() is null or not folkoop_private.is_pilot() or not exists(
     select 1 from public.fk_cooperations where id=p_resource and kind='resource' and owner_id=auth.uid()
   ) then raise insufficient_privilege using message='OWNER_REQUIRED'; end if;
@@ -175,6 +186,9 @@ create function public.fk_export_resource_planning(p_kind text,p_after uuid defa
 returns jsonb language plpgsql stable security invoker set search_path='' as $$
 declare result jsonb;
 begin
+  if not folkoop_private.resource_session_active() then
+    raise insufficient_privilege using message='SESSION_REQUIRED';
+  end if;
   if auth.uid() is null or not folkoop_private.is_pilot() then
     raise insufficient_privilege using message='PILOT_REQUIRED';
   end if;

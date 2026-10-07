@@ -26,6 +26,7 @@ select fk_resource_test.ok(not has_table_privilege('anon','public.fk_resource_re
 select fk_resource_test.ok(not has_table_privilege('authenticated','public.fk_resource_requirements','INSERT') and not has_table_privilege('authenticated','public.fk_resource_availability','UPDATE'),'no direct authenticated writes');
 select fk_resource_test.ok(not has_function_privilege('anon','public.fk_save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)','EXECUTE'),'anonymous RPC execution denied');
 select fk_resource_test.ok(not has_function_privilege('anon','folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)','EXECUTE'),'anonymous private mutation execution denied');
+select fk_resource_test.ok(has_function_privilege('authenticated','folkoop_private.resource_session_active()','EXECUTE') and not has_function_privilege('anon','folkoop_private.resource_session_active()','EXECUTE'),'session RLS helper is authenticated-only executable');
 select fk_resource_test.ok((select not prosecdef from pg_proc where oid='public.fk_save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)'::regprocedure),'public RPC is invoker, privileged implementation private');
 select fk_resource_test.ok(to_regprocedure('public.fk_accept_resource_offer(uuid)') is null,'R1 does not claim acceptance or reservation');
 
@@ -34,6 +35,11 @@ insert into auth.users(id) values
  ('62222222-2222-4222-8222-222222222222'),
  ('63333333-3333-4333-8333-333333333333'),
  ('64444444-4444-4444-8444-444444444444');
+insert into auth.sessions(id,user_id) values
+ ('61111111-1111-4111-8111-111111111111','61111111-1111-4111-8111-111111111111'),
+ ('62222222-2222-4222-8222-222222222222','62222222-2222-4222-8222-222222222222'),
+ ('63333333-3333-4333-8333-333333333333','63333333-3333-4333-8333-333333333333'),
+ ('64444444-4444-4444-8444-444444444444','64444444-4444-4444-8444-444444444444');
 insert into folkoop_private.pilots(user_id) values
  ('61111111-1111-4111-8111-111111111111'),
  ('62222222-2222-4222-8222-222222222222'),
@@ -99,6 +105,17 @@ select fk_resource_test.fails(format('select public.fk_save_resource_requirement
 select set_config('request.jwt.claim.sub','62222222-2222-4222-8222-222222222222',true);
 select public.fk_leave_cooperation(:'project_id');
 select fk_resource_test.ok((select count(*)=0 from public.fk_resource_requirements where id=:'req_id'),'leaving project immediately removes read access');
+select set_config('request.jwt.claim.sub','61111111-1111-4111-8111-111111111111',true);
+reset role;
+delete from auth.sessions where id='61111111-1111-4111-8111-111111111111';
+set local role authenticated;
+select set_config('request.jwt.claim.sub','61111111-1111-4111-8111-111111111111',true);
+select fk_resource_test.ok((select count(*)=0 from public.fk_resource_requirements where id=:'req_id'),'revoked session immediately loses R1 read access');
+select fk_resource_test.fails(format('select public.fk_save_resource_requirement(%L,%L,null,''revoked'',''consumable'',1,''kg'',null,null,'''',2)',:'req_id',:'project_id'),'42501','revoked session cannot mutate R1');
+select fk_resource_test.fails('select public.fk_export_resource_planning(''requirements'')','42501','revoked session cannot export R1');
+reset role;
+insert into auth.sessions(id,user_id) values('61111111-1111-4111-8111-111111111111','61111111-1111-4111-8111-111111111111');
+set local role authenticated;
 select set_config('request.jwt.claim.sub','61111111-1111-4111-8111-111111111111',true);
 select public.fk_update_cooperation(:'project_id','R1 repair example','Synthetic R1 test','Göteborg','done',null,'');
 select fk_resource_test.fails(format('select public.fk_save_resource_requirement(%L,%L,null,''closed'',''consumable'',1,''kg'',null,null,'''',2)',:'req_id',:'project_id'),'22023','closed project rejects planning mutations');

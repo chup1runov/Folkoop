@@ -1,5 +1,5 @@
 -- Post-candidate catalog audit. The existing pre-candidate audit is unchanged.
--- Explicitly reconcile its eight RLS helpers with FOUR reviewed R1 implementations.
+-- Explicitly reconcile its eight hosted RLS helpers with five authenticated R1 helpers.
 create schema fk_r1_privilege_test;
 create function fk_r1_privilege_test.assert_contract() returns void language plpgsql as $$
 declare
@@ -12,6 +12,7 @@ declare
     'folkoop_private.shares_chat(uuid)',
     'folkoop_private.shares_cooperation(uuid)',
     'folkoop_private.selected_purchase_provider(uuid)',
+    'folkoop_private.resource_session_active()',
     'folkoop_private.save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)',
     'folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)',
     'folkoop_private.remove_resource_plan(text,uuid,uuid,integer)',
