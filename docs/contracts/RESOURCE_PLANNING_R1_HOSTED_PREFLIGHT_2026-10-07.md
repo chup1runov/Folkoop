@@ -82,3 +82,35 @@ Next gate after CI on the corrected migration: rehearse the pending migration on
 isolated environment or separately authorized path, then perform three-account,
 session and account-closure/export/retention verification before any production
 application or feature-flag activation.
+
+
+## Hosted apply result — 2026-10-07
+
+After explicit production authorization, the frozen R1 SQL was applied to project
+`cwvhkdqsrbllsykhccmb`. Supabase recorded:
+
+`20261007121210 · folkoop_resource_planning_r1`
+
+The repository migration file was renamed to
+`20261007121210_folkoop_resource_planning_r1.sql` without changing SQL content;
+the applied Git blob remains
+`3d5073fb68c8dd1050814e5237bea1aa41216902`.
+
+Post-apply verification confirmed:
+- the three R1 tables exist;
+- RLS is enabled on both public R1 tables and the private removal table;
+- anon has no R1 table/RPC access;
+- authenticated has SELECT only on public R1 tables plus the reviewed RPC/helper
+  EXECUTE surface;
+- `resource_session_active()` is SECURITY DEFINER with pinned empty search path,
+  authenticated-only EXECUTE, and is present in both SELECT policies;
+- `account_closure_inventory(uuid)` exposes all four R1 count/provenance fields;
+- `fk_resource_requirements_created_by_idx` exists;
+- a server context without user/session returns false from the session helper;
+- the public feature flag remains OFF.
+
+Security Advisor added the private R1 removal table as a fourth intentional
+`rls_enabled_no_policy` INFO finding. No new public R1 SECURITY DEFINER warning
+was introduced. Performance Advisor shows new R1 indexes as unused immediately
+after creation and retains the pre-existing unindexed
+`fk_economic_flows.created_by` finding.
