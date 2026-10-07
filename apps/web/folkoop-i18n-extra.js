@@ -4377,6 +4377,12 @@ for(const [code,replacement] of Object.entries(semanticCopyAudit20261007)){
 }
 // SEMANTIC_COPY_AUDIT_20261007
 
+
+languages.fa.network.home.why='صفحهٔ اصلی عمداً بر پایهٔ اقدام‌های مفید ساخته شده است، نه یک فید بی‌پایان برای نگه‌داشتن توجه.';
+languages.ku.network.coop.purchaseHelp='Hejmar qebareya fizîkî ye, ne dravdan. Li vir tu dravdan an veguheztina pereyan nayê kirin.';
+languages.so.network.base.profile='Borofaaylka shabakadda';
+// NATURALNESS_SPOT_FIXES_20261007
+
 // LANG_BLOCKS
 globalThis.FolkoopExtraCopy = Object.freeze({languages});
 })();
