@@ -23,7 +23,10 @@ authenticated. It is intended for an operator/admin database context only.
 - communities owned by the user;
 - standalone group conversations owned by the user;
 - cooperations owned by the user;
-- linked work chats attached to owned cooperations.
+- linked work chats attached to owned cooperations;
+- R1 resource requirements attached to owned cooperations;
+- R1 private availability attached to owned resources;
+- minimal R1 removal receipts attached to owned cooperations.
 
 These are the dangerous roots: deleting their owner can cascade into rows
 belonging to other participants.
@@ -37,7 +40,8 @@ belonging to other participants.
 
 `pseudonymising_set_null`
 - activity where the user is actor;
-- task assignments that become unassigned.
+- task assignments that become unassigned;
+- R1 requirement `created_by` provenance when a requirement survives independently of its author.
 
 `private_pilot`
 - admission record;
@@ -55,8 +59,10 @@ Before any destructive action:
 1. disable the participant's pilot admission/authorization so the admitted
    network path stops accepting the user immediately;
 2. globally revoke refresh sessions using a supported Supabase Auth path;
-3. remember that already-issued access JWTs can remain valid until their `exp`,
-   so session revocation is not the immediate authorization boundary;
+3. remember that already-issued access JWTs can remain valid until their `exp`.
+   R1 resource planning now separately checks JWT `session_id` against `auth.sessions`
+   and therefore fails closed after logout/revocation; older FOLKOOP surfaces must
+   not be silently assumed to have the same immediate-revocation guarantee;
 4. run the read-only inventory above;
 5. resolve every `owned_shared` object:
    - transfer ownership to a consenting remaining participant when the shared
@@ -91,8 +97,9 @@ runbook are now documented:
 - retention and rights handling are documented.
 
 The remaining launch gate for account closure is **operational verification**:
-run this procedure once against a developer/test identity after real Google Auth
-is active.
+run this procedure once against a deliberately designated developer/test identity
+on the final pilot Auth route. Do not use an ordinary participant or infer that
+an existing Auth identity is a test identity.
 
 The current FK cascade remains an integrity mechanism, not a privacy policy.
 
