@@ -4284,6 +4284,99 @@ for(const code of auditedExtraLanguages20261007){
 }
 // ROUTE_AUDIT_20261007
 
+
+// High-priority editorial truth audit: preserve the current pilot's implemented
+// network routes, private-draft boundaries and honest security/venue claims.
+// This follows the route-key overlay and does not change route behavior.
+const semanticCopyAudit20261007={
+  "es": {
+    "peopleText": "Después de iniciar sesión, Personas conecta a los participantes que eligieron aparecer en el directorio según sus habilidades e intereses compartidos. Los borradores privados del perfil guardados localmente permanecen separados de la red.",
+    "togetherText": "Pide ayuda, ofrece una habilidad, comparte un recurso o coordina una compra conjunta. Los participantes que han iniciado sesión pueden crear y unirse a actividades de cooperación; los pagos y pedidos externos se realizan fuera de FOLKOOP.",
+    "projectsText": "Un Proyecto de la red puede reunir un objetivo, participantes, tareas, actualizaciones y un chat de trabajo. Tus borradores privados locales siguen siendo tuyos hasta que decidas crear un Proyecto en la red.",
+    "cityText": "Fuentes oficiales locales conectadas y rutas de acceso en un solo lugar. FOLKOOP te ayuda a entender el siguiente paso; las solicitudes oficiales se envían a través del organismo responsable.",
+    "messageText": "En el modo local no se envían mensajes. Los participantes del piloto que hayan iniciado sesión pueden usar chats personales, de grupo y de trabajo guardados en el servidor. Estos chats no tienen cifrado de extremo a extremo.",
+    "noDraftsText": "Los borradores locales siguen siendo privados y nunca se publican automáticamente. Para compartir una idea en el piloto, inicia sesión y crea por separado una cooperación o un Proyecto en la red.",
+    "helperOpen": "Abrir la guía de FOLKOOP"
+  },
+  "uk": {
+    "peopleText": "Після входу розділ «Люди» допомагає знаходити учасників, які самі дозволили показувати свій профіль, за навичками та спільними інтересами. Приватні локальні чернетки профілю залишаються окремо від мережі.",
+    "togetherText": "Проси допомоги, пропонуй уміння, ділися ресурсами або координуй спільну закупівлю. Учасники після входу можуть створювати спільні справи й долучатися до них; платежі та зовнішні замовлення відбуваються поза FOLKOOP.",
+    "projectsText": "Мережевий Проєкт об’єднує мету, учасників, завдання, оновлення й робочий чат. Твої локальні приватні чернетки залишаються твоїми, доки ти свідомо не створиш окремий Проєкт у мережі.",
+    "cityText": "Підключені офіційні місцеві джерела та маршрути в одному місці. FOLKOOP допомагає зрозуміти наступний крок; офіційні звернення й надалі подаються через відповідну установу.",
+    "messageText": "У локальному режимі повідомлення не надсилаються. Учасники пілоту після входу можуть користуватися особистими, груповими й робочими чатами на сервері. Ці чати не мають наскрізного шифрування.",
+    "noDraftsText": "Локальні чернетки залишаються приватними й ніколи не публікуються автоматично. Щоб поділитися ідеєю в пілоті, увійди та окремо створи спільну справу або Проєкт у мережі.",
+    "helperOpen": "Відкрити помічницю FOLKOOP"
+  },
+  "fi": {
+    "peopleText": "Kirjautumisen jälkeen Ihmiset-osio yhdistää pilottiosallistujia, jotka ovat itse sallineet profiilinsa löytymisen, taitojen ja yhteisten kiinnostusten perusteella. Yksityiset paikalliset profiililuonnokset pysyvät erillään verkosta.",
+    "togetherText": "Pyydä apua, tarjoa osaamistasi, jaa resursseja tai koordinoi yhteisostoa. Kirjautuneet pilottiosallistujat voivat luoda yhteistyökohteita ja liittyä niihin; maksut ja ulkoiset tilaukset hoidetaan FOLKOOPin ulkopuolella.",
+    "projectsText": "Verkon Projekti kokoaa tavoitteen, osallistujat, tehtävät, päivitykset ja työchatin yhteen. Yksityiset paikalliset luonnokset pysyvät ominasi, kunnes päätät itse luoda erillisen verkko-Projektin.",
+    "cityText": "Yhdistetyt viralliset paikalliset lähteet ja asiointireitit yhdessä paikassa. FOLKOOP auttaa ymmärtämään seuraavan askeleen; viralliset ilmoitukset lähetetään edelleen toimivaltaisen viranomaisen kautta.",
+    "messageText": "Paikallisessa tilassa viestejä ei lähetetä. Kirjautuneet pilottiosallistujat voivat käyttää palvelimelle tallennettuja suoria, ryhmä- ja yhteistyökeskusteluja. Keskusteluissa ei ole päästä päähän -salausta.",
+    "noDraftsText": "Paikalliset luonnokset pysyvät yksityisinä eikä niitä koskaan julkaista automaattisesti. Jos haluat jakaa idean pilotissa, kirjaudu sisään ja luo erillinen yhteistyökohde tai Projekti verkkoon.",
+    "helperOpen": "Avaa FOLKOOP-opas"
+  },
+  "bs": {
+    "peopleText": "Nakon prijave, odjeljak Ljudi povezuje učesnike koji su sami odlučili da njihov profil bude vidljiv, prema vještinama i zajedničkim interesima. Privatne lokalne skice profila ostaju odvojene od mreže.",
+    "togetherText": "Zatraži pomoć, ponudi vještinu, podijeli resurs ili koordiniraj zajedničku kupovinu. Prijavljeni učesnici pilota mogu stvarati oblike saradnje i pridruživati im se; plaćanja i vanjske narudžbe obavljaju se izvan FOLKOOP-a.",
+    "projectsText": "Mrežni Projekat može povezati cilj, učesnike, zadatke, novosti i radni razgovor. Tvoje privatne lokalne skice ostaju tvoje dok samostalno ne odlučiš stvoriti odvojeni Projekat na mreži.",
+    "cityText": "Povezani službeni lokalni izvori i putevi do usluga na jednom mjestu. FOLKOOP pomaže da razumiješ sljedeći korak; službene prijave i dalje se podnose nadležnom organu.",
+    "messageText": "U lokalnom režimu poruke se ne šalju. Prijavljeni učesnici pilota mogu koristiti direktne, grupne i radne razgovore pohranjene na serveru. Ti razgovori nemaju end-to-end enkripciju.",
+    "noDraftsText": "Lokalne skice ostaju privatne i nikada se ne objavljuju automatski. Da podijeliš ideju u pilotu, prijavi se i zasebno stvori saradnju ili Projekat na mreži.",
+    "helperOpen": "Otvori vodič za FOLKOOP"
+  },
+  "ar": {
+    "peopleText": "بعد تسجيل الدخول، يساعد قسم «الأشخاص» في العثور على المشاركين الذين اختاروا إظهار ملفاتهم للآخرين بحسب المهارات والاهتمامات المشتركة. تبقى مسودات الملف الشخصي المحلية والخاصة منفصلة عن الشبكة.",
+    "togetherText": "اطلب المساعدة أو اعرض مهارة أو شارك موردًا أو نسّق شراءً جماعيًا. يستطيع المشاركون الذين سجّلوا الدخول إنشاء أنشطة تعاون والانضمام إليها؛ وتظل المدفوعات والطلبات الخارجية خارج FOLKOOP.",
+    "projectsText": "يمكن لمشروع على الشبكة أن يجمع هدفًا ومشاركين ومهام وتحديثات ومحادثة عمل. تبقى مسوداتك المحلية الخاصة ملكًا لك حتى تختار عمدًا إنشاء مشروع منفصل على الشبكة.",
+    "cityText": "مصادر محلية رسمية متصلة ومسارات للخدمات في مكان واحد. يساعدك FOLKOOP على فهم الخطوة التالية؛ وتُرسل الطلبات الرسمية عبر الجهة المسؤولة.",
+    "messageText": "لا تُرسل أي رسائل في الوضع المحلي. يستطيع المشاركون المسجّلون في البرنامج التجريبي استخدام محادثات مباشرة وجماعية ومحادثات عمل محفوظة على الخادم. هذه المحادثات ليست مشفّرة من طرف إلى طرف.",
+    "noDraftsText": "تظل المسودات المحلية خاصة ولا تُنشر تلقائيًا أبدًا. لمشاركة فكرة في البرنامج التجريبي، سجّل الدخول وأنشئ تعاونًا أو مشروعًا منفصلًا على الشبكة.",
+    "helperOpen": "فتح دليل FOLKOOP"
+  },
+  "fa": {
+    "peopleText": "پس از ورود، بخش «افراد» شرکت‌کنندگانی را که خودشان اجازهٔ دیده‌شدن پروفایلشان را داده‌اند، بر اساس مهارت‌ها و علایق مشترک به هم متصل می‌کند. پیش‌نویس‌های خصوصی پروفایل روی دستگاه جدا از شبکه باقی می‌مانند.",
+    "togetherText": "کمک بخواه، مهارتت را پیشنهاد بده، منبعی را به اشتراک بگذار یا خرید گروهی را هماهنگ کن. شرکت‌کنندگانی که وارد شده‌اند می‌توانند همکاری ایجاد کنند و به آن بپیوندند؛ پرداخت‌ها و سفارش‌های بیرونی همچنان خارج از FOLKOOP انجام می‌شوند.",
+    "projectsText": "یک پروژهٔ شبکه‌ای می‌تواند هدف، شرکت‌کنندگان، وظایف، به‌روزرسانی‌ها و گفت‌وگوی کاری را کنار هم بیاورد. پیش‌نویس‌های محلی و خصوصی تا زمانی که آگاهانه پروژه‌ای جداگانه در شبکه نسازی، نزد خودت می‌مانند.",
+    "cityText": "منابع رسمی محلیِ متصل و مسیرهای دسترسی به خدمات در یک جا گرد آمده‌اند. FOLKOOP برای فهمیدن گام بعدی کمکت می‌کند؛ درخواست‌های رسمی همچنان از طریق مرجع مسئول فرستاده می‌شوند.",
+    "messageText": "در حالت محلی هیچ پیامی ارسال نمی‌شود. شرکت‌کنندگان واردشدهٔ پایلوت می‌توانند از گفت‌وگوهای مستقیم، گروهی و کاریِ ذخیره‌شده روی سرور استفاده کنند. این گفت‌وگوها رمزگذاری سرتاسری ندارند.",
+    "noDraftsText": "پیش‌نویس‌های محلی خصوصی می‌مانند و هرگز خودکار منتشر نمی‌شوند. برای به اشتراک گذاشتن ایده در پایلوت، وارد شو و یک همکاری یا پروژهٔ جداگانه در شبکه بساز.",
+    "helperOpen": "باز کردن راهنمای FOLKOOP"
+  },
+  "so": {
+    "peopleText": "Markaad gasho, qaybta Dadka waxay isku xirtaa ka qaybgalayaasha iyagu doortay in borofaaylkooda la heli karo, iyadoo lagu salaynayo xirfadaha iyo danaha ay wadaagaan. Qabyooyinka borofaaylka ee gaarka ah ee qalabka ku jira way ka gooni yihiin shabakadda.",
+    "togetherText": "Codso caawimo, soo bandhig xirfad, wadaag kheyraad ama isku dubbarid iibsi wadajir ah. Ka qaybgalayaasha soo galay waxay samayn karaan iskaashi kuna biiri karaan; lacag-bixinta iyo dalabaadka dibadda waxaa lagu sameeyaa meel ka baxsan FOLKOOP.",
+    "projectsText": "Mashruuc shabakadeed wuxuu isku keeni karaa hadaf, ka qaybgalayaal, hawlo, cusboonaysiin iyo wada-hadal shaqo. Qabyooyinkaaga gaarka ah ee qalabka ku jira adigaa iska leh ilaa aad si ula kac ah mashruuc gooni ah uga samayso shabakadda.",
+    "cityText": "Ilo rasmi ah oo maxalli ah iyo waddooyinka adeegyada ayaa hal meel la iskugu keenay. FOLKOOP wuxuu kaa caawiyaa fahamka tallaabada xigta; codsiyada rasmiga ah waxaa weli loo gudbiyaa hay’adda mas’uulka ah.",
+    "messageText": "Habka gudaha ah wax farriimo ah lama diro. Ka qaybgalayaasha tijaabada ee soo galay waxay isticmaali karaan wada-hadallo toos ah, kooxeed iyo kuwo shaqo oo server-ka lagu kaydiyo. Wada-hadalladani ma laha sirgelin dhammaad-ilaa-dhammaad ah.",
+    "noDraftsText": "Qabyooyinka gudaha ah waxay ahaanayaan gaar, si toos ahna waligood looma daabaco. Si aad fikrad ula wadaagto tijaabada, gal oo si gooni ah shabakadda uga samee iskaashi ama mashruuc.",
+    "helperOpen": "Fur hagaha FOLKOOP",
+    "me": "Borofaayl",
+    "myTitle": "Borofaayl"
+  },
+  "ku": {
+    "peopleText": "Piştî têketinê, beşa «Mirov» beşdarên ku bi xwe hilbijartine profîla wan were dîtin, li gorî jêhatîbûn û eleqeyên hevpar bi hev ve girêdide. Pêşnivîsên profîla taybet a li ser amûra te ji torê cuda dimînin.",
+    "togetherText": "Alîkarî bixwaze, jêhatîbûnekê pêşkêş bike, çavkaniyekê parve bike an kirîna hevpar bi rê ve bibe. Beşdarên ku têketine dikarin hevkariyan ava bikin û tevlî wan bibin; dravdan û fermanên derveyî FOLKOOP li derveyî wê pêk tên.",
+    "projectsText": "Projeyek li ser torê dikare armanc, beşdar, peywir, nûkirin û axaftina karê bîne hev. Pêşnivîsên te yên herêmî û taybet heta ku tu bi xwe projeyek cuda li ser torê çênekî, yên te dimînin.",
+    "cityText": "Çavkaniyên fermî yên herêmî û rêyên xizmetan li cihekî hatine komkirin. FOLKOOP alîkarî dike ku tu gava paşîn fam bikî; serlêdanên fermî hîn jî bi rêya saziya berpirsiyar têne şandin.",
+    "messageText": "Di moda herêmî de tu peyam nayê şandin. Beşdarên pilotê ku têketine dikarin axaftinên rasterast, komî û karê yên li ser serverê hilanîn bikar bînin. Ev axaftin bi şîfrekirina serî-bi-serî nayên parastin.",
+    "noDraftsText": "Pêşnivîsên herêmî taybet dimînin û tu carî bixwe nayên weşandin. Ji bo parvekirina fikrekê di pilotê de, têkeve û hevkariyek an projeyek cuda li ser torê biafirîne.",
+    "centerText": "Navenda fizîkî ya FOLKOOP armanceke pêşerojê ye: ji bo hevdîtin, fêrbûn, alîkariya mirovan, xebata projeyan û parvekirina amûran. Hê navendeke FOLKOOP nehatiye vekirin; em nadibêjin ku cih, amûr an bernameyek piştrastkirî amade ye.",
+    "helperOpen": "Rêberê FOLKOOP veke",
+    "hero": "Tiştek pêwîst e? Dikarî alîkarî bikî?\nDixwazî tiştek pêk bînî?"
+  }
+};
+for(const [code,replacement] of Object.entries(semanticCopyAudit20261007)){
+ const pack=languages[code],{helperOpen,...shell}=replacement;
+ Object.assign(pack.shell,shell);
+ pack.shell.hero=pack.shell.hero.split("\\n").join("\n");
+ pack.helper.open=helperOpen;
+ // Extra-language general tutorial follows the updated current product wording.
+ for(const key of ['people','together','projects','city'])
+  pack.tutorial[key]=pack.shell[key+'Text'];
+}
+// SEMANTIC_COPY_AUDIT_20261007
+
 // LANG_BLOCKS
 globalThis.FolkoopExtraCopy = Object.freeze({languages});
 })();
