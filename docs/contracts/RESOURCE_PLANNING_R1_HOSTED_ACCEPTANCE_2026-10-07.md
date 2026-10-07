@@ -49,7 +49,10 @@ own-record export isolation, and logout revocation for R1 write/read/export.
 It then attempts cleanup through supported lifecycle RPCs.
 
 A cleanup failure is a blocker and must be handled through supported lifecycle
-paths, not direct protected-table edits.
+paths, not direct protected-table edits. The harness re-authenticates a test
+identity if its session was deliberately revoked during the logout/JWT check,
+logs both test sessions out at the end, and returns FAIL with
+`CLEANUP_INCOMPLETE` if any technical-object cleanup step fails.
 
 Account closure is separate and destructive. After this gate passes, rehearse
 docs/ACCOUNT_CLOSURE_RUNBOOK.md on a designated developer/test identity. Run the
