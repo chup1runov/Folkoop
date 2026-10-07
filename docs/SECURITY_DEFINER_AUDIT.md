@@ -145,12 +145,12 @@ https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticate
 RLS reference:
 https://supabase.com/docs/guides/database/postgres/row-level-security
 
-## R1 repository migration delta — not yet hosted
+## R1 hosted migration audit
 
 6 October 2026.
 
-The repository migration `20261006152958_folkoop_resource_planning_r1.sql` extends the reviewed private-helper
-set in disposable CI from the eight hosted RLS helpers above to thirteen exact
+The hosted migration `20261007121210_folkoop_resource_planning_r1.sql` extends the reviewed private-helper
+set from the original eight hosted RLS helpers to thirteen exact
 `regprocedure` signatures. The five additional authenticated R1 helpers are:
 
 - `resource_session_active()`
@@ -170,10 +170,11 @@ PostgREST. R1 therefore adds an authenticated RLS helper
 reads or export. This is deliberately R1-scoped; it does not claim that every
 pre-existing FOLKOOP RPC has been retrofitted with immediate JWT revocation.
 
-This is **repository migration state, not hosted-state evidence**. The hosted
-project still has the eight-helper inventory described above until this migration
-is separately applied and verified. The public resource-planning feature flag
-also remains disabled.
+Hosted verification on 7 October confirms these five R1 private helpers have the
+reviewed empty search path, authenticated-only EXECUTE, and no anon/PUBLIC EXECUTE.
+The two public R1 tables have RLS enabled; the private removal table has RLS with no
+browser policy or browser table grant; and both R1 SELECT policies invoke
+`resource_session_active()`. The public resource-planning feature flag remains disabled.
 
 ## Remaining pre-pilot security work
 
