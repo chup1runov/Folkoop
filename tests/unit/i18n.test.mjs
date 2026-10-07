@@ -130,6 +130,35 @@ test('non-core language packs do not collapse into excessive English fallback',(
  }
 });
 
+
+test('primary navigation labels stay compact and semantically attached to current sections',()=>{
+ const keys=['home','people','together','projects','city','center'];
+ for(const lang of EXTRA){
+  const pack=extra[lang];
+  for(const key of keys){
+   const value=pack.shell[key];
+   assert(value.length>0&&value.length<48,lang+' '+key+' must be a navigation label, not explanatory prose');
+   assert(!/[.!?]$/.test(value),lang+' '+key+' unexpectedly looks like a sentence');
+  }
+  assert.equal(pack.tutorial.together,pack.shell.togetherText,lang+' tutorial Together drifted from current copy');
+  assert.equal(pack.tutorial.projects,pack.shell.projectsText,lang+' tutorial Projects drifted from current copy');
+  assert.equal(pack.tutorial.people,pack.shell.peopleText,lang+' tutorial People drifted from current copy');
+  assert.equal(pack.tutorial.city,pack.shell.cityText,lang+' tutorial City drifted from current copy');
+  assert.equal(pack.tutorial.center,pack.shell.centerOnlineText,lang+' tutorial Center drifted from current copy');
+  assert(pack.homeWelcome.placeText.startsWith(pack.shell.cityHelp),lang+' Home place copy lost city-selection guidance');
+ }
+});
+
+test('Mura, guest and account routes prefer the selected language before English fallback',async()=>{
+ const city=await readFile('apps/web/app.js','utf8');
+ assert(folkoop.includes('muraTutorialCopy[lang]||tutorialCopy[lang]||muraTutorialCopy.en'));
+ assert(folkoop.includes('muraTutorialTitles[lang]||tutorialTitles[lang]||muraTutorialTitles.en'));
+ assert(folkoop.includes('muraHelperCopy[lang]||helperCopy[lang]||muraHelperCopy.en'));
+ assert(!network.includes('muraGuestCopy[lang()]||muraGuestCopy.en'));
+ assert(network.includes("accountEntryCopy[lang()]?.[k]||t(k)||accountEntryCopy.en[k]"));
+ assert(!city.includes('muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key]'));
+});
+
 test('renderers consume the full-language registry rather than three-language fallback',()=>{
  assert(folkoop.includes('FolkoopExtraCopy?.languages'));
  assert(welcome.includes('FolkoopExtraCopy?.languages'));
