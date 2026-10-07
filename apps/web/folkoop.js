@@ -112,7 +112,7 @@ function renderMobileChrome(){
  const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
  const subLabel=k=>{
-  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':'About me';
+  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':lang==='en'?'About me':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.shell?.me||t('me'));
   return SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  };
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
@@ -120,8 +120,8 @@ function renderMobileChrome(){
  const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=current==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
- const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':'Leave Mura\'s account';
- const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.";
+ const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
+ const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>Mura</strong><p>'+esc(muraPopover)+'</p><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
@@ -519,7 +519,7 @@ function showOnboarding(step=0){
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=onboardingStep===0?t('tutorialBack'):(rtl?'→ ':'← ')+t('tutorialProgress')+' '+onboardingStep;back.disabled=onboardingStep===0;
  const taskPending=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep);
  const next=dialog.querySelector('[data-onboarding="next"]');
- next.textContent=taskPending?(lang==='ru'?'Посмотреть на деле':lang==='sv'?'Visa i praktiken':'See it in practice'):(onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
+ next.textContent=taskPending?(lang==='ru'?'Посмотреть на деле':lang==='sv'?'Visa i praktiken':lang==='en'?'See it in practice':t('tutorialNext')):(onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':lang==='en'?'Explore Mura\'s account':t('tutorialDone')):t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
  updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
@@ -702,7 +702,7 @@ document.addEventListener('click',e=>{
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
   if(action==='next'){
    const task=muraPracticeForStep(onboardingStep);
-   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?(muraPracticeStep===3?'Готово — ты уже видел три ключевых связи в моём аккаунте. Дальше просто исследуй.':'Готово. Посмотрим следующую связь?'):lang==='sv'?(muraPracticeStep===3?'Klart — du har sett tre viktiga samband i mitt konto. Nu kan du bara utforska.':'Klart. Ska vi titta på nästa samband?'):(muraPracticeStep===3?'Done — you have seen three key connections in my account. Now just explore.':'Done. Want to see the next connection?'));ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialNext');return;}
+   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?(muraPracticeStep===3?'Готово — ты уже видел три ключевых связи в моём аккаунте. Дальше просто исследуй.':'Готово. Посмотрим следующую связь?'):lang==='sv'?(muraPracticeStep===3?'Klart — du har sett tre viktiga samband i mitt konto. Nu kan du bara utforska.':'Klart. Ska vi titta på nästa samband?'):lang==='en'?(muraPracticeStep===3?'Done — you have seen three key connections in my account. Now just explore.':'Done. Want to see the next connection?'):(muraPracticeStep===3?t('tutorialDone'):t('tutorialNext')));ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialNext');return;}
    if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
   }
  }
