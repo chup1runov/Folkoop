@@ -571,8 +571,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .mura-life-heading h2{margin:4px 0 0;font-size:clamp(1.55rem,3.4vw,2.15rem);line-height:1.2;letter-spacing:-.035em;color:#332f2a}
 .mura-life-timeline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 16px}
 .mura-life-chapter{position:relative;min-width:0}
-.mura-life-dot{position:absolute;left:17px;top:23px;width:9px;height:9px;border-radius:50%;background:#c86f57;box-shadow:0 0 0 5px #fae5dc;z-index:1}
-.mura-life-card{height:100%;display:flex;flex-direction:column;padding:17px 19px 15px 40px;border:1px solid #e8ded1;border-radius:16px;background:#fffdfb;color:#403d39}
+.mura-life-dot{position:absolute;inset-inline-start:17px;top:23px;width:9px;height:9px;border-radius:50%;background:#c86f57;box-shadow:0 0 0 5px #fae5dc;z-index:1}
+.mura-life-card{height:100%;display:flex;flex-direction:column;padding-block:17px 15px;padding-inline:40px 19px;border:1px solid #e8ded1;border-radius:16px;background:#fffdfb;color:#403d39}
 .mura-life-kicker{margin:0 0 7px;font-size:.72rem;font-weight:780;color:#9d513e;letter-spacing:.06em;text-transform:uppercase}
 .mura-life-voice{font-size:.91rem;line-height:1.62;margin:0;flex:1}
 .mura-life-object{margin:13px 0 0;font-size:.75rem;color:#58665c;font-weight:730;border-inline-start:3px solid #c6dacf;padding-inline-start:9px}
@@ -583,7 +583,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .mura-identity-line h1{font-size:clamp(2.25rem,5vw,3.2rem);letter-spacing:-.05em}
 .mura-hero-character img{width:132px;max-width:100%;height:auto}
 @media(max-width:780px){.mura-life{padding:22px 18px}.mura-life-timeline{grid-template-columns:1fr}.mura-hero{grid-template-columns:minmax(0,1fr) 100px}.mura-now-card{grid-column:1/-1}.mura-hero-character img{width:100px}}
-@media(max-width:390px){.mura-life{padding:18px 11px;border-radius:18px}.mura-life-card{padding:14px 13px 12px 32px}.mura-life-dot{left:11px}.mura-life-voice{font-size:.86rem}.mura-hero{padding:14px}.mura-identity-line h1{font-size:2.3rem}}
+@media(max-width:390px){.mura-life{padding:18px 11px;border-radius:18px}.mura-life-card{padding-block:14px 12px;padding-inline:32px 13px}.mura-life-dot{inset-inline-start:11px}.mura-life-voice{font-size:.86rem}.mura-hero{padding:14px}.mura-identity-line h1{font-size:2.3rem}}
 @media(prefers-reduced-motion:reduce){.mura-life-link:hover{transition:none}}
 
 /* Mura's Center is presented as her local life, with source facts still outside her voice. */
