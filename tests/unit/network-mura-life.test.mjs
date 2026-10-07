@@ -36,7 +36,7 @@ test('all eleven existing languages have complete first-person story copy',()=>{
  for(const language of ['ru','en','sv','es','uk','fi','bs','ar','fa','so','ku']){
   const copy=life.copyFor(language);
   assert.equal(copy.length,12,language);
-  for(const part of copy){if(Array.isArray(part)){assert.equal(part.length,2);for(const v of part)assert.ok(v.length>8,language);}else assert.ok(part.length>2,language);}
+  for(const part of copy){if(Array.isArray(part)){assert.equal(part.length,2);assert.ok(part[0].length>1,language+' heading');assert.ok(part[1].length>25,language+' personal voice');}else assert.ok(part.length>2,language);}
   const html=life.render({data,userId:me,language});
   assert.equal((html.match(/data-mura-chapter=/g)||[]).length,9,language);
  }
