@@ -4248,6 +4248,42 @@ const guestDemoCopy={
 };
 for(const [code,copy] of Object.entries(guestDemoCopy))Object.assign(languages[code].network.home,copy);
 
+
+const auditedExtraLanguages20261007=['es','uk','fi','bs','ar','fa','so','ku'];
+for(const code of auditedExtraLanguages20261007){
+ const pack=languages[code];
+ Object.assign(pack.shell,{
+  home:pack.network.home.title,
+  people:pack.homeWelcome.people,
+  together:pack.network.coop.togetherTitle,
+  projects:pack.network.coop.projectsTitle,
+  city:pack.homeWelcome.city,
+  center:pack.homeWelcome.center
+ });
+ pack.homeWelcome.placeText=pack.shell.cityHelp+' '+pack.shell.centerOnlineText;
+ Object.assign(pack.tutorial,{
+  welcome:pack.shell.intro,
+  home:pack.shell.myPlaceIntro+' '+pack.shell.makeItYoursText,
+  together:pack.shell.togetherText,
+  projects:pack.shell.projectsText,
+  people:pack.shell.peopleText,
+  city:pack.shell.cityText,
+  center:pack.shell.centerOnlineText,
+  quick:pack.shell.makeItYoursText
+ });
+ Object.assign(pack.tutorialTitles,{
+  welcome:'FOLKOOP',
+  home:pack.shell.myPlace,
+  together:pack.shell.togetherTitle,
+  projects:pack.shell.projectsTitle,
+  people:pack.shell.peopleTitle,
+  city:pack.shell.city,
+  center:pack.shell.center,
+  quick:pack.shell.makeItYours
+ });
+}
+// ROUTE_AUDIT_20261007
+
 // LANG_BLOCKS
 globalThis.FolkoopExtraCopy = Object.freeze({languages});
 })();
