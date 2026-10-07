@@ -27,7 +27,7 @@ revoke all on function folkoop_private.resource_plan_dimensions_valid(text,numer
 -- R1 treats Auth logout/session revocation as immediately effective instead of
 -- accepting a still-unexpired JWT for private resource reads/writes.
 create function folkoop_private.resource_session_active() returns boolean
-language plpgsql stable security definer set search_path='' as $
+language plpgsql stable security definer set search_path='' as $session$
 declare sid uuid;
 begin
   if auth.uid() is null then return false; end if;
@@ -42,7 +42,7 @@ begin
     where s.id=sid and s.user_id=auth.uid()
       and (s.not_after is null or s.not_after>now())
   );
-end $;
+end $session$;
 revoke all on function folkoop_private.resource_session_active() from public,anon,authenticated;
 grant execute on function folkoop_private.resource_session_active() to authenticated;
 
