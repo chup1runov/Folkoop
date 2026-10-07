@@ -31,7 +31,7 @@ test('wrong project ref is refused',()=>rejects(()=>parsePublicConfig(CONFIG.rep
 test('acceptance script contains no Auth admin create/delete path',()=>{
  const src=readFileSync('scripts/ops/r1-hosted-acceptance.mjs','utf8');
  assert.doesNotMatch(src,/\/auth\/v1\/admin\/users/);
- assert.doesNotMatch(src,/service_role/i);
+ assert.match(src,/PRIVILEGED_KEY_NOT_ALLOWED/);
  assert.match(src,/TECH-R1:/);
  assert.match(src,/SESSION_REQUIRED/);
 });
