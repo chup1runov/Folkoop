@@ -17,7 +17,7 @@ test('every localized hero has a real layout line break, not a printed escape',(
  }
 });
 
-// Versioned human-reviewed factual anchors. These checks catch regression to copy
+// Versioned editorial factual anchors. These checks catch regression to copy
 // from the pre-network prototype. They do NOT claim literary/native-speaker QA.
 const claims={
  en:{drafts:'never published automatically',local:'no messages are sent',encryption:'not end-to-end encrypted'},
