@@ -88,7 +88,7 @@ select fk_secdef_test.ok(
  'authenticated cannot execute unreviewed private SECURITY DEFINER signatures'
 );
 
--- Conversely, all twelve reviewed helpers must exist, remain SECURITY DEFINER,
+-- Conversely, all thirteen reviewed helpers must exist, remain SECURITY DEFINER,
 -- pin their search path (checked above), and retain explicit authenticated EXECUTE.
 with allowed(signature) as (
   values
@@ -100,6 +100,7 @@ with allowed(signature) as (
       ('folkoop_private.shares_chat(uuid)'),
       ('folkoop_private.shares_cooperation(uuid)'),
       ('folkoop_private.selected_purchase_provider(uuid)'),
+      ('folkoop_private.resource_session_active()'),
       ('folkoop_private.save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)'),
       ('folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)'),
       ('folkoop_private.remove_resource_plan(text,uuid,uuid,integer)'),
