@@ -88,15 +88,15 @@ export async function runHostedAcceptance({env=process.env,configSource=readFile
   const api=makeClient(config,fetchFn);
   const report={schema_version:1,project_ref:config.ref,scope:'R1 hosted developer/test acceptance only',feature_flag:false,checks:[],cleanup:[],blockers:[]};
   const ok=(value,label)=>{if(!value)throw fail('CHECK_FAILED',label);report.checks.push(label);};
-  let a=null,b=null,project=null,resource=null,requirement=null,joined=false,availabilityRevision=0,requirementRevision=0;
+  let a=null,b=null,project=null,resource=null,requirement=null,joined=false,availabilityRevision=0,requirementRevision=0,aSessionActive=false,bSessionActive=false;
   const rpcOk=async(session,name,args,label)=>{
     const r=await api.rpc(session,name,args);
     if(!r.ok)throw fail(label,String(r.data?.message||r.data?.code||r.status));
     return r.data;
   };
   try{
-    a=await api.login(identities.a);
-    b=await api.login(identities.b);
+    a=await api.login(identities.a);aSessionActive=true;
+    b=await api.login(identities.b);bSessionActive=true;
     ok(a.id!==b.id,'two distinct Auth identities');
 
     for(const entry of [['A',a],['B',b]]){
@@ -165,6 +165,7 @@ export async function runHostedAcceptance({env=process.env,configSource=readFile
 
     const oldA=a;
     const loggedOut=await api.logout(a);
+    aSessionActive=false;
     ok(loggedOut.ok,'Auth logout succeeds for A');
 
     const staleWrite=await api.rpc(oldA,'fk_save_resource_requirement',{
@@ -181,43 +182,74 @@ export async function runHostedAcceptance({env=process.env,configSource=readFile
     const staleExport=await api.rpc(oldA,'fk_export_resource_planning',{p_kind:'requirements',p_after:null,p_limit:10});
     ok(!staleExport.ok&&staleExport.status===403&&staleExport.data?.message==='SESSION_REQUIRED','logged-out JWT cannot export R1');
 
-    a=await api.login(identities.a);
+    a=await api.login(identities.a);aSessionActive=true;
     report.result='PASS';
   }catch(error){
     report.result='FAIL';
     report.blockers.push(error?.code||String(error));
     throw Object.assign(error,{acceptanceReport:report});
   }finally{
+    // Cleanup must not rely on a token that this test intentionally revoked.
+    if(project&&!aSessionActive){
+      try{
+        a=await api.login(identities.a);aSessionActive=true;
+        report.cleanup.push('owner_relogin:true');
+      }catch{report.cleanup.push('owner_relogin:false');}
+    }
+    if(resource&&!bSessionActive){
+      try{
+        b=await api.login(identities.b);bSessionActive=true;
+        report.cleanup.push('resource_owner_relogin:true');
+      }catch{report.cleanup.push('resource_owner_relogin:false');}
+    }
     try{
-      if(a&&requirement&&project&&requirementRevision){
+      if(a&&aSessionActive&&requirement&&project&&requirementRevision){
         const r=await api.rpc(a,'fk_remove_resource_requirement',{p_project:project,p_id:requirement,p_expected_revision:requirementRevision});
         report.cleanup.push('requirement:'+String(r.ok));
       }
     }catch{report.cleanup.push('requirement:false');}
     try{
-      if(b&&resource&&availabilityRevision){
+      if(b&&bSessionActive&&resource&&availabilityRevision){
         const r=await api.rpc(b,'fk_remove_resource_availability',{p_resource:resource,p_expected_revision:availabilityRevision});
         report.cleanup.push('availability:'+String(r.ok));
       }
     }catch{report.cleanup.push('availability:false');}
     try{
-      if(b&&project&&joined){
+      if(b&&bSessionActive&&project&&joined){
         const r=await api.rpc(b,'fk_leave_cooperation',{p_cooperation:project});
         report.cleanup.push('member:'+String(r.ok));
       }
     }catch{report.cleanup.push('member:false');}
     try{
-      if(a&&project){
+      if(a&&aSessionActive&&project){
         const r=await api.rpc(a,'fk_delete_cooperation',{p_cooperation:project});
         report.cleanup.push('project:'+String(r.ok));
       }
     }catch{report.cleanup.push('project:false');}
     try{
-      if(b&&resource){
+      if(b&&bSessionActive&&resource){
         const r=await api.rpc(b,'fk_delete_cooperation',{p_cooperation:resource});
         report.cleanup.push('resource:'+String(r.ok));
       }
     }catch{report.cleanup.push('resource:false');}
+    try{
+      if(a&&aSessionActive){
+        const r=await api.logout(a);report.cleanup.push('logout_a:'+String(r.ok));aSessionActive=false;
+      }
+    }catch{report.cleanup.push('logout_a:false');}
+    try{
+      if(b&&bSessionActive){
+        const r=await api.logout(b);report.cleanup.push('logout_b:'+String(r.ok));bSessionActive=false;
+      }
+    }catch{report.cleanup.push('logout_b:false');}
+  }
+  const cleanupFailed=report.cleanup.some((item)=>item.endsWith(':false'));
+  if(cleanupFailed){
+    report.result='FAIL';
+    if(!report.blockers.includes('CLEANUP_INCOMPLETE'))report.blockers.push('CLEANUP_INCOMPLETE');
+    const error=fail('CLEANUP_INCOMPLETE');
+    error.acceptanceReport=report;
+    throw error;
   }
   return report;
 }
