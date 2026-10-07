@@ -6,6 +6,8 @@ on:
       - '.github/workflows/supabase-migration-tooling.yml'
       - 'supabase/migrations/**'
       - 'supabase/migration-history-baseline.json'
+      - 'scripts/ops/r1-production-migration.sh'
+      - 'docs/contracts/RESOURCE_PLANNING_R1_PRODUCTION_APPLY_RUNBOOK_2026-10-07.md'
   workflow_dispatch:
 permissions:
   contents: read
@@ -67,3 +69,9 @@ jobs:
           mapfile -t generated < <(find supabase/migrations -maxdepth 1 -type f -name '*_cli_contract_probe.sql' -printf '%f\n')
           test "${#generated[@]}" -eq 1
           [[ "${generated[0]}" =~ ^[0-9]{14}_cli_contract_probe\.sql$ ]]
+      - name: Verify R1 production guard remains fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/ops/r1-production-migration.sh check
+          supabase db push --help | grep -q -- '--dry-run'
