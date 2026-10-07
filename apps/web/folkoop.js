@@ -382,16 +382,16 @@ for(const code of C.LANGS){
  if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
  if(x?.helper)helperCopy[code]=x.helper;
 }
-function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
+function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||tutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
- const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
+ const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||tutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
-function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
+function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||helperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
 function helperTip(route=current){
  const source=helperSource();
  return source.tips[route]||helperCopy.en.tips[route]||source.intro;
@@ -589,7 +589,7 @@ function render(focus=false){
  if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
  document.querySelectorAll('[data-shell-label]').forEach(el=>{const key=el.dataset.shellLabel;el.textContent=t(key);});
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
- $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
+ $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');$('#muraPracticeStars')?.setAttribute('aria-label',t('tutorialProgress')); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
  const location=$('#locationLabel');if(location){const city=selectedCity();location.textContent=city;location.hidden=!city;}
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
