@@ -60,7 +60,17 @@ Depending on how you use the pilot:
 - memberships and participation state;
 - messages and cooperation updates;
 - tasks;
-- activity/read state needed for the workspace.
+- activity/read state needed for the workspace;
+- if R1 resource planning is activated: structured project resource requirements
+  (for example quantity, unit, time window and conditions) and your private
+  availability declarations for resources you own.
+
+Resource availability is not a public profile field: the current R1 design keeps
+an availability declaration visible only to the resource owner, while project
+requirements are visible to members of the relevant project. A small private
+anti-replay record can retain only object/parent identifiers, version and removal
+time after a requirement or availability declaration is removed; it does not keep
+the removed title, quantity or conditions and disappears with the parent object.
 
 The first core-loop pilot does not need payment or escrow data.
 
