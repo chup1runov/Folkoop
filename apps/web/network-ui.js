@@ -623,8 +623,9 @@ function renderMuraPeople(u){
   const chatTitles=data.chatMembers.filter(m=>m.user_id===p.id).map(m=>data.chats.find(x=>x.id===m.conversation_id)).filter(Boolean).map(chat=>chat.kind==='direct'?mt('direct'):chat.title).slice(0,1);
   return `<article class="card mura-person-page-card" data-demo-story="person"><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div></article>`;
  };
- const intro=lang()==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':lang()==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':'Not a contact list: people I already share a project, place or conversation with.';
- return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA / PEOPLE</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
+ const currentLang=lang();
+ const intro=currentLang==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':currentLang==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':currentLang==='en'?'Not a contact list: people I already share a project, place or conversation with.':(globalThis.FolkoopExtraCopy?.languages?.[currentLang]?.helper?.tips?.people||t('directory'));
+ return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA · ${esc(t('directory'))}</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
 }
 
 function renderHome(u){
@@ -824,7 +825,7 @@ function render(){
  const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
  document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
- if(!relevant||localMyPlace)return;host.lang=lang();host.dir='ltr';
+ if(!relevant||localMyPlace)return;host.lang=lang();host.dir=document.documentElement.dir||'ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
  if(!u){
@@ -842,7 +843,7 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):renderHome(u);}
+ else if(r==='home'){html=guestDemo&&['en','sv','ru'].includes(lang())?muraHomeDomain.render(u):renderHome(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
