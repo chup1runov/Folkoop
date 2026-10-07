@@ -55,7 +55,24 @@ select fk_secdef_test.ok(
  'all public fk_* SECURITY DEFINER RPCs remain authenticated-only callable'
 );
 
--- Only helpers called by RLS policies may be executable by authenticated.
+-- Only exact reviewed private helpers may be executable by authenticated.
+-- Exact regprocedure signatures fail closed on an unexpected overload.
+with allowed(signature) as (
+  values
+      ('folkoop_private.is_pilot()'),
+      ('folkoop_private.chat_member(uuid)'),
+      ('folkoop_private.coop_member(uuid)'),
+      ('folkoop_private.is_blocked(uuid)'),
+      ('folkoop_private.member_of(uuid)'),
+      ('folkoop_private.shares_chat(uuid)'),
+      ('folkoop_private.shares_cooperation(uuid)'),
+      ('folkoop_private.selected_purchase_provider(uuid)'),
+      ('folkoop_private.resource_session_active()'),
+      ('folkoop_private.save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)'),
+      ('folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)'),
+      ('folkoop_private.remove_resource_plan(text,uuid,uuid,integer)'),
+      ('folkoop_private.resource_availability_revision(uuid)')
+)
 select fk_secdef_test.ok(
  not exists(
   select 1
@@ -64,29 +81,42 @@ select fk_secdef_test.ok(
   where p.prosecdef
     and n.nspname='folkoop_private'
     and has_function_privilege('authenticated',p.oid,'execute')
-    and p.proname not in (
-      'is_pilot','chat_member','coop_member','is_blocked','member_of',
-      'shares_chat','shares_cooperation','selected_purchase_provider'
+    and not exists(
+      select 1 from allowed a where to_regprocedure(a.signature)::oid=p.oid
     )
  ),
- 'authenticated cannot execute non-RLS private SECURITY DEFINER helpers'
+ 'authenticated cannot execute unreviewed private SECURITY DEFINER signatures'
 );
 
--- Conversely, every whitelisted RLS helper must stay executable or policies break.
+-- Conversely, all thirteen reviewed helpers must exist, remain SECURITY DEFINER,
+-- pin their search path (checked above), and retain explicit authenticated EXECUTE.
+with allowed(signature) as (
+  values
+      ('folkoop_private.is_pilot()'),
+      ('folkoop_private.chat_member(uuid)'),
+      ('folkoop_private.coop_member(uuid)'),
+      ('folkoop_private.is_blocked(uuid)'),
+      ('folkoop_private.member_of(uuid)'),
+      ('folkoop_private.shares_chat(uuid)'),
+      ('folkoop_private.shares_cooperation(uuid)'),
+      ('folkoop_private.selected_purchase_provider(uuid)'),
+      ('folkoop_private.resource_session_active()'),
+      ('folkoop_private.save_resource_requirement(uuid,uuid,uuid,text,text,numeric,text,timestamptz,timestamptz,text,integer)'),
+      ('folkoop_private.save_resource_availability(uuid,text,numeric,text,timestamptz,timestamptz,text,integer)'),
+      ('folkoop_private.remove_resource_plan(text,uuid,uuid,integer)'),
+      ('folkoop_private.resource_availability_revision(uuid)')
+)
 select fk_secdef_test.ok(
  (
   select count(*)
-  from pg_proc p
+  from allowed a
+  join pg_proc p on p.oid=to_regprocedure(a.signature)::oid
   join pg_namespace n on n.oid=p.pronamespace
   where p.prosecdef
     and n.nspname='folkoop_private'
-    and p.proname in (
-      'is_pilot','chat_member','coop_member','is_blocked','member_of',
-      'shares_chat','shares_cooperation','selected_purchase_provider'
-    )
     and has_function_privilege('authenticated',p.oid,'execute')
- )=8,
- 'all eight private RLS helpers are explicitly executable by authenticated'
+ )=13,
+ 'all thirteen reviewed private helpers are explicitly executable by authenticated'
 );
 
 rollback;

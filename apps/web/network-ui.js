@@ -536,6 +536,7 @@ function formatWhen(value){
 
 const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
 const obtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ot(key))}</button>`;
+let resourcePlanningContext=null,resourcePlanningDomain=null;
 const coopProfile=id=>data.chatProfiles.find(p=>p.id===id)||data.directory.find(p=>p.id===id);
 const kindLabel=k=>ct(k);
 const statusLabel=s=>ct(({open:'openStatus',active:'activeStatus',done:'doneStatus',cancelled:'cancelledStatus'})[s]||s);
@@ -750,6 +751,10 @@ function renderCooperation(u,r){
   const unreadActivity=Number(data.activityInbox.find(x=>x.cooperation_id===coop.id)?.unread_count||0);
   html+=cbtn('back','back');
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
+  if(['project','resource'].includes(coop.kind)&&(guestDemo||(api?.resourcePlanning&&(member||owner)))){
+   resourcePlanningContext={coop,owner,member:!!member,readOnly:guestDemo,user:u,language:lang(),busy};
+   html+='<section data-resource-planning-panel></section>';
+  }
   if(myNextTask)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
   if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
@@ -818,6 +823,7 @@ function renderCooperation(u,r){
 }
 
 function render(){
+ resourcePlanningContext=null;
  const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser),localMyPlace=r==='me'&&!hasUser&&!guestDemo&&showLocalGuest;host.hidden=!relevant||localMyPlace;
  document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo&&!showLocalGuest));
  document.body.classList.toggle('guest-preview-open',!!(guestDemo&&relevant));
@@ -864,6 +870,8 @@ function render(){
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
  }
  host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
+ if(!resourcePlanningDomain&&globalThis.FolkoopResourceForms)resourcePlanningDomain=globalThis.FolkoopResourceForms.create({api:api?.resourcePlanning});
+ resourcePlanningDomain?.mount(host.querySelector('[data-resource-planning-panel]'),resourcePlanningContext);
  syncBadges();
  queueMicrotask(()=>window.dispatchEvent(new CustomEvent('folkoop:network-rendered',{detail:{route:r,guestDemo}})));
 }

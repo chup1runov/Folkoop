@@ -31,3 +31,14 @@ for file in "${db_tests[@]}"; do
   [[ "$file" == "supabase/tests/network-bootstrap.sql" ]] && continue
   run_sql "$file"
 done
+
+# R1 DDL is now a normal migration. Exercise its behavior after all migrations
+# have been applied to the disposable database; do not replay proposal DDL.
+echo '==> R1 migration behavior + lifecycle + post-migration privilege contract'
+{
+  printf 'begin;\n'
+  cat supabase/tests/resource-planning-v0.sql
+  cat supabase/tests/resource-planning-lifecycle-v0.sql
+  cat supabase/tests/resource-planning-privileges-v0.sql
+  printf '\nrollback;\n'
+} | psql_ci

@@ -215,6 +215,37 @@ GitHub contains source, migrations, synthetic tests and public documentation.
 Tests must remain synthetic. Do not commit real participant data, Auth tokens,
 OAuth secrets or plaintext pilot invite codes.
 
+## R1 resource-planning data
+
+Production schema now contains the R1 resource-planning layer while its public UI
+feature flag remains disabled.
+
+`public.fk_resource_requirements`
+- belongs to an existing project cooperation;
+- optional link to an Economic Flow;
+- stores title, resource kind, exact numeric quantity/unit, optional interval and conditions;
+- `created_by` references Auth with `ON DELETE SET NULL`;
+- project ownership controls mutation;
+- project membership plus an active Auth session controls read access.
+
+`public.fk_resource_availability`
+- one private availability declaration per existing Resource cooperation;
+- stores exact quantity/unit, optional interval and conditions;
+- visible only to the Resource owner with an active Auth session;
+- deleted with its Resource parent.
+
+`folkoop_private.resource_plan_removals`
+- minimal anti-replay receipt containing kind, object UUID, parent cooperation UUID,
+  generation and removal time;
+- deliberately contains no requirement title, conditions or quantity;
+- no browser table grants and no browser RLS policy;
+- deleted when the parent cooperation is deleted.
+
+R1 account-closure inventory now reports requirements, availability, removal
+receipts and authored-requirement `SET NULL` provenance separately. A removed
+availability/requirement payload is not retained in the receipt, but provider
+backups and copies previously exported by a participant are outside that claim.
+
 ## Current export/access behavior
 
 `network-client.js::exportOwn()` is explicitly a convenience export of visible
@@ -227,7 +258,13 @@ It currently queries:
 - chat memberships, authored messages, message reports and received invites;
 - cooperation memberships and authored updates;
 - tasks **created** by the user;
-- purchase commitments/offers/reports/confirmations.
+- purchase commitments/offers/reports/confirmations;
+- R1 authored resource requirements (bounded first page);
+- R1 owner-private resource availability (bounded first page).
+
+The two R1 pages expose `has_more`, `next_cursor` and `snapshot=false`. They do
+not turn this convenience method into a complete or transactionally consistent
+account-access package.
 
 It does not provide a complete inventory. Examples of material omissions include:
 - communities owned by the user;
@@ -248,7 +285,7 @@ describe this method as a complete GDPR access/export mechanism.
 ## Current retention status
 
 There is no general automated retention/gallring schedule for profile,
-community, messaging, cooperation, activity or moderation records.
+community, messaging, cooperation, R1 resource planning, activity or moderation records.
 
 Invite rows can have an expiry, but expiry of an invite is not a general account
 retention policy.

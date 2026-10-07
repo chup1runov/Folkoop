@@ -107,6 +107,9 @@ pilot, not the future end of FOLKOOP as a project.
 | User-authored posts/messages/updates | While needed for the active pilot cooperation context | Default: delete the closing participant's authored rows unless a specific, documented safety/legal hold applies |
 | Communities/group conversations/cooperations owned by closing participant | While active | Do **not** blind-cascade. Transfer ownership to a consenting remaining participant when shared and still needed; otherwise delete after reviewing effects |
 | Project tasks | While active | Delete creator-owned rows; assignments may be cleared/pseudonymised according to the schema; verify no shared object is unintentionally lost |
+| R1 project resource requirements | While the project/resource need is active and needed for the cooperation context | Delete the requirement through the supported R1 lifecycle when no longer needed. If the closing participant merely authored a requirement inside a project owned by someone else and that requirement is intentionally retained, `created_by` may be cleared by the Auth FK; operator closure inventory must show this provenance path explicitly |
+| R1 private resource availability | While the resource owner chooses to declare availability | Remove the declaration through the supported R1 lifecycle before or during closure; deleting the owned Resource parent also removes it |
+| R1 removal receipt metadata | Only while the parent cooperation/resource exists and while needed to prevent stale request replay | Contains object/parent UUIDs, generation and removal time only; no removed payload. Delete automatically with the parent; do not repurpose as behavioral history |
 | Cooperation activity | Through pilot + 90 days for outcome analysis | Clear/detach actor identity where supported; delete coded event-level data by pilot + 90 days after producing irreversible aggregate statistics |
 | PostHog Product Analytics events, **only if separately activated** | Through pilot + 90 days maximum for the row-level pilot dataset | Use explicit PostHog deletion tooling/process; do not rely on the provider's longer plan-level event-retention window. If this deletion path is not operationally verified, keep PostHog disabled |
 | Moderation reports | Until case closed + 180 days | Retain only the minimum needed for safety/accountability; then delete or irreversibly anonymise. Extend only for a documented legal hold/active claim |
@@ -134,6 +137,11 @@ Approved pilot account closure follows this order:
    Supabase documents that already-issued access JWTs can remain valid until
    their `exp`; logout/session revocation alone is therefore not the immediate
    authorization boundary.
+   For the R1 resource-planning surface specifically, the application additionally
+   validates JWT `session_id` against `auth.sessions`, so logout/revocation
+   removes R1 read/write/export access immediately even while the signed access
+   token itself has not yet expired. Do not infer this stronger property for
+   unrelated legacy RPCs unless they are separately hardened and verified.
 4. Run `folkoop_private.account_closure_inventory(<user_uuid>)`.
 5. If any `owned_shared` count is non-zero, resolve every object before Auth
    deletion:

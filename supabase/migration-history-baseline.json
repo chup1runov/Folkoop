@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "verified_at": "2026-10-04",
-  "source": "Read-only hosted supabase_migrations.schema_migrations comparison. The 14 pre-E01 migrations matched hosted stored statements 14/14 after normalization; E01 was then applied from merged main and is recorded under the hosted server-generated version 20261004194921.",
+  "verified_at": "2026-10-07",
+  "source": "Read-only hosted supabase_migrations.schema_migrations comparison. The first 15 migrations matched repository history through E01. R1 was applied from the frozen reviewed SQL via the authenticated Supabase migration API; Supabase assigned hosted version 20261007121210. The repository migration file was renamed to that hosted version without changing SQL content, preserving the applied Git blob.",
   "entries": [
     {
       "version": "20260925111649",
@@ -77,6 +77,11 @@
       "version": "20261004194921",
       "name": "folkoop_economic_flow_v0",
       "filename": "20261004194921_folkoop_economic_flow_v0.sql"
+    },
+    {
+      "version": "20261007121210",
+      "name": "folkoop_resource_planning_r1",
+      "filename": "20261007121210_folkoop_resource_planning_r1.sql"
     }
   ]
 }

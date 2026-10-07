@@ -37,22 +37,27 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function notify(){for(const fn of listeners)fn(session?{id:session.id}:null);}
  function clear(){session=null;epoch++;authAttempt++;for(const c of controllers)c.abort();analyticsReset();notify();}
  function user(){if(session&&session.expiresAt<=clock())clear();return session?{id:session.id}:null;}
- async function request(path,{method='GET',body,auth=true,token}={}){
+ async function request(path,{method='GET',body,auth=true,token,resource=false}={}){
   if(!cfg)throw fail('DISABLED');
   if(auth&&!user())throw fail('AUTH_REQUIRED');
-  const version=epoch,controller=new AbortController();controllers.add(controller);
+  const version=epoch,authVersion=authAttempt,controller=new AbortController();controllers.add(controller);
   const timer=setTimeout(()=>controller.abort(),12000);
   const headers={apikey:cfg.key,Accept:'application/json'};
   if(auth||token)headers.Authorization='Bearer '+(token||session.token);
   if(body!==undefined)headers['Content-Type']='application/json';
   try{
    const response=await transport(cfg.url+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',redirect:'error',signal:controller.signal});
-   if(version!==epoch)throw fail('STALE');
+   if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');
    if(!response.ok){
     let detail=null;
     if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
      try{detail=await response.json();}catch{}
     }
+    if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');
+    if(resource&&detail?.code==='40001')throw fail('RESOURCE_CONFLICT');
+    if(resource&&['PGRST202','PGRST205','42P01'].includes(detail?.code))throw fail('RESOURCE_SCHEMA_UNAVAILABLE');
+    if(resource&&detail?.code==='22023')throw fail('INVALID_INPUT');
+    if(resource&&response.status===403&&detail?.message==='SESSION_REQUIRED'){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
@@ -60,7 +65,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    }
    if(response.status===204)return null;
    if(!/\bjson\b/i.test(response.headers.get('content-type')||''))throw fail('INVALID_RESPONSE');
-   const result=await response.json();if(version!==epoch)throw fail('STALE');return result;
+   const result=await response.json();if(version!==epoch||(auth&&authVersion!==authAttempt))throw fail('STALE');return result;
   }catch(e){if(e.code)throw e;throw fail('NETWORK');}
   finally{clearTimeout(timer);controllers.delete(controller);}
  }
@@ -89,10 +94,16 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   return [s,e];
  }
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
+ async function resourceExport(kind){
+  const data=await request('/rest/v1/rpc/fk_export_resource_planning',{method:'POST',body:{p_kind:kind,p_after:null,p_limit:100},resource:true});
+  if(!data||typeof data!=='object'||data.schema_version!==1||data.kind!==kind||data.scope!=='own_resource_planning_only'||data.snapshot!==false||!Array.isArray(data.records)||typeof data.has_more!=='boolean')throw fail('INVALID_RESPONSE');
+  return data;
+ }
  async function trackedRpc(name,args,event,properties){const result=await rpc(name,args);track(event,properties);return result;}
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
+  resourcePlanning:value?.resourcePlanningEnabled===true?globalThis.FolkoopResourceTransport.create({request,context:()=>({userId:user()?.id||null,epoch:String(epoch)+':'+String(authAttempt)}),onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);}}):null,
   enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   googleOAuthUrl(){
    if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');
@@ -208,7 +219,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   finishPurchase(cid,note=''){return trackedRpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)},'purchase_completed');},
   cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,resourceRequirements,resourceAvailability]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -226,9 +237,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500'),
    rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
    rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
-   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500')
+   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
+   resourceExport('requirements'),
+   resourceExport('availability')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,resourcePlanning:{requirements:resourceRequirements,availability:resourceAvailability},scope:'Visible records only; server limits may truncate. Resource-planning pages expose has_more/next_cursor and are not a complete account snapshot. Request a complete account export from the operator.'};
   }
  });
 }
