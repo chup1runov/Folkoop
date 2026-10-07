@@ -1,0 +1,37 @@
+name: R1 local Supabase rehearsal
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/supabase-local-r1.yml'
+      - 'supabase/migrations/**'
+      - 'supabase/proposals/resource-planning-*.sql'
+      - 'supabase/tests/resource-planning-*.sql'
+      - 'apps/web/resource-planning-*.js'
+      - 'apps/web/network-client.js'
+      - 'tests/integration/resource-planning-local-supabase.mjs'
+      - 'scripts/ci/test-supabase-local-r1.sh'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  rehearsal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.117.0
+      - name: Start isolated local Auth/PostgREST stack and run R1 rehearsal
+        run: bash scripts/ci/test-supabase-local-r1.sh
+      - name: Retain local Supabase rehearsal evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-local-supabase
+          path: qa-output/r1-local-supabase.json
+          retention-days: 7
