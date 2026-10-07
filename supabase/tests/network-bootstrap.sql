@@ -10,8 +10,10 @@ create table auth.sessions(
  user_id uuid not null references auth.users(id) on delete cascade,
  not_after timestamptz
 );
-create function auth.uid() returns uuid language sql stable as $ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $;
-create function auth.jwt() returns jsonb language sql stable as $
+create function auth.uid() returns uuid language sql stable as $uid$
+ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid
+$uid$;
+create function auth.jwt() returns jsonb language sql stable as $jwt$
  select jsonb_strip_nulls(jsonb_build_object(
   'sub',nullif(current_setting('request.jwt.claim.sub',true),''),
   'session_id',coalesce(
@@ -19,6 +21,6 @@ create function auth.jwt() returns jsonb language sql stable as $
     nullif(current_setting('request.jwt.claim.sub',true),'')
   )
  ))
-$;
+$jwt$;
 grant usage on schema auth to anon,authenticated;
 grant execute on function auth.uid(),auth.jwt() to anon,authenticated;
