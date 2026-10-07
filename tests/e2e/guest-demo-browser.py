@@ -63,6 +63,12 @@ async def main():
   await expect(page.locator('.mura-home')).to_be_visible()
   await expect(page.locator('.mura-hero')).to_contain_text('FOLKOOP МУРЫ')
   await expect(page.locator('.mura-hero')).to_contain_text('Живая жизнь внутри FOLKOOP')
+  await expect(page.locator('.mura-life')).to_be_visible()
+  assert await page.locator('.mura-life-chapter').count()==9
+  await expect(page.locator('[data-mura-chapter="need"]')).to_contain_text('плиткорез')
+  await expect(page.locator('[data-mura-chapter="project"]')).to_contain_text('Анна')
+  await expect(page.locator('[data-mura-chapter="purchase"]')).to_contain_text('Купить сухие дрова вместе')
+  await expect(page.locator('[data-mura-chapter="outcome"]')).to_contain_text('лестницу')
   await expect(page.locator('.mura-story-grid')).to_contain_text('Обмен растениями и семенами по соседству')
   await expect(page.locator('.mura-conversation-list')).to_contain_text('Omar')
   await expect(page.locator('.mura-note-grid')).to_contain_text('Одолжить дрель на вечер')
