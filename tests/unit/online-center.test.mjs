@@ -65,7 +65,8 @@ test('Center guidance no longer reverts to physical-only semantics in secondary 
     const x=extra[lang];
     assert.equal(x.tutorial.center,x.shell.centerOnlineText,lang+' tutorial');
     assert.equal(x.helper.tips.center,x.shell.centerOnlineText,lang+' helper');
-    assert.equal(x.homeWelcome.placeText,x.shell.centerOnlineText,lang+' homeWelcome');
+    assert(x.homeWelcome.placeText.includes(x.shell.centerOnlineText),lang+' homeWelcome Center semantics');
+    assert(x.homeWelcome.placeText.startsWith(x.shell.cityHelp),lang+' homeWelcome city guidance');
   }
   const shell=await readFile('apps/web/folkoop.js','utf8');
   assert(shell.includes('Center now connects community, people, City and projects as an online/hybrid route.'));
