@@ -28,6 +28,15 @@ for(const key of ['SUPABASE_SERVICE_ROLE_KEY','SERVICE_ROLE_KEY','SUPABASE_SECRE
 }
 test('feature flag true is refused even with otherwise valid config',()=>rejects(()=>parsePublicConfig(CONFIG.replace('resourcePlanningEnabled:false','resourcePlanningEnabled:true')),'CONFIG_INVALID'));
 test('wrong project ref is refused',()=>rejects(()=>parsePublicConfig(CONFIG.replace('cwvhkdqsrbllsykhccmb','aaaaaaaaaaaaaaaaaaaa')),'CONFIG_INVALID'));
+test('acceptance cleanup re-authenticates after deliberate logout and fails closed on leftovers',()=>{
+ const src=readFileSync('scripts/ops/r1-hosted-acceptance.mjs','utf8');
+ assert.match(src,/if\(project&&!aSessionActive\)/);
+ assert.match(src,/owner_relogin:true/);
+ assert.match(src,/logout_a:/);
+ assert.match(src,/logout_b:/);
+ assert.match(src,/CLEANUP_INCOMPLETE/);
+ assert.match(src,/report\.cleanup\.some/);
+});
 test('acceptance script contains no Auth admin create/delete path',()=>{
  const src=readFileSync('scripts/ops/r1-hosted-acceptance.mjs','utf8');
  assert.doesNotMatch(src,/\/auth\/v1\/admin\/users/);
