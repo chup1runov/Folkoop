@@ -221,3 +221,6 @@ questions:[
 ['Piştre çi tê?','Nivîsên zelal, rawestgehên hilanî, guhertinên girîng, dîrok û hilbijartina cihê pirsgirêkê bi dest. Karên hemwelatî yên gav-bi-gav rêyek nû ne. Şopandin, xal, xelat û karên cîranan hîn tune ne.']
 ]}
 };
+
+const contactProject20261007={sv:'Kontakta projektet',en:'Contact the project',ru:'Связаться с проектом',uk:'Зв’язатися з проєктом',fi:'Ota yhteyttä projektiin',es:'Contactar con el proyecto',bs:'Kontaktiraj projekat',ar:'التواصل مع المشروع',fa:'تماس با پروژه',so:'La xiriir mashruuca',ku:'Bi projeyê re têkilî daynin'};
+for(const [code,label] of Object.entries(contactProject20261007))globalThis.FolkoopAboutCopy[code].contactProject=label;
