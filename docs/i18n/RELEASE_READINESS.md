@@ -27,7 +27,7 @@ npm run i18n:require-reviewed
 - `i18n:require-reviewed` is an **opt-in strict claim gate** which fails until *all eleven* approvals exist and match the current reviewer-pack fingerprints. It is **not** run as a mandatory deployment gate while human review is missing; its purpose is to prevent falsely claiming 11 certified languages.
 - The export covers more than the 509-key contract, but **not every runtime-only Mura/guest dictionary, ARIA announcement, dynamically assembled error, official-source text or user-generated content**. Reviewers must inspect those surfaces manually as well; passing the export does not imply complete coverage.
 
-The `review-inventory.json` file contains one `sha256` per locale over sorted `[key,target]` pairs. When a source string or target translation is changed in any exported key, that locale's approval becomes stale until a new human review is recorded. Changes to runtime logic, language exposure or uncovered surfaces can also require re-review **even if the checksum stays the same**.
+The `review-inventory.json` file contains one `sha256` per locale over sorted `[key,English source,target]` triples. When a source string or target translation is changed in any exported key, that locale's approval becomes stale until a new human review is recorded. Changes to runtime logic, language exposure or uncovered surfaces can also require re-review **even if the checksum stays the same**.
 
 ## Native review procedure
 
