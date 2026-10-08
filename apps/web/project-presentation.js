@@ -4,12 +4,12 @@
 (() => {
 'use strict';
 const copy={
- sv:['Till projektet','Översikt'], en:['Back to project','Overview'],
- ru:['Вернуться к проекту','Обзор'], es:['Volver al proyecto','Resumen'],
- uk:['Повернутися до проєкту','Огляд'], fi:['Takaisin projektiin','Yleiskuva'],
- bs:['Nazad na projekt','Pregled'], ar:['العودة إلى المشروع','نظرة عامة'],
- fa:['بازگشت به پروژه','نمای کلی'], so:['Ku noqo mashruuca','Dulmar'],
- ku:['Vegere projeyê','Dîtina giştî']
+ sv:['Till projektet','Översikt','Lär känna personen'], en:['Back to project','Overview','Meet this person'],
+ ru:['Вернуться к проекту','Обзор','Узнать о человеке'], es:['Volver al proyecto','Resumen','Conocer a esta persona'],
+ uk:['Повернутися до проєкту','Огляд','Дізнатися про людину'], fi:['Takaisin projektiin','Yleiskuva','Tutustu ihmiseen'],
+ bs:['Nazad na projekt','Pregled','Upoznaj osobu'], ar:['العودة إلى المشروع','نظرة عامة','تعرّف إلى الشخص'],
+ fa:['بازگشت به پروژه','نمای کلی','آشنایی با این شخص'], so:['Ku noqo mashruuca','Dulmar','Baro qofkan'],
+ ku:['Vegere projeyê','Dîtina giştî','Vî kesî nas bike']
 };
 const text=(language,index)=>(copy[language]||copy.en)[index];
 const direct=(root,selector)=>Array.from(root.children).find(node=>node.matches(selector));
@@ -92,6 +92,14 @@ function renderCurrent(event){
  const root=document.getElementById('networkPanel');
  if(!root)return;
  const detail=event?.detail||{};
+ if(detail.route==='people'){
+  const selected=root.querySelector('[data-person-focused="true"]');
+  if(selected){
+   selected.focus({preventScroll:true});
+   selected.scrollIntoView({block:'center',behavior:'instant'});
+  }
+  return;
+ }
  enhanceProject(root,{route:detail.route||location.hash.slice(2)||'home',guestDemo:detail.guestDemo??root.classList.contains('guest-demo')});
 }
 globalThis.FolkoopProjectPresentation=Object.freeze({enhanceProject,text});

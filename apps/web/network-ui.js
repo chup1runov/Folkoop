@@ -104,7 +104,7 @@ const accountEntryCopy={
 };
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
 
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
+let selected=null,selectedChat=null,selectedCoop=null,personFocus=null,personSourceProject=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
 function resetEconomicFlowState(){
  data.economicFlows=[];data.economicFlowRoles=[];
  economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
@@ -629,9 +629,11 @@ const economicFlowDomain=globalThis.FolkoopNetworkEconomicFlow.create({
 function renderMuraPeople(u){
  const people=data.directory.filter(p=>p.id!==u.id);
  const card=p=>{
+  const focus=personFocus===p.id&&!!personSourceProject&&data.cooperations.some(c=>c.id===personSourceProject&&c.kind==='project');
+  const returnButton=focus?`<div class="actions"><button type="button" class="button secondary project-person-return" data-coop="openNotify" data-id="${esc(personSourceProject)}">${esc(globalThis.FolkoopProjectPresentation?.text(lang(),0)||ct('projectsTitle'))}</button></div>`:'';
   const coopTitles=data.coopMembers.filter(m=>m.user_id===p.id).map(m=>data.cooperations.find(x=>x.id===m.cooperation_id)?.title).filter(Boolean).slice(0,2);
   const chatTitles=data.chatMembers.filter(m=>m.user_id===p.id).map(m=>data.chats.find(x=>x.id===m.conversation_id)).filter(Boolean).map(chat=>chat.kind==='direct'?mt('direct'):chat.title).slice(0,1);
-  return `<article class="card mura-person-page-card" data-demo-story="person"><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div></article>`;
+  return `<article class="card mura-person-page-card${focus?' project-person-focus':''}" data-demo-story="person" data-person-id="${esc(p.id)}"${focus?' data-person-focused="true" tabindex="-1"':''}><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div>${returnButton}</article>`;
  };
  const currentLang=lang();
  const intro=currentLang==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':currentLang==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':currentLang==='en'?'Not a contact list: people I already share a project, place or conversation with.':(globalThis.FolkoopExtraCopy?.languages?.[currentLang]?.helper?.tips?.people||t('directory'));
@@ -791,7 +793,7 @@ function renderCooperation(u,r){
   }
   const activityBody=`<div class="activity-list">${data.coopActivity.map(e=>`<article class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div><strong>${esc(activityLabel(e,u))}</strong><p class="meta">${esc(formatWhen(e.created_at))}</p></div></article>`).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div>`;
   html+=coopDisclosure('activity',at('activity'),data.coopActivity.length,activityBody);
-  const membersBody=`<div class="coop-compact-list">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';return `<article class="coop-compact-row"><div><strong>${esc(name)}</strong><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></div>${remove}</article>`;}).join('')}</div>${member&&!owner?`<div class="actions">${cbtn('leave','leave',coop.id)}</div>`:''}`;
+  const membersBody=`<div class="coop-compact-list">${members.map(m=>{const p=coopProfile(m.user_id),name=m.user_id===u.id?mt('you'):(p?.name||ct('noProfile'));const remove=owner&&m.user_id!==u.id?cbtn('removeMember','remove',m.user_id):'';const listed=coop.kind==='project'&&m.user_id!==u.id&&data.directory.some(x=>x.id===m.user_id);const viewPerson=listed?`<button type="button" class="project-person-visit" data-home="openPerson" data-id="${esc(m.user_id)}">${esc(globalThis.FolkoopProjectPresentation?.text(lang(),2)||t('directory'))}</button>`:'';return `<article class="coop-compact-row"><div><strong>${esc(name)}</strong><span class="meta">${esc(ct(m.role==='owner'?'owner':'member'))}</span></div>${viewPerson}${remove}</article>`;}).join('')}</div>${member&&!owner?`<div class="actions">${cbtn('leave','leave',coop.id)}</div>`:''}`;
   html+=coopDisclosure('members',ct('members'),members.length,membersBody);
   if(coop.kind==='purchase'){
    const mine=data.commitments.find(x=>x.user_id===u.id),cd=commitDraft.quantity!==''?commitDraft:{quantity:mine?.quantity??'',note:mine?.note||''};
@@ -835,6 +837,7 @@ function render(){
  const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
  document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
+ if(r==='home'){personFocus=null;personSourceProject=null;}
  if(!relevant||localMyPlace)return;host.lang=lang();host.dir=document.documentElement.dir||'ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
@@ -859,7 +862,7 @@ function render(){
  else if(r==='me'){
   html=profileDomain.render(u,{profileDraft,guestDemo});
  }else if(r==='people'){
-  html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
+  html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>{const focus=personFocus===p.id&&personSourceProject&&data.cooperations.some(c=>c.id===personSourceProject&&c.kind==='project');return `<article class="card${focus?' project-person-focus':''}" data-person-id="${esc(p.id)}"${focus?' data-person-focused="true" tabindex="-1"':''}><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${focus?`<button class="button secondary project-person-return" type="button" data-coop="openNotify" data-id="${esc(personSourceProject)}">${esc(globalThis.FolkoopProjectPresentation?.text(lang(),0)||ct('projectsTitle'))}</button>`:''}${p.id!==u.id?btn('block','block',p.id):''}</article>`;}).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
   html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
  }
@@ -871,7 +874,7 @@ function render(){
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-home="openPerson"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
  }
  host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
@@ -983,6 +986,13 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   oauthPopup=popup;notice=t('oauthWaiting');
  });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
   if(a==='openCoop'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openPerson'){
+   const parent=data.cooperations.find(x=>x.id===selectedCoop&&x.kind==='project');
+   const listed=data.directory.some(x=>x.id===id);
+   const joined=parent&&data.coopMembers.some(x=>x.cooperation_id===parent.id&&x.user_id===id);
+   if(!parent||!listed||!joined)return;
+   personFocus=id;personSourceProject=parent.id;navigateNetwork('#/people');
+  }
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};coopCreateOpen=true;selectedCoop=null;resetEconomicFlowState();navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
@@ -1008,7 +1018,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='blockProvider')await api.block(id);
   if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
   if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
-  if(a==='openNotify'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openNotify'){personFocus=null;personSourceProject=null;if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;const guestAllowedNet=new Set(['back','open','backChats','openChat','refresh','logout']);if(guestDemo&&!guestAllowedNet.has(a)){guestRequireAccount();return;}
  run(async()=>{

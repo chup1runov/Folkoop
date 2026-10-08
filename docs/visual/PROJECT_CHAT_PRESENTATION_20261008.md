@@ -30,3 +30,18 @@ Assets are included in the normal HTML/build/precache. No build-time source rewr
 ## Not delivered by this slice
 
 No merge/deploy; no production data/Auth/provider/feature-flag changes. No R1 activation, resource reservation, Agreement/Decision runtime or independent Outcome. Existing Messages PRs #252/#253 were inspected but not blindly merged or declared completed. Physical iPhone/VoiceOver, human first-contact #261 and native-language #259 review remain separate.
+
+## Project member → person → original project
+
+A member gets a visit link only when the project membership AND the directory
+contain the exact same person identifier. The People page highlights that same
+visible profile, places keyboard focus on it, and offers a contextual return to
+the original project via existing authorised `openNotify`.
+
+This is presentation-only: no extra profile lookup, data duplication, contact
+permission, reservation, payment, Auth change or claim about real-world
+acquaintance. Source selection is memory-only and clears on Home and return.
+
+All eleven application languages have a personal-link label. RTL, 320/390px
+screens and read-only Mura routes keep their existing boundaries. The browser
+suite now verifies the person round trip inside the prior project/chat journey.

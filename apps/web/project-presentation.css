@@ -59,3 +59,13 @@
 #networkPanel[dir=rtl] .chat-messages .chat-message.is-mine{border-radius:4px 20px 20px 20px}
 @media(max-width:780px){.project-presentation-top,.project-presentation-body{grid-template-columns:1fr}.project-workspace .coop-summary{padding:21px}.project-presentation-context{padding:20px}.project-presentation-body{gap:13px}.project-section-navigation{gap:1px}.project-section-link{padding:10px 12px}.conversation-project-context{align-items:stretch;flex-direction:column}.conversation-project-context button{width:100%}.conversation-header{padding:18px}#networkPanel .chat-messages .chat-message{width:91%;padding:13px 15px}.project-workspace .coop-summary-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:17px;padding-top:13px}.project-workspace .coop-summary-stats>span{min-width:0;padding:9px 10px;gap:4px}.project-workspace .coop-summary-stats small{font-size:.75rem}}
 @media(max-width:360px){.project-workspace .coop-summary{padding:17px}.project-workspace .coop-summary h2{font-size:1.6rem}.project-section-link{padding:10px;font-size:.8rem}.project-workspace .coop-disclosure-body{padding:0 14px 14px}.conversation-header{padding:14px}#networkPanel .chat-messages .chat-message{width:96%}}
+
+/* Project member → visible person → original project. */
+.project-person-visit{min-height:44px;max-width:100%;padding:9px 13px;border:1px solid #c0d8ce;background:#f0f8f2;color:#165942;border-radius:11px;font-weight:680;font-size:.83rem;text-align:center;cursor:pointer}
+.project-person-visit:hover{background:#e0f1e6}
+.project-person-visit:focus-visible,.project-person-return:focus-visible{outline:3px solid #27786f;outline-offset:3px}
+.project-presentation-people .coop-compact-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.project-person-focus{border:2px solid #2d7662!important;background:#f0f8f3!important;box-shadow:0 0 0 4px #d7eadd!important;scroll-margin-top:88px}
+.project-person-focus:focus{outline:3px solid #27786f;outline-offset:3px}
+.project-person-return{min-height:44px;margin-top:14px;white-space:normal}
+@media(max-width:390px){.project-presentation-people .coop-compact-row{align-items:stretch}.project-person-visit{width:100%}}

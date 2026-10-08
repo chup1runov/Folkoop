@@ -20,6 +20,7 @@ test('project return and overview copy covers all eleven languages',()=>{
   assert(presentation.text(language,1).length>2,language);
  }
  assert.equal(presentation.text('unknown',0),'Back to project');
+ for(const language of ['sv','en','ru','es','uk','fi','bs','ar','fa','so','ku'])assert(presentation.text(language,2).length>6,language+' person link');
 });
 test('layout exits for unavailable roots and non-project routes',()=>{
  assert.equal(presentation.enhanceProject(null),false);
@@ -62,4 +63,15 @@ test('presentation owns no storage, cloned data, network or mutation APIs',()=>{
  assert.doesNotMatch(source,/fetch\s*\(|localStorage|sessionStorage|cloneNode|innerHTML|\.click\(\)|\.submit\(/);
  assert.match(source,/folkoop:network-rendered/);
  assert.match(source,/target\.open=true/);
+});
+
+test('project → person → project is ephemeral and only for visible directory profiles',()=>{
+ const source=readFileSync(base+'/network-ui.js','utf8');
+ assert(source.includes('data-home="openPerson"'));
+ assert(source.includes('data-person-focused="true"'));
+ assert(source.includes('data.directory.some(x=>x.id===m.user_id)'));
+ assert(source.includes('data.coopMembers.some(x=>x.cooperation_id===parent.id&&x.user_id===id)'));
+ assert(source.includes('personFocus=id;personSourceProject=parent.id'));
+ assert(source.includes('personFocus=null;personSourceProject=null'));
+ assert.doesNotMatch(readFileSync(base+'/project-presentation.js','utf8'),/localStorage|sessionStorage|fetch\s*\(/);
 });
