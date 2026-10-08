@@ -325,13 +325,13 @@ function hideEntryGate(){
  const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');globalThis.FolkoopGuide?.syncModal?.();
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
-function setEntryMode(mode){
+function setEntryMode(mode,{routeToMe=true}={}){
  entryGateAfterMuraExit=false;entryModeMemory=mode;
  try{sessionStorage.setItem(ENTRY_KEY,mode);if(mode==='guest')storage?.setItem(LANGUAGE_KEY,'done');}catch{}
  hideEntryGate();
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?'tour':mode}}));
  if(mode==='guest'){muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);}
- else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
+ else if(routeToMe){location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
  en:{name:'Mura',label:'FOLKOOP helper',open:'Open FOLKOOP guide',close:'Close',tour:'Show the full introduction again',intro:'I live here to explain what this part of FOLKOOP is for.',tips:{
@@ -689,7 +689,8 @@ document.addEventListener('click',e=>{
   const intent=entryIntent.dataset.entryIntent;
   if(!['browse','need','offer','project'].includes(intent))return;
   // A deliberate action enters the private local workspace, never auto-publishes.
-  setEntryMode('local');
+  // Avoid an intermediate #/me hashchange racing with the intended draft route.
+  setEntryMode('local',{routeToMe:false});
   if(intent==='browse'){current='center';location.hash='#/center';render(true);}
   else startFromShell(intent);
   return;
