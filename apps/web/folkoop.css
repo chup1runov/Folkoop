@@ -561,3 +561,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .center-future-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:4px}
 .center-future-card{background:var(--paper);border-style:dashed}
 @media(max-width:760px){.center-home-hero{grid-template-columns:auto 1fr}.center-home-meta{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.center-live-grid,.center-future-grid{grid-template-columns:1fr}}
+/* First-contact three-path preview (opt-in ?firstContact=three, not the default UI). */
+.entry-gate[data-entry-variant="three"] .entry-welcome-card{width:min(1020px,100%);display:block;max-height:min(94dvh,900px);overflow:auto;padding:clamp(16px,3vw,30px)}
+.entry-gate[data-entry-variant="three"] .entry-mura{display:none}
+.entry-gate[data-entry-variant="three"] .entry-welcome-copy{min-width:0}
+.entry-three-modes[hidden]{display:none!important}
+.entry-three-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 20px}
+.entry-three-card{display:flex;flex-direction:column;gap:9px;min-width:0;border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--paper)}
+.entry-three-card h2{font-size:clamp(1rem,2vw,1.15rem);line-height:1.2;margin:0}
+.entry-three-card p{font-size:.91rem;line-height:1.5;color:var(--muted);margin:0 0 auto}
+.entry-three-card>.button{margin-top:8px}
+.entry-three-card .button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 11px;white-space:normal;text-align:center}
+.entry-three-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.entry-three-actions .button{flex:1 1 110px}
+.entry-gate[data-entry-variant="three"] .entry-gate-actions{grid-template-columns:1fr}
+.entry-gate[data-entry-variant="three"] .entry-gate-actions .button{min-height:44px}
+@media(max-width:760px){
+ .entry-gate[data-entry-variant="three"]{padding:10px}
+ .entry-gate[data-entry-variant="three"] .entry-welcome-card{max-height:calc(100dvh - 20px)}
+ .entry-three-modes{grid-template-columns:1fr;gap:8px;margin:10px 0 12px}
+ .entry-three-card{padding:12px;gap:5px}
+ .entry-three-card h2{font-size:1rem}
+ .entry-three-card p{font-size:.85rem;line-height:1.4}
+ .entry-three-card .button{margin-top:3px}
+}
