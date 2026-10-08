@@ -35,18 +35,19 @@ FALLBACK_SENTINELS=[
 ]
 
 EXPECTED_JS="""({lang,route}) => {
- const p=globalThis.FolkoopExtraCopy?.languages?.[lang];
- if(!p)return null;
+ const registry=globalThis.FolkoopExtraCopy;
+ const p=registry?.languages?.[lang],g=registry?.muraGuest?.[lang],h=registry?.muraHome?.[lang];
+ if(!p||!g||!h)return null;
  const map={
-  home:p.network?.home?.title,
-  together:p.network?.coop?.togetherTitle,
-  projects:p.network?.coop?.projectsTitle,
-  messages:p.network?.chat?.messagesTitle,
-  people:p.network?.base?.directory,
-  communities:p.network?.base?.groups,
+  home:h.lead,
+  together:g.coop?.togetherTitle,
+  projects:g.coop?.projectsTitle,
+  messages:g.chat?.messagesTitle,
+  people:g.base?.directory,
+  communities:g.base?.groups,
   city:p.shell?.city,
   center:p.shell?.centerOnlineTitle,
-  me:p.network?.base?.profile,
+  me:g.base?.profile,
   settings:p.shell?.settingsTitle,
   about:p.shell?.aboutTitle
  };
@@ -141,6 +142,11 @@ async def main():
        lowered=text.casefold()
        leaked=[s for s in FALLBACK_SENTINELS if s.casefold() in lowered]
        assert not leaked,f'{lang}/{route}: core-language fallback leaked: {leaked}'
+      if lang in EXTRA and route=='home':
+       await expect(page.locator('#networkPanel .mura-home')).to_be_visible()
+      if lang in EXTRA and route=='city':
+       for development_label in ['early product prototype','demo —','pilot','prototyp']:
+        assert development_label not in text.casefold(),f'{lang}/city: development chrome leaked: {development_label}'
       assert not errors,f'{lang}/{route}: page errors: {errors}'
       matrix[lang][route]={'status':'PASS','marker':marker}
      except Exception as exc:
