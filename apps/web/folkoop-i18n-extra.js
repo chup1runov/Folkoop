@@ -4384,5 +4384,312 @@ languages.so.network.base.profile='Borofaaylka shabakadda';
 // NATURALNESS_SPOT_FIXES_20261007
 
 // LANG_BLOCKS
-globalThis.FolkoopExtraCopy = Object.freeze({languages});
+// Authored Mura guest chapters adapted from the approved Mura story work (#257).
+// Keep separate from the 509-key product schema: Mura's own life must never be
+// replaced with unrelated generic route descriptions in extra languages.
+const muraNarrativeExtra20261008={
+  "es": {
+    "tutorial": {
+      "welcome": "Entra. Soy Mura y vivo en Göteborg. Aquí están mis vecinos, mis conversaciones y algunas ideas que siguen esperando. Te enseño cómo se conectan.",
+      "home": "Ayer volví a mirar el intercambio de plantas y quién había respondido. También guardo mis notas privadas y cosas pendientes.",
+      "together": "Mi pequeña reforma se paró en los azulejos. Solo necesito una cortadora un fin de semana, así que busco a alguien que pueda prestarla.",
+      "projects": "Entonces pensé en mi cámara. También puedo ayudar con fotos a un vecino o a un proyecto, no solo pedir ayuda.",
+      "people": "Propuse intercambiar plantas. Anna y Sara se apuntaron; después llegaron las tareas y el chat del proyecto. Aún acordamos dónde poner la mesa.",
+      "city": "Conozco a Anna por las plantas, a Johan por las reparaciones y a Omar por la recogida. Nos une algo que hacemos juntos.",
+      "center": "En Göteborg veo de qué hablan los vecinos, dónde quedan y a quién puedo preguntar. A veces una conversación es suficiente.",
+      "quick": "Todavía no te he mostrado todo. Entra en una conversación, un proyecto o una de mis ideas pendientes. Seguimos por aquí."
+    },
+    "titles": {
+      "welcome": "Bienvenido a mi lugar",
+      "home": "Lo que guardo aquí",
+      "together": "Algo que necesito",
+      "projects": "Lo que puedo ofrecer",
+      "people": "Una idea que creció",
+      "city": "Personas a mi alrededor",
+      "center": "Mi Centro local",
+      "quick": "Ahora explora tú"
+    },
+    "center": {
+      "title": "Mi gente y mis lugares en Göteborg",
+      "body": "Los vecinos, encuentros y oportunidades de la ciudad forman parte de mi semana. A veces solo quiero leer una conversación.",
+      "localTitle": "Lo que se comenta cerca",
+      "localText": "Sigo las conversaciones locales y el contexto de GBG Forum. No todo debe convertirse en una tarea.",
+      "helper": "Vengo cuando busco gente, una reunión o un camino por la ciudad."
+    }
+  },
+  "uk": {
+    "tutorial": {
+      "welcome": "Заходь. Я Мура, живу в Гетеборзі. Тут мої сусіди, розмови, незавершені справи й те, що вже вийшло. Покажу, як усе пов’язане.",
+      "home": "Учора знову перевірила обмін рослинами й відповіді. Тут також мої особисті нотатки та справи на потім.",
+      "together": "Удома ремонт зупинився на плитці. Плиткоріз потрібен лише на вихідні, тому шукаю, у кого позичити.",
+      "projects": "А потім згадала про свій фотоапарат. Можу й сама допомогти сусідам або проєкту зі світлинами.",
+      "people": "Я запропонувала обмінятися рослинами. Відгукнулися Анна й Сара, з’явилися завдання та спільний чат. Ще домовляємося про стіл.",
+      "city": "Анну знаю через рослини, Йохана — через ремонт, з Омаром говоримо про доставку. Нас поєднує спільна справа.",
+      "center": "У Гетеборзі дивлюся, про що говорять сусіди, де зустрічаються і куди звернутися. Іноді простої розмови достатньо.",
+      "quick": "Я показала не все. Відкрий розмову, проєкт, знайомих або мої незавершені нотатки. Я тут."
+    },
+    "titles": {
+      "welcome": "Ласкаво прошу до мене",
+      "home": "Що я тут зберігаю",
+      "together": "Що мені потрібно",
+      "projects": "Чим можу допомогти",
+      "people": "Ідея, що виросла",
+      "city": "Люди поруч",
+      "center": "Мій місцевий Центр",
+      "quick": "Досліджуй сам"
+    },
+    "center": {
+      "title": "Мої люди й місця в Göteborg",
+      "body": "Сусіди, зустрічі й можливості міста — частина мого життя. Інколи я просто читаю розмови.",
+      "localTitle": "Про що говорять поруч",
+      "localText": "Слідкую за місцевими розмовами й контекстом ГБГ Форуму. Не все має ставати завданням.",
+      "helper": "Сюди приходжу по людей, зустрічі й корисні міські маршрути."
+    }
+  },
+  "fi": {
+    "tutorial": {
+      "welcome": "Tule sisään. Olen Mura ja asun Göteborgissa. Täällä on naapureita, keskusteluja ja keskeneräisiä asioita. Näytän, miten ne liittyvät yhteen.",
+      "home": "Eilen kävin katsomassa, miten kasvien vaihto etenee ja kuka vastasi. Täällä ovat myös omat muistiinpanoni.",
+      "together": "Pieni kotiremonttini pysähtyi laattoihin. Tarvitsen laattaleikkurin vain viikonlopuksi, joten yritän lainata sellaisen.",
+      "projects": "Sitten muistin kamerani. Voin auttaa naapuria tai projektia valokuvilla enkä vain pyytää apua.",
+      "people": "Ehdotin kasvien vaihtoa. Anna ja Sara tulivat mukaan, sitten syntyivät tehtävät ja yhteinen keskustelu. Pöydän paikka pitää vielä sopia.",
+      "city": "Tunnen Annan kasveista, Johanin korjauksista ja Omarin noudon suunnittelusta. Yhteinen tekeminen toi meidät yhteen.",
+      "center": "Göteborgissa katson, mistä naapurit puhuvat, missä tavataan ja mihin voi ottaa yhteyttä. Joskus keskustelu riittää.",
+      "quick": "Kaikkea en vielä näyttänyt. Avaa keskustelu, projekti, tuttu ihminen tai keskeneräinen muistiinpano. Olen täällä."
+    },
+    "titles": {
+      "welcome": "Tervetuloa luokseni",
+      "home": "Mitä täällä säilytän",
+      "together": "Mitä tarvitsen",
+      "projects": "Mitä voin tarjota",
+      "people": "Idea joka kasvoi",
+      "city": "Ihmisiä ympärilläni",
+      "center": "Paikallinen Centerini",
+      "quick": "Tutustu rauhassa"
+    },
+    "center": {
+      "title": "Ihmiset ja paikat Göteborgissa",
+      "body": "Naapurit, tapaamiset ja kaupungin mahdollisuudet ovat osa arkeani. Joskus haluan vain lukea keskustelua.",
+      "localTitle": "Mistä naapurit puhuvat",
+      "localText": "Seuraan paikallisia keskusteluja ja GBG Forumin ympäristöä. Kaikesta ei tarvitse tehdä tehtävää.",
+      "helper": "Tulen tänne etsimään ihmisiä, tapaamisia ja kaupungin mahdollisuuksia."
+    }
+  },
+  "bs": {
+    "tutorial": {
+      "welcome": "Uđi. Ja sam Mura i živim u Göteborgu. Ovdje su moje komšije, razgovori, nezavršene stvari i poneki uspjeh. Pokazat ću ti kako su povezani.",
+      "home": "Jučer sam provjerila razmjenu biljaka i ko je odgovorio. Ovdje čuvam i privatne bilješke.",
+      "together": "Mali popravak kod kuće stao je kod pločica. Rezač mi treba samo za vikend, pa tražim da ga posudim.",
+      "projects": "Onda sam se sjetila fotoaparata. Mogu pomoći komšijama ili projektu fotografijama, ne samo tražiti pomoć.",
+      "people": "Predložila sam razmjenu biljaka. Anna i Sara su se pridružile, pa su nastali zadaci i razgovor. Još dogovaramo sto.",
+      "city": "Annu znam kroz biljke, Johana kroz popravke, a s Omarom pričam o preuzimanju. Spojio nas je zajednički posao.",
+      "center": "U Göteborgu gledam o čemu komšije pričaju i gdje se okupljaju. Nekada je razgovor sasvim dovoljan.",
+      "quick": "Nisam ti još sve pokazala. Otvori razgovor, projekt, nekoga koga znam ili moju nedovršenu bilješku."
+    },
+    "titles": {
+      "welcome": "Dobro došao kod mene",
+      "home": "Šta čuvam ovdje",
+      "together": "Šta mi treba",
+      "projects": "Šta mogu ponuditi",
+      "people": "Ideja je porasla",
+      "city": "Ljudi oko mene",
+      "center": "Moj lokalni Centar",
+      "quick": "Istraži sam"
+    },
+    "center": {
+      "title": "Moji ljudi i mjesta u Göteborgu",
+      "body": "Komšije, susreti i gradske mogućnosti dio su mog svakodnevnog života. Nekad samo želim čitati razgovor.",
+      "localTitle": "O čemu komšije pričaju",
+      "localText": "Pratim lokalne razgovore i kontekst GBG Foruma. Ne mora sve postati zadatak.",
+      "helper": "Dolazim ovdje kad tražim ljude, susret ili gradske mogućnosti."
+    }
+  },
+  "ar": {
+    "tutorial": {
+      "welcome": "تفضل. أنا مورا وأعيش في يوتيبوري. هنا جيراني ومحادثاتي وأعمال لم تكتمل وأخرى انتهت. سأريك كيف ترتبط.",
+      "home": "عدت أمس لأرى كيف يسير تبادل النباتات ومن رد عليّ. هنا أيضاً ملاحظاتي الخاصة وأعمالي المؤجلة.",
+      "together": "توقف إصلاح صغير في البيت عند البلاط. أحتاج قاطعه لعطلة نهاية أسبوع فقط، لذلك أحاول استعارته.",
+      "projects": "ثم تذكرت الكاميرا. أستطيع مساعدة الجيران أو المشروع بالصور، لا أن أطلب المساعدة فقط.",
+      "people": "اقترحت تبادل النباتات. انضمت آنا وسارة، ثم ظهرت المهام ومحادثة العمل. ما زلنا نختار مكان الطاولة.",
+      "city": "عرفت آنا عبر النباتات ويوهان عبر الإصلاح وعمر عبر حديث الاستلام. جمعنا عمل مشترك.",
+      "center": "في يوتيبوري أتابع ما يتحدث عنه الجيران وأماكن اللقاء والجهات المفيدة. أحياناً تكفي محادثة فقط.",
+      "quick": "لم أريك كل شيء. افتح محادثة أو مشروعاً أو شخصاً أعرفه أو إحدى ملاحظاتي غير المكتملة."
+    },
+    "titles": {
+      "welcome": "أهلاً بك عندي",
+      "home": "ما أحتفظ به هنا",
+      "together": "ما أحتاجه",
+      "projects": "ما يمكنني تقديمه",
+      "people": "فكرة كبرت",
+      "city": "الناس من حولي",
+      "center": "مركزي المحلي",
+      "quick": "استكشف بنفسك"
+    },
+    "center": {
+      "title": "أناسيّ وأماكني في يوتيبوري",
+      "body": "الجيران واللقاءات وفرص المدينة جزء من حياتي اليومية. أحياناً أريد فقط قراءة حديث.",
+      "localTitle": "ما الذي يتحدث عنه الجيران",
+      "localText": "أتابع أحاديث الحي وسياق منتدى غوتنبرغ. ليس كل حديث مهمة جديدة.",
+      "helper": "أعود هنا لأجد شخصاً أو لقاء أو طريقاً مفيداً في المدينة."
+    }
+  },
+  "fa": {
+    "tutorial": {
+      "welcome": "بیا داخل. من مورا هستم و در یوتبری زندگی می‌کنم. اینجا همسایه‌ها، گفت‌وگوها و کارهای نیمه‌تمامم هستند. نشان می‌دهم چطور به هم مربوط‌اند.",
+      "home": "دیروز دوباره سراغ تبادل گیاه رفتم ببینم چه کسی پاسخ داده. یادداشت‌های خصوصی و کارهای بعدی‌ام هم اینجا هستند.",
+      "together": "تعمیر کوچکم در خانه به کاشی رسید و متوقف شد. کاشی‌بُر را فقط آخر هفته لازم دارم، پس دنبال قرض گرفتنش هستم.",
+      "projects": "بعد یاد دوربینم افتادم. می‌توانم برای همسایه‌ها یا پروژه عکس بگیرم، نه اینکه فقط کمک بخواهم.",
+      "people": "تبادل گیاه را پیشنهاد دادم. آنا و سارا آمدند و کارها و گفت‌وگو شروع شد. هنوز جای میز را هماهنگ می‌کنیم.",
+      "city": "آنا را از گیاه‌ها می‌شناسم، یوهان را از تعمیر و با عمر درباره تحویل حرف زده‌ام. یک کار مشترک ما را آشنا کرد.",
+      "center": "در یوتبری می‌بینم همسایه‌ها درباره چه حرف می‌زنند و کجا همدیگر را می‌بینند. گاهی گفت‌وگو کافی است.",
+      "quick": "هنوز همه چیز را نشان نداده‌ام. گفت‌وگو، پروژه، آدم‌ها یا یادداشت ناتمام مرا باز کن."
+    },
+    "titles": {
+      "welcome": "به خانه‌ام خوش آمدی",
+      "home": "چیزهایی که اینجا دارم",
+      "together": "چیزی که نیاز دارم",
+      "projects": "چیزی که می‌توانم بدهم",
+      "people": "ایده‌ای که بزرگ شد",
+      "city": "آدم‌های اطرافم",
+      "center": "مرکز محلی من",
+      "quick": "خودت بگرد"
+    },
+    "center": {
+      "title": "آدم‌ها و جاهای من در یوتبری",
+      "body": "همسایه‌ها، دیدارها و فرصت‌های شهر بخشی از روزهای من‌اند. گاهی فقط می‌خواهم گفت‌وگویی را بخوانم.",
+      "localTitle": "حرف‌های همسایه‌ها",
+      "localText": "گفت‌وگوهای محلی و فضای پیرامون انجمن گوتنبرگ را دنبال می‌کنم. هر حرفی قرار نیست کار تازه‌ای باشد.",
+      "helper": "وقتی دنبال آدم‌ها، دیدار یا مسیر شهری هستم به اینجا سر می‌زنم."
+    }
+  },
+  "so": {
+    "tutorial": {
+      "welcome": "Soo gal. Waxaan ahay Mura, Göteborg ayaan degganahay. Halkan waxaa ku jira deriskayga, sheekooyinkayga iyo hawlo aan dhammaan. Aan ku tuso sida ay isugu xiran yihiin.",
+      "home": "Shalay waxaan dib u eegay isweydaarsiga dhirta iyo cidda jawaabtay. Qoraalladayda gaarka ahna way yaallaan.",
+      "together": "Dayactir yar oo guriga ah ayaa ku xayirmay dhoobada. Qalabka jarista waxaan u baahanahay hal dhammaad toddobaad, sidaas darteed waan amaahanayaa.",
+      "projects": "Markaas waxaan xusuustay kamaradayda. Waxaan sawirro uga caawin karaa deriska ama mashruuca, ma aha inaan mar kasta codsado.",
+      "people": "Waxaan soo jeediyay isweydaarsiga dhirta. Anna iyo Sara ayaa ku soo biiray; hawlo iyo wada hadal ayaana yimid. Weli meel baan isla dooranaynaa.",
+      "city": "Anna dhirta ayaan ku bartay, Johan dayactirka, Omarna qaadista ayaan ka wada hadalnay. Hawl wadajir ah ayaa na kulmisay.",
+      "center": "Göteborg waxaan ka eegaa deriska waxa ay ka hadlayaan iyo meelaha la isugu yimaado. Mararka qaar sheeko keliya ayaa ku filan.",
+      "quick": "Wax walba weli kuma tusin. Fur wada hadal, mashruuc, qof aan aqaan ama qoraal aan dhammayn."
+    },
+    "titles": {
+      "welcome": "Ku soo dhowow gurigayga",
+      "home": "Waxaan ku haysto",
+      "together": "Waxaan u baahanahay",
+      "projects": "Waxaan bixin karo",
+      "people": "Fikrad korodhay",
+      "city": "Dadka agtayda",
+      "center": "Xaruntayda deegaanka",
+      "quick": "Adigu baadh"
+    },
+    "center": {
+      "title": "Dadkayga iyo meelahayga Göteborg",
+      "body": "Deriska, kulamada iyo fursadaha magaalada waa qayb ka mid ah maalmahayga. Mararka qaar sheeko ayaan akhriyaa.",
+      "localTitle": "Waxa derisku ka hadlayaan",
+      "localText": "Waxaan raacaa sheekooyinka deegaanka iyo GBG Forum. Sheeko kasta hawl ma noqoto.",
+      "helper": "Waxaan halkan ka raadiyaa qof, kulan ama adeeg magaalada ah."
+    }
+  },
+  "ku": {
+    "tutorial": {
+      "welcome": "Were hundir. Ez Mura me û li Göteborg dijîm. Li vir cîran, axaftin û karên min ên neqediyayî hene. Ez ê girêdanên wan nîşan bidim.",
+      "home": "Duh min dîsa li guherîna nebatan nihêrî ka kê bersiv daye. Nivîsên min ên taybet jî li vir in.",
+      "together": "Tamîra min a biçûk li malê li ser seramîkê rawestiya. Amûrê tenê dawiya hefteyê dixwazim, ji ber vê yekê ez deyn digerim.",
+      "projects": "Paşê kamera min hat bîra min. Dikarin bi wêneyan alîkariya cîranan an projeyek bikim.",
+      "people": "Min guherîna nebatan pêşniyar kir. Anna û Sara hatin, erk û axaftin jî çêbûn. Hê em cihê maseyê diyar dikin.",
+      "city": "Min Anna bi nebatan, Johan bi tamîrê, Omar jî bi wergirtinê nas kir. Kareke hevpar me anî cem hev.",
+      "center": "Li Göteborg ez dibînim cîran çi diaxivin û li ku dicivin. Carinan tenê axaftin bes e.",
+      "quick": "Min hê her tişt nîşan neda. Axaftinek, projeyek, mirov an nivîsek min a neqediyayî veke."
+    },
+    "titles": {
+      "welcome": "Bi xêr hatî mala min",
+      "home": "Tiştên li vir",
+      "together": "Tiştek ku dixwazim",
+      "projects": "Tiştên ku dikarim",
+      "people": "Ramanek mezin bû",
+      "city": "Mirovên li dor min",
+      "center": "Navenda min a herêmî",
+      "quick": "Tu jî bigere"
+    },
+    "center": {
+      "title": "Mirov û cihên min li Göteborg",
+      "body": "Cîran, civîn û derfetên bajêr beşek ji rojên min in. Carinan tenê dixwazim axaftinek bixwînim.",
+      "localTitle": "Axaftina cîranan",
+      "localText": "Ez axaftinên herêmî û derdora GBG Forum dişopînim. Ne her axaftin divê bibe erk.",
+      "helper": "Ez li vir mirov, civîn an rêya bajêr digerim."
+    }
+  }
+};
+const muraGuestExtra20261008=Object.create(null);
+const muraHomeExtra20261008=Object.create(null);
+for(const [code,story] of Object.entries(muraNarrativeExtra20261008)){
+ const pack=languages[code],base=pack.network.base,chat=pack.network.chat,
+ coop=pack.network.coop,activity=pack.network.activity,
+ home=pack.network.home,life=story.tutorial,title=story.titles;
+ muraGuestExtra20261008[code]={
+  base:{
+   profile:'Mura',listed:base.listed,groups:'Mura · '+base.groups,
+   desc:life.center,directory:'Mura · '+base.directory,own:'Mura',
+   out:home.demoExit,by:base.by,empty:base.empty
+  },
+  chat:{
+   messagesTitle:'Mura · '+chat.messagesTitle,
+   messagesDesc:life.city,conversation:chat.conversation,direct:chat.direct,
+   groupChat:chat.groupChat,membersList:chat.membersList,notEncrypted:'',
+   you:'Mura',noPeople:chat.noChats
+  },
+  coop:{
+   togetherTitle:pack.shell.together,projectsTitle:'Mura · '+coop.projectsTitle,
+   networkDesc:life.together+' '+life.projects,projectDesc:life.people,
+   localBelow:'',memberOnly:coop.memberOnly
+  },
+  offer:{
+   offerHelp:coop.purchaseHelp,
+   notOrder:pack.network.offer.notOrder
+  },
+  activity:{
+   activity:activity.activity,notifications:activity.notifications,
+   workChat:activity.workChat,linkedChat:activity.linkedChat,
+   managedChat:'',unread:activity.unread,
+   noActivity:activity.noActivity,recentActivity:activity.recentActivity,
+   openActivity:activity.openActivity
+  },
+  home:{
+   demoBadge:'Mura · Göteborg',demoText:home.demoText,
+   demoExit:home.demoExit
+  }
+ };
+ // Text for Mura's read-only account is anchored to her authored activities;
+ // semantic short labels reuse the selected language's normal vocabulary.
+ muraHomeExtra20261008[code]={
+  eyebrow:'Mura · FOLKOOP',
+  lead:life.welcome,
+  active:coop.activeStatus,people:pack.shell.people,
+  unread:activity.unread,drafts:pack.shell.drafts,today:home.daily,
+  continue:coop.open,storyEyebrow:title.home,storyTitle:title.people,
+  storyText:life.people,peopleEyebrow:pack.shell.people,
+  peopleTitle:title.city,seePeople:base.directory,
+  chatEyebrow:pack.shell.messages,chatTitle:chat.messagesTitle,
+  allMessages:pack.shell.messages,sparkEyebrow:pack.shell.resource,
+  sparkTitle:title.projects,sparkText:life.projects,
+  draftEyebrow:pack.shell.drafts,draftTitle:pack.shell.drafts,
+  openProfile:pack.shell.profileLink,cityTitle:story.center.title,
+  cityText:story.center.body,cityCta:pack.shell.openCity,
+  neighbourhood:story.center.localTitle,roamTitle:title.quick,
+  roamText:life.quick,openStory:coop.open,next:home.nextStep,
+  myPart:coop.member,resourceSpark:coop.resource,
+  communitySpark:base.groups,languageSpark:pack.shell.together,
+  openConversation:chat.conversation,participant:base.by,
+  outcomeEyebrow:pack.network.lifecycle.done,
+  outcomeTitle:pack.network.lifecycle.done,
+  outcomeText:life.welcome,result:pack.network.lifecycle.done
+ };
+}
+globalThis.FolkoopExtraCopy = Object.freeze({
+ languages,
+ muraNarrative: Object.freeze(muraNarrativeExtra20261008),
+ muraGuest: Object.freeze(muraGuestExtra20261008),
+ muraHome: Object.freeze(muraHomeExtra20261008)
+});
 })();
