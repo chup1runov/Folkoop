@@ -92,8 +92,9 @@ async def main():
     if action in ['need','offer','projects']:
      await expect(page.locator('#networkPanel')).to_be_visible()
     if action in ['need','offer']:
-     chosen=page.locator(f'[data-together-kind="{action}"]')
-     if await chosen.count():await expect(chosen).to_have_class(re.compile('.*active.*'))
+     await expect(page.locator('#networkPanel .coop-summary')).to_be_visible()
+     await expect(page.locator('#networkPanel .coop-summary .badge').first).to_have_text(
+      'Need' if action=='need' else 'Offer')
     if action=='center':
      await expect(page.locator('#workspace')).to_contain_text('Center')
     await page.reload()
