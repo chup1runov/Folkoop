@@ -161,7 +161,7 @@ export async function getReviewCorpus(){
  return cached;
 }
 export function fingerprint(rows){
- const canonical=rows.map(({key,target})=>[key,target]);
+ const canonical=rows.map(({key,source,target})=>[key,source,target]);
  return createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
 }
 function csvCell(value){
