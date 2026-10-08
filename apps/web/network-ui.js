@@ -73,7 +73,7 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const muraText=(section,key)=>{
- const pack=muraGuestCopy[lang()];
+ const pack=muraGuestCopy[lang()]||globalThis.FolkoopExtraCopy?.muraGuest?.[lang()];
  return guestDemo?pack?.[section]?.[key]:undefined;
 };
 const SUBSECTION_KEY='folkoop-subsection-v1';
@@ -843,7 +843,7 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'){html=guestDemo&&['en','sv','ru'].includes(lang())?muraHomeDomain.render(u):renderHome(u);}
+ else if(r==='home'){html=guestDemo?muraHomeDomain.render(u):renderHome(u);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
