@@ -16,7 +16,7 @@ test('native-review packets cover all schema paths, City, Today, About FAQs and 
   for(const path of FOLKOOP_I18N_PATHS)
    assert(ids.has(path),lang+' missing schema review path '+path);
   for(const prefix of ['city.messages.','city.about.faq.','city.today.',
-                       'city.todayCompact.','homeModes.'])
+                       'city.todayCompact.','homeModes.','firstContactPreview.'])
    assert(r.some(x=>x.key.startsWith(prefix)),lang+' missing review layer '+prefix);
   assert(r.length>FOLKOOP_I18N_PATHS.length+100,lang+' reviewer corpus unexpectedly small');
   assert.match(fingerprint(r),/^[0-9a-f]{64}$/);
