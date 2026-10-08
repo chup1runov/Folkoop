@@ -58,7 +58,7 @@ async def main():
    await page.goto(BASE+'?intro=1')
    sw_version=await page.evaluate("""async()=>{const r=await fetch('./sw.js',{cache:'no-store'});const x=await r.text();return x.match(/const VERSION='([^']+)'/)?.[1]||''}""")
    expected_version=json.loads(Path('package.json').read_text())['version']
-    if sw_version!=expected_version: failures.append(f'{width}: production shell version is {sw_version or "missing"}, expected {expected_version}')
+   if sw_version!=expected_version: failures.append(f'{width}: production shell version is {sw_version or "missing"}, expected {expected_version}')
    await expect(page.locator('#onboarding')).to_be_visible()
    await page.wait_for_timeout(220)
    for index in range(8):
