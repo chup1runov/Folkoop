@@ -56,6 +56,8 @@ const homeModesCopy={
  so:{browseTitle:'Dadka la joog',browseText:'Eeg wada hadallada, kulamada, bulshooyinka iyo goobaha adigoon hawl samayn.',browseAction:'Fur Xarunta',solveTitle:'Xalli arrin gaar ah',solveText:'Caawin codso ama wax faa’iido leh bixi. Si yar u bilow — mashruuc khasab ma aha.',needAction:'Raadi caawin',offerAction:'Bixi caawin',organizeTitle:'Wax wada abaabula',organizeText:'Isku keen dadka, hawlaha iyo agabka, qalab qoto dheerna ku dar marka loo baahdo.',organizeAction:'Bilow mashruuc'},
  ku:{browseTitle:'Di nav mirovan de be',browseText:'Axaftin, civîn, civak û cihan bêyî afirandina karê nû temaşe bike.',browseAction:'Navendê veke',solveTitle:'Pirsek taybet çareser bike',solveText:'Alîkarî bixwaze an tiştek bikêr pêşkêş bike. Bi hêsanî dest pê bike — proje ne pêdivî ye.',needAction:'Alîkarî bibîne',offerAction:'Alîkarî pêşkêş bike',organizeTitle:'Tiştek bi hev re rêxistin bike',organizeText:'Mirov, kar û çavkaniyan bîne hev û amûrên kûrtir tenê dema pêdivî be zêde bike.',organizeAction:'Projeyek dest pê bike'}
 };
+// Shared existing translations for the opt-in first-contact comparison screen.
+globalThis.FolkoopHomeModesCopy=Object.freeze(homeModesCopy);
 const homeModeText=k=>homeModesCopy[lang()]?.[k]||homeModesCopy.en[k]||k;
 
 const baseCopy={sv,en,ru};
