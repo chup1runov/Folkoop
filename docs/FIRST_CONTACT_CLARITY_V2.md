@@ -209,6 +209,23 @@ If fail:
 - classify why the proposition failed;
 - revise headline/action framing and repeat the small test.
 
+## Evidence kit — 8 October 2026
+
+An independent, implementation-neutral research kit is now available at
+[`docs/research/FIRST_CONTACT_STUDY_20261008.md`](research/FIRST_CONTACT_STUDY_20261008.md)
+and `scripts/research/first-contact-study.mjs`.
+
+**Status:** prepared, not conducted. No new 5–10-person study or comprehension
+acceptance is claimed.
+
+An explicit *later* owner-approved whole-system laboratory decision in
+[PR #234](https://github.com/chup1runov/Folkoop/pull/234) uses **three equal
+paths** (explore/belong, solve a concrete question, organise together).
+The **four concrete entrances** documented above remain an earlier test
+candidate, not an instruction to silently override that later decision
+or ship a redesign without evidence. The kit can evaluate the current
+Mura-first welcome and each candidate using separate independent groups.
+
 ## 13. Explicit non-goals
 
 This slice does not add:
