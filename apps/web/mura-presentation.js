@@ -35,7 +35,14 @@ function enhance(root){
  function select(index,focus){
   selectedChapter=panels[index].dataset.muraChapter;
   tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;panels[i].hidden=i!==index;});
-  if(focus){tabs[index].focus({preventScroll:true});tabs[index].scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});}
+  if(focus){
+   tabs[index].focus({preventScroll:true});
+   // A deliberate chapter choice reveals the note below the fixed top bar.
+   // Initial Home rendering never scrolls the visitor away from her profile.
+   const inset=(document.querySelector('.topbar')?.getBoundingClientRect().height||0)+12;
+   window.scrollTo({top:Math.max(0,window.scrollY+root.getBoundingClientRect().top-inset),behavior:'instant'});
+   tabs[index].scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+  }
  }
  list.addEventListener('click',event=>{const tab=event.target.closest('[role="tab"]');const index=tabs.indexOf(tab);if(index>=0)select(index,true);});
  list.addEventListener('keydown',event=>{
