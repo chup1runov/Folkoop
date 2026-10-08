@@ -30,6 +30,14 @@ Old no-Center tests describe old runtime; update them only in a reviewed impleme
 
 Blockchain is a required scoped design/prototype/integration workstream, not merely an optional idea. It is not a universal replacement for the database, no guarantee of real-world truth, and no authority for mandatory wallets, tokens/NFTs, personal-data publication or fee spending. Follow ADR-002 and the charter's design/activation gates.
 
+## Localization acceptance and release claims
+
+All eleven advertised interface languages must be assessed separately. A green 509-key schema, route coverage or browser CI is **technical coverage**, not a certification that translated copy is natural or even semantically correct.
+
+A locale is **linguistically approved** only when three evidence gates are documented: (1) structural/browser QA of the current UI and RTL where applicable, including City and guest routes; (2) editorial equivalence for current product functionality, privacy, payments, physical Center, Mura and source authority; and (3) a fluent native/target-variant reviewer who personally inspected the relevant routes, interactions and strings, resolved blocking findings and linked the review to the reviewed translation fingerprint. LLM output, machine translation, key counts, automated screenshots or author self-assertion do not constitute human approval.
+
+The normative protocol, per-locale pending/approved records and verification command are in `docs/i18n/RELEASE_READINESS.md` and `docs/i18n/locale-acceptance.json`. Keep approvals **pending** unless genuine review evidence exists; invalidate approvals when reviewed copy or scope changes. Do not claim all 11 languages are fully translated, native-reviewed or ready solely from passing automation. A pending human-review gate does not by itself block ordinary pilot deployment; it blocks the **certified-language claim**.
+
 ## Boundaries
 
 Do not copy private conversation archives, founder negotiation positions, credentials, personal identifiers or participant/forum data into this public repository. Integration is not authorisation to rename the external forum or import its members/messages. Existing licensing and source attribution remain in force. Do not activate Google Auth or change infrastructure spending without the required owner/provider readiness decision.
