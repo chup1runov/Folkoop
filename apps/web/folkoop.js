@@ -360,6 +360,20 @@ const helperCopy={
   about:'Om oss förklarar FOLKOOPs syfte, gränser, pilotens nuvarande läge och riktningen för den framtida arkitekturen.'
  }}
 };
+const onboardingActionCopy={
+ en:{practice:'See it in practice',explore:"Explore Mura's account"},
+ sv:{practice:'Visa i praktiken',explore:'Utforska hos Mura'},
+ ru:{practice:'Посмотреть на деле',explore:'Осмотреться у Муры'},
+ es:{practice:'Verlo en la práctica',explore:'Explorar la cuenta de Mura'},
+ uk:{practice:'Подивитися на практиці',explore:'Оглянути акаунт Мури'},
+ fi:{practice:'Katso käytännössä',explore:'Tutki Muran tiliä'},
+ bs:{practice:'Pogledaj u praksi',explore:'Istraži Murin račun'},
+ ar:{practice:'مشاهدته عمليًا',explore:'استكشف حساب مورا'},
+ fa:{practice:'در عمل ببین',explore:'حساب مورا را بگرد'},
+ so:{practice:'Ku arag sida ay u shaqayso',explore:'Sahami akoonka Mura'},
+ ku:{practice:'Di pratîkê de bibîne',explore:'Hesabê Mura keşf bike'}
+};
+const onboardingFeedbackCopy={"en":{"next":"Done. Want to see the next connection?","finished":"Done — you've seen three key connections in my account. Now explore."},"sv":{"next":"Klart. Ska vi titta på nästa samband?","finished":"Klart — du har sett tre viktiga samband i mitt konto. Utforska gärna vidare."},"ru":{"next":"Готово. Посмотрим следующую связь?","finished":"Готово — ты уже увидел три ключевые связи в моём аккаунте. Теперь исследуй дальше."},"es":{"next":"Listo. ¿Vemos la siguiente conexión?","finished":"Listo. Ya viste tres conexiones en mi cuenta. Ahora puedes seguir explorando."},"uk":{"next":"Готово. Подивимося на наступний зв’язок?","finished":"Готово. Ти побачив три важливі зв’язки в моєму акаунті. Тепер досліджуй далі."},"fi":{"next":"Valmis. Katsotaanko seuraavaa yhteyttä?","finished":"Valmista. Näit kolme tärkeää yhteyttä tililläni. Tutustu nyt rauhassa lisää."},"bs":{"next":"Gotovo. Da pogledamo sljedeću vezu?","finished":"Gotovo. Vidio/la si tri važne veze u mom računu. Sada istraži dalje."},"ar":{"next":"تمّ. هل نرى الصلة التالية؟","finished":"تمّ. رأيت ثلاث صلات مهمة في حسابي. يمكنك الآن الاستكشاف بحرية."},"fa":{"next":"انجام شد. ارتباط بعدی را ببینیم؟","finished":"تمام شد. سه ارتباط مهم را در حساب من دیدی. حالا می‌توانی بیشتر بگردی."},"so":{"next":"Waa la dhammeeyay. Ma eegnaa xiriirka xiga?","finished":"Waa la dhammeeyay. Waxaad aragtay saddex xiriir oo muhiim ah oo akoonkayga ah. Hadda sahmi."},"ku":{"next":"Qediya. Gelo em girêdana din bibînin?","finished":"Qediya. Te sê girêdanên girîng di hesabê min de dîtin. Niha bigere."}};
 const muraTutorialCopy={
  en:{welcome:"Come in — this is my FOLKOOP. I'll show you what is happening in my life here, then you can roam around on your own.",home:"This is my profile and my unfinished thoughts. Some things are public, some are still private drafts. They are all part of the same place.",together:"I need a tile cutter for one weekend. Instead of posting into a void, I keep the need as a concrete thing that can connect to a person or resource.",projects:"I can help too. Photography is one of the things I offer when a neighbour or project needs it.",people:"This plant-and-seed exchange started as one small idea. Now it has people, tasks, updates and its own work chat.",city:"These are people around me. I don't need followers — I need people whose skills, interests or location cross with something I'm doing.",center:"This is my Göteborg Center story: ordinary local community, people, City and projects connect here. The forum context is illustrative — no real members or messages are copied.",quick:"That's enough instruction. Now just look around my account: open anything that catches your eye and follow the connections."},
  ru:{welcome:"Заходи — это мой FOLKOOP. Я покажу, что здесь происходит в моей жизни, а потом просто походишь сама или сам и посмотришь всё, что захочется.",home:"Это мой профиль и мои незаконченные мысли. Что-то уже стало общим делом, а что-то пока лежит в личных черновиках — всё это живёт в одном месте.",together:"Мне на выходные нужен плиткорез. Вместо сообщения в пустоту я держу потребность как конкретное дело, которое может связаться с человеком или ресурсом.",projects:"А здесь наоборот — я могу помочь сама. Фотография — одна из вещей, которые я предлагаю, когда она нужна соседу или проекту.",people:"Этот обмен растениями начался с маленькой идеи. Теперь здесь есть люди, задачи, обновления и свой рабочий чат.",city:"Это люди вокруг меня. Мне не нужны подписчики — мне нужны те, чьи навыки, интересы или район пересекаются с тем, что я делаю.",center:"Это моя история Центра в Göteborg: здесь связываются обычное локальное общение, люди, Город и проекты. Контекст форума иллюстративный — реальные участники и сообщения не копируются.",quick:"На этом инструкция заканчивается. Теперь просто походи по моему аккаунту: открывай всё, что цепляет, и смотри, куда ведут связи."},
@@ -519,7 +533,7 @@ function showOnboarding(step=0){
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=onboardingStep===0?t('tutorialBack'):(rtl?'→ ':'← ')+t('tutorialProgress')+' '+onboardingStep;back.disabled=onboardingStep===0;
  const taskPending=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep);
  const next=dialog.querySelector('[data-onboarding="next"]');
- next.textContent=taskPending?(lang==='ru'?'Посмотреть на деле':lang==='sv'?'Visa i praktiken':lang==='en'?'See it in practice':t('tutorialNext')):(onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':lang==='en'?'Explore Mura\'s account':t('tutorialDone')):t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
+ next.textContent=taskPending?onboardingActionCopy[lang]?.practice||onboardingActionCopy.en.practice:(onboardingStep===onboardingSteps.length-1?onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore:t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
  updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
@@ -583,13 +597,15 @@ function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML='';
  renderMobileChrome();
- $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
+ $('#nav').setAttribute('aria-label',t('select'));
+  $('#mobilePrimaryNav')?.setAttribute('aria-label',t('select'));
+  $('#networkPanel')?.setAttribute('aria-label','FOLKOOP · '+t('together'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
  const searchButton=$('#globalSearchButton'),startButton=$('#globalStartButton');
  if(searchButton){searchButton.setAttribute('aria-label',t('search'));searchButton.setAttribute('title',t('search'));}
  if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
  document.querySelectorAll('[data-shell-label]').forEach(el=>{const key=el.dataset.shellLabel;el.textContent=t(key);});
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
- $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');$('#muraPracticeStars')?.setAttribute('aria-label',t('tutorialProgress')); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
+ $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');$('#muraPracticeStars')?.setAttribute('aria-label','Mura · '+t('tutorialProgress')); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
  const location=$('#locationLabel');if(location){const city=selectedCity();location.textContent=city;location.hidden=!city;}
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
@@ -702,7 +718,14 @@ document.addEventListener('click',e=>{
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
   if(action==='next'){
    const task=muraPracticeForStep(onboardingStep);
-   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?(muraPracticeStep===3?'Готово — ты уже видел три ключевых связи в моём аккаунте. Дальше просто исследуй.':'Готово. Посмотрим следующую связь?'):lang==='sv'?(muraPracticeStep===3?'Klart — du har sett tre viktiga samband i mitt konto. Nu kan du bara utforska.':'Klart. Ska vi titta på nästa samband?'):lang==='en'?(muraPracticeStep===3?'Done — you have seen three key connections in my account. Now just explore.':'Done. Want to see the next connection?'):(muraPracticeStep===3?t('tutorialDone'):t('tutorialNext')));ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialNext');return;}
+   if(task&&muraPracticeStep<task){
+    completeMuraPractice(onboardingStep);
+    const body=ensureOnboarding().querySelector('#onboardingBody');
+    const feedback=onboardingFeedbackCopy[lang]||onboardingFeedbackCopy.en;
+    if(body)body.textContent=muraPracticeStep===3?feedback.finished:feedback.next;
+    ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore):t('tutorialNext');
+    return;
+   }
    if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
   }
  }
