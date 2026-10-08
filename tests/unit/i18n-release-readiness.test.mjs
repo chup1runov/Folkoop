@@ -24,16 +24,15 @@ test('native-review packets cover all schema paths, City, Today, About FAQs and 
  }
 });
 
-test('pending native-language review is truthful and never counted as certified',()=>{
+test('only evidence-backed approvals count as certified; pending remains explicit',()=>{
  const status=evaluateAcceptance(manifest,rows);
  assert.equal(status.ok,true,status.errors.join('\n'));
- assert.equal(status.certified,false);
- assert.equal(status.approved.length,0);
- assert.deepEqual(status.pending,[...FOLKOOP_LANGUAGES]);
- for(const lang of FOLKOOP_LANGUAGES){
-  assert.equal(manifest.languages[lang].native_review.status,'pending');
-  assert.equal(manifest.languages[lang].native_review.approval,null);
- }
+ const approved=FOLKOOP_LANGUAGES.filter(l=>manifest.languages[l].native_review.status==='approved');
+ const pending=FOLKOOP_LANGUAGES.filter(l=>manifest.languages[l].native_review.status==='pending');
+ assert.deepEqual(status.approved,approved);
+ assert.deepEqual(status.pending,pending);
+ assert.equal(status.certified,approved.length===FOLKOOP_LANGUAGES.length);
+ for(const lang of pending)assert.equal(manifest.languages[lang].native_review.approval,null);
 });
 
 test('a simulated human-approval record is never valid without coverage or matching copy digest',()=>{
@@ -61,6 +60,10 @@ test('a simulated human-approval record is never valid without coverage or match
  assert.equal(result.certified,false);
  assert.deepEqual(result.approved,['ar']);
  assert.equal(result.pending.length,10);
+ const newSource=rows.ar.map(x=>({...x}));
+ newSource[0].source+=' (changed reference)';
+ result=evaluateAcceptance(cloned,{...rows,ar:newSource});
+ assert.equal(result.ok,false,'changing canonical English copy must invalidate reviewed meaning');
  const altered=rows.ar.map(x=>({...x}));
  altered[0].target+=' ';
  result=evaluateAcceptance(cloned,{...rows,ar:altered});
