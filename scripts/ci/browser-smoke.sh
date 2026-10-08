@@ -10,6 +10,7 @@ for _ in $(seq 1 20); do
  sleep .25
 done
 export BASE_URL=http://127.0.0.1:4173/Folkoop/
+python3 tests/e2e/project-presentation-browser.py
 python3 tests/e2e/entry-dependency-browser.py
 python3 tests/e2e/mura-presentation-browser.py
 python3 tests/support/city-regression.py tests/e2e/browser.py
