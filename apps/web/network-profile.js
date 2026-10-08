@@ -26,11 +26,11 @@ function create({
     if(guestDemo){
       const city=profile.city||'';
       const lang=globalThis.document?.documentElement?.lang||'en';
-      const privateDraft=lang==='ru'?'Личный черновик':lang==='sv'?'Privat utkast':'Private draft';
-      const lifeTitle=lang==='ru'?'Что у меня здесь живёт':lang==='sv'?'Det som händer hos mig':'What lives here';
-      const projectLabel=lang==='ru'?'дел и проектов':lang==='sv'?'saker och projekt':'things and projects';
-      const chatLabel=lang==='ru'?'разговоров':lang==='sv'?'samtal':'conversations';
-      const groupLabel=lang==='ru'?'сообществ':lang==='sv'?'gemenskaper':'communities';
+      const privateDraft=lang==='ru'?'Личный черновик':lang==='sv'?'Privat utkast':lang==='en'?'Private draft':shellText('local');
+      const lifeTitle=lang==='ru'?'Что у меня здесь живёт':lang==='sv'?'Det som händer hos mig':lang==='en'?'What lives here':shellText('myActivity');
+      const projectLabel=lang==='ru'?'дел и проектов':lang==='sv'?'saker och projekt':lang==='en'?'things and projects':shellText('projects');
+      const chatLabel=lang==='ru'?'разговоров':lang==='sv'?'samtal':lang==='en'?'conversations':shellText('messages');
+      const groupLabel=lang==='ru'?'сообществ':lang==='sv'?'gemenskaper':lang==='en'?'communities':text('groups');
       const projects=(data.cooperations||[]).filter(item=>item.owner_id===user.id||['project','need','offer'].includes(item.kind)).length;
       const chats=(data.chats||[]).length;
       const groups=(data.memberships||[]).filter(item=>!item.banned).length;

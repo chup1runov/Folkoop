@@ -44,7 +44,7 @@
     const bio=element('p',L.bio,'project-bio');bio.id='projectBio';
     author.append(bio,link('MittSkifte ↗',BIO_SOURCE,'project-history-link'));
     const contacts=element('div',undefined,'project-contact-actions');
-    const github=link('GitHub · Contact the project ↗',CONTACT.github,'project-contact-button');github.id='contactAuthor';github.dir='ltr';
+    const github=link('GitHub · '+(L.contactProject||'Contact the project')+' ↗',CONTACT.github,'project-contact-button');github.id='contactAuthor';github.dir='ltr';
     const telegram=link('Telegram · @chup1runov ↗',CONTACT.telegram,'project-contact-button secondary');telegram.id='contactTelegram';telegram.dir='ltr';
     for(const a of [github,telegram])a.setAttribute('aria-describedby','projectContactNote');
     contacts.append(github,telegram);

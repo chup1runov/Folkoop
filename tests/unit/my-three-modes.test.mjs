@@ -14,7 +14,7 @@ test('real-user My overview exposes three equal ways to use FOLKOOP',()=>{
   assert.match(ui,/data-home="createCoop" data-kind="project"/);
 });
 
-test('Mura home stays on the dedicated illustrative renderer',()=>{
+test('Mura home keeps the dedicated illustrative renderer in all eleven languages',()=>{
   assert.match(ui,/html=guestDemo\?muraHomeDomain\.render\(u\):renderHome\(u\)/);
 });
 

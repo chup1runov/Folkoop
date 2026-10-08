@@ -19,6 +19,13 @@
 - [ ] Database authorization tests pass when migrations/RPC/RLS paths change.
 - [ ] Documentation and machine-readable contracts point to current paths.
 
+## Localization (when any user-facing text or route changes)
+
+- [ ] All affected locales retain correct meanings for consent, privacy, payments, message encryption, physical Center, official City handoffs and Mura.
+- [ ] The 509-key schema, route browser matrix (including RTL) and editorial truth tests have been checked, or omissions are identified.
+- [ ] Native-reader approval is backed by the current exported corpus/fingerprint and a review evidence reference, **or remains explicitly PENDING** in `docs/i18n/locale-acceptance.json`.
+- [ ] No claim of fully native-reviewed or linguistically approved languages is based only on automated tests or an AI assessment.
+
 ## Deployment / rollback
 
 <!-- State whether this is behavior-neutral, deploy-affecting, or requires an operator step. -->

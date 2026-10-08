@@ -36,6 +36,10 @@ jobs:
           python -m py_compile tests/e2e/*.py tests/support/*.py
           node scripts/ci/static-smoke.mjs
           node --test tests/unit/*.test.mjs tests/integration/*.test.mjs
+      - name: Export native-review corpus and validate claim ledger
+        run: |
+          node scripts/i18n/native-review-source.mjs
+          node scripts/i18n/release-readiness.mjs
       - name: Install pinned browser test driver
         run: python -m pip install 'playwright==1.57.0'
       - name: Prepare static browser test build
