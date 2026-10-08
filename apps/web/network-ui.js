@@ -1100,7 +1100,7 @@ window.addEventListener('folkoop:guest-demo',e=>{
   else if(!guestDemo&&sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');
  }catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);render();if(target==='#/together'&&['need','offer'].includes(detail.focusKind))host.querySelector('[data-together-kind="'+detail.focusKind+'"]')?.click();}).catch(()=>render());}else render();
+ if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
 });
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
