@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "policy": "docs/i18n/RELEASE_READINESS.md",
+  "source": "The published eleven UI choices; native approval requires direct evidence for the current copy fingerprint.",
+  "languages": {
+    "sv": {
+      "variant": "sv-SE",
+      "label": "Swedish",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "en": {
+      "variant": "en",
+      "label": "English",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "ar": {
+      "variant": "ar (MSA)",
+      "label": "Modern Standard Arabic",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "so": {
+      "variant": "so",
+      "label": "Somali",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "fa": {
+      "variant": "fa-IR",
+      "label": "Persian",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "fi": {
+      "variant": "fi-FI",
+      "label": "Finnish",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "bs": {
+      "variant": "bs-Latn-BA",
+      "label": "Bosnian (Latin); not automatically approved for Croatian or Serbian",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "ku": {
+      "variant": "ku-Latn (Kurmanji)",
+      "label": "Northern Kurdish / Kurmanji in Latin script; not Sorani",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "es": {
+      "variant": "es (international)",
+      "label": "International Spanish",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "ru": {
+      "variant": "ru",
+      "label": "Russian",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    },
+    "uk": {
+      "variant": "uk-UA",
+      "label": "Ukrainian",
+      "native_review": {
+        "status": "pending",
+        "approval": null
+      }
+    }
+  }
+}
