@@ -92,3 +92,32 @@ test('PWA release changes when locale assets change so installed users can upgra
  assert(sw.includes("const VERSION='"+version+"'"));
  assert.notEqual(version,'0.40.4','the pre-localization PWA cache version cannot remain active');
 });
+
+
+test('Mura City explicitly overrides development chrome in every additional language',async()=>{
+ const source=await readFile('apps/web/app.js','utf8');
+ const marker='Object.assign(muraCityCopy, ';
+ const start=source.indexOf(marker);
+ assert(start>=0,'Mura City extra-language copy registry missing');
+ const end=source.indexOf(');\nfunction t(key)',start);
+ assert(end>start,'Mura City translated registry termination missing');
+ const payload=source.slice(start+marker.length,end);
+ const localized=vm.runInNewContext('('+payload+')');
+ for(const lang of extra){
+  const item=localized[lang];
+  assert(item,lang+' Mura City requires an explicit localization');
+  for(const key of ['pilot','eyebrow','status','responsibilityHelp','demoNotVerified',
+    'addPhoto','noRealReport','earlyPrototype','nearHelp','demoLiveLater',
+    'demo','nationalDecisionSource']){
+   assert.equal(typeof item[key],'string',lang+' missing City '+key);
+  }
+  assert.equal(item.pilot,'',lang+' must hide pilot banner in Mura');
+  const copy=Object.values(item).join(' ').toLowerCase();
+  assert(!/(?:\bdemo\b|\bpilot\b|early product prototype|прототип|демо)/i.test(copy),
+   lang+' developer chrome leaked into Mura City');
+  assert(item.nationalDecisionSource==='Sveriges riksdag',
+   lang+' City decision source must stay attributed to the Riksdag');
+ }
+ assert(source.includes('muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key]'),
+  'Mura-specific safe fallback is required when City UI adds a new label');
+});
