@@ -1018,7 +1018,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='blockProvider')await api.block(id);
   if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
   if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
-  if(a==='openNotify'){personFocus=null;personSourceProject=null;if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openNotify'){if(selectedCoop!==id)resetEconomicFlowState();personFocus=null;personSourceProject=null;selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   await load();notice='';
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;const guestAllowedNet=new Set(['back','open','backChats','openChat','refresh','logout']);if(guestDemo&&!guestAllowedNet.has(a)){guestRequireAccount();return;}
  run(async()=>{
