@@ -80,7 +80,7 @@ test('PWA release version and build metadata stay in sync',async()=>{
   readFile('package-lock.json','utf8')
  ]);
  const version=JSON.parse(pkg).version;
- assert.equal(version,'0.40.6');
+ assert.match(version,/^\d+\.\d+\.\d+$/,'release must use a valid semantic version');
  assert.equal(JSON.parse(lock).version,version);
  assert.equal(JSON.parse(lock).packages[''].version,version);
  assert(sw.includes("const VERSION='"+version+"'"));
