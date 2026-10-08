@@ -155,7 +155,7 @@ test('Mura, guest and account routes prefer the selected language before English
  assert(folkoop.includes('muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en'));
  assert(folkoop.includes('muraHelperCopy[lang]||globalThis.FolkoopExtraCopy?.muraHelper?.[lang]||muraHelperCopy.en'));
  assert(!network.includes('muraGuestCopy[lang()]||muraGuestCopy.en'));
- assert(network.includes("accountEntryCopy[lang()]?.[k]||t(k)||accountEntryCopy.en[k]"));
+ assert(network.includes("accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k)"));
  assert(city.includes('muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key]'));
 });
 
