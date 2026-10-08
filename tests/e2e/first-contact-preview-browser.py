@@ -3,7 +3,7 @@
 Tests the actual FOLKOOP built app, not a static mock or a participant study.
 No email/account creation, server mutation or synthetic research responses.
 """
-import asyncio, json, os, shutil
+import asyncio, json, os, shutil, re
 from pathlib import Path
 from playwright.async_api import async_playwright, expect
 
@@ -73,10 +73,7 @@ async def main():
     if route.request.url.startswith(BASE):await route.continue_()
     else:await route.abort()
    await context.route('**/*',local_only)
-   await context.add_init_script("""() => {
-    localStorage.setItem('folkoop-language','en');
-    localStorage.setItem('folkoop-language-choice-v1','done');
-   }""")
+   await context.add_init_script("""localStorage.setItem('folkoop-language','en');localStorage.setItem('folkoop-language-choice-v1','done');""")
    page=await context.new_page()
    unsafe=[]
    page.on('request',lambda req:unsafe.append(req.method+' '+req.url) if req.method not in ['GET','HEAD'] else None)
@@ -85,7 +82,43 @@ async def main():
     await expect(page.locator('#folkoopEntryGate')).to_be_visible()
     await page.locator(f'[data-entry-path="{action}"]').click()
     await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
-    await expect(page).to_have_url(lambda url:url.fragment=='/'+target)
+    await expect(page).to_have_url(re.compile(r'#/'+target+r'
+    await expect(page.locator('#onboarding')).to_be_hidden()
+    await expect(page.locator('#netLogin')).to_be_hidden()
+    if action!='center':await expect(page.locator('body')).to_have_class(re.compile('.*guest-preview-open.*'))
+    assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')")=='guest'
+    if action in ['need','offer']:
+     await expect(page.locator('#networkPanel')).to_be_visible()
+     selected=page.locator(f'[data-together-kind="{action}"]')
+     if await selected.count():
+      await expect(selected).to_have_class(re.compile('.*active.*'))
+    if action=='center':
+     await expect(page.locator('#workspace')).to_contain_text('Center')
+    await page.reload()
+    await expect(page.locator('#onboarding')).to_be_hidden()
+    await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
+    assert not unsafe,(action,'guest preview triggered a write',unsafe)
+   finally:
+    await context.close()
+
+  context=await browser.new_context(viewport={'width':390,'height':844},service_workers='block')
+  await context.route('**/*',local_only)
+  page=await context.new_page()
+  try:
+   await page.goto(BASE+'?first-contact=three-paths')
+   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+   await page.locator('#folkoopEntryGate [data-entry="guest"]').click()
+   await expect(page.locator('#onboarding')).to_be_visible()
+   await expect(page.locator('#netLogin')).to_be_hidden()
+  finally:
+   await context.close()
+  await browser.close()
+ print('PASS opt-in entry layout across 11 languages, 3 viewports and RTL ('+ENGINE+')')
+ print('PASS guest browse actions center / need / offer / projects, no signup or writes ('+ENGINE+')')
+ print('PASS normal Mura guided tour remains the secondary route ('+ENGINE+')')
+
+asyncio.run(main())
+))
     await expect(page.locator('#onboarding')).to_be_hidden()
     await expect(page.locator('#netLogin')).to_be_hidden()
     await expect(page.locator('body')).to_have_class(__import__('re').compile('.*guest-preview-open.*'))
