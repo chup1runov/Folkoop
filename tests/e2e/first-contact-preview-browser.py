@@ -72,10 +72,6 @@ async def main():
   for action,target in [('center','center'),('need','together'),('offer','together'),('projects','projects')]:
    context=await browser.new_context(viewport={'width':390,'height':844},service_workers='block')
    await context.route('**/*',local_only)
-   await context.add_init_script("""
-    localStorage.setItem('folkoop-language','en');
-    localStorage.setItem('folkoop-language-choice-v1','done');
-   """)
    page=await context.new_page()
    unsafe=[]
    page.on('request',lambda req:unsafe.append(req.method+' '+req.url)
@@ -83,6 +79,8 @@ async def main():
    try:
     await page.goto(BASE+'?first-contact=three-paths')
     await expect(page.locator('#folkoopEntryGate')).to_be_visible()
+    await page.locator('[data-entry-language="en"]').click()
+    await expect(page.locator('#entryThreePaths')).to_be_visible()
     await page.locator(f'[data-entry-path="{action}"]').click()
     await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
     await expect(page).to_have_url(re.compile(r'#/'+target+r'$'))
