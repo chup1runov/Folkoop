@@ -382,16 +382,16 @@ for(const code of C.LANGS){
  if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
  if(x?.helper)helperCopy[code]=x.helper;
 }
-function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||tutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
+function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.tutorial||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
- const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||tutorialTitles[lang]||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
+ const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
-function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||helperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
+function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||globalThis.FolkoopExtraCopy?.muraHelper?.[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
 function helperTip(route=current){
  const source=helperSource();
  return source.tips[route]||helperCopy.en.tips[route]||source.intro;
