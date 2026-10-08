@@ -564,9 +564,125 @@ const muraCityCopy={
   sv:{pilot:'',eyebrow:'Göteborg · Mura',status:'Officiella källor och användbara lokala vägar',responsibilityHelp:'Beskriv problemet med vanliga ord. Kontrollera den officiella källan innan du skickar något.',demoNotVerified:'Preliminär väg — kontrollera i den officiella källan.',addPhoto:'Lägg till foto',noRealReport:'Inget skickas automatiskt.',earlyPrototype:'FOLKOOP hjälper till att förbereda vägen; det officiella systemet hanterar ärendet.',nearHelp:'Öppna lokala planer och officiell information runt Göteborg.',demoLiveLater:'Referensinformation',demo:'Referens',nationalDecisionSource:'Sveriges riksdag'},
   ru:{pilot:'',eyebrow:'Göteborg · Мура',status:'Официальные источники и полезные городские маршруты',responsibilityHelp:'Опиши проблему обычными словами. Перед отправкой проверь официальный источник.',demoNotVerified:'Предварительный маршрут — проверь его в официальном источнике.',addPhoto:'Добавить фото',noRealReport:'Ничего не отправляется автоматически.',earlyPrototype:'FOLKOOP помогает подготовить маршрут; само обращение оформляется в официальном сервисе.',nearHelp:'Открытые планы и официальная информация по Göteborg.',demoLiveLater:'Справочная информация',demo:'Справочно',nationalDecisionSource:'Sveriges riksdag'}
 };
+// Mura's City uses the official-source voice rather than prototype/demo chrome
+// in each of the eight additional interface languages.
+Object.assign(muraCityCopy, {
+  "es": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Fuentes oficiales y rutas útiles para Göteborg",
+    "responsibilityHelp": "Describe el problema con tus palabras. Comprueba la fuente oficial antes de enviar nada.",
+    "demoNotVerified": "Ruta preliminar: compruébala en la fuente oficial.",
+    "addPhoto": "Añadir foto",
+    "noRealReport": "No se envía nada automáticamente.",
+    "earlyPrototype": "FOLKOOP te orienta; la autoridad correspondiente gestiona el expediente.",
+    "nearHelp": "Explora planes locales e información oficial de Göteborg.",
+    "demoLiveLater": "Información de referencia",
+    "demo": "Referencia",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "uk": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Офіційні джерела та корисні маршрути Гетеборга",
+    "responsibilityHelp": "Опиши проблему звичайними словами. Перед надсиланням перевір офіційне джерело.",
+    "demoNotVerified": "Попередній маршрут — перевір в офіційному джерелі.",
+    "addPhoto": "Додати фото",
+    "noRealReport": "Нічого не надсилається автоматично.",
+    "earlyPrototype": "FOLKOOP підказує маршрут; саме звернення опрацьовує відповідна установа.",
+    "nearHelp": "Переглянь місцеві плани та офіційну інформацію Гетеборга.",
+    "demoLiveLater": "Довідкова інформація",
+    "demo": "Довідка",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "fi": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Viralliset lähteet ja hyödylliset paikalliset palvelureitit",
+    "responsibilityHelp": "Kuvaile asia omin sanoin. Tarkista virallinen lähde ennen lähettämistä.",
+    "demoNotVerified": "Alustava reitti – tarkista virallisesta lähteestä.",
+    "addPhoto": "Lisää kuva",
+    "noRealReport": "Mitään ei lähetetä automaattisesti.",
+    "earlyPrototype": "FOLKOOP auttaa löytämään oikean kanavan; viranomainen käsittelee asian.",
+    "nearHelp": "Tutustu Göteborgin paikallisiin suunnitelmiin ja virallisiin tietoihin.",
+    "demoLiveLater": "Lähdetiedot",
+    "demo": "Lähde",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "bs": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Službeni izvori i korisni lokalni putevi",
+    "responsibilityHelp": "Opiši problem svojim riječima. Provjeri službeni izvor prije slanja.",
+    "demoNotVerified": "Preliminarni put – provjeri ga u službenom izvoru.",
+    "addPhoto": "Dodaj fotografiju",
+    "noRealReport": "Ništa se ne šalje automatski.",
+    "earlyPrototype": "FOLKOOP pomaže pronaći put; nadležni organ vodi stvarni postupak.",
+    "nearHelp": "Otvori lokalne planove i službene informacije za Göteborg.",
+    "demoLiveLater": "Referentne informacije",
+    "demo": "Referenca",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "ar": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "مصادر رسمية ومسارات محلية مفيدة في يوتيبوري",
+    "responsibilityHelp": "صِف المشكلة بكلماتك. تحقّق من المصدر الرسمي قبل إرسال أي شيء.",
+    "demoNotVerified": "مسار أولي — تحقّق منه لدى المصدر الرسمي.",
+    "addPhoto": "إضافة صورة",
+    "noRealReport": "لا يُرسل أي شيء تلقائيًا.",
+    "earlyPrototype": "يساعد FOLKOOP في إيجاد المسار؛ الجهة الرسمية هي التي تتولى المعاملة.",
+    "nearHelp": "افتح الخطط المحلية والمعلومات الرسمية في يوتيبوري.",
+    "demoLiveLater": "معلومات مرجعية",
+    "demo": "مرجع",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "fa": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "منابع رسمی و مسیرهای مفید محلی در یوتبری",
+    "responsibilityHelp": "مشکل را با زبان خودت توضیح بده. پیش از ارسال، منبع رسمی را بررسی کن.",
+    "demoNotVerified": "مسیر اولیه است؛ در منبع رسمی بررسی کن.",
+    "addPhoto": "افزودن عکس",
+    "noRealReport": "هیچ چیز خودکار ارسال نمی‌شود.",
+    "earlyPrototype": "FOLKOOP مسیر را نشان می‌دهد؛ مرجع رسمی مسئول رسیدگی است.",
+    "nearHelp": "برنامه‌های محلی و اطلاعات رسمی یوتبری را ببین.",
+    "demoLiveLater": "اطلاعات مرجع",
+    "demo": "مرجع",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "so": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Ilo rasmi ah iyo waddooyin adeeg oo waxtar leh Göteborg",
+    "responsibilityHelp": "Dhibaatada ku sharax erayadaada. Hubi isha rasmiga ah ka hor dirista.",
+    "demoNotVerified": "Waddo horudhac ah — ka hubi isha rasmiga ah.",
+    "addPhoto": "Ku dar sawir",
+    "noRealReport": "Wax si toos ah looma diro.",
+    "earlyPrototype": "FOLKOOP wuxuu tilmaamaa jidka; hay’adda rasmiga ah ayaa qaabilsan dacwadda.",
+    "nearHelp": "Eeg qorshayaasha deegaanka iyo xogta rasmiga ah ee Göteborg.",
+    "demoLiveLater": "Xog tixraac ah",
+    "demo": "Tixraac",
+    "nationalDecisionSource": "Sveriges riksdag"
+  },
+  "ku": {
+    "pilot": "",
+    "eyebrow": "Göteborg · Mura",
+    "status": "Çavkaniyên fermî û rêyên herêmî yên bikêr li Göteborg",
+    "responsibilityHelp": "Pirsgirêkê bi gotinên xwe rave bike. Berî şandinê çavkaniya fermî kontrol bike.",
+    "demoNotVerified": "Rêya destpêkê ye — li çavkaniya fermî kontrol bike.",
+    "addPhoto": "Wêne zêde bike",
+    "noRealReport": "Tiştek bixwe nayê şandin.",
+    "earlyPrototype": "FOLKOOP rê nîşan dide; saziya fermî karûbarê birêve dibe.",
+    "nearHelp": "Planên herêmî û agahiyên fermî yên Göteborg veke.",
+    "demoLiveLater": "Agahiyên referansê",
+    "demo": "Referans",
+    "nationalDecisionSource": "Sveriges riksdag"
+  }
+});
 function t(key) {
   if(MURA_MODE){
-    const mura=muraCityCopy[currentLanguage]?.[key];
+    const mura=muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key];
     if(mura!==undefined)return mura;
   }
   return messages[currentLanguage][key] || messages.sv[key] || key;
