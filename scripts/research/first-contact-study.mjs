@@ -178,7 +178,7 @@ async function command(){
   console.log('Created private local EMPTY study template: '+output);
   console.log('No participant test has been performed. Read docs/research/FIRST_CONTACT_STUDY_20261008.md.');
  }else if(operation==='assess'){
-  if(!opts.in||!opts.out)throw Error('Usage: assess --in qa-output/first-contact/study.json --out qa-output/first-contact/report.md');
+  if(!opts.in||!opts.out||!/\.md$/i.test(opts.out))throw Error('Usage: assess --in qa-output/first-contact/study.json --out qa-output/first-contact/report.md (Markdown output required)');
   const study=JSON.parse(await readFile(resolve(opts.in),'utf8'));
   const result=assessStudy(study);
   const output=resolve(opts.out);
