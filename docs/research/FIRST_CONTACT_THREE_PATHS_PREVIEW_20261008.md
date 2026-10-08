@@ -19,7 +19,7 @@ The preview is not available on public Pages until merged and deployed. For a lo
 | Mode | Message | Explicit action |
 |---|---|---|
 | Be among people | Browse conversations, meetings, communities and places without creating a task. | Open Center → read-only Mura Center |
-| Solve one concrete question | Ask for help or offer something useful; a project is optional. | Find help / Offer help → read-only guest Together filtered by Need/Offer |
+| Solve one concrete question | Ask for help or offer something useful; a project is optional. | Find help / Offer help → read-only Mura Need or Offer example under Together |
 | Organise something together | Start from people, tasks and resources, and add deeper tools only when necessary. | Start a project → read-only guest Projects |
 
 A secondary **visit Mura** button retains the existing full guided tour. Mura and her circle remain a disclosed illustrative story. This version doesn't automatically publish objects, create memberships, issue invitations, complete actions, claim an operating physical Center or open account sign-in.
@@ -32,7 +32,7 @@ The earlier **four-concrete-actions** candidate in `docs/FIRST_CONTACT_CLARITY_V
 - All 11 languages included; three equal paths reuse existing `homeModesCopy` rather than a competing translation dictionary. Additional headline/intro text is localized for those same 11 choices.
 - Arabic and Persian use RTL; Kurdish Kurmanji uses LTR.
 - Language selection, keyboard focus, discoverability, viewport scroll and tap targets remain available.
-- Each primary path begins in **read-only Mura guest mode**, not a real participant's account. Need/Offer paths reveal those categories under Together, but do not create an object.
+- Each primary path begins in **read-only Mura guest mode**, not a real participant's account. Need/Offer paths open an authored Need or Offer story under Together, but do not create an object.
 - The secondary Mura button keeps the current eight-step guided visit. Sign-in/registration still requires explicit exit; the ordinary welcome is unaffected.
 - Refresh of a preview guest session must not unexpectedly force the Mura tour.
 - The guest snapshot never sends database mutations or messages; the official-source/City and online/physical Center boundaries remain unchanged.
