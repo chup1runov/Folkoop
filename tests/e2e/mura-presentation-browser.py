@@ -1,5 +1,5 @@
 """Presentation path in the actual built app. No production users or remote writes."""
-import asyncio, csv, hashlib, json, os, zipfile
+import asyncio, csv, hashlib, json, os, shutil, zipfile
 from pathlib import Path
 from playwright.async_api import async_playwright, expect
 BASE=os.environ.get('BASE_URL','http://127.0.0.1:4173/Folkoop/')
@@ -15,6 +15,9 @@ async def one(browser,language,width):
  await context.route('**/*',guard)
  page=await context.new_page();page.on('pageerror',lambda error:errors.append(str(error)))
  await page.goto(BASE+'?first-contact=three-paths')
+ # The shell suppresses automatic onboarding under automation. Open its normal
+ # entry gate explicitly rather than pretending this is a human interview.
+ await page.evaluate("window.dispatchEvent(new CustomEvent('folkoop:open-entry'))")
  await page.locator('[data-entry-language="'+language+'"]').click()
  await expect(page.locator('#entryThreePaths')).to_be_visible()
  if language in ('ru','en') and width==1280:await page.screenshot(path=str(OUT/f'{language}-{width}-entry.png'))
@@ -76,7 +79,7 @@ async def one(browser,language,width):
 
 async def main():
  async with async_playwright() as p:
-  browser=await p.chromium.launch()
+  browser=await p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   results=[]
   for language in LANGS:
    for width in (390,1280):results.append(await one(browser,language,width))
