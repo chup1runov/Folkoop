@@ -4623,10 +4623,21 @@ const muraNarrativeExtra20261008={
 };
 const muraGuestExtra20261008=Object.create(null);
 const muraHomeExtra20261008=Object.create(null);
+const muraHelperExtra20261008=Object.create(null);
 for(const [code,story] of Object.entries(muraNarrativeExtra20261008)){
  const pack=languages[code],base=pack.network.base,chat=pack.network.chat,
  coop=pack.network.coop,activity=pack.network.activity,
  home=pack.network.home,life=story.tutorial,title=story.titles;
+ muraHelperExtra20261008[code]={
+  ...pack.helper,name:'Mura',
+  tips:{
+   ...pack.helper.tips,
+   home:life.home,me:life.home,together:life.together,
+   projects:life.people,people:life.city,
+   communities:life.center,messages:life.city,
+   city:life.center,center:story.center.helper
+  }
+ };
  muraGuestExtra20261008[code]={
   base:{
    profile:'Mura',listed:base.listed,groups:'Mura · '+base.groups,
@@ -4690,6 +4701,7 @@ globalThis.FolkoopExtraCopy = Object.freeze({
  languages,
  muraNarrative: Object.freeze(muraNarrativeExtra20261008),
  muraGuest: Object.freeze(muraGuestExtra20261008),
- muraHome: Object.freeze(muraHomeExtra20261008)
+ muraHome: Object.freeze(muraHomeExtra20261008),
+ muraHelper: Object.freeze(muraHelperExtra20261008)
 });
 })();
