@@ -13,6 +13,7 @@ const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
+const THREE_MODE_PREVIEW=new URL(location.href).searchParams.get('firstContact')==='three';
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null,entryGateAfterMuraExit=false;
 const onboardingSteps=[
@@ -282,25 +283,38 @@ const muraEntryCopy={
 };
 const muraEntrySource=()=>muraEntryCopy[lang]||muraEntryCopy.en;
 const entrySource=()=>entryCopy[lang]||entryCopy.en;
+// Opt-in comparison only; the shipped first-contact experience remains unchanged.
+const THREE_MODE_ENTRY_COPY={"en":{"title":"What would you like to do?","intro":"Find people and resources, solve a question, or make something happen together."},"sv":{"title":"Vad vill du göra?","intro":"Hitta människor och resurser, lös en fråga eller gör något tillsammans."},"ru":{"title":"Что ты хочешь сделать?","intro":"Найди людей и ресурсы, реши конкретный вопрос или организуй общее дело."},"es":{"title":"¿Qué quieres hacer?","intro":"Encuentra personas y recursos, resuelve algo o haz algo juntos."},"uk":{"title":"Що хочеш зробити?","intro":"Знайди людей і ресурси, виріши питання або організуй спільну справу."},"fi":{"title":"Mitä haluat tehdä?","intro":"Löydä ihmisiä ja resursseja, ratkaise asia tai tee jotain yhdessä."},"bs":{"title":"Šta želiš uraditi?","intro":"Pronađi ljude i resurse, riješi pitanje ili organizuj nešto zajedno."},"ar":{"title":"ماذا تريد أن تفعل؟","intro":"اعثر على أشخاص وموارد، أو حل مشكلة، أو نظّم نشاطًا مع الآخرين."},"fa":{"title":"می‌خواهی چه کار کنی؟","intro":"آدم‌ها و منابع را پیدا کن، مسئله‌ای را حل کن یا کاری را با هم انجام دهید."},"so":{"title":"Maxaad rabtaa inaad qabato?","intro":"Hel dad iyo kheyraad, arrin xalli ama wax wada abaabula."},"ku":{"title":"Tu dixwazî çi bikî?","intro":"Mirov û çavkaniyan bibîne, pirsek çareser bike an tiştek bi hev re rêxistin bike."}};
 function ensureEntryGate(){
  let gate=document.getElementById('folkoopEntryGate');
  if(gate)return gate;
  gate=document.createElement('section');
  gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
  gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
- gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><div id="entryThreeModes" class="entry-three-modes" hidden></div><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
 function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
  const gate=ensureEntryGate(),x=muraEntrySource(),choices=gate.querySelector('#entryLanguageChoices');
  const emailButton=gate.querySelector('[data-entry="email"]'),guestButton=gate.querySelector('[data-entry="guest"]');
- gate.querySelector('#entryGateTitle').textContent=afterMuraExit?x.exitTitle:x.title;
- gate.querySelector('#entryGateBody').textContent=afterMuraExit?x.exitBody:x.body;
+ const preview=THREE_MODE_PREVIEW&&!afterMuraExit;
+ gate.dataset.entryVariant=preview?'three':'default';
+ const entryThree=gate.querySelector('#entryThreeModes');
+ entryThree.hidden=!preview;
+ if(preview){
+  const modes=globalThis.FolkoopHomeModesCopy?.[lang];
+  if(!modes)throw new Error('THREE_MODE_COPY_MISSING_'+lang);
+  entryThree.innerHTML='<article class="entry-three-card"><h2>'+esc(modes.browseTitle)+'</h2><p>'+esc(modes.browseText)+'</p><button type="button" class="button secondary" data-entry-intent="browse">'+esc(modes.browseAction)+'</button></article>'+
+   '<article class="entry-three-card"><h2>'+esc(modes.solveTitle)+'</h2><p>'+esc(modes.solveText)+'</p><div class="entry-three-actions"><button type="button" class="button secondary" data-entry-intent="need">'+esc(modes.needAction)+'</button><button type="button" class="button secondary" data-entry-intent="offer">'+esc(modes.offerAction)+'</button></div></article>'+
+   '<article class="entry-three-card"><h2>'+esc(modes.organizeTitle)+'</h2><p>'+esc(modes.organizeText)+'</p><button type="button" class="button secondary" data-entry-intent="project">'+esc(modes.organizeAction)+'</button></article>';
+ }
+ gate.querySelector('#entryGateTitle').textContent=preview?THREE_MODE_ENTRY_COPY[lang].title:(afterMuraExit?x.exitTitle:x.title);
+ gate.querySelector('#entryGateBody').textContent=preview?THREE_MODE_ENTRY_COPY[lang].intro:(afterMuraExit?x.exitBody:x.body);
  gate.querySelector('#entryGateNote').textContent=noteOverride||(afterMuraExit?x.exitNote:x.note);
  gate.querySelector('#entryLanguageLabel').textContent=x.language;
  emailButton.textContent=x.email;emailButton.hidden=!afterMuraExit;
  guestButton.textContent=afterMuraExit?x.back:x.guest;
- guestButton.className=afterMuraExit?'button secondary':'button';
+ guestButton.className=(preview||afterMuraExit)?'button secondary':'button';
  emailButton.className='button';
  choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
  gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
@@ -670,6 +684,16 @@ document.addEventListener('click',e=>{
  }
  const entryLanguage=e.target.closest('[data-entry-language]');
  if(entryLanguage){changeLanguage(entryLanguage.dataset.entryLanguage);showEntryGate('',entryGateAfterMuraExit);return;}
+ const entryIntent=e.target.closest('[data-entry-intent]');
+ if(entryIntent&&THREE_MODE_PREVIEW&&!entryGateAfterMuraExit){
+  const intent=entryIntent.dataset.entryIntent;
+  if(!['browse','need','offer','project'].includes(intent))return;
+  // A deliberate action enters the private local workspace, never auto-publishes.
+  setEntryMode('local');
+  if(intent==='browse'){current='center';location.hash='#/center';render(true);}
+  else startFromShell(intent);
+  return;
+ }
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
