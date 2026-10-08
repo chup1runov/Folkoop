@@ -52,9 +52,11 @@ async def main():
      headline=await page.evaluate('(l)=>FolkoopFirstContactPreview.copy[l].title',lang)
      await expect(page.locator('#entryGateTitle')).to_have_text(headline)
      geometry=await page.evaluate("""() => {
-      const r=document.querySelector('.entry-welcome-card').getBoundingClientRect();
-      return [r.left,r.right,document.documentElement.scrollWidth-
-                         document.documentElement.clientWidth];
+      const card=document.querySelector('.entry-welcome-card');
+      const gate=document.querySelector('#folkoopEntryGate');
+      const r=card.getBoundingClientRect();
+      return [r.left,r.right,Math.max(card.scrollWidth-card.clientWidth,
+                                    gate.scrollWidth-gate.clientWidth)];
      }""")
      assert geometry[0]>=-1 and geometry[1]<=width+1,(width,lang,geometry)
      assert geometry[2]<=1,(width,lang,'horizontal overflow',geometry)
