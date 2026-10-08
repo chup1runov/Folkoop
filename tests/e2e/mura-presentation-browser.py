@@ -15,8 +15,7 @@ async def one(browser,language,width):
  await context.route('**/*',guard)
  page=await context.new_page();page.on('pageerror',lambda error:errors.append(str(error)))
  await page.goto(BASE+'?first-contact=three-paths')
- # The shell suppresses automatic onboarding under automation. Open its normal
- # entry gate explicitly rather than pretending this is a human interview.
+ # Automation opens the ordinary entry gate; this is not a human interview.
  await page.evaluate("window.dispatchEvent(new CustomEvent('folkoop:open-entry'))")
  await page.locator('[data-entry-language="'+language+'"]').click()
  await expect(page.locator('#entryThreePaths')).to_be_visible()
@@ -45,20 +44,30 @@ async def one(browser,language,width):
   assert (await root.locator('[data-mura-select="'+key+'"]').bounding_box())['height']>=44
  await root.locator('[data-mura-select="project"]').click()
  title=(await root.locator('[data-mura-chapter="project"] .mura-life-object').inner_text()).strip()
+ if language=='ru':
+  link=await root.locator('[data-mura-chapter="project"] .mura-life-link').bounding_box()
+  dock=await page.locator('#mobileContextDock').bounding_box()
+  assert link and dock and link['y']+link['height']<dock['y'],{'link':link,'dock':dock,'width':width}
  if language in ('ru','en','ar','fa'):
-  await page.evaluate('window.scrollTo(0,0)')
-  await page.screenshot(path=str(OUT/f'{language}-{width}-home.png'),full_page=True)
+  # Capture the real positioned chapter before returning to the profile header.
   await root.screenshot(path=str(OUT/f'{language}-{width}-story.png'))
+  await page.screenshot(path=str(OUT/f'{language}-{width}-story-in-account.png'))
+  await page.evaluate('window.scrollTo(0,0)')
+  await page.screenshot(path=str(OUT/f'{language}-{width}-home.png'))
  await root.locator('[data-mura-chapter="project"] [data-home="openCoop"]').click()
  await expect(page).to_have_url(__import__('re').compile(r'#/projects$'))
  await expect(page.locator('#networkPanel')).to_contain_text(title)
- if language=='ru' and width==1280:await page.screenshot(path=str(OUT/'ru-1280-project.png'),full_page=True)
+ if language=='ru' and width==1280:
+  await page.evaluate('window.scrollTo(0,0)')
+  await page.screenshot(path=str(OUT/'ru-1280-project.png'))
  await page.locator('#mobilePrimaryNav [data-mobile-nav="home"]').click()
  await expect(page.locator('[data-mura-select="project"]')).to_have_attribute('aria-selected','true')
  await page.locator('[data-mura-select="chat"]').click()
  await page.locator('[data-mura-chapter="chat"] [data-net="openChat"]').click()
  await expect(page).to_have_url(__import__('re').compile(r'#/messages$'))
- if language=='ru' and width==1280:await page.screenshot(path=str(OUT/'ru-1280-chat.png'),full_page=True)
+ if language=='ru' and width==1280:
+  await page.evaluate('window.scrollTo(0,0)')
+  await page.screenshot(path=str(OUT/'ru-1280-chat.png'))
  await page.locator('#mobilePrimaryNav [data-mobile-nav="home"]').click()
  await expect(page.locator('[data-mura-select="chat"]')).to_have_attribute('aria-selected','true')
  assert await page.locator('.mura-chapter-nav').count()==1
