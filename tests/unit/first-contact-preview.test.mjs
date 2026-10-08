@@ -67,6 +67,8 @@ test('opt-in URL leaves ordinary first-contact, sign-in and Mura tour paths inta
 test('URL entry path is confined to read-only Mura and keeps explicit exit boundary',()=>{
  assert(network.includes("['center','together','projects'].includes(detail.target)"));
  assert(network.includes("['need','offer'].includes(detail.focusKind)"));
+ assert(network.includes('selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null'));
+
  assert(network.includes("if(guestDemo){showLocalGuest=false;"));
  assert(!preview.render('en',modeDict,escape,icon).includes('type="submit"'));
 });
