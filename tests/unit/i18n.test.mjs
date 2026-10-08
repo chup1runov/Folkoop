@@ -151,12 +151,12 @@ test('primary navigation labels stay compact and semantically attached to curren
 
 test('Mura, guest and account routes prefer the selected language before English fallback',async()=>{
  const city=await readFile('apps/web/app.js','utf8');
- assert(folkoop.includes('muraTutorialCopy[lang]||tutorialCopy[lang]||muraTutorialCopy.en'));
- assert(folkoop.includes('muraTutorialTitles[lang]||tutorialTitles[lang]||muraTutorialTitles.en'));
- assert(folkoop.includes('muraHelperCopy[lang]||helperCopy[lang]||muraHelperCopy.en'));
+ assert(folkoop.includes('muraTutorialCopy[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.tutorial||muraTutorialCopy.en'));
+ assert(folkoop.includes('muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en'));
+ assert(folkoop.includes('muraHelperCopy[lang]||globalThis.FolkoopExtraCopy?.muraHelper?.[lang]||muraHelperCopy.en'));
  assert(!network.includes('muraGuestCopy[lang()]||muraGuestCopy.en'));
  assert(network.includes("accountEntryCopy[lang()]?.[k]||t(k)||accountEntryCopy.en[k]"));
- assert(!city.includes('muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key]'));
+ assert(city.includes('muraCityCopy[currentLanguage]?.[key]??muraCityCopy.en[key]'));
 });
 
 test('renderers consume the full-language registry rather than three-language fallback',()=>{
