@@ -62,7 +62,19 @@ async def one(browser,language,width):
   person_name=(await visit.locator('xpath=..').locator('strong').first.inner_text()).strip()
   await expect(visit).to_be_visible()
   await visit.click()
-  await expect(page).to_have_url(re.compile(r'#/people
+  await expect(page).to_have_url(re.compile(r'#/people'))
+  person=page.locator('[data-person-focused="true"]')
+  await expect(person).to_have_count(1)
+  await expect(person).to_have_attribute('data-person-id',person_id)
+  await expect(person).to_contain_text(person_name)
+  await expect(person).to_be_focused()
+  if language=='ru' and width in (390,1280):
+   await page.evaluate('scrollTo(0,0)')
+   await page.screenshot(path=str(OUT/f'{language}-{width}-{ENGINE}-person.png'))
+  await person.locator('[data-coop="openNotify"]').click()
+  await expect(page).to_have_url(re.compile(r'#/projects'))
+  await expect(workspace.locator('.coop-summary h2')).to_have_text(title)
+  assert await workspace.locator('form:visible').count()==0
   assert await workspace.locator('[data-coop="join"]:visible').count()==0
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
   await workspace.locator('[data-project-jump="overview"]').click()
