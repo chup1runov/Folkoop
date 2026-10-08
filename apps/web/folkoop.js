@@ -13,7 +13,10 @@ const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
-const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1');
+// An explicit opt-in URL permits a side-by-side comprehension study;
+// the ordinary first-contact welcome stays unchanged for everyone else.
+const firstContactPreview=new URL(location.href).searchParams.get('first-contact')==='three-paths';
+const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactPreview);
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null,entryGateAfterMuraExit=false;
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'wink'},
@@ -112,7 +115,7 @@ function renderMobileChrome(){
  const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
  const subLabel=k=>{
-  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':'About me';
+  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':lang==='en'?'About me':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.shell?.me||t('me'));
   return SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  };
  const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
@@ -120,8 +123,8 @@ function renderMobileChrome(){
  const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const language=current==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
- const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':'Leave Mura\'s account';
- const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.";
+ const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
+ const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>Mura</strong><p>'+esc(muraPopover)+'</p><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
  dock.innerHTML=demo+items+language+popover;
  dock.hidden=!(guest||context.length);
@@ -194,14 +197,14 @@ function myPage(){
  <div id="myPlaceEditorPanel" class="profile-grid" hidden><form id="profileForm" class="card editor" data-my-place-editor><span id="myPlaceEditor" class="anchor-target" aria-hidden="true"></span><h2>${esc(t('editMyPlace'))}</h2><div class="profile-avatar" aria-hidden="true">${icon('me')}</div><label>${esc(t('name'))}<input name="name" maxlength="60" autocomplete="nickname" value="${esc(p.name||'')}"></label><label>${esc(t('motto'))}<input name="motto" maxlength="100" value="${esc(p.motto||'')}"></label><fieldset class="my-place-accent"><legend>${esc(t('accent'))}</legend>${C.ACCENTS.map(a=>`<label class="accent-choice accent-${a}"><input type="radio" name="accent" value="${a}"${a===accent?' checked':''}><span aria-hidden="true"></span>${esc(t('accent'+a[0].toUpperCase()+a.slice(1)))}</label>`).join('')}</fieldset><label>${esc(t('cityProfile'))}<input name="city" maxlength="120" autocomplete="address-level2" value="${esc(p.city||'')}"></label><p class="meta">${esc(t('cityHelp'))}</p><label>${esc(t('skills'))}<input name="skills" maxlength="200" value="${esc(p.skills||'')}"></label><label>${esc(t('about'))}<textarea name="about" rows="4" maxlength="600">${esc(p.about||'')}</textarea></label><p class="meta">${esc(t('privacy'))}</p><button class="button" type="submit">${esc(t('saveProfile'))}</button></form><aside><div class="card"><h2>${esc(t('profileSaved'))}</h2><p>${esc(t('myText'))}</p><label class="checkbox"><input id="remember" type="checkbox"${store.isPersistent()?' checked':''}> <span>${esc(t('remember'))}</span></label><p class="meta">${esc(t(store.isPersistent()?'device':'memory'))}</p><div class="stack"><button class="button secondary" type="button" data-action="export">${esc(t('export'))}</button><button class="text-button danger" type="button" data-action="clear">${esc(t('clear'))}</button></div></div></aside></div><h2>${esc(t('drafts'))}</h2>${drafts()}`;
 }
 function center(){
- const city=selectedCity(),goteborg=citySupported(city),mura=isMuraVisit(),personal=globalThis.FolkoopMuraVoice?.centerCopy(lang);
+ const city=selectedCity(),goteborg=citySupported(city),mura=isMuraVisit();
  const handoff=cityHandoff&&(!cityHandoff.sourceId.includes('goteborg_')||goteborg)?`<article class="card center-handoff" data-center-story="city-handoff"><span class="badge">${esc(t('city'))} → FOLKOOP</span><h2>${esc(cityHandoff.title)}</h2><p class="meta">${esc(cityHandoff.sourceName)}</p><p>${esc(t('centerCityText'))}</p><p><a class="text-link" href="${esc(cityHandoff.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(cityHandoff.sourceName)} ↗</a></p><div class="actions">${a('communities','communities','text-link')}${a('people','people','text-link')}${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article>`:'';
  const routeCard=(route,iconKey,titleKey,textKey,labelKey)=>`<article class="card center-live-card" data-center-route="${esc(route)}"><span class="small-icon">${icon(iconKey)}</span><h2>${esc(t(titleKey))}</h2><p>${esc(t(textKey))}</p>${a(route,labelKey,'text-link')}</article>`;
  const local=goteborg
-  ?`<article class="card center-local-card" data-center-story="local"><span class="badge">${esc(mura?'':t('centerOnlineStatus'))}</span><h2>${esc(mura&&personal?personal.localTitle:t('centerLocalTitle'))}</h2><p>${esc(mura&&personal?personal.localText:t('centerLocalText'))}</p>${mura?'':`<p class="meta">${esc(t('centerLocalExternalNote'))}</p><p><a class="text-link" href="${GOTEBORG_FORUM_URL}" target="_blank" rel="noopener noreferrer">${esc(t('centerLocalExternal'))} ↗</a></p>`}</article>`
+  ?`<article class="card center-local-card" data-center-story="local"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><h2>${esc(t('centerLocalTitle'))}</h2><p>${esc(t('centerLocalText'))}</p>${mura?`<p class="meta">${esc(t('centerLocalIllustrative'))}</p>`:`<p class="meta">${esc(t('centerLocalExternalNote'))}</p><p><a class="text-link" href="${GOTEBORG_FORUM_URL}" target="_blank" rel="noopener noreferrer">${esc(t('centerLocalExternal'))} ↗</a></p>`}</article>`
   :`<article class="card center-local-card" data-center-story="local"><span class="badge muted-badge">${esc(t('future'))}</span><h2>${esc(t('centerOtherCityTitle'))}</h2><p>${esc(t('centerOtherCityText'))}</p>${city?'':a('me','profileLink','text-link')}</article>`;
  const future=mura?'':`<section class="center-future-grid"><article class="card center-future-card"><span class="badge muted-badge">${esc(t('future'))}</span><span class="small-icon">${icon('me')}</span><h2>${esc(t('centerHostTitle'))}</h2><p>${esc(t('centerHostText'))}</p></article><article class="card center-future-card"><span class="badge muted-badge">${esc(t('future'))}</span><span class="small-icon">${icon('center')}</span><h2>${esc(t('centerPhysicalTitle'))}</h2><p>${esc(t('centerPhysicalText'))}</p></article></section>`;
- return `<section class="center-home"><header class="center-home-hero"><img src="./folkoop-mark.png" alt="" width="58" height="58"><div><p class="eyebrow">FOLKOOP</p><h1>${esc(mura&&personal?personal.title:t('centerOnlineTitle'))}</h1><p>${esc(mura&&personal?personal.body:t('centerOnlineText'))}</p></div><div class="center-home-meta"><span class="badge">${esc(mura?'':t('centerOnlineStatus'))}</span><span class="meta">${esc(city||'FOLKOOP')}</span></div></header>${handoff}<section class="center-live-grid">${local}${routeCard('communities','communities','centerCommunityTitle','centerCommunityText','communities')}${routeCard('people','people','centerPeopleTitle','centerPeopleText','people')}${routeCard('city','city','centerCityTitle','centerCityText','openCity')}<article class="card center-live-card" data-center-route="action"><span class="small-icon">${icon('project')}</span><h2>${esc(t('centerProjectTitle'))}</h2><p>${esc(t('centerProjectText'))}</p><div class="actions">${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article></section>${future}</section>`;
+ return `<section class="center-home"><header class="center-home-hero"><img src="./folkoop-mark.png" alt="" width="58" height="58"><div><p class="eyebrow">FOLKOOP</p><h1>${esc(t('centerOnlineTitle'))}</h1><p>${esc(t('centerOnlineText'))}</p></div><div class="center-home-meta"><span class="badge">${esc(mura?t('centerMuraStatus'):t('centerOnlineStatus'))}</span><span class="meta">${esc(city||'FOLKOOP')}</span></div></header>${handoff}<section class="center-live-grid">${local}${routeCard('communities','communities','centerCommunityTitle','centerCommunityText','communities')}${routeCard('people','people','centerPeopleTitle','centerPeopleText','people')}${routeCard('city','city','centerCityTitle','centerCityText','openCity')}<article class="card center-live-card" data-center-route="action"><span class="small-icon">${icon('project')}</span><h2>${esc(t('centerProjectTitle'))}</h2><p>${esc(t('centerProjectText'))}</p><div class="actions">${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article></section>${future}</section>`;
 }
 function settingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
@@ -288,7 +291,7 @@ function ensureEntryGate(){
  gate=document.createElement('section');
  gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
  gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
- gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div id="entryThreePaths" hidden></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
 function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
@@ -303,6 +306,19 @@ function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
  guestButton.className=afterMuraExit?'button secondary':'button';
  emailButton.className='button';
  choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ const trial=firstContactPreview&&!afterMuraExit;
+ const trialPanel=gate.querySelector('#entryThreePaths');
+ gate.classList.toggle('entry-three-preview',trial);
+ trialPanel.hidden=!trial;
+ if(trial){
+  const preview=globalThis.FolkoopFirstContactPreview;
+  if(!preview||!globalThis.FolkoopHomeModesCopy)throw new Error('FIRST_CONTACT_PREVIEW_NOT_LOADED');
+  const text=preview.copy[lang];
+  gate.querySelector('#entryGateTitle').textContent=text.title;
+  gate.querySelector('#entryGateBody').textContent=text.intro;
+  trialPanel.innerHTML=preview.render(lang,globalThis.FolkoopHomeModesCopy,esc,icon);
+  guestButton.className='button secondary';
+ }else trialPanel.replaceChildren();
  gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
@@ -311,13 +327,16 @@ function hideEntryGate(){
  const gate=ensureEntryGate();gate.hidden=true;document.body.classList.remove('entry-gate-open');globalThis.FolkoopGuide?.syncModal?.();
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
-function setEntryMode(mode){
+function setEntryMode(mode,browseRoute='',focusKind=''){
  entryGateAfterMuraExit=false;entryModeMemory=mode;
+ const target=mode==='guest'&&['center','together','projects'].includes(browseRoute)?browseRoute:null;
  try{sessionStorage.setItem(ENTRY_KEY,mode);if(mode==='guest')storage?.setItem(LANGUAGE_KEY,'done');}catch{}
  hideEntryGate();
- window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?'tour':mode}}));
- if(mode==='guest'){muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);}
- else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?(target||'tour'):mode,focusKind:target==='together'?focusKind:''}}));
+ if(mode==='guest'){
+  if(target){current=target;location.hash='#/'+target;render();requestAnimationFrame(()=>$('#mobilePrimaryNav a[aria-current="page"]')?.focus({preventScroll:true}));return;}
+  muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);
+ }else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
  en:{name:'Mura',label:'FOLKOOP helper',open:'Open FOLKOOP guide',close:'Close',tour:'Show the full introduction again',intro:'I live here to explain what this part of FOLKOOP is for.',tips:{
@@ -360,6 +379,20 @@ const helperCopy={
   about:'Om oss förklarar FOLKOOPs syfte, gränser, pilotens nuvarande läge och riktningen för den framtida arkitekturen.'
  }}
 };
+const onboardingActionCopy={
+ en:{practice:'See it in practice',explore:"Explore Mura's account"},
+ sv:{practice:'Visa i praktiken',explore:'Utforska hos Mura'},
+ ru:{practice:'Посмотреть на деле',explore:'Осмотреться у Муры'},
+ es:{practice:'Verlo en la práctica',explore:'Explorar la cuenta de Mura'},
+ uk:{practice:'Подивитися на практиці',explore:'Оглянути акаунт Мури'},
+ fi:{practice:'Katso käytännössä',explore:'Tutki Muran tiliä'},
+ bs:{practice:'Pogledaj u praksi',explore:'Istraži Murin račun'},
+ ar:{practice:'مشاهدته عمليًا',explore:'استكشف حساب مورا'},
+ fa:{practice:'در عمل ببین',explore:'حساب مورا را بگرد'},
+ so:{practice:'Ku arag sida ay u shaqayso',explore:'Sahami akoonka Mura'},
+ ku:{practice:'Di pratîkê de bibîne',explore:'Hesabê Mura keşf bike'}
+};
+const onboardingFeedbackCopy={"en":{"next":"Done. Want to see the next connection?","finished":"Done — you've seen three key connections in my account. Now explore."},"sv":{"next":"Klart. Ska vi titta på nästa samband?","finished":"Klart — du har sett tre viktiga samband i mitt konto. Utforska gärna vidare."},"ru":{"next":"Готово. Посмотрим следующую связь?","finished":"Готово — ты уже увидел три ключевые связи в моём аккаунте. Теперь исследуй дальше."},"es":{"next":"Listo. ¿Vemos la siguiente conexión?","finished":"Listo. Ya viste tres conexiones en mi cuenta. Ahora puedes seguir explorando."},"uk":{"next":"Готово. Подивимося на наступний зв’язок?","finished":"Готово. Ти побачив три важливі зв’язки в моєму акаунті. Тепер досліджуй далі."},"fi":{"next":"Valmis. Katsotaanko seuraavaa yhteyttä?","finished":"Valmista. Näit kolme tärkeää yhteyttä tililläni. Tutustu nyt rauhassa lisää."},"bs":{"next":"Gotovo. Da pogledamo sljedeću vezu?","finished":"Gotovo. Vidio/la si tri važne veze u mom računu. Sada istraži dalje."},"ar":{"next":"تمّ. هل نرى الصلة التالية؟","finished":"تمّ. رأيت ثلاث صلات مهمة في حسابي. يمكنك الآن الاستكشاف بحرية."},"fa":{"next":"انجام شد. ارتباط بعدی را ببینیم؟","finished":"تمام شد. سه ارتباط مهم را در حساب من دیدی. حالا می‌توانی بیشتر بگردی."},"so":{"next":"Waa la dhammeeyay. Ma eegnaa xiriirka xiga?","finished":"Waa la dhammeeyay. Waxaad aragtay saddex xiriir oo muhiim ah oo akoonkayga ah. Hadda sahmi."},"ku":{"next":"Qediya. Gelo em girêdana din bibînin?","finished":"Qediya. Te sê girêdanên girîng di hesabê min de dîtin. Niha bigere."}};
 const muraTutorialCopy={
  en:{welcome:"Come in — this is my FOLKOOP. I'll show you what is happening in my life here, then you can roam around on your own.",home:"This is my profile and my unfinished thoughts. Some things are public, some are still private drafts. They are all part of the same place.",together:"I need a tile cutter for one weekend. Instead of posting into a void, I keep the need as a concrete thing that can connect to a person or resource.",projects:"I can help too. Photography is one of the things I offer when a neighbour or project needs it.",people:"This plant-and-seed exchange started as one small idea. Now it has people, tasks, updates and its own work chat.",city:"These are people around me. I don't need followers — I need people whose skills, interests or location cross with something I'm doing.",center:"This is my Göteborg Center story: ordinary local community, people, City and projects connect here. The forum context is illustrative — no real members or messages are copied.",quick:"That's enough instruction. Now just look around my account: open anything that catches your eye and follow the connections."},
  ru:{welcome:"Заходи — это мой FOLKOOP. Я покажу, что здесь происходит в моей жизни, а потом просто походишь сама или сам и посмотришь всё, что захочется.",home:"Это мой профиль и мои незаконченные мысли. Что-то уже стало общим делом, а что-то пока лежит в личных черновиках — всё это живёт в одном месте.",together:"Мне на выходные нужен плиткорез. Вместо сообщения в пустоту я держу потребность как конкретное дело, которое может связаться с человеком или ресурсом.",projects:"А здесь наоборот — я могу помочь сама. Фотография — одна из вещей, которые я предлагаю, когда она нужна соседу или проекту.",people:"Этот обмен растениями начался с маленькой идеи. Теперь здесь есть люди, задачи, обновления и свой рабочий чат.",city:"Это люди вокруг меня. Мне не нужны подписчики — мне нужны те, чьи навыки, интересы или район пересекаются с тем, что я делаю.",center:"Это моя история Центра в Göteborg: здесь связываются обычное локальное общение, люди, Город и проекты. Контекст форума иллюстративный — реальные участники и сообщения не копируются.",quick:"На этом инструкция заканчивается. Теперь просто походи по моему аккаунту: открывай всё, что цепляет, и смотри, куда ведут связи."},
@@ -382,20 +415,18 @@ for(const code of C.LANGS){
  if(x?.tutorialTitles)tutorialTitles[code]=x.tutorialTitles;
  if(x?.helper)helperCopy[code]=x.helper;
 }
-function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return globalThis.FolkoopMuraVoice?.walkCopy(lang)||muraTutorialCopy[lang]||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
+function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.tutorial||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
- if(isMuraVisit()||tourReturnMode!==null)return globalThis.FolkoopMuraVoice?.walkTitle(lang,step.id)||(muraTutorialTitles[lang]||muraTutorialTitles.en)[step.id]||navText(step.route);
- const titles=tutorialTitles[lang]||tutorialTitles.en;
+ const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
-function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
+function helperSource(){if(isMuraVisit())return muraHelperCopy[lang]||globalThis.FolkoopExtraCopy?.muraHelper?.[lang]||muraHelperCopy.en;return helperCopy[lang]||helperCopy.en;}
 function helperTip(route=current){
  const source=helperSource();
- if(isMuraVisit()&&route==='center')return globalThis.FolkoopMuraVoice?.centerCopy(lang)?.helper||source.tips.center;
  return source.tips[route]||helperCopy.en.tips[route]||source.intro;
 }
 function ensureHelper(){
@@ -521,7 +552,7 @@ function showOnboarding(step=0){
  const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=onboardingStep===0?t('tutorialBack'):(rtl?'→ ':'← ')+t('tutorialProgress')+' '+onboardingStep;back.disabled=onboardingStep===0;
  const taskPending=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep);
  const next=dialog.querySelector('[data-onboarding="next"]');
- next.textContent=taskPending?(lang==='ru'?'Посмотреть на деле':lang==='sv'?'Visa i praktiken':'See it in practice'):(onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
+ next.textContent=taskPending?onboardingActionCopy[lang]?.practice||onboardingActionCopy.en.practice:(onboardingStep===onboardingSteps.length-1?onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore:t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
  updateMuraPractice();
  positionOnboarding(item);
  globalThis.FolkoopGuide?.react?.('step');
@@ -585,13 +616,15 @@ function render(focus=false){
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
  $('#nav').innerHTML='';
  renderMobileChrome();
- $('#nav').setAttribute('aria-label',t('select'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
+ $('#nav').setAttribute('aria-label',t('select'));
+  $('#mobilePrimaryNav')?.setAttribute('aria-label',t('select'));
+  $('#networkPanel')?.setAttribute('aria-label','FOLKOOP · '+t('together'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
  const searchButton=$('#globalSearchButton'),startButton=$('#globalStartButton');
  if(searchButton){searchButton.setAttribute('aria-label',t('search'));searchButton.setAttribute('title',t('search'));}
  if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
  document.querySelectorAll('[data-shell-label]').forEach(el=>{const key=el.dataset.shellLabel;el.textContent=t(key);});
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
- $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
+ $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');$('#muraPracticeStars')?.setAttribute('aria-label','Mura · '+t('tutorialProgress')); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
  const location=$('#locationLabel');if(location){const city=selectedCity();location.textContent=city;location.hidden=!city;}
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
@@ -672,6 +705,13 @@ document.addEventListener('click',e=>{
  }
  const entryLanguage=e.target.closest('[data-entry-language]');
  if(entryLanguage){changeLanguage(entryLanguage.dataset.entryLanguage);showEntryGate('',entryGateAfterMuraExit);return;}
+ const previewChoice=e.target.closest('[data-entry-path]');
+ if(previewChoice&&!ensureEntryGate().hidden&&firstContactPreview){
+  const choice=previewChoice.dataset.entryPath;
+  if(!['center','need','offer','projects'].includes(choice))return;
+  setEntryMode('guest',choice==='center'?'center':choice==='projects'?'projects':'together',choice==='need'||choice==='offer'?choice:'');
+  return;
+ }
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
@@ -704,7 +744,14 @@ document.addEventListener('click',e=>{
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
   if(action==='next'){
    const task=muraPracticeForStep(onboardingStep);
-   if(task&&muraPracticeStep<task){completeMuraPractice(onboardingStep);const body=ensureOnboarding().querySelector('#onboardingBody');if(body)body.textContent=(lang==='ru'?(muraPracticeStep===3?'Готово — ты уже видел три ключевых связи в моём аккаунте. Дальше просто исследуй.':'Готово. Посмотрим следующую связь?'):lang==='sv'?(muraPracticeStep===3?'Klart — du har sett tre viktiga samband i mitt konto. Nu kan du bara utforska.':'Klart. Ska vi titta på nästa samband?'):(muraPracticeStep===3?'Done — you have seen three key connections in my account. Now just explore.':'Done. Want to see the next connection?'));ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(lang==='ru'?'Осмотреться у Муры':lang==='sv'?'Utforska hos Mura':'Explore Mura\'s account'):t('tutorialNext');return;}
+   if(task&&muraPracticeStep<task){
+    completeMuraPractice(onboardingStep);
+    const body=ensureOnboarding().querySelector('#onboardingBody');
+    const feedback=onboardingFeedbackCopy[lang]||onboardingFeedbackCopy.en;
+    if(body)body.textContent=muraPracticeStep===3?feedback.finished:feedback.next;
+    ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore):t('tutorialNext');
+    return;
+   }
    if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
   }
  }
@@ -789,6 +836,6 @@ if(!onboardingSuppressed){
  if(introParam==='1')setTimeout(startFullIntroduction,120);
  else if(!languageChosen)setTimeout(startFirstVisit,120);
  else if(!entryMode)setTimeout(()=>{entryGateAfterMuraExit=false;showEntryGate('',false);},120);
- else if(!onboardingDone)setTimeout(()=>showOnboarding(0),120);
+ else if(!onboardingDone&&!firstContactPreview)setTimeout(()=>showOnboarding(0),120);
 }
 })();

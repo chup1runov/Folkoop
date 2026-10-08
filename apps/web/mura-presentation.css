@@ -1,0 +1,25 @@
+/* One readable moment at a time, inside the normal Mura account. */
+.mura-home .mura-life{margin:26px 0 32px;padding:25px 28px 28px;border:1px solid #ded9cc;border-radius:24px;background:#fffaf1;color:#283734;box-shadow:0 12px 38px #4b48300a}
+.mura-life-heading .eyebrow{color:#965037;font-size:.72rem;letter-spacing:.13em}
+.mura-life-heading h2{margin:5px 0 20px;font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;letter-spacing:-.025em}
+.mura-life-timeline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mura-life[data-presentation-ready] .mura-life-timeline{display:block}
+.mura-life-chapter[hidden]{display:none!important}
+.mura-chapter-nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:thin;padding:4px 2px 12px;margin-bottom:16px;max-width:100%;overscroll-behavior-inline:contain}
+.mura-chapter-tab{display:flex;align-items:center;gap:8px;flex:0 0 auto;min-height:44px;padding:10px 13px;border:1px solid #deddd4;border-radius:13px;background:#fffef9;color:#4d5852;font:inherit;font-size:.8rem;font-weight:650;white-space:nowrap;cursor:pointer}
+.mura-chapter-tab[aria-selected=true]{background:#176b69;border-color:#176b69;color:white;box-shadow:0 3px 9px #176b6920}
+.mura-chapter-number{font-size:.65rem;opacity:.85;font-variant-numeric:tabular-nums}
+.mura-chapter-tab:focus-visible,.mura-life-link:focus-visible,.mura-life-chapter:focus-visible{outline:3px solid #a94c2d;outline-offset:3px}
+.mura-life-card{padding:20px 24px;border:1px solid #e5dece;border-radius:17px;background:#fffefa}
+.mura-life-kicker{margin:0 0 10px;color:#92513c;font-size:.73rem;font-weight:750;letter-spacing:.05em}
+.mura-life-voice{max-width:74ch;margin:0;font-size:clamp(1rem,1.7vw,1.16rem);line-height:1.65;letter-spacing:-.01em}
+.mura-life-object{margin:18px 0 0;padding-inline-start:12px;border-inline-start:3px solid #aacfc1;color:#4a6058;font-size:.88rem;font-weight:650}
+.mura-life-link{display:inline-flex;align-items:center;gap:24px;min-height:44px;margin-top:15px;padding:9px 15px;border:1px solid #c6dcd4;border-radius:10px;background:#eef7f2;color:#165c57;font:inherit;font-size:.85rem;font-weight:750;text-decoration:none;cursor:pointer}
+.mura-life-link:hover{background:#e1f0e8;border-color:#86b8a5}
+.mura-life-dot{display:none}
+.mura-home .mura-hero-character img{width:126px;height:auto;max-width:100%}
+.mura-home .mura-hero{grid-template-columns:minmax(0,1.5fr) 132px minmax(215px,.8fr)}
+@media(min-width:1100px){.mura-chapter-nav{flex-wrap:wrap}}
+@media(max-width:780px){.mura-home .mura-hero{grid-template-columns:minmax(0,1fr) 96px}.mura-home .mura-now-card{grid-column:1/-1}.mura-home .mura-life{padding:20px 17px}.mura-life-timeline{grid-template-columns:1fr}.mura-life-card{padding:18px}.mura-life-heading h2{font-size:1.5rem}}
+@media(max-width:390px){.mura-home .mura-life{padding:18px 12px;border-radius:18px}.mura-life-card{padding:16px 14px}.mura-chapter-tab{padding:10px 12px}.mura-life-voice{font-size:1rem}}
+@media(prefers-reduced-motion:reduce){.mura-chapter-nav{scroll-behavior:auto}}

@@ -56,6 +56,8 @@ const homeModesCopy={
  so:{browseTitle:'Dadka la joog',browseText:'Eeg wada hadallada, kulamada, bulshooyinka iyo goobaha adigoon hawl samayn.',browseAction:'Fur Xarunta',solveTitle:'Xalli arrin gaar ah',solveText:'Caawin codso ama wax faa’iido leh bixi. Si yar u bilow — mashruuc khasab ma aha.',needAction:'Raadi caawin',offerAction:'Bixi caawin',organizeTitle:'Wax wada abaabula',organizeText:'Isku keen dadka, hawlaha iyo agabka, qalab qoto dheerna ku dar marka loo baahdo.',organizeAction:'Bilow mashruuc'},
  ku:{browseTitle:'Di nav mirovan de be',browseText:'Axaftin, civîn, civak û cihan bêyî afirandina karê nû temaşe bike.',browseAction:'Navendê veke',solveTitle:'Pirsek taybet çareser bike',solveText:'Alîkarî bixwaze an tiştek bikêr pêşkêş bike. Bi hêsanî dest pê bike — proje ne pêdivî ye.',needAction:'Alîkarî bibîne',offerAction:'Alîkarî pêşkêş bike',organizeTitle:'Tiştek bi hev re rêxistin bike',organizeText:'Mirov, kar û çavkaniyan bîne hev û amûrên kûrtir tenê dema pêdivî be zêde bike.',organizeAction:'Projeyek dest pê bike'}
 };
+// Reuse exactly the same localized labels in the optional first-contact trial.
+globalThis.FolkoopHomeModesCopy=Object.freeze(homeModesCopy);
 const homeModeText=k=>homeModesCopy[lang()]?.[k]||homeModesCopy.en[k]||k;
 
 const baseCopy={sv,en,ru};
@@ -73,7 +75,7 @@ for(const code of (globalThis.FolkoopCore?.LANGS||Object.keys(extraCopy))){
 }
 const lang=()=>globalThis.FolkoopCore?.LANGS?.includes(document.documentElement.lang)?document.documentElement.lang:'en';
 const muraText=(section,key)=>{
- const pack=muraGuestCopy[lang()]||muraGuestCopy.en;
+ const pack=muraGuestCopy[lang()]||globalThis.FolkoopExtraCopy?.muraGuest?.[lang()];
  return guestDemo?pack?.[section]?.[key]:undefined;
 };
 const SUBSECTION_KEY='folkoop-subsection-v1';
@@ -90,7 +92,15 @@ const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
 const accountEntryCopy={
  en:{login:'Create or enter your FOLKOOP place',invite:'Continue with your own people, ideas and real things you want to do.',email:'Email',send:'Continue',localContinue:'Continue locally without an account'},
  ru:{login:'Создать своё место в FOLKOOP',invite:'Продолжи уже со своими людьми, идеями и реальными делами.',email:'Электронная почта',send:'Продолжить',localContinue:'Продолжить локально без аккаунта'},
- sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'}
+ sv:{login:'Skapa din egen plats i FOLKOOP',invite:'Fortsätt med dina egna människor, idéer och verkliga saker du vill göra.',email:'E-post',send:'Fortsätt',localContinue:'Fortsätt lokalt utan konto'},
+ es:{login:'Crear o entrar en tu espacio FOLKOOP',invite:'Continúa con tu propia gente, tus ideas y las cosas reales que quieres hacer.',email:'Correo electrónico',send:'Continuar',localContinue:'Continuar localmente sin una cuenta'},
+ uk:{login:'Створити або відкрити своє місце у FOLKOOP',invite:'Продовжуй зі своїми людьми, ідеями та реальними справами.',email:'Електронна пошта',send:'Продовжити',localContinue:'Продовжити локально без акаунта'},
+ fi:{login:'Luo oma FOLKOOP-paikkasi tai siirry siihen',invite:'Jatka omien ihmistesi, ideoidesi ja oikeiden tekemistesi kanssa.',email:'Sähköposti',send:'Jatka',localContinue:'Jatka paikallisesti ilman tiliä'},
+ bs:{login:'Napravi ili otvori svoje mjesto u FOLKOOP-u',invite:'Nastavi sa svojim ljudima, idejama i stvarnim stvarima koje želiš uraditi.',email:'E-pošta',send:'Nastavi',localContinue:'Nastavi lokalno bez računa'},
+ ar:{login:'أنشئ مساحتك في FOLKOOP أو ادخل إليها',invite:'تابع مع أشخاصك وأفكارك والأشياء الحقيقية التي تريد القيام بها.',email:'البريد الإلكتروني',send:'متابعة',localContinue:'المتابعة محليًا من دون حساب'},
+ fa:{login:'جای خودت را در FOLKOOP بساز یا وارد آن شو',invite:'با آدم‌ها، ایده‌ها و کارهای واقعی خودت ادامه بده.',email:'ایمیل',send:'ادامه',localContinue:'ادامهٔ محلی بدون حساب'},
+ so:{login:'Samee ama gal meeshaada FOLKOOP',invite:'Ku sii wad dadkaaga, fikradahaaga iyo waxyaabaha dhabta ah ee aad rabto inaad samayso.',email:'Iimayl',send:'Sii wad',localContinue:'Gudaha ku sii wad adigoon akoon lahayn'},
+ ku:{login:'Cihê xwe yê FOLKOOP çêke an têkevê',invite:'Bi mirov, raman û karên rastîn ên xwe bidomîne.',email:'E-peyam',send:'Bidomîne',localContinue:'Bê hesab bi awayek herêmî bidomîne'}
 };
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
 
@@ -623,8 +633,9 @@ function renderMuraPeople(u){
   const chatTitles=data.chatMembers.filter(m=>m.user_id===p.id).map(m=>data.chats.find(x=>x.id===m.conversation_id)).filter(Boolean).map(chat=>chat.kind==='direct'?mt('direct'):chat.title).slice(0,1);
   return `<article class="card mura-person-page-card" data-demo-story="person"><div class="mura-person-page-head"><span class="mura-avatar" aria-hidden="true">${esc((p.name||'?').slice(0,1))}</span><div><h3>${esc(p.name)}</h3><p class="meta">${esc(p.skills||'')}</p></div></div><p>${esc(p.connection||p.about||'')}</p><div class="mura-connection-chips">${coopTitles.map(x=>`<span>${esc(x)}</span>`).join('')}${chatTitles.map(x=>`<span>${esc(x)}</span>`).join('')}</div></article>`;
  };
- const intro=lang()==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':lang()==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':'Not a contact list: people I already share a project, place or conversation with.';
- return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA / PEOPLE</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
+ const currentLang=lang();
+ const intro=currentLang==='ru'?'Не список контактов, а люди, с которыми меня уже связывает дело, место или разговор.':currentLang==='sv'?'Inte en kontaktlista, utan människor jag redan delar ett projekt, en plats eller ett samtal med.':currentLang==='en'?'Not a contact list: people I already share a project, place or conversation with.':(globalThis.FolkoopExtraCopy?.languages?.[currentLang]?.helper?.tips?.people||t('directory'));
+ return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA · ${esc(t('directory'))}</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
 }
 
 function renderHome(u){
@@ -824,7 +835,7 @@ function render(){
  const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
  document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
- if(!relevant||localMyPlace)return;host.lang=lang();host.dir='ltr';
+ if(!relevant||localMyPlace)return;host.lang=lang();host.dir=document.documentElement.dir||'ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
  if(!u){
@@ -1089,7 +1100,7 @@ window.addEventListener('folkoop:guest-demo',e=>{
   else if(!guestDemo&&sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');
  }catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':'#/home';load().then(()=>{navigateNetwork(target);render();}).catch(()=>render());}else render();
+ if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
 });
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();

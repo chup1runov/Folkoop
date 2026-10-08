@@ -43,17 +43,12 @@ test('Center runtime is connected navigation, not a hidden Mura route or simulat
   assert(!/\bfetch\s*\(/.test(source));
 });
 
-test('Mura Center tells a personal story while external links retain no-sync boundaries',async()=>{
+test('Center source keeps the authored/local and external/no-sync concepts distinct',async()=>{
   const source=await readFile('apps/web/folkoop.js','utf8');
-  for(const key of ['centerLocalExternalNote','centerLocalExternal'])assert(source.includes(key),key);
-  assert(source.includes('FolkoopMuraVoice?.centerCopy(lang)'));
-  assert(source.includes("mura?'':t('centerOnlineStatus')"));
-  assert(!source.includes("mura?"+'`'+'<p class="meta">${esc(t(\'centerLocalIllustrative\'))}</p>'+'`'+":"));
+  for(const key of ['centerLocalIllustrative','centerLocalExternalNote','centerLocalExternal'])assert(source.includes(key),key);
   const copy=await readFile('apps/web/folkoop-copy.js','utf8');
   assert(copy.includes('no FOLKOOP account or data synchronization'));
   assert(copy.includes('Nothing is copied from the real forum'));
-  const contract=await readFile('docs/MURA_ACCEPTANCE_CONTRACT.md','utf8');
-  assert(contract.includes('disclosure remains at the public **entry boundary**'));
 });
 
 test('Mura acceptance contract allows only the authored Online Center story',async()=>{
@@ -70,7 +65,8 @@ test('Center guidance no longer reverts to physical-only semantics in secondary 
     const x=extra[lang];
     assert.equal(x.tutorial.center,x.shell.centerOnlineText,lang+' tutorial');
     assert.equal(x.helper.tips.center,x.shell.centerOnlineText,lang+' helper');
-    assert.equal(x.homeWelcome.placeText,x.shell.centerOnlineText,lang+' homeWelcome');
+    assert(x.homeWelcome.placeText.includes(x.shell.centerOnlineText),lang+' homeWelcome Center semantics');
+    assert(x.homeWelcome.placeText.startsWith(x.shell.cityHelp),lang+' homeWelcome city guidance');
   }
   const shell=await readFile('apps/web/folkoop.js','utf8');
   assert(shell.includes('Center now connects community, people, City and projects as an online/hybrid route.'));

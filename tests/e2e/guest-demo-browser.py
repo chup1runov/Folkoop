@@ -47,7 +47,7 @@ async def main():
   await expect(page.locator('#folkoopEntryGate')).to_be_hidden()
   await expect(page.locator('#onboarding')).to_be_visible()
   await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать ко мне')
-  await expect(page.locator('#onboardingBody')).to_contain_text('Я Мура')
+  await expect(page.locator('#onboardingBody')).to_contain_text('это мой FOLKOOP')
   await expect(page.locator('#onboardingProgress')).to_contain_text('1 / 8')
   passed.append('Visiting Mura launches an in-character walk through her own account')
   await page.click('[data-onboarding="skip"]')
@@ -63,12 +63,6 @@ async def main():
   await expect(page.locator('.mura-home')).to_be_visible()
   await expect(page.locator('.mura-hero')).to_contain_text('FOLKOOP МУРЫ')
   await expect(page.locator('.mura-hero')).to_contain_text('Живая жизнь внутри FOLKOOP')
-  await expect(page.locator('.mura-life')).to_be_visible()
-  assert await page.locator('.mura-life-chapter').count()==9
-  await expect(page.locator('[data-mura-chapter="need"]')).to_contain_text('плиткорез')
-  await expect(page.locator('[data-mura-chapter="project"]')).to_contain_text('Анна')
-  await expect(page.locator('[data-mura-chapter="purchase"]')).to_contain_text('Купить сухие дрова вместе')
-  await expect(page.locator('[data-mura-chapter="outcome"]')).to_contain_text('лестницу')
   await expect(page.locator('.mura-story-grid')).to_contain_text('Обмен растениями и семенами по соседству')
   await expect(page.locator('.mura-conversation-list')).to_contain_text('Omar')
   await expect(page.locator('.mura-note-grid')).to_contain_text('Одолжить дрель на вечер')
@@ -92,14 +86,6 @@ async def main():
   assert not [u for u in external if 'supabase.co' in u],external
   await page.screenshot(path=str(OUT/'folkoop-v035-guest-home-mobile.png'),full_page=True)
   passed.append('Mura Home is a lived-in account surface with no signup, pilot or technical chrome')
-  await page.locator('[data-mura-chapter="project"] [data-home="openCoop"]').click()
-  assert page.url.endswith('#/projects'),page.url
-  await expect(page.locator('#networkPanel')).to_contain_text('Обмен растениями и семенами по соседству')
-  await assert_mura_immersed(page,'#networkPanel')
-  await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
-  await expect(page.locator('.mura-home')).to_be_visible()
-  await expect(page.locator('[data-mura-chapter="project"]')).to_be_visible()
-  passed.append('Mura diary opens the existing project and returns to the same personal Home')
   await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Mura')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="home-overview"]')).to_have_attribute('aria-current','page')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="me"]')).to_contain_text('Обо мне')
@@ -237,12 +223,11 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="center"]')
   await expect(page.locator('#workspace [data-center-story="local"]')).to_be_visible()
   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
-  await expect(page.locator('#workspace')).to_contain_text('Мои места и люди в Göteborg')
-  assert 'специально созданных персонажей' not in (await page.locator('#workspace').inner_text()).lower()
+  await expect(page.locator('#workspace')).to_contain_text('специально созданных персонажей')
   for center_route in ('people','communities','city','action'):
    await expect(page.locator(f'#workspace [data-center-route="{center_route}"]')).to_be_visible()
   assert await page.locator('#workspace a[href*="t.me"]').count()==0
-  assert 'не утверждаем, что физический Центр FOLKOOP уже открыт' not in (await page.locator('#workspace').inner_text()).lower()
+  await expect(page.locator('#workspace')).to_contain_text('не утверждаем, что физический Центр FOLKOOP уже открыт')
   await assert_mura_immersed(page,'#workspace')
   passed.append('Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims')
 

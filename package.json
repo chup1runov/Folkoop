@@ -1,6 +1,6 @@
 {
   "name": "folkoop",
-  "version": "0.40.4",
+  "version": "0.40.8",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "description": "FOLKOOP — people, cooperation, projects, city and center.",
@@ -11,6 +11,9 @@
     "auth:preflight": "node scripts/auth/probe-auth-readiness.mjs",
     "auth:require-google": "node scripts/auth/probe-auth-readiness.mjs --require-google-ready",
     "auth:require-provider": "node scripts/auth/probe-auth-readiness.mjs --require-hosted-google",
-    "audit:built-assets": "node scripts/ci/audit-built-assets.mjs"
+    "audit:built-assets": "node scripts/ci/audit-built-assets.mjs",
+    "i18n:export-review": "node scripts/i18n/native-review-source.mjs",
+    "i18n:readiness": "node scripts/i18n/release-readiness.mjs",
+    "i18n:require-reviewed": "node scripts/i18n/release-readiness.mjs --require-approved"
   }
 }
