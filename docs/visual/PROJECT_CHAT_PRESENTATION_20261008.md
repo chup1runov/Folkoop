@@ -45,3 +45,24 @@ acquaintance. Source selection is memory-only and clears on Home and return.
 All eleven application languages have a personal-link label. RTL, 320/390px
 screens and read-only Mura routes keep their existing boundaries. The browser
 suite now verifies the person round trip inside the prior project/chat journey.
+
+## Catalogue resource discovery — separate from availability and reservation
+
+The next visual slice shows already-visible Resource cooperation catalogue entries
+whose user-entered `location_text` exactly matches the Project's own listed place
+(case/space normalized). It does **not** infer relevance, distance or availability.
+The panel explicitly says these are other catalogue entries, not assigned or
+reserved for the Project. It displays up to two titles, keeps its separate
+existing Resource UUIDs, and navigates through the existing `openNotify` route.
+
+The new display does not query R1 private availability, add resources to a
+Project, create reservations or expose a new backend response. The authenticated
+API continues to decide which cooperation records are visible. The read-only Mura
+sample has one existing Olofstorp resource card, while other projects with no
+same-listed-place resources show no catalogue panel, not fake recommendations.
+
+The panel and context/CTA copy cover 11 languages, with native quality still
+pending #259. Project section navigation opens the panel using the same keyboard
+focus pattern. Browser regression checks Project → catalogue Resource → Together
+→ return to Project → person → chat → same Mura chapter in Chromium and WebKit.
+No backend writes, real-world fulfilment or payment is implied.

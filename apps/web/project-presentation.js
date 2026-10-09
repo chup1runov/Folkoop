@@ -31,6 +31,7 @@ function enhanceProject(root,{route,guestDemo=false}={}){
  const top=make('div','project-presentation-top');
  const context=make('aside','project-presentation-context');
  const next=direct(root,'.coop-next-step');
+ const resources=direct(root,'.project-resource-discovery');
  const chatButton=root.querySelector('[data-coop="openLinkedChat"]');
  const chatAction=chatButton?.parentElement;
  root.insertBefore(workspace,summary);
@@ -59,6 +60,14 @@ function enhanceProject(root,{route,guestDemo=false}={}){
  body.append(primary,secondary);
  primary.append(tasks);
  secondary.append(people);
+ if(resources){
+  resources.id='project-section-resources';
+  workspace.append(resources);
+  const jump=make('button','project-section-link');
+  jump.type='button';jump.dataset.projectJump='resources';
+  jump.textContent=globalThis.FolkoopProjectResources?.word(doc.documentElement.lang||'en',4)||'Resources';
+  navigation.append(jump);
+ }
  // Preserve native disclosure state. Opening a section is an explicit action.
  const more=make('div','project-presentation-more');
  workspace.append(more);
@@ -78,7 +87,7 @@ function enhanceProject(root,{route,guestDemo=false}={}){
   const button=event.target.closest('button[data-project-jump]');
   if(!button||!workspace.contains(button))return;
   const key=button.dataset.projectJump;
-  const target=key==='overview'?summary:ordered.find(node=>node.dataset.coopSection===key);
+  const target=key==='overview'?summary:(key==='resources'?resources:ordered.find(node=>node.dataset.coopSection===key));
   if(!target||target.hidden)return;
   if(target.tagName==='DETAILS')target.open=true;
   const focusTarget=target.tagName==='DETAILS'?target.querySelector(':scope > summary'):target;

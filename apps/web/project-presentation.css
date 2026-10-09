@@ -69,3 +69,18 @@
 .project-person-focus:focus{outline:3px solid #27786f;outline-offset:3px}
 .project-person-return{min-height:44px;margin-top:14px;white-space:normal}
 @media(max-width:390px){.project-presentation-people .coop-compact-row{align-items:stretch}.project-person-visit{width:100%}}
+
+/* Another visible resource catalogue entry with the same stated location is
+   not reserved, recommended, or attached to this project. */
+.project-resource-discovery{margin:18px 0 0;padding:22px 24px;background:#f4f8f4;border:1px solid #cfdfd5;border-radius:20px;min-width:0;scroll-margin-top:88px}
+.project-resource-discovery:focus{outline:3px solid #27786f;outline-offset:3px}
+.project-resource-heading .eyebrow{font-size:.72rem;letter-spacing:.055em;color:#577568;font-weight:750;margin:0 0 9px}
+.project-resource-heading h3{font-size:clamp(1.12rem,2.5vw,1.45rem);color:#244c3d;margin:0 0 14px;line-height:1.28}
+.project-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.project-resource-card{padding:18px;display:flex;flex-direction:column;gap:15px;border:1px solid #d8e4d9;border-radius:14px;background:#fff;min-width:0}
+.project-resource-card strong{font-size:.98rem;line-height:1.4;overflow-wrap:anywhere;color:#29463b}
+#networkPanel .project-resource-open{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;min-height:44px;padding:9px 11px;border-radius:9px;border:1px solid #bed5c7;background:#eaf3ed;color:#225a48;font-weight:700;text-align:start}
+.project-resource-open:hover{background:#dceee4}
+.project-resource-open:focus-visible{outline:3px solid #27786f;outline-offset:3px}
+.project-resource-disclaimer{font-size:.81rem;line-height:1.5;color:#526b5b;margin:13px 0 0}
+@media(max-width:490px){.project-resource-grid{grid-template-columns:1fr}.project-resource-discovery{padding:16px}}
