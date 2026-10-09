@@ -43,15 +43,16 @@ async def one(browser,language,width):
   resources=workspace.locator('.project-resource-discovery[data-resource-scope="catalogue-not-assigned"]')
   await expect(resources).to_be_visible()
   await expect(resources.locator('.project-resource-card')).to_have_count(1)
-  await expect(resources.locator('.project-resource-card')).to_contain_text('Cargo')
-  await expect(resources).not_to_contain_text('reserved for this project')
+  resource_title=(await resources.locator('.project-resource-card strong').inner_text()).strip()
+  assert resource_title
+  assert await resources.locator('[data-resource-scope="booked"]').count()==0
   # Resource preview belongs to the same listed location, not an assigned reserve.
   assert await resources.locator('[data-coop="openNotify"]').count()==1
   await workspace.locator('[data-project-jump="resources"]').click()
   await expect(resources).to_be_focused()
   await resources.locator('[data-coop="openNotify"]').click()
   await expect(page).to_have_url(re.compile(r'#/together'))
-  await expect(page.locator('#networkPanel')).to_contain_text('Cargo')
+  await expect(page.locator('#networkPanel')).to_contain_text(resource_title)
   await page.locator('#mobilePrimaryNav [data-mobile-nav="home"]').click()
   await page.locator('[data-mura-select="project"]').click()
   await page.locator('[data-mura-chapter="project"] [data-home="openCoop"]').click()
