@@ -1,0 +1,86 @@
+/* One project, existing people/tasks and its linked conversation. */
+.project-workspace{--project-green:#1b6051;--project-muted:#50655e;min-width:0;margin:18px 0 28px;color:#203c34}
+.project-presentation-top{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(230px,1fr);gap:18px;align-items:stretch}
+.project-presentation-top-single{grid-template-columns:1fr}
+.project-workspace .coop-summary{margin:0;padding:25px 28px;border:1px solid #bfd9cd;border-radius:24px;background:linear-gradient(130deg,#edf6ef,#f9fbf5);box-shadow:none;min-width:0}
+.project-workspace .coop-summary h2{font-size:clamp(1.65rem,3.3vw,2.55rem);line-height:1.12;letter-spacing:-.035em;margin:19px 0 13px;max-width:25ch;overflow-wrap:anywhere}
+.project-workspace .coop-summary-description{font-size:1rem;line-height:1.65;color:#3e594f;max-width:65ch}
+.project-workspace .coop-summary-stats{border-top:1px solid #cddfd3;margin-top:22px;padding-top:17px;gap:24px}
+.project-workspace .coop-summary-stats strong{font-size:1.4rem;color:var(--project-green)}
+.project-workspace .coop-summary-stats small{font-size:.8rem;line-height:1.35;overflow-wrap:normal;word-break:normal}
+.project-presentation-context{display:flex;flex-direction:column;min-width:0;padding:22px 23px;background:#fbf3e8;border:1px solid #ead8bd;border-radius:24px}
+.project-workspace .coop-next-step{margin:0 0 17px;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
+.project-workspace .coop-next-step .eyebrow{color:#745127;font-size:.76rem;letter-spacing:.04em}
+.project-workspace .coop-next-step strong{display:block;margin:10px 0;font-size:1.18rem;line-height:1.35;color:#3d3424}
+.project-workspace .coop-next-step p{font-size:.93rem;line-height:1.6;color:#625540}
+.project-work-chat-action{margin-top:auto;display:flex;flex-direction:column;align-items:stretch;gap:8px}
+#networkPanel .project-work-chat-action button{min-height:48px;white-space:normal;text-align:center;border-radius:12px;background:var(--project-green);color:#fff;border-color:var(--project-green)}
+.project-work-chat-action .meta{font-size:.75rem;line-height:1.45}
+.project-section-navigation{display:flex;gap:5px;flex-wrap:wrap;margin:17px 0;padding:7px;border:1px solid #dce6de;border-radius:14px;background:#fff}
+.project-section-link{appearance:none;background:transparent;border:0;color:#355448;border-radius:9px;padding:11px 15px;min-height:44px;font-size:.85rem;font-weight:680;cursor:pointer}
+.project-section-link:first-child{background:#e9f3ee;color:#155943}
+.project-section-link:hover{background:#edf3ed}
+.project-section-link:focus-visible,.project-work-chat-action button:focus-visible{outline:3px solid #236f6b;outline-offset:3px}
+.project-presentation-body{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(230px,1fr);gap:18px;align-items:start}
+.project-presentation-work,.project-presentation-people{min-width:0}
+.project-workspace .coop-disclosure{margin:0;border:1px solid #dce5dd;border-radius:18px;box-shadow:none;overflow:visible;background:#fff}
+.project-workspace .coop-disclosure > summary{padding:17px 19px;min-height:54px;font-size:1rem;scroll-margin-top:90px;border-radius:18px;overflow-wrap:anywhere}
+.project-workspace .coop-disclosure-body{padding:0 19px 18px}
+.project-workspace .coop-task-row{padding:16px 0;background:transparent;border:0;border-top:1px solid #e5ebe5;border-radius:0;box-shadow:none}
+.project-workspace .coop-task-main{gap:8px}
+.project-workspace .coop-task-main > strong{font-size:1.03rem;line-height:1.4}
+.project-workspace .coop-task-row p{font-size:.91rem;line-height:1.55;color:#5b665d;margin:9px 0}
+.project-workspace .coop-task-row .badge{align-self:start;font-size:.72rem;border-radius:6px}
+.project-workspace .coop-compact-row{padding:12px 0;border:0;border-top:1px solid #e5ebe5;border-radius:0;overflow-wrap:anywhere}
+.project-presentation-people .coop-compact-row > div{display:grid;gap:4px}
+.project-presentation-people .coop-compact-row strong{font-size:.95rem}
+.project-presentation-more{display:grid;gap:10px;margin-top:18px}
+.project-workspace .coop-summary{scroll-margin-top:90px}
+/* Conversation source and return action remain visible alongside the actual messages. */
+.conversation-header{min-width:0;border-radius:22px;padding:23px;background:#f6faf7;border:1px solid #cee0d5}
+.conversation-header h2{font-size:clamp(1.25rem,2.5vw,1.8rem);line-height:1.25;overflow-wrap:anywhere}
+.conversation-project-context{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;margin:16px 0;background:#e5f1ea;border:1px solid #c8dfd1;border-radius:13px;min-width:0}
+.conversation-project-context > div{min-width:0;display:grid;gap:5px}
+.conversation-project-context .meta{font-size:.73rem;color:#3f6554;margin:0}
+.conversation-project-context strong{font-size:1rem;line-height:1.35;overflow-wrap:anywhere}
+#networkPanel .conversation-project-context button{flex-shrink:0;min-height:44px;white-space:normal;border-radius:10px;color:#165a44;background:#fff;border:1px solid #b3cdbc}
+.conversation-members{margin-top:13px;color:#53685d}
+.conversation-members > summary{cursor:pointer;min-height:44px;padding:11px 0;font-size:.85rem}
+.conversation-members .stack{margin-top:9px}
+.conversation-members .row{padding:7px 0;border-bottom:1px solid #e2ebe4}
+#networkPanel .chat-messages{display:flex;flex-direction:column;gap:12px;padding:18px 0;max-width:100%;min-width:0}
+#networkPanel .chat-messages .chat-message{width:min(84%,720px);min-width:0;align-self:flex-start;margin:0;padding:15px 19px;border-radius:4px 20px 20px 20px;border:1px solid #dce4da;background:#fff;box-shadow:0 2px 5px #23442b06;overflow-wrap:anywhere}
+#networkPanel .chat-messages .chat-message.is-mine{align-self:flex-end;background:#e8f3eb;border-color:#c9dfcc;border-radius:20px 4px 20px 20px}
+.chat-message > small{font-size:.78rem;font-weight:750;color:#356d56}
+.chat-message > p:not(.meta){font-size:.97rem;line-height:1.6;margin:7px 0 10px}
+.chat-message > .meta{font-size:.72rem;margin:0;color:#5d6c61}
+.chat-message .actions:empty,.guest-demo .chat-message > .actions{display:none}
+#networkPanel[dir=rtl] .chat-messages .chat-message{border-radius:20px 4px 20px 20px}
+#networkPanel[dir=rtl] .chat-messages .chat-message.is-mine{border-radius:4px 20px 20px 20px}
+@media(max-width:780px){.project-presentation-top,.project-presentation-body{grid-template-columns:1fr}.project-workspace .coop-summary{padding:21px}.project-presentation-context{padding:20px}.project-presentation-body{gap:13px}.project-section-navigation{gap:1px}.project-section-link{padding:10px 12px}.conversation-project-context{align-items:stretch;flex-direction:column}.conversation-project-context button{width:100%}.conversation-header{padding:18px}#networkPanel .chat-messages .chat-message{width:91%;padding:13px 15px}.project-workspace .coop-summary-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:17px;padding-top:13px}.project-workspace .coop-summary-stats>span{min-width:0;padding:9px 10px;gap:4px}.project-workspace .coop-summary-stats small{font-size:.75rem}}
+@media(max-width:360px){.project-workspace .coop-summary{padding:17px}.project-workspace .coop-summary h2{font-size:1.6rem}.project-section-link{padding:10px;font-size:.8rem}.project-workspace .coop-disclosure-body{padding:0 14px 14px}.conversation-header{padding:14px}#networkPanel .chat-messages .chat-message{width:96%}}
+
+/* Project member → visible person → original project. */
+.project-person-visit{min-height:44px;max-width:100%;padding:9px 13px;border:1px solid #c0d8ce;background:#f0f8f2;color:#165942;border-radius:11px;font-weight:680;font-size:.83rem;text-align:center;cursor:pointer}
+.project-person-visit:hover{background:#e0f1e6}
+.project-person-visit:focus-visible,.project-person-return:focus-visible{outline:3px solid #27786f;outline-offset:3px}
+.project-presentation-people .coop-compact-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.project-person-focus{border:2px solid #2d7662!important;background:#f0f8f3!important;box-shadow:0 0 0 4px #d7eadd!important;scroll-margin-top:88px}
+.project-person-focus:focus{outline:3px solid #27786f;outline-offset:3px}
+.project-person-return{min-height:44px;margin-top:14px;white-space:normal}
+@media(max-width:390px){.project-presentation-people .coop-compact-row{align-items:stretch}.project-person-visit{width:100%}}
+
+/* Another visible resource catalogue entry with the same stated location is
+   not reserved, recommended, or attached to this project. */
+.project-resource-discovery{margin:18px 0 0;padding:22px 24px;background:#f4f8f4;border:1px solid #cfdfd5;border-radius:20px;min-width:0;scroll-margin-top:88px}
+.project-resource-discovery:focus{outline:3px solid #27786f;outline-offset:3px}
+.project-resource-heading .eyebrow{font-size:.72rem;letter-spacing:.055em;color:#577568;font-weight:750;margin:0 0 9px}
+.project-resource-heading h3{font-size:clamp(1.12rem,2.5vw,1.45rem);color:#244c3d;margin:0 0 14px;line-height:1.28}
+.project-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.project-resource-card{padding:18px;display:flex;flex-direction:column;gap:15px;border:1px solid #d8e4d9;border-radius:14px;background:#fff;min-width:0}
+.project-resource-card strong{font-size:.98rem;line-height:1.4;overflow-wrap:anywhere;color:#29463b}
+#networkPanel .project-resource-open{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;min-height:44px;padding:9px 11px;border-radius:9px;border:1px solid #bed5c7;background:#eaf3ed;color:#225a48;font-weight:700;text-align:start}
+.project-resource-open:hover{background:#dceee4}
+.project-resource-open:focus-visible{outline:3px solid #27786f;outline-offset:3px}
+.project-resource-disclaimer{font-size:.81rem;line-height:1.5;color:#526b5b;margin:13px 0 0}
+@media(max-width:490px){.project-resource-grid{grid-template-columns:1fr}.project-resource-discovery{padding:16px}}
