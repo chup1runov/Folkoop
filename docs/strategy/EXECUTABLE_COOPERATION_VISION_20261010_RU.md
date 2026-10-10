@@ -28,7 +28,7 @@
 
 ## 2. Что уже предусмотрено в FOLKOOP; в чём реальный пробел
 
-**Уже приняты в scope**: Need, Offer, Resource, Project, Shared Purchase, Economic Flow, FOLKUNO Center (online/physical/hybrid), Sverinav City, GBG Forum, SDCF, Host/referral, Outcome/Evidence, Agreement/Decision, Web3/Web4, VC/Passport, federation, AI Action Agent/MCP/A2A, QR/NFC/digital twins, scoped blockchain. Нельзя повторно продавать их владельцу как новую идею или считать отсутствующие runtime-функции реализованными.
+**Уже приняты в scope**: Need, Offer, Resource, Project, Shared Purchase, Economic Flow, Center (online/physical/hybrid), City, GBG Forum, SDCF, Host/referral, Outcome/Evidence, Agreement/Decision, Web3/Web4, VC/Passport, federation, AI Action Agent/MCP/A2A, QR/NFC/digital twins, scoped blockchain. Нельзя повторно продавать их владельцу как новую идею или считать отсутствующие runtime-функции реализованными.
 
 **Проверенный срез на 10.10.2026**: GitHub main 32eedae9b10a1ed262fd2134e98a3100f826239f (public 0.40.7). E01 Economic Flow schema и client slice существуют. PR #254 (R1 Resource Planning) draft: по его проверенной истории hosted schema применена, UI feature flag off, hosted acceptance не пройдён из-за отсутствия должным образом допущенных тестовых аккаунтов. PR #257 (визуальный Project/People/Chat/Resource) draft и не опубликован. Его preview подбирает только уже видимые записи Resource с совпадающим указанным местом, **не подтверждённую пригодность, доступность или резервирование**. PR #234 — визуальная лаборатория, не production. Реальные интервью #261, физический iPhone/VoiceOver #116, Google OAuth #83, ручные pilot/privacy gates остаются отдельными.
 
