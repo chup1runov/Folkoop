@@ -127,3 +127,33 @@ test('each variant has a separate evidence record, not a pooled false-positive A
  assert.equal(assessStudy(a).study.variant,'three-equal-paths');
  assert.equal(assessStudy(b).study.variant,'four-concrete-actions');
 });
+
+test('invalid first-contact records cannot leak raw identifiers through diagnostic reports',()=>{
+ const input=dataset(5);
+ const privateMarker='CONTACT_SECRET_NAME_OR_EMAIL@example.invalid';
+ input.responses[0].anonId=privateMarker;
+ delete input.responses[0].freshReviewer;
+ delete input.responses[0].humanCoded;
+ input.responses[0].interpretation=privateMarker;
+ input.responses[0].confusionTags=[privateMarker];
+ const result=assessStudy(input);
+ const report=reportMarkdown(result);
+ assert.equal(result.status,'INVALID');
+ assert.equal(result.valid,false);
+ assert(result.errors.some(e=>e.includes('anonymous reviewer ID')));
+ assert(result.errors.some(e=>e.includes('Human coding')));
+ assert(!JSON.stringify(result).includes(privateMarker));
+ assert(!report.includes(privateMarker));
+ assert(!report.includes('<script'));
+});
+
+test('duplicate anonymous IDs are not included verbatim in invalid exports',()=>{
+ const input=dataset(5);
+ input.responses[0].anonId='p947';
+ input.responses[1].anonId='p947';
+ const result=assessStudy(input);
+ assert.equal(result.status,'INVALID');
+ assert(result.errors.some(e=>e.includes('Duplicate anonymous reviewer ID')));
+ assert(!JSON.stringify(result).includes('p947'));
+ assert(!reportMarkdown(result).includes('p947'));
+});
