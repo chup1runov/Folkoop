@@ -1050,10 +1050,26 @@ window.addEventListener('message',e=>{
 });
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:subsection',e=>{
- const parent=e.detail?.parent;
+ const parent=e.detail?.parent,key=e.detail?.key;
  if(parent==='projects')selectedCoop=null;
  if(parent==='messages')selectedChat=null;
  render();
+ if(parent==='messages'&&['messages-direct','messages-groups','messages-invites'].includes(key)){
+  // The shell completes subsection routing and its other click handlers after this event.
+  // Focus only once that synchronous navigation has settled, not on a transient DOM node.
+  requestAnimationFrame(()=>{
+   if(route()!=='messages'||currentSubsection('messages')!==key)return;
+   // querySelector on a selector list follows DOM order: the page h2 precedes the form.
+   // Prefer a genuine input, falling back to a focusable heading for invitation lists.
+   const target=host.querySelector('#netDirect select[name="other"]')
+    ||host.querySelector('#netNewChat input[name="title"]')
+    ||(key==='messages-invites'?host.querySelector('#messagesInvitationHeading'):null)
+    ||host.querySelector('h2');
+   if(!target)return;
+   if(/^H[2-6]$/.test(target.tagName))target.tabIndex=-1;
+   target.focus({preventScroll:true});
+  });
+ }
 });
 window.addEventListener('folkoop:start-cooperation',e=>{
  const detail=e.detail||{},kind=detail.kind;
@@ -1081,6 +1097,29 @@ document.addEventListener('click',e=>{
  if(!turnOff)filter.classList.add('active');
  document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
   const matches=kind==='all'||card.dataset.kind===kind;
+  card.dataset.kindMatch=matches?'1':'0';
+  const searchMatch=card.dataset.searchMatch!=='0';
+  card.hidden=!(matches&&searchMatch);
+ });
+});
+document.addEventListener('input',e=>{
+ if(e.target?.id!=='networkMessageSearch')return;
+ const needle=e.target.value.trim().toLocaleLowerCase();
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
+  card.dataset.searchMatch=matches?'1':'0';
+  const kindMatch=card.dataset.kindMatch!=='0';
+  card.hidden=!(matches&&kindMatch);
+ });
+});
+document.addEventListener('click',e=>{
+ const filter=e.target.closest?.('[data-message-kind]');if(!filter)return;
+ const turnOff=filter.classList.contains('active');
+ document.querySelectorAll('#networkPanel [data-message-kind]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});
+ const kind=turnOff?'all':filter.dataset.messageKind;
+ if(!turnOff){filter.classList.add('active');filter.setAttribute('aria-pressed','true');}
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=kind==='all'||card.dataset.messageType===kind;
   card.dataset.kindMatch=matches?'1':'0';
   const searchMatch=card.dataset.searchMatch!=='0';
   card.hidden=!(matches&&searchMatch);
