@@ -141,7 +141,7 @@ test('invalid first-contact records cannot leak raw identifiers through diagnost
  assert.equal(result.status,'INVALID');
  assert.equal(result.valid,false);
  assert(result.errors.some(e=>e.includes('anonymous reviewer ID')));
- assert(result.errors.some(e=>e.includes('Human coding')));
+ assert(result.errors.some(e=>e.includes('human coding')));
  assert(!JSON.stringify(result).includes(privateMarker));
  assert(!report.includes(privateMarker));
  assert(!report.includes('<script'));
