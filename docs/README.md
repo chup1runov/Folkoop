@@ -23,6 +23,16 @@ When documents disagree, use this order unless a more specific current document 
 
 Research and old release notes do not silently override current product policy. Equally, old pilot restrictions must not silently override the new owner-approved foundation scope. Missing originals, deferred work and contradictions must remain visible.
 
+
+## Owner-endorsed strategic program — 10 October 2026
+
+**Executable Cooperation (ECX)** strengthens the path from intent and available capabilities to feasible shared plans, versioned conditional consent, execution, truthful Outcomes, portable evidence and narrowly justified AI/blockchain. This is a **strategic direction with phased acceptance**, not a claim that future features are shipped or permission to bypass P0/privacy/pilot gates.
+
+- [Strategy, competitor and 2026 technology review (RU)](strategy/EXECUTABLE_COOPERATION_VISION_20261010_RU.md)
+- [Detailed implementation and validation plan (RU)](strategy/EXECUTABLE_COOPERATION_PLAN_20261010_RU.md)
+
+These documents are subordinate to the Foundation Charter and the ranked MASTER_PLAN_20261004; neither replaces the current five-space IA, the three equal human entry paths, or preserved no-loss scope.
+
 ## Current product and pilot
 
 Start with:
