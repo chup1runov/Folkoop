@@ -1054,6 +1054,13 @@ window.addEventListener('folkoop:subsection',e=>{
  if(parent==='projects')selectedCoop=null;
  if(parent==='messages')selectedChat=null;
  render();
+ if(parent==='messages'&&['messages-direct','messages-groups','messages-invites'].includes(e.detail?.key)){
+  const target=host.querySelector('#netDirect select[name="other"],#netNewChat input[name="title"],#networkPanel h3,#networkPanel h2');
+  if(target){
+   if(/^H[2-6]$/.test(target.tagName))target.tabIndex=-1;
+   target.focus({preventScroll:true});
+  }
+ }
 });
 window.addEventListener('folkoop:start-cooperation',e=>{
  const detail=e.detail||{},kind=detail.kind;
@@ -1081,6 +1088,29 @@ document.addEventListener('click',e=>{
  if(!turnOff)filter.classList.add('active');
  document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
   const matches=kind==='all'||card.dataset.kind===kind;
+  card.dataset.kindMatch=matches?'1':'0';
+  const searchMatch=card.dataset.searchMatch!=='0';
+  card.hidden=!(matches&&searchMatch);
+ });
+});
+document.addEventListener('input',e=>{
+ if(e.target?.id!=='networkMessageSearch')return;
+ const needle=e.target.value.trim().toLocaleLowerCase();
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
+  card.dataset.searchMatch=matches?'1':'0';
+  const kindMatch=card.dataset.kindMatch!=='0';
+  card.hidden=!(matches&&kindMatch);
+ });
+});
+document.addEventListener('click',e=>{
+ const filter=e.target.closest?.('[data-message-kind]');if(!filter)return;
+ const turnOff=filter.classList.contains('active');
+ document.querySelectorAll('#networkPanel [data-message-kind]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});
+ const kind=turnOff?'all':filter.dataset.messageKind;
+ if(!turnOff){filter.classList.add('active');filter.setAttribute('aria-pressed','true');}
+ document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
+  const matches=kind==='all'||card.dataset.messageType===kind;
   card.dataset.kindMatch=matches?'1':'0';
   const searchMatch=card.dataset.searchMatch!=='0';
   card.hidden=!(matches&&searchMatch);
