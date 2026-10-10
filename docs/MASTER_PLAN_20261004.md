@@ -6,6 +6,8 @@ Controlling scope: `FOUNDATION_CHARTER.md` / **FK-FOUNDATION-2026-10-04**.
 
 This file consolidates the current executable plans and supersedes older priority queues **as an execution index only**. It does not erase their source decisions, historical context or stable requirement IDs.
 
+**Strategic addendum, 10 October 2026:** [Executable Cooperation vision](strategy/EXECUTABLE_COOPERATION_VISION_20261010_RU.md) and [phased implementation plan](strategy/EXECUTABLE_COOPERATION_PLAN_20261010_RU.md) are owner-endorsed directions for feasible multi-party cooperation, conditional commitments, evidence-aware Outcomes, scoped AI and independent trust proofs. They do **not** supersede this ranked execution index, Foundation Charter, GDPR/security gates or bounded Göteborg pilot. Future SQL, agent activation, live partner transfers and blockchain mainnet still require separate reviewed authorisation.
+
 Permanent rules:
 
 1. **Do not reduce the full FOLKOOP scope merely because the next pilot is narrow.**
