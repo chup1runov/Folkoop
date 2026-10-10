@@ -72,21 +72,23 @@ function validateStudyHeader(input){
 function classifyResponse(r,idx,seen){
  const errors=[],reasons=[];
  const id=String(r?.anonId||'');
- if(!/^p[0-9]{2,3}$/.test(id))errors.push('Use only local anonymous IDs p01, p02 etc; row '+(idx+1));
- else if(seen.has(id))errors.push('Duplicate anonymous reviewer ID: '+id);
+ // Diagnostic errors may be exported as Markdown/JSON. Never interpolate raw
+ // respondent identifiers, free text, or per-row labels into those reports.
+ if(!/^p[0-9]{2,3}$/.test(id))errors.push('Invalid anonymous reviewer ID (expected p01 etc.)');
+ else if(seen.has(id))errors.push('Duplicate anonymous reviewer ID');
  else seen.add(id);
- if(typeof r?.freshReviewer!=='boolean')errors.push(id+': freshness must be recorded');
- if(typeof r?.uncoached!=='boolean')errors.push(id+': coaching status missing');
- if(!Number.isInteger(r?.exposureSeconds))errors.push(id+': exposure seconds must be an integer');
- if(r?.humanCoded!==true)errors.push(id+': human coding of real answers not confirmed');
- if(!INTERPRETATIONS.includes(r?.interpretation))errors.push(id+': missing interpretation code');
- if(typeof r?.describesIntentToNextAction!=='boolean')errors.push(id+': flow comprehension not coded');
- if(typeof r?.choosesPlausibleFirstAction!=='boolean')errors.push(id+': first action comprehension not coded');
- if(!FIRST_ACTIONS.includes(r?.firstAction))errors.push(id+': first-action category missing');
- if(!['yes','no','uncertain'].includes(r?.muraUnderstood))errors.push(id+': Mura understanding missing');
+ if(typeof r?.freshReviewer!=='boolean')errors.push('Freshness must be recorded');
+ if(typeof r?.uncoached!=='boolean')errors.push('Coaching status missing');
+ if(!Number.isInteger(r?.exposureSeconds))errors.push('Exposure seconds must be an integer');
+ if(r?.humanCoded!==true)errors.push('human coding of real answers not confirmed');
+ if(!INTERPRETATIONS.includes(r?.interpretation))errors.push('Missing interpretation code');
+ if(typeof r?.describesIntentToNextAction!=='boolean')errors.push('Flow comprehension not coded');
+ if(typeof r?.choosesPlausibleFirstAction!=='boolean')errors.push('First action comprehension not coded');
+ if(!FIRST_ACTIONS.includes(r?.firstAction))errors.push('First-action category missing');
+ if(!['yes','no','uncertain'].includes(r?.muraUnderstood))errors.push('Mura understanding missing');
  if(!Array.isArray(r?.confusionTags)||r.confusionTags.length===0||
     r.confusionTags.some(tag=>!CONFUSION_TAGS.includes(tag)))
-  errors.push(id+': confusion tags must come from the fixed vocabulary');
+  errors.push('Confusion tags must come from the fixed vocabulary');
  if(r?.freshReviewer===false)reasons.push('previously-seen');
  if(r?.uncoached===false)reasons.push('facilitated');
  if(Number.isInteger(r?.exposureSeconds)&&

@@ -1,5 +1,7 @@
 # FOLKOOP — P0-A first-contact comprehension field kit
 
+> **Operational update — 10 October 2026:** The variant table below preserves its original 8 October snapshot. Since then `three-equal-paths` was deployed as an **opt-in** first-contact screen via `/?first-contact=three-paths` (PR #264); the default `current-welcome` screen remains unchanged. This is a deployed *test candidate*, not a proven improvement. Pin and verify the exact active release, locale and fresh browser state in [issue #261](https://github.com/chup1runov/Folkoop/issues/261) before recruiting each cohort. Neither screen has passed independent first-contact comprehension testing.
+
 **Date:** 8 October 2026. **Status:** executable test kit READY; no new participant evidence has been collected. **Priority:** #1 in `docs/MASTER_PLAN_20261004.md`, Program P0-A.
 
 Authority: `docs/FOUNDATION_CHARTER.md`, `docs/FIRST_CONTACT_CLARITY_V2.md`, the 1 October first-contact synthesis, and later owner-approved [whole-system lab PR #234](https://github.com/chup1runov/Folkoop/pull/234). This kit does **not** replace any of those decisions or propose a new product architecture.
