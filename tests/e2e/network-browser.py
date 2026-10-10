@@ -390,6 +390,8 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await expect(page.locator('#networkMessageSearch')).to_be_visible()
+  # The navigation reloads the synthetic inbox asynchronously; wait before inserting DOM-only fixtures.
+  await page.wait_for_load_state('networkidle')
   # UI-only deterministic fixture: never sent to Supabase and never counted as real conversations.
   await page.evaluate("""() => {
     const list=document.querySelector('#networkPanel .mura-chat-grid');
