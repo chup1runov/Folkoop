@@ -769,6 +769,40 @@ Parallel but non-blocking:
 
 ---
 
+# 19A. PARALLEL WHOLE-SYSTEM VISUAL INTEGRATION LAB
+
+Owner-confirmed purpose: keep all ten FOLKOOP components in view simultaneously, combine them visually into one product first, discuss the working relationships, and only then deepen production implementation slice by slice.
+
+This track runs in parallel with pilot/evidence work. It does not authorize production claims.
+
+## Three equal participant modes
+
+The visual architecture must support three equally legitimate ways of using FOLKOOP:
+
+1. **Look around / belong** — community, conversations, meetings, learning, places and ordinary presence without requiring a task.
+2. **Solve a concrete question** — need, offer, resource, official City route or local opportunity.
+3. **Organise something together** — people, project/work, resources, economy, logistics, decisions and outcomes.
+
+A participant may move freely between these modes. They are not separate applications or registration flows.
+
+## v0.2 lab
+
+Current branch lab:
+- `apps/web/whole-system-v02.html`
+- `apps/web/whole-system-v02.css`
+- `apps/web/whole-system-v02.js`
+- `docs/WHOLE_SYSTEM_VISUAL_PROTOTYPE_V02.md`
+
+Design rule:
+**the full depth lives in connected objects and contextual tools; the participant-facing surface speaks in human actions.**
+
+The lab keeps a design-only coverage map for:
+current FOLKOOP implementation, civic/public-infrastructure origin, community/Center origin, owner cooperative-social-network work, attributed cooperative-economy research, ГБГ Форум, Mura, SDCF, Web3/Web4 and blockchain.
+
+No lab interaction is production truth. Promotion requires owner review plus production/security/privacy/permission mapping and appropriate evidence.
+
+---
+
 # 20. Decision rule for any new task
 
 Before inserting work above the current queue, answer:

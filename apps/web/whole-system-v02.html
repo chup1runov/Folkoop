@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8f6">
+<title>FOLKOOP — Whole-System Visual Prototype v0.2</title>
+<link rel="icon" href="./folkoop-mark.png" type="image/png">
+<link rel="stylesheet" href="./whole-system-v02.css">
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+
+<header class="app-header">
+  <a class="brand" href="#home" data-go="home" aria-label="FOLKOOP — домой">
+    <img src="./folkoop-mark.png" alt="" width="42" height="42">
+    <span>FOLKOOP</span>
+  </a>
+
+  <label class="global-search">
+    <span class="sr-only">Поиск</span>
+    <input id="globalSearch" type="search" placeholder="Люди, вещи, места и дела">
+  </label>
+
+  <button id="designToggle" class="design-toggle" type="button" aria-pressed="false">
+    Режим проектирования
+  </button>
+</header>
+
+<nav class="global-nav" aria-label="Основные разделы">
+  <button class="active" data-screen="home"><span>⌂</span><b>Моё</b></button>
+  <button data-screen="together"><span>◎</span><b>Вместе</b></button>
+  <button data-screen="city"><span>⌖</span><b>Город</b></button>
+  <button data-screen="center"><span>◉</span><b>Центр</b></button>
+  <button data-screen="messages"><span>▰</span><b>Сообщения</b></button>
+</nav>
+
+<main id="main">
+  <section class="screen active" data-screen-id="home">
+    <div class="welcome-card">
+      <div>
+        <p class="eyebrow">Мой FOLKOOP</p>
+        <h1>Что вам сейчас ближе?</h1>
+        <p class="lead">Можно просто осмотреться, решить один вопрос или собрать людей для общего дела. Ничего изучать заранее не нужно.</p>
+      </div>
+      <button class="mura-link" data-action="open-mura">
+        <span class="mura-avatar">М</span>
+        <span><b>Посмотреть через Муру</b><small>Три обычные истории вместо экскурсии по функциям</small></span>
+      </button>
+    </div>
+
+    <div class="entry-modes" aria-label="Три способа пользоваться FOLKOOP">
+      <article class="entry-mode social">
+        <span class="mode-icon">☕</span>
+        <p class="eyebrow">Осмотреться</p>
+        <h2>Быть среди людей</h2>
+        <p>Темы, встречи, сообщества, занятия и места. Можно просто смотреть и общаться.</p>
+        <div class="example-links">
+          <button data-go="center" data-center-focus="events">Найти встречу</button>
+          <button data-go="center" data-center-focus="community">Почитать сообщество</button>
+        </div>
+        <span class="dev-status prototype dev-only">визуально интегрировано</span>
+      </article>
+
+      <article class="entry-mode solve">
+        <span class="mode-icon">↘</span>
+        <p class="eyebrow">Решить вопрос</p>
+        <h2>Мне нужно / я могу</h2>
+        <p>Помощь, вещь, навык, городской маршрут или возможность рядом.</p>
+        <div class="example-links">
+          <button data-action="start-ladder">Нужна лестница</button>
+          <button data-action="start-offer">Могу помочь</button>
+        </div>
+        <span class="dev-status live dev-only">часть уже работает</span>
+      </article>
+
+      <article class="entry-mode organize">
+        <span class="mode-icon">✦</span>
+        <p class="eyebrow">Организовать</p>
+        <h2>Сделать что-то вместе</h2>
+        <p>Люди, задачи, ресурсы, закупки, решения, логистика и результат — по мере необходимости.</p>
+        <div class="example-links">
+          <button data-action="open-repair-project">Открыть Repair Day</button>
+          <button data-go="together">Посмотреть общие дела</button>
+        </div>
+        <span class="dev-status prototype dev-only">глубокий workspace</span>
+      </article>
+    </div>
+
+    <section class="continuation">
+      <header class="section-title">
+        <div>
+          <p class="eyebrow">Продолжить</p>
+          <h2>Ваши текущие вещи</h2>
+        </div>
+        <button class="text-action" data-go="together">Все дела →</button>
+      </header>
+
+      <div class="continue-grid">
+        <button class="continue-card" data-action="open-repair-project">
+          <span class="type project">Проект</span>
+          <strong>Repair Day</strong>
+          <small>Следующее: подтвердить площадку · 4 участника</small>
+        </button>
+        <button class="continue-card" data-action="open-ladder-flow">
+          <span class="type need">Запрос</span>
+          <strong>Лестница на субботу</strong>
+          <small id="ladderSummary">Черновик · ещё не опубликован</small>
+        </button>
+        <button class="continue-card" data-go="messages">
+          <span class="type chat">Разговор</span>
+          <strong>Юхан</strong>
+          <small>«Я посмотрю площадку после работы»</small>
+        </button>
+      </div>
+    </section>
+
+    <section id="ladderFlow" class="simple-flow" hidden>
+      <header class="section-title">
+        <div>
+          <p class="eyebrow">Простой сценарий</p>
+          <h2>Нужна лестница на субботу</h2>
+        </div>
+        <button class="text-action" data-action="close-ladder">Закрыть</button>
+      </header>
+
+      <div class="flow-steps">
+        <button class="flow-step active" data-ladder-step="draft">
+          <b>1</b><span><strong>Описать</strong><small>Черновик только у вас</small></span>
+        </button>
+        <button class="flow-step" data-ladder-step="matches">
+          <b>2</b><span><strong>Посмотреть варианты</strong><small>Люди и ресурсы</small></span>
+        </button>
+        <button class="flow-step" data-ladder-step="talk">
+          <b>3</b><span><strong>Договориться</strong><small>Без обязательного проекта</small></span>
+        </button>
+        <button class="flow-step" data-ladder-step="return">
+          <b>4</b><span><strong>Вернуть</strong><small>При желании отметить результат</small></span>
+        </button>
+      </div>
+
+      <div id="ladderPanel" class="flow-panel"></div>
+    </section>
+  </section>
+
+  <section class="screen" data-screen-id="together">
+    <header class="page-head">
+      <p class="eyebrow">Вместе</p>
+      <h1>Люди, предложения и общие дела</h1>
+      <p>Здесь можно найти то, что уже происходит, или начать с простого действия. Не нужно сначала выбирать внутренний тип объекта.</p>
+    </header>
+
+    <div class="quick-actions">
+      <button data-action="start-ladder"><b>Найти помощь</b><small>Вещь, навык, совет</small></button>
+      <button data-action="start-offer"><b>Предложить</b><small>Время, ресурс, умение</small></button>
+      <button data-action="open-repair-project"><b>Сделать вместе</b><small>Проект или общее дело</small></button>
+      <button data-go="center"><b>Найти людей</b><small>Сообщества и встречи</small></button>
+    </div>
+
+    <div class="filter-row">
+      <button class="active">Для меня</button>
+      <button>Рядом</button>
+      <button>Нужно</button>
+      <button>Предлагают</button>
+      <button>Проекты</button>
+      <button>Общие покупки</button>
+    </div>
+
+    <div class="discovery-grid">
+      <article class="friendly-card">
+        <span class="type need">Нужно</span>
+        <h3>Нужна помощь настроить домашнюю сеть</h3>
+        <p>Олофсторп · в выходные · примерно 1 час</p>
+        <div class="card-actions"><button>Посмотреть</button><button>Написать</button></div>
+      </article>
+
+      <article class="friendly-card">
+        <span class="type offer">Предлагают</span>
+        <h3>Могу помочь с CV на шведском</h3>
+        <p>Онлайн или Göteborg · бесплатно</p>
+        <div class="card-actions"><button>Подробнее</button><button>Написать</button></div>
+      </article>
+
+      <article class="friendly-card linked">
+        <span class="type project">Общее дело</span>
+        <h3>Repair Day</h3>
+        <p>4 участника · нужны площадка и ещё 2 инструмента</p>
+        <div class="relation">Связано: место из «Города» · разговор с Юханом</div>
+        <div class="card-actions"><button data-action="open-repair-project">Открыть</button></div>
+      </article>
+
+      <article class="friendly-card">
+        <span class="type purchase">Общая покупка</span>
+        <h3>Сухие дрова вместе</h3>
+        <p>Собрано 7.2 м³ · выбор поставщика</p>
+        <div class="card-actions"><button>Посмотреть условия</button></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="city">
+    <header class="page-head">
+      <p class="eyebrow">Город</p>
+      <h1>Возможности и городские вопросы</h1>
+      <p>Официальные источники, организации и полезные возможности могут вести дальше — в разговор, Center или совместное дело.</p>
+    </header>
+
+    <div class="city-search">
+      <input type="search" placeholder="Например: место для мастерской, разрешение, автобус...">
+      <button>Найти</button>
+    </div>
+
+    <div class="city-columns">
+      <section>
+        <h2>Официальный маршрут</h2>
+        <article class="source-card">
+          <span class="source-kind official">Официальный источник</span>
+          <h3>Кто отвечает за общественное пространство?</h3>
+          <p>Показываем источник, область действия, дату публикации/получения и официальный следующий шаг.</p>
+          <button>Открыть источник</button>
+          <span class="dev-status live dev-only">City source-first runtime</span>
+        </article>
+      </section>
+
+      <section>
+        <h2>Возможности рядом</h2>
+        <article class="source-card" id="workshopPlaceCard">
+          <span class="source-kind opportunity">Организация / место</span>
+          <h3>Мастерская для Repair Day</h3>
+          <p>Доступность и условия должны быть явно подтверждены источником или организацией.</p>
+          <div class="relation">Можно связать с вашим проектом без копирования записи.</div>
+          <button id="linkWorkshopButton" data-action="link-workshop">Связать с Repair Day</button>
+          <span class="dev-status prototype dev-only">Capability / Place target</span>
+        </article>
+      </section>
+    </div>
+
+    <aside class="next-step-card">
+      <div>
+        <p class="eyebrow">Не знаете, куда дальше?</p>
+        <h2>Выберите способ</h2>
+      </div>
+      <div class="next-step-actions">
+        <button data-go="center">Спросить людей</button>
+        <button data-action="host-help">Попросить помочь разобраться</button>
+        <button data-go="together">Начать общее дело</button>
+      </div>
+    </aside>
+  </section>
+
+  <section class="screen" data-screen-id="center">
+    <header class="page-head">
+      <p class="eyebrow">Центр</p>
+      <h1>Люди, встречи и сообщества</h1>
+      <p>Можно прийти без задачи: читать, общаться, встретиться, чему-то научиться. А если понадобится — перейти к общему действию.</p>
+    </header>
+
+    <div class="center-hero">
+      <div>
+        <span class="context-chip">Göteborg · online / hybrid</span>
+        <h2>Что происходит рядом</h2>
+        <p>Локальный контекст показан отдельно от внешнего форума. В макете нет импорта реальных участников или сообщений.</p>
+      </div>
+      <button data-action="host-help">Помочь мне разобраться</button>
+    </div>
+
+    <div class="center-grid">
+      <article class="community-card">
+        <span class="type community">Разговор</span>
+        <h3>Что делаем в субботу?</h3>
+        <p>Обычная тема сообщества. Никто не обязан превращать её в проект.</p>
+        <button data-go="messages">Открыть разговор</button>
+      </article>
+
+      <article class="community-card">
+        <span class="type event">Встреча</span>
+        <h3>Прогулка вокруг озера</h3>
+        <p>Суббота 11:00 · можно прийти одному</p>
+        <button id="joinWalkButton" data-action="join-walk">Хочу присоединиться</button>
+      </article>
+
+      <article class="community-card">
+        <span class="type learning">Навык</span>
+        <h3>Небольшая мастерская по ремонту</h3>
+        <p>Кто-то учит, кто-то пробует, кто-то просто смотрит.</p>
+        <button data-action="open-repair-project">Посмотреть связанное дело</button>
+      </article>
+
+      <article class="community-card">
+        <span class="type host">Host</span>
+        <h3>Человеческая навигация</h3>
+        <p id="hostStatus">В production staffed Host ещё не заявлен. Здесь показываем только будущий путь.</p>
+        <button data-action="host-help">Попросить навигацию</button>
+        <span class="dev-status planned dev-only">S01 Host target</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="messages">
+    <header class="page-head compact">
+      <p class="eyebrow">Сообщения</p>
+      <h1>Разговоры</h1>
+      <p>Личные, групповые и рабочие. Разговор может быть связан с делом, но не превращается в задачу автоматически.</p>
+    </header>
+
+    <div class="messages-layout">
+      <aside class="conversation-list">
+        <button class="active" data-conversation="repair"><b>Repair Day</b><small>Анна: принесу паяльник</small></button>
+        <button data-conversation="johan"><b>Юхан</b><small>Посмотрю площадку</small></button>
+        <button data-conversation="local"><b>Локальный чат</b><small>8 новых сообщений</small></button>
+      </aside>
+      <section class="conversation">
+        <header><div><b id="conversationTitle">Repair Day</b><small id="conversationMeta">Связано с проектом</small></div><button data-action="open-repair-project">Открыть дело</button></header>
+        <div id="messageBody" class="message-body">
+          <div class="bubble other">Я могу принести паяльник и удлинитель.</div>
+          <div class="bubble me">Отлично. Я добавлю это в ресурсы проекта.</div>
+          <button class="linked-context" data-action="open-repair-project">↗ Ресурс «инструменты» в Repair Day</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="screen workspace-screen" data-screen-id="workspace">
+    <header class="workspace-head">
+      <button class="back-link" data-action="workspace-back">← Назад</button>
+      <div>
+        <span class="type project">Общее дело</span>
+        <h1>Repair Day</h1>
+        <p>Организовать небольшой день ремонта и обмена навыками.</p>
+      </div>
+      <button class="pin-button" data-action="pin-project">☆ Закрепить</button>
+    </header>
+
+    <nav class="workspace-tabs" aria-label="Инструменты проекта">
+      <button class="active" data-workspace-tab="overview">Обзор</button>
+      <button data-workspace-tab="people">Люди</button>
+      <button data-workspace-tab="work">Работа</button>
+      <button data-workspace-tab="resources">Ресурсы</button>
+      <button data-workspace-tab="more">Ещё</button>
+    </nav>
+
+    <div class="workspace-panel active" data-workspace-panel="overview">
+      <div class="overview-grid">
+        <article class="summary-card">
+          <p class="eyebrow">Следующий шаг</p>
+          <h2 id="projectNextStep">Подтвердить площадку</h2>
+          <p>Проект не требует включения всех сложных инструментов сразу.</p>
+          <button data-go="city">Открыть вариант в «Городе»</button>
+        </article>
+
+        <article class="summary-card">
+          <p class="eyebrow">Люди</p>
+          <h2>4 участника</h2>
+          <p>Анна · Юхан · Мура · вы</p>
+          <button data-workspace-open="people">Посмотреть роли</button>
+        </article>
+
+        <article class="summary-card">
+          <p class="eyebrow">Что подключено</p>
+          <div class="tool-list">
+            <span>✓ Задачи</span>
+            <span>✓ Ресурсы</span>
+            <span>✓ Закупка</span>
+            <span>○ Решения</span>
+            <span>○ Результат</span>
+          </div>
+          <button data-workspace-open="more">Настроить инструменты</button>
+        </article>
+      </div>
+
+      <div class="story-thread">
+        <h2>Как это связано</h2>
+        <div class="thread-item"><b>Center</b><span>Идея появилась в локальном разговоре</span><button data-go="center">Открыть</button></div>
+        <div class="thread-item"><b>City</b><span id="threadPlace">Площадка ещё не связана</span><button data-go="city">Открыть</button></div>
+        <div class="thread-item"><b>Сообщения</b><span>Рабочий чат с участниками</span><button data-go="messages">Открыть</button></div>
+      </div>
+    </div>
+
+    <div class="workspace-panel" data-workspace-panel="people">
+      <header class="panel-head"><h2>Люди и роли</h2><button>Пригласить человека</button></header>
+      <div class="people-list">
+        <article><span class="avatar">М</span><div><b>Мура</b><small>Организатор · иллюстративный аккаунт</small></div></article>
+        <article><span class="avatar">А</span><div><b>Анна</b><small>Ремонт электроники · инструменты</small></div></article>
+        <article><span class="avatar">Ю</span><div><b>Юхан</b><small>Площадка · координация</small></div></article>
+        <article><span class="avatar">В</span><div><b>Вы</b><small>Участник</small></div></article>
+      </div>
+      <button class="secondary-wide">Посмотреть нужные навыки</button>
+    </div>
+
+    <div class="workspace-panel" data-workspace-panel="work">
+      <header class="panel-head"><h2>Работа</h2><button>Добавить задачу</button></header>
+      <div class="task-list">
+        <label><input type="checkbox" checked> Сделать объявление <small>Мура</small></label>
+        <label><input type="checkbox" checked> Собрать список инструментов <small>Анна</small></label>
+        <label><input type="checkbox"> Подтвердить площадку <small>Юхан</small></label>
+        <label><input type="checkbox"> Подтвердить время с участниками <small>Мура</small></label>
+      </div>
+      <button class="secondary-wide" data-go="messages">Открыть рабочий чат</button>
+    </div>
+
+    <div class="workspace-panel" data-workspace-panel="resources">
+      <header class="panel-head"><h2>Ресурсы</h2><button>Добавить ресурс</button></header>
+      <div class="resource-list">
+        <article><b>Паяльник</b><small>Анна · обещала принести</small><span class="claim">сообщил участник</span></article>
+        <article><b>Удлинитель</b><small>Анна · обещала принести</small><span class="claim">сообщил участник</span></article>
+        <article id="projectWorkshopResource"><b>Площадка</b><small>ещё не выбрана</small><span class="claim neutral">нет подтверждения</span></article>
+      </div>
+    </div>
+
+    <div class="workspace-panel" data-workspace-panel="more">
+      <header class="panel-head">
+        <div><h2>Дополнительные инструменты</h2><p>Подключаются тогда, когда помогают делу. После подключения остаются на одном месте.</p></div>
+      </header>
+
+      <div class="tool-grid">
+        <article>
+          <span class="tool-icon">¤</span>
+          <h3>Экономика</h3>
+          <p>Закупка, роли, Economic Flow, позже fulfilment/logistics.</p>
+          <button data-action="open-economy">Открыть</button>
+          <span class="dev-status live dev-only">E01 UI live in 0.40.4</span>
+        </article>
+
+        <article>
+          <span class="tool-icon">✓</span>
+          <h3>Решения</h3>
+          <p>Варианты, согласование, полномочия и версия соглашения.</p>
+          <button data-action="open-decisions">Добавить инструмент</button>
+          <span class="dev-status planned dev-only">SDCF / Agreement target</span>
+        </article>
+
+        <article>
+          <span class="tool-icon">◌</span>
+          <h3>Результат</h3>
+          <p>Что произошло, кто это сообщил, кто подтвердил и какие есть доказательства.</p>
+          <button data-action="open-outcome">Добавить инструмент</button>
+          <span class="dev-status planned dev-only">Outcome/Evidence target</span>
+        </article>
+      </div>
+
+      <div id="deepToolPanel" class="deep-tool-panel" hidden></div>
+    </div>
+  </section>
+</main>
+
+<aside id="muraDrawer" class="drawer" hidden aria-label="Истории Муры">
+  <header><div><p class="eyebrow">Мура</p><h2>Посмотрите, как это бывает</h2></div><button data-action="close-mura" aria-label="Закрыть">×</button></header>
+  <p>Не обязательный тур. Выберите историю и свободно переходите между связанными местами.</p>
+  <button class="story-choice" data-action="start-ladder"><b>Просто</b><span>Одолжить лестницу и договориться с человеком</span></button>
+  <button class="story-choice" data-go="center"><b>Социально</b><span>Найти встречу и прийти одному</span></button>
+  <button class="story-choice" data-action="open-repair-project"><b>Глубоко</b><span>Center → City → проект → ресурсы → решение → результат</span></button>
+  <p class="drawer-note">Мура — вымышленный иллюстративный аккаунт. Реальные внешние действия из её истории не выполняются.</p>
+</aside>
+
+<aside id="designDrawer" class="drawer design-drawer" hidden aria-label="Карта интеграции">
+  <header><div><p class="eyebrow">Режим проектирования</p><h2>10 составляющих → один FOLKOOP</h2></div><button data-action="close-design" aria-label="Закрыть">×</button></header>
+  <p>Обычный пользователь эту карту не видит. Она нужна, чтобы мы не потеряли глубину при упрощении UX.</p>
+
+  <div class="coverage-list">
+    <article><b>1 · Текущий FOLKOOP</b><span>identity · communities · messaging · cooperation · tasks · purchases · Economic Flow</span></article>
+    <article><b>2 · Civic / public-infrastructure origin</b><span>City · responsibility · official route · provenance · nearby</span></article>
+    <article><b>3 · Community / Center origin</b><span>Center · Host · belonging · activities · partners · physical/hybrid</span></article>
+    <article><b>4 · Кооперативная соцсеть</b><span>Need · Offer · Resource · people · projects · shared action</span></article>
+    <article><b>5 · Attributed cooperative-economy research</b><span>demand · production · sales · roles · logistics · documents · coordinator model</span></article>
+    <article><b>6 · ГБГ Форум</b><span>ordinary local conversation · peer help · meetings · exchange</span></article>
+    <article><b>7 · Мура</b><span>whole-system illustrative account · no fake live actions</span></article>
+    <article><b>8 · SDCF</b><span>objective · constraint · decision · authority · controlled action · learning</span></article>
+    <article><b>9 · Web3/Web4</b><span>portable identity · credentials · federation · agents · MCP/A2A · physical links</span></article>
+    <article><b>10 · Blockchain</b><span>selected independent integrity / attestation use case, not universal dependency</span></article>
+  </div>
+
+  <div class="design-rule">
+    <strong>Правило v0.2</strong>
+    <p>Глубина живёт в связях и контекстных инструментах. Верхний интерфейс говорит на языке человеческих действий.</p>
+  </div>
+</aside>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<footer class="app-footer">
+  <img src="./folkoop-mark.png" alt="" width="28" height="28">
+  <span>Whole-System Visual Prototype v0.2 · визуальная лаборатория, не production</span>
+</footer>
+
+<script src="./whole-system-v02.js"></script>
+</body>
+</html>
