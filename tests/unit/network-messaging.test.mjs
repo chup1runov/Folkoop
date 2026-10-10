@@ -174,3 +174,10 @@ test('one joined conversation produces one overview card even if linked to work'
  assert(!html.includes('id="netDirect"'));
  assert(!html.includes('id="netNewChat"'));
 });
+
+test('invitations heading has stable focus target for keyboard navigation',()=>{
+ const f=fixture(),html=domain(f).render(f.user,{view:'messages-invites'});
+ assert(html.includes('<h3 id="messagesInvitationHeading">'));
+ assert(!html.includes('id="netDirect"'));
+ assert(!html.includes('id="netNewChat"'));
+});
