@@ -80,7 +80,7 @@ function classifyResponse(r,idx,seen){
  if(typeof r?.freshReviewer!=='boolean')errors.push('Freshness must be recorded');
  if(typeof r?.uncoached!=='boolean')errors.push('Coaching status missing');
  if(!Number.isInteger(r?.exposureSeconds))errors.push('Exposure seconds must be an integer');
- if(r?.humanCoded!==true)errors.push('Human coding of real answers not confirmed');
+ if(r?.humanCoded!==true)errors.push('human coding of real answers not confirmed');
  if(!INTERPRETATIONS.includes(r?.interpretation))errors.push('Missing interpretation code');
  if(typeof r?.describesIntentToNextAction!=='boolean')errors.push('Flow comprehension not coded');
  if(typeof r?.choosesPlausibleFirstAction!=='boolean')errors.push('First action comprehension not coded');
