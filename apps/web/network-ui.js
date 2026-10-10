@@ -1059,7 +1059,11 @@ window.addEventListener('folkoop:subsection',e=>{
   // Focus only once that synchronous navigation has settled, not on a transient DOM node.
   requestAnimationFrame(()=>{
    if(route()!=='messages'||currentSubsection('messages')!==key)return;
-   const target=host.querySelector('#netDirect select[name="other"],#netNewChat input[name="title"],#networkPanel h3,#networkPanel h2');
+   // querySelector on a selector list follows DOM order: the page h2 precedes the form.
+   // Prefer a genuine input, falling back to a focusable heading for invitation lists.
+   const target=host.querySelector('#netDirect select[name="other"]')
+    ||host.querySelector('#netNewChat input[name="title"]')
+    ||host.querySelector('h3,h2');
    if(!target)return;
    if(/^H[2-6]$/.test(target.tagName))target.tabIndex=-1;
    target.focus({preventScroll:true});
