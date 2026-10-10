@@ -1,5 +1,5 @@
 /* Public shell/feeds only. Never cache Auth, network profiles/posts or coordinates. */
-const VERSION='0.40.7';
+const VERSION='0.40.8';
 const BASE=new URL(self.registration.scope);
 const PREFIX='folkoop:'+BASE.pathname+':';
 // One release-cycle compatibility cleanup for caches created before FOLKOOP became the single identity.
