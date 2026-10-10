@@ -390,11 +390,44 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
   await expect(page.locator('#networkMessageSearch')).to_be_visible()
+  # UI-only deterministic fixture: never sent to Supabase and never counted as real conversations.
+  await page.evaluate("""() => {
+    const list=document.querySelector('#networkPanel .mura-chat-grid');
+    if(!list)throw new Error('MESSAGES_LIST_MISSING');
+    [['direct','Synthetic Direct Hazel'],['group','Synthetic Group Fern'],['work','Synthetic Work Cedar']].forEach(([kind,label])=>{
+      const card=document.createElement('article');
+      card.setAttribute('data-message-card','');
+      card.setAttribute('data-message-test','');
+      card.dataset.messageType=kind;
+      card.textContent=label;
+      list.append(card);
+    });
+    const invites=document.createElement('a');
+    invites.href='#/messages';
+    invites.dataset.subsection='messages-invites';
+    invites.textContent='Synthetic invitation route';
+    document.querySelector('#networkPanel .messages-hub').append(invites);
+  }""")
+  await expect(page.locator('[data-message-test]')).to_have_count(3)
   await expect(page.locator('[data-message-kind="work"]')).to_have_attribute('aria-pressed','false')
   await page.click('[data-message-kind="work"]')
   await expect(page.locator('[data-message-kind="work"]')).to_have_attribute('aria-pressed','true')
+  await expect(page.locator('[data-message-test][data-message-type="work"]')).to_be_visible()
+  await expect(page.locator('[data-message-test][data-message-type="direct"]')).to_be_hidden()
+  await expect(page.locator('[data-message-test][data-message-type="group"]')).to_be_hidden()
+  await page.fill('#networkMessageSearch','Synthetic Group Fern')
+  await expect(page.locator('[data-message-test][data-message-type="work"]')).to_be_hidden()
   await page.click('[data-message-kind="work"]')
   await expect(page.locator('[data-message-kind="work"]')).to_have_attribute('aria-pressed','false')
+  await expect(page.locator('[data-message-test][data-message-type="group"]')).to_be_visible()
+  await expect(page.locator('[data-message-test][data-message-type="direct"]')).to_be_hidden()
+  await page.fill('#networkMessageSearch','')
+  await expect(page.locator('[data-message-test][data-message-type="direct"]')).to_be_visible()
+  await expect(page.locator('[data-message-test][data-message-type="work"]')).to_be_visible()
+  await page.click('.messages-hub [data-subsection="messages-invites"]')
+  await expect(page.locator('#messagesInvitationHeading')).to_be_visible()
+  await expect(page.locator('#messagesInvitationHeading')).to_be_focused()
+  await page.click('#mobileContextDock [data-mobile-subnav="messages-chats"]')
   await page.click('.messages-hub [data-subsection="messages-direct"]')
   await expect(page.locator('#netDirect')).to_be_visible()
   await expect(page.locator('#netDirect [name=other]')).to_be_focused()
