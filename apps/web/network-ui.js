@@ -1050,16 +1050,20 @@ window.addEventListener('message',e=>{
 });
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
 window.addEventListener('folkoop:subsection',e=>{
- const parent=e.detail?.parent;
+ const parent=e.detail?.parent,key=e.detail?.key;
  if(parent==='projects')selectedCoop=null;
  if(parent==='messages')selectedChat=null;
  render();
- if(parent==='messages'&&['messages-direct','messages-groups','messages-invites'].includes(e.detail?.key)){
-  const target=host.querySelector('#netDirect select[name="other"],#netNewChat input[name="title"],#networkPanel h3,#networkPanel h2');
-  if(target){
+ if(parent==='messages'&&['messages-direct','messages-groups','messages-invites'].includes(key)){
+  // The shell completes subsection routing and its other click handlers after this event.
+  // Focus only once that synchronous navigation has settled, not on a transient DOM node.
+  requestAnimationFrame(()=>{
+   if(route()!=='messages'||currentSubsection('messages')!==key)return;
+   const target=host.querySelector('#netDirect select[name="other"],#netNewChat input[name="title"],#networkPanel h3,#networkPanel h2');
+   if(!target)return;
    if(/^H[2-6]$/.test(target.tagName))target.tabIndex=-1;
    target.focus({preventScroll:true});
-  }
+  });
  }
 });
 window.addEventListener('folkoop:start-cooperation',e=>{
