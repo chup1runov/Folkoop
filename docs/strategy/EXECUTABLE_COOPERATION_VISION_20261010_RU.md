@@ -32,6 +32,17 @@
 
 **Проверенный срез на 10.10.2026**: GitHub main 32eedae9b10a1ed262fd2134e98a3100f826239f (public 0.40.7). E01 Economic Flow schema и client slice существуют. PR #254 (R1 Resource Planning) draft: по его проверенной истории hosted schema применена, UI feature flag off, hosted acceptance не пройдён из-за отсутствия должным образом допущенных тестовых аккаунтов. PR #257 (визуальный Project/People/Chat/Resource) draft и не опубликован. Его preview подбирает только уже видимые записи Resource с совпадающим указанным местом, **не подтверждённую пригодность, доступность или резервирование**. PR #234 — визуальная лаборатория, не production. Реальные интервью #261, физический iPhone/VoiceOver #116, Google OAuth #83, ручные pilot/privacy gates остаются отдельными.
 
+### Историческая ресурсная последовательность R1–R4 (не четыре готовые функции)
+
+Привязка основана на контракте [PR #254 Resource Planning R1](https://github.com/chup1runov/Folkoop/pull/254) и предшествующем исследовании COOPTECH; это **этапы предметного проекта**, а не самостоятельные программы ECX:
+
+- **R1 — Requirements + Availability:** структурированные потребности Project и приватная доступность Resource от владельца. Hosted schema по истории PR применена, пользовательский feature flag OFF; acceptance остаётся открытым.
+- **R2 — Offers/Responses:** добровольный ответ владельца, предложение условий и сравнение вариантов. Планируемая функция, не резерв и не оплата.
+- **R3 — Agreement/Reservation:** явное согласие сторон на конкретную версию условий и управление предварительным/подтверждённым резервом. Не объявлено реализованным и не универсальный юридический договор.
+- **R4 — Handover/Return + Evidence:** фактическая передача, использование/возврат, отдельные утверждения и подтверждения результата. Не выводить из UI Done.
+
+Требования ресурса, Shared Purchase, Economic Flow, generic Fulfilment и независимое Outcome/Evidence имеют разные источники истины. Ранние записи R0–R4 являются историческим планом переноса, не доказательством выполнения R2–R4.
+
 **Главный пробел**: между «найдено» и «выполнено» нет проверенной, масштабируемой многосубъектной механики **совместной осуществимости, условного согласия, исполнения и переносимого доказательства**. Новое направление не заменяет R1–R4, E01/E02 или SDCF, а соединяет их через конкретные сценарии и критерии.
 
 ## 3. Основные предложения ECX-01…ECX-08
@@ -126,7 +137,7 @@ Passport/VC2 по возможности позволяют передать п�
 - Beckn v2: https://github.com/beckn/protocol-specifications-v2
 - Open Referral HSDS: https://docs.openreferral.org/en/latest/hsds/overview.html
 - W3C VC 2.0: https://www.w3.org/news/2025/the-verifiable-credentials-2-0-family-of-specifications-is-now-a-w3c-recommendation/
-- MCP security: https://modelcontextprotocol.io/specification/latest/basic/security_best_practices
+- MCP security — закреплённая версия протокола 2026-07-28 (вместо изменяемой latest): https://modelcontextprotocol.io/specification/2026-07-28/basic/security_best_practices
 - EDPB blockchain privacy: https://www.edpb.europa.eu/news/edpb-sheds-light-on-anonymisation-and-web-scraping-for-generative-ai-and-adopts-final-version_en
 - AI commerce benchmarks: https://developers.googleblog.com/en/under-the-hood-universal-commerce-protocol-ucp/
 
