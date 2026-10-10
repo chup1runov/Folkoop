@@ -1063,7 +1063,8 @@ window.addEventListener('folkoop:subsection',e=>{
    // Prefer a genuine input, falling back to a focusable heading for invitation lists.
    const target=host.querySelector('#netDirect select[name="other"]')
     ||host.querySelector('#netNewChat input[name="title"]')
-    ||host.querySelector('h3,h2');
+    ||(key==='messages-invites'?host.querySelector('#messagesInvitationHeading'):null)
+    ||host.querySelector('h2');
    if(!target)return;
    if(/^H[2-6]$/.test(target.tagName))target.tabIndex=-1;
    target.focus({preventScroll:true});
