@@ -16,7 +16,10 @@ const introParam=new URL(location.href).searchParams.get('intro');
 // An explicit opt-in URL permits a side-by-side comprehension study;
 // the ordinary first-contact welcome stays unchanged for everyone else.
 const firstContactPreview=new URL(location.href).searchParams.get('first-contact')==='three-paths';
-const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactPreview);
+const firstContactGuest=new URL(location.href).searchParams.get('first-contact')==='guest-guide';
+const firstContactTrial=firstContactPreview||firstContactGuest;
+const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactTrial);
+let guestPathsExpanded=false;
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null,entryGateAfterMuraExit=false;
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'wink'},
@@ -291,34 +294,62 @@ function ensureEntryGate(){
  gate=document.createElement('section');
  gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
  gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
- gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><div id="entryThreePaths" hidden></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><label id="entryGuestLanguageLabel" class="entry-guest-language" hidden><span id="entryGuestLanguageTitle"></span><select id="entryGuestLanguage" aria-labelledby="entryGuestLanguageTitle"></select></label><div id="entryThreePaths" hidden tabindex="-1"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="paths" aria-controls="entryThreePaths" aria-expanded="false" hidden></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
 function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
  const gate=ensureEntryGate(),x=muraEntrySource(),choices=gate.querySelector('#entryLanguageChoices');
  const emailButton=gate.querySelector('[data-entry="email"]'),guestButton=gate.querySelector('[data-entry="guest"]');
- gate.querySelector('#entryGateTitle').textContent=afterMuraExit?x.exitTitle:x.title;
- gate.querySelector('#entryGateBody').textContent=afterMuraExit?x.exitBody:x.body;
- gate.querySelector('#entryGateNote').textContent=noteOverride||(afterMuraExit?x.exitNote:x.note);
- gate.querySelector('#entryLanguageLabel').textContent=x.language;
- emailButton.textContent=x.email;emailButton.hidden=!afterMuraExit;
- guestButton.textContent=afterMuraExit?x.back:x.guest;
- guestButton.className=afterMuraExit?'button secondary':'button';
- emailButton.className='button';
- choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ const pathsButton=gate.querySelector('[data-entry="paths"]'),actions=gate.querySelector('.entry-gate-actions');
+ const pickerLabel=gate.querySelector('#entryGuestLanguageLabel'),picker=gate.querySelector('#entryGuestLanguage');
  const trial=firstContactPreview&&!afterMuraExit;
+ const guideTrial=firstContactGuest&&!afterMuraExit;
+ const preview=(trial||guideTrial)?globalThis.FolkoopFirstContactPreview:null;
+ const guide=guideTrial?preview?.guestCopy?.[lang]:null;
+ if(guideTrial&&!guide)throw new Error('FIRST_CONTACT_GUEST_COPY_MISSING');
+ gate.querySelector('#entryGateTitle').textContent=guideTrial?guide.title:(afterMuraExit?x.exitTitle:x.title);
+ gate.querySelector('#entryGateBody').textContent=guideTrial?guide.intro:(afterMuraExit?x.exitBody:x.body);
+ gate.querySelector('#entryGateNote').textContent=noteOverride||(guideTrial?guide.note:(afterMuraExit?x.exitNote:x.note));
+ gate.querySelector('#entryLanguageLabel').textContent=x.language;
+ gate.querySelector('#entryLanguageLabel').hidden=guideTrial;
+ choices.hidden=guideTrial;
+ choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ pickerLabel.hidden=!guideTrial;
+ if(guideTrial){
+  gate.querySelector('#entryGuestLanguageTitle').textContent=guide.language;
+  picker.innerHTML=C.LANGS.map(code=>'<option value="'+code+'"'+(code===lang?' selected':'')+'>'+esc(I.NAMES[code])+'</option>').join('');
+ }
+ emailButton.textContent=x.email;emailButton.hidden=!afterMuraExit;
+ guestButton.textContent=guideTrial?guide.guest:(afterMuraExit?x.back:x.guest);
+ guestButton.className=(trial||afterMuraExit)?'button secondary':'button';
+ emailButton.className='button';
+ pathsButton.hidden=!guideTrial;
+ pathsButton.textContent=guideTrial?(guestPathsExpanded?guide.hide:guide.choose):'';
+ pathsButton.setAttribute('aria-expanded',String(guideTrial&&guestPathsExpanded));
+ const showModes=trial||(guideTrial&&guestPathsExpanded);
  const trialPanel=gate.querySelector('#entryThreePaths');
  gate.classList.toggle('entry-three-preview',trial);
- trialPanel.hidden=!trial;
- if(trial){
-  const preview=globalThis.FolkoopFirstContactPreview;
+ gate.classList.toggle('entry-guest-guide',guideTrial);
+ gate.classList.toggle('entry-guest-options-open',guideTrial&&guestPathsExpanded);
+ // B keeps the original mode-first layout. In C, choices follow the explicit opt-in.
+ if(guideTrial)actions.after(trialPanel);else actions.before(trialPanel);
+ trialPanel.hidden=!showModes;
+ trialPanel.setAttribute('role',showModes?'region':'presentation');
+ if(showModes){
   if(!preview||!globalThis.FolkoopHomeModesCopy)throw new Error('FIRST_CONTACT_PREVIEW_NOT_LOADED');
   const text=preview.copy[lang];
-  gate.querySelector('#entryGateTitle').textContent=text.title;
-  gate.querySelector('#entryGateBody').textContent=text.intro;
-  trialPanel.innerHTML=preview.render(lang,globalThis.FolkoopHomeModesCopy,esc,icon);
-  guestButton.className='button secondary';
- }else trialPanel.replaceChildren();
+  if(trial){
+   gate.querySelector('#entryGateTitle').textContent=text.title;
+   gate.querySelector('#entryGateBody').textContent=text.intro;
+  }
+  trialPanel.setAttribute('aria-label',text.title);
+  trialPanel.innerHTML=(guideTrial?'<p class="entry-guest-demo">'+esc(guide.demo)+'</p>':'')+
+   preview.render(lang,globalThis.FolkoopHomeModesCopy,esc,icon);
+  if(trial)guestButton.className='button secondary';
+ }else{
+  trialPanel.removeAttribute('aria-label');
+  trialPanel.replaceChildren();
+ }
  gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
@@ -328,7 +359,7 @@ function hideEntryGate(){
  globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');
 }
 function setEntryMode(mode,browseRoute='',focusKind=''){
- entryGateAfterMuraExit=false;entryModeMemory=mode;
+ guestPathsExpanded=false;entryGateAfterMuraExit=false;entryModeMemory=mode;
  const target=mode==='guest'&&['center','together','projects'].includes(browseRoute)?browseRoute:null;
  try{sessionStorage.setItem(ENTRY_KEY,mode);if(mode==='guest')storage?.setItem(LANGUAGE_KEY,'done');}catch{}
  hideEntryGate();
@@ -706,7 +737,7 @@ document.addEventListener('click',e=>{
  const entryLanguage=e.target.closest('[data-entry-language]');
  if(entryLanguage){changeLanguage(entryLanguage.dataset.entryLanguage);showEntryGate('',entryGateAfterMuraExit);return;}
  const previewChoice=e.target.closest('[data-entry-path]');
- if(previewChoice&&!ensureEntryGate().hidden&&firstContactPreview){
+ if(previewChoice&&!ensureEntryGate().hidden&&(firstContactPreview||(firstContactGuest&&guestPathsExpanded))){
   const choice=previewChoice.dataset.entryPath;
   if(!['center','need','offer','projects'].includes(choice))return;
   setEntryMode('guest',choice==='center'?'center':choice==='projects'?'projects':'together',choice==='need'||choice==='offer'?choice:'');
@@ -715,6 +746,18 @@ document.addEventListener('click',e=>{
  const entry=e.target.closest('[data-entry]');
  if(entry){
   const action=entry.dataset.entry;
+  if(action==='paths'&&firstContactGuest&&!entryGateAfterMuraExit){
+   guestPathsExpanded=!guestPathsExpanded;
+   showEntryGate('',false);
+   if(guestPathsExpanded){
+    requestAnimationFrame(()=>{
+     const target=ensureEntryGate().querySelector('#entryThreePaths');
+     target?.focus({preventScroll:true});
+     target?.scrollIntoView({block:'nearest',behavior:'auto'});
+    });
+   }else ensureEntryGate().querySelector('[data-entry="paths"]')?.focus({preventScroll:true});
+   return;
+  }
   if(action==='guest'){
    if(entryGateAfterMuraExit){
     entryGateAfterMuraExit=false;hideEntryGate();
@@ -777,6 +820,14 @@ document.addEventListener('input',e=>{
  if(e.target.id==='draftSearch'){query=e.target.value;$('#draftList').innerHTML=drafts(current==='projects'?['project']:['need','offer','purchase','resource']);}
 });
 document.addEventListener('change',e=>{
+ if(e.target.id==='entryGuestLanguage'&&firstContactGuest&&!entryGateAfterMuraExit&&!ensureEntryGate().hidden){
+  const code=e.target.value;
+  if(!C.LANGS.includes(code))return;
+  changeLanguage(code);
+  showEntryGate('',false);
+  ensureEntryGate().querySelector('#entryGuestLanguage')?.focus({preventScroll:true});
+  return;
+ }
  if(e.target.id==='remember'){const ok=store.remember(e.target.checked);e.target.checked=store.isPersistent();capture();render();status(ok);}
 });
 document.addEventListener('submit',e=>{
@@ -824,7 +875,7 @@ function startFullIntroduction(){
  muraPracticeStep=0;muraPracticeXp=0;showOnboarding(0);
 }
 function startFirstVisit(){
- onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=false;tourReturnMode=null;entryGateAfterMuraExit=false;showEntryGate('',false);
+ onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=false;tourReturnMode=null;guestPathsExpanded=false;entryGateAfterMuraExit=false;showEntryGate('',false);
 }
 let onboardingDone=false,languageChosen=false;
 try{
@@ -836,6 +887,6 @@ if(!onboardingSuppressed){
  if(introParam==='1')setTimeout(startFullIntroduction,120);
  else if(!languageChosen)setTimeout(startFirstVisit,120);
  else if(!entryMode)setTimeout(()=>{entryGateAfterMuraExit=false;showEntryGate('',false);},120);
- else if(!onboardingDone&&!firstContactPreview)setTimeout(()=>showOnboarding(0),120);
+ else if(!onboardingDone&&!firstContactTrial)setTimeout(()=>showOnboarding(0),120);
 }
 })();
