@@ -26,7 +26,7 @@ test('research protocol provides an empty private template rather than fabricate
  assert.deepEqual(sample.responses,[]);
  assert.equal(sample.schemaVersion,1);
  assert.equal(sample.study.buildRef,SHA);
- assert.deepEqual([...STUDY_VARIANTS],['current-welcome','three-equal-paths','four-concrete-actions']);
+ assert.deepEqual([...STUDY_VARIANTS],['current-welcome','three-equal-paths','guest-guided-welcome','four-concrete-actions']);
  assert.equal(QUESTIONS.length,6);
  const outcome=assessStudy(sample);
  assert.equal(outcome.status,'INSUFFICIENT_EVIDENCE');
@@ -126,4 +126,16 @@ test('each variant has a separate evidence record, not a pooled false-positive A
  assert.equal(assessStudy(b).status,'INSUFFICIENT_EVIDENCE');
  assert.equal(assessStudy(a).study.variant,'three-equal-paths');
  assert.equal(assessStudy(b).study.variant,'four-concrete-actions');
+});
+
+test('C guest-guided evidence is separate from B and cannot borrow its denominator',()=>{
+ const variantC=dataset(0,[],{variant:'guest-guided-welcome'});
+ const result=assessStudy(variantC);
+ assert.equal(result.valid,true);
+ assert.equal(result.study.variant,'guest-guided-welcome');
+ assert.equal(result.status,'INSUFFICIENT_EVIDENCE');
+ assert.equal(result.sample.eligible,0);
+ const other=dataset(5,[],{variant:'three-equal-paths'});
+ assert.equal(assessStudy(other).status,'PASS'); // test fixture, never real study
+ assert.equal(assessStudy(variantC).status,'INSUFFICIENT_EVIDENCE');
 });

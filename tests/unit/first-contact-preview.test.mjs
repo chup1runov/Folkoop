@@ -56,7 +56,7 @@ test('opt-in URL leaves ordinary first-contact, sign-in and Mura tour paths inta
  assert(shell.includes('const trial=firstContactPreview&&!afterMuraExit'));
  assert(shell.includes("setEntryMode('guest',choice==='center'"));
  assert(shell.includes("if(target){current=target"));
- assert(shell.includes("else if(!onboardingDone&&!firstContactPreview)"));
+ assert(shell.includes("else if(!onboardingDone&&!firstContactTrial)"));
  assert(shell.includes("setEntryMode('guest');return;"),'traditional Mura tour entry should be preserved');
  assert(html.includes('<script defer src="./first-contact-preview.js"></script>'));
  assert(sw.includes("'first-contact-preview.js'"));

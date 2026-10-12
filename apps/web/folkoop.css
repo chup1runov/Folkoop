@@ -615,3 +615,51 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .entry-three-card h2{font-size:.96rem}
  .entry-three-solve-actions .button{font-size:.78rem}
 }
+
+/* P0-A opt-in guest-guided variant C. Default entry and three-path B are unchanged. */
+.entry-guest-guide .entry-welcome-card{
+ display:grid;grid-template-columns:minmax(72px,112px) minmax(0,1fr);gap:16px;
+ align-items:center;width:min(610px,100%);max-height:calc(100dvh - 24px);
+ padding:18px;overflow-y:auto;overscroll-behavior:contain
+}
+.entry-guest-guide .entry-mura img{width:min(100%,100px);margin:auto}
+.entry-guest-guide .entry-welcome-copy{min-width:0}
+.entry-guest-guide .entry-welcome-copy h1{font-size:clamp(1.35rem,3.5vw,1.9rem);margin:0 0 8px}
+.entry-guest-guide .entry-gate-body{font-size:.9rem;line-height:1.38;margin-bottom:10px}
+.entry-guest-guide #entryGuestLanguageLabel:not([hidden]){display:grid;gap:4px;font-size:.82rem;font-weight:650;margin:0 0 12px}
+.entry-guest-guide #entryGuestLanguage{
+ display:block;width:100%;min-height:44px;max-width:100%;padding:8px 10px;
+ font:inherit;font-weight:500;background:#fff;color:var(--ink);
+ border:1px solid var(--line);border-radius:10px
+}
+.entry-guest-guide #entryGuestLanguage:focus-visible,
+.entry-guest-guide [data-entry="paths"]:focus-visible{
+ outline:3px solid var(--focus);outline-offset:2px
+}
+.entry-guest-guide #entryGuestLanguageLabel[hidden],
+.entry-guest-guide #entryLanguageChoices[hidden],
+.entry-guest-guide #entryLanguageLabel[hidden],
+.entry-guest-guide [data-entry="paths"][hidden]{display:none!important}
+.entry-guest-guide .entry-gate-actions{display:grid;grid-template-columns:1fr;gap:8px}
+.entry-guest-guide .entry-gate-actions .button{width:100%;min-height:44px}
+.entry-guest-guide .entry-learning-note{font-size:.78rem;line-height:1.35;margin:10px 0 0;padding-top:8px}
+.entry-guest-guide .entry-guest-demo{margin:12px 0 10px;font-size:.83rem;color:var(--muted)}
+.entry-guest-guide #entryThreePaths{margin-top:12px;min-width:0}
+.entry-guest-guide #entryThreePaths:focus{outline:none}
+.entry-guest-guide #entryThreePaths:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.entry-guest-options-open .entry-mura{display:none}
+.entry-guest-options-open .entry-welcome-card{display:block;width:min(900px,100%)}
+@media(max-width:760px){
+ .entry-guest-guide .entry-welcome-card{display:block;max-height:calc(100dvh - 20px);padding:14px}
+ .entry-guest-guide .entry-mura img{width:68px;margin:0 auto 5px}
+ .entry-guest-guide .entry-gate-body{font-size:.86rem;margin-bottom:9px}
+ .entry-guest-guide .entry-welcome-copy h1{font-size:1.45rem}
+}
+@media(max-width:380px) and (max-height:620px){
+ .entry-guest-guide .entry-welcome-card{padding:10px 12px}
+ .entry-guest-guide .entry-mura img{width:43px;margin-bottom:2px}
+ .entry-guest-guide .entry-welcome-copy h1{font-size:1.25rem;line-height:1.14}
+ .entry-guest-guide .entry-gate-body{font-size:.83rem;line-height:1.28;margin-bottom:7px}
+ .entry-guest-guide #entryGuestLanguageLabel:not([hidden]){margin-bottom:8px}
+ .entry-guest-guide .entry-learning-note{font-size:.73rem;margin-top:6px;padding-top:6px}
+}

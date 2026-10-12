@@ -19,3 +19,4 @@ python3 tests/e2e/entry-welcome-audit-browser.py
 python3 tests/e2e/onboarding-audit-browser.py
 python3 tests/e2e/entry-dependency-browser.py
 python3 tests/e2e/first-contact-preview-browser.py
+python3 tests/e2e/first-contact-guest-browser.py
