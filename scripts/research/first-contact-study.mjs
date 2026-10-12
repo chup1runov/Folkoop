@@ -5,7 +5,7 @@ import {dirname,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 export const STUDY_VARIANTS=Object.freeze([
- 'current-welcome','three-equal-paths','four-concrete-actions'
+ 'current-welcome','three-equal-paths','guest-guided-welcome','four-concrete-actions'
 ]);
 export const INTERPRETATIONS=Object.freeze([
  'cooperation-action','social-network-forum','classifieds-marketplace',
