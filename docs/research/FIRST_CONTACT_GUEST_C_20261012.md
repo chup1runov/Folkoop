@@ -32,5 +32,18 @@ External first-contact feedback had two distinct concerns: visitors did not unde
   - no unexpected Supabase writes or sign-in UI; no document-level horizontal overflow, no JS page errors.
 - A/B existing browser and authorization checks run unchanged.
 
+## Independent evidence record for C
+The private first-contact evaluator now recognizes C as `guest-guided-welcome`, **distinct** from A's `current-welcome` and B's `three-equal-paths`. Before real recruitment, pin the exact version of C actually deployed to `main`, then create a new **empty** local response file (the command must not produce pretend respondents):
+
+```sh
+node scripts/research/first-contact-study.mjs init \
+  --variant guest-guided-welcome \
+  --language sv \
+  --buildRef <DEPLOYED_40_CHARACTER_COMMIT_SHA> \
+  --out qa-output/first-contact/c-guest-sv.json
+```
+
+After independent first-time human responses are collected consensually and manually coded, `assess` separately; do not reuse an A or B cohort, merge sample denominators, or put participant-level JSON in GitHub/Box. The same six unprompted questions, 20–30s exposure and 5–10 **eligible per variant** still apply. The source implementation remains an empty research template, not evidence that any human has seen C.
+
 ## Decision
 A/B/C human-comprehension comparisons must use independent participants per tested version. C is an approved engineering candidate for evaluation, **not a proven winner or automatically launched default**. If field evidence supports C, promote via a separate reviewed first-screen decision after physical-device and privacy requirements are met.
