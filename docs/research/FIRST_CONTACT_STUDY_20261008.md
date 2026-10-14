@@ -1,5 +1,7 @@
 # FOLKOOP — P0-A first-contact comprehension field kit
 
+> **Operational update — 12 October 2026:** The variant table below preserves its original 8 October snapshot. Three first-contact screens are now available: A `current-welcome` at `/` (unchanged default); B `three-equal-paths` at `/?first-contact=three-paths` (PR #264); and C `guest-guided-welcome` at `/?first-contact=guest-guide` (PR #271, release 0.40.9). B and C are **opt-in test candidates**, not proven improvements. C has a separate evidence record; see [its protocol](FIRST_CONTACT_GUEST_C_20261012.md). Pin and verify the exact active release, locale and fresh browser state in [issue #261](https://github.com/chup1runov/Folkoop/issues/261) before recruiting each cohort. No variant has passed independent first-contact comprehension testing. Use 5–10 different first-time participants per tested variant; never pool their denominators.
+
 **Date:** 8 October 2026. **Status:** executable test kit READY; no new participant evidence has been collected. **Priority:** #1 in `docs/MASTER_PLAN_20261004.md`, Program P0-A.
 
 Authority: `docs/FOUNDATION_CHARTER.md`, `docs/FIRST_CONTACT_CLARITY_V2.md`, the 1 October first-contact synthesis, and later owner-approved [whole-system lab PR #234](https://github.com/chup1runov/Folkoop/pull/234). This kit does **not** replace any of those decisions or propose a new product architecture.
