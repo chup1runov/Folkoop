@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8f6">
+<title>FOLKOOP — Visual Prototype v0.3</title>
+<link rel="icon" href="./folkoop-mark.png" type="image/png">
+<link rel="stylesheet" href="./whole-system-v03.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">К содержанию</a>
+
+<header class="app-header">
+  <span class="wordmark" aria-label="FOLKOOP">FOLKOOP</span>
+  <div class="top-actions">
+    <button id="searchButton" class="icon-button" type="button" data-i18n-aria="search" data-i18n-title="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+    </button>
+    <button id="startButton" class="icon-button primary" type="button" data-i18n-aria="start" data-i18n-title="start">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button id="languageButton" class="icon-button" type="button" data-i18n-aria="language" data-i18n-title="language">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4.5 6 4.5 9S15 18 12 21c-3-3-4.5-6-4.5-9S9 6 12 3Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="screen active" data-screen-id="home">
+    <header class="page-hero">
+      <p class="eyebrow" data-i18n="my">Моё</p>
+      <h1 data-i18n="homeTitle">Что вам сейчас ближе?</h1>
+      <p class="lead" data-i18n="homeLead">Можно осмотреться, решить один вопрос или организовать общее дело.</p>
+    </header>
+
+    <div class="mode-grid">
+      <article class="mode-card social">
+        <span class="mode-symbol">☕</span>
+        <h2 data-i18n="exploreTitle">Быть среди людей</h2>
+        <p data-i18n="exploreText">Темы, встречи, сообщества, занятия и места. Можно просто смотреть и общаться.</p>
+        <div class="mode-actions">
+          <button data-go="center" data-i18n="findMeeting">Найти встречу</button>
+          <button data-go="center" data-i18n="browseCommunity">Почитать сообщество</button>
+        </div>
+      </article>
+
+      <article class="mode-card solve">
+        <span class="mode-symbol">↘</span>
+        <h2 data-i18n="solveTitle">Решить конкретный вопрос</h2>
+        <p data-i18n="solveText">Помощь, вещь, навык, городской маршрут или возможность рядом.</p>
+        <div class="mode-actions">
+          <button data-go="together" data-i18n="needHelp">Найти помощь</button>
+          <button data-go="together" data-i18n="offerHelp">Предложить помощь</button>
+        </div>
+      </article>
+
+      <article class="mode-card organize">
+        <span class="mode-symbol">✦</span>
+        <h2 data-i18n="organizeTitle">Сделать что-то вместе</h2>
+        <p data-i18n="organizeText">Люди, задачи, ресурсы, закупки, решения и результат — по мере необходимости.</p>
+        <div class="mode-actions">
+          <button data-action="open-project" data-i18n="openProject">Открыть Repair Day</button>
+        </div>
+      </article>
+    </div>
+
+    <section class="continue-section">
+      <div class="section-heading">
+        <div><p class="eyebrow" data-i18n="continue">Продолжить</p><h2 data-i18n="currentThings">Ваши текущие вещи</h2></div>
+      </div>
+      <div class="continue-grid">
+        <button class="continue-card" data-action="open-project">
+          <span class="type-badge project" data-i18n="project">Проект</span>
+          <strong>Repair Day</strong>
+          <small data-i18n="nextConfirmPlace">Следующее: подтвердить площадку</small>
+        </button>
+        <button class="continue-card" data-go="together">
+          <span class="type-badge need" data-i18n="request">Запрос</span>
+          <strong data-i18n="ladderSaturday">Лестница на субботу</strong>
+          <small data-i18n="draft">Черновик</small>
+        </button>
+        <button class="continue-card" data-go="messages">
+          <span class="type-badge chat" data-i18n="conversation">Разговор</span>
+          <strong>Johan</strong>
+          <small data-i18n="johanMsg">Я посмотрю площадку после работы</small>
+        </button>
+      </div>
+    </section>
+  </section>
+
+  <section class="screen" data-screen-id="together">
+    <header class="page-hero compact">
+      <p class="eyebrow" data-i18n="together">Вместе</p>
+      <h1 data-i18n="togetherTitle">Люди, предложения и общие дела</h1>
+      <p class="lead" data-i18n="togetherLead">Найдите помощь, предложите своё или присоединитесь к тому, что уже происходит.</p>
+    </header>
+    <div class="quick-grid">
+      <button><span>👥</span><b data-i18n="peopleSkills">Люди и навыки</b></button>
+      <button><span>↕</span><b data-i18n="needsOffers">Нужно и могу</b></button>
+      <button><span>🧰</span><b data-i18n="resources">Ресурсы</b></button>
+      <button data-action="open-project"><span>✦</span><b data-i18n="projects">Проекты</b></button>
+      <button><span>🛒</span><b data-i18n="sharedPurchases">Общие покупки</b></button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="city">
+    <header class="page-hero compact">
+      <p class="eyebrow" data-i18n="city">Город</p>
+      <h1 data-i18n="cityTitle">Возможности и городские вопросы</h1>
+      <p class="lead" data-i18n="cityLead">Официальные маршруты, организации, возможности и полезная информация рядом.</p>
+    </header>
+    <div class="feature-grid">
+      <article><span>🏛</span><h2 data-i18n="officialRoutes">Официальные маршруты</h2></article>
+      <article><span>🏢</span><h2 data-i18n="organisationsServices">Организации и услуги</h2></article>
+      <article><span>⌖</span><h2 data-i18n="opportunitiesNearby">Возможности рядом</h2></article>
+      <article><span>◷</span><h2 data-i18n="followDeadlines">Сроки и изменения</h2></article>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="center">
+    <header class="page-hero compact center-hero">
+      <img src="./folkoop-mark.png" alt="" width="64" height="64">
+      <div>
+        <p class="eyebrow" data-i18n="center">Центр</p>
+        <h1 data-i18n="centerTitle">Люди, встречи и сообщества</h1>
+        <p class="lead" data-i18n="centerLead">Можно прийти без задачи: общаться, встретиться, чему-то научиться или получить человеческую навигацию.</p>
+      </div>
+    </header>
+    <div class="feature-grid">
+      <article><span>💬</span><h2 data-i18n="conversations">Разговоры и сообщества</h2></article>
+      <article><span>☕</span><h2 data-i18n="meetingsActivities">Встречи и активности</h2></article>
+      <article><span>🧭</span><h2 data-i18n="hostNavigation">Host и навигация</h2></article>
+      <article><span>🏠</span><h2 data-i18n="placesLearning">Места и обучение</h2></article>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="messages">
+    <header class="page-hero compact">
+      <p class="eyebrow" data-i18n="messages">Сообщения</p>
+      <h1 data-i18n="messagesTitle">Разговоры</h1>
+      <p class="lead" data-i18n="messagesLead">Личные, групповые и рабочие чаты. Разговор не становится задачей автоматически.</p>
+    </header>
+    <div class="feature-grid">
+      <article><span>👤</span><h2 data-i18n="directChats">Личные</h2></article>
+      <article><span>👥</span><h2 data-i18n="groupChats">Групповые</h2></article>
+      <article><span>🧰</span><h2 data-i18n="workChats">Рабочие</h2></article>
+    </div>
+  </section>
+
+  <section class="screen" data-screen-id="workspace">
+    <button class="back-button" data-action="back" data-i18n="back">← Назад</button>
+    <header class="workspace-head">
+      <span class="type-badge project" data-i18n="project">Проект</span>
+      <h1>Repair Day</h1>
+      <p data-i18n="workspaceLead">Общее дело с людьми, задачами, ресурсами и подключаемыми инструментами.</p>
+    </header>
+    <nav class="workspace-tabs" aria-label="Workspace">
+      <button class="active" data-tab="overview" data-i18n="overview">Обзор</button>
+      <button data-tab="people" data-i18n="people">Люди</button>
+      <button data-tab="work" data-i18n="work">Работа</button>
+      <button data-tab="resources" data-i18n="resources">Ресурсы</button>
+      <button data-tab="more" data-i18n="more">Ещё</button>
+    </nav>
+    <div class="workspace-panel active" data-panel="overview">
+      <div class="feature-grid">
+        <article><span>✓</span><h2 data-i18n="tasks">Задачи</h2></article>
+        <article><span>🧰</span><h2 data-i18n="resources">Ресурсы</h2></article>
+        <article><span>🛒</span><h2 data-i18n="purchase">Закупка</h2></article>
+      </div>
+    </div>
+    <div class="workspace-panel" data-panel="people"><div class="empty-panel" data-i18n="people">Люди</div></div>
+    <div class="workspace-panel" data-panel="work"><div class="empty-panel" data-i18n="work">Работа</div></div>
+    <div class="workspace-panel" data-panel="resources"><div class="empty-panel" data-i18n="resources">Ресурсы</div></div>
+    <div class="workspace-panel" data-panel="more">
+      <div class="feature-grid">
+        <article><span>¤</span><h2 data-i18n="economy">Экономика</h2></article>
+        <article><span>⇄</span><h2 data-i18n="logistics">Логистика</h2></article>
+        <article><span>▤</span><h2 data-i18n="documents">Документы</h2></article>
+        <article><span>✓</span><h2 data-i18n="decisions">Решения</h2></article>
+        <article><span>◌</span><h2 data-i18n="outcome">Результат и подтверждения</h2></article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="icon-nav" id="iconNav" aria-label="Main navigation">
+  <button class="active" data-screen="home" data-i18n-aria="my" data-i18n-title="my">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+  </button>
+  <button data-screen="together" data-i18n-aria="together" data-i18n-title="together">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 12.5 2.2 2.2a2 2 0 0 0 2.8 0l5.2-5.2a2.8 2.8 0 0 0-4-4l-2 2"/><path d="m15.5 11.5-2.2-2.2a2 2 0 0 0-2.8 0l-5.2 5.2a2.8 2.8 0 0 0 4 4l2-2"/></svg>
+  </button>
+  <button data-screen="city" data-i18n-aria="city" data-i18n-title="city">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9h5v12M8 21V4h7v17M15 21V7h6v14M10.5 7h2M10.5 11h2M17.5 11h1"/></svg>
+  </button>
+  <button class="center-nav-button" data-screen="center" data-i18n-aria="center" data-i18n-title="center">
+    <img src="./folkoop-mark.png" alt="" width="38" height="38">
+  </button>
+  <button data-screen="messages" data-i18n-aria="messages" data-i18n-title="messages">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 9h8M8 12h5"/></svg>
+  </button>
+</nav>
+
+<div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+
+<section class="action-sheet" id="searchSheet" hidden aria-modal="true" role="dialog">
+  <header><h2 data-i18n="searchTitle">Поиск</h2><button data-close-sheet aria-label="Close">×</button></header>
+  <input id="searchInput" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Люди, вещи, места и дела">
+  <p data-i18n="searchHint">Один поиск по людям, ресурсам, проектам, местам, организациям и городским вопросам.</p>
+</section>
+
+<section class="action-sheet" id="startSheet" hidden aria-modal="true" role="dialog">
+  <header><h2 data-i18n="startTitle">Начать</h2><button data-close-sheet aria-label="Close">×</button></header>
+  <div class="sheet-actions">
+    <button data-go="together"><span>↘</span><b data-i18n="startNeed">Найти помощь</b></button>
+    <button data-go="together"><span>↗</span><b data-i18n="startOffer">Предложить</b></button>
+    <button data-action="open-project"><span>✦</span><b data-i18n="startTogether">Сделать вместе</b></button>
+    <button data-go="together"><span>🧰</span><b data-i18n="startResource">Добавить ресурс</b></button>
+    <button data-go="center"><span>☕</span><b data-i18n="startActivity">Создать встречу</b></button>
+  </div>
+</section>
+
+<section class="action-sheet" id="languageSheet" hidden aria-modal="true" role="dialog">
+  <header><h2 data-i18n="languageTitle">Язык</h2><button data-close-sheet aria-label="Close">×</button></header>
+  <div id="languageList" class="language-list"></div>
+</section>
+
+<div class="prototype-note" data-i18n="prototypeNote">Визуальный прототип — реальные действия не отправляются.</div>
+<script src="./whole-system-v03.js"></script>
+</body>
+</html>
