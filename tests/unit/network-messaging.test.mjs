@@ -181,3 +181,22 @@ test('invitations heading has stable focus target for keyboard navigation',()=>{
  assert(!html.includes('id="netDirect"'));
  assert(!html.includes('id="netNewChat"'));
 });
+
+test('contacts are deduplicated, escaped and open existing direct chats without mutation',()=>{
+ const f=fixture(),html=domain(f).render(f.user,{view:'messages-contacts',language:'ru',guestDemo:true});
+ assert.equal((html.match(/data-contact-card/g)||[]).length,2);
+ assert(html.includes('Bob &lt;img src=x&gt;'));
+ assert(html.includes('data-net="openChat" data-id="d1"'));
+ assert(!html.includes('data-contact-id'));
+ assert(!html.includes('netDirect'));
+});
+test('calls disclose unavailability without fabricated history or a call control in all locales',()=>{
+ const f=fixture();
+ for(const language of ['ru','en','sv','uk','es','fi','bs','ar','fa','so','ku']){
+  const html=domain(f).render(f.user,{view:'messages-calls',language});
+  assert(html.includes('messages-empty-call'));
+  assert(html.includes('data-subsection="messages-chats"'));
+  assert(!html.includes('<button'));
+  assert(!html.includes('getUserMedia'));
+ }
+});

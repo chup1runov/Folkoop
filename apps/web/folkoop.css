@@ -697,3 +697,39 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .entry-guest-guide #entryGuestLanguageLabel:not([hidden]){margin-bottom:8px}
  .entry-guest-guide .entry-learning-note{font-size:.73rem;margin-top:6px;padding-top:6px}
 }
+
+/* Messenger: compact conversation rows, distinct bubbles, no invented presence. */
+.mura-chat-grid{display:flex!important;flex-direction:column;gap:0!important;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface)}
+.mura-chat-grid .mura-chat-card{position:relative;display:flex;align-items:center;gap:14px;padding:16px!important;border:0;border-radius:0;box-shadow:none;margin:0;border-bottom:1px solid var(--line);min-width:0;transition:background .15s ease}
+.mura-chat-grid .mura-chat-card:last-child{border-bottom:0}
+.messenger-avatar{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:50%;background:#dcebea;color:#245b60;font-size:1.2rem;font-weight:750}
+.mura-chat-card:nth-child(3n+2) .messenger-avatar,.messenger-contact:nth-child(3n+2) .messenger-avatar{background:#e8e2f2;color:#62517d}
+.mura-chat-card:nth-child(3n) .messenger-avatar,.messenger-contact:nth-child(3n) .messenger-avatar{background:#f4e7d8;color:#7a5732}
+.messenger-chat-copy{min-width:0;flex:1;padding-inline-end:22px}
+.messenger-chat-copy h3{font-size:1rem;margin:0;overflow-wrap:anywhere}
+.messenger-chat-copy .meta{font-size:.78rem;margin:4px 0}
+.messenger-chat-copy .mura-chat-preview{margin:4px 0 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:.9rem;color:var(--muted)}
+.messenger-open{position:absolute;inset:0;width:100%;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;display:flex;align-items:center;justify-content:flex-end;padding:16px;color:var(--muted)}
+.mura-chat-card:has(.messenger-open:hover),.mura-chat-card:has(.messenger-open:focus-visible){background:#346c7010}
+.messenger-open:active{background:#346c7020!important}
+.messenger-open:focus-visible{outline:2px solid var(--focus);outline-offset:-3px}
+.messenger-contact-list{border-top:1px solid var(--line);margin-top:18px}
+.messenger-contact{position:relative;display:flex;align-items:center;gap:12px;padding:14px 26px 14px 0;border-bottom:1px solid var(--line);min-width:0}
+.messenger-contact>div{flex:1;min-width:0;overflow-wrap:anywhere}
+.messenger-contact h3{margin:0;font-size:1rem}
+.messenger-contact p{margin:4px 0;font-size:.85rem}
+.messenger-contact>.button,.messenger-contact>.text-button{max-width:38%;white-space:normal}
+.messages-contact-search{display:grid;gap:6px;max-width:480px}
+.messages-empty-call{text-align:center;max-width:540px;margin:36px auto;padding:24px}
+.messages-empty-call p{color:var(--muted);line-height:1.6}
+.messages-call-symbol{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;margin:0 auto 20px;background:#346c7012;color:var(--accent);font-size:2rem}
+.messages-filter-row a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:24px;background:#346c7010;text-decoration:none;color:inherit}
+.chat-messages{display:flex;flex-direction:column;gap:10px;padding:16px 0}
+.chat-messages>.messenger-bubble{align-self:flex-start;max-width:85%;min-width:0;border-radius:18px 18px 18px 5px;box-shadow:0 2px 5px #00000008;overflow-wrap:anywhere}
+.chat-messages>.messenger-bubble.is-mine{align-self:flex-end;background:#e4f0e9;border-radius:18px 18px 5px 18px}
+[dir=rtl] .chat-messages>.messenger-bubble{border-radius:18px 18px 5px 18px}
+[dir=rtl] .chat-messages>.messenger-bubble.is-mine{border-radius:18px 18px 18px 5px}
+.chat-messages .messenger-bubble>.meta{font-size:.72rem;text-align:end;margin-bottom:0}
+.messenger-contact[hidden],.mura-chat-card[hidden]{display:none!important}
+@media(max-width:620px){.mura-chat-grid .mura-chat-card{gap:10px;padding:12px!important}.messenger-avatar{width:42px;height:42px;flex-basis:42px}.chat-messages>.messenger-bubble{max-width:92%}.messages-empty-call{margin:16px auto;padding:16px}}
+@media(prefers-reduced-motion:reduce){.mura-chat-grid .mura-chat-card{transition:none}}
