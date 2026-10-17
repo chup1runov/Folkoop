@@ -94,6 +94,9 @@ async def main():
   passed.append('Home attention disclosure exposes real pending obligations')
 
   await page.click('[data-home-section="feed"] > summary')
+  await page.click('[data-net=refresh]')
+  await expect(page.locator('[data-net=refresh]')).to_be_enabled()
+  await expect(page.locator('[data-home-section="feed"]')).to_have_attribute('open','')
   await expect(page.locator('#networkPanel')).to_contain_text('В субботу общий субботник')
   await expect(page.locator('#networkPanel')).to_contain_text('Соседи Олофсторпа')
   await expect(page.locator('#networkPanel')).to_contain_text('Общая мастерская')

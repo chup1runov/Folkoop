@@ -913,7 +913,11 @@ function render(){
   html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
  }
   const demoBanner='';
+ const homeScope=r==='home'&&u&&!guestDemo?`home:${u.id}`:'';
+ const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
+ host.dataset.homeScope=homeScope;
+ for(const el of host.querySelectorAll('details[data-home-section]'))el.open=openHomeSections.includes(el.dataset.homeSection);
  host.classList.toggle('guest-demo',guestDemo);
  if(guestDemo){
   host.querySelectorAll('form').forEach(form=>{form.hidden=true;form.setAttribute('aria-hidden','true');});
