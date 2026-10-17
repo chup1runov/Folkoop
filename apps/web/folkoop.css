@@ -733,3 +733,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .messenger-contact[hidden],.mura-chat-card[hidden]{display:none!important}
 @media(max-width:620px){.mura-chat-grid .mura-chat-card{gap:10px;padding:12px!important}.messenger-avatar{width:42px;height:42px;flex-basis:42px}.chat-messages>.messenger-bubble{max-width:92%}.messages-empty-call{margin:16px auto;padding:16px}}
 @media(prefers-reduced-motion:reduce){.mura-chat-grid .mura-chat-card{transition:none}}
+/* Together workspaces: real assigned tasks and latest project activity. */
+.project-shortcuts{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+.project-shortcuts a{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;color:inherit;text-decoration:none}
+.project-shortcuts strong{font-size:1.5rem;color:var(--teal)}
+.project-search{display:grid;gap:6px;max-width:36rem;margin:18px 0}
+.project-search input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:inherit}
+.task-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.task-column{min-width:0;background:rgba(23,107,107,.04);border-radius:18px;padding:14px}
+.task-column h4{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px}
+.project-work-card{margin-bottom:12px;overflow-wrap:anywhere}
+.project-work-card h3{margin-block:10px}
+.project-timeline{border-inline-start:2px solid var(--line);padding-inline-start:18px;max-width:56rem}
+.project-timeline .project-work-card{position:relative}
+.project-timeline .project-work-card:before{content:'';position:absolute;inset-inline-start:-25px;top:24px;width:10px;height:10px;border-radius:50%;background:var(--teal);border:2px solid #fff}
+[data-project-search-card][hidden],#projectSearchEmpty[hidden]{display:none!important}
+[data-entry-language="ku"] strong,[data-folkoop-guide-lang="ku"] strong{display:flex;align-items:center;gap:8px}
+[data-entry-language="ku"] strong:before,[data-folkoop-guide-lang="ku"] strong:before{content:'☀';display:inline-grid;place-items:center;flex-shrink:0;width:30px;height:20px;background:linear-gradient(#ed2024 0 33.33%,#fff 33.33% 66.66%,#278b3c 66.66%);color:#f5bb18;font-size:22px;line-height:1;box-shadow:0 0 0 1px #0002;border-radius:2px}
+@media(max-width:600px){.task-board{grid-template-columns:1fr}.project-shortcuts a{flex:1 1 140px;min-width:0}.project-timeline{padding-inline-start:12px}.project-timeline .project-work-card:before{inset-inline-start:-19px}}

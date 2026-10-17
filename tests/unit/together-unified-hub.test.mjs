@@ -6,6 +6,24 @@ const ui=await readFile('apps/web/network-ui.js','utf8');
 const shell=await readFile('apps/web/folkoop.js','utf8');
 const css=await readFile('apps/web/folkoop.css','utf8');
 
+test('project workspaces expose searchable assigned work and newest-first updates without new writes',()=>{
+ assert.match(ui,/data-project-view="tasks"/);
+ assert.match(ui,/x.assignee_id===u.id&&x.status!=='done'/);
+ assert.match(ui,/\['todo','doing'\]\.map\(status=>/);
+ assert.match(ui,/data-project-view="updates"/);
+ assert.match(ui,/String\(b.last_activity_at\).localeCompare\(String\(a.last_activity_at\)\)/);
+ assert.match(ui,/id="networkProjectSearch"/);
+ assert.match(ui,/id="projectSearchEmpty"/);
+ assert.match(css,/\.task-board\{grid-template-columns:1fr\}/);
+});
+
+test('all languages have conventional flags with an explicit Kurdish native-select fallback',()=>{
+ const marks=shell.match(/const LANGUAGE_MARKS=(\{[^;]+\});/)[1];
+ assert(!marks.includes('🌐'));
+ for(const mark of ['🇸🇪','🇬🇧','🇷🇺','🇺🇦','🇫🇮','🇧🇦','🇭🇷','🇷🇸','🇸🇦','🇮🇷','🇸🇴','🇪🇸','☀️'])assert(marks.includes(mark));
+ assert(css.includes('[data-folkoop-guide-lang="ku"] strong:before'));
+});
+
 test('Together lists all five cooperation kinds in one production discovery surface',()=>{
   assert.match(ui,/allowed=projectMode\?\['project'\]:\['need','offer','purchase','resource','project'\]/);
   assert.match(ui,/data-together-card data-kind=/);
