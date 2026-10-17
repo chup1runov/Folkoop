@@ -22,12 +22,27 @@ async def audit(browser,width,height):
  page=await context.new_page()
  await page.goto(BASE+'#/home')
  await expect(page.locator('#mobilePrimaryNav a')).to_have_count(5)
+ assert await page.locator('#mobilePrimaryNav a').evaluate_all("els => els.map(el => el.dataset.mobileNav)")==['home','together','center','city','messages']
+ for link in await page.locator('#mobilePrimaryNav a').all():
+  await expect(link.locator('span:not(.net-count)')).to_be_visible()
+ for link in await page.locator('#mobileContextDock > a').all():
+  await expect(link.locator('svg')).to_be_visible()
+  await expect(link.locator('span')).to_be_visible()
  await expect(page.locator('.sidebar')).to_be_hidden()
  await expect(page.locator('#mobilePrimaryNav a[href="#/center"]')).to_have_count(1)
- await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Mura')
+ await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Профиль')
  await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
- await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Обо мне')
+ await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Профиль')
  await expect(page.locator('.mura-home')).to_be_visible()
+ await page.click('[data-mobile-action="language"]')
+ await expect(page.locator('[data-folkoop-guide-lang="sv"]')).to_contain_text('🇸🇪 Svenska')
+ await expect(page.locator('[data-folkoop-guide-lang="ar"]')).to_contain_text('🌐')
+ await page.click('[data-folkoop-guide-lang="ru"]')
+ await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
+ await page.click('[data-mobile-action="demo"]')
+ await expect(page.locator('.mobile-demo-popover [data-action="tutorial"]')).to_be_visible()
+ await expect(page.locator('[data-mobile-action="exitmura"]')).to_be_visible()
+ await page.click('[data-mobile-action="demo"]')
  if width<=760 or (width<=900 and height<=480):
   chrome=await page.evaluate("""() => {
    const primaryEl=document.querySelector('#mobilePrimaryNav');
@@ -66,7 +81,12 @@ async def audit(browser,width,height):
  await page.click('#mobileContextDock [data-subsection="projects-tasks"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Подтвердить место для обмена')
 
- await page.click('#mobilePrimaryNav a[href="#/messages"]')
+ try:
+  await page.click('#mobilePrimaryNav a[href="#/messages"]',timeout=5000)
+ except Exception:
+  await page.screenshot(path=str(OUT/f'navigation-failure-{ENGINE}-{width}.png'))
+  print(await page.locator('#mobilePrimaryNav').evaluate("el => ({rect:el.getBoundingClientRect().toJSON(),scrollX,scrollY,innerWidth,innerHeight,inert:el.inert,hit:document.elementFromPoint(innerWidth-35,innerHeight-25)?.outerHTML.slice(0,250)})"))
+  raise
  await expect(page.locator('#mobileContextDock [data-subsection^="messages-"]')).to_have_count(3)
  await page.click('#mobileContextDock [data-subsection="messages-direct"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Личная переписка')
@@ -76,11 +96,27 @@ async def audit(browser,width,height):
 
  await page.click('#mobilePrimaryNav a[href="#/city"]')
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="city"]')).to_have_attribute('aria-current','page')
+ await page.click('[data-subsection="city-services"]')
+ await expect(page.locator('[data-subsection="city-services"]')).to_have_attribute('aria-current','page')
+ await page.wait_for_function("() => document.querySelector('#cityFrame').contentWindow.location.hash === '#ansvar'")
+ await page.click('[data-subsection="city-transport"]')
+ await expect(page.locator('#cityWorkspace')).to_be_hidden()
+ await expect(page.locator('.city-source-space a')).to_have_attribute('href','https://www.vasttrafik.se/reseplanering/')
+ await page.click('[data-subsection="city-reports"]')
+ await page.wait_for_function("() => document.querySelector('#cityFrame').contentWindow.location.hash === '#rapportera'")
+ await page.click('[data-subsection="city-decisions"]')
+ await page.wait_for_function("() => document.querySelector('#cityFrame').contentWindow.location.hash === '#beslut'")
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-city.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/center"]')
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="center"] img.primary-center-mark')).to_have_count(1)
  await expect(page.locator('#mobileContextDock a[href="#/people"]')).to_have_count(1)
  await expect(page.locator('#mobileContextDock a[href="#/communities"]')).to_have_count(1)
+ await page.click('[data-subsection="center-map"]')
+ await expect(page.locator('.city-source-space a')).to_have_attribute('href','https://www.goteborg.com/en/events')
+ await page.click('[data-subsection="center-events"]')
+ await expect(page.locator('.city-source-space h1')).to_have_text('Афиша')
+ await page.click('[data-subsection="center"]')
+ await expect(page.locator('.center-home')).to_be_visible()
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-center.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/together"]')
  await page.click('#mobileContextDock [data-subsection="projects-overview"]')
@@ -107,7 +143,7 @@ async def main():
   await audit(browser,844,390)
   await audit(browser,1366,900)
   await browser.close()
- print('PASS five-space icon-only navigation keeps stacked chrome within the viewport budget')
+ print('PASS five-space labelled navigation keeps stacked chrome within the viewport budget')
  print('PASS Mura Home stays immersive while Projects remain reachable under Together')
  print('PASS City and Center are distinct primary spaces without duplicating the underlying routes')
 

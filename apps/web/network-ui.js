@@ -350,9 +350,10 @@ const demoLocaleCopy={
 
  }
 };
-const demoText=value=>demoLocaleCopy[lang()]?.[value]||value;
+const muraBio={"en":"I like turning small neighbourhood ideas into things people can actually do together.","ru":"Люблю превращать маленькие соседские идеи в дела, которые можно сделать вместе.","sv":"Jag gillar att förvandla små grannskapsidéer till saker vi faktiskt kan göra tillsammans.","uk":"Люблю перетворювати маленькі сусідські ідеї на справи, які можна зробити разом.","fi":"Pidän siitä, että pienistä naapuruston ideoista syntyy yhteistä tekemistä.","bs":"Volim male ideje iz susjedstva pretvarati u stvari koje možemo zajedno uraditi.","ku":"Ez hez dikim ramanên biçûk ên cîrantiyê veguherînim karên ku em bi hev re bikin.","so":"Waxaan jeclahay in fikradaha yaryar ee xaafadda loo beddelo wax aan wada qaban karno.","ar":"أحب تحويل أفكار الحي الصغيرة إلى أعمال نستطيع إنجازها معاً.","fa":"دوست دارم ایده‌های کوچک محله را به کارهایی تبدیل کنم که با هم انجام می‌دهیم.","es":"Me gusta convertir pequeñas ideas del vecindario en cosas que podemos hacer juntos."};
+const demoText=value=>value==='I like turning small neighbourhood ideas into things people can actually do together.'?(muraBio[lang()]||muraBio.en):(demoLocaleCopy[lang()]?.[value]||value);
 
-function demoSnapshot(){
+function demoSnapshot(all=false){
  const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004',D='00000000-0000-4000-8000-000000000005',E='00000000-0000-4000-8000-000000000006',F='00000000-0000-4000-8000-000000000007';
  const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102',G3='00000000-0000-4000-8000-000000000103',G4='00000000-0000-4000-8000-000000000104';
  const CHAT='00000000-0000-4000-8000-000000000201',DIRECT='00000000-0000-4000-8000-000000000202',DIRECT_A='00000000-0000-4000-8000-000000000203',WALK_CHAT='00000000-0000-4000-8000-000000000204',TOOL_CHAT='00000000-0000-4000-8000-000000000205';
@@ -497,10 +498,10 @@ function demoSnapshot(){
   myConfirmations:[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'}],
   allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:'2026-10-01T18:00:00Z',external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
  };
- const chosen=selectedCoop;
+ const chosen=all?null:selectedCoop;
  return {...base,
-  posts:allPosts.filter(x=>!selected||x.community_id===selected),
-  chatMessages:allMessages.filter(x=>!selectedChat||x.conversation_id===selectedChat),
+  posts:allPosts.filter(x=>all||!selected||x.community_id===selected),
+  chatMessages:allMessages.filter(x=>all||!selectedChat||x.conversation_id===selectedChat),
   coopUpdates:updates.filter(x=>!chosen||x.cooperation_id===chosen),
   projectTasks:tasks.filter(x=>!chosen||x.cooperation_id===chosen),
   commitments:commitments.filter(x=>!chosen||x.cooperation_id===chosen),
@@ -518,6 +519,53 @@ function guestRequireAccount(){
  render();
 }
 
+// Search only the authored account or already-authorized, loaded account data.
+// Never fetch extra conversations, index local visitor drafts, or persist queries.
+let revealSearchResult=()=>{};
+api?.onChange(()=>{revealSearchResult=()=>{};window.dispatchEvent(new CustomEvent('folkoop:search-scope-changed'));});
+window.addEventListener('folkoop:network-rendered',()=>revealSearchResult());
+window.addEventListener('folkoop:search-index',event=>{
+ revealSearchResult=()=>{};
+ if(!guestDemo&&!currentUser())return;
+ const snapshot=guestDemo?demoSnapshot(true):data;
+ const owner=currentUser()?.id;
+ const scope=guestDemo;
+ const label=key=>globalThis.FolkoopCopy.COPY[lang()][key]||globalThis.FolkoopCopy.COPY.en[key];
+ event.detail.handled=true;
+ const add=(kind,title,body,target,id,needle=title,selector='article')=>{
+  if(!title&&!body)return;
+  event.detail.entries.push({kind,title:title||kind,body:body||'',open:()=>{
+   if(scope!==guestDemo||owner!==currentUser()?.id)return;
+   selected=null;selectedChat=null;selectedCoop=null;
+   if(target==='messages')selectedChat=id;
+   if(target==='communities')selected=id;
+   if(target==='projects'||target==='together')selectedCoop=id;
+   resetEconomicFlowState();
+   navigateNetwork('#/'+target);
+   const reveal=()=>requestAnimationFrame(()=>{
+    if(scope!==guestDemo||owner!==currentUser()?.id||route()!==target)return;
+    if(target==='messages'&&selectedChat!==id)return;
+    if(['projects','together'].includes(target)&&selectedCoop!==id)return;
+    if(target==='communities'&&selected!==id)return;
+    const candidates=[...host.querySelectorAll(selector)].filter(el=>el.textContent.includes(needle));
+    const match=candidates.sort((a,b)=>a.textContent.length-b.textContent.length)[0];
+    if(match){for(let p=match.parentElement;p&&p!==host;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
+     match.classList.add('account-search-match');match.tabIndex=-1;match.focus({preventScroll:true});match.scrollIntoView({block:'center',behavior:'instant'});}
+   });
+   revealSearchResult=reveal;
+   if(guestDemo){data=demoSnapshot();render();reveal();}
+   else run(async()=>{await load();render();reveal();});
+  }});
+ };
+ const coop=id=>snapshot.cooperations.find(x=>x.id===id);
+ for(const p of snapshot.directory)add(t('directory'),p.name,[p.skills,p.about].filter(Boolean).join(' · '),'people',p.id);
+ for(const g of snapshot.groups)add(label('communities'),g.name||g.title,g.description,'communities',g.id);
+ for(const c of snapshot.cooperations)add(ct(c.kind),c.title,c.description,c.kind==='project'?'projects':'together',c.id);
+ for(const task of snapshot.projectTasks){const c=coop(task.cooperation_id);if(c)add(ct('tasks'),task.title,[c.title,task.details].filter(Boolean).join(' · '),'projects',c.id,task.title,'.coop-task-row');}
+ for(const m of snapshot.chatMessages){const chat=snapshot.chats.find(x=>x.id===m.conversation_id);if(chat)add(label('messages'),chat.title||label('messages'),m.body,'messages',chat.id,m.body,'.chat-messages article');}
+ for(const d of snapshot.localDrafts)add(label('drafts'),d.title,d.body,'me',d.id);
+ for(const u of snapshot.coopUpdates){const c=coop(u.cooperation_id);if(c)add(ct('updates'),c.title,u.body,c.kind==='project'?'projects':'together',c.id,u.body);}
+});
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
@@ -1125,6 +1173,22 @@ document.addEventListener('click',e=>{
   card.hidden=!(matches&&searchMatch);
  });
 });
+window.addEventListener('folkoop:mura-story',e=>{
+ // This adapter can only browse authored fixtures. Never select account data
+ // or accept arbitrary object IDs from the tour.
+ if(!guestDemo||!['profile','project','chat'].includes(e.detail?.scene))return;
+ // Snapshot relations are scoped by the current selection. Clear that scope
+ // before resolving the story so another open activity cannot hide its chat.
+ selected=null;selectedCoop=null;selectedChat=null;
+ const snapshot=demoSnapshot();
+ const project=snapshot.cooperations.find(x=>x.id==='00000000-0000-4000-8000-000000000301');
+ const chat=snapshot.coopChats.find(x=>x.cooperation_id===project?.id);
+ if(!project||!chat)return;
+ selectedCoop=e.detail.scene==='profile'?null:project.id;
+ selectedChat=e.detail.scene==='chat'?chat.conversation_id:null;
+ data=demoSnapshot();
+ render();
+});
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
  guestDemo=detail.enabled!==false;
@@ -1141,6 +1205,6 @@ window.addEventListener('folkoop:guest-demo',e=>{
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
  if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
 });
-new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
 })();

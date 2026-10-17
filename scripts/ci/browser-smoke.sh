@@ -31,3 +31,6 @@ python3 tests/e2e/i18n-route-matrix-browser.py
 python3 tests/e2e/entry-dependency-browser.py
 python3 tests/e2e/first-contact-preview-browser.py
 python3 tests/e2e/first-contact-guest-browser.py
+python3 tests/e2e/guide-interactive-browser.py
+python3 tests/e2e/mura-cache-update-browser.py
+python3 tests/e2e/account-search-browser.py

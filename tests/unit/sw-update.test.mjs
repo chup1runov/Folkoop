@@ -1,6 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {runInNewContext} from 'node:vm';
+
+test('first installation does not interrupt entry; an existing controller reloads once per update',async()=>{
+ const code=await readFile('apps/web/sw-register.js','utf8');
+ for(const existing of [false,true]){
+  let changed,reloads=0;
+  runInNewContext(code,{navigator:{serviceWorker:{controller:existing?{}:null,addEventListener:(_,fn)=>{changed=fn;}}},window:{addEventListener:()=>{}},location:{reload:()=>reloads++}});
+  changed();changed();
+  assert.equal(reloads,existing?1:0);
+ }
+});
 
 test('PWA registration forces a network update check and activates waiting releases',async()=>{
  const code=await readFile('apps/web/sw-register.js','utf8');

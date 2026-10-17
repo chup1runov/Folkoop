@@ -498,12 +498,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .shell-start-menu[hidden]{display:none!important}
 .shell-start-menu button{display:flex;width:100%;min-height:44px;align-items:center;padding:9px 11px;border:0;border-radius:10px;background:transparent;color:var(--ink);text-align:start;font-weight:700}
 .shell-start-menu button:hover{background:var(--soft)}
-.mobile-primary-nav a{font-size:0;gap:0}
+.mobile-primary-nav a{font-size:.68rem;gap:3px}
 .mobile-primary-nav a svg{width:25px;height:25px}
 .mobile-primary-nav a .primary-center-mark{display:block;width:38px;height:38px;border-radius:10px;object-fit:contain}
 .mobile-primary-nav a[data-mobile-nav="center"][aria-current="page"]{background:#f2f4ef}
 .mobile-primary-nav a[data-mobile-nav="center"][aria-current="page"] .primary-center-mark{transform:scale(1.06)}
-.mobile-primary-nav a[aria-current="page"]::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.mobile-primary-nav a[aria-current="page"]::after{display:none}
 @media(max-width:760px){
  .topbar{padding-inline:14px}
  .brand{font-size:1rem}
@@ -512,6 +512,40 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  .top-actions,.location{display:none!important}
  .shell-start-menu{top:58px;right:10px}
 }
+
+.account-search{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:20px;border:1px solid var(--line);border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:0 20px 60px #0003}
+.account-search::backdrop{background:#172e3066}
+.account-search form{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.account-search h2{margin:0;font-size:1.2rem}
+.account-search form button{min-width:44px;min-height:44px;font-size:1.6rem}
+.account-search input{width:100%;min-height:48px;margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+#accountSearchResults{display:grid;gap:8px}
+#accountSearchResults button{display:grid;gap:5px;text-align:start;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);overflow-wrap:anywhere}
+#accountSearchResults small{color:var(--accent)}
+#accountSearchResults span{color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.account-search-match{outline:3px solid var(--accent);outline-offset:3px;scroll-margin-block:90px}
+
+/* Labelled two-level navigation: shared desktop/mobile targets and restrained feedback. */
+.mobile-primary-nav a,.mobile-context-dock>a,.mobile-context-dock>button{transition:background-color 140ms ease,color 140ms ease,transform 140ms ease}
+.mobile-primary-nav a svg{width:21px;height:21px}
+.mobile-primary-nav a .primary-center-mark{width:25px;height:25px;border-radius:7px}
+.mobile-primary-nav a[aria-current="page"],.mobile-primary-nav a[data-mobile-nav="center"][aria-current="page"]{background:var(--soft);color:var(--accent)}
+.mobile-primary-nav a:active,.mobile-context-dock>a:active,.mobile-context-dock>button:active{transform:scale(.96);background:var(--soft)}
+.mobile-context-dock{box-shadow:none;border-radius:14px 14px 0 0}
+.mobile-context-dock>a,.mobile-context-dock>button{flex:1 0 54px;flex-direction:column;justify-content:center;gap:3px;min-height:44px;min-width:54px;border-radius:10px;font-size:.68rem;line-height:1.1}
+.mobile-context-dock>a svg,.mobile-context-dock>button svg{width:18px;height:18px}
+.mobile-context-dock>a[aria-current="page"],.mobile-context-dock>button[aria-expanded="true"]{background:var(--soft);color:var(--accent);border-color:transparent;box-shadow:none}
+.mobile-demo-popover{position:fixed;inset-inline:12px;bottom:calc(120px + env(safe-area-inset-bottom));padding:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px #0002;max-height:55vh;overflow:auto}
+.mobile-demo-popover[hidden]{display:none!important}
+.mobile-demo-popover .button{margin-top:8px}
+@media(max-width:760px){
+ .mobile-primary-nav a{font-size:.62rem;gap:2px}
+ .mobile-primary-nav a svg{width:19px;height:19px}
+ .mobile-primary-nav a .primary-center-mark{width:21px;height:21px}
+ .mobile-context-dock{gap:2px;padding-inline:4px}
+ .mobile-context-dock>a,.mobile-context-dock>button{padding:3px 7px;font-size:.65rem}
+}
+@media(prefers-reduced-motion:reduce){.mobile-primary-nav a,.mobile-context-dock>a,.mobile-context-dock>button{transition:none!important;transform:none!important}}
 
 /* v0.42 — My space: three equal ways to use FOLKOOP */
 .home-use-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 24px}
