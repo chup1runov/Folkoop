@@ -41,6 +41,7 @@ const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4
 Object.assign(icons,{language:'M3 5h12M9 3v2M5 5c0 6 4 10 9 12M13 5c0 5-4 10-10 12M14 21l4-10 4 10M16 17h4',tasks:'m3 6 2 2 4-4M12 6h9M3 14l2 2 4-4M12 14h9M12 20h9',updates:'M4 4h16v16H4ZM8 8h8M8 12h8M8 16h4'});
 Object.assign(icons,{map:'M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2ZM9 3v16M15 5v16',calendar:'M4 5h16v16H4ZM8 3v4M16 3v4M4 10h16M8 14h2M14 14h2',transport:'M5 3h14v15H5ZM5 11h14M8 18l-3 3M16 18l3 3M8 15h.01M16 15h.01'});
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
+icons.phone='M5 3h4l2 5-3 2a15 15 0 0 0 6 6l2-3 5 2v4a2 2 0 0 1-2 2C9 21 3 15 3 5a2 2 0 0 1 2-2Z';
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
 const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
@@ -81,7 +82,7 @@ const MOBILE_CONTEXT={
  together:['together','projects-overview','projects-mine','projects-tasks','projects-updates'],
  city:CITY_SECTIONS,
  center:CENTER_SECTIONS,
- messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
+ messages:['messages-contacts','messages-calls','messages-chats'],
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>route==='projects'?'together':['people','communities'].includes(route)?'center':['me','settings','about'].includes(route)?'home':route;
@@ -128,7 +129,7 @@ function renderMobileChrome(){
   together:['together','projects-overview','projects-tasks','projects-updates'],
   city:CITY_SECTIONS,
   center:CENTER_SECTIONS,
-  messages:['messages-chats','messages-direct','messages-groups'],
+  messages:['messages-contacts','messages-calls','messages-chats'],
   me:[]
  };
  const accountContext=active==='home'&&['me','settings','about'].includes(current)
@@ -137,15 +138,19 @@ function renderMobileChrome(){
  const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
  const subLabel=k=>{
+  const messageIndex=['messages-contacts','messages-calls','messages-chats'].indexOf(k);
+  if(messageIndex>=0)return globalThis.FolkoopNetworkMessaging.copy(lang)[messageIndex];
   if(spaceLabel(k))return spaceLabel(k);
   if(k==='me')return t('me');
   return SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  };
  const virtualTarget=k=>subsectionParent(k)||k;
  const isVirtualSubsection=k=>subsectionParent(k)!=='';
+ const selectedSubsection=['messages-direct','messages-groups','messages-invites'].includes(subsection)?'messages-chats':subsection;
  const subIcons={'city-overview':'city','city-services':'center','city-transport':'transport','city-reports':'updates','city-decisions':'tasks','center-map':'map','center-events':'calendar','home-overview':'home','projects-overview':'projects','projects-mine':'me','projects-tasks':'tasks','projects-updates':'updates','messages-chats':'messages','messages-direct':'me','messages-groups':'communities','messages-invites':'people'};
+ subIcons['messages-contacts']='people';subIcons['messages-calls']='phone';
  const language=active==='home'?'<button type="button" data-mobile-action="language">'+icon('language')+'<span>'+esc(t('language'))+'</span></button>':'';
- const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current&&!(k==='center'&&subsectionParent(subsection)==='center'));return (k==='settings'?language:'')+'<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(subIcons[k]||k)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&selectedSubsection===k):(target===current&&!(k==='center'&&subsectionParent(subsection)==='center'));return (k==='settings'?language:'')+'<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(subIcons[k]||k)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false">'+icon('settings')+'<span>'+esc(t('settings'))+'</span></button>':'';
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
  const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));

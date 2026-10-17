@@ -40,7 +40,7 @@ test('every primary destination has a second-line context definition',async()=>{
   "together:['together','projects-overview','projects-mine','projects-tasks','projects-updates']",
   "city:CITY_SECTIONS",
   "center:CENTER_SECTIONS",
-  "messages:['messages-chats','messages-direct','messages-groups','messages-invites']"
+  "messages:['messages-contacts','messages-calls','messages-chats']"
  ])assert(js.includes(entry),entry);
 });
 

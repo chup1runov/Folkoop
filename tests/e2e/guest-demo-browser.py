@@ -308,9 +308,9 @@ async def main():
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await page.locator('[data-net="openChat"]').first.click()
   await expect(page.locator('[data-net="backChats"]')).to_be_visible()
-  await page.click('#mobileContextDock [data-mobile-subnav="messages-groups"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="messages-contacts"]')
   assert await page.locator('[data-net="backChats"]').count()==0
-  await expect(page.locator('#mobileContextDock [data-mobile-subnav="messages-groups"]')).to_have_attribute('aria-current','page')
+  await expect(page.locator('#mobileContextDock [data-mobile-subnav="messages-contacts"]')).to_have_attribute('aria-current','page')
   passed.append('Project and message subtabs clear stale open entity details')
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')

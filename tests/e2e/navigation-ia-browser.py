@@ -88,9 +88,20 @@ async def audit(browser,width,height):
   print(await page.locator('#mobilePrimaryNav').evaluate("el => ({rect:el.getBoundingClientRect().toJSON(),scrollX,scrollY,innerWidth,innerHeight,inert:el.inert,hit:document.elementFromPoint(innerWidth-35,innerHeight-25)?.outerHTML.slice(0,250)})"))
   raise
  await expect(page.locator('#mobileContextDock [data-subsection^="messages-"]')).to_have_count(3)
- await page.click('#mobileContextDock [data-subsection="messages-direct"]')
+ await page.click('#mobileContextDock [data-subsection="messages-contacts"]')
+ await expect(page.locator('#networkContactSearch')).to_be_visible()
+ await page.fill('#networkContactSearch','Omar')
+ await expect(page.locator('[data-contact-card]:visible')).to_have_count(1)
+ await page.locator('[data-contact-card]:visible [data-net="openChat"]').click()
+ await expect(page.locator('[data-net="backChats"]')).to_be_visible()
+ await page.click('#mobileContextDock [data-subsection="messages-calls"]')
+ await expect(page.locator('#networkPanel')).to_contain_text('Звонки пока не подключены')
+ await expect(page.locator('[data-net="backChats"]')).to_have_count(0)
+ await expect(page.locator('#netMessage')).to_have_count(0)
+ await page.click('#mobileContextDock [data-subsection="messages-chats"]')
+ await page.click('#networkPanel [data-subsection="messages-direct"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Личная переписка')
- await page.click('#mobileContextDock [data-subsection="messages-groups"]')
+ await page.click('#networkPanel [data-subsection="messages-groups"]')
  await expect(page.locator('#networkPanel')).to_contain_text('Групповой чат')
  assert await page.locator('#mobileContextDock [data-subsection="messages-invites"]').count()==0
 

@@ -2,6 +2,20 @@
    RPC execution, authorization and state ownership stay in network-ui.js. */
 (() => {
 'use strict';
+const labels={
+ ru:['Контакты','Звонки','Чаты','Звонки пока не подключены','Здесь появятся голосовые и видеозвонки. Пока можно написать в чат.','Открыть чаты','Люди из доступных профилей и переписок. Контакты телефона не импортируются.'],
+ en:['Contacts','Calls','Chats','Calls are not connected yet','Voice and video calls will appear here. For now, send a chat message.','Open chats','People from available profiles and conversations. Phone contacts are not imported.'],
+ sv:['Kontakter','Samtal','Chattar','Samtal är inte anslutna ännu','Röst- och videosamtal kommer att finnas här. Tills vidare kan du skriva i chatten.','Öppna chattar','Personer från tillgängliga profiler och konversationer. Telefonkontakter importeras inte.'],
+ uk:['Контакти','Дзвінки','Чати','Дзвінки ще не підключені','Тут з’являться голосові та відеодзвінки. Поки можна написати в чат.','Відкрити чати','Люди з доступних профілів і листування. Контакти телефона не імпортуються.'],
+ es:['Contactos','Llamadas','Chats','Las llamadas aún no están conectadas','Aquí habrá llamadas de voz y vídeo. Por ahora, puedes escribir en el chat.','Abrir chats','Personas de perfiles y conversaciones disponibles. No se importan contactos del teléfono.'],
+ fi:['Yhteystiedot','Puhelut','Keskustelut','Puhelut eivät ole vielä käytössä','Ääni- ja videopuhelut tulevat tänne. Nyt voit lähettää viestin keskustelussa.','Avaa keskustelut','Ihmisiä saatavilla olevista profiileista ja keskusteluista. Puhelimen yhteystietoja ei tuoda.'],
+ bs:['Kontakti','Pozivi','Razgovori','Pozivi još nisu povezani','Ovdje će biti glasovni i video pozivi. Za sada možete poslati poruku.','Otvori razgovore','Ljudi iz dostupnih profila i razgovora. Telefonski kontakti se ne uvoze.'],
+ ar:['جهات الاتصال','المكالمات','المحادثات','المكالمات غير متصلة بعد','ستظهر هنا مكالمات الصوت والفيديو. يمكنك الآن إرسال رسالة في المحادثة.','فتح المحادثات','أشخاص من الملفات والمحادثات المتاحة. لا يتم استيراد جهات اتصال الهاتف.'],
+ fa:['مخاطبان','تماس‌ها','گفت‌وگوها','تماس‌ها هنوز متصل نیستند','تماس‌های صوتی و تصویری اینجا خواهند بود. فعلاً می‌توانید در گفت‌وگو پیام بفرستید.','باز کردن گفت‌وگوها','افراد از نمایه‌ها و گفت‌وگوهای در دسترس. مخاطبان تلفن وارد نمی‌شوند.'],
+ so:['Xiriirrada','Wicitaannada','Wadahadallo','Wicitaannadu weli ma shaqeeyaan','Wicitaannada codka iyo muuqaalka ayaa halkan iman doona. Hadda farriin ku dir wada hadalka.','Fur wadahadallada','Dadka ka socda bogagga iyo wada hadallada la heli karo. Xiriirrada taleefanka lama soo dejiyo.'],
+ ku:['Têkilî','Bang','Peyamdan','Bang hîn ne girêdayî ne','Bangên deng û vîdyoyê dê li vir bin. Niha dikarî peyamekê bişînî.','Peyamdanê veke','Kesên ji profîl û axaftinên berdest. Têkiliyên telefonê nayên împortkirin.']
+};
+const copy=lang=>labels[lang]||labels.en;
 
 function create({
   escape,
@@ -43,6 +57,7 @@ function create({
       inviteTarget='',
       messageDrafts={},
       guestDemo=false,
+      language='en',
       view='messages-chats'
     }=state;
 
@@ -51,6 +66,19 @@ function create({
     const ownInvite=chat&&chatInvites.find(invite=>invite.conversation_id===chat.id&&invite.user_id===user.id);
     const linked=chat&&coopChats.find(item=>item.conversation_id===chat.id);
     const discoverable=directory.filter(profile=>profile.id!==user.id);
+    const text=copy(language);
+    const initials=name=>escape(Array.from(String(name||'?').trim())[0]||'?');
+
+    if(!chat&&view==='messages-calls')return `<section class="messages-empty-call"><span class="messages-call-symbol" aria-hidden="true">☎</span><h2>${escape(text[1])}</h2><h3>${escape(text[3])}</h3><p>${escape(text[4])}</p><a class="button" href="#/messages" data-subsection="messages-chats">${escape(text[5])}</a></section>`;
+    if(!chat&&view==='messages-contacts'){
+      const ids=new Set(discoverable.map(p=>p.id));
+      for(const member of chatMembers)if(member.user_id!==user.id&&chatMembers.some(own=>own.user_id===user.id&&own.conversation_id===member.conversation_id))ids.add(member.user_id);
+      const contacts=[...ids].map(id=>getProfile(id)||directory.find(p=>p.id===id)).filter(Boolean).sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),language));
+      return `<section class="messages-contacts"><h2>${escape(text[0])}</h2><p class="meta">${escape(text[6])}</p><label class="messages-contact-search">${escape(text[0])}<input id="networkContactSearch" type="search" autocomplete="off"></label><div class="messenger-contact-list">${contacts.map(person=>{
+        const direct=chats.find(c=>c.kind==='direct'&&chatMembers.some(m=>m.conversation_id===c.id&&m.user_id===user.id)&&chatMembers.some(m=>m.conversation_id===c.id&&m.user_id===person.id));
+        return `<article class="messenger-contact" data-contact-card><span class="messenger-avatar" aria-hidden="true">${initials(person.name)}</span><div><h3>${escape(person.name||'—')}</h3><p class="meta">${escape(person.skills||'')}</p></div>${direct?`<button type="button" class="messenger-open" data-net="openChat" data-id="${escape(direct.id)}" aria-label="${escape(chatText('conversation')+' · '+person.name)}"><span aria-hidden="true">›</span></button>`:guestDemo?'':`<a class="text-button" href="#/messages" data-subsection="messages-direct" data-contact-id="${escape(person.id)}">${escape(chatText('startDirect'))}</a>`}</article>`;
+      }).join('')||`<p class="empty">${escape(chatText('noPeople'))}</p>`}</div></section>`;
+    }
 
     let html=`<div class="row"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div>${guestDemo?'':`<div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div>`}</div>`;
 
@@ -87,7 +115,7 @@ function create({
         const profile=getProfile(message.author_id);
         const mine=message.author_id===user.id;
         const canDelete=mine||(chat.kind==='group'&&chat.owner_id===user.id);
-        return `<article class="card"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
+        return `<article class="card messenger-bubble${mine?' is-mine':''}"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
       }).join('')||`<div class="empty"><p>${escape(generalText('empty'))}</p></div>`}</section>`;
 
       if(!guestDemo)html+=`<form id="netMessage" class="editor card"><label>${escape(chatText('message'))}<textarea name="body" maxlength="4000" rows="3" required>${escape(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${escape(chatText('sendMessage'))}</button></form>`;
@@ -109,7 +137,7 @@ function create({
 
     const invitationView=`<h3 id="messagesInvitationHeading">${escape(chatText('invitations'))}</h3><div class="draft-grid">${invitations.map(chatItem=>`<article class="card"><h3>${escape(chatLabel(chatItem,user))}</h3><span class="badge">${escape(chatText('invitePending'))}</span><div class="actions">${networkButton('openChat','open',chatItem.id)}${networkButton('acceptChat','accept',chatItem.id)}${networkButton('declineChat','decline',chatItem.id)}</div></article>`).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
-    const messagesHub=guestDemo?'':`<section class="messages-hub" aria-labelledby="messagesHubTitle">
+    const messagesHub=guestDemo?`<nav class="messages-filter-row" aria-label="${escape(text[2])}"><a href="#/messages" data-subsection="messages-chats">${escape(text[2])}</a><a href="#/messages" data-subsection="messages-direct">${escape(chatText('direct'))}</a><a href="#/messages" data-subsection="messages-groups">${escape(chatText('groupChat'))}</a></nav>`:`<section class="messages-hub" aria-labelledby="messagesHubTitle">
       <div class="messages-hub-head"><p class="eyebrow">FOLKOOP</p><h3 id="messagesHubTitle">${escape(chatText('messagesTitle'))}</h3><p>${escape(chatText('messagesDesc'))}</p></div>
       <div class="messages-action-grid">
         <a href="#/messages" data-subsection="messages-direct"><span aria-hidden="true">👤</span><strong>${escape(chatText('direct'))}</strong><small>${escape(chatText('startDirect'))}</small></a>
@@ -131,10 +159,11 @@ function create({
       const link=coopChats.find(item=>item.conversation_id===chatItem.id);
       const preview=[...chatMessages].filter(message=>message.conversation_id===chatItem.id).sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0))[0];
       const messageType=link?'work':chatItem.kind;
-      return `<article class="card mura-chat-card" data-message-card data-message-type="${escape(messageType)}"${guestDemo&&link?' data-demo-story="chat"':''}><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${guestDemo&&preview?`<p class="mura-chat-preview">${escape(preview.body)}</p>`:''}${networkButton('openChat','open',chatItem.id)}</article>`;
+      return `<article class="card mura-chat-card" data-message-card data-message-type="${escape(messageType)}"${guestDemo&&link?' data-demo-story="chat"':''}><span class="messenger-avatar" aria-hidden="true">${initials(chatLabel(chatItem,user))}</span><div class="messenger-chat-copy"><div class="row"><h3>${escape(chatLabel(chatItem,user))}</h3>${unread?`<span class="net-count">${escape(String(unread))}</span>`:''}</div><p class="meta">${escape(link?activityText('linkedChat'):(chatItem.kind==='group'?chatText('groupChat'):chatText('direct')))}</p>${preview?`<p class="mura-chat-preview">${escape(preview.body)}</p>`:''}</div><button type="button" class="messenger-open" data-net="openChat" data-id="${escape(chatItem.id)}" aria-label="${escape(chatText('conversation')+' · '+chatLabel(chatItem,user))}"><span aria-hidden="true">›</span></button></article>`;
     }).join('')||`<div class="empty"><p>${escape(chatText('noChats'))}</p></div>`}</div>`;
 
     if(guestDemo){
+      html+=messagesHub;
       if(view==='messages-direct')html+=cards(joined.filter(chatItem=>chatItem.kind==='direct'));
       else if(view==='messages-groups')html+=cards(joined.filter(chatItem=>chatItem.kind==='group'));
       else html+=cards(joined);
@@ -148,5 +177,5 @@ function create({
   return Object.freeze({chatLabel,render});
 }
 
-globalThis.FolkoopNetworkMessaging=Object.freeze({create});
+globalThis.FolkoopNetworkMessaging=Object.freeze({create,copy});
 })();

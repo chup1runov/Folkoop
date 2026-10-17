@@ -759,6 +759,7 @@ function renderMessages(u){
  const rawView=currentSubsection('messages');
  const view=guestDemo&&rawView==='messages-invites'?'messages-chats':rawView;
  return messagingDomain.render(u,{
+  language:lang(),
   selectedChat,
   directTarget,
   chatDraft,
@@ -1156,6 +1157,11 @@ document.addEventListener('click',e=>{
  });
 });
 document.addEventListener('input',e=>{
+ if(e.target?.id==='networkContactSearch'){
+  const needle=e.target.value.trim().toLocaleLowerCase();
+  host.querySelectorAll('[data-contact-card]').forEach(card=>{card.hidden=!card.textContent.toLocaleLowerCase().includes(needle);});
+  return;
+ }
  if(e.target?.id!=='networkMessageSearch')return;
  const needle=e.target.value.trim().toLocaleLowerCase();
  document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
@@ -1166,6 +1172,8 @@ document.addEventListener('input',e=>{
  });
 });
 document.addEventListener('click',e=>{
+ const contact=e.target.closest?.('[data-contact-id]');
+ if(contact&&!guestDemo)directTarget=contact.dataset.contactId;
  const filter=e.target.closest?.('[data-message-kind]');if(!filter)return;
  const turnOff=filter.classList.contains('active');
  document.querySelectorAll('#networkPanel [data-message-kind]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});
