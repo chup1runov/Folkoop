@@ -63,6 +63,10 @@ async def main():
    await expect(page.locator('#onboarding')).to_be_visible()
    await page.wait_for_timeout(220)
    for index in range(5):
+    # The read-only account renders asynchronously. Measure the actual story
+    # target after layout, not the portrait fallback during a slow CI render.
+    await expect(page.locator('.tutorial-target')).to_be_visible()
+    await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
     record = await page.evaluate(GEOMETRY)
     record.update(width=width,height=height,step=index+1)
     records.append(record)
