@@ -68,7 +68,9 @@ test('all eleven locales have guided-tour action and feedback texts',()=>{
  }
  assert.equal(Object.keys(actions).length,11);
  assert.equal(Object.keys(feedback).length,11);
- assert(core.includes("onboardingFeedbackCopy[lang]||onboardingFeedbackCopy.en"));
+ // The story opens existing localized project/chat objects, not success claims.
+ assert(core.includes("new CustomEvent('folkoop:mura-story'"));
+ assert(core.includes('muraStoryCopy[lang]?.[item.id]?.[2]'));
  assert(core.includes("$('#mobilePrimaryNav')?.setAttribute('aria-label',t('select'))"));
  assert(core.includes("$('#networkPanel')?.setAttribute('aria-label','FOLKOOP · '+t('together'))"));
 });

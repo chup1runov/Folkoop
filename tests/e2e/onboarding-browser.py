@@ -37,39 +37,30 @@ async def mobile_flow(browser,passed):
 
  await expect(page.locator('#onboarding')).to_be_visible()
  titles=[
-  'Добро пожаловать ко мне',
-  'Что я храню здесь',
-  'Что мне понадобилось',
-  'Чем я могу помочь',
-  'Идея, которая выросла',
-  'Люди вокруг меня',
-  'Мой локальный Центр',
-  'Теперь исследуй сам'
+  'Заходи ко мне',
+  'Одна маленькая идея',
+  'Уже не одна',
+  'Моя часть дела',
+  'Осмотримся?'
  ]
  semantic={
-  2:('together','Одолжить плиткорез на выходные'),
-  3:('together','Могу помочь с фотографией'),
-  4:('projects','Обмен растениями и семенами по соседству')
+  1:('projects','Обмен растениями и семенами по соседству'),
+  2:('messages','Anna'),
+  3:('projects','Обмен растениями и семенами по соседству')
  }
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
-  await expect(page.locator('#onboardingProgress')).to_contain_text(f'{idx+1} / 8')
+  await expect(page.locator('#onboardingProgress')).to_contain_text(f'{idx+1} / 5')
   await expect(page.locator('#onboardingSpotlight')).to_be_visible()
-  await expect(page.locator('#folkoopGuideActor')).to_be_visible()
+  await expect(page.locator('.onboarding-portrait')).to_be_visible()
   if idx in semantic:
    route_name,visible_text=semantic[idx]
    assert page.url.endswith('#/'+route_name),(idx,page.url)
    await expect(page.locator('#networkPanel')).to_contain_text(visible_text)
-   await page.click('[data-onboarding="next"]')
-   await expect(page.locator('#muraPracticeXp')).to_have_text(f'{idx-1} / 3')
    assert 'XP' not in await page.locator('#onboarding').inner_text()
-  if idx==6:
-   assert page.url.endswith('#/center'),page.url
-   await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
-   assert await page.locator('#workspace a[href*="t.me"]').count()==0
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
-   await page.click('[data-onboarding="next"]')
+   await page.click('[data-coop="openLinkedChat"]' if idx==1 else '[data-onboarding="next"]')
 
  await expect(page.locator('[data-onboarding="next"]')).to_have_text('Осмотреться у Муры')
  await page.click('[data-onboarding="next"]')
@@ -90,12 +81,15 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopHelperTitle')).to_have_text('Мура')
  await expect(page.locator('#folkoopHelperPanel')).to_contain_text('моего аккаунта')
  await page.click('[data-helper="tour"]')
- await expect(page.locator('#onboardingTitle')).to_have_text('Добро пожаловать ко мне')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Заходи ко мне')
  await page.click('[data-onboarding="skip"]')
  await expect(page.locator('#onboarding')).to_be_hidden()
  await expect(page).to_have_url(re.compile(r'#/home$'))
  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
  passed.append('Replaying Mura tour returns to Mura rather than converting the visitor into an account flow')
+ await page.evaluate("location.hash='#/center'")
+ await expect(page.locator('#workspace [data-center-story="local"]')).to_contain_text('ГБГ Форум')
+ assert await page.locator('#workspace a[href*="t.me"]').count()==0
 
  assert not errors,errors
  await context.close()
@@ -107,7 +101,7 @@ async def desktop_flow(browser,passed):
  await page.goto(BASE+'?intro=1')
  await expect(page.locator('#onboarding')).to_be_visible()
  await expect(page.locator('#onboardingTitle')).to_have_text('Welcome to my place')
- await expect(page.locator('#folkoopGuideActor')).to_be_visible()
+ await expect(page.locator('.onboarding-portrait')).to_be_visible()
  await page.click('[data-onboarding="next"]')
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')

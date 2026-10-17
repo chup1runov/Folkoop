@@ -50,7 +50,7 @@ function pose(name){
  actor.dataset.pose=name;
 }
 function dims(mode='home'){
- const short=innerHeight<520,mobile=innerWidth<720,tour=mode!=='home';
+ const short=innerHeight<520,mobile=innerWidth<=760,tour=mode!=='home';
  const w=tour?(short?90:mobile?108:132):(short?56:mobile?64:78);
  return {w,h:w*(208/192)};
 }
@@ -64,16 +64,19 @@ function pointPose(targetRect,actorRect){
 // Both dialogs are local presentation UI. Only their own controls are observed;
 // no messages, account data or user activity history are inspected or retained.
 let modal=null,returnFocus=null,redirectingFocus=false;
+let modalAction=null;
+const storyAction=root=>root?.dataset.interactive==='chat'?document.querySelector('#networkPanel [data-coop="openLinkedChat"]'):null;
+const inModal=target=>modal?.contains(target)||modalAction?.contains(target);
 const inertBefore=new Map();
 const focusables=root=>Array.from(root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')).filter(e=>!e.closest('[hidden],[inert]')&&e.getClientRects().length);
 function focusModal(){
  if(!modal)return;
- const preferred=modal.querySelector('[data-onboarding="next"]')||modal.querySelector('.is-current')||focusables(modal)[0];
+ const preferred=modalAction||modal.querySelector('[data-onboarding="next"]:not([hidden])')||modal.querySelector('.is-current')||focusables(modal)[0];
  (preferred||modal).focus({preventScroll:true});
 }
 function closeModal(restore=true){
  if(!modal)return;
- const previous=returnFocus;modal=null;returnFocus=null;
+ const previous=returnFocus;modal=null;returnFocus=null;modalAction=null;
  for(const [el,value] of inertBefore)if(el.isConnected)el.inert=value;
  inertBefore.clear();
  document.body.classList.remove('guide-tour-open');
@@ -84,27 +87,40 @@ function closeModal(restore=true){
  }
 }
 function openModal(root){
- if(modal===root){if(!root.contains(document.activeElement))focusModal();return;}
+ const action=storyAction(root);
+ if(modal===root&&modalAction===action){if(!inModal(document.activeElement)||document.activeElement.closest('[hidden]'))focusModal();return;}
  closeModal(false);returnFocus=document.activeElement;modal=root;
+ modalAction=action;
+ root.querySelector('[role="dialog"]')?.setAttribute('aria-modal',String(!action));
  root.tabIndex=-1;
  document.body.classList.toggle('guide-tour-open',root.id==='onboarding');
- for(const el of document.body.children){
-  if(el===root||['SCRIPT','STYLE','LINK'].includes(el.tagName))continue;
+ const isolate=parent=>{for(const el of parent.children){
+  if(el===root||el===action||['SCRIPT','STYLE','LINK'].includes(el.tagName))continue;
+  if(el.contains(root)||(action&&el.contains(action))){isolate(el);continue;}
   inertBefore.set(el,el.inert);el.inert=true;
- }
+ }};
+ isolate(document.body);
  focusModal();
 }
 document.addEventListener('focusin',event=>{
- if(!modal||modal.hidden||modal.contains(event.target)||redirectingFocus)return;
+ if(!modal||modal.hidden||inModal(event.target)||redirectingFocus)return;
  redirectingFocus=true;focusModal();redirectingFocus=false;
 },true);
 document.addEventListener('keydown',event=>{
  if(!modal||modal.hidden||event.key!=='Tab')return;
- const controls=focusables(modal);
+ const controls=[...focusables(modal),...(modalAction?.isConnected?[modalAction]:[])];
  if(!controls.length){event.preventDefault();modal.focus({preventScroll:true});return;}
- const first=controls[0],last=controls[controls.length-1],active=document.activeElement;
- if(event.shiftKey&&(active===first||!controls.includes(active))){event.preventDefault();last.focus({preventScroll:true});}
- else if(!event.shiftKey&&(active===last||!controls.includes(active))){event.preventDefault();first.focus({preventScroll:true});}
+ // WebKit may skip buttons under the host's keyboard-navigation preference.
+ // Cycle explicitly so the modal remains usable under either OS preference.
+ const index=controls.indexOf(document.activeElement);
+ const next=index<0?(event.shiftKey?controls.length-1:0):(index+(event.shiftKey?-1:1)+controls.length)%controls.length;
+ event.preventDefault();controls[next].focus({preventScroll:true});
+},true);
+// The interactive scene exposes exactly one real, read-only navigation action.
+document.addEventListener('click',event=>{
+ if(modal&&!modal.hidden&&modalAction&&!inModal(event.target)){
+  event.preventDefault();event.stopImmediatePropagation();
+ }
 },true);
 function overlap(a,b){
  return b?Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)):0;
@@ -132,12 +148,14 @@ function layoutTour(target){
   copy.setAttribute('aria-labelledby','onboardingTitle');
   if(card.dataset.guideStep!==step){card.scrollTop=0;copy.scrollTop=0;card.dataset.guideStep=step;}
  }
- const mobile=innerWidth<=720,short=innerHeight<520,gap=mobile||short?12:24;
+ const mobile=innerWidth<=760,short=innerHeight<520,gap=mobile||short?12:24;
  const helper=target===actor;
  let r=target.getBoundingClientRect();
  const left=r.left+r.width/2>=innerWidth/2;
- card.style.width=(mobile?innerWidth-24:Math.min(500,innerWidth-48))+'px';
- card.style.maxHeight=Math.floor(short&&!mobile?Math.min(innerHeight-24,260):(mobile?innerHeight*.44:Math.min(innerHeight*.72,620)))+'px';
+ card.style.width=(mobile?innerWidth-24:short?Math.min(380,innerWidth*.46):Math.min(500,innerWidth-48))+'px';
+ // Reserve room for chapter selection and reachable actions on short screens.
+ // Only the narrative scrolls in ordinary layouts; the card remains bounded.
+ card.style.maxHeight=Math.floor(short?Math.min(innerHeight-24,340):(mobile?Math.min(innerHeight-24,Math.max(340,innerHeight*.44)):Math.min(innerHeight*.72,620)))+'px';
  card.style.left=left||mobile?gap+'px':'auto';
  card.style.right=left&&!mobile?'auto':gap+'px';
  // On mobile the primary/context navigation lives at the bottom of the viewport.
@@ -181,18 +199,19 @@ function layoutTour(target){
 }
 function applyPosition(target,mode='point',poseName=null){
  ensureActor();currentTarget=target||null;currentMode=mode;currentPose=poseName;
+ if(activeTour()?.dataset.story==='true')return;
  const {w,h}=dims(mode);actor.style.setProperty('--folkoop-guide-w',w+'px');
  actor.classList.toggle('is-perched',mode==='perch');
  actor.classList.toggle('is-home',mode==='home');
  actor.classList.toggle('is-tour',mode!=='home');
  if(mode==='home'||!target){
-  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<720?'10px':'18px';const dock=document.getElementById('mobileContextDock'),primary=document.getElementById('mobilePrimaryNav'),chrome=!dock?.hidden&&dock?.getClientRects().length?dock:primary?.getClientRects().length?primary:null;const chromeReserve=chrome?Math.max(0,innerHeight-chrome.getBoundingClientRect().top)+14:18;actor.style.bottom=Math.max(18,chromeReserve)+'px';
+  actor.style.left='auto';actor.style.top='auto';actor.style.right=innerWidth<=760?'10px':'18px';const dock=document.getElementById('mobileContextDock'),primary=document.getElementById('mobilePrimaryNav'),chrome=!dock?.hidden&&dock?.getClientRects().length?dock:primary?.getClientRects().length?primary:null;const chromeReserve=chrome?Math.max(0,innerHeight-chrome.getBoundingClientRect().top)+14:18;actor.style.bottom=Math.max(18,chromeReserve)+'px';
   pose(poseName||'idle');actor.disabled=false;actor.setAttribute('aria-expanded',String(document.getElementById('folkoopHelperPanel')?.hidden===false));return;
  }
  actor.style.right='auto';actor.style.bottom='auto';actor.disabled=true;
  const r=target.getBoundingClientRect(),card=activeTour()?.querySelector('.onboarding-card')?.getBoundingClientRect();
  const seatY=r.top-h*.44,seatX=r.width>w*3.2?r.left+r.width/2-w/2:r.right-w*.55;
- const mobile=innerWidth<720,sideGap=mobile?10:16;
+ const mobile=innerWidth<=760,sideGap=mobile?10:16;
  const candidates=mode==='perch'
   ?[[seatX,seatY],[r.right-w*.55,seatY],[r.left-w*.45,seatY],[r.left+r.width/2-w/2,seatY]]
   :[[r.right+sideGap,r.top+r.height/2-h/2],[r.left-w-sideGap,r.top+r.height/2-h/2],[r.left+r.width/2-w/2,r.top-h-16],[r.left+r.width/2-w/2,r.bottom+12],[12,12],[innerWidth-w-12,12]];
@@ -221,6 +240,7 @@ function teleportTo(target,opts={}){
   return;
  }
  layoutTour(target);
+ if(activeTour()?.dataset.story==='true'){cancelTeleport();return;}
  if(reduced()||opts.instant){applyPosition(target,mode,poseName);return;}
  const generation=motionGeneration;actor.classList.add('teleport-out');
  teleportTimer=setTimeout(()=>{

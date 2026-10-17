@@ -50,10 +50,24 @@ test('rights: built artifact ships exact notices without changing application co
   assert.equal(run.status,0,run.stderr);
   for(const name of files){
    if(name==='app.js')continue;
+   if(name==='sw.js'){
+    const built=await readFile(path.join(tmp,'_site',name),'utf8');
+    assert.match(built,/const BUILD_ID='[a-f0-9]{20}';/);
+    assert.equal(built.replace(/const BUILD_ID='[^']+';/,"const BUILD_ID='source';"),await readFile(path.join(root,'apps/web/sw.js'),'utf8'));
+    continue;
+   }
    assert.deepEqual(await readFile(path.join(tmp,'_site',name)),await readFile(['LICENSE','LICENSING.md','THIRD_PARTY_NOTICES.md'].includes(name)?path.join(root,name):path.join(root,'apps','web',name)),name);
   }
   const sourceApp=await readFile(path.join(root,'apps','web','app.js'),'utf8');
   const expected=sourceApp.replace(/const APP_VERSION = '[^']+';/,`const APP_VERSION = '${pkg.version}';`);
   assert.equal(await readFile(path.join(tmp,'_site/app.js'),'utf8'),expected);
+  const worker=await readFile(path.join(tmp,'_site/sw.js'),'utf8');
+  const rebuild=()=>spawnSync(process.execPath,['scripts/build/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
+  assert.equal(rebuild().status,0);
+  assert.equal(await readFile(path.join(tmp,'_site/sw.js'),'utf8'),worker,'identical builds keep the cache fingerprint');
+  const css=path.join(tmp,'apps/web/folkoop-guide.css');
+  await writeFile(css,(await readFile(css,'utf8'))+'\n/* changed fixture */\n');
+  assert.equal(rebuild().status,0);
+  assert.notEqual(await readFile(path.join(tmp,'_site/sw.js'),'utf8'),worker,'same-version CSS changes rotate the offline cache');
  }finally{await rm(tmp,{recursive:true,force:true});}
 });

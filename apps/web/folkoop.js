@@ -8,7 +8,10 @@ let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.
 if(!C.LANGS.includes(lang))lang='sv';
 let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null, cityHandoff=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
-const NAV_ORDER=['home','together','city','center','messages'];
+const NAV_ORDER=['home','together','center','city','messages'];
+// Flags are supplementary locale cues, not a claim about a speaker's nationality.
+const LANGUAGE_MARKS={sv:'🇸🇪',en:'🌐',ru:'🇷🇺',uk:'🇺🇦',fi:'🇫🇮',bs:'🌐',ar:'🌐',fa:'🌐',so:'🇸🇴',ku:'🌐',es:'🌐'};
+const LANGUAGE_NAMES=Object.fromEntries(C.LANGS.map(code=>[code,`${LANGUAGE_MARKS[code]||'🌐'} ${I.NAMES[code]}`]));
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
@@ -20,16 +23,13 @@ const firstContactGuest=new URL(location.href).searchParams.get('first-contact')
 const firstContactTrial=firstContactPreview||firstContactGuest;
 const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactTrial);
 let guestPathsExpanded=false;
-let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,muraPracticeStep=0,muraPracticeXp=0,tourReturnMode=null,entryGateAfterMuraExit=false;
+let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,tourReturnMode=null,entryGateAfterMuraExit=false;
 const onboardingSteps=[
  {id:'welcome',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'wink'},
- {id:'home',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'inspect'},
- {id:'together',route:'together',target:'[data-demo-story="need"] h3',motion:'point',pose:'point'},
- {id:'projects',route:'together',target:'[data-demo-story="offer"] h3',motion:'point',pose:'idea'},
- {id:'people',route:'projects',target:'[data-demo-story="project"] h3',motion:'point',pose:'lean-in'},
- {id:'city',route:'people',target:'[data-demo-story="person"] h3',motion:'point',pose:'searching'},
- {id:'center',route:'center',target:'[data-center-story="local"] h2',motion:'point',pose:'point'},
- {id:'quick',route:'me',target:'.demo-profile-card h2',motion:'point',pose:'confident'}
+ {id:'project',route:'projects',story:'project',target:'[data-coop="openLinkedChat"]',motion:'point',pose:'idea'},
+ {id:'chat',route:'messages',story:'chat',target:'.chat-messages > article:first-child',motion:'point',pose:'lean-in'},
+ {id:'next',route:'projects',story:'project',target:'.coop-next-step',motion:'point',pose:'point'},
+ {id:'quick',route:'home',target:'.mura-hero h1',motion:'point',pose:'confident'}
 ];
 
 const legacyRoutes=['ansvar','rapportera','nara','beslut','om'];
@@ -38,6 +38,8 @@ if(initialCityHash!=='home'){current='city';history.replaceState(null,'','#/city
 const GOTEBORG_FORUM_URL='https://t.me/+YlokNMBafp8wM2Vi';
 const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project:'M4 19V5h16v14H4Zm4-7h8M12 8v8',purchase:'M4 6h2l2 9h9l2-6H8M10 20h.01M17 20h.01',resource:'M5 7h14v12H5V7Zm3 0V4h8v3'};
 const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8.5 12.5 2.2 2.2a2 2 0 0 0 2.8 0l5.2-5.2a2.8 2.8 0 0 0-4-4l-2 2m3 4-2.2-2.2a2 2 0 0 0-2.8 0l-5.2 5.2a2.8 2.8 0 0 0 4 4l2-2',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
+Object.assign(icons,{language:'M3 5h12M9 3v2M5 5c0 6 4 10 9 12M13 5c0 5-4 10-10 12M14 21l4-10 4 10M16 17h4',tasks:'m3 6 2 2 4-4M12 6h9M3 14l2 2 4-4M12 14h9M12 20h9',updates:'M4 4h16v16H4ZM8 8h8M8 12h8M8 16h4'});
+Object.assign(icons,{map:'M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2ZM9 3v16M15 5v16',calendar:'M4 5h16v16H4ZM8 3v4M16 3v4M4 10h16M8 14h2M14 14h2',transport:'M5 3h14v15H5ZM5 11h14M8 18l-3 3M16 18l3 3M8 15h.01M16 15h.01'});
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
 const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
@@ -58,20 +60,37 @@ function normalizeCityHandoff(value){
 }
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
+const CITY_SECTIONS=['city-overview','city-services','city-transport','city-reports','city-decisions'];
+const CENTER_SECTIONS=['center','communities','center-map','people','center-events'];
+const SPACE_COPY={
+ ru:['Гётеборг','Службы','Транспорт','Обращения','Решения','Карта','Афиша','Открыть источник','Откроется внешний сайт. Даты, цены и доступность проверяй у организатора.','В календаре есть карта, выбор дат и фильтр бесплатных событий.'],
+ en:['Gothenburg','Services','Transport','Reports','Decisions','Map','Events','Open source','Opens an external website. Check dates, prices and availability with the provider.','The calendar has a map, date selection and a free-events filter.'],
+ sv:['Göteborg','Service','Resor','Anmälan','Beslut','Karta','Evenemang','Öppna källan','En extern webbplats öppnas. Kontrollera datum, priser och tillgänglighet hos arrangören.','Kalendern har karta, datumval och filter för gratis evenemang.'],
+ uk:['Гетеборг','Служби','Транспорт','Звернення','Рішення','Карта','Афіша','Відкрити джерело','Відкриється зовнішній сайт. Дати, ціни й доступність перевіряй в організатора.','У календарі є карта, вибір дат і фільтр безкоштовних подій.'],
+ fi:['Göteborg','Palvelut','Liikenne','Ilmoitukset','Päätökset','Kartta','Tapahtumat','Avaa lähde','Ulkoinen sivusto avautuu. Tarkista päivät, hinnat ja saatavuus järjestäjältä.','Kalenterissa on kartta, päivämäärävalinta ja maksuttomien tapahtumien suodatin.'],
+ es:['Gotemburgo','Servicios','Transporte','Avisos','Decisiones','Mapa','Agenda','Abrir fuente','Se abre una web externa. Consulta fechas, precios y disponibilidad con el organizador.','El calendario tiene mapa, selección de fechas y filtro de eventos gratuitos.'],
+ bs:['Göteborg','Službe','Prijevoz','Prijave','Odluke','Karta','Događaji','Otvori izvor','Otvara se vanjska stranica. Provjeri datume, cijene i dostupnost kod organizatora.','Kalendar ima kartu, izbor datuma i filter besplatnih događaja.'],
+ ar:['غوتنبرغ','الخدمات','النقل','البلاغات','القرارات','الخريطة','الفعاليات','افتح المصدر','يفتح موقعًا خارجيًا. تحقق من المواعيد والأسعار والتوفر لدى المنظم.','يتضمن التقويم خريطة واختيار التواريخ ومرشحًا للفعاليات المجانية.'],
+ fa:['گوتنبرگ','خدمات','حمل‌ونقل','گزارش‌ها','تصمیم‌ها','نقشه','رویدادها','باز کردن منبع','سایت خارجی باز می‌شود. تاریخ، قیمت و دسترسی را با برگزارکننده بررسی کنید.','تقویم دارای نقشه، انتخاب تاریخ و فیلتر رویدادهای رایگان است.'],
+ so:['Göteborg','Adeegyada','Gaadiidka','Warbixin','Go’aamada','Khariidad','Dhacdooyin','Fur isha','Bog dibadda ah ayaa furmaya. Ka hubi qabanqaabiyaha taariikhaha, qiimaha iyo helitaanka.','Jadwalku wuxuu leeyahay khariidad, doorashada taariikhda iyo shaandhaynta dhacdooyinka bilaashka ah.'],
+ ku:['Göteborg','Xizmet','Veguhestin','Rapor','Biryar','Nexşe','Bûyer','Çavkaniyê veke','Malperek derveyî vedibe. Dîrok, biha û berdestbûnê bi organîzator re kontrol bike.','Salname nexşe, hilbijartina dîrokê û parzûna bûyerên belaş heye.']
+};
+const spaceLabel=k=>{const i=[...CITY_SECTIONS,'center-map','center-events'].indexOf(k);return i<0?'':SPACE_COPY[lang][i];};
 const MOBILE_CONTEXT={
- home:['home-overview','home-attention','home-feed','home-actions','me'],
+ home:['home-overview','me','settings'],
  together:['together','projects-overview','projects-mine','projects-tasks','projects-updates'],
- city:[],
- center:['center','people','communities'],
+ city:CITY_SECTIONS,
+ center:CENTER_SECTIONS,
  messages:['messages-chats','messages-direct','messages-groups','messages-invites'],
  me:['me','settings','about']
 };
 const mobilePrimaryFor=route=>route==='projects'?'together':['people','communities'].includes(route)?'center':['me','settings','about'].includes(route)?'home':route;
 const SUBSECTION_KEY='folkoop-subsection-v1';
 let subsection='';
+let pendingCityScreen;
 try{subsection=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}
 document.documentElement.dataset.folkoopSubsection=subsection;
-const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':'';
+const subsectionParent=k=>k?.startsWith('home-')?'home':k?.startsWith('projects-')?'projects':k?.startsWith('messages-')?'messages':CITY_SECTIONS.includes(k)?'city':['center-map','center-events'].includes(k)?'center':'';
 const SUBNAV_LABELS={
  en:{'home-overview':'Overview','home-attention':'Needs attention','home-feed':'What is happening','home-actions':'Quick actions','projects-overview':'Projects','projects-mine':'Mine','projects-tasks':'Tasks','projects-updates':'Updates','messages-chats':'Chats','messages-direct':'Direct','messages-groups':'Groups','messages-invites':'Invitations'},
  sv:{'home-overview':'Översikt','home-attention':'Behöver uppmärksamhet','home-feed':'Vad händer','home-actions':'Snabbåtgärder','projects-overview':'Projekt','projects-mine':'Mina','projects-tasks':'Uppgifter','projects-updates':'Uppdateringar','messages-chats':'Chattar','messages-direct':'Direkt','messages-groups':'Grupper','messages-invites':'Inbjudningar'},
@@ -85,7 +104,7 @@ const SUBNAV_LABELS={
  so:{'home-overview':'Dulmar','home-attention':'U baahan fiiro','home-feed':'Waxa dhacaya','home-actions':'Tallaabooyin degdeg ah','projects-overview':'Mashaariic','projects-mine':'Kuweyga','projects-tasks':'Hawlo','projects-updates':'Cusboonaysiin','messages-chats':'Wadahadallo','messages-direct':'Toos','messages-groups':'Kooxo','messages-invites':'Casuumado'},
  ku:{'home-overview':'Nêrîna giştî','home-attention':'Pêdivî bi baldarî ye','home-feed':'Çi diqewime','home-actions':'Kiryarên bilez','projects-overview':'Proje','projects-mine':'Yên min','projects-tasks':'Kar','projects-updates':'Nûvekirin','messages-chats':'Peyamdan','messages-direct':'Rasterast','messages-groups':'Kom','messages-invites':'Dawet'}
 };
-const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats'};
+const defaultSubsection={home:'home-overview',projects:'projects-overview',messages:'messages-chats',city:'city-overview'};
 const HOME_PRIMARY_LABEL=Object.freeze({sv:'Mitt',en:'My',ru:'Моё',es:'Lo mío',uk:'Моє',fi:'Oma',bs:'Moje',ar:'لي',fa:'مال من',so:'Kayga',ku:'Ya min'});
 const primaryLabel=k=>k==='home'?(isMuraVisit()?'Mura':(HOME_PRIMARY_LABEL[lang]||t('me'))):t(k);
 const primaryIcon=k=>k==='center'?'<img class="primary-center-mark" src="./folkoop-mark.png" alt="">':icon(k==='home'?'me':k);
@@ -102,13 +121,13 @@ function renderMobileChrome(){
  document.documentElement.dataset.folkoopSubsection=subsection;
  primary.dataset.activeSection=active;
  const guest=isMuraVisit();
- const personalPrimaryLabel=guest?'Mura':(HOME_PRIMARY_LABEL[lang]||t('me'));
- primary.innerHTML=MOBILE_PRIMARY.map(k=>{const label=k==='home'?personalPrimaryLabel:primaryLabel(k);return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+primaryIcon(k)+'</a>';}).join('');
+ const personalPrimaryLabel=t('me');
+ primary.innerHTML=MOBILE_PRIMARY.map(k=>{const label=k==='home'?personalPrimaryLabel:primaryLabel(k);return '<a href="#/'+k+'" data-mobile-nav="'+k+'" data-section="'+k+'" aria-label="'+esc(label)+'" title="'+esc(label)+'"'+(active===k?' aria-current="page"':'')+'>'+primaryIcon(k)+'<span>'+esc(label)+'</span></a>';}).join('');
  const guestContext={
   home:['home-overview','me'],
   together:['together','projects-overview','projects-tasks','projects-updates'],
-  city:[],
-  center:['center','people','communities'],
+  city:CITY_SECTIONS,
+  center:CENTER_SECTIONS,
   messages:['messages-chats','messages-direct','messages-groups'],
   me:[]
  };
@@ -118,18 +137,20 @@ function renderMobileChrome(){
  const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
  const subLabel=k=>{
-  if(guest&&k==='me')return lang==='ru'?'Обо мне':lang==='sv'?'Om mig':lang==='en'?'About me':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.shell?.me||t('me'));
+  if(spaceLabel(k))return spaceLabel(k);
+  if(k==='me')return t('me');
   return SUBNAV_LABELS[lang]?.[k]||SUBNAV_LABELS.en[k]||t(k==='about'?'aboutPage':k);
  };
- const virtualTarget=k=>k.startsWith('home-')?'home':k.startsWith('projects-')?'projects':k.startsWith('messages-')?'messages':k;
+ const virtualTarget=k=>subsectionParent(k)||k;
  const isVirtualSubsection=k=>subsectionParent(k)!=='';
- const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current);return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'><span>'+esc(subLabel(k))+'</span></a>';}).join('');
- const language=current==='me'?'<button type="button" data-mobile-action="language">'+icon('settings')+'<span>'+esc(t('language'))+'</span></button>':'';
- const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false"><span class="demo-dot" aria-hidden="true"></span><span>Mura</span></button>':'';
+ const subIcons={'city-overview':'city','city-services':'center','city-transport':'transport','city-reports':'updates','city-decisions':'tasks','center-map':'map','center-events':'calendar','home-overview':'home','projects-overview':'projects','projects-mine':'me','projects-tasks':'tasks','projects-updates':'updates','messages-chats':'messages','messages-direct':'me','messages-groups':'communities','messages-invites':'people'};
+ const language=active==='home'?'<button type="button" data-mobile-action="language">'+icon('language')+'<span>'+esc(t('language'))+'</span></button>':'';
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&subsection===k):(target===current&&!(k==='center'&&subsectionParent(subsection)==='center'));return (k==='settings'?language:'')+'<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(subIcons[k]||k)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false">'+icon('settings')+'<span>'+esc(t('settings'))+'</span></button>':'';
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
  const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));
- const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>Mura</strong><p>'+esc(muraPopover)+'</p><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
- dock.innerHTML=demo+items+language+popover;
+ const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>Mura</strong><p>'+esc(muraPopover)+'</p><button class="button secondary" type="button" data-action="tutorial">'+esc(t('repeatTutorial'))+'</button><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
+ dock.innerHTML=items+(guest?language+demo:'')+popover;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
  globalThis.FolkoopGuide?.refresh?.();
@@ -148,10 +169,52 @@ function toggleStartMenu(){
  const menu=$('#globalStartMenu'),button=$('#globalStartButton');if(!menu||!button)return;
  const open=menu.hidden;menu.hidden=!open;button.setAttribute('aria-expanded',String(open));
 }
+const SEARCH_COPY={
+ ru:['Поиск по аккаунту','Поиск в доступных данных. Незагруженные переписки и внешние городские источники не включены.','Ничего не найдено'],
+ en:['Search account','Search available data. Unloaded conversations and external city sources are not included.','No results'],
+ sv:['Sök i kontot','Sök i tillgängliga uppgifter. Oladdade samtal och externa stadskällor ingår inte.','Inga resultat'],
+ uk:['Пошук в акаунті','Пошук у доступних даних. Незавантажені розмови та зовнішні міські джерела не включено.','Нічого не знайдено'],
+ fi:['Hae tililtä','Haku saatavilla olevista tiedoista. Lataamattomat keskustelut ja ulkoiset kaupunkilähteet eivät sisälly.','Ei tuloksia'],
+ es:['Buscar en la cuenta','Busca en los datos disponibles. No incluye conversaciones sin cargar ni fuentes externas de la ciudad.','Sin resultados'],
+ bs:['Pretraži račun','Pretraga dostupnih podataka. Neučitani razgovori i vanjski gradski izvori nisu uključeni.','Nema rezultata'],
+ ar:['البحث في الحساب','البحث في البيانات المتاحة. لا يشمل المحادثات غير المحملة والمصادر الخارجية للمدينة.','لا توجد نتائج'],
+ fa:['جست‌وجو در حساب','جست‌وجو در داده‌های موجود. گفت‌وگوهای بارگذاری‌نشده و منابع خارجی شهر شامل نمی‌شوند.','نتیجه‌ای یافت نشد'],
+ so:['Ka raadi akoonka','Raadi xogta la heli karo. Wadahadallada aan la soo rarin iyo ilaha dibadda ee magaalada kuma jiraan.','Wax natiijo ah lama helin'],
+ ku:['Di hesabê de bigere','Di daneyên berdest de lêgerîn. Axaftinên nehatine barkirin û çavkaniyên derveyî yên bajêr ne di nav de ne.','Encam tune']
+};
 function openGlobalSearch(){
- closeStartMenu();capture();current='together';query='';formKind=null;history.pushState(null,'','#/together');render(true);
- const focusSearch=()=>{const input=$('#networkCoopSearch')||$('#draftSearch');if(!input)return false;input.focus({preventScroll:false});return true;};
- requestAnimationFrame(()=>{if(!focusSearch())window.addEventListener('folkoop:network-rendered',()=>focusSearch(),{once:true});});
+ closeStartMenu();closeMobileDemo();capture();
+ const detail={entries:[],handled:false};
+ window.dispatchEvent(new CustomEvent('folkoop:search-index',{detail}));
+ // Do not fall back to the visitor's private workspace while inside Mura.
+ if(!detail.handled&&!isMuraVisit())for(const draft of store.get().drafts){
+  detail.entries.push({kind:t('drafts'),title:draft.title,body:draft.body,open:()=>{
+   current='me';location.hash='#/me';render();requestAnimationFrame(()=>{
+    const card=[...document.querySelectorAll('#workspace .draft')].find(el=>el.querySelector('[data-toggle]')?.dataset.toggle===draft.id);
+    card?.scrollIntoView({block:'center',behavior:'instant'});card?.classList.add('account-search-match');
+   });
+  }});
+ }
+ const copy=SEARCH_COPY[lang]||SEARCH_COPY.en;
+ const dialog=document.createElement('dialog');dialog.id='accountSearch';dialog.className='account-search';
+ dialog.setAttribute('aria-labelledby','accountSearchTitle');
+ dialog.innerHTML='<form method="dialog"><h2 id="accountSearchTitle">'+esc(copy[0])+'</h2><button class="text-button" aria-label="'+esc(t('closeMenu'))+'">×</button></form><label class="sr-only" for="accountSearchInput">'+esc(copy[0])+'</label><input id="accountSearchInput" type="search" autocomplete="off" maxlength="160" placeholder="'+esc(copy[0])+'"><p class="meta">'+esc(copy[1])+'</p><p id="accountSearchStatus" role="status" aria-live="polite"></p><div id="accountSearchResults"></div>';
+ document.body.append(dialog);
+ let entries=detail.entries,matches=[],openingResult=false;
+ const normalize=value=>String(value||'').normalize('NFKC').toLocaleLowerCase(lang).replace(/ё/g,'е');
+ const input=dialog.querySelector('input'),results=dialog.querySelector('#accountSearchResults');
+ input.addEventListener('input',()=>{
+  const terms=normalize(input.value).trim().split(/\s+/).filter(Boolean);
+  matches=terms.length?entries.filter(row=>terms.every(term=>normalize(row.title+' '+row.body).includes(term))):[];
+  dialog.querySelector('#accountSearchStatus').textContent=terms.length?(matches.length?String(matches.length):copy[2]):'';
+  results.innerHTML=matches.slice(0,60).map((row,i)=>'<button type="button" data-search-result="'+i+'"><small>'+esc(row.kind)+'</small><strong>'+esc(row.title)+'</strong><span>'+esc(row.body)+'</span></button>').join('');
+ });
+ results.addEventListener('click',event=>{const button=event.target.closest('[data-search-result]');if(!button)return;const row=matches[Number(button.dataset.searchResult)];openingResult=true;dialog.close();row?.open();});
+ const close=()=>{if(dialog.open)dialog.close();};
+ dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}},true);
+ for(const name of ['hashchange','folkoop:guest-demo','folkoop:account-ready','folkoop:search-scope-changed'])window.addEventListener(name,close);
+ dialog.addEventListener('close',()=>{entries=[];matches=[];dialog.remove();for(const name of ['hashchange','folkoop:guest-demo','folkoop:account-ready','folkoop:search-scope-changed'])window.removeEventListener(name,close);if(!openingResult)$('#globalSearchButton')?.focus({preventScroll:true});},{once:true});
+ dialog.showModal();input.focus();
 }
 function startFromShell(kind){
  closeStartMenu();
@@ -200,6 +263,7 @@ function myPage(){
  <div id="myPlaceEditorPanel" class="profile-grid" hidden><form id="profileForm" class="card editor" data-my-place-editor><span id="myPlaceEditor" class="anchor-target" aria-hidden="true"></span><h2>${esc(t('editMyPlace'))}</h2><div class="profile-avatar" aria-hidden="true">${icon('me')}</div><label>${esc(t('name'))}<input name="name" maxlength="60" autocomplete="nickname" value="${esc(p.name||'')}"></label><label>${esc(t('motto'))}<input name="motto" maxlength="100" value="${esc(p.motto||'')}"></label><fieldset class="my-place-accent"><legend>${esc(t('accent'))}</legend>${C.ACCENTS.map(a=>`<label class="accent-choice accent-${a}"><input type="radio" name="accent" value="${a}"${a===accent?' checked':''}><span aria-hidden="true"></span>${esc(t('accent'+a[0].toUpperCase()+a.slice(1)))}</label>`).join('')}</fieldset><label>${esc(t('cityProfile'))}<input name="city" maxlength="120" autocomplete="address-level2" value="${esc(p.city||'')}"></label><p class="meta">${esc(t('cityHelp'))}</p><label>${esc(t('skills'))}<input name="skills" maxlength="200" value="${esc(p.skills||'')}"></label><label>${esc(t('about'))}<textarea name="about" rows="4" maxlength="600">${esc(p.about||'')}</textarea></label><p class="meta">${esc(t('privacy'))}</p><button class="button" type="submit">${esc(t('saveProfile'))}</button></form><aside><div class="card"><h2>${esc(t('profileSaved'))}</h2><p>${esc(t('myText'))}</p><label class="checkbox"><input id="remember" type="checkbox"${store.isPersistent()?' checked':''}> <span>${esc(t('remember'))}</span></label><p class="meta">${esc(t(store.isPersistent()?'device':'memory'))}</p><div class="stack"><button class="button secondary" type="button" data-action="export">${esc(t('export'))}</button><button class="text-button danger" type="button" data-action="clear">${esc(t('clear'))}</button></div></div></aside></div><h2>${esc(t('drafts'))}</h2>${drafts()}`;
 }
 function center(){
+ if(['center-map','center-events'].includes(subsection))return externalSpace(subsection);
  const city=selectedCity(),goteborg=citySupported(city),mura=isMuraVisit();
  const handoff=cityHandoff&&(!cityHandoff.sourceId.includes('goteborg_')||goteborg)?`<article class="card center-handoff" data-center-story="city-handoff"><span class="badge">${esc(t('city'))} → FOLKOOP</span><h2>${esc(cityHandoff.title)}</h2><p class="meta">${esc(cityHandoff.sourceName)}</p><p>${esc(t('centerCityText'))}</p><p><a class="text-link" href="${esc(cityHandoff.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(cityHandoff.sourceName)} ↗</a></p><div class="actions">${a('communities','communities','text-link')}${a('people','people','text-link')}${a('together','together','text-link')}${a('projects','projects','text-link')}</div></article>`:'';
  const routeCard=(route,iconKey,titleKey,textKey,labelKey)=>`<article class="card center-live-card" data-center-route="${esc(route)}"><span class="small-icon">${icon(iconKey)}</span><h2>${esc(t(titleKey))}</h2><p>${esc(t(textKey))}</p>${a(route,labelKey,'text-link')}</article>`;
@@ -220,7 +284,15 @@ function cityShell(){
  const city=selectedCity();
  if(!city)return head('cityMissingTitle','cityMissingText')+`<div class="actions">${a('me','profileLink')}</div>`;
  if(!citySupported(city))return head('cityUnsupportedTitle','cityUnsupportedText')+`<article class="card"><h2>${esc(city)}</h2><p>${esc(t('cityUnsupportedText'))}</p><div class="actions">${a('me','profileLink','button secondary')}</div></article>`;
+ if(subsection==='city-transport')return externalSpace(subsection);
  return head('city','cityText')+`<a class="text-link" href="./city.html?embedded=1" target="_blank" rel="noopener">${esc(t('cityFull'))} ↗</a>`;
+}
+function externalSpace(key){
+ const copy=SPACE_COPY[lang],transport=key==='city-transport';
+ if(!citySupported(selectedCity()))return head('cityUnsupportedTitle','cityUnsupportedText');
+ const url=transport?'https://www.vasttrafik.se/reseplanering/':'https://www.goteborg.com/en/events';
+ const source=transport?'Västtrafik':'goteborg.com';
+ return `<section class="city-source-space"><h1>${esc(spaceLabel(key))}</h1><article class="card"><span class="small-icon">${icon(transport?'city':'center')}</span><h2>${esc(source)}</h2>${transport?'':`<p>${esc(copy[9])}</p>`}<p>${esc(copy[8])}</p><a class="button secondary" href="${url}" target="_blank" rel="noopener noreferrer">${esc(copy[7])} · ${source} ↗</a></article></section>`;
 }
 
 const tutorialCopy={
@@ -313,11 +385,11 @@ function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
  gate.querySelector('#entryLanguageLabel').textContent=x.language;
  gate.querySelector('#entryLanguageLabel').hidden=guideTrial;
  choices.hidden=guideTrial;
- choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(I.NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
+ choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(LANGUAGE_NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
  pickerLabel.hidden=!guideTrial;
  if(guideTrial){
   gate.querySelector('#entryGuestLanguageTitle').textContent=guide.language;
-  picker.innerHTML=C.LANGS.map(code=>'<option value="'+code+'"'+(code===lang?' selected':'')+'>'+esc(I.NAMES[code])+'</option>').join('');
+  picker.innerHTML=C.LANGS.map(code=>'<option value="'+code+'"'+(code===lang?' selected':'')+'>'+esc(LANGUAGE_NAMES[code])+'</option>').join('');
  }
  emailButton.textContent=x.email;emailButton.hidden=!afterMuraExit;
  guestButton.textContent=guideTrial?guide.guest:(afterMuraExit?x.back:x.guest);
@@ -366,7 +438,7 @@ function setEntryMode(mode,browseRoute='',focusKind=''){
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?(target||'tour'):mode,focusKind:target==='together'?focusKind:''}}));
  if(mode==='guest'){
   if(target){current=target;location.hash='#/'+target;render();requestAnimationFrame(()=>$('#mobilePrimaryNav a[aria-current="page"]')?.focus({preventScroll:true}));return;}
-  muraPracticeStep=0;muraPracticeXp=0;location.hash='#/me';setTimeout(()=>showOnboarding(0),260);
+  location.hash='#/me';setTimeout(()=>showOnboarding(0),260);
  }else {location.hash='#/me';setTimeout(()=>document.querySelector('#netLogin [name="email"]')?.focus(),80);}
 }
 const helperCopy={
@@ -424,6 +496,307 @@ const onboardingActionCopy={
  ku:{practice:'Di pratîkê de bibîne',explore:'Hesabê Mura keşf bike'}
 };
 const onboardingFeedbackCopy={"en":{"next":"Done. Want to see the next connection?","finished":"Done — you've seen three key connections in my account. Now explore."},"sv":{"next":"Klart. Ska vi titta på nästa samband?","finished":"Klart — du har sett tre viktiga samband i mitt konto. Utforska gärna vidare."},"ru":{"next":"Готово. Посмотрим следующую связь?","finished":"Готово — ты уже увидел три ключевые связи в моём аккаунте. Теперь исследуй дальше."},"es":{"next":"Listo. ¿Vemos la siguiente conexión?","finished":"Listo. Ya viste tres conexiones en mi cuenta. Ahora puedes seguir explorando."},"uk":{"next":"Готово. Подивимося на наступний зв’язок?","finished":"Готово. Ти побачив три важливі зв’язки в моєму акаунті. Тепер досліджуй далі."},"fi":{"next":"Valmis. Katsotaanko seuraavaa yhteyttä?","finished":"Valmista. Näit kolme tärkeää yhteyttä tililläni. Tutustu nyt rauhassa lisää."},"bs":{"next":"Gotovo. Da pogledamo sljedeću vezu?","finished":"Gotovo. Vidio/la si tri važne veze u mom računu. Sada istraži dalje."},"ar":{"next":"تمّ. هل نرى الصلة التالية؟","finished":"تمّ. رأيت ثلاث صلات مهمة في حسابي. يمكنك الآن الاستكشاف بحرية."},"fa":{"next":"انجام شد. ارتباط بعدی را ببینیم؟","finished":"تمام شد. سه ارتباط مهم را در حساب من دیدی. حالا می‌توانی بیشتر بگردی."},"so":{"next":"Waa la dhammeeyay. Ma eegnaa xiriirka xiga?","finished":"Waa la dhammeeyay. Waxaad aragtay saddex xiriir oo muhiim ah oo akoonkayga ah. Hadda sahmi."},"ku":{"next":"Qediya. Gelo em girêdana din bibînin?","finished":"Qediya. Te sê girêdanên girîng di hesabê min de dîtin. Niha bigere."}};
+// One authored story, with short scene copy and destination-specific actions.
+// Translations remain pending human editorial review.
+const muraStoryCopy={
+ "ru": {
+  "welcome": [
+   "Заходи ко мне",
+   "Я Мура. Хочу устроить обмен растениями с соседями. Покажу, как мы собираем его вместе?",
+   "Посмотреть проект"
+  ],
+  "project": [
+   "Одна маленькая идея",
+   "Открой «Чат проекта» — покажу, как соседи помогают подготовить наш обмен растениями.",
+   "Заглянуть в переписку"
+  ],
+  "chat": [
+   "Уже не одна",
+   "Anna предлагает стол и инструменты, Linnea подготовила вывеску. А вот с кофе ещё нужна помощь.",
+   "А что за мной?"
+  ],
+  "next": [
+   "Моя часть дела",
+   "Мне осталось подтвердить место на субботу. Переписка рядом, а договорённость не теряется — вот моя задача.",
+   "Вернуться ко мне"
+  ],
+  "quick": [
+   "Осмотримся?",
+   "Обмен ещё впереди. Пока загляни в мои другие дела, к людям или в переписки. Нажми на меня, если захочешь пройти историю снова.",
+   "Осмотреться у Муры"
+  ]
+ },
+ "en": {
+  "welcome": [
+   "Welcome to my place",
+   "I'm Mura. I want to exchange plants with my neighbours. Want to see how we're putting it together?",
+   "Open the project"
+  ],
+  "project": [
+   "One small idea",
+   "Open “Work chat” in the project. I'll show you how our neighbours are helping with the plant exchange.",
+   "Read our chat"
+  ],
+  "chat": [
+   "Not on my own",
+   "Anna offers a table and tools; Linnea has made a sign. We still need someone for coffee.",
+   "What's my part?"
+  ],
+  "next": [
+   "My part of the plan",
+   "I still need to confirm the table for Saturday. The chat is nearby, and here's my task so it doesn't get lost.",
+   "Back to my place"
+  ],
+  "quick": [
+   "You know the way now",
+   "The exchange is still ahead. Explore my other activities, people or chats. Tap me whenever you want to see this story again.",
+   "Look around with Mura"
+  ]
+ },
+ "sv": {
+  "welcome": [
+   "Välkommen hem till mig",
+   "Jag är Mura. Jag vill byta växter med grannarna. Vill du se hur vi ordnar det tillsammans?",
+   "Öppna projektet"
+  ],
+  "project": [
+   "En liten idé",
+   "Öppna projektets arbetschatt. Jag visar hur grannarna hjälper till med växtbytet.",
+   "Läs vår chatt"
+  ],
+  "chat": [
+   "Inte ensam längre",
+   "Anna erbjuder bord och verktyg, Linnea har gjort en skylt. Någon behöver fortfarande ordna kaffe.",
+   "Vad ska jag göra?"
+  ],
+  "next": [
+   "Min del av arbetet",
+   "Jag behöver bekräfta bordet till lördag. Chatten finns nära, och här är min uppgift så att den inte glöms bort.",
+   "Tillbaka till mig"
+  ],
+  "quick": [
+   "Nu hittar du här",
+   "Växtbytet ligger fortfarande framför oss. Titta på mina andra aktiviteter, människor eller chattar. Tryck på mig för att se berättelsen igen.",
+   "Se dig omkring hos Mura"
+  ]
+ },
+ "uk": {
+  "welcome": [
+   "Заходь до мене",
+   "Я Мура. Хочу влаштувати обмін рослинами із сусідами. Показати, як ми готуємо його разом?",
+   "Відкрити проєкт"
+  ],
+  "project": [
+   "Одна маленька ідея",
+   "Відкрий чат проєкту — покажу, як сусіди допомагають підготувати обмін рослинами.",
+   "Зазирнути в листування"
+  ],
+  "chat": [
+   "Уже не сама",
+   "Anna пропонує стіл та інструменти, Linnea підготувала вивіску. А з кавою ще потрібна допомога.",
+   "А що за мною?"
+  ],
+  "next": [
+   "Моя частина справи",
+   "Мені ще треба підтвердити стіл на суботу. Листування поруч, а домовленість не губиться — ось моє завдання.",
+   "Повернутися до мене"
+  ],
+  "quick": [
+   "Тепер ти знаєш дорогу",
+   "Обмін ще попереду. Зазирни в інші мої справи, до людей чи в листування. Натисни на мене, щоб знову пройти цю історію.",
+   "Озирнутися в Мури"
+  ]
+ },
+ "fi": {
+  "welcome": [
+   "Tervetuloa luokseni",
+   "Olen Mura. Haluan vaihtaa kasveja naapureiden kanssa. Katsotaanko, miten järjestämme sen yhdessä?",
+   "Avaa projekti"
+  ],
+  "project": [
+   "Pieni idea",
+   "Avaa projektin työryhmäkeskustelu. Näytän, miten naapurit auttavat kasvienvaihdon valmisteluissa.",
+   "Lue keskustelu"
+  ],
+  "chat": [
+   "En enää yksin",
+   "Anna tarjoaa pöydän ja työkaluja, Linnea on tehnyt kyltin. Kahvin järjestämiseen tarvitaan vielä apua.",
+   "Mikä on minun osuuteni?"
+  ],
+  "next": [
+   "Minun tehtäväni",
+   "Minun pitää vielä varmistaa pöytä lauantaiksi. Keskustelu on lähellä, ja tehtäväni löytyy täältä, ettei se unohdu.",
+   "Takaisin luokseni"
+  ],
+  "quick": [
+   "Nyt tunnet reitin",
+   "Kasvienvaihto on vielä edessä. Tutki muita tekemisiäni, ihmisiä tai keskusteluja. Paina minua, jos haluat nähdä tarinan uudelleen.",
+   "Tutustu Muran tiliin"
+  ]
+ },
+ "es": {
+  "welcome": [
+   "Bienvenido a mi espacio",
+   "Soy Mura. Quiero intercambiar plantas con mis vecinos. ¿Te enseño cómo lo estamos preparando juntos?",
+   "Abrir el proyecto"
+  ],
+  "project": [
+   "Una pequeña idea",
+   "Abre el chat del proyecto. Te enseñaré cómo ayudan los vecinos a preparar el intercambio de plantas.",
+   "Leer nuestra conversación"
+  ],
+  "chat": [
+   "Ya no estoy sola",
+   "Anna ofrece una mesa y herramientas; Linnea ha preparado un cartel. Aún necesitamos ayuda con el café.",
+   "¿Y qué me toca a mí?"
+  ],
+  "next": [
+   "Mi parte",
+   "Me falta confirmar la mesa para el sábado. La conversación está cerca y aquí queda mi tarea, para no olvidarla.",
+   "Volver a mi espacio"
+  ],
+  "quick": [
+   "Ya conoces el camino",
+   "El intercambio aún está por llegar. Explora mis otras actividades, personas o conversaciones. Pulsa sobre mí para volver a ver la historia.",
+   "Explorar con Mura"
+  ]
+ },
+ "ar": {
+  "welcome": [
+   "أهلاً بك عندي",
+   "أنا مورا. أريد تبادل النباتات مع الجيران. هل أريك كيف نستعد معاً؟",
+   "افتح المشروع"
+  ],
+  "project": [
+   "فكرة صغيرة",
+   "افتح محادثة المشروع. سأريك كيف يساعد الجيران في تجهيز تبادل النباتات.",
+   "اقرأ محادثتنا"
+  ],
+  "chat": [
+   "لم أعد وحدي",
+   "تعرض Anna إحضار طاولة وأدوات، وقد أعدّت Linnea لافتة. ما زلنا نحتاج من يساعد بالقهوة.",
+   "وما دوري أنا؟"
+  ],
+  "next": [
+   "مهمتي",
+   "ما زال عليّ تأكيد توفر الطاولة يوم السبت. المحادثة قريبة، ومهمتي هنا كي لا أنساها.",
+   "عد إلى حسابي"
+  ],
+  "quick": [
+   "الآن تعرف الطريق",
+   "التبادل لم يحدث بعد. استكشف أنشطتي الأخرى والأشخاص والمحادثات. اضغط عليّ لرؤية القصة مجدداً.",
+   "استكشف حساب مورا"
+  ]
+ },
+ "fa": {
+  "welcome": [
+   "به خانه‌ام خوش آمدی",
+   "من مورا هستم. می‌خواهم با همسایه‌ها گیاه مبادله کنیم. نشان بدهم چطور با هم آماده‌اش می‌کنیم؟",
+   "باز کردن پروژه"
+  ],
+  "project": [
+   "یک ایدهٔ کوچک",
+   "گفت‌وگوی پروژه را باز کن تا ببینی همسایه‌ها چطور برای مبادلهٔ گیاه کمک می‌کنند.",
+   "خواندن گفت‌وگو"
+  ],
+  "chat": [
+   "دیگر تنها نیستم",
+   "Anna میز و ابزار پیشنهاد داده و Linnea تابلو را آماده کرده. برای قهوه هنوز کمک لازم داریم.",
+   "سهم من چیست؟"
+  ],
+  "next": [
+   "کار من",
+   "هنوز باید میز شنبه را تأیید کنم. گفت‌وگو همین نزدیکی است و کار من اینجا می‌ماند تا فراموش نشود.",
+   "بازگشت به حسابم"
+  ],
+  "quick": [
+   "حالا راه را بلدی",
+   "مبادله هنوز انجام نشده. کارهای دیگرم، آدم‌ها یا گفت‌وگوها را ببین. برای دیدن دوبارهٔ این داستان روی من بزن.",
+   "گشتن در حساب مورا"
+  ]
+ },
+ "so": {
+  "welcome": [
+   "Ku soo dhowow akoonkayga",
+   "Waxaan ahay Mura. Waxaan rabaa inaan dhir la is dhaafsado deriska. Ma ku tusaa sida aan wadajir u diyaarinayno?",
+   "Fur mashruuca"
+  ],
+  "project": [
+   "Fikrad yar",
+   "Fur wada sheekaysiga mashruuca. Waxaan ku tusayaa sida derisku u caawinayo diyaarinta dhir isdhaafsiga.",
+   "Akhri wada sheekaysiga"
+  ],
+  "chat": [
+   "Keligay ma ihi",
+   "Anna waxay soo bandhigtay miis iyo qalab, Linnea-na waxay diyaarisay boor. Weli waxaan u baahanahay qof kafeega caawiya.",
+   "Maxaa aniga ii yaal?"
+  ],
+  "next": [
+   "Hawshayda",
+   "Weli waa inaan xaqiijiyaa miiska Sabtida. Wada sheekaysigu waa dhow yahay, hawshaydiina halkan ayay taal si aan loo illoobin.",
+   "Ku noqo akoonkayga"
+  ],
+  "quick": [
+   "Hadda jidka waad taqaan",
+   "Isdhaafsigu weli ma dhicin. Eeg hawlahayga kale, dadka ama wada sheekaysiga. I taabo si aad sheekadan mar kale u aragto.",
+   "Sahami akoonka Mura"
+  ]
+ },
+ "bs": {
+  "welcome": [
+   "Dobro došli kod mene",
+   "Ja sam Mura. Želim razmijeniti biljke sa susjedima. Da pokažem kako to zajedno pripremamo?",
+   "Otvori projekat"
+  ],
+  "project": [
+   "Jedna mala ideja",
+   "Otvori razgovor projekta. Pokazat ću ti kako susjedi pomažu pripremiti razmjenu biljaka.",
+   "Pročitaj razgovor"
+  ],
+  "chat": [
+   "Više nisam sama",
+   "Anna nudi sto i alat, a Linnea je pripremila natpis. Za kafu nam još treba pomoć.",
+   "A šta je moj dio?"
+  ],
+  "next": [
+   "Moj dio posla",
+   "Još trebam potvrditi sto za subotu. Razgovor je blizu, a moj zadatak ostaje ovdje da ga ne zaboravim.",
+   "Vrati se kod mene"
+  ],
+  "quick": [
+   "Sada znaš put",
+   "Razmjena tek dolazi. Pogledaj moje druge aktivnosti, ljude ili razgovore. Pritisni me ako želiš ponovo proći ovu priču.",
+   "Razgledaj kod Mure"
+  ]
+ },
+ "ku": {
+  "welcome": [
+   "Bi xêr hatî cem min",
+   "Ez Mura me. Dixwazim bi cîranan re nebatan biguherînim. Bila nîşan bidim ka em çawa bi hev re amade dikin?",
+   "Projeyê veke"
+  ],
+  "project": [
+   "Ramaneke biçûk",
+   "Axaftina projeyê veke. Ez ê nîşan bidim ka cîran çawa alîkariya amadekirina guherandina nebatan dikin.",
+   "Axaftina me bixwîne"
+  ],
+  "chat": [
+   "Êdî ne bi tenê me",
+   "Anna mase û amûran pêşniyar dike, Linnea jî levheyek amade kiriye. Ji bo qehweyê hêj alîkarî lazim e.",
+   "Para min çi ye?"
+  ],
+  "next": [
+   "Karê min",
+   "Divê ez hêj maseya şemiyê piştrast bikim. Axaftin li nêzîk e û karê min li vir dimîne da ku ji bîr nebe.",
+   "Vegere cem min"
+  ],
+  "quick": [
+   "Niha tu rê dizanî",
+   "Guherandin hêj pêşiya me ye. Li karên min ên din, mirovan an axaftinan binêre. Ji bo dîtina vê çîrokê careke din li min bitikîne.",
+   "Li hesabê Mura bigere"
+  ]
+ }
+};
 const muraTutorialCopy={
  en:{welcome:"Come in — this is my FOLKOOP. I'll show you what is happening in my life here, then you can roam around on your own.",home:"This is my profile and my unfinished thoughts. Some things are public, some are still private drafts. They are all part of the same place.",together:"I need a tile cutter for one weekend. Instead of posting into a void, I keep the need as a concrete thing that can connect to a person or resource.",projects:"I can help too. Photography is one of the things I offer when a neighbour or project needs it.",people:"This plant-and-seed exchange started as one small idea. Now it has people, tasks, updates and its own work chat.",city:"These are people around me. I don't need followers — I need people whose skills, interests or location cross with something I'm doing.",center:"This is my Göteborg Center story: ordinary local community, people, City and projects connect here. The forum context is illustrative — no real members or messages are copied.",quick:"That's enough instruction. Now just look around my account: open anything that catches your eye and follow the connections."},
  ru:{welcome:"Заходи — это мой FOLKOOP. Я покажу, что здесь происходит в моей жизни, а потом просто походишь сама или сам и посмотришь всё, что захочется.",home:"Это мой профиль и мои незаконченные мысли. Что-то уже стало общим делом, а что-то пока лежит в личных черновиках — всё это живёт в одном месте.",together:"Мне на выходные нужен плиткорез. Вместо сообщения в пустоту я держу потребность как конкретное дело, которое может связаться с человеком или ресурсом.",projects:"А здесь наоборот — я могу помочь сама. Фотография — одна из вещей, которые я предлагаю, когда она нужна соседу или проекту.",people:"Этот обмен растениями начался с маленькой идеи. Теперь здесь есть люди, задачи, обновления и свой рабочий чат.",city:"Это люди вокруг меня. Мне не нужны подписчики — мне нужны те, чьи навыки, интересы или район пересекаются с тем, что я делаю.",center:"Это моя история Центра в Göteborg: здесь связываются обычное локальное общение, люди, Город и проекты. Контекст форума иллюстративный — реальные участники и сообщения не копируются.",quick:"На этом инструкция заканчивается. Теперь просто походи по моему аккаунту: открывай всё, что цепляет, и смотри, куда ведут связи."},
@@ -448,10 +821,12 @@ for(const code of C.LANGS){
 }
 function tutorialSource(){if(isMuraVisit()||tourReturnMode!==null)return muraTutorialCopy[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.tutorial||muraTutorialCopy.en;return tutorialCopy[lang]||tutorialCopy.en;}
 function tutorialTitle(step){
+ if(muraStoryCopy[lang]?.[step.id])return muraStoryCopy[lang][step.id][0];
  const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
 function tutorialText(step){
+ if(muraStoryCopy[lang]?.[step.id])return muraStoryCopy[lang][step.id][1];
  const source=tutorialSource();
  return source[step.id]||source[step.route]||tutorialCopy.en[step.id]||tutorialCopy.en[step.route]||'';
 }
@@ -488,32 +863,28 @@ function ensureOnboarding(){
  dialog.id='onboarding';
  dialog.className='onboarding';
  dialog.hidden=true;
- dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="onboarding-head"><div class="onboarding-guide"><span class="onboarding-guide-mark" aria-hidden="true">M</span><span id="onboardingGuideName"></span></div><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div id="muraPractice" class="mura-practice" hidden><span id="muraPracticeStars" aria-label="Mura tour progress">○ ○ ○</span><strong id="muraPracticeXp">0 / 3</strong></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><span id="onboardingProgress" class="onboarding-progress"></span><button type="button" class="button" data-onboarding="next"></button></div></section>';
+ dialog.dataset.story='true';
+ dialog.innerHTML='<div class="onboarding-backdrop"></div><div id="onboardingSpotlight" class="onboarding-spotlight" aria-hidden="true"></div><section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle"><div class="onboarding-head"><div class="onboarding-guide"><img class="onboarding-portrait" src="./folkoop-guide-confident.webp" alt="" width="48" height="52"><span id="onboardingGuideName"></span></div><button type="button" class="text-button" data-onboarding="skip"></button></div><h2 id="onboardingTitle"></h2><div class="onboarding-copy" id="onboardingCopy"><p id="onboardingBody"></p><div class="onboarding-scroll-cue" id="onboardingScrollCue" aria-hidden="true"><span>⌄</span></div></div><div class="onboarding-actions"><button type="button" class="button secondary" data-onboarding="back"></button><button type="button" id="onboardingProgress" class="onboarding-progress text-button" aria-expanded="false" aria-controls="onboardingChapter"></button><button type="button" class="button" data-onboarding="next"></button></div></section>';
  document.body.append(dialog);
+ const picker=document.createElement('select');
+ picker.id='onboardingChapter';
+ picker.hidden=true;
+ dialog.querySelector('#onboardingProgress').addEventListener('click',()=>{
+  picker.hidden=!picker.hidden;
+  dialog.querySelector('#onboardingProgress').setAttribute('aria-expanded',String(!picker.hidden));
+  if(!picker.hidden)picker.focus({preventScroll:true});
+  positionOnboarding(onboardingSteps[onboardingStep]);
+ });
+ picker.addEventListener('change',()=>showOnboarding(Number(picker.value)));
+ dialog.querySelector('.onboarding-head').after(picker);
  return dialog;
 }
 function onboardingTarget(step){
- const mobile=$('#mobilePrimaryNav')&&getComputedStyle($('#mobilePrimaryNav')).display!=='none';
- if(step.id==='helper')globalThis.FolkoopGuide?.home({instant:true,pose:step.pose||'wink'});
- // The final "start with one real thing" step used to target the Home quick grid.
- // On a narrow screen that grid can sit far below the fold while the modal tour
- // intentionally locks page scrolling. Point at the always-visible Together
- // destination instead: it is the mobile entry point for Need/Offer/Resource/
- // Shared Purchase and preserves the same user action without off-screen geometry.
- if(mobile&&['welcome','home'].includes(step.id)){
-  return document.querySelector('#mobilePrimaryNav [data-mobile-nav="home"]');
- }
- if(mobile&&step.id==='quick'){
-  return document.querySelector('#mobilePrimaryNav [data-mobile-nav="together"]');
- }
- if(mobile&&step.target.startsWith('#nav')){
-  const primary=mobilePrimaryFor(step.route);
-  return document.querySelector(step.route===primary?'#mobilePrimaryNav [data-mobile-nav="'+primary+'"]':'#mobileContextDock [data-mobile-subnav="'+step.route+'"]');
- }
  if(menuOpen)closeMenu();
  return document.querySelector(step.target);
 }
 function positionOnboarding(step){
+ if(!onboardingOpen)return;
  const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';globalThis.FolkoopGuide?.syncModal?.();return;}
@@ -537,6 +908,7 @@ function positionOnboarding(step){
   }
  }
  requestAnimationFrame(()=>{
+  if(!onboardingOpen||onboardingSteps[onboardingStep]!==step)return;
   const rect=target.getBoundingClientRect(),pad=7;
   spot.hidden=false;dialog.dataset.noTarget='0';
   spot.style.left=Math.max(6,rect.left-pad)+'px';
@@ -554,47 +926,48 @@ function updateOnboardingScrollCue(){
  const atEnd=copy.scrollTop+copy.clientHeight>=copy.scrollHeight-3;
  cue.hidden=!overflow||atEnd;
 }
-function muraPracticeForStep(step){return step===2?1:step===3?2:step===4?3:0;}
-function updateMuraPractice(){
- const dialog=ensureOnboarding(),box=dialog.querySelector('#muraPractice');if(!box)return;
- box.hidden=muraPracticeStep===0&&onboardingStep<2;
- dialog.querySelector('#muraPracticeStars').textContent=[0,1,2].map(i=>i<muraPracticeStep?'●':'○').join(' ');
- dialog.querySelector('#muraPracticeXp').textContent=muraPracticeStep+' / 3';
-}
-function completeMuraPractice(step){
- const n=muraPracticeForStep(step);if(!n||n<=muraPracticeStep)return;
- muraPracticeStep=n;muraPracticeXp=Math.min(15,n*5);updateMuraPractice();
- globalThis.FolkoopGuide?.react?.('done');
-}
 function showOnboarding(step=0){
  onboardingOpen=true;
  onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
  const item=onboardingSteps[onboardingStep],dialog=ensureOnboarding(),source=helperSource();
+ dialog.dataset.interactive=item.id==='project'?'chat':'';
  dialog.hidden=false;
  if(current!==item.route){current=item.route;history.replaceState(null,'','#/'+item.route);render();}
+ // Select existing read-only objects, not a duplicate card inside the tour.
+ window.dispatchEvent(new CustomEvent('folkoop:mura-story',{detail:{scene:item.story||'profile'}}));
  dialog.querySelector('#onboardingProgress').textContent=(onboardingStep+1)+' / '+onboardingSteps.length;
- dialog.querySelector('#onboardingGuideName').textContent=source.name+' · '+source.label;
+ dialog.querySelector('#onboardingGuideName').textContent=source.name;
  dialog.querySelector('#onboardingTitle').textContent=tutorialTitle(item);
+ const picker=dialog.querySelector('#onboardingChapter');
+ picker.hidden=true;
+ dialog.querySelector('#onboardingProgress').setAttribute('aria-expanded','false');
+ picker.setAttribute('aria-label',t('tutorialProgress'));
+ picker.innerHTML=onboardingSteps.map((entry,index)=>`<option value="${index}">${index+1}. ${esc(tutorialTitle(entry))}</option>`).join('');
+ picker.value=String(onboardingStep);
  dialog.querySelector('#onboardingBody').textContent=tutorialText(item);
  const copy=dialog.querySelector('#onboardingCopy');if(copy){copy.scrollTop=0;copy.onscroll=updateOnboardingScrollCue;}
  requestAnimationFrame(updateOnboardingScrollCue);
  dialog.querySelector('[data-onboarding="skip"]').textContent=t('tutorialSkip');
  const rtl=document.documentElement.dir==='rtl';
- const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=onboardingStep===0?t('tutorialBack'):(rtl?'→ ':'← ')+t('tutorialProgress')+' '+onboardingStep;back.disabled=onboardingStep===0;
- const taskPending=muraPracticeForStep(onboardingStep)&&muraPracticeStep<muraPracticeForStep(onboardingStep);
+ const back=dialog.querySelector('[data-onboarding="back"]');back.textContent=(rtl?'→ ':'← ')+t('tutorialBack');back.disabled=onboardingStep===0;
  const next=dialog.querySelector('[data-onboarding="next"]');
- next.textContent=taskPending?onboardingActionCopy[lang]?.practice||onboardingActionCopy.en.practice:(onboardingStep===onboardingSteps.length-1?onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore:t('tutorialProgress')+' '+(onboardingStep+2)+(rtl?' ←':' →'));
- updateMuraPractice();
+ next.hidden=item.id==='project';
+ next.textContent=muraStoryCopy[lang]?.[item.id]?.[2]||t('tutorialNext');
  positionOnboarding(item);
+ if(item.id==='welcome'||item.id==='quick')requestAnimationFrame(()=>{
+  window.scrollTo({top:0,behavior:'instant'});
+  globalThis.FolkoopGuide?.refresh?.();
+ });
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(){
  const temporaryTour=tourReturnMode!==null;
  const explicitMuraVisit=isMuraVisit()&&!temporaryTour;
  const guestTour=isMuraVisit()||temporaryTour;
- const completedMuraPractice=muraPracticeStep===3&&guestTour;
  onboardingOpen=false;
  const dialog=ensureOnboarding();dialog.hidden=true;
+ globalThis.FolkoopGuide?.syncModal?.();
+ requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
  dialog.querySelector('#onboardingSpotlight').hidden=true;
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
  if(menuOpen)closeMenu();
@@ -622,8 +995,7 @@ function finishOnboarding(){
  }
 
  const returnTarget=temporaryTour&&tourReturnMode==='account'?'account':'local';
- if(guestTour&&!completedMuraPractice){if(temporaryTour)window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:true}}));current='home';history.replaceState(null,'','#/home');render();tourReturnMode=null;}
- if(completedMuraPractice){try{if(returnTarget==='account')sessionStorage.setItem(ENTRY_KEY,'account');else sessionStorage.removeItem(ENTRY_KEY);}catch{}window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:temporaryTour}}));document.body.classList.remove('network-login-open','guest-preview-open');current='me';history.replaceState(null,'','#/me');render();document.body.classList.remove('network-login-open','guest-preview-open');globalThis.FolkoopGuide?.element?.().removeAttribute('hidden');tourReturnMode=null;setTimeout(()=>{const panel=$('#workspace');panel?.querySelector('.my-place-empty')?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});},120);}
+ if(guestTour){if(temporaryTour)window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:false,target:returnTarget,temporary:true}}));current='home';history.replaceState(null,'','#/home');render();tourReturnMode=null;}
 }
 function openMenu(){
  menuOpen=true;document.body.classList.add('menu-open');
@@ -638,10 +1010,16 @@ function showCity(){
  $('#cityWorkspace').hidden=false;
  const mura=isMuraVisit();
  if(frame&&frame.dataset.mura!==String(mura)){frame.remove();frame=null;}
- if(!frame){frame=document.createElement('iframe');frame.id='cityFrame';frame.dataset.mura=String(mura);frame.title=t('city');frame.setAttribute('allow','geolocation');frame.referrerPolicy='no-referrer';frame.src='./city.html?embedded=1'+(mura?'&mura=1':'')+'#'+initialCityHash;frame.addEventListener('load',()=>sendCity());$('#cityWorkspace').append(frame);}
+ if(!frame){frame=document.createElement('iframe');frame.id='cityFrame';frame.dataset.mura=String(mura);frame.title=t('city');frame.setAttribute('allow','geolocation');frame.referrerPolicy='no-referrer';frame.src='./city.html?embedded=1'+(mura?'&mura=1':'')+'#'+initialCityHash;frame.addEventListener('load',()=>{frame.dataset.ready='true';sendCity();});$('#cityWorkspace').append(frame);}
  sendCity();
 }
-function sendCity(){frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,visible:current==='city'&&citySupported(selectedCity())},location.origin);}
+function sendCity(){
+ // Route commands belong to explicit subsection clicks, not visibility/language updates.
+ // Keeping the iframe alive must also preserve its current screen and report draft.
+ const ready=frame?.dataset.ready==='true';
+ frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,screen:ready?pendingCityScreen:undefined,visible:current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity())},location.origin);
+ if(ready)pendingCityScreen=undefined;
+}
 function render(focus=false){
  if(isMuraVisit()&&['settings','about'].includes(current)){current='me';history.replaceState(null,'','#/'+current);}
  document.documentElement.lang=lang;document.documentElement.dir=['ar','fa'].includes(lang)?'rtl':'ltr';document.title=`${navText(current)} · FOLKOOP`;
@@ -651,11 +1029,11 @@ function render(focus=false){
   $('#mobilePrimaryNav')?.setAttribute('aria-label',t('select'));
   $('#networkPanel')?.setAttribute('aria-label','FOLKOOP · '+t('together'));$('#brandHome').setAttribute('aria-label','FOLKOOP');
  const searchButton=$('#globalSearchButton'),startButton=$('#globalStartButton');
- if(searchButton){searchButton.setAttribute('aria-label',t('search'));searchButton.setAttribute('title',t('search'));}
+ if(searchButton){searchButton.setAttribute('aria-label',SEARCH_COPY[lang][0]);searchButton.setAttribute('title',SEARCH_COPY[lang][0]);}
  if(startButton){startButton.setAttribute('aria-label',t('create'));startButton.setAttribute('title',t('create'));}
  document.querySelectorAll('[data-shell-label]').forEach(el=>{const key=el.dataset.shellLabel;el.textContent=t(key);});
  const messageLink=$('#messageLink');if(messageLink){messageLink.setAttribute('aria-label',t('messages'));const messageLabel=$('#messageLabel');if(messageLabel)messageLabel.textContent=t('messages');}
- $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip');$('#muraPracticeStars')?.setAttribute('aria-label','Mura · '+t('tutorialProgress')); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
+ $('#languageLabel').textContent=t('language');$('#language').value=lang;$('#skip').textContent=t('skip'); const sidebarTagline=$('#sidebarTagline');if(sidebarTagline)sidebarTagline.textContent=t('tagline'); const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute('content',t('aboutText'));
  const menuButton=$('#mobileMenuToggle');if(menuButton){menuButton.setAttribute('aria-label',menuOpen?t('closeMenu'):t('menu'));menuButton.querySelector('.sr-only').textContent=menuOpen?t('closeMenu'):t('menu');}
  const location=$('#locationLabel');if(location){const city=selectedCity();location.textContent=city;location.hidden=!city;}
  $('#pilotTitle').textContent=t('pilot');$('#pilotText').textContent=t('scope');
@@ -676,13 +1054,13 @@ function render(focus=false){
   body=head(current+'Title',current+'Text')+`<div class="actions">${kinds.map(k=>button(k,k)).join('')}</div>`+form()+`<label class="search">${esc(t('search'))}<input id="draftSearch" type="search" value="${esc(query)}"></label><div id="draftList">${drafts(kinds)}</div>`;
  }
  if(current==='city')body=cityShell();
- root.innerHTML=body;if(current==='city'&&citySupported(selectedCity()))showCity();else sendCity();
+ root.innerHTML=body;if(current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity()))showCity();else sendCity();
  updateHelper();
  if(onboardingOpen)showOnboarding(onboardingStep);
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
-$('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(I.NAMES[k])}</option>`).join('');
+$('#language').innerHTML=C.LANGS.map(k=>`<option value="${k}">${esc(LANGUAGE_NAMES[k])}</option>`).join('');
 $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
 $('#globalSearchButton')?.addEventListener('click',openGlobalSearch);
 $('#globalStartButton')?.addEventListener('click',e=>{e.stopPropagation();toggleStartMenu();});
@@ -691,8 +1069,9 @@ document.addEventListener('click',e=>{if(!e.target.closest('#globalStartMenu,#gl
 document.addEventListener('click',e=>{
  const link=e.target.closest?.('[data-subsection]');if(!link)return;
  const key=link.dataset.subsection,parent=subsectionParent(key);
- if(!parent)return; // Real route tabs (Together / People / Communities etc.) use normal hash navigation.
+ if(!parent){if(key==='center'){subsection='';try{sessionStorage.setItem(SUBSECTION_KEY,'');}catch{}render();}return;} // Real route tabs keep normal hash navigation.
  e.preventDefault();subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
+ if(parent==='city')pendingCityScreen=({'city-overview':'home','city-services':'ansvar','city-reports':'rapportera','city-decisions':'beslut'})[key];
  if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
  render();
  window.dispatchEvent(new CustomEvent('folkoop:subsection',{detail:{key,parent}}));
@@ -701,7 +1080,11 @@ document.addEventListener('click',e=>{
   'projects-overview':'#networkPanel, #draftList','projects-mine':'#networkPanel','projects-tasks':'#networkPanel','projects-updates':'#networkPanel',
   'messages-chats':'#networkPanel','messages-direct':'#networkPanel','messages-groups':'#networkPanel','messages-invites':'#networkPanel'
  }[key];
- const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});
+ // Replaced subsection pages start at the top; only in-page Home anchors scroll.
+ // Scrolling a freshly replaced, short panel under the sticky header can leave
+ // WebKit's fixed navigation hit region behind its painted position.
+ if(parent==='projects'||parent==='messages'||key==='home-overview')window.scrollTo({top:0,behavior:'instant'});
+ else{const target=selector&&document.querySelector(selector);target?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});}
 });
 
 window.addEventListener('folkoop:guest-demo',e=>{
@@ -718,7 +1101,13 @@ window.addEventListener('folkoop:language-picked',e=>{
  languageOnlyFlow=false;firstVisitFlow=false;
 });
 window.addEventListener('folkoop:open-entry',e=>{entryGateAfterMuraExit=e.detail?.source==='guest-exit';showEntryGate(e.detail?.note||'',entryGateAfterMuraExit);});
-window.addEventListener('folkoop:network-rendered',()=>{if(onboardingOpen)requestAnimationFrame(()=>positionOnboarding(onboardingSteps[onboardingStep]));});
+window.addEventListener('folkoop:network-rendered',e=>{
+ if(!onboardingOpen)return;
+ if(onboardingSteps[onboardingStep].id==='project'&&e.detail?.guestDemo&&e.detail?.route==='messages'&&document.querySelector('.chat-messages')){
+  showOnboarding(onboardingStep+1);return;
+ }
+ requestAnimationFrame(()=>{if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
+});
 window.addEventListener('folkoop:account-ready',()=>{if(!onboardingDone&&!onboardingSuppressed)setTimeout(()=>showOnboarding(0),120);});
 window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
@@ -732,7 +1121,7 @@ document.addEventListener('click',e=>{
   if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
   if(action==='exitmura'){closeMobileDemo();entryGateAfterMuraExit=true;showEntryGate('',true);return;}
   if(action==='signin'){closeMobileDemo();showEntryGate('',true);return;}
-  if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,I.NAMES,lang);return;}
+  if(action==='language'){closeMobileDemo();firstVisitFlow=false;languageOnlyFlow=true;globalThis.FolkoopGuide?.showLanguageGate(C.LANGS,LANGUAGE_NAMES,lang);return;}
  }
  const entryLanguage=e.target.closest('[data-entry-language]');
  if(entryLanguage){changeLanguage(entryLanguage.dataset.entryLanguage);showEntryGate('',entryGateAfterMuraExit);return;}
@@ -786,15 +1175,6 @@ document.addEventListener('click',e=>{
   if(action==='skip'){finishOnboarding();return;}
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
   if(action==='next'){
-   const task=muraPracticeForStep(onboardingStep);
-   if(task&&muraPracticeStep<task){
-    completeMuraPractice(onboardingStep);
-    const body=ensureOnboarding().querySelector('#onboardingBody');
-    const feedback=onboardingFeedbackCopy[lang]||onboardingFeedbackCopy.en;
-    if(body)body.textContent=muraPracticeStep===3?feedback.finished:feedback.next;
-    ensureOnboarding().querySelector('[data-onboarding="next"]').textContent=onboardingStep===onboardingSteps.length-1?(onboardingActionCopy[lang]?.explore||onboardingActionCopy.en.explore):t('tutorialNext');
-    return;
-   }
    if(onboardingStep>=onboardingSteps.length-1)finishOnboarding();else showOnboarding(onboardingStep+1);return;
   }
  }
@@ -872,7 +1252,7 @@ function startFullIntroduction(){
  helperOpen=false;updateHelper();firstVisitFlow=false;languageOnlyFlow=false;
  tourReturnMode=entryModeNow()||'local';
  window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:true,target:'tour',temporary:true}}));
- muraPracticeStep=0;muraPracticeXp=0;showOnboarding(0);
+ showOnboarding(0);
 }
 function startFirstVisit(){
  onboardingOpen=false;helperOpen=false;updateHelper();languageOnlyFlow=false;firstVisitFlow=false;tourReturnMode=null;guestPathsExpanded=false;entryGateAfterMuraExit=false;showEntryGate('',false);

@@ -32,6 +32,7 @@ function refreshBrand(){
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||e.source!==parent||e.data?.type!=='folkoop:city')return;
  const v=e.data;
+ if(['home','ansvar','rapportera','nara','beslut'].includes(v.screen)&&v.screen!==currentScreen&&typeof navigate==='function')navigate(v.screen);
  if(cityNames[v.language]&&v.language!==document.documentElement.lang&&typeof applyLanguage==='function')applyLanguage(v.language);
  if(v.visible===false){globalThis.FolkoopCityToday?.stop();wasHidden=true;}
  if(v.visible===true&&wasHidden){wasHidden=false;if(typeof render==='function')render(currentScreen,false);}

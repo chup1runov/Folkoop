@@ -34,9 +34,12 @@ test('global Start delegates to signed-in network cooperation before local fallb
   assert.match(ui,/detail\.handled=true/);
 });
 
-test('global Search targets the real Together search when the network surface renders',()=>{
+test('global Search indexes the account without replacing the Together filter',()=>{
   assert.match(ui,/id="networkCoopSearch"/);
-  assert.match(shell,/\$\('#networkCoopSearch'\)\|\|\$\('#draftSearch'\)/);
+  assert.match(shell,/folkoop:search-index/);
+  assert.match(shell,/dialog.showModal\(\)/);
+  assert.match(ui,/guestDemo\?demoSnapshot\(true\):data/);
+  assert.match(shell,/!detail.handled&&!isMuraVisit\(\)/);
   assert.match(shell,/folkoop:network-rendered/);
 });
 

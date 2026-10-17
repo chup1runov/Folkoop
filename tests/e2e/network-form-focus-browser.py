@@ -134,10 +134,9 @@ async def scenario(browser, kind, partial):
         await title.click()
         if partial:
             await page.keyboard.type('abcXYZ')
-            await page.keyboard.press('Home')
+            # Arrow selection is consistent on macOS/Linux; Home/End is not.
             for _ in range(3):
-                await page.keyboard.press('ArrowRight')
-            await page.keyboard.press('Shift+End')
+                await page.keyboard.press('Shift+ArrowLeft')
         await expect(title).to_be_focused()
         result['before'] = await title.evaluate('(e)=>({value:e.value,start:e.selectionStart,end:e.selectionEnd})')
         release.set()
