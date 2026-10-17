@@ -122,15 +122,15 @@ async def main():
 
   await page.click('[data-coop=openNotify]')
   await expect(page.locator('#networkPanel')).to_contain_text('Progress from another member')
-  assert state['activity_inbox'][0]['unread_count']==0
   await expect(page.locator('#mobilePrimaryNav a[href="#/together"] .net-count')).to_have_count(0)
+  assert state['activity_inbox'][0]['unread_count']==0
   passed.append('Opening the cooperation marks its activity read on the server')
 
   await page.click('[data-coop=openLinkedChat]')
   await expect(page.locator('#networkPanel')).to_contain_text('Unread work-chat message')
   await expect(page.locator('#networkPanel')).to_contain_text('Рабочий чат')
-  assert state['chat_inbox'][0]['unread_count']==0
   await expect(page.locator('#mobilePrimaryNav a[href="#/messages"] .net-count')).to_have_count(0)
+  assert state['chat_inbox'][0]['unread_count']==0
   passed.append('Opening the linked work chat marks message unread separately')
 
   assert errors==[],errors
