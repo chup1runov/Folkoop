@@ -1,5 +1,5 @@
 """Read-only, cross-section account search; no remote requests or real accounts."""
-import asyncio, os
+import asyncio, os, shutil
 from playwright.async_api import async_playwright, expect
 
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4186/')
@@ -7,7 +7,7 @@ ENGINE=os.getenv('BROWSER_ENGINE','chromium')
 
 async def main():
  async with async_playwright() as pw:
-  browser=await getattr(pw,ENGINE).launch()
+  browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   for width,height in [(390,844),(1366,900)]:
    context=await browser.new_context(viewport={'width':width,'height':height},service_workers='block')
    await context.add_init_script("""localStorage.setItem('folkoop-language','ru');

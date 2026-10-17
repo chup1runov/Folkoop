@@ -1,5 +1,5 @@
 """Interactive tour acceptance in real engines, including RTL; no external writes."""
-import asyncio, os, json
+import asyncio, os, json, shutil
 from pathlib import Path
 from playwright.async_api import async_playwright, expect
 
@@ -11,7 +11,7 @@ async def main():
  OUT.mkdir(parents=True,exist_ok=True)
  results=[]
  async with async_playwright() as pw:
-  browser=await getattr(pw,ENGINE).launch()
+  browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   try:
    for lang in ['ru','ar','fa']:
     for width,height in [(320,568),(390,844),(844,390),(1366,900)]:

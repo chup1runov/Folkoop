@@ -1,5 +1,5 @@
 """Upgrade a populated, same-version offline shell without deleting user data."""
-import asyncio, os, threading
+import asyncio, os, threading, shutil
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -31,7 +31,7 @@ async def main():
  base=f'http://127.0.0.1:{server.server_port}/'
  try:
   async with async_playwright() as pw:
-   browser=await getattr(pw,os.getenv('BROWSER_ENGINE','chromium')).launch()
+   browser=await pw.webkit.launch() if os.getenv('BROWSER_ENGINE','chromium')=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
    page=await browser.new_page()
    await page.goto(base+'?intro=0')
    await page.wait_for_function('() => navigator.serviceWorker.controller !== null')
