@@ -232,7 +232,7 @@ async def main():
   await page.click('#netPost button')
   await expect(page.locator('#netStatus')).to_contain_text('не подтверждено')
   await expect(page.locator('#netPost [name=body]')).to_have_value('Retain this unsent text')
-  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Моё')
+  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Профиль')
   await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
   await page.click('#mobileContextDock [data-mobile-subnav="me"]')
   await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
