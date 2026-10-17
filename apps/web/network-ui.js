@@ -775,7 +775,8 @@ function coopDisclosure(key,title,count,body,open=false){
 }
 
 function projectSearch(){
- return `<label class="project-search"><span>${esc(t('search'))}</span><input id="networkProjectSearch" type="search" autocomplete="off"></label><p id="projectSearchEmpty" class="empty" role="status" hidden>${esc(ct('empty'))}</p>`;
+ const label={en:'Search',sv:'Sök',ru:'Поиск',uk:'Пошук',fi:'Haku',bs:'Pretraga',ar:'بحث',fa:'جستجو',so:'Raadi',ku:'Lêgerîn',es:'Buscar'}[lang()]||'Search';
+ return `<label class="project-search"><span>${esc(label)}</span><input id="networkProjectSearch" type="search" autocomplete="off"></label><p id="projectSearchEmpty" class="empty" role="status" hidden>${esc(ct('empty'))}</p>`;
 }
 
 function renderCooperation(u,r){
