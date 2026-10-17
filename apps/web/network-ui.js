@@ -774,6 +774,11 @@ function coopDisclosure(key,title,count,body,open=false){
  return `<details class="coop-disclosure" data-coop-section="${esc(key)}"${open?' open':''}><summary><span>${esc(title)}</span>${count!==''?`<span class="coop-section-count">${esc(String(count))}</span>`:''}</summary><div class="coop-disclosure-body">${body}</div></details>`;
 }
 
+function projectSearch(){
+ const label={en:'Search',sv:'Sök',ru:'Поиск',uk:'Пошук',fi:'Haku',bs:'Pretraga',ar:'بحث',fa:'جستجو',so:'Raadi',ku:'Lêgerîn',es:'Buscar'}[lang()]||'Search';
+ return `<label class="project-search"><span>${esc(label)}</span><input id="networkProjectSearch" type="search" autocomplete="off"></label><p id="projectSearchEmpty" class="empty" role="status" hidden>${esc(ct('empty'))}</p>`;
+}
+
 function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource','project'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
@@ -859,15 +864,16 @@ function renderCooperation(u,r){
  if(projectMode){
    const rawView=currentSubsection('projects'),view=guestDemo&&rawView==='projects-mine'?'projects-overview':rawView;
   if(view==='projects-tasks'){
-   const tasks=data.assignedTasks.filter(x=>x.status!=='done');
-   html+=`<h3>${esc(ct('tasks'))}</h3><div class="draft-grid">${tasks.map(task=>{const project=data.cooperations.find(x=>x.id===task.cooperation_id);return `<article class="card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div>`;
+   const tasks=data.assignedTasks.filter(x=>x.assignee_id===u.id&&x.status!=='done');
+   html+=`<section class="project-workspace" data-project-view="tasks"><div class="row"><h3>${esc(ct('tasks'))} <span class="badge">${tasks.length}</span></h3><span class="meta">${esc(ht('task'))}</span></div>${projectSearch()}<div class="task-board">${['todo','doing'].map(status=>`<section class="task-column"><h4>${esc(ct(status))} <span class="badge">${tasks.filter(x=>x.status===status).length}</span></h4>${tasks.filter(x=>x.status===status).map(task=>{const project=list.find(x=>x.id===task.cooperation_id);return `<article class="card project-work-card" data-project-search-card><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<p class="meta">${esc(ct('empty'))}</p>`}</section>`).join('')}</div></section>`;
    return html;
   }
   if(view==='projects-updates'){
-   const updates=data.activityInbox.filter(x=>x.cooperation_kind==='project'&&x.last_activity_at);
-   html+=`<h3>${esc(ct('updates'))}</h3><div class="draft-grid">${updates.map(x=>{const line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card"><div class="row"><h3>${esc(x.cooperation_title)}</h3>${Number(x.unread_count||0)?`<span class="net-count">${esc(String(x.unread_count))}</span>`:''}</div><p class="meta">${esc(line)} · ${esc(formatWhen(x.last_activity_at))}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div>`;
+   const updates=data.activityInbox.filter(x=>x.cooperation_kind==='project'&&x.last_activity_at).sort((a,b)=>String(b.last_activity_at).localeCompare(String(a.last_activity_at)));
+   html+=`<section class="project-workspace" data-project-view="updates"><h3>${esc(ct('updates'))}</h3><p class="meta">${esc(at('recentActivity'))}</p>${projectSearch()}<div class="project-timeline">${updates.map(x=>{const line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card project-work-card" data-project-search-card><time class="meta" datetime="${esc(x.last_activity_at)}">${esc(formatWhen(x.last_activity_at))}</time><div class="row"><h3>${esc(x.cooperation_title)}</h3>${Number(x.unread_count||0)?`<span class="net-count">${esc(String(x.unread_count))}</span>`:''}</div><p>${esc(line)}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
    return html;
   }
+  html+=`<nav class="project-shortcuts" aria-label="${esc(ct('projectsTitle'))}"><a href="#/projects" data-subsection="projects-tasks"><strong>${data.assignedTasks.filter(x=>x.assignee_id===u.id&&x.status!=='done').length}</strong><span>${esc(ht('task'))}</span></a><a href="#/projects" data-subsection="projects-updates"><strong>${data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((sum,x)=>sum+Number(x.unread_count||0),0)}</strong><span>${esc(at('unread'))} · ${esc(ct('updates'))}</span></a></nav>${projectSearch()}`;
  }
  const kind=projectMode?'project':coopDraft.kind;
  const rawListView=projectMode?currentSubsection('projects'):'',view=guestDemo&&rawListView==='projects-mine'?'projects-overview':rawListView;
@@ -1134,6 +1140,14 @@ window.addEventListener('folkoop:start-cooperation',e=>{
  navigateNetwork(kind==='project'?'#/projects':'#/together');
 });
 document.addEventListener('input',e=>{
+ if(e.target?.id==='networkProjectSearch'){
+  const needle=e.target.value.trim().toLocaleLowerCase();
+  const cards=[...host.querySelectorAll('[data-project-search-card],[data-together-card]')];
+  for(const card of cards)card.hidden=!!needle&&!card.textContent.toLocaleLowerCase().includes(needle);
+  const empty=host.querySelector('#projectSearchEmpty');
+  if(empty)empty.hidden=!needle||cards.some(card=>!card.hidden);
+  return;
+ }
  if(e.target?.id!=='networkCoopSearch')return;
  const needle=e.target.value.trim().toLocaleLowerCase();
  document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{

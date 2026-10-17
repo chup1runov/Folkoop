@@ -36,7 +36,9 @@ async def audit(browser,width,height):
  await expect(page.locator('.mura-home')).to_be_visible()
  await page.click('[data-mobile-action="language"]')
  await expect(page.locator('[data-folkoop-guide-lang="sv"]')).to_contain_text('🇸🇪 Svenska')
- await expect(page.locator('[data-folkoop-guide-lang="ar"]')).to_contain_text('🌐')
+ await expect(page.locator('[data-folkoop-guide-lang="ar"]')).to_contain_text('🇸🇦')
+ await expect(page.locator('[data-folkoop-guide-lang="ku"]')).to_contain_text('☀️')
+ assert await page.locator('[data-folkoop-guide-lang="ku"] strong').evaluate("el => getComputedStyle(el,'::before').backgroundImage")!='none'
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
  await page.click('[data-mobile-action="demo"]')
@@ -130,6 +132,25 @@ async def audit(browser,width,height):
  await expect(page.locator('.center-home')).to_be_visible()
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-center.png'),full_page=True)
  await page.click('#mobilePrimaryNav a[href="#/together"]')
+ await page.click('#mobileContextDock [data-subsection="projects-overview"]')
+ await expect(page.locator('.project-shortcuts')).to_be_visible()
+ await page.locator('#networkProjectSearch').fill('no-project-matches-this-query')
+ await expect(page.locator('#projectSearchEmpty')).to_be_visible()
+ await expect(page.locator('[data-together-card]:visible')).to_have_count(0)
+ await page.locator('#networkProjectSearch').fill('')
+ assert await page.locator('[data-together-card]:visible').count()>0
+ await page.click('#mobileContextDock [data-subsection="projects-tasks"]')
+ await expect(page.locator('[data-project-view="tasks"]')).to_be_visible()
+ await expect(page.locator('.task-column')).to_have_count(2)
+ assert await page.locator('[data-project-search-card]').count()>0
+ await page.locator('[data-project-search-card] [data-coop="open"]').first.click()
+ await expect(page.locator('.coop-summary')).to_be_visible()
+ await page.click('#mobileContextDock [data-subsection="projects-updates"]')
+ await expect(page.locator('[data-project-view="updates"]')).to_be_visible()
+ dates=await page.locator('.project-timeline time').evaluate_all('els => els.map(el => el.dateTime)')
+ assert dates==sorted(dates,reverse=True),dates
+ await page.locator('.project-timeline [data-coop="openNotify"]').first.click()
+ await expect(page.locator('.coop-summary')).to_be_visible()
  await page.click('#mobileContextDock [data-subsection="projects-overview"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
 

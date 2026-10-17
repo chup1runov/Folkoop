@@ -10,7 +10,9 @@ let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=nu
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const NAV_ORDER=['home','together','center','city','messages'];
 // Flags are supplementary locale cues, not a claim about a speaker's nationality.
-const LANGUAGE_MARKS={sv:'🇸🇪',en:'🌐',ru:'🇷🇺',uk:'🇺🇦',fi:'🇫🇮',bs:'🌐',ar:'🌐',fa:'🌐',so:'🇸🇴',ku:'🌐',es:'🌐'};
+// Conventional language markers, not the participant's nationality. Native
+// selects cannot render the Kurdish flag; custom pickers draw it beside ☀️.
+const LANGUAGE_MARKS={sv:'🇸🇪',en:'🇬🇧',ru:'🇷🇺',uk:'🇺🇦',fi:'🇫🇮',bs:'🇧🇦 🇭🇷 🇷🇸',ar:'🇸🇦',fa:'🇮🇷',so:'🇸🇴',ku:'☀️',es:'🇪🇸'};
 const LANGUAGE_NAMES=Object.fromEntries(C.LANGS.map(code=>[code,`${LANGUAGE_MARKS[code]||'🌐'} ${I.NAMES[code]}`]));
 const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
