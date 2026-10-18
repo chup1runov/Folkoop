@@ -72,3 +72,12 @@ role reset, parent preservation, deletion cascade and operator inventory.
 Browser tests use two isolated synthetic HTTP sessions; they test UI, not real
 Auth or a real meeting. Hosted transactional SQL rehearsal uses synthetic rows
 and rolls back. Neither is a human two-account acceptance or physical iPhone test.
+
+Verified 18 October: 373 local unit/integration tests, build and diff checks;
+Chromium and WebKit two-session browser scenario; existing email-link/export and
+Mura regression checks. PR 280 initial CI passed database authorization,
+Chromium, WebKit, source contracts and migration tooling. Hosted migration
+`20261018132436` applied; the same SQL acceptance suite passed afterwards and
+rolled back, with zero fixture users left. Security advisor output remained
+unchanged from the pre-migration baseline (existing warnings are not resolved by
+this feature). Public-site deployment and final browser checks are separate.

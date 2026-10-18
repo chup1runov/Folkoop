@@ -1,3 +1,4 @@
+-- CLI generated 20261018131024; hosted apply_migration recorded 20261018132436.
 begin;
 -- Personal accounts of an event, not certified attendance or external evidence.
 create table public.fk_meeting_outcomes(
