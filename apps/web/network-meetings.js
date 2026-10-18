@@ -26,7 +26,7 @@ function stockholmTime(local,offset){
 function formValues(v){return {...v,startsAt:stockholmTime(v.start,v.offset),endsAt:stockholmTime(v.end,v.endOffset)};}
 function render({snapshot,user,owner,members,name,draft,now=Date.now(),online=true}){
  const tx=i=>esc(text(i)),s=snapshot?.terms,rows=snapshot?.responses||[];
- const fresh=!!snapshot&&!snapshot.error&&online&&now-Date.parse(snapshot.checked_at)<60000;
+ const fresh=!!snapshot&&!snapshot.error&&!snapshot.stale&&online&&now-(snapshot.loadedAt??Date.parse(snapshot.checked_at))<60000;
  const current=fresh&&snapshot.current===true&&Date.parse(s?.starts_at)>now;
  const yes=(id,role)=>rows.some(x=>x.user_id===id&&x.role===role&&x.confirmed);
  const label=id=>esc(id?name(id):text(26));

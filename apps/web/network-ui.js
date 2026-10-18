@@ -1004,7 +1004,7 @@ async function load(){
  const economicFlowRoles=economicFlows.length?await api.economicFlowRoles(economicFlows.map(x=>x.id)):[];
  let meeting=null;
  if(ownCoopMember&&selectedCooperation?.kind==='project'){
-  try{meeting=await api.meetingSnapshot(selectedCoop);if(!meeting||Array.isArray(meeting))throw new Error('INVALID_RESPONSE');}
+  try{meeting=await api.meetingSnapshot(selectedCoop);if(!meeting||Array.isArray(meeting))throw new Error('INVALID_RESPONSE');meeting.loadedAt=Date.now();}
   catch{meeting={error:true};}
  }
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
@@ -1097,7 +1097,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};resetEconomicFlowState();}
   if(a==='open'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;economicSectionOpen=false;}
-  if(a==='meetingRefresh')meetingDraft=null;
+  if(a==='meetingRefresh'&&data.meeting?.error)meetingDraft=null;
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
   if(a==='delete'){if(!confirm(t('confirm')))return;await api.deleteCooperation(id);selectedCoop=null;}
@@ -1284,10 +1284,10 @@ window.addEventListener('folkoop:guest-demo',e=>{
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
  if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
 });
-window.addEventListener('offline',()=>{if(!guestDemo&&data.meeting){data.meeting={error:true};render();}});
+window.addEventListener('offline',()=>{if(!guestDemo&&data.meeting){data.meeting.stale=true;render();}});
 api?.onChange(()=>{meetingDraft=null;});
 // Expire the visible snapshot without writing or manufacturing a live status.
-setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&Date.now()-Date.parse(data.meeting.checked_at)>=60000){data.meeting={error:true};if(!busy)render();}},5000);
+setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
 })();
