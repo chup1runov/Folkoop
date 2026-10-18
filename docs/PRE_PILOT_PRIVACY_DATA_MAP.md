@@ -1,5 +1,21 @@
 # FOLKOOP Pre-Pilot Privacy Data Map v1.1
 
+## Addendum — meeting outcomes, 18 October 2026
+
+Owner-authorized meeting-result runtime stores a personal result, optional note
+(500 characters), actor, meeting/version and report timestamp in
+`fk_meeting_outcomes`. Only admitted current project members with live sessions
+can read. The organizer or personally confirmed attendee can write only their
+own report after the scheduled end. No presence tracking or external evidence
+is collected. Statements can be corrected/withdrawn; withdrawing clears the note.
+The bounded personal export includes only the caller's outcomes. Membership and
+account closure cascade reports; operator inventory v3 counts them. Apply the
+existing authored-cooperation-content retention policy, not indefinite storage.
+`fk_meeting_repeats` relates existing projects and terms versions; it copies no
+participants, chats, consents or outcome reports. No new external processor,
+analytics collection or separate research dataset is introduced. Details and
+verification boundaries: `architecture/MEETING_OUTCOMES.md`.
+
 29 September 2026.
 
 This is the technical data inventory and account-lifecycle map for the controlled

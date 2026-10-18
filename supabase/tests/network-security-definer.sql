@@ -67,7 +67,8 @@ select fk_secdef_test.ok(
     and p.proname not in (
       'is_pilot','chat_member','coop_member','is_blocked','member_of',
       'shares_chat','shares_cooperation','selected_purchase_provider',
-      'meeting_session_active','save_meeting_terms','respond_meeting','meeting_snapshot'
+      'meeting_session_active','save_meeting_terms','respond_meeting','meeting_snapshot',
+      'report_meeting_outcome','meeting_outcome_snapshot','repeat_meeting'
     )
  ),
  'authenticated cannot execute non-RLS private SECURITY DEFINER helpers'

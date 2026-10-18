@@ -39,7 +39,7 @@ async def main():
   download=await exported.value
   exported_data=json.loads(Path(await download.path()).read_text())
   assert exported_data['manifest']['completeAccountExport'] is False
-  assert len(exported_data['manifest']['sections'])==19
+  assert len(exported_data['manifest']['sections'])==20
   await expect(page.locator('#networkExportReport')).to_contain_text('Это не полная копия аккаунта')
   assert TOKEN not in json.dumps(exported_data)
   await expect(page.locator('#networkExportReport a')).to_have_attribute('href','mailto:Chup1runov@gmail.com')
