@@ -103,6 +103,21 @@ const accountEntryCopy={
  ku:{login:'Cihê xwe yê FOLKOOP çêke an têkevê',invite:'Bi mirov, raman û karên rastîn ên xwe bidomîne.',email:'E-peyam',send:'Bidomîne',localContinue:'Bê hesab bi awayek herêmî bidomîne'}
 };
 const accountEntryText=k=>accountEntryCopy[lang()]?.[k]||accountEntryCopy.en[k]||t(k);
+const emailLinkCopy={
+ en:['Send sign-in link','Check your email and open the sign-in link. If your email contains a code instead, enter it below.','Sign in as','This link is invalid or expired. Request a new email.','Use another account'],
+ ru:['Получить ссылку для входа','Открой ссылку в письме. Если вместо ссылки пришёл код, введи его ниже.','Войти как','Ссылка недействительна или истекла. Запроси новое письмо.','Другой аккаунт'],
+ sv:['Skicka inloggningslänk','Öppna länken i mejlet. Om mejlet innehåller en kod i stället, ange den nedan.','Logga in som','Länken är ogiltig eller har gått ut. Begär ett nytt mejl.','Annat konto'],
+ uk:['Отримати посилання для входу','Відкрий посилання в листі. Якщо замість посилання надійшов код, введи його нижче.','Увійти як','Посилання недійсне або прострочене. Запроси новий лист.','Інший акаунт'],
+ fi:['Lähetä kirjautumislinkki','Avaa sähköpostin linkki. Jos viestissä on koodi, syötä se alle.','Kirjaudu käyttäjänä','Linkki ei kelpaa tai on vanhentunut. Pyydä uusi viesti.','Toinen tili'],
+ es:['Enviar enlace de acceso','Abre el enlace del correo. Si recibes un código en su lugar, introdúcelo abajo.','Entrar como','El enlace no es válido o ha caducado. Solicita otro correo.','Otra cuenta'],
+ bs:['Pošalji link za prijavu','Otvori link u e-poruci. Ako poruka umjesto linka sadrži kod, unesi ga ispod.','Prijavi se kao','Link nije važeći ili je istekao. Zatraži novu poruku.','Drugi račun'],
+ ar:['إرسال رابط الدخول','افتح الرابط في البريد. إذا وصلك رمز بدلاً منه، أدخله أدناه.','الدخول باسم','الرابط غير صالح أو انتهت صلاحيته. اطلب رسالة جديدة.','حساب آخر'],
+ fa:['ارسال پیوند ورود','پیوند ایمیل را باز کن. اگر به جای آن کد دریافت کردی، آن را پایین وارد کن.','ورود با حساب','پیوند نامعتبر یا منقضی شده است. ایمیل تازه درخواست کن.','حساب دیگر'],
+ so:['Dir xiriiriyaha gelitaanka','Fur xiriiriyaha iimaylka. Haddii aad hesho kood halkiisa, hoos geli.','Ku gal akoonka','Xiriiriyuhu ma shaqaynayo ama wuu dhacay. Codso iimayl cusub.','Akoon kale'],
+ ku:['Girêdana têketinê bişîne','Girêdana e-peyamê veke. Heke li şûna wê kod hat, li jêr binivîse.','Bi vî hesabî têkeve','Girêdan ne derbasdar e an dema wê derbas bûye. E-peyameke nû bixwaze.','Hesabek din']
+};
+const linkText=i=>(emailLinkCopy[lang()]||emailLinkCopy.en)[i];
+let emailLink=globalThis.FolkoopEmailLink?.take?.()||null,emailLinkIdentity=null;
 
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
 function resetEconomicFlowState(){
@@ -928,10 +943,12 @@ function render(){
   const termsUrl=lang()==='sv'?api.policy.termsUrlSv:api.policy.termsUrlEn;
   const policyBlock=`<div class="pilot-policy"><label class="checkbox policy-consent"><input type="checkbox" name="policyAccepted"${policyAccepted?' checked':''}><span>${esc(t('policyAccept'))}</span></label><p class="pilot-policy-links"><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(termsUrl)}">${esc(t('termsLink'))}</a><span aria-hidden="true">·</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="${esc(api.policy.privacyUrl)}">${esc(t('privacyLink'))}</a><span class="policy-version">v1 · 29.09.2026</span></p></div>`;
   const inviteField=`<label>${esc(t('inviteCode'))}<input name="inviteCode" autocomplete="off" minlength="0" maxlength="120" value="${esc(pilotInvite)}" aria-describedby="pilotInviteHint"></label><p id="pilotInviteHint" class="meta pilot-field-hint">${esc(t('inviteCodeHint'))}</p>`;
-  const emailStart=`<label>${esc(loginText('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="${codeRequested?'button secondary':'button'}">${esc(codeRequested?t('resend'):loginText('send'))}</button>`;
+  const emailStart=`<label>${esc(loginText('email'))}<input type="email" name="email" maxlength="254" autocomplete="email" required value="${esc(email)}"></label><button name="operation" value="code" class="${codeRequested?'button secondary':'button'}">${esc(linkText(0))}</button>${codeRequested?`<p role="status">${esc(linkText(1))}</p>`:''}`;
   const emailCodeOnly=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label><button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
   const emailFinish=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label>${inviteField}${policyBlock}<button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
-  if(api.googleOAuthEnabled){
+  if(emailLink){
+   html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2>${emailLinkIdentity?`<p>${esc(linkText(2))} <strong>${esc(emailLinkIdentity.email)}</strong></p><form id="netEmailLink" class="editor card">${inviteField}${policyBlock}<button class="button">${esc(t('verify'))}</button></form>`:`<p role="status">${esc(emailLink.error?linkText(3):t('loading'))}</p>`}<button type="button" class="text-button" data-email-link-cancel>${esc(linkText(4))}</button></section>`;
+  }else if(api.googleOAuthEnabled){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${inviteField}${policyBlock}<button type="button" class="button pilot-google" data-auth="google">${esc(t('google'))}</button><details class="pilot-alt-auth"${codeRequested?' open':''}><summary>${esc(t('email'))}</summary><div class="pilot-alt-auth-body">${emailStart}${codeRequested?emailCodeOnly:''}</div></details></form></section>`;
   }else{
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
@@ -1024,6 +1041,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netGroup')groupDraft=v;
  if(f.id==='netPost')postDrafts[selected]=v.body;
  if(f.id==='netLogin'){email=v.email||'';otpCode=v.code||'';pilotInvite=v.inviteCode||'';policyAccepted=v.policyAccepted==='on';}
+ if(f.id==='netEmailLink'){pilotInvite=v.inviteCode||'';policyAccepted=v.policyAccepted==='on';}
  if(f.id==='netDirect')directTarget=v.other||'';
  if(f.id==='netNewChat'){const fd=new FormData(f);chatDraft={title:String(fd.get('title')||''),members:fd.getAll('members').map(String)};}
  if(f.id==='netChatInvite')inviteTarget=v.user||'';
@@ -1041,6 +1059,11 @@ host.addEventListener('input',e=>{
 });
 host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequireAccount();return;}const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
+  if(f.id==='netEmailLink'){
+   if(!emailLinkIdentity||!emailLink?.token||emailLink.expiresAt<=Date.now()){emailLink={error:true};emailLinkIdentity=null;notice=linkText(3);return;}
+   await api.completeOAuth(emailLink.token,Math.floor((emailLink.expiresAt-Date.now())/1000),values.inviteCode||'',{termsAccepted:values.policyAccepted==='on',privacyAcknowledged:values.policyAccepted==='on'});
+   emailLink=null;emailLinkIdentity=null;await load();notice='';return;
+  }
   if(f.id==='netMeetingTerms'||f.classList.contains('netMeetingResponse')){
    try{
     if(f.id==='netMeetingTerms'){await api.saveMeetingTerms(selectedCoop,globalThis.FolkoopMeetings.formValues(values));meetingDraft=null;}
@@ -1049,7 +1072,7 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
    }catch{data.meeting={error:true};notice=globalThis.FolkoopMeetings.text(24);}
    return;
   }
-  if(f.id==='netLogin'){email=values.email;otpCode=values.code||'';pilotInvite=values.inviteCode||'';if(op==='code'){await api.requestCode(email);codeRequested=true;notice=t('sent');return;}await api.verify(email,otpCode,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});email='';otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;await load();notice='';return;}
+  if(f.id==='netLogin'){email=values.email;otpCode=values.code||'';pilotInvite=values.inviteCode||'';if(op==='code'){await api.requestCode(email);codeRequested=true;notice='';return;}await api.verify(email,otpCode,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});email='';otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;await load();notice='';return;}
   if(f.id==='netDirect'){selectedChat=await api.startDirect(values.other);directTarget='';}
   if(f.id==='netNewChat'){const fd=new FormData(f);selectedChat=await api.createGroupChat(String(fd.get('title')||''),fd.getAll('members').map(String));chatDraft={title:'',members:[]};}
   if(f.id==='netChatInvite'){await api.inviteChat(selectedChat,values.user);inviteTarget='';}
@@ -1289,5 +1312,10 @@ api?.onChange(()=>{meetingDraft=null;});
 // Expire the visible snapshot without writing or manufacturing a live status.
 setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-if(guestDemo)load().then(render).catch(render);else render();
+host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-cancel]')){emailLink=null;emailLinkIdentity=null;pilotInvite='';policyAccepted=false;notice='';render();}});
+if(emailLink){
+ guestDemo=false;
+ if(!emailLink.error){const pending=emailLink;api.inspectEmailLink(pending.token).then(who=>{if(emailLink!==pending)return;emailLinkIdentity=who;render();}).catch(()=>{if(emailLink!==pending)return;emailLink={error:true};emailLinkIdentity=null;render();});}
+ render();
+}else if(guestDemo)load().then(render).catch(render);else render();
 })();

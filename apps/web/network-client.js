@@ -109,6 +109,12 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    try{await rpc('fk_claim_pilot_invite',{p_code:invite,...policy});}catch(e){clear();throw e;}
    analyticsIdentify(session.id);track('pilot_session_started');notify();return user();
   },
+  async inspectEmailLink(accessToken){
+   if(typeof accessToken!=='string'||accessToken.length<20||accessToken.length>12000)throw fail('INVALID_INPUT');
+   const who=await request('/auth/v1/user',{auth:false,token:accessToken});
+   id(who?.id);if(typeof who.email!=='string'||!who.email_confirmed_at)throw fail('AUTH_REQUIRED');
+   return {id:who.id,email:who.email};
+  },
   async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
   async verify(email,code,inviteCode='',acceptance){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');

@@ -14,6 +14,7 @@ export BROWSER_ENGINE=webkit
 export QA_OUTPUT=qa-output/webkit
 python3 tests/e2e/navigation-ia-browser.py
 python3 tests/e2e/meeting-browser.py
+python3 tests/e2e/email-link-browser.py
 python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/security-csp-browser.py
 python3 tests/e2e/entry-welcome-audit-browser.py

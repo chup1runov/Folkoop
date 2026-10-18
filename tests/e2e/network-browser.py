@@ -171,7 +171,7 @@ async def main():
   passed.append('First login step stays compact: email only; local profile is separate and the guide does not cover Auth')
   await page.fill('#netLogin [name=email]','synthetic@example.test')
   await page.click('#netLogin [value=code]')
-  await expect(page.locator('#netStatus')).to_contain_text('одноразовый код отправлен')
+  await expect(page.locator('#netLogin')).to_contain_text('Открой ссылку в письме')
   await page.screenshot(path=str(OUT/'pilot-login-step2-mobile.png'),full_page=True)
   await expect(page.locator('#netLogin [name=code]')).to_be_visible()
   await expect(page.locator('#netLogin [name=inviteCode]')).to_be_visible()
