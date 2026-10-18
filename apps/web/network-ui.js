@@ -844,6 +844,7 @@ function renderCooperation(u,r){
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
   if(myNextTask&&!(guestDemo&&coop.id===MEETING_PROJECT))html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   html+=renderMeetingReadiness(coop,guestDemo);
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopMeetings.render({snapshot:data.meeting,user:u,owner,members,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),draft:meetingDraft?.cooperationId===coop.id?meetingDraft:null,online:navigator.onLine});
   if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
   if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
   if(member&&['project','purchase'].includes(coop.kind)){
@@ -965,6 +966,7 @@ function render(){
  syncBadges();
  queueMicrotask(()=>window.dispatchEvent(new CustomEvent('folkoop:network-rendered',{detail:{route:r,guestDemo}})));
 }
+let meetingDraft=null;
 async function load(){
  const v=version,u=currentUser();if(!u)return;
  if(guestDemo){data=demoSnapshot();return;}
@@ -1000,7 +1002,13 @@ async function load(){
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
  const economicFlows=ownCoopMember&&['project','purchase'].includes(selectedCooperation?.kind)?await api.economicFlows(selectedCoop):[];
  const economicFlowRoles=economicFlows.length?await api.economicFlowRoles(economicFlows.map(x=>x.id)):[];
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles};
+ let meeting=null;
+ if(ownCoopMember&&selectedCooperation?.kind==='project'){
+  try{meeting=await api.meetingSnapshot(selectedCoop);if(!meeting||Array.isArray(meeting))throw new Error('INVALID_RESPONSE');}
+  catch{meeting={error:true};}
+ }
+ if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -1011,6 +1019,7 @@ async function run(fn){
 }
 host.addEventListener('input',e=>{
  const f=e.target.form;if(!f)return;const v=Object.fromEntries(new FormData(f));
+ if(f.id==='netMeetingTerms')meetingDraft={...v,cooperationId:selectedCoop};
  if(f.id==='netProfile')profileDraft={...v,listed:v.listed==='on'};
  if(f.id==='netGroup')groupDraft=v;
  if(f.id==='netPost')postDrafts[selected]=v.body;
@@ -1032,6 +1041,14 @@ host.addEventListener('input',e=>{
 });
 host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequireAccount();return;}const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
+  if(f.id==='netMeetingTerms'||f.classList.contains('netMeetingResponse')){
+   try{
+    if(f.id==='netMeetingTerms'){await api.saveMeetingTerms(selectedCoop,globalThis.FolkoopMeetings.formValues(values));meetingDraft=null;}
+    else await api.respondMeeting(selectedCoop,values.version,values.role,op==='yes');
+    await load();notice=t('saved');
+   }catch{data.meeting={error:true};notice=globalThis.FolkoopMeetings.text(24);}
+   return;
+  }
   if(f.id==='netLogin'){email=values.email;otpCode=values.code||'';pilotInvite=values.inviteCode||'';if(op==='code'){await api.requestCode(email);codeRequested=true;notice=t('sent');return;}await api.verify(email,otpCode,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});email='';otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;await load();notice='';return;}
   if(f.id==='netDirect'){selectedChat=await api.startDirect(values.other);directTarget='';}
   if(f.id==='netNewChat'){const fd=new FormData(f);selectedChat=await api.createGroupChat(String(fd.get('title')||''),fd.getAll('members').map(String));chatDraft={title:'',members:[]};}
@@ -1080,6 +1097,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};resetEconomicFlowState();}
   if(a==='open'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;economicSectionOpen=false;}
+  if(a==='meetingRefresh')meetingDraft=null;
   if(a==='join')await api.joinCooperation(id);
   if(a==='leave'){if(!confirm(t('confirm')))return;await api.leaveCooperation(id);selectedCoop=null;}
   if(a==='delete'){if(!confirm(t('confirm')))return;await api.deleteCooperation(id);selectedCoop=null;}
@@ -1266,6 +1284,10 @@ window.addEventListener('folkoop:guest-demo',e=>{
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
  if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
 });
+window.addEventListener('offline',()=>{if(!guestDemo&&data.meeting){data.meeting={error:true};render();}});
+api?.onChange(()=>{meetingDraft=null;});
+// Expire the visible snapshot without writing or manufacturing a live status.
+setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&Date.now()-Date.parse(data.meeting.checked_at)>=60000){data.meeting={error:true};if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 if(guestDemo)load().then(render).catch(render);else render();
 })();
