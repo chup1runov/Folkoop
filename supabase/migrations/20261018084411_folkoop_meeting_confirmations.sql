@@ -1,4 +1,5 @@
 -- Created with Supabase CLI 2.117.0. Personal meeting commitments, not reservations.
+-- CLI generated 20261018083422; hosted apply_migration recorded 20261018084411.
 begin;
 create table public.fk_meeting_terms(
  cooperation_id uuid not null references public.fk_cooperations(id) on delete cascade,

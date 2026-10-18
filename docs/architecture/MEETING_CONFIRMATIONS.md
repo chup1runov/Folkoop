@@ -64,3 +64,18 @@ SQL authorization tests use a disposable database and synthetic sessions/people.
 Browser tests mock HTTP contracts; they are not human user acceptance or evidence
 that a real meeting happened. Eleven-language copy is technically covered, not
 native-review approved. A real iPhone/multi-person acceptance remains separate.
+
+Hosted deployment: migration `20261018084411` was applied on 18 October 2026
+(CLI draft timestamp `20261018083422`). A transaction using synthetic Auth users
+and a synthetic live session exercised the real RPCs for proposal, attendance,
+both roles and withdrawal, then rolled back all fixture data. Hosted RLS/grants
+were inspected separately. No real participant's agreement was submitted.
+
+Security advisor before/after comparison found no new meeting-related findings.
+Pre-existing warnings remain: 59 intentionally authenticated public definer RPCs
+([advisor](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable)),
+four closed private RLS tables without client policies
+([advisor](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy)),
+and disabled leaked-password protection
+([documentation](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)).
+This feature does not change Auth settings or claim an entirely clean security audit.
