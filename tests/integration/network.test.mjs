@@ -9,6 +9,24 @@ const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishab
 const oauthCfg={...cfg,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/Folkoop/auth-callback.html'};
 const uid='11111111-1111-4111-8111-111111111111',cid='22222222-2222-4222-8222-222222222222';
 const acceptance=Object.freeze({termsAccepted:true,privacyAcknowledged:true});
+test('export has bounded actor-filtered queries and exact coverage without claiming a full account copy',async()=>{
+ const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify([{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
+ await s.login();const result=await s.c.exportOwn();
+ assert.equal(result.manifest.sections.length,19);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'truncated');
+ assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
+ for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
+ assert(!JSON.stringify(result).includes('test-token'));
+});
+test('export does not infer completeness from a short or empty response without an exact count',async()=>{
+ const s=setup();await s.login();const result=await s.c.exportOwn();assert(result.manifest.sections.every(x=>x.coverage==='unknown'&&x.visibleTotal===null));
+});
+test('export rejects a failed section rather than silently producing an incomplete success',async()=>{
+ const s=setup(url=>url.includes('fk_messages?')?json({},403):null);await s.login();await assert.rejects(s.c.exportOwn(),e=>e.code==='DENIED');
+});
+test('export rejects responses completing after logout',async()=>{
+ let release;const s=setup(url=>url.includes('fk_messages?')?new Promise(r=>release=()=>r(json([]))):null);await s.login();const pending=s.c.exportOwn();await s.c.logout();release();await assert.rejects(pending,e=>e.code==='STALE');
+});
 const policyPayload={p_terms_version:'2026-09-29-v1',p_accept_terms:true,p_privacy_version:'2026-09-29-v1',p_ack_privacy:true};
 const json=(v,status=200)=>new Response(JSON.stringify(v),{status,headers:{'content-type':'application/json'}});
 function setup(extra,config=cfg){const calls=[];let now=1000;
