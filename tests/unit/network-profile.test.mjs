@@ -7,6 +7,10 @@ const context=vm.createContext({globalThis:{}});
 context.globalThis=context;
 vm.runInContext(await readFile('apps/web/network-profile.js','utf8'),context,{filename:'network-profile.js'});
 const create=context.FolkoopNetworkProfile.create;
+test('global sign-out is explicit and never shown in Mura',()=>{
+ assert.match(domain(fixture()).render({id:'alice'}),/data-net="logoutAll"/);
+ assert.doesNotMatch(domain(fixture()).render({id:'alice'},{guestDemo:true}),/data-net="logoutAll"/);
+});
 test('export report covers all locales and separates truncation from unknown completeness',()=>{
  assert.equal(Object.keys(context.FolkoopNetworkProfile.exportCopy).length,11);
  for(const values of Object.values(context.FolkoopNetworkProfile.exportCopy)){assert.equal(values.length,5);assert(values.every(s=>s.trim()));}

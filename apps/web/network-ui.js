@@ -1144,7 +1144,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
  run(async()=>{
   if(a==='localGuest'){showLocalGuest=true;render();return;}
   if(a==='logout'&&guestDemo){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-exit'}}));notice='';return;}
-  if(a==='logout'){await api.logout();notice='';return;}
+  if(a==='logout'||a==='logoutAll'){await api.logout({allDevices:a==='logoutAll'});notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
   if(a==='backChats')selectedChat=null;if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
   if(a==='acceptChat')await api.acceptChat(id);

@@ -2,6 +2,7 @@
    Profile persistence, account deletion, export and authorization remain owned by network-ui.js. */
 (() => {
 'use strict';
+const logoutAllCopy={en:'Sign out on all devices',ru:'Выйти на всех устройствах',sv:'Logga ut på alla enheter',uk:'Вийти на всіх пристроях',es:'Cerrar sesión en todos los dispositivos',fi:'Kirjaudu ulos kaikilta laitteilta',bs:'Odjavi se sa svih uređaja',ar:'تسجيل الخروج من جميع الأجهزة',fa:'خروج از همهٔ دستگاه‌ها',so:'Ka bax dhammaan qalabka',ku:'Ji hemû amûran derkeve'};
 const exportCopy={
  en:['Export report','Records in file','Sections with omitted rows','Sections with unknown completeness','This is not a complete account copy. Keep the file private. For a full copy or account closure, contact the pilot operator.'],
  ru:['Отчёт о выгрузке','Записей в файле','Разделов с пропущенными записями','Разделов с неизвестной полнотой','Это не полная копия аккаунта. Храни файл приватно. За полной копией или закрытием аккаунта обратись к оператору пилота.'],
@@ -52,11 +53,12 @@ function create({
       return `<div class="row mura-profile-toolbar"><div><p class="eyebrow">MURA / FOLKOOP</p><h2>${escape(text('profile'))}</h2></div>${button('logout','out')}</div><article class="card demo-profile-card"><span class="badge">${escape(homeText('demoBadge'))}</span><div class="mura-profile-head"><div><h2>${escape(profile.name||'')}</h2>${city?`<p class="meta"><strong>${escape(shellText('cityProfile'))}:</strong> ${escape(city)}</p>`:''}</div></div><p><strong>${escape(text('skills'))}:</strong> ${escape(profile.skills||'')}</p><p>${escape(profile.about||'')}</p><p class="meta">${escape(text('listed'))}</p><div class="mura-profile-stats" aria-label="${escape(lifeTitle)}"><span><strong>${projects}</strong>${escape(projectLabel)}</span><span><strong>${chats}</strong>${escape(chatLabel)}</span><span><strong>${groups}</strong>${escape(groupLabel)}</span></div></article>${drafts}${renderActivityNotifications(user)}`;
     }
 
+    const logoutAll=`<button class="button secondary" type="button" data-net="logoutAll">${escape(logoutAllCopy[globalThis.document?.documentElement?.lang]||logoutAllCopy.en)}</button>`;
     const blockRows=blocks
       .map(block=>`<p>${escape(block.target_id)} ${button('unblock','unblock',block.target_id)}</p>`)
       .join('');
 
-    return `<div class="row"><h2>${escape(text('profile'))}</h2>${button('logout','out')}</div><p>${escape(text('private'))}</p><form id="netProfile" class="editor card">${field('name','name',profile.name||'',60)}${field('skills','skills',profile.skills||'',200)}${field('about','about',profile.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${profile.listed?' checked':''}>${escape(text('listed'))}</label><button class="button">${escape(text('save'))}</button></form><div class="actions">${button('deleteProfile','deleteProfile')}${button('export','export')}${button('refresh','refresh')}</div><p class="meta">${escape(text('accountDelete'))} ${escape(text('exportNote'))}</p><h3>${escape(text('blocks'))}</h3>${blockRows}${renderActivityNotifications(user)}<h3>${escape(text('localTitle'))}</h3>`;
+    return `<div class="row"><h2>${escape(text('profile'))}</h2>${button('logout','out')}${logoutAll}</div><p>${escape(text('private'))}</p><form id="netProfile" class="editor card">${field('name','name',profile.name||'',60)}${field('skills','skills',profile.skills||'',200)}${field('about','about',profile.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${profile.listed?' checked':''}>${escape(text('listed'))}</label><button class="button">${escape(text('save'))}</button></form><div class="actions">${button('deleteProfile','deleteProfile')}${button('export','export')}${button('refresh','refresh')}</div><p class="meta">${escape(text('accountDelete'))} ${escape(text('exportNote'))}</p><h3>${escape(text('blocks'))}</h3>${blockRows}${renderActivityNotifications(user)}<h3>${escape(text('localTitle'))}</h3>`;
   }
 
   function renderExportReport(manifest){
