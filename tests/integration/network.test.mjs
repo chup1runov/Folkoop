@@ -9,6 +9,11 @@ const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishab
 const oauthCfg={...cfg,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/Folkoop/auth-callback.html'};
 const uid='11111111-1111-4111-8111-111111111111',cid='22222222-2222-4222-8222-222222222222';
 const acceptance=Object.freeze({termsAccepted:true,privacyAcknowledged:true});
+test('explicit all-device logout revokes globally; normal logout remains local',async()=>{
+ const s=setup();await s.login();await s.c.logout({allDevices:true});
+ assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=global')&&x.method==='POST'));assert.equal(s.c.user(),null);
+ await s.login();await s.c.logout();assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=local')));
+});
 test('export has bounded actor-filtered queries and exact coverage without claiming a full account copy',async()=>{
  const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify([{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();

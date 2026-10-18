@@ -137,7 +137,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    try{await rpc('fk_claim_pilot_invite',{p_code:invite,...policy});}catch(e){clear();throw e;}
    analyticsIdentify(session.id);track('pilot_session_started');notify();return user();
   },
-  async logout(){const token=session?.token;clear();if(token)await request('/auth/v1/logout?scope=local',{method:'POST',auth:false,token});},
+  async logout({allDevices=false}={}){bool(allDevices);const token=session?.token;clear();if(token)await request('/auth/v1/logout?scope='+(allDevices?'global':'local'),{method:'POST',auth:false,token});},
   profile(){return rows('fk_profiles?select=id,name,skills,about,listed&id=eq.'+id(user()?.id));},
   saveProfile(p){if(typeof p.listed!=='boolean')throw fail('INVALID_INPUT');return rpc('fk_save_profile',{p_name:text(p.name,60,1),p_skills:text(p.skills,200),p_about:text(p.about,600),p_listed:p.listed});},
   directory(){return rows('fk_profiles?select=id,name,skills,about&listed=eq.true&order=name.asc&limit=100');},

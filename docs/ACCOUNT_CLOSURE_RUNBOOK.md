@@ -12,7 +12,12 @@ Never start with `auth.users DELETE`.
 
 First run the read-only operator preflight:
 
-`folkoop_private.account_closure_inventory(<user_uuid>)`
+`folkoop_private.account_closure_inventory_v2(<user_uuid>)`
+
+The v2 wrapper preserves the original inventory (including deployed resource
+extensions) and adds meeting responses, proposed facilitator/opener references,
+economic-flow roles and authored/shared flows. Run v2, not the historical v1
+alone. Storage ownership and Auth sessions still require separate checks.
 
 The function is private and has no EXECUTE grant for PUBLIC, anon or
 authenticated. It is intended for an operator/admin database context only.
@@ -55,6 +60,9 @@ Before any destructive action:
 1. disable the participant's pilot admission/authorization so the admitted
    network path stops accepting the user immediately;
 2. globally revoke refresh sessions using a supported Supabase Auth path;
+   the authenticated profile's explicit **Sign out on all devices** uses
+   `/auth/v1/logout?scope=global`; ordinary **Sign out** remains local;
+   verify zero remaining Auth sessions before removing the identity;
 3. remember that already-issued access JWTs can remain valid until their `exp`,
    so session revocation is not the immediate authorization boundary;
 4. run the read-only inventory above;
@@ -91,8 +99,8 @@ runbook are now documented:
 - retention and rights handling are documented.
 
 The remaining launch gate for account closure is **operational verification**:
-run this procedure once against a developer/test identity after real Google Auth
-is active.
+run this procedure once against a developer/test identity using an approved
+real Auth method (email-link Auth is sufficient; Google activation is not required).
 
 The current FK cascade remains an integrity mechanism, not a privacy policy.
 
