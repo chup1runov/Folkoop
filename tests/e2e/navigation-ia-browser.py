@@ -153,6 +153,17 @@ async def audit(browser,width,height):
  await expect(page.locator('.coop-summary')).to_be_visible()
  await page.click('#mobileContextDock [data-subsection="projects-overview"]')
  await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-projects.png'),full_page=True)
+ await page.click('[data-coop="open"][data-id="00000000-0000-4000-8000-000000000310"]')
+ await expect(page.locator('[data-readiness="story-pending"]')).to_be_visible()
+ for label in ['Что нужно','Что подтверждено','Чего не хватает']:
+  await expect(page.locator('.readiness-columns').get_by_role('heading',name=label,exact=True)).to_be_visible()
+ await expect(page.locator('.readiness-story-note')).to_contain_text('не реальная бронь')
+ await page.click('[data-readiness-task]')
+ await expect(page.locator('[data-coop-section="tasks"]')).to_have_attribute('open','')
+ await expect(page.locator('[data-coop-section="tasks"] .coop-task-row')).to_have_count(1)
+ assert await page.locator('#networkPanel form:visible').count()==0
+ assert await page.locator('html').evaluate('el => el.scrollWidth <= innerWidth + 1')
+ await page.screenshot(path=str(OUT/f'navigation-ia-{ENGINE}-{width}x{height}-readiness.png'),full_page=True)
 
  # The embedded City keeps its civic routes but must not present a second FOLKOOP shell.
  await page.goto(BASE+'city.html?embedded=1&mura=1')
