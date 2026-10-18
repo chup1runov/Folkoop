@@ -1,3 +1,4 @@
+-- CLI generated 20261018122420; hosted apply_migration recorded 20261018122827.
 -- Additive operator preflight: retain the existing inventory, including any
 -- deployed resource extensions, and cover newer coordination references.
 begin;

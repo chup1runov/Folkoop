@@ -10,12 +10,13 @@ async def main():
   browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   context=await browser.new_context(service_workers='block',viewport={'width':390,'height':844})
   await context.add_init_script("localStorage.setItem('folkoop-language','ru');")
-  claims=[]
+  claims=[];logout_scopes=[]
   async def route(r):
    url=r.request.url
    if '.supabase.co/' not in url:await r.continue_();return
    if url.endswith('/user'):result={'id':'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','email':'synthetic@example.test','email_confirmed_at':'2026-10-18T10:00:00Z'}
    elif url.endswith('/fk_claim_pilot_invite'):claims.append(r.request.post_data_json);result=True
+   elif '/logout?scope=' in url:logout_scopes.append(url.split('scope=')[1]);result=None
    else:result=[]
    await r.fulfill(body=json.dumps(result),content_type='application/json',headers={'content-range':'*/0'})
   await context.route('**/*',route)
@@ -45,6 +46,10 @@ async def main():
   assert not await page.evaluate("JSON.stringify({...localStorage,...sessionStorage}).includes('synthetic-email-link-token')")
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   assert not errors,errors
+  await page.locator('[data-net=logoutAll]').click()
+  await expect(page.locator('#netLogin')).to_be_visible()
+  assert logout_scopes==['global']
+  assert await page.locator('#networkExportReport').count()==0
   await page.reload()
   assert await page.locator('#netProfile').count()==0
   assert await page.locator('#networkExportReport').count()==0
