@@ -17,7 +17,7 @@ async def main():
    if url.endswith('/user'):result={'id':'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','email':'synthetic@example.test','email_confirmed_at':'2026-10-18T10:00:00Z'}
    elif url.endswith('/fk_claim_pilot_invite'):claims.append(r.request.post_data_json);result=True
    else:result=[]
-   await r.fulfill(body=json.dumps(result),content_type='application/json')
+   await r.fulfill(body=json.dumps(result),content_type='application/json',headers={'content-range':'*/0'})
   await context.route('**/*',route)
   page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   await page.goto(BASE+'#access_token='+TOKEN+'&refresh_token=discard-this&expires_in=3600&token_type=bearer&type=magiclink')
@@ -33,11 +33,21 @@ async def main():
   await page.locator('#netEmailLink button').click()
   await expect(page.locator('#netProfile')).to_be_visible()
   assert len(claims)==1 and claims[0]['p_accept_terms'] is True
+  async with page.expect_download() as exported:
+   await page.locator('[data-net=export]').click()
+  download=await exported.value
+  exported_data=json.loads(Path(await download.path()).read_text())
+  assert exported_data['manifest']['completeAccountExport'] is False
+  assert len(exported_data['manifest']['sections'])==19
+  await expect(page.locator('#networkExportReport')).to_contain_text('Это не полная копия аккаунта')
+  assert TOKEN not in json.dumps(exported_data)
+  await expect(page.locator('#networkExportReport a')).to_have_attribute('href','mailto:Chup1runov@gmail.com')
   assert not await page.evaluate("JSON.stringify({...localStorage,...sessionStorage}).includes('synthetic-email-link-token')")
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   assert not errors,errors
   await page.reload()
   assert await page.locator('#netProfile').count()==0
+  assert await page.locator('#networkExportReport').count()==0
   await page.close();page=await context.new_page()
   await page.goto(BASE+'#error=access_denied&error_description=secret')
   await expect(page.locator('#networkPanel')).to_contain_text('Ссылка недействительна')

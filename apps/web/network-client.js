@@ -37,12 +37,13 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  function notify(){for(const fn of listeners)fn(session?{id:session.id}:null);}
  function clear(){session=null;epoch++;authAttempt++;for(const c of controllers)c.abort();analyticsReset();notify();}
  function user(){if(session&&session.expiresAt<=clock())clear();return session?{id:session.id}:null;}
- async function request(path,{method='GET',body,auth=true,token}={}){
+ async function request(path,{method='GET',body,auth=true,token,withCount=false}={}){
   if(!cfg)throw fail('DISABLED');
   if(auth&&!user())throw fail('AUTH_REQUIRED');
   const version=epoch,controller=new AbortController();controllers.add(controller);
   const timer=setTimeout(()=>controller.abort(),12000);
   const headers={apikey:cfg.key,Accept:'application/json'};
+  if(withCount)headers.Prefer='count=exact';
   if(auth||token)headers.Authorization='Bearer '+(token||session.token);
   if(body!==undefined)headers['Content-Type']='application/json';
   try{
@@ -61,7 +62,13 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    }
    if(response.status===204)return null;
    if(!/\bjson\b/i.test(response.headers.get('content-type')||''))throw fail('INVALID_RESPONSE');
-   const result=await response.json();if(version!==epoch)throw fail('STALE');return result;
+   const result=await response.json();if(version!==epoch)throw fail('STALE');
+   if(withCount){
+    const range=response.headers.get('content-range')||'',match=/^(?:\d+-\d+|\*)\/(\d+)$/.exec(range);
+    const total=match?Number(match[1]):null;
+    return {records:result,total:Number.isSafeInteger(total)&&total>=0?total:null};
+   }
+   return result;
   }catch(e){if(e.code)throw e;throw fail('NETWORK');}
   finally{clearTimeout(timer);controllers.delete(controller);}
  }
@@ -218,7 +225,20 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   finishPurchase(cid,note=''){return trackedRpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)},'purchase_completed');},
   cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses]=await Promise.all([
+  async exportOwn(){
+   const uid=id(user()?.id),exportEpoch=epoch,startedAt=new Date(clock()).toISOString(),sections=[];
+   // A bounded convenience copy, not a full account archive or atomic snapshot.
+   async function rows(path){
+    const limit=Number(/[?&]limit=(\d+)/.exec(path)?.[1]||1000);
+    const bounded=/[?&]limit=/.test(path)?path:path+'&limit='+limit;
+    const {records,total}=await request('/rest/v1/'+bounded,{withCount:true});
+    if(!Array.isArray(records)||records.length>limit)throw fail('INVALID_RESPONSE');
+    const known=total!==null&&total>=records.length;
+    sections.push({collection:path.split('?')[0],returned:records.length,requestedLimit:limit,
+     visibleTotal:known?total:null,coverage:!known?'unknown':total>records.length?'truncated':'visible-query-complete'});
+    return records;
+   }
+   const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -239,7 +259,12 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
    rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
+   const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
+    completeAccountExport:false,atomicSnapshot:false,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
+    excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
+    fullCopyContact:'Chup1runov@gmail.com'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,manifest,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }

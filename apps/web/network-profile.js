@@ -2,6 +2,19 @@
    Profile persistence, account deletion, export and authorization remain owned by network-ui.js. */
 (() => {
 'use strict';
+const exportCopy={
+ en:['Export report','Records in file','Sections with omitted rows','Sections with unknown completeness','This is not a complete account copy. Keep the file private. For a full copy or account closure, contact the pilot operator.'],
+ ru:['Отчёт о выгрузке','Записей в файле','Разделов с пропущенными записями','Разделов с неизвестной полнотой','Это не полная копия аккаунта. Храни файл приватно. За полной копией или закрытием аккаунта обратись к оператору пилота.'],
+ sv:['Exportrapport','Poster i filen','Delar med utelämnade poster','Delar med okänd fullständighet','Detta är inte en fullständig kontokopia. Förvara filen privat. Kontakta pilotoperatören för en fullständig kopia eller kontostängning.'],
+ uk:['Звіт про вивантаження','Записів у файлі','Розділів із пропущеними записами','Розділів із невідомою повнотою','Це не повна копія акаунта. Зберігай файл приватно. За повною копією або закриттям акаунта звернися до оператора пілоту.'],
+ es:['Informe de exportación','Registros en el archivo','Secciones con registros omitidos','Secciones de integridad desconocida','No es una copia completa de la cuenta. Guarda el archivo de forma privada. Contacta con el operador del piloto para una copia completa o el cierre de la cuenta.'],
+ fi:['Vientiraportti','Tietueita tiedostossa','Osioita, joista puuttuu tietueita','Osioita, joiden kattavuus on tuntematon','Tämä ei ole täydellinen tilikopio. Säilytä tiedosto yksityisesti. Pyydä täydellinen kopio tai tilin sulkeminen pilotin ylläpitäjältä.'],
+ bs:['Izvještaj o izvozu','Zapisi u datoteci','Odjeljci s izostavljenim zapisima','Odjeljci nepoznate potpunosti','Ovo nije potpuna kopija računa. Čuvaj datoteku privatno. Za potpunu kopiju ili zatvaranje računa obrati se operateru pilota.'],
+ ar:['تقرير التصدير','السجلات في الملف','الأقسام التي تحتوي على سجلات محذوفة من التصدير','الأقسام غير المعروفة الاكتمال','هذه ليست نسخة كاملة من الحساب. احتفظ بالملف بشكل خاص. لنسخة كاملة أو إغلاق الحساب، اتصل بمشغّل التجربة.'],
+ fa:['گزارش خروجی','رکوردهای فایل','بخش‌های دارای رکوردهای جاافتاده','بخش‌هایی با کامل‌بودن نامشخص','این نسخهٔ کامل حساب نیست. فایل را خصوصی نگه دار. برای نسخهٔ کامل یا بستن حساب با مسئول پایلوت تماس بگیر.'],
+ so:['Warbixinta dhoofinta','Diiwaannada faylka','Qaybaha ay diiwaanno ka maqan yihiin','Qaybaha aan dhammaystirkooda la aqoon','Tani ma aha nuqul buuxa oo akoonka ah. Faylka si gaar ah u hay. Nuqul buuxa ama xiritaanka akoonka kala xiriir maamulaha tijaabada.'],
+ ku:['Rapora derxistinê','Tomarên di pelê de','Beşên bi tomarên kêm','Beşên ku temambûna wan nayê zanîn','Ev ne kopiyeke temam a hesabê ye. Pelê taybet bihêle. Ji bo kopiyeke temam an girtina hesabê bi berpirsiyarê pilotê re têkilî dayne.']
+};
 
 function create({
   escape,
@@ -46,8 +59,14 @@ function create({
     return `<div class="row"><h2>${escape(text('profile'))}</h2>${button('logout','out')}</div><p>${escape(text('private'))}</p><form id="netProfile" class="editor card">${field('name','name',profile.name||'',60)}${field('skills','skills',profile.skills||'',200)}${field('about','about',profile.about||'',600,true)}<label class="checkbox"><input type="checkbox" name="listed"${profile.listed?' checked':''}>${escape(text('listed'))}</label><button class="button">${escape(text('save'))}</button></form><div class="actions">${button('deleteProfile','deleteProfile')}${button('export','export')}${button('refresh','refresh')}</div><p class="meta">${escape(text('accountDelete'))} ${escape(text('exportNote'))}</p><h3>${escape(text('blocks'))}</h3>${blockRows}${renderActivityNotifications(user)}<h3>${escape(text('localTitle'))}</h3>`;
   }
 
-  return Object.freeze({render});
+  function renderExportReport(manifest){
+    if(!manifest||!Array.isArray(manifest.sections))return '';
+    const copy=exportCopy[globalThis.document?.documentElement?.lang]||exportCopy.en;
+    const values=[manifest.sections.reduce((n,s)=>n+s.returned,0),manifest.sections.filter(s=>s.coverage==='truncated').length,manifest.sections.filter(s=>s.coverage==='unknown').length];
+    return `<section class="card" id="networkExportReport" role="status" aria-live="polite"><h3>${escape(copy[0])}</h3><dl>${values.map((n,i)=>`<dt>${escape(copy[i+1])}</dt><dd>${escape(String(n))}</dd>`).join('')}</dl><p>${escape(copy[4])}</p><a href="mailto:Chup1runov@gmail.com">Chup1runov@gmail.com</a></section>`;
+  }
+  return Object.freeze({render,renderExportReport});
 }
 
-globalThis.FolkoopNetworkProfile=Object.freeze({create});
+globalThis.FolkoopNetworkProfile=Object.freeze({create,exportCopy});
 })();

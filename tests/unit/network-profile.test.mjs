@@ -7,6 +7,13 @@ const context=vm.createContext({globalThis:{}});
 context.globalThis=context;
 vm.runInContext(await readFile('apps/web/network-profile.js','utf8'),context,{filename:'network-profile.js'});
 const create=context.FolkoopNetworkProfile.create;
+test('export report covers all locales and separates truncation from unknown completeness',()=>{
+ assert.equal(Object.keys(context.FolkoopNetworkProfile.exportCopy).length,11);
+ for(const values of Object.values(context.FolkoopNetworkProfile.exportCopy)){assert.equal(values.length,5);assert(values.every(s=>s.trim()));}
+ const html=domain(fixture()).renderExportReport({sections:[{returned:3,coverage:'truncated'},{returned:2,coverage:'unknown'},{returned:0,coverage:'visible-query-complete'}]});
+ assert.match(html,/<dd>5<\/dd>/);assert.match(html,/not a complete account copy/);assert.match(html,/role="status"/);assert(!html.includes('<script'));
+ assert.equal(domain(fixture()).renderExportReport(null),'');
+});
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,ch=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -48,7 +55,7 @@ function domain(f){
 }
 
 test('profile domain exposes only render responsibility',()=>{
- assert.deepEqual(Object.keys(domain(fixture())),['render']);
+ assert.deepEqual(Object.keys(domain(fixture())),['render','renderExportReport']);
 });
 
 test('signed-in profile rendering preserves form/action hooks and escapes profile text',()=>{
