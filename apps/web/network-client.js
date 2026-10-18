@@ -174,6 +174,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   cooperations(){return rows('fk_cooperations?select=id,owner_id,kind,title,description,location_text,status,target_quantity,unit,created_at,updated_at&order=created_at.desc&limit=200');},
   cooperationMembers(){return rows('fk_cooperation_members?select=cooperation_id,user_id,role,joined_at&limit=1000');},
   meetingSnapshot(cid){return rpc('fk_meeting_snapshot',{p_cooperation:id(cid)});},
+  meetingOutcomeSnapshot(cid){return rpc('fk_meeting_outcome_snapshot',{p_cooperation:id(cid)});},
+  reportMeetingOutcome(cid,version,result,note=''){if(!['held','not_held','postponed','unsure','withdrawn'].includes(result))throw fail('INVALID_INPUT');return rpc('fk_report_meeting_outcome',{p_cooperation:id(cid),p_version:integer(version,1,1000),p_result:result,p_note:text(note,500)});},
+  repeatMeeting(cid,v){return rpc('fk_repeat_meeting',{p_cooperation:id(cid),p_version:integer(v.version,1,1000),p_starts_at:timestamp(v.startsAt,{required:true}),p_ends_at:timestamp(v.endsAt,{required:true})});},
   saveMeetingTerms(cid,v){return rpc('fk_save_meeting_terms',{p_cooperation:id(cid),p_expected_version:integer(v.version,0,999),p_starts_at:timestamp(v.startsAt,{required:true}),p_ends_at:timestamp(v.endsAt,{required:true}),p_place:text(v.place,200,1),p_conditions:text(v.conditions||'',1000),p_minimum:integer(v.minimum,1,100),p_capacity:integer(v.capacity,1,100),p_facilitator:v.facilitator?id(v.facilitator):null,p_opener:v.opener?id(v.opener):null});},
   respondMeeting(cid,version,role,confirmed){if(!['attendee','facilitator','opener'].includes(role))throw fail('INVALID_INPUT');return rpc('fk_respond_meeting',{p_cooperation:id(cid),p_version:integer(version,1,1000),p_role:role,p_confirm:bool(confirmed)});},
   cooperationUpdates(cid){return rows('fk_cooperation_updates?select=id,cooperation_id,author_id,body,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
@@ -238,7 +241,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
      visibleTotal:known?total:null,coverage:!known?'unknown':total>records.length?'truncated':'visible-query-complete'});
     return records;
    }
-   const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses]=await Promise.all([
+   const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -257,14 +260,15 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
    rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
    rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
-   rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000')
+   rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000'),
+   rows('fk_meeting_outcomes?user_id=eq.'+uid+'&order=reported_at.desc&limit=1000')
   ]);
    if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
    const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
     completeAccountExport:false,atomicSnapshot:false,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
     excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
     fullCopyContact:'Chup1runov@gmail.com'};
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,manifest,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,manifest,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }

@@ -9,6 +9,13 @@ const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishab
 const oauthCfg={...cfg,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/Folkoop/auth-callback.html'};
 const uid='11111111-1111-4111-8111-111111111111',cid='22222222-2222-4222-8222-222222222222';
 const acceptance=Object.freeze({termsAccepted:true,privacyAcknowledged:true});
+test('meeting outcome and repeat send no actor or copied consent',async()=>{
+ const s=setup();await s.login();await s.c.reportMeetingOutcome(cid,1,'held','A note');
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_cooperation:cid,p_version:1,p_result:'held',p_note:'A note'});
+ assert.throws(()=>s.c.reportMeetingOutcome(cid,1,'verified'),e=>e.code==='INVALID_INPUT');
+ await s.c.repeatMeeting(cid,{version:1,startsAt:'2030-01-01T12:00Z',endsAt:'2030-01-01T13:00Z'});
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_cooperation:cid,p_version:1,p_starts_at:'2030-01-01T12:00:00.000Z',p_ends_at:'2030-01-01T13:00:00.000Z'});
+});
 test('explicit all-device logout revokes globally; normal logout remains local',async()=>{
  const s=setup();await s.login();await s.c.logout({allDevices:true});
  assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=global')&&x.method==='POST'));assert.equal(s.c.user(),null);
@@ -17,7 +24,7 @@ test('explicit all-device logout revokes globally; normal logout remains local',
 test('export has bounded actor-filtered queries and exact coverage without claiming a full account copy',async()=>{
  const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify([{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
- assert.equal(result.manifest.sections.length,19);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.length,20);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'truncated');
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
  for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}

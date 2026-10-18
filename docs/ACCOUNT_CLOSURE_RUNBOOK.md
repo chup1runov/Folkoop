@@ -12,12 +12,14 @@ Never start with `auth.users DELETE`.
 
 First run the read-only operator preflight:
 
-`folkoop_private.account_closure_inventory_v2(<user_uuid>)`
+`folkoop_private.account_closure_inventory_v3(<user_uuid>)`
 
-The v2 wrapper preserves the original inventory (including deployed resource
-extensions) and adds meeting responses, proposed facilitator/opener references,
-economic-flow roles and authored/shared flows. Run v2, not the historical v1
-alone. Storage ownership and Auth sessions still require separate checks.
+The v3 wrapper preserves v2 and the original inventory (including deployed
+resource extensions), adding personal meeting outcomes to meeting responses,
+proposed facilitator/opener references and economic-flow roles/authored/shared
+flows. Run v3, not the historical v1/v2 alone. Storage ownership and Auth
+sessions still require separate checks. Membership deletion cascades personal
+outcomes; review owned projects before deleting their owner.
 
 The function is private and has no EXECUTE grant for PUBLIC, anon or
 authenticated. It is intended for an operator/admin database context only.
