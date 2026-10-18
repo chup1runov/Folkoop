@@ -763,3 +763,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .readiness-next{font-weight:600;margin-block:18px 12px}
 .readiness-story-note{margin:16px 0 0}
 @media(max-width:800px){.readiness-columns{grid-template-columns:1fr}.project-readiness{padding:16px}}
+.meeting-confirmations .readiness-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-block:16px}
+.meeting-confirmations .readiness-columns>section{background:#f2f6f5;border-radius:14px;padding:16px;min-width:0}
+.meeting-confirmations li{overflow-wrap:anywhere;margin-block:8px}
+.meeting-confirmations details{margin-top:16px}
+.meeting-confirmations form{margin-top:12px}
+.meeting-confirmations .meta{overflow-wrap:anywhere}
+@media(max-width:800px){.meeting-confirmations .readiness-columns{grid-template-columns:1fr}}

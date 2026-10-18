@@ -56,6 +56,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
+    if(['MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED'].includes(detail?.message))throw fail(detail.message);
     throw fail(response.status===429?'RATE_LIMIT':response.status===403?'DENIED':'REQUEST_FAILED');
    }
    if(response.status===204)return null;
@@ -159,6 +160,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},
   cooperations(){return rows('fk_cooperations?select=id,owner_id,kind,title,description,location_text,status,target_quantity,unit,created_at,updated_at&order=created_at.desc&limit=200');},
   cooperationMembers(){return rows('fk_cooperation_members?select=cooperation_id,user_id,role,joined_at&limit=1000');},
+  meetingSnapshot(cid){return rpc('fk_meeting_snapshot',{p_cooperation:id(cid)});},
+  saveMeetingTerms(cid,v){return rpc('fk_save_meeting_terms',{p_cooperation:id(cid),p_expected_version:integer(v.version,0,999),p_starts_at:timestamp(v.startsAt,{required:true}),p_ends_at:timestamp(v.endsAt,{required:true}),p_place:text(v.place,200,1),p_conditions:text(v.conditions||'',1000),p_minimum:integer(v.minimum,1,100),p_capacity:integer(v.capacity,1,100),p_facilitator:v.facilitator?id(v.facilitator):null,p_opener:v.opener?id(v.opener):null});},
+  respondMeeting(cid,version,role,confirmed){if(!['attendee','facilitator','opener'].includes(role))throw fail('INVALID_INPUT');return rpc('fk_respond_meeting',{p_cooperation:id(cid),p_version:integer(version,1,1000),p_role:role,p_confirm:bool(confirmed)});},
   cooperationUpdates(cid){return rows('fk_cooperation_updates?select=id,cooperation_id,author_id,body,created_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
   projectTasks(cid){return rows('fk_project_tasks?select=id,cooperation_id,creator_id,assignee_id,title,details,status,created_at,updated_at&cooperation_id=eq.'+id(cid)+'&order=created_at.asc&limit=200');},
   purchaseCommitments(cid){return rows('fk_purchase_commitments?select=cooperation_id,user_id,quantity,note,updated_at&cooperation_id=eq.'+id(cid)+'&limit=200');},
@@ -208,7 +212,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   finishPurchase(cid,note=''){return trackedRpc('fk_finish_purchase',{p_cooperation:id(cid),p_result_note:text(note,2000)},'purchase_completed');},
   cancelPurchase(cid,reason){return rpc('fk_cancel_purchase_process',{p_cooperation:id(cid),p_reason:text(reason,2000,3)});},
   deleteProfile(){return rpc('fk_delete_profile');},
-  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles]=await Promise.all([
+  async exportOwn(){const uid=id(user()?.id);const [profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses]=await Promise.all([
    rows('fk_profiles?id=eq.'+uid),
    rows('fk_memberships?user_id=eq.'+uid),
    rows('fk_posts?author_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
@@ -226,9 +230,10 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_offer_reports?reporter_id=eq.'+uid+'&limit=500'),
    rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
    rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
-   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500')
+   rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
+   rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000')
   ]);
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
+   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,scope:'Visible records only; server limits may truncate. Request a complete account export from the operator.'};
   }
  });
 }
