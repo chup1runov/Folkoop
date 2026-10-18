@@ -14,7 +14,7 @@ OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(parents=True,exist_ok=Tru
 async def main():
  async with async_playwright() as pw:
   browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
-  state={'terms':None,'responses':[],'writes':[],'fail':False,'reports':[],'ended':False,'next':None}
+  state={'terms':None,'responses':[],'writes':[],'fail':False,'reports':[],'ended':False,'next':None,'nextResponses':[]}
   async def session(uid,width):
    context=await browser.new_context(service_workers='block',viewport={'width':width,'height':844},locale='ru-RU')
    await context.add_init_script("localStorage.setItem('folkoop-language','ru');localStorage.setItem('folkoop-language-choice-v1','done');sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-intro-seen','1');")
@@ -32,7 +32,7 @@ async def main():
     elif '/fk_cooperation_members?' in url:result=[{'cooperation_id':P,'user_id':x,'role':'owner' if x==A else 'member'} for x in [A,B]]+([{'cooperation_id':N,'user_id':A,'role':'owner'}] if state['next'] else [])
     elif url.endswith('/fk_meeting_snapshot'):
      result={'terms':state['terms'],'responses':state['responses'],'current':True,'people_confirmed':False,'attendee_count':sum(x['confirmed'] and x['role']=='attendee' for x in state['responses']),'checked_at':datetime.now(timezone.utc).isoformat()}
-     if v['p_cooperation']==N:result.update(terms=state['next'],responses=[],attendee_count=0)
+     if v['p_cooperation']==N:result.update(terms=state['next'],responses=state['nextResponses'],attendee_count=len(state['nextResponses']))
     elif url.endswith('/fk_meeting_outcome_snapshot'):
      reports=state['reports'];kinds=set(x['result'] for x in reports)
      status='unreported' if not reports else 'unclear' if len(kinds)>1 or 'unsure' in kinds else 'participant_confirmed' if len(reports)>1 and kinds=={'held'} else 'self_reported'
@@ -51,7 +51,8 @@ async def main():
      state['writes'].append(v)
      if state['fail']:
       await req.fulfill(status=409,body=json.dumps({'message':'MEETING_VERSION_CONFLICT'}),content_type='application/json');return
-     state['responses']=[x for x in state['responses'] if not(x['user_id']==uid and x['role']==v['p_role'])]+[{'user_id':uid,'role':v['p_role'],'confirmed':v['p_confirm']}];result=None
+     key='nextResponses' if v['p_cooperation']==N else 'responses'
+     state[key]=[x for x in state[key] if not(x['user_id']==uid and x['role']==v['p_role'])]+[{'user_id':uid,'role':v['p_role'],'confirmed':v['p_confirm']}];result=None
     await req.fulfill(body=json.dumps(result),content_type='application/json')
    await context.route('**/*',route)
    page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
@@ -145,6 +146,10 @@ async def main():
   await expect(owner_page.locator('.netMeetingResponse button')).to_have_text('Я приду')
   assert state['writes'][-1]=={'p_cooperation':P,'p_version':1,'p_starts_at':'2099-10-20T16:00:00.000Z','p_ends_at':'2099-10-20T17:00:00.000Z'}
   assert await owner_page.locator('#netMeetingOutcome').count()==0
+  await owner_page.locator('.netMeetingResponse button').click()
+  await expect(owner_page.locator('.netMeetingResponse button')).to_have_text('Отозвать')
+  assert state['writes'][-1]=={'p_cooperation':N,'p_version':1,'p_role':'attendee','p_confirm':True}
+  assert len(state['nextResponses'])==1
   await owner_page.locator('.meeting-outcome [data-id="'+P+'"]').click()
   await expect(owner_page.locator('.meeting-outcome')).to_contain_text('Открыть следующую встречу')
   assert not errors+owner_errors,errors+owner_errors
