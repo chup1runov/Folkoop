@@ -3,6 +3,7 @@
 // to the public artifact and which of those are core offline shell assets.
 
 export const BUILD_FILES=Object.freeze([
+  'email-link.js',
   'city-source.html','folkoop.html','styles.css','compact.css','about-project.css',
   'civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js',
   'goteborg-plans.js','app.js','about-copy.js','about-project.js',
@@ -20,6 +21,7 @@ export const BUILD_FILES=Object.freeze([
 ]);
 
 export const PRECACHE_PATHS=Object.freeze([
+  'email-link.js',
   '','index.html','styles.css','compact.css','about-project.css','civic-core.js',
   'daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js',
   'about-copy.js','about-project.js','manifest.webmanifest','sw-register.js','icon.svg',

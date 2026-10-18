@@ -21,6 +21,7 @@ python3 tests/e2e/purchase-lifecycle-browser.py
 python3 tests/e2e/activity-chat-browser.py
 python3 tests/e2e/navigation-ia-browser.py
 python3 tests/e2e/meeting-browser.py
+python3 tests/e2e/email-link-browser.py
 python3 tests/e2e/theme-visual-browser.py
 python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/home-browser.py
