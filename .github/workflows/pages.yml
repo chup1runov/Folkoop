@@ -80,7 +80,8 @@ jobs:
         with:
           path: _site
   webkit:
-    runs-on: ubuntu-latest
+    # Playwright 1.57.0 WebKit supports Ubuntu 24.04; ubuntu-latest is rolling to 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
