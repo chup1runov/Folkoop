@@ -29,7 +29,13 @@ function configuration(value){
  let u,r;try{u=new URL(value.url);r=new URL(value.oauthRedirectUrl||'https://invalid.example/');}catch{throw fail('CONFIG');}
  if(u.protocol!=='https:'||!/^\w{20}\.supabase\.co$/.test(u.hostname)||u.port||u.username||u.password||u.pathname!=='/'||u.search||u.hash||!/^sb_publishable_[A-Za-z0-9_-]{10,200}$/.test(value.publishableKey||''))throw fail('CONFIG');
  if(value.googleOAuthEnabled===true&&(r.protocol!=='https:'||r.username||r.password||r.search||r.hash))throw fail('CONFIG');
- return {url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
+ let emailRedirectUrl=null;
+ if(value.emailRedirectUrl!==undefined){
+  let e;try{e=new URL(value.emailRedirectUrl);}catch{throw fail('CONFIG');}
+  if(e.protocol!=='https:'||e.username||e.password||e.port||e.search||e.hash)throw fail('CONFIG');
+  emailRedirectUrl=e.href;
+ }
+ return {emailRedirectUrl,url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
 }
 function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.now}={}){
  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
@@ -122,7 +128,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    id(who?.id);if(typeof who.email!=='string'||!who.email_confirmed_at)throw fail('AUTH_REQUIRED');
    return {id:who.id,email:who.email};
   },
-  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
+  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp'+(cfg?.emailRedirectUrl?'?redirect_to='+encodeURIComponent(cfg.emailRedirectUrl):''),{method:'POST',auth:false,body:{email,create_user:true}});},
   async verify(email,code,inviteCode='',acceptance){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
    const invite=text(inviteCode,120),policy=policyAcceptance(acceptance);
