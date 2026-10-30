@@ -19,7 +19,7 @@ const COPY={
  ku:['Nûvekirin heye','Guhertoyeke nû ya FOLKOOP amade ye. Dema karê xwe qedandî nû bike.','Niha nû bike','Paşê','Guhertinên tomarnekirî dikarin winda bibin. Niha nû bike?']
 };
 const copy=()=>COPY[document.documentElement.lang]||COPY.en;
-const hadController=!!navigator.serviceWorker.controller;
+let hasControlledPage=!!navigator.serviceWorker.controller;
 let registration=null,waiting=null,banner=null,parts=null;
 let dismissed=false,requestedActivation=false,reloaded=false,possiblyUnsaved=false;
 
@@ -32,7 +32,7 @@ document.addEventListener('change',event=>{
 },true);
 
 function showAvailable(){
- if(!hadController||dismissed||reloaded)return;
+ if(!hasControlledPage||dismissed||reloaded)return;
  if(!banner){
   banner=document.createElement('aside');
   banner.className='folkoop-update-notice';
@@ -72,7 +72,9 @@ function showAvailable(){
 }
 
 navigator.serviceWorker.addEventListener('controllerchange',()=>{
- if(!hadController||reloaded)return;
+ const firstControl=!hasControlledPage;
+ hasControlledPage=hasControlledPage||!!navigator.serviceWorker.controller;
+ if(firstControl||reloaded)return;
  if(requestedActivation){
   reloaded=true;
   location.reload();
@@ -88,7 +90,7 @@ window.addEventListener('load',async()=>{
  try{
   registration=await navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'});
   const installed=worker=>{
-   if(worker?.state==='installed'&&hadController){
+   if(worker?.state==='installed'&&hasControlledPage){
     waiting=worker;
     showAvailable();
    }
