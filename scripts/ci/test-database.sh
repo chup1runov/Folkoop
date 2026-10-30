@@ -33,3 +33,14 @@ for file in "${db_tests[@]}"; do
   [[ "$file" == "supabase/tests/network-bootstrap.sql" ]] && continue
   run_sql "$file"
 done
+
+# Candidate bounded chat-receipt proposal: executed only in the disposable CI
+# database and wrapped in a transaction that always rolls back. It is NOT a
+# production migration and does not modify Supabase hosted migration history.
+echo "==> disposable candidate chat-visible-read-v1 (rollback)"
+{
+  printf 'begin;\\n'
+  cat supabase/proposals/chat-visible-read-cursor-v1.sql
+  cat supabase/tests/candidate-chat-visible-read.sql
+  printf 'rollback;\\n'
+} | psql_ci
