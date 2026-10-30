@@ -35,7 +35,7 @@ function configuration(value){
   if(e.protocol!=='https:'||e.username||e.password||e.port||e.search||e.hash)throw fail('CONFIG');
   emailRedirectUrl=e.href;
  }
- return {emailRedirectUrl,url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
+ return {emailRedirectUrl,url:u.origin,key:value.publishableKey,chatBoundedReadEnabled:value.chatBoundedReadEnabled===true,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
 }
 function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.now}={}){
  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
@@ -107,7 +107,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
-  enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
+  enabled:!!cfg,chatBoundedReadEnabled:cfg?.chatBoundedReadEnabled===true,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   googleOAuthUrl(){
    if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');
    const u=new URL(cfg.url+'/auth/v1/authorize');u.searchParams.set('provider','google');u.searchParams.set('redirect_to',cfg.oauthRedirectUrl);return u.href;
@@ -190,7 +190,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   leaveChat(cid){return rpc('fk_leave_chat',{p_conversation:id(cid)});},
   removeChatMember(cid,uid){return rpc('fk_remove_chat_member',{p_conversation:id(cid),p_user:id(uid)});},
   sendMessage(cid,body){return rpc('fk_send_message',{p_conversation:id(cid),p_body:text(body,4000,1)});},
-  markChatRead(cid){return rpc('fk_mark_chat_read',{p_conversation:id(cid)});},
+  // Do not keep the legacy unbounded timestamp-only read RPC callable by UI.
+  ackVisibleChat(cid,mid){
+   if(!cfg?.chatBoundedReadEnabled)throw fail('DISABLED');
+   return rpc('fk_ack_visible_chat',{p_conversation:id(cid),p_message:id(mid)});
+  },
   deleteMessage(mid){return rpc('fk_delete_message',{p_message:id(mid)});},
   reportMessage(mid,reason){return rpc('fk_report_message',{p_message:id(mid),p_reason:text(reason,1000,2)});},
   deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},
