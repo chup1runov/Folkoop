@@ -32,6 +32,7 @@ function harness({controller=true,confirmResult=true}={}){
  runInNewContext(code,ctx);
  return {calls,messages,reg,worker,body,doc,listeners,windowListeners,nodes,
   setConfirm:yes=>{win.confirm=()=>{calls.confirm++;return yes;};},
+  setController:value=>{sw.controller=value;},
   async open(){await windowListeners.load?.();},
   banner(){return body.children[0];},
   updateButton(){return body.children[0]?.children[2];},
@@ -135,4 +136,20 @@ test('all eleven supported languages have a readable passive update action',asyn
   assert(words.every(x=>typeof x==='string'&&x.length>=4),lang);
   assert.equal(h.calls.reload,0);
  }
+});
+
+test('a tab kept open after first install still receives its second update',async()=>{
+ const h=harness({controller:false});await h.open();
+ assert.equal(h.body.children.length,0);
+ h.setController({});
+ h.listeners.controllerchange(); // silent initial control claim
+ assert.equal(h.calls.reload,0);
+ h.reg.installing=h.worker;
+ h.reg.listeners.updatefound(); // next release becomes installed in same tab
+ assert.equal(h.banner().hidden,false);
+ assert.equal(h.calls.reload,0);
+ h.updateButton().click();
+ assert.equal(h.messages.length,1);
+ h.listeners.controllerchange();
+ assert.equal(h.calls.reload,1);
 });
