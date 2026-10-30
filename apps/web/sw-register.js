@@ -23,13 +23,34 @@ let hasControlledPage=!!navigator.serviceWorker.controller;
 let registration=null,waiting=null,banner=null,parts=null;
 let dismissed=false,requestedActivation=false,reloaded=false,possiblyUnsaved=false;
 
-// Form edits are intentionally NOT written to persistent storage.
-document.addEventListener('input',event=>{
- if(event.isTrusted&&event.target?.closest?.('form'))possiblyUnsaved=true;
+// Form/City edits are intentionally NOT persisted by the updater.
+const onEditableChange=event=>{
+ if(!event.isTrusted)return;
+ const el=event.target;
+ if(el?.matches?.('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')
+    ||el?.closest?.('[contenteditable="true"]'))possiblyUnsaved=true;
+};
+document.addEventListener('input',onEditableChange,true);
+document.addEventListener('change',onEditableChange,true);
+
+// Embedded City is a same-origin iframe. Its reportDescription/reportPlace
+// controls are not children of a <form>, and iframe events do not reach the
+// outer document. Watch each new City document without reading draft values.
+const watchedCityDocuments=new WeakSet();
+function attachCityDraftGuard(frame){
+ try{
+  const city=frame?.contentDocument;
+  if(!city){if(frame)possiblyUnsaved=true;return;}
+  if(watchedCityDocuments.has(city))return;
+  watchedCityDocuments.add(city);
+  city.addEventListener('input',onEditableChange,true);
+  city.addEventListener('change',onEditableChange,true);
+ }catch{possiblyUnsaved=true;}
+}
+document.addEventListener('load',event=>{
+ if(event.target?.id==='cityFrame')attachCityDraftGuard(event.target);
 },true);
-document.addEventListener('change',event=>{
- if(event.isTrusted&&event.target?.closest?.('form'))possiblyUnsaved=true;
-},true);
+attachCityDraftGuard(document.getElementById('cityFrame'));
 
 function showAvailable(){
  if(!hasControlledPage||dismissed||reloaded)return;
