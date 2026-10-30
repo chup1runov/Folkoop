@@ -156,3 +156,51 @@ test('chat page cursors reject invalid timestamps and IDs before any requests',a
  }
  assert.equal(s.calls.length,before);
 });
+
+test('500 messages traverse stable same-timestamp UUID pages without omissions or duplicates',async()=>{
+ const base='34444444-4444-4444-8444-',stamp='2026-10-30T12:00:00.123456+00:00';
+ const full=Array.from({length:500},(_,i)=>({
+  id:base+String(i+1).padStart(12,'0'),conversation_id:cid,author_id:uid,
+  body:'Record '+(i+1),created_at:stamp
+ })).reverse();
+ const s=setup(url=>{
+  if(!url.includes('/fk_messages?'))return null;
+  const query=new URL(url).searchParams,or=query.get('or');
+  const boundary=or?.match(/id\.lt\.([0-9a-f-]{36})/)?.[1];
+  const eligible=boundary?full.filter(x=>x.id<boundary):full;
+  return json(eligible.slice(0,51));
+ });
+ await s.login();
+ const shown=[],ids=new Set();
+ let before=null,pages=0;
+ do {
+  const page=await s.c.chatMessages(cid,before);
+  assert(page.messages.length>0);
+  for(const msg of page.messages){
+   assert(!ids.has(msg.id),'duplicate page boundary');
+   ids.add(msg.id);shown.push(msg);
+  }
+  pages++;
+  before=page.hasOlder?page.messages[0]:null;
+  if(!page.hasOlder)break;
+  assert(pages<20);
+ }while(true);
+ assert.equal(pages,10);
+ assert.equal(shown.length,500);
+ assert.equal(ids.size,500);
+ assert(!s.calls.some(x=>x.url.endsWith('/fk_mark_chat_read')));
+});
+
+test('visible read receipts require explicit server feature flag and correct message IDs',async()=>{
+ const disabled=setup();await disabled.login();
+ assert.equal(disabled.c.chatBoundedReadEnabled,false);
+ assert.throws(()=>disabled.c.ackVisibleChat(cid,uid),e=>e.code==='DISABLED');
+ const enabled=setup(null,{...cfg,chatBoundedReadEnabled:true});
+ await enabled.login();
+ assert.equal(enabled.c.chatBoundedReadEnabled,true);
+ await enabled.c.ackVisibleChat(cid,uid);
+ const call=enabled.calls.at(-1);
+ assert(call.url.endsWith('/rest/v1/rpc/fk_ack_visible_chat'));
+ assert.deepEqual(JSON.parse(call.body),{p_conversation:cid,p_message:uid});
+ assert.throws(()=>enabled.c.ackVisibleChat(cid,'invalid'),e=>e.code==='INVALID_INPUT');
+});
