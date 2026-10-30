@@ -14,7 +14,7 @@ test('no old unbounded read RPC remains in network UI or adapter',()=>{
  assert.doesNotMatch(client,/rpc\('fk_mark_chat_read'/);
  assert.match(client,/ackVisibleChat\(cid,mid\)/);
  assert.match(client,/chatBoundedReadEnabled/);
- assert.match(ui,/document\.visibilityState==='visible'/);
+ assert.match(ui,/document\.visibilityState!=='visible'/);
  assert.match(ui,/IntersectionObserver/);
  assert.match(ui,/entry\.intersectionRatio<0\.5/);
  assert.match(renderer,/data-chat-message-id=/);
