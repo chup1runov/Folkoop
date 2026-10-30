@@ -3,23 +3,102 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 
-test('first installation does not interrupt entry; an existing controller reloads once per update',async()=>{
- const code=await readFile('apps/web/sw-register.js','utf8');
- for(const existing of [false,true]){
-  let changed,reloads=0;
-  runInNewContext(code,{navigator:{serviceWorker:{controller:existing?{}:null,addEventListener:(_,fn)=>{changed=fn;}}},window:{addEventListener:()=>{}},location:{reload:()=>reloads++}});
-  changed();changed();
-  assert.equal(reloads,existing?1:0);
+const code=await readFile('apps/web/sw-register.js','utf8');
+function harness({controller=true,confirmResult=true}={}){
+ const listeners={},windowListeners={},nodes=[],messages=[],calls={reload:0,update:0,register:0,confirm:0};
+ const worker={state:'installed',listeners:{},postMessage:value=>messages.push(value),addEventListener(name,fn){this.listeners[name]=fn;}};
+ const reg={waiting:worker,installing:null,listeners:{},
+  addEventListener(name,fn){this.listeners[name]=fn;},
+  async update(){calls.update++;}};
+ function element(tag){
+  const e={tag,hidden:false,attributes:{},events:{},children:[],textContent:'',
+   setAttribute(k,v){this.attributes[k]=v;},
+   append(...items){this.children.push(...items);},
+   addEventListener(k,fn){this.events[k]=fn;},
+   click(){this.events.click?.();}};
+  nodes.push(e);return e;
  }
+ const body={children:[],append(node){this.children.push(node);}};
+ const doc={documentElement:{lang:'ru'},body,addEventListener:(k,cb)=>listeners[k]=cb,
+  createElement:element};
+ const sw={controller:controller?{}:null,
+  addEventListener:(k,cb)=>listeners[k]=cb,
+  async register(_,options){calls.register++;assert.equal(options.updateViaCache,'none');return reg;}};
+ const win={addEventListener:(k,cb)=>windowListeners[k]=cb,
+  confirm(){calls.confirm++;return confirmResult;}};
+ const ctx={navigator:{serviceWorker:sw},window:win,document:doc,
+  location:{reload(){calls.reload++;}},
+  MutationObserver:class {observe(){}},console};
+ runInNewContext(code,ctx);
+ return {calls,messages,reg,worker,body,doc,listeners,windowListeners,nodes,
+  setConfirm:yes=>{win.confirm=()=>{calls.confirm++;return yes;};},
+  async open(){await windowListeners.load?.();},
+  banner(){return body.children[0];},
+  updateButton(){return body.children[0]?.children[2];},
+  laterButton(){return body.children[0]?.children[3];}};
+}
+
+test('first install never shows an update prompt or triggers reload',async()=>{
+ const h=harness({controller:false});
+ await h.open();
+ h.listeners.controllerchange?.();
+ assert.equal(h.calls.register,1);
+ assert.equal(h.calls.update,1);
+ assert.equal(h.calls.reload,0);
+ assert.equal(h.messages.length,0);
+ assert.equal(h.body.children.length,0);
 });
 
-test('PWA registration forces a network update check and activates waiting releases',async()=>{
- const code=await readFile('apps/web/sw-register.js','utf8');
+test('existing clients see a passive notice, not an automatic activation/reload',async()=>{
+ const h=harness();
+ await h.open();
+ assert.equal(h.calls.update,1);
+ assert.equal(h.calls.reload,0);
+ assert.equal(h.messages.length,0);
+ assert.equal(h.banner().attributes.role,'status');
+ assert.equal(h.banner().hidden,false);
+ assert.match(h.banner().children[0].textContent,/обновлен/i);
+ // Activation initiated by another tab also cannot reload local drafts.
+ h.listeners.controllerchange?.();
+ assert.equal(h.calls.reload,0);
+ assert.equal(h.banner().hidden,false);
+ h.laterButton().click();
+ assert.equal(h.banner().hidden,true);
+});
+
+test('dirty form denies update until participant confirms, then reloads only once',async()=>{
+ const h=harness({confirmResult:false});await h.open();
+ const field={closest:selector=>selector==='form'?{}:null};
+ h.listeners.input({isTrusted:true,target:field});
+ h.updateButton().click();
+ assert.equal(h.calls.confirm,1);
+ assert.equal(h.messages.length,0);
+ assert.equal(h.calls.reload,0);
+ h.setConfirm(true);
+ h.updateButton().click();
+ assert.equal(h.messages.length,1);
+ assert.equal(h.messages[0].type,'SKIP_WAITING');
+ assert.equal(h.calls.reload,0,'controller change must complete before reload');
+ h.listeners.controllerchange();
+ h.listeners.controllerchange();
+ assert.equal(h.calls.reload,1);
+});
+
+test('notice refreshes its language without persisting user input',async()=>{
+ const h=harness();await h.open();
+ h.doc.documentElement.lang='en';
+ h.reg.listeners.updatefound?.();
+ assert.match(h.banner().children[0].textContent,/update/i);
+ assert.doesNotMatch(code,/localStorage|sessionStorage|indexedDB/);
+});
+
+test('PWA registration checks for network updates without forcing waiting workers',()=>{
  assert.match(code,/updateViaCache:'none'/);
  assert.match(code,/registration\.update\(\)/);
  assert.match(code,/SKIP_WAITING/);
  assert.match(code,/controllerchange/);
  assert.match(code,/location\.reload\(\)/);
+ assert.doesNotMatch(code,/registration\.waiting\.postMessage\(/);
 });
 
 test('service worker accepts only the release activation message',async()=>{
@@ -29,16 +108,19 @@ test('service worker accepts only the release activation message',async()=>{
 });
 
 test('both public shells use the shared update-aware registration runtime',async()=>{
- const [city,folkoop]=await Promise.all([readFile('apps/web/index.html','utf8'),readFile('apps/web/folkoop.html','utf8')]);
+ const [city,folkoop]=await Promise.all([
+  readFile('apps/web/index.html','utf8'),readFile('apps/web/folkoop.html','utf8')
+ ]);
  assert.match(city,/\.\/sw-register\.js/);
  assert.match(folkoop,/\.\/sw-register\.js/);
  assert.doesNotMatch(city,/navigator\.serviceWorker\.register/);
  assert.doesNotMatch(folkoop,/navigator\.serviceWorker\.register/);
+ for(const path of ['apps/web/folkoop.css','apps/web/styles.css']){
+  assert.match(await readFile(path,'utf8'),/\.folkoop-update-notice:not\(\[hidden\]\)/);
+ }
 });
-
 
 test('service-worker cache version matches the packaged release version',async()=>{
  const [sw,pkg]=await Promise.all([readFile('apps/web/sw.js','utf8'),readFile('package.json','utf8')]);
- const version=JSON.parse(pkg).version;
- assert(sw.includes("const VERSION='"+version+"'"));
+ assert(sw.includes("const VERSION='"+JSON.parse(pkg).version+"'"));
 });
