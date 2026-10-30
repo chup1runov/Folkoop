@@ -121,7 +121,7 @@ let emailLink=globalThis.FolkoopEmailLink?.take?.()||null,emailLinkIdentity=null
 let exportReport=null;
 api?.onChange(()=>{exportReport=null;});
 
-let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
+let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatHasOlder:false,chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
 function resetEconomicFlowState(){
  data.economicFlows=[];data.economicFlowRoles=[];
  economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
@@ -804,6 +804,7 @@ function renderMessages(u){
  return messagingDomain.render(u,{
   language:lang(),
   selectedChat,
+  chatHasOlder:!!data.chatHasOlder,
   directTarget,
   chatDraft,
   inviteTarget,
@@ -1015,15 +1016,14 @@ async function load(){
  ]);
  const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
  const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
- const chatMessages=ownChatMember?await api.chatMessages(selectedChat):[];
+ const chatPage=ownChatMember?await api.chatMessages(selectedChat):{messages:[],hasOlder:false};
+ const chatMessages=chatPage.messages;
+ const chatHasOlder=chatPage.hasOlder;
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
- if(ownChatMember&&chatMessages.length){
-  const newest=chatMessages.at(-1)?.created_at;
-  if(newest&&(!ownChatMember.last_read_at||Date.parse(newest)>Date.parse(ownChatMember.last_read_at))){
-   await api.markChatRead(selectedChat);ownChatMember.last_read_at=new Date().toISOString();
-   const inbox=chatInbox.find(x=>x.conversation_id===selectedChat);if(inbox)inbox.unread_count=0;
-  }
- }
+ // The legacy read RPC advances last_read_at to now(), potentially
+ // acknowledging unseen messages. Never invoke it. A separate bounded RPC
+ // will later confirm only messages actually displayed to the participant.
+ // Keep server unread counts authoritative until that migration ships.
  const ownCoopMember=selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
  const selectedCooperation=selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
  const [coopUpdates,projectTasks,commitments,coopActivity]=ownCoopMember?await Promise.all([
@@ -1050,7 +1050,7 @@ async function load(){
   catch{meeting={error:true};}
  }
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting};
+ data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatHasOlder,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting};
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -1174,6 +1174,17 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='logout'||a==='logoutAll'){await api.logout({allDevices:a==='logoutAll'});notice='';return;}
   if(a==='back')selected=null;if(a==='open')selected=id;
   if(a==='backChats')selectedChat=null;if(a==='openChat'){selectedChat=id;navigateNetwork('#/messages');}
+  if(a==='olderChatMessages'){
+   const conversation=selectedChat,rows=data.chatMessages,oldest=rows?.[0],wasOlder=data.chatHasOlder;
+   const epoch=version,actor=currentUser()?.id;
+   if(!conversation||!wasOlder||!oldest||!actor)throw Object.assign(new Error('INVALID_INPUT'),{code:'INVALID_INPUT'});
+   const page=await api.chatMessages(conversation,{id:oldest.id,created_at:oldest.created_at});
+   if(epoch!==version||selectedChat!==conversation||currentUser()?.id!==actor)throw Object.assign(new Error('STALE'),{code:'STALE'});
+   const known=new Set(rows.map(x=>x.id));
+   data.chatMessages=[...page.messages.filter(x=>!known.has(x.id)),...rows];
+   data.chatHasOlder=page.hasOlder;
+   notice='';return;
+  }
   if(a==='acceptChat')await api.acceptChat(id);
   if(a==='declineChat'){await api.declineChat(id);if(selectedChat===id)selectedChat=null;}
   if(a==='leaveChat'){if(!confirm(t('confirm')))return;await api.leaveChat(id);selectedChat=null;}
@@ -1201,7 +1212,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};render();});
+api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatHasOlder:false,chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};render();});
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;
@@ -1328,7 +1339,7 @@ window.addEventListener('folkoop:guest-demo',e=>{
  guestDemo=detail.enabled!==false;
  if(!guestDemo){
   showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
-  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};
+  data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatHasOlder:false,chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};
   economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
  }
  try{
