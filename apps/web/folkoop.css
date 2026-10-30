@@ -770,3 +770,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .meeting-confirmations form{margin-top:12px}
 .meeting-confirmations .meta{overflow-wrap:anywhere}
 @media(max-width:800px){.meeting-confirmations .readiness-columns{grid-template-columns:1fr}}
+
+
+/* Optional release notice: never interrupts an active form or guest tour. */
+.folkoop-update-notice:not([hidden]){
+ position:fixed;inset:auto max(12px,env(safe-area-inset-right)) calc(5.5rem + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+ z-index:1100;max-width:460px;margin-inline:auto;padding:12px 14px;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+ border:2px solid #a6c9ff;border-radius:14px;background:#172337;color:#fff;
+ box-shadow:0 6px 28px rgba(0,0,0,.35);font-size:.9rem;line-height:1.4;
+}
+.folkoop-update-notice strong,.folkoop-update-notice span{grid-column:1/-1}
+.folkoop-update-notice button{min-height:44px;min-width:0;width:100%;font:inherit;cursor:pointer}
+.folkoop-update-notice button:focus-visible{outline:3px solid #ffd95b;outline-offset:2px}
+.folkoop-update-notice[hidden]{display:none!important}
+@media(min-width:800px){.folkoop-update-notice:not([hidden]){bottom:18px}}
