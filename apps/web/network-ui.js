@@ -965,7 +965,8 @@ function observeRenderedChat(routeName){
    chatReadAcknowledged.set(key,visibleId);
    void api.ackVisibleChat(conversation,visibleId).then(unread=>{
     if(selectedChat!==conversation||currentUser()?.id!==actor||version!==epoch)return;
-    const count=Number(unread);
+    const count=typeof unread==='number'?unread:
+      (typeof unread==='string'&&/^[0-9]+$/.test(unread)?Number(unread):NaN);
     if(!Number.isSafeInteger(count)||count<0)return;
     const inbox=data.chatInbox.find(row=>row.conversation_id===conversation);
     if(inbox)inbox.unread_count=count;
