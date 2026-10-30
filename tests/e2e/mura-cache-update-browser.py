@@ -1,4 +1,4 @@
-"""Upgrade a populated, same-version offline shell without deleting user data."""
+"""Offer a safe, consented same-version PWA upgrade without deleting stored data."""
 import asyncio, os, threading, shutil
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
@@ -40,8 +40,13 @@ async def main():
    await page.wait_for_function("() => document.documentElement.dataset.cacheFixture==='old'")
    phase['old']=False
    await page.reload()
-   # The old shell loads once, then the registration lifecycle activates the
-   # new worker and reloads it. No cache/storage-clearing APIs are used.
+   # Updates now require participant action. Merely finding a waiting worker
+   # must NOT reload the page or erase a form that is still being edited.
+   await page.wait_for_function("() => !!document.querySelector('.folkoop-update-notice:not([hidden])')",timeout=30000)
+   assert await page.evaluate("document.documentElement.dataset.cacheFixture")=='old'
+   assert await page.evaluate("localStorage.getItem('mura-cache-test-draft')")=='keep me'
+   await page.locator('.folkoop-update-notice button').first.click()
+   # Only explicit acceptance activates the new worker and reloads the shell.
    try:
     await page.wait_for_function("() => !!document.querySelector('#folkoopGuideActor') && !document.documentElement.dataset.cacheFixture",timeout=30000)
    except Exception:
