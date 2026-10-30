@@ -25,13 +25,23 @@ test('every current public FK table creation migration expressly opts into narro
  assert(checkedMigrations>=5,'Expected multiple explicit-permission table migrations');
 });
 
-test('migration history cannot silently restore broad Data API default grants',async()=>{
+test('migration history cannot restore blanket public grants, including SELECT-only',async()=>{
+ const allTablesGrant=/\bgrant\b[^;]{0,350}\bon\s+all\s+tables\s+in\s+schema\s+[^;]{0,100}\bpublic\b[^;]{0,150}\bto\s+[^;]{0,100}\b(?:anon|authenticated)\b/i;
+ const defaultPrivilegeGrant=/\balter\s+default\s+privileges\b[^;]{0,350}\bgrant\b[^;]{0,240}\bon\s+tables\b[^;]{0,130}\bto\s+[^;]{0,100}\b(?:anon|authenticated)\b/i;
+ // Known-bad samples prove the checker itself is not a cosmetic regex.
+ for(const sql of [
+  'GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;',
+  'grant select, insert on all tables in schema public to anon, authenticated;',
+  'GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;'
+ ])assert.match(sql,allTablesGrant);
+ for(const sql of [
+  'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO authenticated;',
+  'ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO anon;'
+ ])assert.match(sql,defaultPrivilegeGrant);
  for(const file of migrations){
-  const content=await readFile(dir+'/'+file,'utf8');
-  assert.doesNotMatch(content,/\bgrant\s+(?:all|select\s*,\s*insert)[\s\S]{0,160}?\bon\s+all\s+tables\s+in\s+schema\s+public\b/i,
-   file+' must not blanket-expose every public table');
-  assert.doesNotMatch(content,/\balter\s+default\s+privileges[\s\S]{0,200}?\bgrant\s+(?:all|select\s*,\s*insert)[\s\S]{0,160}?\bto\s+(?:anon|authenticated)\b/i,
-   file+' must not reintroduce automatic broad Data API permissions');
+  const content=(await readFile(dir+'/'+file,'utf8')).replace(/--[^\n]*/g,'');
+  assert.doesNotMatch(content,allTablesGrant,file+' must not blanket-expose every public table');
+  assert.doesNotMatch(content,defaultPrivilegeGrant,file+' must not restore default grants');
  }
 });
 
@@ -39,10 +49,16 @@ test('disposable SQL acceptance probes the post-30-October opt-in and direct-wri
  const testSql=await readFile('supabase/tests/network-z-data-api-grants.sql','utf8');
  const runner=await readFile('scripts/ci/test-database.sh','utf8');
  assert.match(runner,/supabase\/tests\/network-\*\.sql/);
+ assert.match(runner,/run_sql "\$file"\s*#[^\n]*\n\s*run_sql supabase\/tests\/data-api-assert-after-migration\.sql/);
+ const afterEach=await readFile('supabase/tests/data-api-assert-after-migration.sql','utf8');
+ assert.match(afterEach,/EXPLICIT_AUTH_SELECT_GRANT_REQUIRED/);
+ assert.match(afterEach,/DIRECT_CLIENT_DML_FORBIDDEN/);
+ assert.match(afterEach,/left\(c\.relname,3\)='fk_'/);
  assert.match(testSql,/DATA_API_EXPLICIT_GRANTS_VERIFIED/);
  assert.match(testSql,/EXPLICIT_AUTH_SELECT_GRANT_REQUIRED/);
  assert.match(testSql,/DIRECT_CLIENT_DML_FORBIDDEN/);
  assert.match(testSql,/create table public\.fk_data_api_opt_in_probe/);
+ assert.match(testSql,/create table public\.fkaudit_no_grant/);
  assert.match(testSql,/grant select on public\.fk_data_api_opt_in_probe to authenticated/);
  assert.match(testSql,/^rollback;/m,'synthetic table must never survive disposable test');
 });
