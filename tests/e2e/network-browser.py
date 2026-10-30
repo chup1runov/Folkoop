@@ -142,8 +142,8 @@ async def main():
      rows=sorted(state['chat_messages'],key=lambda x:(x['created_at'],x['id']),reverse=True)
      cursor=params.get('or',[''])[0]
      if cursor:
-      boundary=re.search(r'created_at\\.lt\\.([^,)]+)',cursor)
-      message_id=re.search(r'id\\.lt\\.([0-9a-f-]{36})',cursor)
+      boundary=re.search(r'created_at\.lt\.([^,)]+)',cursor)
+      message_id=re.search(r'id\.lt\.([0-9a-f-]{36})',cursor)
       assert boundary and message_id,cursor
       rows=[m for m in rows if (m['created_at'],m['id'])<(boundary.group(1),message_id.group(1))]
      result=rows[:int(params.get('limit',['51'])[0])]
