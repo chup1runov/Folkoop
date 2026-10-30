@@ -883,6 +883,7 @@ html[data-folkoop-embedded-city="1"] .compact-weather{border-radius:16px}
 }
 .folkoop-update-notice strong,.folkoop-update-notice span{grid-column:1/-1}
 .folkoop-update-notice button{min-height:44px;min-width:0;width:100%;font:inherit;cursor:pointer}
+.folkoop-update-notice .button.secondary{color:#fff;background:#263d60;border:1px solid #b5d4ff}
 .folkoop-update-notice button:focus-visible{outline:3px solid #ffd95b;outline-offset:2px}
 .folkoop-update-notice[hidden]{display:none!important}
 @media(min-width:800px){.folkoop-update-notice:not([hidden]){bottom:18px}}
