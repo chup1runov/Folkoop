@@ -58,9 +58,13 @@ Proposed model:
    remains a membership-checked no-op during the transition so older cached
    clients cannot falsely mark newly received messages read. The sending RPC
    also stops advancing a read marker merely because someone sent a reply.
-5. **Before deployment**, implement client `ackVisibleChat` using a
-   visibility-gated message ID with exact-head browser tests. A read marker
-   can only represent a displayed message, not a page that was merely fetched.
+5. The client now includes a **feature-gated** `ackVisibleChat` adapter
+   and IntersectionObserver-based message-bubble acknowledgement with
+   a visible-message ID. Public `network-config.js` explicitly keeps
+   `chatBoundedReadEnabled:false`. No new read RPC is invoked against
+   hosted Supabase until the proposed migration is installed and accepted.
+   A read marker can only represent a message that intersected the
+   viewport, not a page that was merely fetched.
 
 A server cannot itself know whether a particular DOM message actually entered
 the user's viewport. It can verify **chat membership, message ID and monotonic
@@ -76,9 +80,10 @@ both required; there is no E2E-encrypted receipt.
    identical timestamps with different UUIDs; newly arrived message after
    fetch; stale/repeated ack; denied nonmembers; sending a reply without
    reading other messages; 50/51, 101 and 500 messages; blocked authors.
-3. Stage the new RPC under appropriate Supabase Auth and RLS checks, then
-   deliver/update the visibility-gated client **without opening new direct
-   table writes**. Existing installed PWA tabs can retain older JS until
+3. Stage the new RPC under appropriate Supabase Auth and RLS checks,
+   perform controlled two-account browser acceptance, and only then set
+   `chatBoundedReadEnabled:true` in a separately reviewed release. Do not
+   create new direct table writes. Existing installed PWA tabs can retain older JS until
    refreshed, so rolling compatibility must be tested explicitly.
 4. Only after successful hosted migration and end-to-end test of genuine
    authorised test identities should the release be merged/promoted.
