@@ -10,6 +10,7 @@ insert into folkoop_private.pilots(user_id) values
 insert into public.fk_conversations(kind,owner_id,title)
 values('group','81111111-1111-4111-8111-111111111111','Chat cursor synthetic')
 returning id as chat_id \gset
+select set_config('test.chat_id',:'chat_id',true);
 insert into public.fk_conversation_members(conversation_id,user_id,role)
 values
  (:'chat_id','81111111-1111-4111-8111-111111111111','owner'),
@@ -26,11 +27,11 @@ select set_config('request.jwt.claim.sub','81111111-1111-4111-8111-111111111111'
 do $cursor_checks$
 declare n bigint;
 begin
- select unread_count into n from public.fk_chat_inbox() where conversation_id=:'chat_id';
+ select unread_count into n from public.fk_chat_inbox() where conversation_id=current_setting('test.chat_id')::uuid;
  if n<>2 then raise exception 'CHAT_CURSOR_PRECONDITION: %',n; end if;
- n:=public.fk_ack_visible_chat(:'chat_id','83333333-3333-4333-8333-333333333331');
+ n:=public.fk_ack_visible_chat(current_setting('test.chat_id')::uuid,'83333333-3333-4333-8333-333333333331');
  if n<>1 then raise exception 'ACK_MUST_NOT_READ_SAME_TIMESTAMP_HIGH_ID: %',n; end if;
- n:=public.fk_ack_visible_chat(:'chat_id','83333333-3333-4333-8333-333333333332');
+ n:=public.fk_ack_visible_chat(current_setting('test.chat_id')::uuid,'83333333-3333-4333-8333-333333333332');
  if n<>0 then raise exception 'ACK_MUST_READ_BOTH_VISIBLE_MESSAGES: %',n; end if;
 end
 $cursor_checks$;
@@ -45,14 +46,14 @@ select set_config('request.jwt.claim.sub','81111111-1111-4111-8111-111111111111'
 do $new_message_checks$
 declare n bigint;
 begin
- select unread_count into n from public.fk_chat_inbox() where conversation_id=:'chat_id';
+ select unread_count into n from public.fk_chat_inbox() where conversation_id=current_setting('test.chat_id')::uuid;
  if n<>1 then raise exception 'NEW_AFTER_ACK_MUST_REMAIN_UNREAD: %',n; end if;
  -- Acking an older visible ID and the deprecated old RPC cannot skip new text.
- n:=public.fk_ack_visible_chat(:'chat_id','83333333-3333-4333-8333-333333333332');
- perform public.fk_mark_chat_read(:'chat_id');
- select unread_count into n from public.fk_chat_inbox() where conversation_id=:'chat_id';
+ n:=public.fk_ack_visible_chat(current_setting('test.chat_id')::uuid,'83333333-3333-4333-8333-333333333332');
+ perform public.fk_mark_chat_read(current_setting('test.chat_id')::uuid);
+ select unread_count into n from public.fk_chat_inbox() where conversation_id=current_setting('test.chat_id')::uuid;
  if n<>1 then raise exception 'LEGACY_OR_STALE_ACK_MUST_NOT_SKIP: %',n; end if;
- n:=public.fk_ack_visible_chat(:'chat_id','83333333-3333-4333-8333-333333333333');
+ n:=public.fk_ack_visible_chat(current_setting('test.chat_id')::uuid,'83333333-3333-4333-8333-333333333333');
  if n<>0 then raise exception 'VISIBLE_LAST_ACK_MUST_CLEAR: %',n; end if;
 end
 $new_message_checks$;
@@ -68,7 +69,7 @@ select public.fk_send_message(:'chat_id','My reply');
 do $sender_checks$
 declare n bigint;
 begin
- select unread_count into n from public.fk_chat_inbox() where conversation_id=:'chat_id';
+ select unread_count into n from public.fk_chat_inbox() where conversation_id=current_setting('test.chat_id')::uuid;
  if n<>1 then raise exception 'SENDING_MUST_NOT_MARK_OTHER_PERSON_READ: %',n; end if;
 end
 $sender_checks$;
@@ -78,7 +79,7 @@ do $deny_checks$
 declare denied boolean;
 begin
  denied:=false;
- begin perform public.fk_ack_visible_chat(:'chat_id','94444444-4444-4444-8444-444444444444');
+ begin perform public.fk_ack_visible_chat(current_setting('test.chat_id')::uuid,'94444444-4444-4444-8444-444444444444');
  exception when insufficient_privilege then denied:=true; end;
  if not denied then raise exception 'UNKNOWN_MESSAGE_CURSOR_WAS_ACCEPTED'; end if;
  denied:=false;
