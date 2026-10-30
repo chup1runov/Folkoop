@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 
 const code=await readFile('apps/web/sw-register.js','utf8');
-function harness({controller=true,confirmResult=true}={}){
+function harness({controller=true,confirmResult=true,withCityFrame=false}={}){
  const listeners={},windowListeners={},nodes=[],messages=[],calls={reload:0,update:0,register:0,confirm:0};
  const worker={state:'installed',listeners:{},postMessage:value=>messages.push(value),addEventListener(name,fn){this.listeners[name]=fn;}};
  const reg={waiting:worker,installing:null,listeners:{},
@@ -19,7 +19,11 @@ function harness({controller=true,confirmResult=true}={}){
   nodes.push(e);return e;
  }
  const body={children:[],append(node){this.children.push(node);}};
+ const cityListeners={};
+ const cityDoc={addEventListener:(k,cb)=>{cityListeners[k]=cb;}};
+ const cityFrame={id:'cityFrame',contentDocument:cityDoc};
  const doc={documentElement:{lang:'ru'},body,addEventListener:(k,cb)=>listeners[k]=cb,
+  getElementById:id=>(id==='cityFrame'&&withCityFrame?cityFrame:null),
   createElement:element};
  const sw={controller:controller?{}:null,
   addEventListener:(k,cb)=>listeners[k]=cb,
@@ -30,7 +34,7 @@ function harness({controller=true,confirmResult=true}={}){
   location:{reload(){calls.reload++;}},
   MutationObserver:class {observe(){}},console};
  runInNewContext(code,ctx);
- return {calls,messages,reg,worker,body,doc,listeners,windowListeners,nodes,
+ return {calls,messages,reg,worker,body,doc,cityListeners,listeners,windowListeners,nodes,
   setConfirm:yes=>{win.confirm=()=>{calls.confirm++;return yes;};},
   setController:value=>{sw.controller=value;},
   async open(){await windowListeners.load?.();},
@@ -69,7 +73,7 @@ test('existing clients see a passive notice, not an automatic activation/reload'
 
 test('dirty form denies update until participant confirms, then reloads only once',async()=>{
  const h=harness({confirmResult:false});await h.open();
- const field={closest:selector=>selector==='form'?{}:null};
+ const field={matches:selector=>selector.includes('input'),closest:()=>null};
  h.listeners.input({isTrusted:true,target:field});
  h.updateButton().click();
  assert.equal(h.calls.confirm,1);
@@ -83,6 +87,16 @@ test('dirty form denies update until participant confirms, then reloads only onc
  h.listeners.controllerchange();
  h.listeners.controllerchange();
  assert.equal(h.calls.reload,1);
+});
+
+test('typing in embedded City non-form report controls blocks silent update',async()=>{
+ const h=harness({confirmResult:false,withCityFrame:true});await h.open();
+ assert.equal(typeof h.cityListeners.input,'function');
+ h.cityListeners.input({isTrusted:true,target:{matches:()=>true,closest:()=>null}});
+ h.updateButton().click();
+ assert.equal(h.calls.confirm,1);
+ assert.equal(h.messages.length,0);
+ assert.equal(h.calls.reload,0);
 });
 
 test('notice refreshes its language without persisting user input',async()=>{
@@ -118,6 +132,7 @@ test('both public shells use the shared update-aware registration runtime',async
  assert.doesNotMatch(folkoop,/navigator\.serviceWorker\.register/);
  for(const path of ['apps/web/folkoop.css','apps/web/styles.css']){
   assert.match(await readFile(path,'utf8'),/\.folkoop-update-notice:not\(\[hidden\]\)/);
+  assert.match(await readFile(path,'utf8'),/\.folkoop-update-notice \.button\.secondary\{color:#fff;/);
  }
 });
 
