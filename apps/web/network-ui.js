@@ -968,10 +968,27 @@ function render(){
   html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
  }
   const demoBanner='';
+ const meetingScope=(!guestDemo&&selectedCoop&&u)?r+':'+u.id+':'+selectedCoop:'';
+ const sameMeeting=!!meetingScope&&host.dataset.meetingScope===meetingScope;
+ const meetingOpen={};
+ if(sameMeeting){
+  for(const id of ['netMeetingTerms','netMeetingRepeat']){
+   const pane=host.querySelector('#'+id)?.closest('details');
+   if(pane)meetingOpen[id]=pane.open;
+  }
+ }
  const homeScope=r==='home'&&u&&!guestDemo?`home:${u.id}`:'';
  const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
  host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  host.dataset.homeScope=homeScope;
+ host.dataset.meetingScope=meetingScope;
+ // Persist explicit open/closed choices for the same project across refreshes,
+ // without transferring them to another project or user.
+ for(const id of ['netMeetingTerms','netMeetingRepeat']){
+  if(!Object.prototype.hasOwnProperty.call(meetingOpen,id))continue;
+  const pane=host.querySelector('#'+id)?.closest('details');
+  if(pane)pane.open=meetingOpen[id];
+ }
  for(const el of host.querySelectorAll('details[data-home-section]'))el.open=openHomeSections.includes(el.dataset.homeSection);
  host.classList.toggle('guest-demo',guestDemo);
  if(guestDemo){
@@ -982,7 +999,9 @@ function render(){
   const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
  }
- host.querySelectorAll('button').forEach(b=>{if(!guestDemo)b.disabled=busy;});
+ // Busy may add a temporary restriction, but never erase a domain-disabled
+ // state (stale/offline/role/meeting conditions) when busy becomes false.
+ if(!guestDemo&&busy)host.querySelectorAll('button').forEach(b=>{b.disabled=true;});
  syncBadges();
  queueMicrotask(()=>window.dispatchEvent(new CustomEvent('folkoop:network-rendered',{detail:{route:r,guestDemo}})));
 }
