@@ -16,7 +16,7 @@ begin
     join pg_catalog.pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public'
       and c.relkind in ('r', 'p')
-      and c.relname like 'fk_%'
+      and left(c.relname,3)='fk_'
   loop
     checked := checked + 1;
     if not t.relrowsecurity then
@@ -49,6 +49,8 @@ $acl_contract$;
 -- because it was created. Later, an explicit GRANT enables only intended reads.
 begin;
 create table public.fk_data_api_opt_in_probe(id integer primary key);
+-- A similarly named but non-FK table must not be forced into the FK policy.
+create table public.fkaudit_no_grant(id integer primary key);
 do $no_implicit_grant$
 begin
   if has_table_privilege('anon', 'public.fk_data_api_opt_in_probe', 'SELECT')
