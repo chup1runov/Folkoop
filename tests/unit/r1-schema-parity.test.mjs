@@ -20,7 +20,7 @@ test('the exact already-applied hosted R1 migration is retained once in main',()
  assert.match(sql,/alter table public\.fk_resource_availability enable row level security/i);
 });
 
-test('schema parity never auto-activates the R1 participant UI',()=>{
+test('schema parity never auto-activates the R1 participant UI',async()=>{
  // Main deliberately omits the draft R1 UI field; omission is OFF.
  // A future explicit flag must also remain false until separately approved.
  assert.doesNotMatch(cfg,/resourcePlanningEnabled\s*:\s*true/);
