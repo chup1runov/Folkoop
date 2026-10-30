@@ -200,3 +200,23 @@ test('calls disclose unavailability without fabricated history or a call control
   assert(!html.includes('getUserMedia'));
  }
 });
+
+test('long conversations expose an explicit older-page action without inventing unread receipts',()=>{
+ const f=fixture(),d=domain(f);
+ const html=d.render(f.user,{selectedChat:'g1',chatHasOlder:true,language:'ru'});
+ assert(html.includes('data-net="olderChatMessages"'));
+ assert(html.includes('Загрузить предыдущие сообщения'));
+ const noOlder=d.render(f.user,{selectedChat:'g1',chatHasOlder:false,language:'ru'});
+ assert(!noOlder.includes('data-net="olderChatMessages"'));
+ const guest=d.render(f.user,{selectedChat:'g1',chatHasOlder:true,guestDemo:true});
+ assert(!guest.includes('data-net="olderChatMessages"'));
+});
+
+test('older-page action is translated across all eleven supported locales',()=>{
+ const f=fixture(),d=domain(f);
+ for(const language of ['ru','en','sv','uk','es','fi','bs','ar','fa','so','ku']){
+  const html=d.render(f.user,{selectedChat:'g1',chatHasOlder:true,language});
+  assert(html.includes('data-net="olderChatMessages"'),language);
+  assert(html.includes('class="chat-messages"'),language);
+ }
+});
