@@ -83,6 +83,11 @@ async def main():
   await form.locator('button').click()
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено')
   assert state['terms']['version']==1 and state['responses']==[]
+  # Full network render must NOT turn stale meeting controls back on.
+  await page.evaluate("window.dispatchEvent(new Event('offline'))")
+  await expect(page.locator('#netMeetingTerms button')).to_be_disabled()
+  await page.locator('[data-coop=meetingRefresh]').click()
+  await expect(page.locator('#netMeetingTerms button')).to_be_enabled()
   assert await page.locator('.netMeetingResponse').count()==1
   assert await page.locator('.meeting-confirmations img').count()==0
   await page.locator('.netMeetingResponse button').click()
@@ -137,6 +142,13 @@ async def main():
   await owner_page.locator('.meeting-outcome summary').click()
   repeat=owner_page.locator('#netMeetingRepeat')
   assert await repeat.locator('[name=start]').input_value()==''
+  # The still-empty open form and focused field survive a background re-render.
+  await repeat.locator('[name=start]').focus()
+  await owner_page.evaluate("window.dispatchEvent(new Event('offline'))")
+  await expect(repeat).to_be_visible()
+  await expect(repeat.locator('[name=start]')).to_be_focused()
+  await owner_page.locator('[data-coop=meetingRefresh]').click()
+  await expect(repeat).to_be_visible()
   await repeat.locator('[name=start]').fill('2099-10-20T18:00')
   await repeat.locator('[name=end]').fill('2099-10-20T19:00')
   await repeat.locator('[name=offset]').select_option('+02:00')
