@@ -87,7 +87,7 @@ test('dirty form denies update until participant confirms, then reloads only onc
 test('notice refreshes its language without persisting user input',async()=>{
  const h=harness();await h.open();
  h.doc.documentElement.lang='en';
- h.reg.listeners.updatefound?.();
+ h.listeners.controllerchange?.();
  assert.match(h.banner().children[0].textContent,/update/i);
  assert.doesNotMatch(code,/localStorage|sessionStorage|indexedDB/);
 });
