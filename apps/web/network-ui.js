@@ -931,6 +931,55 @@ function renderCooperation(u,r){
  return html;
 }
 
+// Bounded read receipts require a visible bubble AND an authenticated server
+// RPC. Nothing is marked read merely because a page of messages was fetched.
+let chatReadObserver=null,chatReadDelay=null;
+const chatReadAcknowledged=new Map();
+function observeRenderedChat(routeName){
+ if(chatReadObserver){chatReadObserver.disconnect();chatReadObserver=null;}
+ if(chatReadDelay!==null){clearTimeout(chatReadDelay);chatReadDelay=null;}
+ if(!api?.chatBoundedReadEnabled||guestDemo||routeName!=='messages'||!selectedChat
+    ||document.visibilityState!=='visible'||typeof IntersectionObserver!=='function')return;
+ const actor=currentUser()?.id,conversation=selectedChat,epoch=version;
+ if(!actor||host.hidden)return;
+ const elements=[...host.querySelectorAll('.chat-messages [data-chat-message-id]')];
+ if(!elements.length)return;
+ const indexes=new Map(data.chatMessages.map((m,i)=>[m.id,i]));
+ let furthest=null;
+ const observer=new IntersectionObserver(entries=>{
+  if(selectedChat!==conversation||currentUser()?.id!==actor||version!==epoch
+     ||route()!=='messages'||document.visibilityState!=='visible'||host.hidden)return;
+  for(const entry of entries){
+   if(!entry.isIntersecting||entry.intersectionRatio<0.5)continue;
+   const id=entry.target.dataset.chatMessageId,i=indexes.get(id);
+   if(i!==undefined&&(!furthest||i>furthest.position))furthest={id,position:i};
+  }
+  if(!furthest)return;
+  if(chatReadDelay!==null)clearTimeout(chatReadDelay);
+  chatReadDelay=setTimeout(()=>{
+   chatReadDelay=null;
+   if(selectedChat!==conversation||currentUser()?.id!==actor||version!==epoch
+      ||route()!=='messages'||document.visibilityState!=='visible'||host.hidden)return;
+   const key=actor+':'+conversation,visibleId=furthest.id;
+   if(chatReadAcknowledged.get(key)===visibleId)return;
+   chatReadAcknowledged.set(key,visibleId);
+   void api.ackVisibleChat(conversation,visibleId).then(unread=>{
+    if(selectedChat!==conversation||currentUser()?.id!==actor||version!==epoch)return;
+    const count=Number(unread);
+    if(!Number.isSafeInteger(count)||count<0)return;
+    const inbox=data.chatInbox.find(row=>row.conversation_id===conversation);
+    if(inbox)inbox.unread_count=count;
+    syncBadges();
+   }).catch(()=>{
+    // A failed acknowledgement must never produce a local read claim.
+    if(chatReadAcknowledged.get(key)===visibleId)chatReadAcknowledged.delete(key);
+   });
+  },350);
+ },{threshold:[0.5,1]});
+ chatReadObserver=observer;
+ for(const node of elements)observer.observe(node);
+}
+
 function render(){
  const r=route(),hasUser=!!currentUser(),relevant=['me','people','communities','messages','together','projects'].includes(r)||(r==='home'&&hasUser),localMyPlace=r==='me'&&!hasUser&&!guestDemo&&showLocalGuest;host.hidden=!relevant||localMyPlace;
  document.body.classList.toggle('network-login-open',!!(api?.enabled&&r==='me'&&!hasUser&&!guestDemo&&!showLocalGuest));
@@ -1004,6 +1053,7 @@ function render(){
  // state (stale/offline/role/meeting conditions) when busy becomes false.
  if(!guestDemo&&busy)host.querySelectorAll('button').forEach(b=>{b.disabled=true;});
  syncBadges();
+ observeRenderedChat(r);
  queueMicrotask(()=>window.dispatchEvent(new CustomEvent('folkoop:network-rendered',{detail:{route:r,guestDemo}})));
 }
 let meetingDraft=null;
@@ -1212,7 +1262,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   await load();notice=a==='deleteProfile'?t('profileDeleted'):'';
  });
 });
-api?.onChange(()=>{if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatHasOlder:false,chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};render();});
+api?.onChange(()=>{chatReadAcknowledged.clear();if(chatReadObserver){chatReadObserver.disconnect();chatReadObserver=null;}if(api?.user?.()){guestDemo=false;try{sessionStorage.setItem('folkoop-entry-mode-v1','account');}catch{}window.dispatchEvent(new CustomEvent('folkoop:account-ready'));}version++;selected=null;selectedChat=null;selectedCoop=null;if(oauthPopup&&!oauthPopup.closed)oauthPopup.close();oauthPopup=null;otpCode='';pilotInvite='';policyAccepted=false;codeRequested=false;showLocalGuest=false;profileDraft=null;groupDraft={};postDrafts={};chatDraft={title:'',members:[]};directTarget='';inviteTarget='';messageDrafts={};coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatHasOlder:false,chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]};render();});
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;
