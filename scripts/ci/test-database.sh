@@ -24,6 +24,8 @@ if (("${#migrations[@]}" == 0)); then
 fi
 for file in "${migrations[@]}"; do
   run_sql "$file"
+  # Catch a new table before a later migration can mask missing access rules.
+  run_sql supabase/tests/data-api-assert-after-migration.sql
 done
 
 db_tests=(supabase/tests/network-*.sql)

@@ -14,7 +14,9 @@ concurrency:
   cancel-in-progress: true
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    # Match WebKit's validated image during the ubuntu-latest 26.04 rollout.
+    # Keep the pinned Playwright 1.57/Chromium browser contract deterministic.
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v7
@@ -80,7 +82,8 @@ jobs:
         with:
           path: _site
   webkit:
-    runs-on: ubuntu-latest
+    # Playwright 1.57.0 WebKit supports Ubuntu 24.04; ubuntu-latest is rolling to 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
