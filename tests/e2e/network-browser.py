@@ -1,7 +1,8 @@
 """HTTP/UI contract checks with synthetic Supabase responses. Not a live Auth test.
 Database authorization is independently checked by network-rls.sql on PostgreSQL.
 """
-import asyncio,json,os,shutil
+import asyncio,json,os,shutil,re
+from urllib.parse import urlsplit,parse_qs
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
 BASE=os.getenv('BASE_URL','http://127.0.0.1:4173/FOLKOOP/')
@@ -136,7 +137,16 @@ async def main():
     elif '/fk_conversations?' in url:result=state['chats']
     elif '/fk_conversation_members?' in url:result=state['chat_members']
     elif '/fk_conversation_invites?' in url:result=state['chat_invites']
-    elif '/fk_messages?' in url:result=state['chat_messages']
+    elif '/fk_messages?' in url:
+     params=parse_qs(urlsplit(url).query)
+     rows=sorted(state['chat_messages'],key=lambda x:(x['created_at'],x['id']),reverse=True)
+     cursor=params.get('or',[''])[0]
+     if cursor:
+      boundary=re.search(r'created_at\\.lt\\.([^,)]+)',cursor)
+      message_id=re.search(r'id\\.lt\\.([0-9a-f-]{36})',cursor)
+      assert boundary and message_id,cursor
+      rows=[m for m in rows if (m['created_at'],m['id'])<(boundary.group(1),message_id.group(1))]
+     result=rows[:int(params.get('limit',['51'])[0])]
     elif '/fk_cooperations?' in url:result=state['cooperations']
     elif '/fk_cooperation_members?' in url:result=state['coop_members']
     elif '/fk_cooperation_updates?' in url:
@@ -450,6 +460,24 @@ async def main():
   assert any(url.endswith('/fk_start_direct') for url,_ in state['requests'])
   assert any(url.endswith('/fk_send_message') for url,_ in state['requests'])
   passed.append('Direct messaging uses server RPCs and escapes message HTML')
+  # 60 synthetic equal-timestamp messages exercise descending UUID cursor ties.
+  state['chat_messages']=[
+   {'id':'74444444-4444-4444-8444-'+str(i).zfill(12),
+    'conversation_id':CHAT,'author_id':OTHER,
+    'body':'Synthetic long message '+str(i),
+    'created_at':'2026-09-25T10:05:00.123456+00:00'} for i in range(1,61)
+  ]
+  await page.locator('#networkPanel [data-net="refresh"]').first.click()
+  await expect(page.locator('.messenger-bubble')).to_have_count(50)
+  await expect(page.locator('[data-net="olderChatMessages"]')).to_be_visible()
+  assert 'Synthetic long message 11' in await page.locator('.messenger-bubble').first.inner_text()
+  await page.locator('[data-net="olderChatMessages"]').click()
+  await expect(page.locator('.messenger-bubble')).to_have_count(60)
+  await expect(page.locator('[data-net="olderChatMessages"]')).to_have_count(0)
+  assert 'Synthetic long message 1' in await page.locator('.messenger-bubble').first.inner_text()
+  assert 'Synthetic long message 60' in await page.locator('.messenger-bubble').last.inner_text()
+  assert not any(url.endswith('/fk_mark_chat_read') for url,_ in state['requests'])
+  passed.append('Latest 50 and older-page UUID tie-boundary work without wall-clock read claims')
   await page.click('[data-net=logout]')
   await expect(page.locator('#netLogin')).to_be_visible()
   assert await page.locator('#networkPanel').get_by_text('Test workshop',exact=True).count()==0
