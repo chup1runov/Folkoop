@@ -35,7 +35,7 @@ function configuration(value){
   if(e.protocol!=='https:'||e.username||e.password||e.port||e.search||e.hash)throw fail('CONFIG');
   emailRedirectUrl=e.href;
  }
- return {emailRedirectUrl,url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
+ return {emailRedirectUrl,url:u.origin,key:value.publishableKey,chatBoundedReadEnabled:value.chatBoundedReadEnabled===true,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
 }
 function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.now}={}){
  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
@@ -107,7 +107,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  async function rows(path){const data=await request('/rest/v1/'+path);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
  return Object.freeze({
-  enabled:!!cfg,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
+  enabled:!!cfg,chatBoundedReadEnabled:cfg?.chatBoundedReadEnabled===true,googleOAuthEnabled:!!cfg?.googleOAuthEnabled,policy:POLICY,user,onChange(fn){listeners.add(fn);return()=>listeners.delete(fn);},
   googleOAuthUrl(){
    if(!cfg?.googleOAuthEnabled)throw fail('DISABLED');
    const u=new URL(cfg.url+'/auth/v1/authorize');u.searchParams.set('provider','google');u.searchParams.set('redirect_to',cfg.oauthRedirectUrl);return u.href;
@@ -164,7 +164,24 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   chats(){return rows('fk_conversations?select=id,kind,owner_id,title,created_at&order=created_at.desc&limit=100');},
   chatMembers(){return rows('fk_conversation_members?select=conversation_id,user_id,role,joined_at,last_read_at&limit=500');},
   chatInvites(){return rows('fk_conversation_invites?select=conversation_id,user_id,invited_by,created_at&order=created_at.desc&limit=100');},
-  chatMessages(cid){return rows('fk_messages?select=id,conversation_id,author_id,body,created_at&conversation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  async chatMessages(cid,before=null){
+   const conversation=id(cid);
+   let older='';
+   if(before!==null){
+    const stamp=before?.created_at,mid=id(before?.id);
+    // Preserve the server's full microsecond timestamp. JS Date would round it
+    // to milliseconds and silently skip messages at a page boundary.
+    if(typeof stamp!=='string'
+       ||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})$/.test(stamp)
+       ||!Number.isFinite(Date.parse(stamp)))throw fail('INVALID_INPUT');
+    older='&or='+encodeURIComponent('(created_at.lt.'+stamp+',and(created_at.eq.'+stamp+',id.lt.'+mid+'))');
+   }
+   // A one-row sentinel below Supabase's ordinary 1000-row cap distinguishes
+   // "more history exists" from "this is the final page".
+   const raw=await rows('fk_messages?select=id,conversation_id,author_id,body,created_at&conversation_id=eq.'+
+      conversation+'&order=created_at.desc,id.desc&limit=51'+older);
+   return {messages:raw.slice(0,50).reverse(),hasOlder:raw.length>50};
+  },
   startDirect(uid){return rpc('fk_start_direct',{p_other:id(uid)});},
   createGroupChat(title,members){return rpc('fk_create_group_chat',{p_title:text(title,80,2),p_members:idList(members)});},
   inviteChat(cid,uid){return rpc('fk_invite_chat',{p_conversation:id(cid),p_user:id(uid)});},
@@ -173,7 +190,11 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   leaveChat(cid){return rpc('fk_leave_chat',{p_conversation:id(cid)});},
   removeChatMember(cid,uid){return rpc('fk_remove_chat_member',{p_conversation:id(cid),p_user:id(uid)});},
   sendMessage(cid,body){return rpc('fk_send_message',{p_conversation:id(cid),p_body:text(body,4000,1)});},
-  markChatRead(cid){return rpc('fk_mark_chat_read',{p_conversation:id(cid)});},
+  // Do not keep the legacy unbounded timestamp-only read RPC callable by UI.
+  ackVisibleChat(cid,mid){
+   if(!cfg?.chatBoundedReadEnabled)throw fail('DISABLED');
+   return rpc('fk_ack_visible_chat',{p_conversation:id(cid),p_message:id(mid)});
+  },
   deleteMessage(mid){return rpc('fk_delete_message',{p_message:id(mid)});},
   reportMessage(mid,reason){return rpc('fk_report_message',{p_message:id(mid),p_reason:text(reason,1000,2)});},
   deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},

@@ -5,5 +5,7 @@ globalThis.FolkoopNetworkConfig=Object.freeze({
  publishableKey:'sb_publishable_rL8EeJ8NHM2rRZJqq19FiA_i9po0sFq',
  emailRedirectUrl:'https://folkoop.pages.dev/',
  googleOAuthEnabled:false,
+ // Held OFF until bounded chat RPC migration and two-account acceptance.
+ chatBoundedReadEnabled:false,
  oauthRedirectUrl:'https://chup1runov.github.io/Folkoop/auth-callback.html'
 });
