@@ -15,6 +15,13 @@ const labels={
  so:['Xiriirrada','Wicitaannada','Wadahadallo','Wicitaannadu weli ma shaqeeyaan','Wicitaannada codka iyo muuqaalka ayaa halkan iman doona. Hadda farriin ku dir wada hadalka.','Fur wadahadallada','Dadka ka socda bogagga iyo wada hadallada la heli karo. Xiriirrada taleefanka lama soo dejiyo.'],
  ku:['Têkilî','Bang','Peyamdan','Bang hîn ne girêdayî ne','Bangên deng û vîdyoyê dê li vir bin. Niha dikarî peyamekê bişînî.','Peyamdanê veke','Kesên ji profîl û axaftinên berdest. Têkiliyên telefonê nayên împortkirin.']
 };
+const olderLabels={
+ sv:'Ladda tidigare meddelanden',en:'Load older messages',ru:'Загрузить предыдущие сообщения',
+ uk:'Завантажити попередні повідомлення',es:'Cargar mensajes anteriores',
+ fi:'Lataa vanhemmat viestit',bs:'Učitaj starije poruke',
+ ar:'تحميل الرسائل السابقة',fa:'بارگذاری پیام‌های قدیمی‌تر',
+ so:'Soo qaad farriimihii hore',ku:'Peyamên kevntir bar bike'
+};
 const copy=lang=>labels[lang]||labels.en;
 
 function create({
@@ -52,6 +59,7 @@ function create({
     const chatInbox=Array.isArray(data.chatInbox)?data.chatInbox:[];
     const {
       selectedChat=null,
+      chatHasOlder=false,
       directTarget='',
       chatDraft={title:'',members:[]},
       inviteTarget='',
@@ -111,6 +119,7 @@ function create({
         html+=`<form id="netChatInvite" class="editor card"><label>${escape(chatText('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(profile=>`<option value="${escape(profile.id)}"${profile.id===inviteTarget?' selected':''}>${escape(profile.name)}</option>`).join('')}</select></label><button class="button">${escape(chatText('invite'))}</button></form>`;
       }
 
+      if(!guestDemo&&chatHasOlder)html+=`<div class="actions"><button type="button" class="button secondary" data-net="olderChatMessages">${escape(olderLabels[language]||olderLabels.en)}</button></div>`;
       html+=`<section class="chat-messages">${chatMessages.map(message=>{
         const profile=getProfile(message.author_id);
         const mine=message.author_id===user.id;
