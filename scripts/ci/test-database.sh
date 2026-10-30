@@ -39,8 +39,8 @@ done
 # production migration and does not modify Supabase hosted migration history.
 echo "==> disposable candidate chat-visible-read-v1 (rollback)"
 {
-  printf 'begin;\\n'
+  printf 'begin;\n'
   cat supabase/proposals/chat-visible-read-cursor-v1.sql
   cat supabase/tests/candidate-chat-visible-read.sql
-  printf 'rollback;\\n'
+  printf 'rollback;\n'
 } | psql_ci
