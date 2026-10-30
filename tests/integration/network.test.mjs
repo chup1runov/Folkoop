@@ -112,3 +112,47 @@ test('no persistent tokens or implicit local draft upload',async()=>{const code=
 test('email login uses deployment callback without putting email in URL',async()=>{const s=setup(null,{...cfg,emailRedirectUrl:'https://folkoop.pages.dev/'});await s.c.requestCode('synthetic@example.test');const u=new URL(s.calls[0].url);assert.equal(u.pathname,'/auth/v1/otp');assert.equal(u.searchParams.get('redirect_to'),'https://folkoop.pages.dev/');assert.equal([...u.searchParams].length,1);assert(!u.href.includes('synthetic'));assert.equal(JSON.parse(s.calls[0].body).email,'synthetic@example.test');});
 test('email callback configuration fails closed',()=>{for(const emailRedirectUrl of ['',null,'not a URL','http://example.test/','https://user:pass@example.test/','https://example.test/?next=elsewhere','https://example.test/#token','https://example.test:444/'])assert.throws(()=>N.client({...cfg,emailRedirectUrl}),e=>e.code==='CONFIG');});
 test('published email callback targets Cloudflare while Google remains disabled',async()=>{const c=vm.createContext({});vm.runInContext(await readFile('apps/web/network-config.js','utf8'),c);assert.equal(c.FolkoopNetworkConfig.emailRedirectUrl,'https://folkoop.pages.dev/');assert.equal(c.FolkoopNetworkConfig.googleOAuthEnabled,false);});
+
+test('chat history opens newest 50 and paginates by exact (timestamp,id) cursor',async()=>{
+ const prefix='33333333-3333-4333-8333-';
+ const stamp='2026-10-30T12:00:00.123456+00:00';
+ const messages=Array.from({length:51},(_,i)=>({
+  id:prefix+String(i+1).padStart(12,'0'),conversation_id:cid,author_id:uid,
+  body:'message '+(i+1),created_at:stamp
+ })).reverse(); // API's created_at DESC then UUID DESC ordering
+ const s=setup(url=>url.includes('/fk_messages?')?json(
+  url.includes('&or=')?messages.slice(50):messages
+ ):null);
+ await s.login();
+ const latest=await s.c.chatMessages(cid);
+ assert.equal(latest.hasOlder,true);
+ assert.equal(latest.messages.length,50);
+ assert.equal(latest.messages[0].body,'message 2');
+ assert.equal(latest.messages.at(-1).body,'message 51');
+ const firstURL=new URL(s.calls.at(-1).url);
+ assert.equal(firstURL.searchParams.get('order'),'created_at.desc,id.desc');
+ assert.equal(firstURL.searchParams.get('limit'),'51');
+ const before=latest.messages[0];
+ const older=await s.c.chatMessages(cid,before);
+ assert.equal(older.hasOlder,false);
+ assert.equal(older.messages.length,1);
+ const secondURL=new URL(s.calls.at(-1).url);
+ assert.equal(secondURL.searchParams.get('conversation_id'),'eq.'+cid);
+ assert.equal(secondURL.searchParams.get('or'),
+  '(created_at.lt.'+stamp+',and(created_at.eq.'+stamp+',id.lt.'+before.id+'))');
+ assert.equal(before.created_at,stamp,'microseconds must not round to milliseconds');
+ assert.equal(older.messages[0].body,'message 1');
+ assert(!s.calls.some(call=>/fk_mark_chat_read/.test(call.url)));
+});
+
+test('chat page cursors reject invalid timestamps and IDs before any requests',async()=>{
+ const s=setup();await s.login();const before=s.calls.length;
+ for(const cursor of [
+  {id:cid,created_at:'no-date'},
+  {id:'not-uuid',created_at:'2026-10-30T12:00:00Z'},
+  {id:cid,created_at:'2026-10-30T12:00:00.123456789+00:00'}
+ ]){
+  await assert.rejects(s.c.chatMessages(cid,cursor),e=>e.code==='INVALID_INPUT');
+ }
+ assert.equal(s.calls.length,before);
+});
