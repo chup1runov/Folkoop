@@ -164,7 +164,24 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   chats(){return rows('fk_conversations?select=id,kind,owner_id,title,created_at&order=created_at.desc&limit=100');},
   chatMembers(){return rows('fk_conversation_members?select=conversation_id,user_id,role,joined_at,last_read_at&limit=500');},
   chatInvites(){return rows('fk_conversation_invites?select=conversation_id,user_id,invited_by,created_at&order=created_at.desc&limit=100');},
-  chatMessages(cid){return rows('fk_messages?select=id,conversation_id,author_id,body,created_at&conversation_id=eq.'+id(cid)+'&order=created_at.asc&limit=100');},
+  async chatMessages(cid,before=null){
+   const conversation=id(cid);
+   let older='';
+   if(before!==null){
+    const stamp=before?.created_at,mid=id(before?.id);
+    // Preserve the server's full microsecond timestamp. JS Date would round it
+    // to milliseconds and silently skip messages at a page boundary.
+    if(typeof stamp!=='string'
+       ||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})$/.test(stamp)
+       ||!Number.isFinite(Date.parse(stamp)))throw fail('INVALID_INPUT');
+    older='&or='+encodeURIComponent('(created_at.lt.'+stamp+',and(created_at.eq.'+stamp+',id.lt.'+mid+'))');
+   }
+   // A one-row sentinel below Supabase's ordinary 1000-row cap distinguishes
+   // "more history exists" from "this is the final page".
+   const raw=await rows('fk_messages?select=id,conversation_id,author_id,body,created_at&conversation_id=eq.'+
+      conversation+'&order=created_at.desc,id.desc&limit=51'+older);
+   return {messages:raw.slice(0,50).reverse(),hasOlder:raw.length>50};
+  },
   startDirect(uid){return rpc('fk_start_direct',{p_other:id(uid)});},
   createGroupChat(title,members){return rpc('fk_create_group_chat',{p_title:text(title,80,2),p_members:idList(members)});},
   inviteChat(cid,uid){return rpc('fk_invite_chat',{p_conversation:id(cid),p_user:id(uid)});},
