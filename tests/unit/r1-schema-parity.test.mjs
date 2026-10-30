@@ -21,8 +21,11 @@ test('the exact already-applied hosted R1 migration is retained once in main',()
 });
 
 test('schema parity never auto-activates the R1 participant UI',()=>{
- assert.match(cfg,/resourcePlanningEnabled:false/);
- assert.doesNotMatch(cfg,/resourcePlanningEnabled:true/);
+ // Main deliberately omits the draft R1 UI field; omission is OFF.
+ // A future explicit flag must also remain false until separately approved.
+ assert.doesNotMatch(cfg,/resourcePlanningEnabled\s*:\s*true/);
+ const r1Flag=cfg.match(/resourcePlanningEnabled\s*:\s*(true|false)/);
+ if(r1Flag)assert.equal(r1Flag[1],'false');
  const network=await readFile('scripts/ci/test-database.sh','utf8');
  assert.match(network,/data-api-assert-after-migration\.sql/);
  const sqlTest=await readFile('supabase/tests/network-r1-schema-parity.sql','utf8');
