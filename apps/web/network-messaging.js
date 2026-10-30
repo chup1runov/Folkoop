@@ -124,7 +124,7 @@ function create({
         const profile=getProfile(message.author_id);
         const mine=message.author_id===user.id;
         const canDelete=mine||(chat.kind==='group'&&chat.owner_id===user.id);
-        return `<article class="card messenger-bubble${mine?' is-mine':''}"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
+        return `<article class="card messenger-bubble${mine?' is-mine':''}" data-chat-message-id="${escape(message.id)}"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
       }).join('')||`<div class="empty"><p>${escape(generalText('empty'))}</p></div>`}</section>`;
 
       if(!guestDemo)html+=`<form id="netMessage" class="editor card"><label>${escape(chatText('message'))}<textarea name="body" maxlength="4000" rows="3" required>${escape(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${escape(chatText('sendMessage'))}</button></form>`;
