@@ -124,3 +124,15 @@ test('service-worker cache version matches the packaged release version',async()
  const [sw,pkg]=await Promise.all([readFile('apps/web/sw.js','utf8'),readFile('package.json','utf8')]);
  assert(sw.includes("const VERSION='"+JSON.parse(pkg).version+"'"));
 });
+
+test('all eleven supported languages have a readable passive update action',async()=>{
+ const h=harness();await h.open();
+ for(const lang of ['sv','en','ru','uk','es','fi','bs','ar','fa','so','ku']){
+  h.doc.documentElement.lang=lang;
+  h.listeners.controllerchange?.(); // another-tab update, no forced reload
+  const words=h.banner().children.map(x=>x.textContent);
+  assert.equal(words.length,4);
+  assert(words.every(x=>typeof x==='string'&&x.length>=4),lang);
+  assert.equal(h.calls.reload,0);
+ }
+});
