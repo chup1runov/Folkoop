@@ -5,19 +5,20 @@
 const host=document.getElementById('networkPanel');if(!host)return;
 let editing=null;
 const editable=el=>el?.matches?.('input:not([type="hidden"]),textarea,select');
+const recoverableForms=new Set(['netCoopCreate','netMeetingTerms','netMeetingRepeat','netMeetingOutcome']);
 document.addEventListener('focusin',e=>{
  const field=e.target,form=field.form;
- editing=editable(field)&&form?.id==='netCoopCreate'&&host.contains(form)
-  ?{field,hash:location.hash}:null;
+ editing=editable(field)&&recoverableForms.has(form?.id)&&host.contains(form)
+  ?{field,formId:form.id,hash:location.hash,meetingScope:host.dataset.meetingScope||''}:null;
 });
 new MutationObserver(()=>{
  if(!editing||editing.field.isConnected)return;
  const saved=editing;editing=null;
  // A navigation or an intentional focus move must not be undone.
- if(saved.hash!==location.hash)return;
+ if(saved.hash!==location.hash||(host.dataset.meetingScope||'')!==saved.meetingScope)return;
  const active=document.activeElement;
  if(active&&active!==document.body&&active!==document.documentElement)return;
- const form=host.querySelector('#netCoopCreate');
+ const form=host.querySelector('#'+saved.formId);
  const next=form?.elements.namedItem(saved.field.name);
  if(!editable(next)||next.disabled||next.type==='hidden')return;
  const changed=next.value!==saved.field.value;
