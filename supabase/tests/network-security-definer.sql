@@ -67,6 +67,8 @@ select fk_secdef_test.ok(
     and p.proname not in (
       'is_pilot','chat_member','coop_member','is_blocked','member_of',
       'shares_chat','shares_cooperation','selected_purchase_provider',
+      'resource_session_active','save_resource_requirement','save_resource_availability',
+      'remove_resource_plan','resource_availability_revision',
       'meeting_session_active','save_meeting_terms','respond_meeting','meeting_snapshot',
       'report_meeting_outcome','meeting_outcome_snapshot','repeat_meeting'
     )
