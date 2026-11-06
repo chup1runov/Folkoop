@@ -63,3 +63,10 @@ References checked: [Supabase sessions](https://supabase.com/docs/guides/auth/se
 [Pages bindings](https://developers.cloudflare.com/pages/functions/bindings/).
 Supabase changelog was also fetched; the self-hosted external URL change does
 not alter this hosted project's endpoint contract.
+
+## Activation checkpoint - 2026-11-06
+
+Earlier non-activation statements describe the implementation stage. The owner
+approved SESSIONS and saved SESSION_KEY in Cloudflare. FOLKOOP_SERVER_SESSION=1
+opts in only the Cloudflare build; it validates key format and public provider
+agreement without copying secrets into assets. Real login/reload is pending.

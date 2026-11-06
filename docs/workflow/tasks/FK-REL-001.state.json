@@ -93,8 +93,6 @@
       "path": "docs/workflow/evidence/FK-REL-001/release-ci.json"
     }
   ],
-  "open_questions": [
-    "Cloudflare SESSIONS D1 production binding awaits action-time confirmation; HttpOnly client mode remains disabled"
-  ],
-  "next_action": "PR #289 merged as d8f2cdd82c04cca6432998342d1ce378110659c8 after successful CI. Verify production Cloudflare and GitHub deployments; SESSIONS binding approval and server-session configuration still pending."
+  "open_questions": [],
+  "next_action": "Deploy Cloudflare session opt-in after owner saved SESSION_KEY; verify real login/reload and GitHub CI with API-backed chat fixtures. Cloudflare 0.41.0 from 7d7492e is deployed."
 }

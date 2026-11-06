@@ -381,3 +381,15 @@ PR #289 слит как d8f2cdd после успешных Chromium, WebKit, SQ
 Нестабильный local WebKit cache-update сохранён как ограничение: три отдельных
 повтора и полный GitHub WebKit прошли. Production-публикация ещё проверяется;
 HttpOnly-режим выключен, привязка D1 ожидает подтверждения.
+
+
+## 2026-11-06 - FK-REL-001 session activation checkpoint
+
+Cloudflare published 0.41.0 from 7d7492e; clean deployment URL shows Profile
+and the 18-story map. Production SESSIONS was explicitly approved and bound;
+the owner saved encrypted SESSION_KEY. Cloudflare-only build opt-in is added;
+466 Node checks and network-browser passed locally. DOM-only chat fixtures
+were replaced with API fixtures to survive legitimate background refresh.
+route-race-before.raw.txt now contains an isolated repeat with old network-ui.js;
+the earlier captured file was overwritten by the parallel successful run.
+Real login/reload and the activated deployment are still being verified.

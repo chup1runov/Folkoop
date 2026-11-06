@@ -1,5 +1,13 @@
 # Состояние разработки FOLKOOP
 
+## Session activation - 2026-11-06
+
+Cloudflare 0.41.0 (7d7492e) is published. SESSIONS is bound and the owner saved
+SESSION_KEY. Cloudflare-only build opt-in passed 466 Node checks; the corrected
+network-browser passed. Real login/reload verification is pending.
+Earlier sections below retain their historical status.
+
+
 ## Выпуск 0.41.0 — подготовка 6 ноября 2026
 
 Публикация разрешена владельцем в FK-REL-001. Supabase восстановлена из паузы;

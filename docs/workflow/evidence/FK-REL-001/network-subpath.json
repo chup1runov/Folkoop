@@ -1,0 +1,6 @@
+[
+  {
+    "test": "tests/e2e/network-browser.py",
+    "exit": 0
+  }
+]

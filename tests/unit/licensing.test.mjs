@@ -37,6 +37,7 @@ test('rights: built artifact ships exact notices without changing application co
   await mkdir(path.join(tmp,'scripts','build'),{recursive:true});
   await mkdir(path.join(tmp,'apps','web'),{recursive:true});
   await copyFile(path.join(root,'scripts/build/build-site.mjs'),path.join(tmp,'scripts/build/build-site.mjs'));
+  await copyFile(path.join(root,'scripts/build/session-config.mjs'),path.join(tmp,'scripts/build/session-config.mjs'));
   await copyFile(path.join(root,'scripts/build/release-version.mjs'),path.join(tmp,'scripts/build/release-version.mjs'));
   await copyFile(path.join(root,'scripts/build/public-assets.mjs'),path.join(tmp,'scripts/build/public-assets.mjs'));
   await writeFile(path.join(tmp,'package.json'),JSON.stringify(pkg));

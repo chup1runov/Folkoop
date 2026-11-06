@@ -1,4 +1,5 @@
 import {mkdir,copyFile,cp,rm,writeFile,readFile} from 'node:fs/promises';
+import {sessionConfig} from './session-config.mjs';
 import {releaseVersion} from './release-version.mjs';
 import {BUILD_FILES} from './public-assets.mjs';
 import {createHash} from 'node:crypto';
@@ -14,6 +15,7 @@ if(!shellOnly){const {validateCityData}=await import('./city-data.mjs');await va
 await rm('_site',{recursive:true,force:true});await mkdir('_site',{recursive:true});
 for(const file of files)await copyFile(source(file),'_site/'+file);
 await writeFile('_site/app.js',app);
+await writeFile('_site/network-config.js',sessionConfig(await readFile(source('network-config.js'),'utf8')));
 await copyFile(source('folkoop.html'),'_site/index.html');
 const city=await readFile(source('city-source.html'),'utf8');
 if(!city.includes('</body>'))throw new Error('City source missing closing body');
