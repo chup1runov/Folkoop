@@ -393,3 +393,18 @@ were replaced with API fixtures to survive legitimate background refresh.
 route-race-before.raw.txt now contains an isolated repeat with old network-ui.js;
 the earlier captured file was overwritten by the parallel successful run.
 Real login/reload and the activated deployment are still being verified.
+
+## Session deployment checkpoint — 2026-11-06
+
+Cloudflare published 0.41.0 with D1 SESSIONS and the owner-saved SESSION_KEY.
+Runtime correction ea30746 binds the default fetch to globalThis; fixed stage-only
+diagnostics never log credentials or request/exception contents. 468 local tests
+passed, including seven server-session tests; the receiver regression fails on the
+old implementation and passes after binding.
+
+Actual email callback returned to Pages, but its first session creation failed.
+After the runtime correction, provider `over_email_send_rate_limit` blocked a new
+email. **Real login/reload remains unverified; FK-REL-001 is not complete.**
+Do not rotate/read the saved secret or connect paid SMTP to finish this check.
+Evidence: [session activation](../workflow/evidence/FK-REL-001/session-activation.json);
+code: [session handler](../../server/auth/session.mjs).

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-06",
+  "revision": "ea30746ccdbde1c1b94e5d23ae4086b9cc867b0b",
+  "cloudflare": {
+    "deployment": "a7befa06-84be-4b5e-86c3-1527cf4c8d36",
+    "result": "success",
+    "site": "https://folkoop.pages.dev/"
+  },
+  "local_tests": {
+    "passed": 468,
+    "failed": 0,
+    "session_tests": 7,
+    "command": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs tests/workflow/*.test.mjs"
+  },
+  "regression": {
+    "old_default_fetch_receiver": "failed",
+    "bound_default_fetch_receiver": "passed"
+  },
+  "real_login": {
+    "result": "limited",
+    "observed": "Email callback returned to Pages; previous runtime failed at identity before upstream fetch. Default fetch binding fixed and deployed. New real-account verification blocked by provider email delivery rate limit.",
+    "provider_code": "over_email_send_rate_limit",
+    "reload_verified": false
+  },
+  "boundaries": [
+    "No secret values stored in repository/evidence",
+    "No billing enabled",
+    "No hosted account or project deleted",
+    "Physical iPhone and native-language review not performed"
+  ],
+  "github": {
+    "previous_full_pass": "https://github.com/chup1runov/Folkoop/actions/runs/42295283478",
+    "runtime_fix_run": "https://github.com/chup1runov/Folkoop/actions/runs/42297275296",
+    "runtime_fix_source_webkit_database": "passed",
+    "runtime_fix_validate_deploy": "passed including deploy and public-origin verification"
+  }
+}

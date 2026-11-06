@@ -1,0 +1,9 @@
+✔ repository path validation rejects traversal and absolute references (0.181709ms)
+ℹ tests 468
+ℹ suites 0
+ℹ pass 468
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1166.567167

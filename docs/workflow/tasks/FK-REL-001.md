@@ -24,3 +24,11 @@ before any server-side Supabase request. Add fixed stage-only diagnostics (no
 exception messages, request contents, identifiers or credentials) for unexpected
 or 5xx failures; retain origin checks and fail-closed behavior. Validate stage
 logging does not include a supplied secret. This is diagnosis, not login acceptance.
+
+Checkpoint ea30746: default global fetch now retains the Workers receiver. Seven
+session tests (including the failing-before receiver regression and diagnostic
+privacy) and all 468 local tests pass. Cloudflare deployment a7befa06 succeeded.
+Fresh real-account acceptance is limited by provider email rate limiting. A
+follow-up UX gap remains: a failed email-link attempt consumes its in-memory
+refresh credential, so recovery currently requires a new link; do not claim retry
+works on the consumed callback. Do not silently persist tokens to work around it.

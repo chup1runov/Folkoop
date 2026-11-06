@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-REL-001",
   "updated": "2026-11-06",
-  "phase": "implementation",
+  "phase": "verification",
   "spec": "docs/workflow/tasks/FK-REL-001.md",
   "authorization": {
     "status": "accepted",
@@ -58,11 +58,13 @@
     },
     {
       "id": "FK-REL-001-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-REL-001-R03"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-REL-001-E03"
+      ]
     },
     {
       "id": "FK-REL-001-T04",
@@ -70,7 +72,9 @@
       "requirements": [
         "FK-REL-001-R04"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-REL-001-E04"
+      ]
     }
   ],
   "evidence": [
@@ -91,8 +95,26 @@
         "C02"
       ],
       "path": "docs/workflow/evidence/FK-REL-001/release-ci.json"
+    },
+    {
+      "id": "FK-REL-001-E03",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-REL-001/session-activation.json"
+    },
+    {
+      "id": "FK-REL-001-E04",
+      "kind": "deterministic",
+      "result": "limited",
+      "checks": [
+        "C04"
+      ],
+      "path": "docs/workflow/evidence/FK-REL-001/session-activation.json"
     }
   ],
   "open_questions": [],
-  "next_action": "Deploy Cloudflare session opt-in after owner saved SESSION_KEY; verify real login/reload and GitHub CI with API-backed chat fixtures. Cloudflare 0.41.0 from 7d7492e is deployed."
+  "next_action": "After Supabase email rate limit resets, request one new email for the already-authorized test account; verify real sign-in, reload and fresh tab on folkoop.pages.dev. Do not reuse consumed callback or claim C04 passed. SESSION_KEY is saved; no new secret or paid service needed."
 }

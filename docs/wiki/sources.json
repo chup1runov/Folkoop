@@ -213,10 +213,10 @@
     {
       "id": "SRC-SERVER-SESSION",
       "path": "server/auth/session.mjs",
-      "status": "local-verified-not-deployed",
+      "status": "deployed-real-login-pending",
       "checked_at": "2026-11-06",
-      "checked_scope": "Local self-review and synthetic provider/browser checks; real hosted activation not performed",
-      "sha256": "fbff07d04a8692bf2f87d4c2dee920aa9dc324ecc7983da2cd0c2531a3e5ce29"
+      "checked_scope": "Read current handler and diff; 7 session tests and 468 total tests passed. Cloudflare ea30746 deployed. Real email login/reload after fix blocked by provider email rate limit.",
+      "sha256": "9ee74254736bcd1a9db7d7145586ba32350051468867fe31b9db07bcdd4e4e01"
     },
     {
       "id": "SRC-STAB003-RESULTS",

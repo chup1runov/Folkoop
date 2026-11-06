@@ -363,3 +363,18 @@ HEAD: `37edc44173f2feb809ca6c46e6ab5c67b377fbce`, 18 октября 2026.
 ## Cloudflare navigation — 2026-10-29
 
 [FK-CF-001](../workflow/tasks/FK-CF-001.md) опубликован: commit 958645e, version 0.40.9, build 66951902dad72b2a23c5. Устранено повторное использование redirected-response для навигации из SW cache. 375 тестов, сборка, аудит и hosted browser reload/City/Transport прошли. Реальная авторизация, физический iPhone и полнота городских источников не проверены. Другие локальные изменения не опубликованы.
+
+## Session deployment checkpoint — 2026-11-06
+
+Cloudflare published 0.41.0 with D1 SESSIONS and the owner-saved SESSION_KEY.
+Runtime correction ea30746 binds the default fetch to globalThis; fixed stage-only
+diagnostics never log credentials or request/exception contents. 468 local tests
+passed, including seven server-session tests; the receiver regression fails on the
+old implementation and passes after binding.
+
+Actual email callback returned to Pages, but its first session creation failed.
+After the runtime correction, provider `over_email_send_rate_limit` blocked a new
+email. **Real login/reload remains unverified; FK-REL-001 is not complete.**
+Do not rotate/read the saved secret or connect paid SMTP to finish this check.
+Evidence: [session activation](../workflow/evidence/FK-REL-001/session-activation.json);
+code: [session handler](../../server/auth/session.mjs).

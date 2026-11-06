@@ -70,3 +70,12 @@ Earlier non-activation statements describe the implementation stage. The owner
 approved SESSIONS and saved SESSION_KEY in Cloudflare. FOLKOOP_SERVER_SESSION=1
 opts in only the Cloudflare build; it validates key format and public provider
 agreement without copying secrets into assets. Real login/reload is pending.
+
+## Runtime follow-up — 2026-11-06
+
+Cloudflare deployed ea30746 after correcting the unbound default fetch. The
+production diagnostic failed at identity before an upstream request; the receiver
+regression is now covered, along with fixed stage-only failure logging. 468 local
+tests pass. New real-account login/reload is pending due to Supabase
+`over_email_send_rate_limit`, not a request to replace the saved SESSION_KEY.
+See ../workflow/evidence/FK-REL-001/session-activation.json.
