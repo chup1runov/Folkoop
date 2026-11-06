@@ -4,12 +4,14 @@ import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {createSessionHandler} from '../../server/auth/session.mjs';
 const uid='11111111-1111-4111-8111-111111111111';
-function fixture({refreshStatus=200}={}){
+function fixture({refreshStatus=200,redirectPath=null}={}){
  const sql=new DatabaseSync(':memory:');sql.exec(readFileSync('cloudflare/migrations/0001_sessions.sql','utf8'));
  const env={SESSION_KEY:'ab'.repeat(32),SUPABASE_URL:'https://abcdefghijklmnopqrst.supabase.co',SUPABASE_PUBLISHABLE_KEY:'sb_publishable_testonly',SESSIONS:{prepare(s){return {bind(...args){const stmt=sql.prepare(s);return {async run(){return {meta:{changes:Number(stmt.run(...args).changes)}};},async first(){return stmt.get(...args)||null;}};}}}}};
  let time=1000000000000, refreshes=0;
  const calls=[];
  const handler=createSessionHandler({clock:()=>time,fetch:async(url,opts)=>{calls.push({url,...opts});
+  assert.equal(opts.redirect,'manual','Workers-compatible requests must never follow redirects');
+  if(redirectPath&&url.includes(redirectPath))return new Response(null,{status:302,headers:{Location:'https://untrusted.example/'}});
   if(url.includes('/token?')){if(refreshStatus!==200)return Response.json({message:'invalid refresh token'},{status:refreshStatus});refreshes++;await new Promise(r=>setTimeout(r,10));return Response.json({access_token:'private-access-'+refreshes,refresh_token:'private-refresh-'+refreshes,expires_in:3600});}
   if(url.endsWith('/user'))return Response.json({id:uid,email_confirmed_at:'2026-01-01'});
   if(url.includes('/logout'))return new Response(null,{status:204});
@@ -71,3 +73,13 @@ test('default runtime fetch retains its global receiver for Workers',async()=>{
 test('rejected refresh requires a new link, transient upstream failure does not become expiry',async()=>{
  for(const [status,expected] of [[400,401],[503,503]]){const f=fixture({refreshStatus:status});const response=await f.req('/session',{method:'POST',body:{access_token:'original-access',refresh_token:'original-refresh',invite:'',acceptance:{termsAccepted:true,privacyAcknowledged:true}}});assert.equal(response.status,expected);assert.equal(f.sql.prepare('select count(*) n from sessions').get().n,0);}
 });
+
+ test('upstream redirects fail closed at login and authenticated proxy without following Location',async()=>{
+  const loginFixture=fixture({redirectPath:'/auth/v1/user'});
+  const res=await loginFixture.req('/session',{method:'POST',body:{access_token:'original-access',refresh_token:'original-refresh',invite:'',acceptance:{termsAccepted:true,privacyAcknowledged:true}}});
+  assert.equal(res.status,502);assert.deepEqual(await res.json(),{message:'UPSTREAM_REDIRECT_REJECTED'});assert.equal(loginFixture.calls.length,1);
+  assert.equal(loginFixture.sql.prepare('select count(*) n from sessions').get().n,0);
+  const f=fixture({redirectPath:'fk_profiles'}),cookie=await f.login();
+  const response=await f.req('/rest/v1/fk_profiles',{cookie});assert.equal(response.status,502);assert.equal(response.headers.get('location'),null);
+  assert(f.calls.every(call=>new URL(call.url).hostname==='abcdefghijklmnopqrst.supabase.co'));
+ });

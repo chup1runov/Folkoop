@@ -29,7 +29,10 @@ export function createSessionHandler({fetch:send=globalThis.fetch.bind(globalThi
     if(token)headers.Authorization='Bearer '+token;
     if(body!==undefined)headers['Content-Type']='application/json';
     if(prefer==='count=exact')headers.Prefer=prefer;
-    return send(env.SUPABASE_URL+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(10000)});
+    // Workers supports manual/follow only. Reject redirects before they can forward credentials.
+    const response=await send(env.SUPABASE_URL+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),redirect:'manual',signal:AbortSignal.timeout(10000)});
+    if(response.status>=300&&response.status<400)throw error(502,'UPSTREAM_REDIRECT_REJECTED');
+    return response;
    }
    async function payload(){if(!/^application\/json(?:;|$)/i.test(request.headers.get('content-type')||''))throw error(415,'JSON_REQUIRED');const text=await request.text();if(text.length>65536)throw error(413,'BODY_TOO_LARGE');try{return JSON.parse(text);}catch{throw error(400,'INVALID_INPUT');}}
    async function requireOK(response){if(!response.ok){const detail=await response.json().catch(()=>null);throw error(stage==='exchange'&&response.status===400?401:response.status,detail?.message==='PILOT_INVITE_REQUIRED'?'PILOT_INVITE_REQUIRED':(response.status===401||stage==='exchange'&&response.status===400)?'AUTH_REQUIRED':'REQUEST_FAILED');}return response.json();}
