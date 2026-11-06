@@ -6,11 +6,14 @@ const host=document.getElementById('networkPanel');if(!host)return;
 let editing=null;
 const editable=el=>el?.matches?.('input:not([type="hidden"]),textarea,select');
 const recoverableForms=new Set(['netCoopCreate','netMeetingTerms','netMeetingRepeat','netMeetingOutcome']);
-document.addEventListener('focusin',e=>{
+function rememberFocus(e){
  const field=e.target,form=field.form;
  editing=editable(field)&&recoverableForms.has(form?.id)&&host.contains(form)
   ?{field,formId:form.id,hash:location.hash,meetingScope:host.dataset.meetingScope||''}:null;
-});
+}
+// Native date controls in WebKit can focus without a bubbling focusin event.
+document.addEventListener('focus',rememberFocus,true);
+document.addEventListener('focusin',rememberFocus);
 new MutationObserver(()=>{
  if(!editing||editing.field.isConnected)return;
  const saved=editing;editing=null;

@@ -1232,12 +1232,18 @@ async function load(){
  data.documentNotifications=documentNotifications;data.documentNotificationsError=documentNotificationsError;
  data.taskBasisNotifications=taskBasisNotifications;data.taskBasisNotificationsError=taskBasisNotificationsError;data.taskBasisNotificationsLoadedAt=taskBasisNotificationsLoadedAt;
 }
+let routeLoadPending=false;
+function loadCurrentRoute(){
+ if(busy){routeLoadPending=true;return;}
+ routeLoadPending=false;
+ if(currentUser())run(async()=>{await load();notice='';});else render();
+}
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
  if(!guestDemo){notice=t('busy');const status=host.querySelector('#netStatus');if(status)status.textContent=notice;}
  else notice='';
  try{await fn();}catch(e){notice=e.code==='MESSAGE_UNCONFIRMED'?(uncertainMessageCopy[lang()]||uncertainMessageCopy.en):t(({AUTH_REQUIRED:'auth',INVITE_REQUIRED:'inviteRequired',POLICY_REQUIRED:'policyRequired',DENIED:'denied',RATE_LIMIT:'limit',INVALID_INPUT:'invalid',STALE:'stale'})[e.code]||'error');}
- finally{busy=false;render();}
+ finally{busy=false;if(routeLoadPending)loadCurrentRoute();else render();}
 }
 host.addEventListener('input',e=>{
  const f=e.target.form;if(!f)return;const v=Object.fromEntries(new FormData(f));
@@ -1572,7 +1578,7 @@ window.addEventListener('message',e=>{
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
-window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;if(currentUser())run(async()=>{await load();notice='';});else render();});
+window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;loadCurrentRoute();});
 window.addEventListener('folkoop:subsection',e=>{
  const parent=e.detail?.parent,key=e.detail?.key;
  if(parent==='projects')selectedCoop=null;
@@ -1843,7 +1849,7 @@ async function refreshAccount(){
  liveRefreshAt=Date.now();busy=true;const expected=version,uid=currentUser().id;
  try{await load();if(expected!==version||currentUser()?.id!==uid)return;liveRefreshError=false;render();}
  catch(e){if(expected===version&&currentUser()?.id===uid){liveRefreshError=true;render();}}
- finally{busy=false;}
+ finally{busy=false;if(routeLoadPending)loadCurrentRoute();}
 }
 setInterval(refreshAccount,60000);
 window.addEventListener('focus',refreshAccount);

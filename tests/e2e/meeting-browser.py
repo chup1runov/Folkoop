@@ -140,11 +140,15 @@ async def main():
   await expect(page.locator('.meeting-outcome')).to_contain_text('Сообщения участников')
   assert len(state['reports'])==1 and state['reports'][0]['user_id']==A
   await owner_page.locator('[data-coop=meetingRefresh]').click()
-  await owner_page.locator('.meeting-outcome summary').click()
+  await expect(owner_page.locator('[data-coop=meetingRefresh]')).to_be_enabled()
   repeat=owner_page.locator('#netMeetingRepeat')
+  if not await repeat.is_visible():
+   await owner_page.locator('.meeting-outcome summary').click()
+  await expect(repeat).to_be_visible()
   assert await repeat.locator('[name=start]').input_value()==''
   # The still-empty open form and focused field survive a background re-render.
   await repeat.locator('[name=start]').focus()
+  await expect(repeat.locator('[name=start]')).to_be_focused()
   await owner_page.evaluate("window.dispatchEvent(new Event('offline'))")
   await expect(repeat).to_be_visible()
   await expect(repeat.locator('[name=start]')).to_be_focused()

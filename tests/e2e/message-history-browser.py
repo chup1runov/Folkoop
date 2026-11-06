@@ -30,7 +30,10 @@ async def main():
     if url.endswith('/verify'):result={'access_token':'synthetic-only','expires_in':3600}
     elif url.endswith('/user'):result={'id':ME}
     elif url.endswith('/fk_claim_pilot_invite'):result=True
-    elif '/fk_profiles?' in url:result=[{'id':ME,'name':'Synthetic reader','skills':'','about':'','listed':True},{'id':OTHER,'name':'Synthetic author','skills':'','about':'','listed':True}]
+    elif '/fk_profiles?' in url:
+     # Navigate while the initial authenticated load is still in flight.
+     await asyncio.sleep(0.2)
+     result=[{'id':ME,'name':'Synthetic reader','skills':'','about':'','listed':True},{'id':OTHER,'name':'Synthetic author','skills':'','about':'','listed':True}]
     elif '/fk_conversations?' in url:result=[{'id':c,'kind':'direct','owner_id':None,'title':''} for c in [CHAT,SECOND]]
     elif '/fk_conversation_members?' in url:result=[{'conversation_id':c,'user_id':u,'role':'member','last_read_at':None} for c in [CHAT,SECOND] for u in [ME,OTHER]]
     elif url.endswith('/fk_chat_inbox'):result=[{'conversation_id':CHAT,'unread_count':len(rows)-len(seen),'last_message_at':rows[-1]['created_at']},{'conversation_id':SECOND,'unread_count':0}]
