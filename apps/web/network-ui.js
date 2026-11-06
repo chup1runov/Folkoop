@@ -1858,9 +1858,9 @@ async function refreshAccount(){
  const pane=host.querySelector('.chat-messages');
  if(pane&&pane.scrollHeight-pane.scrollTop-pane.clientHeight>80)return;
  liveRefreshAt=Date.now();busy=true;const expected=version,uid=currentUser().id;
- try{await load();if(expected!==version||currentUser()?.id!==uid)return;liveRefreshError=false;render();}
- catch(e){if(expected===version&&currentUser()?.id===uid){liveRefreshError=true;render();}}
- finally{busy=false;if(routeLoadPending)loadCurrentRoute();}
+ try{await load();if(expected!==version||currentUser()?.id!==uid)return;liveRefreshError=false;}
+ catch(e){if(expected===version&&currentUser()?.id===uid)liveRefreshError=true;}
+ finally{busy=false;if(routeLoadPending)loadCurrentRoute();else if(expected===version&&currentUser()?.id===uid)render();}
 }
 setInterval(refreshAccount,60000);
 window.addEventListener('focus',refreshAccount);

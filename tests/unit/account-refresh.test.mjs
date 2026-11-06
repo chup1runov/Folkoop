@@ -7,3 +7,7 @@ test('overlapping refresh is suppressed and rejected load is visible',async()=>{
 test('navigation during refresh discards stale render',async()=>{const h=harness();h.ctx.load=async()=>{h.ctx.version++;};await h.run();assert.equal(h.renders(),0);});
 
 test('navigation queued during refresh is loaded after releasing busy state',async()=>{const h=harness();let queued=0;h.ctx.load=async()=>{h.ctx.version++;h.ctx.routeLoadPending=true;};h.ctx.loadCurrentRoute=()=>{assert.equal(h.ctx.busy,false);queued++;};await h.run();assert.equal(h.renders(),0);assert.equal(queued,1);});
+
+test('success and failure render only after releasing the busy restriction',async()=>{
+ for(const fail of [false,true]){const h=harness();let renders=0;h.ctx.render=()=>{assert.equal(h.ctx.busy,false);renders++;};if(fail)h.ctx.load=async()=>{throw new Error('temporary');};await h.run();assert.equal(renders,1);}
+});
