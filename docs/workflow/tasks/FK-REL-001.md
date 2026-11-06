@@ -18,3 +18,9 @@ Context: STAB-001/002/003 local evidence, main 5ce4a9b, 43 migration files,
 462 deterministic checks, dirty baseline preserved outside checkout. Plan self-review:
 prior local completion is not deployment evidence. No production test fixtures.
 Do not weaken authorization or skip readiness checks just to deploy.
+
+Production follow-up: actual email sign-in reaches Pages but session creation fails
+before any server-side Supabase request. Add fixed stage-only diagnostics (no
+exception messages, request contents, identifiers or credentials) for unexpected
+or 5xx failures; retain origin checks and fail-closed behavior. Validate stage
+logging does not include a supplied secret. This is diagnosis, not login acceptance.
