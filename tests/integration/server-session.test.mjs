@@ -47,3 +47,23 @@ test('all-device logout removes both server sessions, individual logout only its
  const f=fixture(),one=await f.login(),two=await f.login();await f.req('/session',{method:'DELETE',cookie:one});assert.equal((await f.req('/session',{cookie:two})).status,200);
  await f.login();await f.req('/session?all=1',{method:'DELETE',cookie:two});assert.equal(f.sql.prepare('select count(*) n from sessions').get().n,0);
 });
+
+test('unexpected failure logs only a fixed stage, never credentials or exception detail',async()=>{
+ const seen=[],original=console.error;console.error=(...args)=>seen.push(args);
+ try{
+  const f=fixture();f.env.SESSIONS.prepare=()=>{throw new Error('private-secret-from-driver');};
+  const response=await f.req('/session',{method:'POST',body:{access_token:'original-access',refresh_token:'original-refresh',invite:'',acceptance:{termsAccepted:true,privacyAcknowledged:true}}});
+  assert.equal(response.status,503);assert.deepEqual(await response.json(),{message:'SESSION_UNAVAILABLE'});
+  assert.deepEqual(seen,[['SESSION_FAILURE','persist']]);
+ }finally{console.error=original;}
+});
+
+test('default runtime fetch retains its global receiver for Workers',async()=>{
+ const original=globalThis.fetch;let called=false;
+ globalThis.fetch=async function(){assert.equal(this,globalThis);called=true;return Response.json({message:'invalid'},{status:401});};
+ try{
+  const handler=createSessionHandler(),f=fixture();
+  const response=await handler(new Request('https://local.example/api/network/session',{method:'POST',headers:{origin:'https://local.example','Content-Type':'application/json'},body:JSON.stringify({access_token:'original-access',refresh_token:'original-refresh',invite:'',acceptance:{termsAccepted:true,privacyAcknowledged:true}})}),f.env);
+  assert.equal(called,true);assert.equal(response.status,401);
+ }finally{globalThis.fetch=original;}
+});

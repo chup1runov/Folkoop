@@ -6,7 +6,7 @@ const bytes=s=>Uint8Array.from(s.match(/../g)||[],x=>parseInt(x,16));
 const error=(status,message)=>Object.assign(new Error(message),{status});
 const json=(body,status=200,extra={})=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
 const cookie=(value,age=TTL)=>`${COOKIE}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
-export function createSessionHandler({fetch:send=globalThis.fetch,clock=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}={}){
+export function createSessionHandler({fetch:send=globalThis.fetch.bind(globalThis),clock=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}={}){
  return async function handle(request,env){
   let db, stage='origin';
   try{
