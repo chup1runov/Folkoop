@@ -62,7 +62,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
      try{detail=await response.json();}catch{}
     }
-    if(path==='/auth/v1/otp'&&response.status===429)throw fail('EMAIL_RATE_LIMIT');
+    if(path.split('?')[0]==='/auth/v1/otp'&&response.status===429)throw fail('EMAIL_RATE_LIMIT');
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
@@ -197,7 +197,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    id(who?.id);if(typeof who.email!=='string'||!who.email_confirmed_at)throw fail('AUTH_REQUIRED');
    return {id:who.id,email:who.email};
   },
-  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp'+(cfg?.emailRedirectUrl?'?redirect_to='+encodeURIComponent(cfg.emailRedirectUrl):''),{method:'POST',auth:false,body:{email,create_user:true}});},
+  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');try{await request('/auth/v1/otp'+(cfg?.emailRedirectUrl?'?redirect_to='+encodeURIComponent(cfg.emailRedirectUrl):''),{method:'POST',auth:false,body:{email,create_user:true}});}catch(e){if(['NETWORK','REQUEST_FAILED','INVALID_RESPONSE'].includes(e.code))throw fail('EMAIL_DELIVERY_UNKNOWN');throw e;}},
   async verify(email,code,inviteCode='',acceptance){
    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
    const invite=text(inviteCode,120),policy=policyAcceptance(acceptance);

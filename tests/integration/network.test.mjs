@@ -189,3 +189,7 @@ test('session retry preserves supplied credentials and distinguishes terminal an
  status=200;await c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh');assert.deepEqual(calls[0],calls[1]);
  status=401;await assert.rejects(c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh'),e=>e.code==='AUTH_LINK_EXPIRED');
 });
+
+test('production redirect query retains email rate classification and uncertain delivery never retries automatically',async()=>{
+ for(const [status,code] of [[429,'EMAIL_RATE_LIMIT'],[503,'EMAIL_DELIVERY_UNKNOWN']]){let count=0;const c=N.client({...cfg,emailRedirectUrl:'https://example.test/'},{transport:async(url)=>{count++;assert(url.includes('/otp?redirect_to='));return json({},status);}});await assert.rejects(c.requestCode('synthetic@example.test'),e=>e.code===code);assert.equal(count,1);}
+});

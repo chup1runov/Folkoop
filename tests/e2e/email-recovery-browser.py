@@ -9,7 +9,7 @@ async def main():
   for width in [1366,390]:
    ctx=await browser.new_context(viewport={'width':width,'height':844},service_workers='block')
    await ctx.add_init_script("sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-language','en');localStorage.setItem('folkoop-language-choice-v1','done');")
-   state={'identity':0,'posts':[],'otp':0,'terminal':False}
+   state={'identity':0,'posts':[],'otp':0,'terminal':False,'mail_status':429}
    async def route(r):
     url=r.request.url
     if '/auth/v1/user' in url:
@@ -17,7 +17,7 @@ async def main():
      return await r.fulfill(status=503 if state['identity']==1 else 200,content_type='application/json',body=json.dumps({'id':UID,'email':'synthetic@example.test','email_confirmed_at':'2026-01-01'}))
     if '/auth/v1/otp' in url:
      state['otp']+=1
-     return await r.fulfill(status=429,content_type='application/json',body='{"code":"over_email_send_rate_limit"}')
+     return await r.fulfill(status=state['mail_status'],content_type='application/json',body='{"code":"over_email_send_rate_limit"}')
     if url.startswith(BASE+'api/network/session') and r.request.method=='POST':
      state['posts'].append(r.request.post_data_json)
      if state['terminal']:return await r.fulfill(status=401,content_type='application/json',body='{"message":"AUTH_REQUIRED"}')
@@ -57,6 +57,10 @@ async def main():
    await p.locator('#netLogin button').click()
    await expect(p.locator('#netStatus')).to_contain_text('reset time is unknown')
    assert state['otp']==1
+   state['mail_status']=503
+   await p.locator('#netLogin button').click()
+   await expect(p.locator('#netStatus')).to_contain_text('Check your inbox and spam')
+   assert state['otp']==2
    print(f'PASS {width}px: identity retry, session retry, reload, new tab, rejected link, email limit; no external traffic')
    await ctx.close()
   await browser.close()

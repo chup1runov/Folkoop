@@ -423,3 +423,5 @@ code: [session handler](../../server/auth/session.mjs).
 письма не отправлялись. [Доказательства](../workflow/evidence/FK-AUTH-RECOVERY-001/local-tests.txt).
 Реальный hosted-вход остаётся непроверенным; тексты 11 языков не получили
 подтверждения носителей. Публикация разрешена, результат развёртывания проверяется отдельно.
+
+Follow-up: the production email redirect query is covered explicitly; uncertain delivery asks the user to check inbox/spam before another request. 473 deterministic tests and the updated desktop/mobile browser scenarios passed. No email sent.

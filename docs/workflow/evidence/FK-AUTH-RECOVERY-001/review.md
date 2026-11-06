@@ -11,3 +11,5 @@ No blocking findings in the reviewed diff against origin/main f5f2bce. This is
 author self-review, not independent review. Recovery after provider rotation/lost
 Set-Cookie may require a new link; it is not guaranteed. 11 copy variants present,
 not human/native approved. Real production login remains outside this local proof.
+
+Follow-up: the production email redirect query is covered explicitly; uncertain delivery asks the user to check inbox/spam before another request. 473 deterministic tests and the updated desktop/mobile browser scenarios passed. No email sent.
