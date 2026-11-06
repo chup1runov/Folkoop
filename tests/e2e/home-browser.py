@@ -82,6 +82,7 @@ async def main():
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
   await page.evaluate("location.hash='#/home'")
+  await page.click('[data-for-you-mode=work]')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Сегодня')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Совместные дрова')
   await expect(page.locator('.home-daily-focus')).to_contain_text('Один полезный следующий шаг')

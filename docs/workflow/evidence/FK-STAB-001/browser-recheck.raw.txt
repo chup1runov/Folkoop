@@ -1,0 +1,22 @@
+START meeting
+PASS organizer proposals, self attendance/roles, escaped terms, stale response recovery and mobile geometry (chromium)
+PASS two-account outcome, disagreement, withdrawal, repeat with blank dates/no consent, previous/next links (chromium)
+RESULT PASS meeting
+START activity-chat
+PASS Project creation exposes its automatically linked work chat and activity journal
+PASS Activity and chat unread counts are independent and visible in navigation
+PASS My page surfaces in-app cooperation activity notifications
+PASS Opening the cooperation marks its activity read on the server
+PASS Displaying the linked work-chat message acknowledges its exact ID
+RESULT PASS activity-chat
+START first-contact-guest
+PASS C first-fold tour/actions, 11 locales and on-demand three modes 320x568 chromium
+PASS C first-fold tour/actions, 11 locales and on-demand three modes 390x844 chromium
+PASS C first-fold tour/actions, 11 locales and on-demand three modes 1280x800 chromium
+PASS C route tour chromium
+PASS C route center chromium
+PASS C route need chromium
+PASS C route offer chromium
+PASS C route projects chromium
+PASS C opt-in guest-first flow: engineering only, no participants (chromium)
+RESULT PASS first-contact-guest

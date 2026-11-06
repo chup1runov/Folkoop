@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "id": "FK-CI-001",
+  "updated": "2026-10-29",
+  "phase": "verification",
+  "preparation_status": "ready",
+  "plan_ids": [
+    "R02",
+    "N08"
+  ],
+  "spec": "docs/workflow/tasks/FK-CI-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-10-29",
+    "scope": "Execute FK-CI-001: read fresh CI logs, minimal local infrastructure fix, feasible nonpublishing checks and wiki update. No publication or workflow that can deploy; no application/DB changes."
+  },
+  "requirements": [
+    {
+      "id": "FK-CI-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-CI-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-CI-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-CI-001-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-CI-001-R05",
+      "checks": [
+        "C05"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-CI-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-CI-001-R01",
+        "FK-CI-001-R04"
+      ],
+      "evidence": [
+        "FK-CI-001-E01"
+      ]
+    },
+    {
+      "id": "FK-CI-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-CI-001-R04",
+        "FK-CI-001-R05"
+      ],
+      "evidence": [
+        "FK-CI-001-E02"
+      ]
+    },
+    {
+      "id": "FK-CI-001-T03",
+      "status": "done",
+      "requirements": [
+        "FK-CI-001-R01",
+        "FK-CI-001-R05"
+      ],
+      "evidence": [
+        "FK-CI-001-E03"
+      ]
+    },
+    {
+      "id": "FK-CI-001-T04",
+      "status": "done",
+      "requirements": [
+        "FK-CI-001-R02",
+        "FK-CI-001-R04"
+      ],
+      "evidence": [
+        "FK-CI-001-E03",
+        "FK-CI-001-E04"
+      ]
+    },
+    {
+      "id": "FK-CI-001-T05",
+      "status": "in_progress",
+      "requirements": [
+        "FK-CI-001-R02",
+        "FK-CI-001-R03",
+        "FK-CI-001-R05"
+      ],
+      "evidence": [
+        "FK-CI-001-E04",
+        "FK-CI-001-E05"
+      ]
+    },
+    {
+      "id": "FK-CI-001-T06",
+      "status": "in_progress",
+      "requirements": [
+        "FK-CI-001-R03",
+        "FK-CI-001-R04",
+        "FK-CI-001-R05"
+      ],
+      "evidence": [
+        "FK-CI-001-E06",
+        "FK-CI-001-E07"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-CI-001-E01",
+      "kind": "historical",
+      "result": "limited",
+      "checks": [],
+      "path": "docs/workflow/evidence/FK-CI-001/context.json"
+    },
+    {
+      "id": "FK-CI-001-E02",
+      "kind": "agent-review",
+      "result": "passed",
+      "checks": [],
+      "path": "docs/workflow/evidence/FK-CI-001/preparation-review.md"
+    },
+    {
+      "id": "FK-CI-001-E03",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01"
+      ],
+      "path": "docs/workflow/evidence/FK-CI-001/diagnosis.md"
+    },
+    {
+      "id": "FK-CI-001-E04",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C02"
+      ],
+      "path": "docs/workflow/evidence/FK-CI-001/runner-contract-check.json"
+    },
+    {
+      "id": "FK-CI-001-E05",
+      "kind": "deterministic",
+      "result": "limited",
+      "checks": [
+        "C03",
+        "C05"
+      ],
+      "path": "docs/workflow/evidence/FK-CI-001/local-verification.json"
+    },
+    {
+      "id": "FK-CI-001-E06",
+      "kind": "agent-review",
+      "result": "limited",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/evidence/FK-CI-001/execution-review.md"
+    },
+    {
+      "id": "FK-CI-001-E07",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C04",
+        "C05"
+      ],
+      "path": "docs/workflow/evidence/FK-CI-001/execution-final-check.json"
+    }
+  ],
+  "open_questions": [
+    "Full WebKit install + all 13 smoke scripts on Ubuntu 24.04 not run; only isolated macOS checks available.",
+    "No remote validation-only route has been authorized or executed; deploy-capable main workflow remains forbidden."
+  ],
+  "next_action": "Local patch ready, C03 pending. Verify the pinned Ubuntu 24.04 environment and all 13 smoke scripts in a nonpublishing environment when available/authorized; never rerun the deploy-capable main workflow under the current restriction.",
+  "implementation_status": "local_fix_checked; full Ubuntu CI acceptance pending"
+}

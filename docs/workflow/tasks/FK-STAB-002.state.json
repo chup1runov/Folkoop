@@ -1,0 +1,129 @@
+{
+  "id": "FK-STAB-002",
+  "updated": "2026-11-06",
+  "phase": "complete",
+  "authorization": {
+    "scope": "Local audit 6–10, tests and wiki only; no publication",
+    "status": "accepted",
+    "date": "2026-11-06"
+  },
+  "status": {
+    "6": "Local GitHub dependency + Cloudflare exact-SHA gate tested; not deployed",
+    "7": "453 tests and static smoke pass",
+    "8": "18 local PostgreSQL suites pass including new project-domain scenarios",
+    "9": "Approved server session implemented and locally tested; deployment config remains disabled pending private setup",
+    "10": "Required/optional account isolation tested in unit tests and browser with forced unrelated failure"
+  },
+  "next_action": "Local task complete. Later: configure private Pages D1/key and enable server mode in an authorized deployment; no publication authorized now.",
+  "schema_version": 1,
+  "spec": "docs/workflow/tasks/FK-STAB-002.md",
+  "requirements": [
+    {
+      "id": "FK-STAB-002-R06",
+      "checks": [
+        "C06"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-R07",
+      "checks": [
+        "C07"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-R08",
+      "checks": [
+        "C08"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-R09",
+      "checks": [
+        "C09"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-R10",
+      "checks": [
+        "C10"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-STAB-002-T06",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-002-R06"
+      ],
+      "evidence": [
+        "FK-STAB-002-E02"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-T07",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-002-R07"
+      ],
+      "evidence": [
+        "FK-STAB-002-E02"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-T08",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-002-R08"
+      ],
+      "evidence": [
+        "FK-STAB-002-E02"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-T09",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-002-R09"
+      ],
+      "evidence": [
+        "FK-STAB-002-E02"
+      ]
+    },
+    {
+      "id": "FK-STAB-002-T10",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-002-R10"
+      ],
+      "evidence": [
+        "FK-STAB-002-E02"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-STAB-002-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C07"
+      ],
+      "path": "docs/workflow/evidence/FK-STAB-002/tests.raw.txt"
+    },
+    {
+      "id": "FK-STAB-002-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10"
+      ],
+      "path": "docs/workflow/evidence/FK-STAB-002/results.md"
+    }
+  ],
+  "open_questions": []
+}

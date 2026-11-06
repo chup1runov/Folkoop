@@ -1,0 +1,18 @@
+[
+  {
+    "test": "tests/e2e/guest-demo-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/onboarding-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/home-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/onboarding-audit-browser.py",
+    "exit": 0
+  }
+]

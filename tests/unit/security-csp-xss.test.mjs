@@ -39,7 +39,7 @@ test('network renderers retain explicit HTML escaping at their sink boundaries',
  const sources=await Promise.all(files.map(path=>readFile(path,'utf8')));
  const ui=sources[0];
  assert.match(ui,/host\.innerHTML=.*esc\(t\('title'\)\)/s);
- assert.match(ui,/host\.innerHTML=demoBanner\+html\+.*esc\(notice\)/s);
+ assert.match(ui,/host\.innerHTML=demoBanner\+muraProfilePractice\(r\)\+muraCenterPractice\(r\)\+html\+.*esc\(notice\)/s);
  const explicitEscapes=sources.reduce((sum,source)=>sum+(source.match(/\b(?:esc|escape)\(/g)||[]).length,0);
  assert(explicitEscapes>350,'network presentation escaping coverage unexpectedly collapsed');
 });

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "folkoop-knowledge",
+    "interface_valid": true,
+    "fingerprints": {
+      "SKILL.md": "20d05ad27ccca31e2cc503c2c65cf9a2769933082ce8e421533b921d12a1280e",
+      "agents/openai.yaml": "8be4c6c6dc1a307d4b00eb761cf58f4ccf62b20201f127d35dc3b5741b8a7dc8"
+    }
+  },
+  {
+    "name": "folkoop-workflow",
+    "interface_valid": true,
+    "fingerprints": {
+      "SKILL.md": "b30ddb7ada0793e573480a57091489fe372946e9b18676f025a6fc54a22af318",
+      "agents/openai.yaml": "0a060658e10211339e0ea6dd1ab89d34136026386121427fd237a07b4d35afae"
+    }
+  },
+  {
+    "name": "folkoop-verify",
+    "interface_valid": true,
+    "fingerprints": {
+      "SKILL.md": "ba8f472c32d161ee2b60ec843d3fabf6b732ece26d1460269dd7783f35266093",
+      "agents/openai.yaml": "fd598c2b81bf22c887dccdc8a021cf3c22f1c4cb982821fd21a4dddd63da409c"
+    }
+  }
+]

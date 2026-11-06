@@ -31,7 +31,7 @@ test('C is a separate opt-in URL, leaving A and B untouched',()=>{
  assert(shell.includes('const trial=firstContactPreview&&!afterMuraExit;'));
  assert(shell.includes('const guideTrial=firstContactGuest&&!afterMuraExit;'));
  assert(shell.includes('const showModes=trial||(guideTrial&&guestPathsExpanded);'));
- assert(shell.includes('else if(!onboardingDone&&!firstContactTrial)'));
+ assert(shell.includes("else if(entryMode==='guest'&&tourProgress.state==='new'&&!onboardingDone&&!firstContactTrial)"),'new chapter tours must still respect the experimental first-contact gate');
  assert(shell.includes("setEntryMode('guest');return;"),'Mura guest tour must use existing read-only route');
  assert(shell.includes("if(action==='paths'&&firstContactGuest&&!entryGateAfterMuraExit)"));
  assert(shell.includes("if(previewChoice&&!ensureEntryGate().hidden&&(firstContactPreview||(firstContactGuest&&guestPathsExpanded)))"));

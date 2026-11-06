@@ -1,0 +1,33 @@
+[
+  {
+    "command": [
+      "node",
+      "--check",
+      "scripts/knowledge/workflow.mjs"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--test",
+      "tests/workflow/workflow.test.mjs"
+    ],
+    "exit_code": 0,
+    "stdout": "✔ linked completed state is valid; unfinished or unverified completion is rejected (7.055292ms)\n✔ duplicate IDs and dangling requirement/evidence references fail closed (0.168583ms)\n✔ missing resume instruction, authority and unknown check cannot masquerade as valid state (0.102458ms)\n✔ a changed source is stale even when its filename and date are unchanged (1.720042ms)\n✔ journal append preserves original bytes and repeated entry is byte-identical (0.686417ms)\n✔ journal rejects unknown sources and marker injection; source commands remain inert text (0.141041ms)\n✔ repository path validation rejects traversal and absolute references (0.13725ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 75.509833\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "scripts/knowledge/workflow.mjs",
+      "check",
+      "docs/workflow/tasks/FK-WF-001.state.json"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 8,\n  \"tasks\": 7,\n  \"evidence\": 2,\n  \"checks\": 8,\n  \"sources\": 18,\n  \"markdownPages\": 12,\n  \"localLinks\": 156,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+    "stderr": ""
+  }
+]

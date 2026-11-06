@@ -30,7 +30,7 @@ async def main():
     elif '/fk_profiles?' in url:result=[{'id':x,'name':'Alice' if x==A else 'Bob','skills':'','about':'','listed':True} for x in [A,B]]
     elif '/fk_cooperations?' in url:result=[{'id':x,'owner_id':A,'kind':'project','title':'Synthetic Swedish meeting','description':'Synthetic only','status':'open','location_text':'Göteborg'} for x in ([P,N] if state['next'] else [P])]
     elif '/fk_cooperation_members?' in url:result=[{'cooperation_id':P,'user_id':x,'role':'owner' if x==A else 'member'} for x in [A,B]]+([{'cooperation_id':N,'user_id':A,'role':'owner'}] if state['next'] else [])
-    elif url.endswith('/fk_meeting_snapshot'):
+    elif url.endswith('/fk_meeting_ready_snapshot'):
      result={'terms':state['terms'],'responses':state['responses'],'current':True,'people_confirmed':False,'attendee_count':sum(x['confirmed'] and x['role']=='attendee' for x in state['responses']),'checked_at':datetime.now(timezone.utc).isoformat()}
      if v['p_cooperation']==N:result.update(terms=state['next'],responses=state['nextResponses'],attendee_count=len(state['nextResponses']))
     elif url.endswith('/fk_meeting_outcome_snapshot'):

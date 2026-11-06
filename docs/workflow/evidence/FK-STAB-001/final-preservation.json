@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "old_source_changes_only": [
+    "docs/wiki/index.md",
+    "docs/wiki/log.md"
+  ],
+  "old_and_new_journal_prefix_preserved": true,
+  "head_is_audited_main": true,
+  "publication": "not performed",
+  "production_database": "not accessed"
+}

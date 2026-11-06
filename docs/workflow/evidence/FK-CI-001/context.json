@@ -1,0 +1,67 @@
+{
+  "id": "FK-CI-001-E01",
+  "inspected_at": "2026-10-29",
+  "scope": "Local preparation only. Remote CI status/logs not refreshed; original failure cause unknown.",
+  "plan_ids": [
+    "R02",
+    "N08"
+  ],
+  "related_next_task": "R01 / PR 281, separate database permissions workstream",
+  "plan_excerpt": {
+    "id": "R02",
+    "parent": "N08",
+    "group": "Уточнения аудита 28–29 октября",
+    "priority": "P0",
+    "task": "Восстановить установку WebKit в scheduled CI",
+    "status": "Последний запуск failed на этапе Install pinned Playwright and WebKit",
+    "next_action": "Разобрать конкретный installation log, исправить воспроизводимость, получить зелёный exact-head CI; не маскировать skip-ом.",
+    "acceptance": "Разобрать конкретный installation log, исправить воспроизводимость, получить зелёный exact-head CI; не маскировать skip-ом.",
+    "source": "https://github.com/chup1runov/Folkoop/actions/runs/40679481253",
+    "authority": "Рекомендация по источникам; не отдельное разрешение на запуск/публикацию."
+  },
+  "historical_run": {
+    "date": "2026-10-28",
+    "url": "https://github.com/chup1runov/Folkoop/actions/runs/40679481253",
+    "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+    "jobs": [
+      {
+        "name": "webkit",
+        "conclusion": "failure"
+      },
+      {
+        "name": "validate",
+        "conclusion": "success"
+      },
+      {
+        "name": "sources",
+        "conclusion": "success"
+      },
+      {
+        "name": "deploy",
+        "conclusion": "skipped"
+      }
+    ],
+    "failed_step": "Install pinned Playwright and WebKit",
+    "root_cause": "unknown; job step metadata is not the installation log"
+  },
+  "local_head": "37edc44173f2feb809ca6c46e6ab5c67b377fbce",
+  "local_branch": "codex/project-decisions-draft-20261018",
+  "sources": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha256": "cba04dee990045f8e472f4d6491f3108aaec69bb209eb1c48d4e9a7fafe6000a",
+      "checked_at": "2026-10-29"
+    },
+    {
+      "path": "scripts/ci/webkit-smoke.sh",
+      "sha256": "b2f7150523fd7eba9dfc2bc4a5f6d6055b3e5dd02aa1aaa621db733de7bfa83d",
+      "checked_at": "2026-10-29"
+    },
+    {
+      "path": "docs/workflow/README.md",
+      "sha256": "cf794f48c027d5a762b2374eaaecea5cf003c1bdcf0c4fc0d6a9592531b577ab",
+      "checked_at": "2026-10-29"
+    }
+  ],
+  "baseline": "External sibling FOLKOOP_CI_PREPARATION_20261029; nonignored regular files only."
+}

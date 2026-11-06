@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-10-29",
+  "result": "limited",
+  "environment": {
+    "os": "Darwin",
+    "os_version": "26.6.2",
+    "architecture": "arm64",
+    "playwright": "1.57.0",
+    "webkit_build": "2227",
+    "installation": "New isolated venv/browser cache outside repo; no application dependencies changed"
+  },
+  "checks": [
+    {
+      "label": "isolated local build",
+      "exit_code": 0,
+      "stdout": "Prepared FOLKOOP v0.40.9: preserved City; network activation remains explicit.\n",
+      "stderr": ""
+    },
+    {
+      "label": "existing entry-dependency WebKit smoke",
+      "exit_code": 0,
+      "stdout": "PASS: old-order failure reproduced; fixed entry survives delayed network-ui (webkit)\n",
+      "stderr": ""
+    },
+    {
+      "label": "existing first-contact-guest WebKit smoke",
+      "exit_code": 0,
+      "stdout": "PASS C first-fold tour/actions, 11 locales and on-demand three modes 320x568 webkit\nPASS C first-fold tour/actions, 11 locales and on-demand three modes 390x844 webkit\nPASS C first-fold tour/actions, 11 locales and on-demand three modes 1280x800 webkit\nPASS C route tour webkit\nPASS C route center webkit\nPASS C route need webkit\nPASS C route offer webkit\nPASS C route projects webkit\nPASS C opt-in guest-first flow: engineering only, no participants (webkit)\n",
+      "stderr": ""
+    }
+  ],
+  "platform_metadata_dry_runs": [
+    {
+      "host_platform_override": "ubuntu24.04-x64",
+      "exit_code": 0,
+      "stdout": "browser: webkit version 26.0\n  Install location:    <isolated-workspace>/browsers/webkit-2227\n  Download url:        https://cdn.playwright.dev/dbazure/download/playwright/builds/webkit/2227/webkit-ubuntu-24.04.zip\n  Download fallback 1: https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/webkit/2227/webkit-ubuntu-24.04.zip\n  Download fallback 2: https://cdn.playwright.dev/builds/webkit/2227/webkit-ubuntu-24.04.zip\n\n",
+      "stderr": ""
+    },
+    {
+      "host_platform_override": "ubuntu26.04-x64",
+      "exit_code": 0,
+      "stdout": "browser: webkit version 26.0\n  Install location:    <isolated-workspace>/browsers/webkit-2227\n\n",
+      "stderr": ""
+    }
+  ],
+  "interpretation": "24.04 resolves an official WebKit download URL; 26.04 dry-run exits 0 but has no download URL. Dry-run exit code is not proof of platform support or Linux execution. Diagnosis uses actual failing Ubuntu job log and upstream platform source.",
+  "limits": [
+    "No Linux container/VM found in available command paths",
+    "No full 13-script WebKit run",
+    "No GitHub rerun/dispatch/push/deploy",
+    "Only two existing local scripts run, with their request filters; no real accounts or database"
+  ],
+  "source_fingerprints": {
+    ".github/workflows/pages.yml": "7179479f49ab7231ab6e3d9ec5d68bf9401e2e4ff448ba110bb39bbb7f327e74",
+    "scripts/ci/webkit-smoke.sh": "b2f7150523fd7eba9dfc2bc4a5f6d6055b3e5dd02aa1aaa621db733de7bfa83d",
+    "tests/e2e/entry-dependency-browser.py": "a83070d6ed01860c1ad95a85e429b657bc4314112144d9a341607878cd348d98",
+    "tests/e2e/first-contact-guest-browser.py": "71d16d312bda4bfee7e3fda342ef74796d13f7683db2c5bc2cd168e4454dbe08"
+  }
+}

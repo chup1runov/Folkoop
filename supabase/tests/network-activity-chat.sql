@@ -68,7 +68,7 @@ select fk_activity_test.ok((select unread_count=0 from public.fk_chat_inbox() wh
 
 select set_config('request.jwt.claim.sub','11111111-aaaa-4111-8111-111111111111',true);
 select fk_activity_test.ok((select unread_count=1 from public.fk_chat_inbox() where conversation_id=:'chat_id'),'other cooperation member gets one unread message');
-select public.fk_mark_chat_read(:'chat_id');
+select public.fk_mark_messages_read(:'chat_id',array(select id from public.fk_messages where conversation_id=:'chat_id'));
 select fk_activity_test.ok((select unread_count=0 from public.fk_chat_inbox() where conversation_id=:'chat_id'),'chat read marker clears unread count');
 
 -- Outsider cannot enumerate linked chat, activity, or messages.

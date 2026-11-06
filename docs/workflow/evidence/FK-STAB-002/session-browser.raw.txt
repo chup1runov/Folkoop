@@ -1,0 +1,2 @@
+PASS server cookie restore/logout/browser storage at 1366px
+PASS server cookie restore/logout/browser storage at 390px

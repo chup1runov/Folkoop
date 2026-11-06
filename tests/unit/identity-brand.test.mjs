@@ -54,7 +54,8 @@ test('origin attribution exceptions cover only the approved provenance documents
     'docs/UNIFICATION.md',
     'docs/NO_LOSS_REQUIREMENTS_REGISTER.md',
     'docs/NO_LOSS_REQUIREMENTS_REGISTER.json',
-    'docs/architecture/adr/ADR-002-four-origin-foundation.md'
+    'docs/architecture/adr/ADR-002-four-origin-foundation.md',
+    'docs/wiki/concept.md'
   ]);
   assert.equal(Object.isFrozen(originProvenanceDocuments),true);
   for(const file of originProvenanceDocuments){

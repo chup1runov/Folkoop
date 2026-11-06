@@ -1,0 +1,69 @@
+diff --git a/apps/web/network-client.js b/apps/web/network-client.js
+index 9d425d1..0309c77 100644
+--- a/apps/web/network-client.js
++++ b/apps/web/network-client.js
+@@ -29,7 +29,13 @@ function configuration(value){
+  let u,r;try{u=new URL(value.url);r=new URL(value.oauthRedirectUrl||'https://invalid.example/');}catch{throw fail('CONFIG');}
+  if(u.protocol!=='https:'||!/^\w{20}\.supabase\.co$/.test(u.hostname)||u.port||u.username||u.password||u.pathname!=='/'||u.search||u.hash||!/^sb_publishable_[A-Za-z0-9_-]{10,200}$/.test(value.publishableKey||''))throw fail('CONFIG');
+  if(value.googleOAuthEnabled===true&&(r.protocol!=='https:'||r.username||r.password||r.search||r.hash))throw fail('CONFIG');
+- return {url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
++ let emailRedirectUrl=null;
++ if(value.emailRedirectUrl!==undefined){
++  let e;try{e=new URL(value.emailRedirectUrl);}catch{throw fail('CONFIG');}
++  if(e.protocol!=='https:'||e.username||e.password||e.port||e.search||e.hash)throw fail('CONFIG');
++  emailRedirectUrl=e.href;
++ }
++ return {emailRedirectUrl,url:u.origin,key:value.publishableKey,googleOAuthEnabled:value.googleOAuthEnabled===true,oauthRedirectUrl:r.href};
+ }
+ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.now}={}){
+  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
+@@ -122,7 +128,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
+    id(who?.id);if(typeof who.email!=='string'||!who.email_confirmed_at)throw fail('AUTH_REQUIRED');
+    return {id:who.id,email:who.email};
+   },
+-  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp',{method:'POST',auth:false,body:{email,create_user:true}});},
++  async requestCode(email){text(email,254,3);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw fail('INVALID_INPUT');await request('/auth/v1/otp'+(cfg?.emailRedirectUrl?'?redirect_to='+encodeURIComponent(cfg.emailRedirectUrl):''),{method:'POST',auth:false,body:{email,create_user:true}});},
+   async verify(email,code,inviteCode='',acceptance){
+    text(email,254,3);if(!/^\d{6,10}$/.test(code))throw fail('INVALID_INPUT');
+    const invite=text(inviteCode,120),policy=policyAcceptance(acceptance);
+diff --git a/apps/web/network-config.js b/apps/web/network-config.js
+index f9d0d16..1bc91e3 100644
+--- a/apps/web/network-config.js
++++ b/apps/web/network-config.js
+@@ -3,6 +3,7 @@ globalThis.FolkoopNetworkConfig=Object.freeze({
+  enabled:true,
+  url:'https://cwvhkdqsrbllsykhccmb.supabase.co',
+  publishableKey:'sb_publishable_rL8EeJ8NHM2rRZJqq19FiA_i9po0sFq',
++ emailRedirectUrl:'https://folkoop.pages.dev/',
+  googleOAuthEnabled:false,
+  oauthRedirectUrl:'https://chup1runov.github.io/Folkoop/auth-callback.html'
+ });
+diff --git a/tests/integration/network.test.mjs b/tests/integration/network.test.mjs
+index 59ddb5f..114ab9a 100644
+--- a/tests/integration/network.test.mjs
++++ b/tests/integration/network.test.mjs
+@@ -108,3 +108,7 @@ test('Home feed and attention queries are scoped to visible rows and current use
+ 
+ test('Home UI stays bounded and action-first in source',async()=>{const s=await readFile('apps/web/network-ui.js','utf8');assert(s.includes('function renderHome'));assert(s.includes('slice(0,12)'));assert(s.includes("data-home=\"openCoop\""));assert(!/infiniteScroll|IntersectionObserver/.test(s));});
+ test('no persistent tokens or implicit local draft upload',async()=>{const code=await readFile('apps/web/network-client.js','utf8');assert(!/localStorage|sessionStorage|indexedDB|sendBeacon/.test(code.replace(/\/\/[^\n]*/g,'')));assert(!/result\.refresh_token/.test(code));assert(!code.includes('folkoop-workspace-v1'));});
++
++test('email login uses deployment callback without putting email in URL',async()=>{const s=setup(null,{...cfg,emailRedirectUrl:'https://folkoop.pages.dev/'});await s.c.requestCode('synthetic@example.test');const u=new URL(s.calls[0].url);assert.equal(u.pathname,'/auth/v1/otp');assert.equal(u.searchParams.get('redirect_to'),'https://folkoop.pages.dev/');assert.equal([...u.searchParams].length,1);assert(!u.href.includes('synthetic'));assert.equal(JSON.parse(s.calls[0].body).email,'synthetic@example.test');});
++test('email callback configuration fails closed',()=>{for(const emailRedirectUrl of ['',null,'not a URL','http://example.test/','https://user:pass@example.test/','https://example.test/?next=elsewhere','https://example.test/#token','https://example.test:444/'])assert.throws(()=>N.client({...cfg,emailRedirectUrl}),e=>e.code==='CONFIG');});
++test('published email callback targets Cloudflare while Google remains disabled',async()=>{const c=vm.createContext({});vm.runInContext(await readFile('apps/web/network-config.js','utf8'),c);assert.equal(c.FolkoopNetworkConfig.emailRedirectUrl,'https://folkoop.pages.dev/');assert.equal(c.FolkoopNetworkConfig.googleOAuthEnabled,false);});
+diff --git a/tests/unit/email-link.test.mjs b/tests/unit/email-link.test.mjs
+index 4429022..d3c361c 100644
+--- a/tests/unit/email-link.test.mjs
++++ b/tests/unit/email-link.test.mjs
+@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
+ import {readFileSync} from 'node:fs';
+ import vm from 'node:vm';
+ const source=readFileSync('apps/web/email-link.js','utf8');
+-function run(hash){const writes=[],ctx=vm.createContext({URLSearchParams,Date,location:{hash,pathname:'/Folkoop/'},history:{replaceState(...v){writes.push(v);}},sessionStorage:{setItem(k,v){assert.equal(k,'folkoop-entry-mode-v1');assert.equal(v,'account');}}});vm.runInContext(source,ctx);return {ctx,writes,value:ctx.FolkoopEmailLink?.take()};}
++function run(hash,pathname='/Folkoop/'){const writes=[],ctx=vm.createContext({URLSearchParams,Date,location:{hash,pathname},history:{replaceState(...v){writes.push(v);}},sessionStorage:{setItem(k,v){assert.equal(k,'folkoop-entry-mode-v1');assert.equal(v,'account');}}});vm.runInContext(source,ctx);return {ctx,writes,value:ctx.FolkoopEmailLink?.take()};}
+ const valid='#access_token='+('x'.repeat(32))+'&refresh_token=never-persist&expires_in=3600&token_type=bearer&type=magiclink';
+ test('email callback is consumed once; URL scrubbed before application code',()=>{const r=run(valid);assert.equal(r.value.token,'x'.repeat(32));assert.equal(r.writes[0][2],'/Folkoop/?intro=0#/me');assert.equal(r.ctx.FolkoopEmailLink.take(),null);assert(!JSON.stringify(r.value).includes('never-persist'));});
+ test('normal routes are untouched',()=>{const r=run('#/projects');assert.equal(r.value,undefined);assert.equal(r.writes.length,0);});
+ test('expired, recovery, provider errors and malformed callbacks fail closed and scrub',()=>{for(const hash of [valid+'&expires_at=1',valid.replace('magiclink','recovery'),valid+'&access_token=another',valid.replace('3600','NaN'),'#error=denied&error_description=private',valid.replace('bearer','other')]){const r=run(hash);assert.equal(r.value.error,true);assert.equal(r.value.token,undefined);assert.equal(r.writes.length,1);}});
+ test('email callback capture precedes analytics and all other application scripts',()=>{const html=readFileSync('apps/web/folkoop.html','utf8');assert.equal([...html.matchAll(/<script[^>]+src="([^"]+)"/g)][0][1],'./email-link.js');});
++
++test('Cloudflare root callback returns to account and scrubs tokens',()=>{const r=run(valid,'/');assert.equal(r.value.token,'x'.repeat(32));assert.equal(r.writes[0][2],'/?intro=0#/me');assert.equal(r.ctx.FolkoopEmailLink.take(),null);});

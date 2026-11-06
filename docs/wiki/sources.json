@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded source registry for the wiki navigation and FK-WF-001 pilot; not exhaustive repository coverage. Dates mean the stated inspection, not renewed external truth or deployment.",
+  "sources": [
+    {
+      "id": "SRC-CHARTER",
+      "path": "docs/FOUNDATION_CHARTER.md",
+      "status": "accepted-decision",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Scope and preservation sections, Mura, verification limits",
+      "sha256": "2c81ff7b5360ed001068f6eff4445b3d3925c9d4de67fbcc9d193151e139c170"
+    },
+    {
+      "id": "SRC-ADR002",
+      "path": "docs/architecture/adr/ADR-002-four-origin-foundation.md",
+      "status": "accepted-decision",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full decision and explicit supersessions",
+      "sha256": "84311470c052dc0c8029852cda50f9a69e5608d37d441bae5564a333f622ff05"
+    },
+    {
+      "id": "SRC-ADR003",
+      "path": "docs/architecture/adr/ADR-003-sdcf-web3-web4-layers.md",
+      "status": "accepted-decision",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full decision",
+      "sha256": "ffe3e087ff0cd5a19470472386c6fac7d09369f83c4715d7ee7dc7eaa0186509"
+    },
+    {
+      "id": "SRC-UNIFICATION",
+      "path": "docs/UNIFICATION.md",
+      "status": "accepted-decision",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full current and historical identity policy",
+      "sha256": "10bce24532774c852c258e4918e23a090001d70201b17489df5add31e727d9b9"
+    },
+    {
+      "id": "SRC-SDCF",
+      "path": "docs/architecture/SDCF_INTEGRATION.md",
+      "status": "accepted-direction",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full contract; no runtime acceptance asserted",
+      "sha256": "7bd4c061538cf37eabd4255de4889e00823ae2a2f13173aff97b8493be90d219"
+    },
+    {
+      "id": "SRC-REQUIREMENTS",
+      "path": "docs/NO_LOSS_REQUIREMENTS_REGISTER.md",
+      "status": "source-register",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Header, canonical register and recovery summary only; not all requirements audited",
+      "sha256": "dd6208a8e4bd5c8fcbe07eac4951d04447033ff934bdd2b19894567593e66108"
+    },
+    {
+      "id": "SRC-OPERATOR",
+      "path": "docs/GOTEBORG_PILOT_OPERATOR_RUNBOOK.md",
+      "status": "historical-procedure",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Header and preconditions only; current operational readiness not certified",
+      "sha256": "3b83c787b19c07b511073ed4ffcbbd5e2b14a1945232f5e82bbf8a035b07b364"
+    },
+    {
+      "id": "SRC-PRIVACY",
+      "path": "docs/PRIVACY_RIGHTS_AND_INCIDENT_RUNBOOK.md",
+      "status": "historical-procedure",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Header and scope only; no fresh legal review",
+      "sha256": "0334edb9014c6d656fcfbb1aaae560f97982939a6e58e45e1ba198fa0d2cb082"
+    },
+    {
+      "id": "SRC-TOKARENKO",
+      "path": "docs/research/sources/TOKARENKO_KOOPSET_RESEARCH.md",
+      "status": "saved-source-review",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Header/source list and architecture opening; original external material not re-read",
+      "sha256": "f1bc1d762b86b5b159ac7c04e778ebfada6638b68477555467d7f6eab4169dd5"
+    },
+    {
+      "id": "SRC-MURA-QA",
+      "path": "docs/MURA_TOUR_QA_20261028.md",
+      "status": "historical-test-report",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Recorded local UI run, test commands, hashes, all limitations; not rerun UI",
+      "sha256": "5a05d8b1d8c47abf1fb7d74bc0f6ec7ac12cdc3e62a3e552b3ee370802bf6983"
+    },
+    {
+      "id": "SRC-MURA-FINALE",
+      "path": "docs/MURA_TOUR_FINALE_DRAFT_20261028.md",
+      "status": "historical-draft",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Finale scope and initial unverified status",
+      "sha256": "6806a47a91568bd7863aaf356f70f0b153e12e4efc18084b53c4e07b638a111b"
+    },
+    {
+      "id": "SRC-MURA-JS",
+      "path": "apps/web/folkoop.js",
+      "status": "local-code",
+      "checked_at": "2026-11-06",
+      "checked_scope": "FK-REL-001: chapter targets, chapter/finish/resume handlers and release regression diff reread; browser verification ongoing",
+      "sha256": "dc5adf886ada00236a130b4a7f58bbec87a6d56c5a706a5461aca2a81cf0a180"
+    },
+    {
+      "id": "SRC-NETWORK-UI",
+      "path": "apps/web/network-ui.js",
+      "status": "local-code",
+      "checked_at": "2026-11-06",
+      "checked_scope": "FK-STAB-003: scoped async search/refresh changes re-read; Mura search preserved in browser; 462 Node checks, local SQL and Chromium evidence. No hosted or native-language readiness claim.",
+      "sha256": "8a497b8722c6a468ddcc10de49e64e0a75a1c406a4ce75e73922b3dc808eac00"
+    },
+    {
+      "id": "SRC-MURA-CSS",
+      "path": "apps/web/folkoop.css",
+      "status": "local-code",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Reconciled independent local feature styles and main PWA notice; targeted geometry/PWA checks, not a new full visual audit",
+      "sha256": "dd87ef99c26b57825bc63914deb70d195c70d228bb05c89e61a8d0d662c913e7"
+    },
+    {
+      "id": "SRC-TEST-PROGRESS",
+      "path": "tests/unit/mura-tour-progress.test.mjs",
+      "status": "local-test",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full 4-test source",
+      "sha256": "49a8722284ef99b08421469bb1f44dfb07c2bf7eeb9ec6564eb62ba99169572b"
+    },
+    {
+      "id": "SRC-TEST-HOME",
+      "path": "tests/unit/network-mura-home.test.mjs",
+      "status": "local-test",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full 3-test source",
+      "sha256": "1b00f8c3b01eaec555c67bb19fd4deb9ff5d9d83ccad93941f499b7328bfb84d"
+    },
+    {
+      "id": "SRC-TEST-ENTRY",
+      "path": "tests/unit/first-contact-guest.test.mjs",
+      "status": "local-test",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full 4-test source",
+      "sha256": "8dd303178160c2ff8a207ca16c120de01bcad1103c428ba28d796fa17d7aebe7"
+    },
+    {
+      "id": "SRC-TEST-MAP",
+      "path": "tests/unit/mura-whole-system-story-map.test.mjs",
+      "status": "local-test",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Static source/inventory: 8 tests; separate conceptual seven-story map",
+      "sha256": "85d616948069d50473ce10e8cab3ed9cf9579e65abfdfbce3e2e125dcac03fae"
+    },
+    {
+      "id": "SRC-CI-PAGES",
+      "path": ".github/workflows/pages.yml",
+      "status": "local-ci-configuration",
+      "checked_at": "2026-11-06",
+      "checked_scope": "FK-STAB-002 local self-review, 453 Node tests and scoped browser/SQL checks; no hosted CI or deployment. See evidence/FK-STAB-002/results.md.",
+      "sha256": "dc9628c9b2e035b8c2eaf516cf6cb7ca9b41d2562197f292e1689bad226066d4"
+    },
+    {
+      "id": "SRC-CI-WEBKIT-SMOKE",
+      "path": "scripts/ci/webkit-smoke.sh",
+      "status": "local-ci-configuration",
+      "checked_at": "2026-10-29",
+      "checked_scope": "Full launcher read, 13 script calls preserved, shell syntax checked; only two selected scripts executed on macOS",
+      "sha256": "b2f7150523fd7eba9dfc2bc4a5f6d6055b3e5dd02aa1aaa621db733de7bfa83d"
+    },
+    {
+      "id": "SRC-STAB-SPEC",
+      "path": "docs/workflow/tasks/FK-STAB-001.md",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Fixed scope, acceptance and self-review",
+      "sha256": "2d84bde5848e950bce97c72e92c963265a23813bd50f2cf6550945de69ed46b9"
+    },
+    {
+      "id": "SRC-STAB-RESULTS",
+      "path": "docs/workflow/evidence/FK-STAB-001/results.md",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Fresh local evidence and explicit deployment/source limitations",
+      "sha256": "072077a0fbe76e9fbd232c39de61bba74d91afd455718bcf97a1a7435cefd351"
+    },
+    {
+      "id": "SRC-STAB-OUTCOME",
+      "path": "supabase/migrations/20261106180000_preserve_meeting_outcomes.sql",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Full forward migration and disposable PostgreSQL regression",
+      "sha256": "6f21604509dd3b1de7bb23e53ece756cced99aabfac110d95c958133d12f03a4"
+    },
+    {
+      "id": "SRC-STAB-MESSAGES",
+      "path": "supabase/migrations/20261106181000_message_pages_and_exact_reads.sql",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Full migration, exact receipt authority/RLS/closure and SQL regressions",
+      "sha256": "735547a0810be1bdbd22d786645d21ef94811aa3baada95d985501f3fe65f717"
+    },
+    {
+      "id": "SRC-STAB-CITY",
+      "path": "scripts/build/build-production.mjs",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Re-read standard production pipeline: existing City fetch/validation preserved, exact-SHA Cloudflare SQL gate added before build; 453 local tests pass. No new real upstream fetch or deployment evidence.",
+      "sha256": "7405ca78385aad8979a1b1610c203e1b7fa7be3fc994114e7b98c808cf2b054a"
+    },
+    {
+      "id": "SRC-STAB002-RESULTS",
+      "path": "docs/workflow/evidence/FK-STAB-002/results.md",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Local self-review and synthetic provider/browser checks; real hosted activation not performed",
+      "sha256": "37f60e549a5d6e55cf80b9b1f29bd214575f7fdf672817c09ad5b0cdfa17ae02"
+    },
+    {
+      "id": "SRC-SERVER-SESSION",
+      "path": "server/auth/session.mjs",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Local self-review and synthetic provider/browser checks; real hosted activation not performed",
+      "sha256": "fbff07d04a8692bf2f87d4c2dee920aa9dc324ecc7983da2cd0c2531a3e5ce29"
+    },
+    {
+      "id": "SRC-STAB003-RESULTS",
+      "path": "docs/workflow/evidence/FK-STAB-003/results.md",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Local checks, operator exclusions and explicit activation limits",
+      "sha256": "9823e09046b5ba91bef656d31cc60589de55fd97e3df4d526732c14e184079c4"
+    },
+    {
+      "id": "SRC-NETWORK-CLIENT",
+      "path": "apps/web/network-client.js",
+      "status": "local-verified-not-deployed",
+      "checked_at": "2026-11-06",
+      "checked_scope": "Paged table/export reads, command retries and server search; 462 Node checks and browser synthetic upstream, no production acceptance",
+      "sha256": "f4e992c96d94c54c62736f4994395fa8d9924a99d173c4483a9e4e69427eaaeb"
+    }
+  ]
+}

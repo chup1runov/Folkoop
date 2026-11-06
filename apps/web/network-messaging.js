@@ -16,6 +16,7 @@ const labels={
  ku:['Têkilî','Bang','Peyamdan','Bang hîn ne girêdayî ne','Bangên deng û vîdyoyê dê li vir bin. Niha dikarî peyamekê bişînî.','Peyamdanê veke','Kesên ji profîl û axaftinên berdest. Têkiliyên telefonê nayên împortkirin.']
 };
 const copy=lang=>labels[lang]||labels.en;
+const olderCopy={en:'Earlier messages',ru:'Предыдущие сообщения',sv:'Tidigare meddelanden',uk:'Попередні повідомлення',es:'Mensajes anteriores',fi:'Aiemmat viestit',bs:'Ranije poruke',ar:'الرسائل السابقة',fa:'پیام‌های قبلی',so:'Farriimihii hore',ku:'Peyamên berê'};
 
 function create({
   escape,
@@ -111,11 +112,11 @@ function create({
         html+=`<form id="netChatInvite" class="editor card"><label>${escape(chatText('choosePerson'))}<select name="user" required><option value="">—</option>${candidates.map(profile=>`<option value="${escape(profile.id)}"${profile.id===inviteTarget?' selected':''}>${escape(profile.name)}</option>`).join('')}</select></label><button class="button">${escape(chatText('invite'))}</button></form>`;
       }
 
-      html+=`<section class="chat-messages">${chatMessages.map(message=>{
+      html+=`${!guestDemo&&data.chatHasMore?`<button type="button" class="button secondary" data-net="olderMessages">${escape(olderCopy[language]||olderCopy.en)}</button>`:''}<section class="chat-messages">${chatMessages.map(message=>{
         const profile=getProfile(message.author_id);
         const mine=message.author_id===user.id;
         const canDelete=mine||(chat.kind==='group'&&chat.owner_id===user.id);
-        return `<article class="card messenger-bubble${mine?' is-mine':''}"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
+        return `<article data-message-id="${escape(message.id)}" data-message-author="${escape(message.author_id)}" class="card messenger-bubble${mine?' is-mine':''}"><small>${escape(mine?chatText('you'):(profile?.name||message.author_id.slice(0,8)))}</small><p style="white-space:pre-wrap">${escape(message.body)}</p><p class="meta">${escape(formatWhen(message.created_at))}</p><div class="actions">${canDelete?networkButton('deleteMessage','delete',message.id):''}${!mine?networkButton('reportMessage','report',message.id)+networkButton('block','block',message.author_id):''}</div></article>`;
       }).join('')||`<div class="empty"><p>${escape(generalText('empty'))}</p></div>`}</section>`;
 
       if(!guestDemo)html+=`<form id="netMessage" class="editor card"><label>${escape(chatText('message'))}<textarea name="body" maxlength="4000" rows="3" required>${escape(messageDrafts[chat.id]||'')}</textarea></label><button class="button">${escape(chatText('sendMessage'))}</button></form>`;

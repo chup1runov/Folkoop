@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "FK-STAB-003",
+  "updated": "2026-11-06",
+  "phase": "complete",
+  "spec": "docs/workflow/tasks/FK-STAB-003.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-06",
+    "scope": "Audit 11–15 local fixes, tests and wiki; no publication"
+  },
+  "requirements": [
+    {
+      "id": "FK-STAB-003-R11",
+      "checks": [
+        "C11"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-R12",
+      "checks": [
+        "C12"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-R13",
+      "checks": [
+        "C13"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-R14",
+      "checks": [
+        "C14"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-R15",
+      "checks": [
+        "C15"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-STAB-003-T11",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-003-R11"
+      ],
+      "evidence": [
+        "FK-STAB-003-E01"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-T12",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-003-R12"
+      ],
+      "evidence": [
+        "FK-STAB-003-E01"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-T13",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-003-R13"
+      ],
+      "evidence": [
+        "FK-STAB-003-E01"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-T14",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-003-R14"
+      ],
+      "evidence": [
+        "FK-STAB-003-E01"
+      ]
+    },
+    {
+      "id": "FK-STAB-003-T15",
+      "status": "done",
+      "requirements": [
+        "FK-STAB-003-R15"
+      ],
+      "evidence": [
+        "FK-STAB-003-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-STAB-003-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15"
+      ],
+      "path": "docs/workflow/evidence/FK-STAB-003/results.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Local 11–15 implementation/checks complete. Next: audit 16–20. New SQL requires separately authorized deployment; no publication now."
+}

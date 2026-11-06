@@ -36,18 +36,9 @@ async def mobile_flow(browser,passed):
  await page.click('[data-entry="guest"]')
 
  await expect(page.locator('#onboarding')).to_be_visible()
- titles=[
-  'Заходи ко мне',
-  'Одна маленькая идея',
-  'Уже не одна',
-  'Моя часть дела',
-  'Осмотримся?'
- ]
- semantic={
-  1:('projects','Обмен растениями и семенами по соседству'),
-  2:('messages','Anna'),
-  3:('projects','Обмен растениями и семенами по соседству')
- }
+ # Accepted chapter tour replaces the former five-scene plant story.
+ titles=['Профиль','Вместе','Центр','Город · Göteborg','Сообщения']
+ semantic={0:('me','Мура'),1:('together','Купить сухие дрова вместе'),2:('center','ГБГ Форум'),4:('messages','Anna')}
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
   await expect(page.locator('#onboardingProgress')).to_contain_text(f'{idx+1} / 5')
@@ -56,17 +47,20 @@ async def mobile_flow(browser,passed):
   if idx in semantic:
    route_name,visible_text=semantic[idx]
    assert page.url.endswith('#/'+route_name),(idx,page.url)
-   await expect(page.locator('#networkPanel')).to_contain_text(visible_text)
+   await expect(page.locator('#workspace' if idx==2 else '#networkPanel')).to_contain_text(visible_text)
    assert 'XP' not in await page.locator('#onboarding').inner_text()
   await page.screenshot(path=str(OUT/f'folkoop-onboarding-step-{idx+1}.png'),full_page=True)
   if idx<len(titles)-1:
-   await page.click('[data-coop="openLinkedChat"]' if idx==1 else '[data-onboarding="next"]')
+   await page.click('[data-onboarding="next"]')
 
- await expect(page.locator('[data-onboarding="next"]')).to_have_text('Осмотреться у Муры')
+ await expect(page.locator('[data-onboarding="next"]')).to_have_text('Остаться у Муры')
  await page.click('[data-onboarding="next"]')
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page).to_have_url(re.compile(r'#/home$'))
+ await expect(page.locator('#muraTourFinale')).to_be_visible()
+ await page.click('[data-mura-stay]')
+ await expect(page).to_have_url(re.compile(r'#/messages$'))
  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
+ await page.evaluate("location.hash='#/home'")
  await expect(page.locator('.mura-home')).to_be_visible()
  await expect(page.locator('.mura-hero')).to_contain_text('Мура')
  await expect(page.locator('.mura-hero')).to_contain_text('Göteborg')
@@ -80,11 +74,11 @@ async def mobile_flow(browser,passed):
  await expect(page.locator('#folkoopHelperPanel')).to_be_visible()
  await expect(page.locator('#folkoopHelperTitle')).to_have_text('Мура')
  await expect(page.locator('#folkoopHelperPanel')).to_contain_text('моего аккаунта')
- await page.click('[data-helper="tour"]')
- await expect(page.locator('#onboardingTitle')).to_have_text('Заходи ко мне')
+ await page.click('[data-helper="restart"]')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Профиль')
  await page.click('[data-onboarding="skip"]')
  await expect(page.locator('#onboarding')).to_be_hidden()
- await expect(page).to_have_url(re.compile(r'#/home$'))
+ await expect(page).to_have_url(re.compile(r'#/me$'))
  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
  passed.append('Replaying Mura tour returns to Mura rather than converting the visitor into an account flow')
  await page.evaluate("location.hash='#/center'")
@@ -100,7 +94,7 @@ async def desktop_flow(browser,passed):
  page=await context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  await page.goto(BASE+'?intro=1')
  await expect(page.locator('#onboarding')).to_be_visible()
- await expect(page.locator('#onboardingTitle')).to_have_text('Welcome to my place')
+ await expect(page.locator('#onboardingTitle')).to_have_text('Profile')
  await expect(page.locator('.onboarding-portrait')).to_be_visible()
  await page.click('[data-onboarding="next"]')
  await expect(page.locator('#onboardingSpotlight')).to_be_visible()

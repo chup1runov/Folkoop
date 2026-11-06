@@ -12,3 +12,12 @@ _qa/
 qa-output/
 __pycache__/
 *.pyc
+
+# Referenced historical synthetic test evidence; keep these exact files portable.
+!docs/workflow/evidence/FK-CF-001/red.log
+!docs/workflow/evidence/FK-CF-001/tests.log
+!docs/workflow/evidence/FK-CF-002/tests.log
+
+# Generated local build and CLI state, never release source.
+_site/
+supabase/.temp/

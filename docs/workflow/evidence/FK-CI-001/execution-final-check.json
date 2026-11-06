@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "scope": "Preservation and documentation structure, not Linux CI acceptance",
+  "baseline_files": 3005,
+  "missing": [],
+  "changed_existing": [
+    "docs/workflow/tasks/FK-CI-001.state.json",
+    "docs/wiki/log.md",
+    ".github/workflows/pages.yml",
+    "docs/wiki/sources.json",
+    "docs/workflow/tasks/FK-CI-001.md",
+    "docs/wiki/development-status.md",
+    "docs/wiki/index.md"
+  ],
+  "application_build_outputs_existing_tests_unchanged": true,
+  "old_log_prefix_preserved": true,
+  "configuration_diff_check": "git diff --check and bash -n passed",
+  "checker": {
+    "command": [
+      "node",
+      "scripts/knowledge/workflow.mjs",
+      "check",
+      "docs/workflow/tasks/FK-CI-001.state.json"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 5,\n  \"tasks\": 6,\n  \"evidence\": 6,\n  \"checks\": 5,\n  \"sources\": 20,\n  \"markdownPages\": 20,\n  \"localLinks\": 208,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n"
+  },
+  "publication": "No commit/push/rerun/dispatch/deploy; all GitHub requests were read-only",
+  "patch_sha256": "7179479f49ab7231ab6e3d9ec5d68bf9401e2e4ff448ba110bb39bbb7f327e74"
+}

@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-06",
+  "project": "FOLKOOP",
+  "restored": true,
+  "applied_count": 25,
+  "public_tables": 58,
+  "read_protection": true,
+  "migrations": [
+    {
+      "version": "20260925111649",
+      "name": "folkoop_network_v016"
+    },
+    {
+      "version": "20260925111918",
+      "name": "folkoop_first_pilot_bootstrap"
+    },
+    {
+      "version": "20260925113111",
+      "name": "folkoop_rls_performance"
+    },
+    {
+      "version": "20260925130711",
+      "name": "folkoop_messaging_v017"
+    },
+    {
+      "version": "20260925131111",
+      "name": "folkoop_messaging_indexes_v017"
+    },
+    {
+      "version": "20260925150129",
+      "name": "folkoop_cooperation_v018"
+    },
+    {
+      "version": "20260925153301",
+      "name": "folkoop_purchase_offers_v019"
+    },
+    {
+      "version": "20260925160441",
+      "name": "folkoop_purchase_lifecycle_v020"
+    },
+    {
+      "version": "20260925163534",
+      "name": "folkoop_activity_chat_v021"
+    },
+    {
+      "version": "20260928144531",
+      "name": "folkoop_pilot_invites_v024"
+    },
+    {
+      "version": "20260928222427",
+      "name": "folkoop_account_lifecycle_trigger"
+    },
+    {
+      "version": "20260928223902",
+      "name": "folkoop_account_closure_preflight"
+    },
+    {
+      "version": "20260929112851",
+      "name": "folkoop_pilot_terms_acceptance"
+    },
+    {
+      "version": "20260930060734",
+      "name": "folkoop_private_table_rls"
+    },
+    {
+      "version": "20261004194921",
+      "name": "folkoop_economic_flow_v0"
+    },
+    {
+      "version": "20261007121210",
+      "name": "folkoop_resource_planning_r1"
+    },
+    {
+      "version": "20261018084411",
+      "name": "folkoop_meeting_confirmations"
+    },
+    {
+      "version": "20261018122827",
+      "name": "folkoop_closure_coordination_inventory"
+    },
+    {
+      "version": "20261018132436",
+      "name": "folkoop_meeting_outcome_repeat"
+    },
+    {
+      "version": "20261106201730",
+      "name": "folkoop_project_decisions"
+    },
+    {
+      "version": "20261106201731",
+      "name": "task_self_claim_result"
+    },
+    {
+      "version": "20261106201732",
+      "name": "task_work_notifications"
+    },
+    {
+      "version": "20261106201733",
+      "name": "shared_need_to_project"
+    },
+    {
+      "version": "20261106201735",
+      "name": "room_request_terms"
+    },
+    {
+      "version": "20261106201736",
+      "name": "room_notification_inbox"
+    },
+    {
+      "version": "20261106201738",
+      "name": "meeting_room_readiness"
+    },
+    {
+      "version": "20261106201739",
+      "name": "meeting_participant_room_notices"
+    },
+    {
+      "version": "20261106201740",
+      "name": "meeting_reminders"
+    },
+    {
+      "version": "20261106201741",
+      "name": "meeting_reminder_history"
+    },
+    {
+      "version": "20261106201742",
+      "name": "project_documents"
+    },
+    {
+      "version": "20261106201743",
+      "name": "project_document_consents"
+    },
+    {
+      "version": "20261106201744",
+      "name": "document_revision_notifications"
+    },
+    {
+      "version": "20261106201745",
+      "name": "task_execution_basis"
+    },
+    {
+      "version": "20261106201747",
+      "name": "task_basis_notifications"
+    },
+    {
+      "version": "20261106201748",
+      "name": "newcomer_welcome"
+    },
+    {
+      "version": "20261106201749",
+      "name": "project_decision_rules"
+    },
+    {
+      "version": "20261106201750",
+      "name": "project_contributions_budget"
+    },
+    {
+      "version": "20261106201751",
+      "name": "contribution_notifications"
+    },
+    {
+      "version": "20261106201752",
+      "name": "meeting_budget_readiness"
+    },
+    {
+      "version": "20261106201753",
+      "name": "meeting_budget_change_notices"
+    },
+    {
+      "version": "20261106201754",
+      "name": "preserve_meeting_outcomes"
+    },
+    {
+      "version": "20261106201755",
+      "name": "message_pages_and_exact_reads"
+    },
+    {
+      "version": "20261106201756",
+      "name": "account_search_and_message_commands"
+    },
+    {
+      "version": "20261106201757",
+      "name": "message_command_closure_inventory"
+    }
+  ]
+}

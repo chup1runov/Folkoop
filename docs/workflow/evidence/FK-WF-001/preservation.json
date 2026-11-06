@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-29",
+  "phase": "pre-final-review",
+  "baseline_files": 2971,
+  "missing": [],
+  "unexpected_edits": [],
+  "changed_existing": [
+    "AGENTS.md",
+    "docs/wiki/AGENTS.md",
+    "docs/wiki/development-status.md",
+    "docs/wiki/index.md",
+    "docs/wiki/log.md"
+  ],
+  "new_outside_scope": [],
+  "new_files": [
+    "docs/wiki/lessons.md",
+    "docs/wiki/sources.json",
+    "docs/workflow/README.md",
+    "docs/workflow/evidence/FK-WF-001/baseline.json",
+    "docs/workflow/evidence/FK-WF-001/behavior-request.md",
+    "docs/workflow/evidence/FK-WF-001/checks.json",
+    "docs/workflow/evidence/FK-WF-001/journal-entry.json",
+    "docs/workflow/evidence/FK-WF-001/journal-idempotence.json",
+    "docs/workflow/evidence/FK-WF-001/mura-tests.raw.json",
+    "docs/workflow/evidence/FK-WF-001/plan-review.md",
+    "docs/workflow/evidence/FK-WF-001/preservation-initial.json",
+    "docs/workflow/evidence/FK-WF-001/preservation.json",
+    "docs/workflow/evidence/FK-WF-001/skill-interfaces.json",
+    "docs/workflow/evidence/FK-WF-001/skills.raw.json",
+    "docs/workflow/evidence/FK-WF-001/workflow-tests.raw.json",
+    "docs/workflow/fixtures/review-sources.md",
+    "docs/workflow/tasks/FK-WF-001.md",
+    "docs/workflow/tasks/FK-WF-001.state.json",
+    "scripts/knowledge/workflow.mjs",
+    "tests/workflow/workflow.test.mjs"
+  ],
+  "result": "passed",
+  "scope": "Baseline covers tracked + untracked nonignored regular files; ignored files/Git internals excluded. App, existing tests and migrations are byte-identical.",
+  "comparison_correction": "Initial current-set included a directory symlink _qa-webkit/Folkoop (existing Oct 18), while baseline explicitly includes regular files only. Compare identical populations via is_file(); initial failed report retained. Directory symlinks remain outside fingerprint coverage."
+}

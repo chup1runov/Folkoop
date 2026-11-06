@@ -1,0 +1,17 @@
+RUN supabase/tests/network-project-domains.sql
+NOTICE:  PASS: participant confirms own document version
+NOTICE:  PASS: document revision never copies consents
+NOTICE:  PASS: old document consent rejected
+NOTICE:  PASS: withdrawal kept for exact revision
+NOTICE:  PASS: outsider cannot read documents
+NOTICE:  PASS: outsider cannot consent
+NOTICE:  PASS: promise is not receipt
+NOTICE:  PASS: self receipt rejected
+NOTICE:  PASS: separate receipt satisfies budget
+NOTICE:  PASS: organizer cannot offer for owner
+NOTICE:  PASS: agreed room is confirmed
+NOTICE:  PASS: changed room invalidates readiness
+NOTICE:  PASS: stale room acceptance rejected
+NOTICE:  PASS: unanswered objection blocks finish
+NOTICE:  PASS: answered objection is not veto; repeat finish creates no duplicate task
+PASS supabase/tests/network-project-domains.sql

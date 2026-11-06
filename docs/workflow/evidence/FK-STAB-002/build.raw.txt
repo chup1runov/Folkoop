@@ -1,0 +1,4 @@
+QA shell only: City feeds intentionally omitted; not a production artifact.
+Prepared FOLKOOP v0.40.9: preserved City; network activation remains explicit.
+Built asset closure OK: HTML references and service-worker core assets exist.
+Built public artifact secret-pattern audit OK.

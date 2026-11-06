@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-29",
+  "scope": "Task preparation only; not CI execution or implementation acceptance",
+  "baseline_files": 3000,
+  "changed_existing": [
+    "docs/wiki/index.md",
+    "docs/wiki/log.md"
+  ],
+  "missing": [],
+  "old_log_prefix_preserved": true,
+  "command": [
+    "node",
+    "scripts/knowledge/workflow.mjs",
+    "check",
+    "docs/workflow/tasks/FK-CI-001.state.json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 5,\n  \"tasks\": 6,\n  \"evidence\": 2,\n  \"checks\": 5,\n  \"sources\": 18,\n  \"markdownPages\": 18,\n  \"localLinks\": 196,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+  "stderr": "",
+  "review": "Self-review of plan, not independent review",
+  "not_run": [
+    "Application tests",
+    "Browser smoke",
+    "CI rerun",
+    "Remote status/log refresh",
+    "Publication"
+  ]
+}

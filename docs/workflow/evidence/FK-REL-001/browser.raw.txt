@@ -1,0 +1,75 @@
+RUN tests/e2e/browser.py
+PASS Compact Idag keeps the current forecast, scoped warning status and one civic deadline
+PASS Weather details disclose by keyboard and tap without navigation or lost focus
+PASS Coarse area preference is adjustable with visible privacy notice and without GPS
+PASS Forecast, warning state and journey action fit above bottom navigation at 390x844
+PASS Water and tickets remain clearly labelled external handoffs under More services
+PASS Riksdag documents remain available in Beslut instead of duplicated on home
+PASS Language switch preserves the in-memory report draft
+PASS Skip link does not reset the route
+PASS Clipboard denial is not reported as success and leaves no hidden textarea
+PASS All eleven languages and RTL have no horizontal overflow at 320 and 390px
+PASS Desktop remains readable and bounded rather than stretched into a dashboard
+PASS Language dialog traps focus and restores it on Escape
+PASS Geolocation denial is a visible error, not a fabricated road holder
+PASS Ambiguous road match cannot auto-route to one recipient
+PASS Active warning text is visible immediately, never hidden in a disclosure
+PASS Warning-source failure cannot appear as all-clear or remain hidden
+PASS Weather-source failure is visible even with collapsed weather details
+PASS Large text can reflow vertically without hiding source-error messages
+PASS Startup tolerates disabled storage
+RUN tests/e2e/about-browser.py
+PASS Direct Om renders approved GitHub/Telegram contacts and sourced bio, with no external requests or repository promotion
+PASS Attributed idea year and verified repository date remain distinct; FAQ works by keyboard
+PASS Civic-task plans are not described as shipped; participation and Riksdag answers link to official sources
+PASS All eleven languages/RTL preserve drafts and contacts without duplicate content or narrow-screen overflow
+PASS Existing clipboard failure remains truthful and cleans up temporary nodes
+PASS Expanded answers reflow with enlarged text and desktop width
+PASS Four tabs and return navigation retain the draft without runtime errors
+RUN tests/e2e/folkoop-browser.py
+PASS FOLKOOP root, brand asset and eleven ordered destinations
+PASS My page saves in memory without a compulsory account or storage consent
+PASS Create and search a private project; HTML entered by a user is text, not executable
+PASS Opt-in browser storage restores profile and drafts
+PASS Export contains local profile city and private FOLKOOP workspace
+PASS City stays integrated and retains an unsubmitted report across navigation/language changes
+PASS City source can continue into FOLKOOP with its official link and cooperative routes without auto-publishing
+PASS Online Center connects current routes without fictitious venue, synchronized forum data, payments or message delivery, and never fabricates Göteborg context for another city
+PASS About makes the approved future architecture visible while labelling it planned and non-crypto-first
+PASS All eleven full-interface languages, RTL, and no horizontal overflow at 320/390/1280px
+PASS Erase removes only FOLKOOP local data; mobile screens captured
+PASS Blocked storage does not prevent starting or editing My page
+PASS Installed shell and embedded City entry load offline; no fabricated source success
+RUN tests/e2e/guest-demo-browser.py
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "tests/e2e/guest-demo-browser.py", line 418, in <module>
+    asyncio.run(main())
+  File "/Users/paup/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/paup/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/paup/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "tests/e2e/guest-demo-browser.py", line 53, in main
+    await expect(page.locator('#onboardingTitle')).to_have_text('Заходи ко мне')
+  File "/Users/paup/Documents/FOLKOOP_REVIEW_2026-10-12/FOLKOOP_CI_EXECUTION_20261029/venv/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 19947, in to_have_text
+    await self._impl_obj.to_have_text(
+  File "/Users/paup/Documents/FOLKOOP_REVIEW_2026-10-12/FOLKOOP_CI_EXECUTION_20261029/venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 561, in to_have_text
+    await self._expect_impl(
+  File "/Users/paup/Documents/FOLKOOP_REVIEW_2026-10-12/FOLKOOP_CI_EXECUTION_20261029/venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 85, in _expect_impl
+    raise AssertionError(
+AssertionError: Locator expected to have text 'Заходи ко мне'
+Actual value: Профиль 
+Call log:
+  - Expect "to_have_text" with timeout 5000ms
+  - waiting for locator("#onboardingTitle")
+    9 × locator resolved to <h2 id="onboardingTitle">Профиль</h2>
+      - unexpected value "Профиль"
+

@@ -1,0 +1,38 @@
+{
+  "id": "FK-WF-001-E03",
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "node": "v24.19.0",
+  "mura_tests": {
+    "passed": 19,
+    "failed": 0,
+    "source": "mura-tests.raw.json"
+  },
+  "workflow_tests": {
+    "passed": 7,
+    "failed": 0,
+    "source": "workflow-tests.raw.json"
+  },
+  "skill_validation": {
+    "passed": 3,
+    "source": "skills.raw.json",
+    "scope": "Frontmatter plus placeholder validator; YAML interface validation follows separately."
+  },
+  "limits": [
+    "No new UI/browser/device run",
+    "No full application suite/build/database or deployment",
+    "Small behavioral sample pending",
+    "Tool aliases in portable command records resolve to existing local runtimes; no packages installed"
+  ],
+  "fingerprints": {
+    "scripts/knowledge/workflow.mjs": "b98e85263459f51a5f5a8935fd519886feb33f76a4caac95e831b24e777cbd71",
+    "tests/workflow/workflow.test.mjs": "51e339d2e6bc10018b83d573acc70b0f6acf9a02c7d031a0d7e784b2e490cd94",
+    "apps/web/folkoop.js": "dd7afba971976b919c6b6f1fa63d5d78fc96e6d4831596e028e6a0a9cdb13397",
+    "apps/web/network-ui.js": "ca9cb23a302a41b3c6fd6196094002bbc8c91a1a017c99a183fca12ee371c105",
+    "apps/web/folkoop.css": "0e31b41b560b4d890c293c8574148fb7ee5d66af17a8e0df209f7ce787afc5d7",
+    "tests/unit/mura-tour-progress.test.mjs": "49a8722284ef99b08421469bb1f44dfb07c2bf7eeb9ec6564eb62ba99169572b",
+    "tests/unit/network-mura-home.test.mjs": "1b00f8c3b01eaec555c67bb19fd4deb9ff5d9d83ccad93941f499b7328bfb84d",
+    "tests/unit/first-contact-guest.test.mjs": "8dd303178160c2ff8a207ca16c120de01bcad1103c428ba28d796fa17d7aebe7",
+    "tests/unit/mura-whole-system-story-map.test.mjs": "85d616948069d50473ce10e8cab3ed9cf9579e65abfdfbce3e2e125dcac03fae"
+  }
+}

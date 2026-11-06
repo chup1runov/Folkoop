@@ -567,6 +567,7 @@ function guestRequireAccount(){
 let revealSearchResult=()=>{};
 api?.onChange(()=>{revealSearchResult=()=>{};window.dispatchEvent(new CustomEvent('folkoop:search-scope-changed'));});
 window.addEventListener('folkoop:network-rendered',()=>revealSearchResult());
+let searchMessageTarget=null;
 window.addEventListener('folkoop:search-index',event=>{
  revealSearchResult=()=>{};
  if(!guestDemo&&!currentUser())return;
@@ -575,12 +576,12 @@ window.addEventListener('folkoop:search-index',event=>{
  const scope=guestDemo;
  const label=key=>globalThis.FolkoopCopy.COPY[lang()][key]||globalThis.FolkoopCopy.COPY.en[key];
  event.detail.handled=true;
- const add=(kind,title,body,target,id,needle=title,selector='article')=>{
+ const add=(kind,title,body,target,id,needle=title,selector='article',messageId=null)=>{
   if(!title&&!body)return;
   event.detail.entries.push({kind,title:title||kind,body:body||'',open:()=>{
    if(scope!==guestDemo||owner!==currentUser()?.id)return;
    selected=null;selectedChat=null;selectedCoop=null;
-   if(target==='messages')selectedChat=id;
+   if(target==='messages'){selectedChat=id;searchMessageTarget=messageId?{chat:id,id:messageId}:null;}
    if(target==='communities')selected=id;
    if(target==='projects'||target==='together')selectedCoop=id;
    resetEconomicFlowState();
@@ -600,19 +601,31 @@ window.addEventListener('folkoop:search-index',event=>{
    else run(async()=>{await load();render();reveal();});
   }});
  };
+ if(!guestDemo){
+  event.detail.remote=async(query,after='')=>{
+   if(scope!==guestDemo||owner!==currentUser()?.id)throw new Error('STALE');
+   const page=await api.searchAccount(query,after);
+   if(scope!==guestDemo||owner!==currentUser()?.id)throw new Error('STALE');
+   const before=event.detail.entries.length;
+   for(const row of page.rows)add(row.kind,row.title,row.body,row.route,row.parent_id,row.body,'article',row.kind==='messages'?row.id:null);
+   return {...page,rows:event.detail.entries.splice(before)};
+  };
+ }
  const coop=id=>snapshot.cooperations.find(x=>x.id===id);
  for(const p of snapshot.directory)add(t('directory'),p.name,[p.skills,p.about].filter(Boolean).join(' · '),'people',p.id);
  for(const g of snapshot.groups)add(label('communities'),g.name||g.title,g.description,'communities',g.id);
  for(const c of snapshot.cooperations)add(ct(c.kind),c.title,c.description,c.kind==='project'?'projects':'together',c.id);
  for(const task of snapshot.projectTasks){const c=coop(task.cooperation_id);if(c)add(ct('tasks'),task.title,[c.title,task.details].filter(Boolean).join(' · '),'projects',c.id,task.title,'.coop-task-row');}
  for(const m of snapshot.chatMessages){const chat=snapshot.chats.find(x=>x.id===m.conversation_id);if(chat)add(label('messages'),chat.title||label('messages'),m.body,'messages',chat.id,m.body,'.chat-messages article');}
- for(const d of snapshot.localDrafts)add(label('drafts'),d.title,d.body,'me',d.id);
+ for(const d of snapshot.localDrafts||[])add(label('drafts'),d.title,d.body,'me',d.id);
  for(const u of snapshot.coopUpdates){const c=coop(u.cooperation_id);if(c)add(ct('updates'),c.title,u.body,c.kind==='project'?'projects':'together',c.id,u.body);}
 });
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
 const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
-const mt=k=>muraText('chat',k)??(chatCopy[lang()][k]||chatCopy.en[k]||k);
+const uncertainMessageCopy={"ru": "Ответ сервера не получен: сообщение могло отправиться. Повторите отправку здесь — повтор использует ту же команду и не создаст дубль.", "en": "No server reply: the message may have been sent. Retry here; the same command will be reused without creating a duplicate.", "sv": "Inget serversvar: meddelandet kan ha skickats. Försök igen här; samma kommando används utan att skapa en dubblett.", "uk": "Немає відповіді сервера: повідомлення могло надіслатися. Повторіть тут — та сама команда не створить дубль.", "fi": "Palvelin ei vastannut: viesti on voitu lähettää. Yritä tässä uudelleen; sama komento estää kaksoiskappaleen.", "es": "El servidor no respondió: el mensaje puede haberse enviado. Reintenta aquí; se reutiliza la misma orden sin crear un duplicado.", "bs": "Server nije odgovorio: poruka je možda poslana. Pokušajte ponovo ovdje; ista naredba sprečava duplikat.", "ar": "لم يرد الخادم؛ ربما أُرسلت الرسالة. أعد المحاولة هنا؛ سيُستخدم الأمر نفسه دون إنشاء نسخة مكررة.", "fa": "سرور پاسخ نداد؛ ممکن است پیام ارسال شده باشد. همین‌جا دوباره تلاش کنید؛ همان فرمان استفاده می‌شود و پیام تکراری ایجاد نمی‌کند.", "so": "Server-ku ma jawaabin: farriinta waxaa laga yaabaa inay dirtay. Halkan ku celi; isla amarka ayaa la isticmaalayaa iyada oo aan nuqul kale la abuurin.", "ku": "Server bersiv neda: dibe ku peyam hatibe şandin. Li vir dîsa biceribîne; heman ferman tê bikaranîn û dubare nayê çêkirin."};
+const liveMessageCopy={"ru": "Автообновление в открытой вкладке, когда вы не вводите текст. Без сквозного шифрования.", "en": "Updates automatically in a visible tab while you are not editing. Not end-to-end encrypted.", "sv": "Uppdateras automatiskt i en synlig flik när du inte skriver. Inte end-to-end-krypterat.", "uk": "Автооновлення у відкритій вкладці, коли ви не вводите текст. Без наскрізного шифрування.", "fi": "Päivittyy automaattisesti näkyvässä välilehdessä, kun et muokkaa. Ei päästä päähän -salausta.", "es": "Se actualiza en una pestaña visible mientras no editas. Sin cifrado de extremo a extremo.", "bs": "Automatsko osvježavanje u vidljivoj kartici dok ne uređujete. Bez end-to-end šifriranja.", "ar": "تحديث تلقائي في علامة تبويب ظاهرة عندما لا تكتب. دون تشفير من طرف إلى طرف.", "fa": "وقتی در حال نوشتن نیستید، در زبانهٔ قابل‌مشاهده خودکار به‌روز می‌شود. رمزگذاری سرتاسری ندارد.", "so": "Si toos ah ayay u cusboonaataa tab muuqda marka aadan wax qorayn. Ma laha sirgelin gees-ilaa-gees ah.", "ku": "Di tabeke xuya de dema ku tu nenivîsî bixweber nû dibe. Şîfrekirina ji serî heta dawiyê tune ye."};
+const mt=k=>muraText('chat',k)??(!guestDemo&&['messagesDesc','notEncrypted'].includes(k)?liveMessageCopy[lang()]||liveMessageCopy.en:(chatCopy[lang()][k]||chatCopy.en[k]||k));
 const ct=k=>muraText('coop',k)??(coopCopy[lang()][k]||coopCopy.en[k]||k);
 const ot=k=>muraText('offer',k)??(offerCopy[lang()][k]||offerCopy.en[k]||k);
 const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
@@ -729,6 +742,7 @@ function renderMuraPeople(u){
  return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA · ${esc(t('directory'))}</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
 }
 
+let forYouWish='browse',forYouMode='discover';
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -794,14 +808,18 @@ function renderHome(u){
  const actionsView=`<section class="home-section"><h2>${esc(ht('quick'))}</h2><div class="quick-grid home-quick"><button class="quick" type="button" data-home="createCoop" data-kind="need">${esc(ht('need'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="offer">${esc(ht('offer'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="purchase">${esc(ht('purchase'))}<span aria-hidden="true">＋</span></button><button class="quick" type="button" data-home="createCoop" data-kind="project">${esc(ht('project'))}<span aria-hidden="true">＋</span></button><a class="quick" href="#/communities">${esc(ht('community'))}<span aria-hidden="true">→</span></a><a class="quick" href="#/city">${esc(ht('city'))}<span aria-hidden="true">→</span></a></div></section>`;
  const feedView=`<section class="home-section"><h2>${esc(ht('feed'))}</h2><div class="home-feed">${feedItems.map(feedCard).join('')||`<div class="empty"><p>${esc(ht('noFeed'))}</p></div>`}</div>${feedItems.length?`<p class="home-feed-end">${esc(ht('feedEnd'))}</p>`:''}</section>`;
  const overviewDetails=`<details data-home-section="attention"><summary>${esc(ht('attention'))}</summary>${attentionView}</details><details data-home-section="feed"><summary>${esc(ht('feed'))}</summary>${feedView}</details><details data-home-section="actions"><summary>${esc(ht('quick'))}</summary>${actionsView}</details>`;
- const body=view==='home-attention'?attentionView:view==='home-feed'?feedView:view==='home-actions'?actionsView:modeCards+overview+overviewDetails;
- return `<section class="home-dashboard" data-home-view="${esc(view)}">${header}${body}</section>`;
+ const discovery=globalThis.FolkoopForYou;
+ const homeOverview=!['home-attention','home-feed','home-actions'].includes(view);
+ const switcher=`<div class="for-you-switch" role="group" aria-label="${esc(ht('title'))}"><button type="button" data-for-you-mode="discover" aria-pressed="${forYouMode==='discover'}">${esc(discovery.text(0))}</button><button type="button" data-for-you-mode="work" aria-pressed="${forYouMode==='work'}">${esc(discovery.text(19))}</button></div>`;
+ const discover=homeOverview&&forYouMode==='discover'?discovery.render({items:data.cooperations,members:data.coopMembers,user:u.id,wish:forYouWish,welcome:data.projectWelcomes,loadedAt:data.loadedAt,online:navigator.onLine,kindLabel,refreshLabel:t('refresh')}):'';
+ const body=view==='home-attention'?attentionView:view==='home-feed'?feedView:view==='home-actions'?actionsView:forYouMode==='discover'?discover:modeCards+overview+overviewDetails;
+ return `<section class="home-dashboard" data-home-view="${esc(view)}">${homeOverview?switcher:''}${homeOverview&&forYouMode==='discover'?'':header}${body}</section>`;
 }
 
 function renderMessages(u){
  const rawView=currentSubsection('messages');
  const view=guestDemo&&rawView==='messages-invites'?'messages-chats':rawView;
- return messagingDomain.render(u,{
+ return '<section class="compact-messenger">'+muraMessagePractice()+messagingDomain.render(u,{
   language:lang(),
   selectedChat,
   directTarget,
@@ -810,7 +828,7 @@ function renderMessages(u){
   messageDrafts,
   guestDemo,
   view
- });
+ })+'</section>';
 }
 
 function coopDisclosure(key,title,count,body,open=false){
@@ -858,17 +876,31 @@ function renderCooperation(u,r){
   const myPendingConfirmation=coop.kind==='purchase'?data.purchaseConfirmations.find(x=>x.user_id===u.id&&x.decision==='pending'):null;
   const unreadActivity=Number(data.activityInbox.find(x=>x.cooperation_id===coop.id)?.unread_count||0);
   html+=cbtn('back','back');
+  html+=muraTogetherPractice(coop);
+  if(!guestDemo&&coop.kind==='project'){
+   html+=globalThis.FolkoopWelcome.card(coop,data.projectWelcomes);
+   if(owner)html+=globalThis.FolkoopWelcome.editor(coop,data.projectWelcomes,welcomeDrafts[coop.id]);
+  }
+  if(!guestDemo&&!member&&['open','active'].includes(coop.status))html+=`<p class="notice">${esc(globalThis.FolkoopForYou.text(18))}</p>`;
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
   if(myNextTask&&!(guestDemo&&coop.id===MEETING_PROJECT))html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderOverview({coop,decisions:data.decisions,meeting:data.meeting,tasks:data.projectTasks,members,name:id=>coopProfile(id)?.name||ct('noProfile'),loadedAt:data.loadedAt,online:navigator.onLine,taskBases:data.taskBases});
   html+=renderMeetingReadiness(coop,guestDemo);
+  if(coop.kind==='project'&&((!guestDemo&&member)||(guestDemo&&coop.id===MEETING_PROJECT)))html+=globalThis.FolkoopBudget.render({coop,user:u,owner,snapshot:data.projectBudget,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo,drafts:budgetDrafts[coop.id]||{}});
+  if(!guestDemo&&((coop.kind==='project'&&member)||(coop.kind==='resource'&&owner)))html+=globalThis.FolkoopRooms.render({coop,user:u,rows:data.roomRequests||[],error:data.roomRequestsError,resources:data.cooperations,drafts:roomDrafts,owner,member,name:id=>coopProfile(id)?.name||ct('noProfile')});
+  if(guestDemo&&coop.id===MEETING_PROJECT)html+=`<section class="card"><h3>${esc(globalThis.FolkoopRooms.text(0))}</h3><p>${esc(globalThis.FolkoopRooms.text(24))}</p><p class="meta">${esc(globalThis.FolkoopRooms.text(17))}</p></section>`;
+  if(!guestDemo&&['need','project'].includes(coop.kind))html+=globalThis.FolkoopNeeds.render({coop,user:u,member,owner,snapshot:data.sharedNeed,draft:needDrafts[coop.id],name:id=>coopProfile(id)?.name||ct('noProfile')});
+  if(guestDemo&&coop.id===MEETING_PROJECT)html+=`<section class="card"><h3>${esc(globalThis.FolkoopNeeds.text(0))} → ${esc(globalThis.FolkoopNeeds.text(11))}</h3><p>${esc(globalThis.FolkoopNeeds.text(12))}</p><p class="meta">${esc(globalThis.FolkoopNeeds.text(9))}</p></section>`;
   if(guestDemo&&coop.id===MEETING_PROJECT){const ot=globalThis.FolkoopMeetings.outcomeText;html+=`<section class="card meeting-outcome-story"><h3>${esc(ot(0))}</h3><p>${esc(ot(19))}</p><p class="meta">${esc(ot(9))}</p><details><summary>${esc(ot(14))}</summary><p>${esc(ot(16))}</p></details></section>`;}
-  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopMeetings.render({snapshot:data.meeting,user:u,owner,members,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),draft:meetingDraft?.cooperationId===coop.id?meetingDraft:null,outcomeDraft:meetingOutcomeDraft?.cooperationId===coop.id?meetingOutcomeDraft:null,repeatDraft:meetingRepeatDraft?.cooperationId===coop.id?meetingRepeatDraft:null,online:navigator.onLine});
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopMeetings.render({snapshot:data.meeting,user:u,owner,members,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),draft:meetingDraft?.cooperationId===coop.id?meetingDraft:null,outcomeDraft:meetingOutcomeDraft?.cooperationId===coop.id?meetingOutcomeDraft:null,repeatDraft:meetingRepeatDraft?.cooperationId===coop.id?meetingRepeatDraft:null,budget:data.projectBudget,budgetDraft:meetingBudgetDrafts[coop.id+':'+data.meeting?.terms?.version],roomRequests:data.roomRequests||[],roomRequestsError:data.roomRequestsError,resources:data.cooperations,online:navigator.onLine});
   if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
   if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
   if(member&&['project','purchase'].includes(coop.kind)){
    const economicBody=economicFlowDomain.render({user:u,coop,owner,members,flows:data.economicFlows,flowRoles:data.economicFlowRoles,createDraft:economicFlowDraft,editDrafts:economicFlowEditDrafts,roleDrafts:economicRoleDrafts,readOnly:guestDemo});
    html+=coopDisclosure('economic-flow',economicFlowDomain.text('section'),data.economicFlows.length,economicBody,economicSectionOpen);
   }
+  if(member&&coop.kind==='project'&&(!guestDemo||coop.id===MEETING_PROJECT))html+=globalThis.FolkoopDecisions.render({snapshot:data.decisions,user:u,owner,organizer:coop.owner_id,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),tasks:data.projectTasks,drafts:decisionDrafts,project:coop.id,demo:guestDemo,active:['open','active'].includes(coop.status)});
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderDocuments({project:coop.id,snapshot:data.projectDocuments,decisions:data.decisions,tasks:data.projectTasks,user:u,owner,members,active:['open','active'].includes(coop.status),drafts:documentDrafts,histories:documentHistories,name:id=>coopProfile(id)?.name||ct('noProfile')});
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
    const editBody=`<form id="netCoopEdit" class="editor card"><label>${esc(ct('title'))}<input name="title" maxlength="120" required value="${esc(d.title)}"></label><label>${esc(ct('description'))}<textarea name="description" maxlength="3000" rows="3">${esc(d.description)}</textarea></label><label>${esc(ct('location'))}<input name="location" maxlength="120" value="${esc(d.location)}"></label><label>${esc(ct('status'))}<select name="status">${['open','active','done','cancelled'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${esc(statusLabel(s))}</option>`).join('')}</select></label>${coop.kind==='purchase'?`<label>${esc(ct('target'))}<input name="targetQuantity" type="number" min="0.001" step="0.001" required value="${esc(d.targetQuantity)}"></label><label>${esc(ct('unit'))}<input name="unit" maxlength="30" required value="${esc(d.unit)}"></label>`:''}<div class="actions"><button class="button">${esc(t('save'))}</button>${cbtn('delete','delete',coop.id)}</div></form>`;
@@ -900,7 +932,15 @@ function renderCooperation(u,r){
    html+=coopDisclosure('purchase-progress',ct('progress'),String(sum)+' '+coop.unit,progressBody);
   }
   if(coop.kind==='project'){
-   const tasksBody=`<div class="coop-compact-list">${data.projectTasks.map(task=>{const p=coopProfile(task.assignee_id);const canManage=owner||task.creator_id===u.id;return `<article class="coop-task-row"><div class="coop-task-main"><span class="badge">${esc(ct(task.status))}</span><strong>${esc(task.title)}</strong><span class="meta">${esc(ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</span></div>${task.details?`<p>${esc(task.details)}</p>`:''}<form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>${canManage?`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const mp=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(mp?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>{const p=coopProfile(m.user_id);return `<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</option>`;}).join('')}</select></label><button class="button">${esc(ct('saveTask'))}</button></form>`;
+   const work=globalThis.FolkoopTaskWork;
+   const tasksBody=`${guestDemo&&coop.id===MEETING_PROJECT?`<p>${esc(work.text(15))}</p>`:''}${guestDemo?'':`<button class="button secondary" type="button" data-coop="taskRefresh">${esc(work.text(18))}</button>`}<div class="coop-compact-list">${data.projectTasks.map(task=>{
+    const p=coopProfile(task.assignee_id),canManage=owner||task.creator_id===u.id;
+    const workflow=!!task.work_stage&&task.work_stage!=='legacy';
+    const basis=workflow&&!guestDemo?work.renderBasis({task,state:data.taskBases,documents:data.projectDocuments,decisions:data.decisions,members,user:u,owner,active:['open','active'].includes(coop.status),name:id=>coopProfile(id)?.name||ct('noProfile'),draft:taskBasisDrafts[task.id]}):'';
+    const statusForm=`<form class="netTaskStatus"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(ct('status'))}<select name="status">${['todo','doing','done'].map(s=>`<option value="${s}"${task.status===s?' selected':''}>${esc(ct(s))}</option>`).join('')}</select></label><button class="button secondary">${esc(t('save'))}</button></form>`;
+    const assignForm=`<form class="netTaskAssign"><input type="hidden" name="task" value="${esc(task.id)}"><label>${esc(workflow?work.text(17):ct('assignee'))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>`<option value="${esc(m.user_id)}"${task.assignee_id===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(coopProfile(m.user_id)?.name||ct('noProfile')))}</option>`).join('')}</select></label><button class="button secondary">${esc(ct('assign'))}</button></form>`;
+    return `<article class="coop-task-row"><div class="coop-task-main"><span class="badge">${esc(workflow?work.label(task):ct(task.status))}</span><strong>${esc(task.title)}</strong><span class="meta">${esc(workflow&&task.work_stage==='available'?work.text(17):ct('assignee'))}: ${esc(task.assignee_id?(task.assignee_id===u.id?mt('you'):(p?.name||ct('noProfile'))):ct('unassigned'))}</span></div>${task.details?`<p>${esc(task.details)}</p>`:''}${basis}${workflow?work.render({task,user:u,organizer:coop.owner_id,name:id=>coopProfile(id)?.name||ct('noProfile'),draft:taskWorkDrafts[task.id],history:taskHistories[task.id],active:!guestDemo&&['open','active'].includes(coop.status),basisState:guestDemo?undefined:data.taskBases}):statusForm}${canManage?`${!workflow||task.work_stage==='available'?assignForm:''}${cbtn('deleteTask','deleteTask',task.id)}`:''}</article>`;
+   }).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netTaskCreate" class="editor card"><h3>${esc(ct('newTask'))}</h3><label>${esc(ct('taskTitle'))}<input name="title" maxlength="160" required value="${esc(taskDraft.title||'')}"></label><label>${esc(ct('taskDetails'))}<textarea name="details" maxlength="2000" rows="3">${esc(taskDraft.details||'')}</textarea></label><label>${esc(work.text(17))}<select name="assignee"><option value="">${esc(ct('unassigned'))}</option>${members.map(m=>`<option value="${esc(m.user_id)}"${taskDraft.assignee===m.user_id?' selected':''}>${esc(m.user_id===u.id?mt('you'):(coopProfile(m.user_id)?.name||ct('noProfile')))}</option>`).join('')}</select></label><p class="meta">${esc(work.text(14))}</p><button class="button">${esc(ct('saveTask'))}</button></form>`;
    html+=coopDisclosure('tasks',ct('tasks'),openTasks.length,tasksBody);
   }
   const updatesBody=`<div class="coop-compact-list">${data.coopUpdates.map(x=>{const p=coopProfile(x.author_id),canDelete=owner||x.author_id===u.id;return `<article class="coop-compact-row"><div><strong>${esc(x.author_id===u.id?mt('you'):(p?.name||ct('noProfile')))}</strong><span class="meta">${esc(formatWhen(x.created_at))}</span><p style="white-space:pre-wrap">${esc(x.body)}</p></div>${canDelete?cbtn('deleteUpdate','deleteUpdate',x.id):''}</article>`;}).join('')||`<div class="empty"><p>${esc(ct('empty'))}</p></div>`}</div><form id="netCoopUpdate" class="editor card"><label>${esc(ct('newUpdate'))}<textarea name="body" maxlength="3000" rows="3" required>${esc(coopUpdateDraft)}</textarea></label><button class="button">${esc(ct('publishUpdate'))}</button></form>`;
@@ -915,6 +955,8 @@ function renderCooperation(u,r){
    return html;
   }
   if(view==='projects-updates'){
+   html+=activityDomain.renderRoomNotifications();
+   html+=activityDomain.renderTaskActions();
    const updates=data.activityInbox.filter(x=>x.cooperation_kind==='project'&&x.last_activity_at).sort((a,b)=>String(b.last_activity_at).localeCompare(String(a.last_activity_at)));
    html+=`<section class="project-workspace" data-project-view="updates"><h3>${esc(ct('updates'))}</h3><p class="meta">${esc(at('recentActivity'))}</p>${projectSearch()}<div class="project-timeline">${updates.map(x=>{const line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card project-work-card" data-project-search-card><time class="meta" datetime="${esc(x.last_activity_at)}">${esc(formatWhen(x.last_activity_at))}</time><div class="row"><h3>${esc(x.cooperation_title)}</h3>${Number(x.unread_count||0)?`<span class="net-count">${esc(String(x.unread_count))}</span>`:''}</div><p>${esc(line)}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
    return html;
@@ -922,6 +964,7 @@ function renderCooperation(u,r){
   html+=`<nav class="project-shortcuts" aria-label="${esc(ct('projectsTitle'))}"><a href="#/projects" data-subsection="projects-tasks"><strong>${data.assignedTasks.filter(x=>x.assignee_id===u.id&&x.status!=='done').length}</strong><span>${esc(ht('task'))}</span></a><a href="#/projects" data-subsection="projects-updates"><strong>${data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((sum,x)=>sum+Number(x.unread_count||0),0)}</strong><span>${esc(at('unread'))} · ${esc(ct('updates'))}</span></a></nav>${projectSearch()}`;
  }
  const kind=projectMode?'project':coopDraft.kind;
+ if(!projectMode&&!guestDemo)html+=globalThis.FolkoopNeeds.template();
  const rawListView=projectMode?currentSubsection('projects'):'',view=guestDemo&&rawListView==='projects-mine'?'projects-overview':rawListView;
  const memberIds=projectMode?new Set(data.coopMembers.filter(m=>m.user_id===u.id).map(m=>m.cooperation_id)) : new Set();
  const displayList=projectMode&&view==='projects-mine'?list.filter(x=>x.owner_id===u.id||memberIds.has(x.id)):list;
@@ -937,6 +980,17 @@ function render(){
  const guestNetworkRoute=guestDemo&&['home','me','people','communities','messages','together','projects'].includes(r);
  document.getElementById('workspace').hidden=!!(guestNetworkRoute||((api?.enabled||guestDemo)&&(['people','communities','messages'].includes(r)||(r==='home'&&hasUser)||(r==='me'&&guestDemo)||(r==='me'&&!hasUser&&!showLocalGuest))));
  syncBadges();
+ if(documentNotificationJump&&documentNotificationJump.project===selectedCoop&&!busy){
+  const jump=documentNotificationJump;documentNotificationJump=null;
+  const card=document.getElementById('project-document-'+jump.document);
+  if(card){card.tabIndex=-1;card.focus({preventScroll:true});card.scrollIntoView({block:'start',behavior:'instant'});}
+ }
+ if(roomNotificationJump&&roomNotificationJump.target===selectedCoop&&!busy){
+  const jump=roomNotificationJump;roomNotificationJump=null;
+  const input=[...host.querySelectorAll('.netRoomAction input[name="id"]')].find(x=>x.value===jump.request);
+  const row=input?.closest('article');
+  if(row){row.tabIndex=-1;row.focus({preventScroll:true});row.scrollIntoView({block:'center',behavior:'instant'});}
+ }
  if(!relevant||localMyPlace)return;host.lang=lang();host.dir=document.documentElement.dir||'ltr';
  if(!api?.enabled&&!guestDemo){host.innerHTML=`<aside class="notice"><strong>${esc(t('title'))}</strong><p>${esc(configError?t('error'):t('off'))}</p></aside>`;return;}
  let html='';const u=currentUser();
@@ -979,7 +1033,27 @@ function render(){
  }
  const homeScope=r==='home'&&u&&!guestDemo?`home:${u.id}`:'';
  const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
- host.innerHTML=demoBanner+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
+ host.innerHTML=demoBanner+muraProfilePractice(r)+muraCenterPractice(r)+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
+ // Resolve notification targets in the newly rendered DOM, including read-only tasks.
+ if(meetingBudgetNoticeJump===selectedCoop&&!busy&&r==='projects'){
+  meetingBudgetNoticeJump=null;
+  const target=host.querySelector('.meeting-confirmations');
+  if(target){target.tabIndex=-1;target.focus({preventScroll:true});target.scrollIntoView({block:'start',behavior:'instant'});}
+ }
+ if(contributionNoticeJump&&contributionNoticeJump.project===selectedCoop&&!busy&&r==='projects'){
+  const jump=contributionNoticeJump;contributionNoticeJump=null;
+  const target=[...host.querySelectorAll('.budget-contribution')].find(el=>el.dataset.contributionRow===jump.contribution)||host.querySelector('.project-budget');
+  if(target){target.tabIndex=-1;target.focus({preventScroll:true});target.scrollIntoView({block:'center',behavior:'instant'});}
+ }
+ if(taskNotificationJump&&taskNotificationJump.project===selectedCoop&&!busy&&r==='projects'){
+  const jump=taskNotificationJump;taskNotificationJump=null;
+  const target=document.getElementById('task-basis-'+jump.task)||[...host.querySelectorAll('input[name="task"]')].find(x=>x.value===jump.task);
+  const row=target?.closest('article');
+  if(row){
+   for(let parent=row.parentElement;parent&&parent!==host;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+   row.tabIndex=-1;row.focus({preventScroll:true});row.scrollIntoView({block:'center',behavior:'instant'});
+  }
+ }
  host.dataset.homeScope=homeScope;
  host.dataset.meetingScope=meetingScope;
  // Persist explicit open/closed choices for the same project across refreshes,
@@ -997,35 +1071,89 @@ function render(){
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
   const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
-  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep))b.hidden=true;});
+  const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice))b.hidden=true;});
  }
  // Busy may add a temporary restriction, but never erase a domain-disabled
  // state (stale/offline/role/meeting conditions) when busy becomes false.
  if(!guestDemo&&busy)host.querySelectorAll('button').forEach(b=>{b.disabled=true;});
+ if(!guestDemo&&currentUser()&&liveRefreshAt){const freshness=document.createElement('p');freshness.className='meta';freshness.setAttribute('role','status');freshness.textContent=liveRefreshError?t('error'):t('refresh')+' · '+new Date(data.loadedAt||liveRefreshAt).toLocaleTimeString();host.prepend(freshness);}
+ if(!guestDemo&&data.partialLoad?.length){const warning=document.createElement('p');warning.className='notice';warning.setAttribute('role','status');warning.textContent=t('error');host.prepend(warning);}
  syncBadges();
+ observeVisibleMessages();
+ if(!guestDemo&&r==='messages'&&messageScrollTarget===selectedChat){messageScrollTarget=null;queueMicrotask(()=>host.querySelector('[data-message-id]:last-child')?.scrollIntoView({block:'end',behavior:'instant'}));}
  queueMicrotask(()=>window.dispatchEvent(new CustomEvent('folkoop:network-rendered',{detail:{route:r,guestDemo}})));
 }
+let messageObserver=null,readTimer=null,readEpoch=0,seenMessages=new Set(),loadedMessageChat=null,messageScrollTarget=null;
+api?.onChange(()=>{loadedMessageChat=null;messageScrollTarget=null;seenMessages.clear();readEpoch++;messageObserver?.disconnect();clearTimeout(readTimer);});
+function observeVisibleMessages(){
+ messageObserver?.disconnect();clearTimeout(readTimer);
+ const epoch=++readEpoch,chat=selectedChat,uid=api?.user()?.id;
+ if(guestDemo||route()!=='messages'||!chat||!uid||document.visibilityState!=='visible'||!globalThis.IntersectionObserver)return;
+ const visible=new Set();
+ const flush=async()=>{
+  if(epoch!==readEpoch||document.visibilityState!=='visible'||selectedChat!==chat||api.user()?.id!==uid)return;
+  const ids=[...visible].filter(id=>!seenMessages.has(chat+':'+id)).slice(0,100);if(!ids.length)return;
+  try{
+   const result=await api.markChatRead(chat,ids);
+   if(epoch!==readEpoch||api.user()?.id!==uid||chat!==selectedChat)return;
+   ids.forEach(id=>seenMessages.add(chat+':'+id));
+   const inbox=data.chatInbox.find(x=>x.conversation_id===chat);
+   if(inbox&&Number.isFinite(Number(result?.unread_count)))inbox.unread_count=Number(result.unread_count);
+   syncBadges();
+  }catch{/* Leave unread state intact; a later render/visibility change retries. */}
+ };
+ messageObserver=new IntersectionObserver(entries=>{
+  for(const entry of entries){const id=entry.target.dataset.messageId;if(entry.isIntersecting)visible.add(id);else visible.delete(id);}
+  clearTimeout(readTimer);readTimer=setTimeout(flush,300);
+ },{threshold:0.1});
+ host.querySelectorAll('[data-message-id]').forEach(el=>{if(el.dataset.messageAuthor!==uid)messageObserver.observe(el);});
+}
+document.addEventListener('visibilitychange',observeVisibleMessages);
 let meetingDraft=null;
 let meetingOutcomeDraft=null,meetingRepeatDraft=null;
+let decisionDrafts={};
+let budgetDrafts={},budgetRequests={},contributionNoticeJump=null,meetingBudgetDrafts={},meetingBudgetNoticeJump=null;
+api?.onChange(()=>{budgetDrafts={};budgetRequests={};contributionNoticeJump=null;meetingBudgetDrafts={};meetingBudgetNoticeJump=null;});
+let documentDrafts={},documentHistories={};
+let taskWorkDrafts={};
+let taskBasisDrafts={};
+let welcomeDrafts={};
+let taskHistories={};
+let needDrafts={};
+let roomDrafts={};
+let roomNotificationJump=null;
+let documentNotificationJump=null;
+let taskNotificationJump=null;
+// Required data fails closed; unrelated failures remain visible without hiding the active section.
+async function loadAccountSections(client,currentRoute){
+ const names=['profile','communities','memberships','directory','blocks','chats','chatMembers','chatInvites','visibleProfiles','cooperations','cooperationMembers','cooperationChats','chatInbox','activityInbox','homePosts','assignedTasks','myPurchaseConfirmations','purchaseProcesses'];
+ const required=new Set(['profile',...({messages:['chats','chatMembers','chatInvites','visibleProfiles','blocks'],communities:['communities','memberships'],people:['directory','blocks'],projects:['cooperations','cooperationMembers'],together:['cooperations','cooperationMembers']}[currentRoute]||[])]);
+ const failed=[];
+ const values=await Promise.all(names.map(async name=>{
+  try{const rows=await client[name]();if(rows?.coverage&&rows.coverage.coverage!=='visible-query-complete')failed.push(name);return rows;}catch(error){
+   if(required.has(name)||['AUTH_REQUIRED','STALE','POLICY_REQUIRED','INVITE_REQUIRED'].includes(error.code))throw error;
+   failed.push(name);return [];
+  }
+ }));
+ return {values,failed};
+}
 async function load(){
  const v=version,u=currentUser();if(!u)return;
  if(guestDemo){data=demoSnapshot();return;}
- const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox,homePosts,assignedTasks,myConfirmations,allProcesses]=await Promise.all([
-  api.profile(),api.communities(),api.memberships(),api.directory(),api.blocks(),api.chats(),api.chatMembers(),api.chatInvites(),api.visibleProfiles(),api.cooperations(),api.cooperationMembers(),api.cooperationChats(),api.chatInbox(),api.activityInbox(),api.homePosts(),api.assignedTasks(),api.myPurchaseConfirmations(),api.purchaseProcesses()
- ]);
- const posts=selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
- const ownChatMember=selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
- const chatMessages=ownChatMember?await api.chatMessages(selectedChat):[];
+ api.takeCoverageWarnings?.();
+ const sectionLoad=await loadAccountSections(api,route());
+ const [profile,groups,memberships,directory,blocks,chats,chatMembers,chatInvites,chatProfiles,cooperations,coopMembers,coopChats,chatInbox,activityInbox,homePosts,assignedTasks,myConfirmations,allProcesses]=sectionLoad.values;
+ const posts=route()==='communities'&&selected&&memberships.some(m=>m.community_id===selected&&!m.banned)?await api.posts(selected):[];
+ const ownChatMember=route()==='messages'&&selectedChat&&chatMembers.find(m=>m.conversation_id===selectedChat&&m.user_id===u.id);
+ const searchAnchor=searchMessageTarget?.chat===selectedChat?searchMessageTarget:null;searchMessageTarget=null;
+ const chatPage=ownChatMember?(searchAnchor?await api.chatMessageContext(selectedChat,searchAnchor.id):await api.chatMessagePage(selectedChat)):{messages:[],hasMore:false,before:null};
+ const chatMessages=chatPage.messages;
+ if(selectedChat!==loadedMessageChat)messageScrollTarget=selectedChat;
+ loadedMessageChat=selectedChat;
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
- if(ownChatMember&&chatMessages.length){
-  const newest=chatMessages.at(-1)?.created_at;
-  if(newest&&(!ownChatMember.last_read_at||Date.parse(newest)>Date.parse(ownChatMember.last_read_at))){
-   await api.markChatRead(selectedChat);ownChatMember.last_read_at=new Date().toISOString();
-   const inbox=chatInbox.find(x=>x.conversation_id===selectedChat);if(inbox)inbox.unread_count=0;
-  }
- }
- const ownCoopMember=selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
- const selectedCooperation=selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
+ const ownCoopMember=['projects','together'].includes(route())&&selectedCoop&&coopMembers.find(m=>m.cooperation_id===selectedCoop&&m.user_id===u.id);
+ const selectedCooperation=['projects','together'].includes(route())&&selectedCoop&&cooperations.find(x=>x.id===selectedCoop);
  const [coopUpdates,projectTasks,commitments,coopActivity]=ownCoopMember?await Promise.all([
   api.cooperationUpdates(selectedCoop),
   selectedCooperation?.kind==='project'?api.projectTasks(selectedCoop):Promise.resolve([]),
@@ -1042,25 +1170,94 @@ async function load(){
  const purchaseConfirmations=selectedCooperation?.kind==='purchase'&&ownCoopMember?await api.purchaseConfirmations(selectedCoop):[];
  const economicFlows=ownCoopMember&&['project','purchase'].includes(selectedCooperation?.kind)?await api.economicFlows(selectedCoop):[];
  const economicFlowRoles=economicFlows.length?await api.economicFlowRoles(economicFlows.map(x=>x.id)):[];
+ let roomNotifications=[],roomNotificationsError=false;
+ let contributionNotices;
+ let meetingBudgetNotices;
+ try{meetingBudgetNotices=await api.meetingBudgetNotices();if(!meetingBudgetNotices||!Array.isArray(meetingBudgetNotices.rows))throw new Error('INVALID_RESPONSE');meetingBudgetNotices.loadedAt=Date.now();}catch{meetingBudgetNotices={error:true};}
+ try{contributionNotices=await api.contributionNotices();if(!contributionNotices||!Array.isArray(contributionNotices.rows))throw new Error('INVALID_RESPONSE');contributionNotices.loadedAt=Date.now();}catch{contributionNotices={error:true};}
+ try{roomNotifications=await api.roomNotificationInbox();}catch{roomNotificationsError=true;}
+ let meetingRoomAlerts=[],meetingRoomAlertsError=false;
+ try{meetingRoomAlerts=await api.meetingRoomAlerts();}catch{meetingRoomAlertsError=true;}
+ let meetingReminders=[],meetingRemindersError=false;
+ let documentNotifications=[],documentNotificationsError=false;
+ let taskBasisNotifications=[],taskBasisNotificationsError=false,taskBasisNotificationsLoadedAt=null;
+ try{taskBasisNotifications=await api.taskBasisNotifications();taskBasisNotificationsLoadedAt=Date.now();}catch{taskBasisNotificationsError=true;}
+ try{documentNotifications=await api.documentRevisionNotifications();}catch{documentNotificationsError=true;}
+ try{meetingReminders=await api.meetingReminderInbox();}catch{meetingRemindersError=true;}
+ let roomRequests=[],roomRequestsError=false;
+ if((ownCoopMember&&selectedCooperation?.kind==='project')||(selectedCooperation?.kind==='resource'&&selectedCooperation.owner_id===u.id)){
+  try{roomRequests=await api.roomRequests(selectedCoop,selectedCooperation.kind==='resource');}catch{roomRequestsError=true;}
+ }
+ let sharedNeed=null;
+ if(ownCoopMember&&['need','project'].includes(selectedCooperation?.kind)){
+  try{sharedNeed=await api.sharedNeed(selectedCoop,selectedCooperation.kind==='need');}catch{sharedNeed={error:true};}
+ }
+ let taskActions=[],taskActionsError=false;
+ try{taskActions=await api.taskActionInbox();}catch{taskActionsError=true;}
+ let decisions=null;
+ let projectDocuments=null;
+ let taskBases=null;
+ let projectWelcomes;
+ let projectBudget=null;
+ try{projectWelcomes={rows:await api.projectWelcomes(),loadedAt:Date.now()};}catch{projectWelcomes={error:true};}
+ if(ownCoopMember&&selectedCooperation?.kind==='project'){
+  try{projectBudget=await api.projectBudget(selectedCoop);if(!projectBudget||Array.isArray(projectBudget))throw new Error('INVALID_RESPONSE');projectBudget.loadedAt=Date.now();}catch{projectBudget={error:true};}
+  try{taskBases={rows:await api.taskBases(selectedCoop),loadedAt:Date.now()};}catch{taskBases={error:true};}
+  try{decisions=await api.projectDecisions(selectedCoop);}catch{decisions={error:true};}
+  try{projectDocuments={rows:await api.projectDocuments(selectedCoop)};
+   try{projectDocuments.consents=await api.documentConsents(selectedCoop);projectDocuments.consentsLoadedAt=Date.now();}catch{projectDocuments.consentsError=true;}
+  }catch{projectDocuments={error:true};}
+ }
  let meeting=null;
  if(ownCoopMember&&selectedCooperation?.kind==='project'){
   try{meeting=await api.meetingSnapshot(selectedCoop);if(!meeting||Array.isArray(meeting))throw new Error('INVALID_RESPONSE');meeting.loadedAt=Date.now();
+   if(selectedCooperation.owner_id===u.id){
+    try{meeting.reminderLog=await api.meetingReminderLog(selectedCoop);}catch{meeting.reminderLog={error:true};}
+    try{meeting.history=await api.meetingHistory(selectedCoop);}catch{meeting.history={error:true};}
+   }
    try{meeting.outcome=await api.meetingOutcomeSnapshot(selectedCoop);if(!meeting.outcome||Array.isArray(meeting.outcome)||meeting.outcome.version!==meeting.terms?.version)throw new Error('INVALID_RESPONSE');}catch{meeting.outcome={error:true};}
   }
   catch{meeting={error:true};}
  }
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
- data={profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting};
+ data={partialLoad:[...new Set([...sectionLoad.failed,...(api.takeCoverageWarnings?.()||[])])],chatHasMore:chatPage.hasMore,chatBefore:chatPage.before,profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting,decisions,taskActions,taskActionsError,sharedNeed,roomRequests,roomRequestsError,roomNotifications,roomNotificationsError,meetingRoomAlerts,meetingRoomAlertsError};
+ data.meetingReminders=meetingReminders;data.meetingRemindersError=meetingRemindersError;
+ data.loadedAt=Date.now();liveRefreshError=false;
+ data.projectDocuments=projectDocuments;
+ data.taskBases=taskBases;
+ data.projectWelcomes=projectWelcomes;
+ data.projectBudget=projectBudget;
+ data.contributionNotices=contributionNotices;
+ data.meetingBudgetNotices=meetingBudgetNotices;
+ data.documentNotifications=documentNotifications;data.documentNotificationsError=documentNotificationsError;
+ data.taskBasisNotifications=taskBasisNotifications;data.taskBasisNotificationsError=taskBasisNotificationsError;data.taskBasisNotificationsLoadedAt=taskBasisNotificationsLoadedAt;
 }
 async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
  if(!guestDemo){notice=t('busy');const status=host.querySelector('#netStatus');if(status)status.textContent=notice;}
  else notice='';
- try{await fn();}catch(e){notice=t(({AUTH_REQUIRED:'auth',INVITE_REQUIRED:'inviteRequired',POLICY_REQUIRED:'policyRequired',DENIED:'denied',RATE_LIMIT:'limit',INVALID_INPUT:'invalid',STALE:'stale'})[e.code]||'error');}
+ try{await fn();}catch(e){notice=e.code==='MESSAGE_UNCONFIRMED'?(uncertainMessageCopy[lang()]||uncertainMessageCopy.en):t(({AUTH_REQUIRED:'auth',INVITE_REQUIRED:'inviteRequired',POLICY_REQUIRED:'policyRequired',DENIED:'denied',RATE_LIMIT:'limit',INVALID_INPUT:'invalid',STALE:'stale'})[e.code]||'error');}
  finally{busy=false;render();}
 }
 host.addEventListener('input',e=>{
  const f=e.target.form;if(!f)return;const v=Object.fromEntries(new FormData(f));
+ if(f.classList.contains('netWelcome'))welcomeDrafts[v.project]={...v,enabled:v.enabled==='on'};
+ if(f.classList.contains('netMeetingBudget'))meetingBudgetDrafts[selectedCoop+':'+v.version]=Object.fromEntries(Object.entries(v).filter(([key])=>key.startsWith('need_')).map(([key,value])=>[key.slice(5),value]));
+ if(f.classList.contains('netBudget')){
+  const key=f.dataset.action+':'+f.dataset.target;
+  (budgetDrafts[selectedCoop]||={})[key]=v;
+ }
+ if(f.classList.contains('netProjectDocument')){const key=selectedCoop+':'+(f.dataset.document||'new');documentDrafts[key]={...documentDrafts[key],...v,tasks:new FormData(f).getAll('tasks')};}
+ if(f.classList.contains('netRoomAction')){const key=f.dataset.new?'new:'+v.project:v.id;const old=roomDrafts[key];roomDrafts[key]={...old,...v};if(f.dataset.new&&old?.resource!==v.resource)delete roomDrafts[key].id;}
+ if(f.id==='netNeedResponse')needDrafts[selectedCoop]={interested:v.interested==='on',can_help:v.can_help==='on',preferences:v.preferences||''};
+ if(f.classList.contains('netTaskWork'))taskWorkDrafts[v.task]={note:v.note||''};
+ if(f.classList.contains('netTaskBasis'))taskBasisDrafts[v.task]={...v,signers:new FormData(f).getAll('signers')};
+ if(f.classList.contains('netDecision')){
+  const key=selectedCoop+':'+f.dataset.operation+':'+(f.dataset.decision||'');
+  const prior=decisionDrafts[key];
+  decisionDrafts[key]={...prior,...v};
+  if(f.dataset.operation==='objection')decisionDrafts[key].id=v.id||prior?.id||'';
+ }
  if(f.id==='netMeetingTerms')meetingDraft={...v,cooperationId:selectedCoop};
  if(f.id==='netMeetingOutcome')meetingOutcomeDraft={...v,cooperationId:selectedCoop};
  if(f.id==='netMeetingRepeat')meetingRepeatDraft={...v,cooperationId:selectedCoop};
@@ -1086,16 +1283,84 @@ host.addEventListener('input',e=>{
 });
 host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequireAccount();return;}const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
+  if(f.classList.contains('netMeetingBudget')){
+   const key=selectedCoop+':'+values.version;
+   const choices=Object.fromEntries(Object.entries(values).filter(([name])=>name.startsWith('need_')).map(([name,value])=>[name.slice(5),value]));
+   meetingBudgetDrafts[key]=choices;
+   try{await api.saveMeetingBudget(selectedCoop,values.version,Object.entries(choices).filter(([,mode])=>mode).map(([need,mode])=>({need,mode})));}
+   catch(e){if(['MEETING_VERSION_CONFLICT','BUDGET_CONFLICT'].includes(e.code)){delete meetingBudgetDrafts[key];await load();notice=globalThis.FolkoopBudget.text(42);return;}throw e;}
+   delete meetingBudgetDrafts[key];await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netBudget')){
+   const project=selectedCoop,action=f.dataset.action,key=action+':'+f.dataset.target;
+   const v={...values};
+   (budgetDrafts[project]||={})[key]=values;
+   if(['need','pledge','expense'].includes(action))v.amount=globalThis.FolkoopBudget.amount(v.amount);
+   // Keep the request ID across uncertain network failures, including a page reload of data.
+   // A changed form is a different request; the server rejects stale state transitions.
+   const fingerprint=JSON.stringify(v),requestKey=project+':'+key;
+   let request=budgetRequests[requestKey];
+   if(request?.uncertain&&request.fingerprint!==fingerprint){
+    // Resolve the previous command before accepting changed financial input.
+    budgetDrafts[project][key]={...request.values};await load();notice=globalThis.FolkoopBudget.text(42);return;
+   }
+   if(!request||request.fingerprint!==fingerprint)request=budgetRequests[requestKey]={id:crypto.randomUUID(),fingerprint,values:{...values}};
+   try{await api.budgetAction(project,request.id,action,v);}
+   catch(e){if(e.code==='BUDGET_CONFLICT'){delete budgetRequests[requestKey];await load();notice=globalThis.FolkoopBudget.text(42);return;}request.uncertain=['NETWORK','REQUEST_FAILED','INVALID_RESPONSE'].includes(e.code);throw e;}
+   delete budgetDrafts[project][key];delete budgetRequests[requestKey];
+   await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netWelcome')){
+   try{await api.saveProjectWelcome(values.project,{...values,enabled:values.enabled==='on'});}
+   catch(e){if(e.code==='WELCOME_CONFLICT'){delete welcomeDrafts[values.project];await load();notice=globalThis.FolkoopWelcome.text(11);return;}throw e;}
+   delete welcomeDrafts[values.project];await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netTaskBasis')||f.classList.contains('netTaskBasisConsent')){
+   try{
+    if(f.classList.contains('netTaskBasis')){
+     const draft=taskBasisDrafts[values.task]={...values,signers:new FormData(f).getAll('signers')};
+     await api.saveTaskBasis(draft);delete taskBasisDrafts[values.task];
+    }else await api.respondTaskBasis(values.task,values.revision,op==='yes');
+   }catch(e){
+    if(['TASK_BASIS_CONFLICT','INVALID_BASIS_LINK','INVALID_SIGNER','TASK_BASIS_CLOSED'].includes(e.code)){
+     delete taskBasisDrafts[values.task];await load();notice=globalThis.FolkoopTaskWork.text(19);return;
+    }throw e;
+   }
+   await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netDocumentConsent')){
+   await api.respondDocument(values.document,values.revision,op==='yes');await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netDocumentHistory')){
+   documentHistories[values.document]=await api.documentHistory(values.document);notice='';return;
+  }
+  if(f.classList.contains('netProjectDocument')){
+   const key=selectedCoop+':'+(f.dataset.document||'new');
+   const draft=documentDrafts[key]={...documentDrafts[key],...values,tasks:new FormData(f).getAll('tasks')};
+   draft.id=f.dataset.document||draft.id||crypto.randomUUID();
+   await api.saveProjectDocument(selectedCoop,draft);delete documentDrafts[key];delete documentHistories[draft.id];await load();notice=t('saved');return;
+  }
+  if(f.classList.contains('netMeetingHistoryMore')){
+   const history=data.meeting?.history;
+   if(!history?.more||!history.cursor)return;
+   const page=await api.meetingHistory(selectedCoop,history.cursor);
+   data.meeting.history={...page,rows:[...history.rows,...page.rows]};notice='';return;
+  }
+  if(f.classList.contains('netMeetingReminder')){
+   const sent=await api.sendMeetingReminder(selectedCoop,values.version,values.recipient,values.role);
+   await load();notice=globalThis.FolkoopMeetings.reminderText(sent?2:3);return;
+  }
   if(f.id==='netEmailLink'){
    if(!emailLinkIdentity||!emailLink?.token||emailLink.expiresAt<=Date.now()){emailLink={error:true};emailLinkIdentity=null;notice=linkText(3);return;}
-   await api.completeOAuth(emailLink.token,Math.floor((emailLink.expiresAt-Date.now())/1000),values.inviteCode||'',{termsAccepted:values.policyAccepted==='on',privacyAcknowledged:values.policyAccepted==='on'});
+   await api.completeOAuth(emailLink.token,Math.floor((emailLink.expiresAt-Date.now())/1000),values.inviteCode||'',{termsAccepted:values.policyAccepted==='on',privacyAcknowledged:values.policyAccepted==='on'},emailLink.takeRefresh?.());
    emailLink=null;emailLinkIdentity=null;await load();notice='';return;
   }
-  if(['netMeetingTerms','netMeetingOutcome','netMeetingRepeat'].includes(f.id)||f.classList.contains('netMeetingResponse')){
+  if(['netMeetingTerms','netMeetingOutcome','netMeetingRepeat'].includes(f.id)||f.classList.contains('netMeetingResponse')||f.classList.contains('netMeetingRoom')){
    try{
     if(f.id==='netMeetingTerms'){await api.saveMeetingTerms(selectedCoop,globalThis.FolkoopMeetings.formValues(values));meetingDraft=null;}
     else if(f.id==='netMeetingOutcome'){await api.reportMeetingOutcome(selectedCoop,values.version,op==='withdrawn'?'withdrawn':values.result,values.note||'');meetingOutcomeDraft=null;}
     else if(f.id==='netMeetingRepeat'){selectedCoop=await api.repeatMeeting(selectedCoop,globalThis.FolkoopMeetings.formValues(values));meetingDraft=null;meetingRepeatDraft=null;}
+    else if(f.classList.contains('netMeetingRoom')){await api.bindMeetingRoom(selectedCoop,values.version,values.request,values.revision);meetingDraft=null;}
     else await api.respondMeeting(selectedCoop,values.version,values.role,op==='yes');
     await load();notice=t('saved');
    }catch{data.meeting={error:true};notice=globalThis.FolkoopMeetings.text(24);}
@@ -1105,7 +1370,7 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netDirect'){selectedChat=await api.startDirect(values.other);directTarget='';}
   if(f.id==='netNewChat'){const fd=new FormData(f);selectedChat=await api.createGroupChat(String(fd.get('title')||''),fd.getAll('members').map(String));chatDraft={title:'',members:[]};}
   if(f.id==='netChatInvite'){await api.inviteChat(selectedChat,values.user);inviteTarget='';}
-  if(f.id==='netMessage'){await api.sendMessage(selectedChat,values.body);delete messageDrafts[selectedChat];}
+  if(f.id==='netMessage'){await api.sendMessage(selectedChat,values.body);delete messageDrafts[selectedChat];messageScrollTarget=selectedChat;}
   if(f.id==='netCoopCreate'){const fd=new FormData(f),kind=String(fd.get('kind')||'project');selectedCoop=await api.createCooperation({kind,title:String(fd.get('title')||''),description:String(fd.get('description')||''),location:String(fd.get('location')||''),targetQuantity:String(fd.get('targetQuantity')||''),unit:String(fd.get('unit')||'')});coopDraft={kind:kind==='project'?'project':'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopCreateOpen=false;}
   if(f.id==='netCoopEdit'){const coop=data.cooperations.find(x=>x.id===selectedCoop);await api.updateCooperation(selectedCoop,{kind:coop.kind,title:values.title,description:values.description,location:values.location,status:values.status,targetQuantity:values.targetQuantity,unit:values.unit});coopEditDraft=null;}
   if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
@@ -1122,7 +1387,69 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netPurchaseCollected'){await api.markPurchaseCollected(selectedCoop,op==='yes',values.note||'');delete lifecycleDrafts.netPurchaseCollected;}
   if(f.id==='netPurchaseFinish'){await api.finishPurchase(selectedCoop,values.note||'');delete lifecycleDrafts.netPurchaseFinish;}
   if(f.id==='netPurchaseCancel'){await api.cancelPurchase(selectedCoop,values.reason);delete lifecycleDrafts.netPurchaseCancel;}
+  if(f.classList.contains('netDecision')){
+   const operation=f.dataset.operation,key=selectedCoop+':'+operation+':'+(f.dataset.decision||'');
+   const previousId=decisionDrafts[key]?.id;
+   const draft=decisionDrafts[key]={...decisionDrafts[key],...values};
+   if(operation==='objection')draft.id=values.id||previousId||crypto.randomUUID();
+   try{
+   if(operation==='propose'){
+    draft.id=draft.id||crypto.randomUUID();
+    await api.proposeProjectDecision(selectedCoop,{...draft,options:globalThis.FolkoopDecisions.lines(draft.options)});
+   }else if(operation==='response')await api.respondProjectDecision(f.dataset.decision,op==='withdraw'?null:values.option,values.note||'');
+   else if(operation==='finish')await api.finishProjectDecision(f.dataset.decision,{...values,tasks:globalThis.FolkoopDecisions.lines(values.tasks)});
+   else if(operation==='objection')await api.saveDecisionObjection({...draft,decision:f.dataset.decision,withdraw:op==='withdraw'});
+   else if(operation==='answer')await api.answerDecisionObjection({...draft,id:f.dataset.decision});
+   }catch(e){
+    if(['DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN'].includes(e.code)){
+     await load();notice=globalThis.FolkoopDecisions.ruleText(e.code==='OBJECTIONS_PENDING'?19:18);
+     // Preserve the user's prose, but require explicit reload of stale edit forms.
+     if(e.code==='DECISION_CONFLICT')delete decisionDrafts[key];
+     return;
+    }throw e;
+   }
+   delete decisionDrafts[key];
+  }
+  if(f.classList.contains('netRoomNotificationRead'))await api.readRoomNotifications(values.request,values.revision);
+  if(f.classList.contains('netContributionNoticeRead')){await api.readContributionNotice(values.event);await load();notice=t('saved');return;}
+  if(f.classList.contains('netMeetingBudgetNoticeRead')){await api.readMeetingBudgetNotice(values.project,values.version);await load();notice=t('saved');return;}
+  if(f.classList.contains('netRoomAction')){
+   const key=f.dataset.new?'new:'+values.project:values.id;
+   const d=roomDrafts[key]={...roomDrafts[key],...values};
+   if(f.dataset.new)d.id=d.id||crypto.randomUUID();
+   await api.roomRequestAction(d,op);delete roomDrafts[key];
+  }
+  if(f.id==='netSwedishNeed'){
+   selectedCoop=await api.createCooperation({kind:'need',title:globalThis.FolkoopNeeds.text(11),description:globalThis.FolkoopNeeds.text(12),location:'',targetQuantity:'',unit:''});
+   resetEconomicFlowState();navigateNetwork('#/together');
+  }
+  if(f.id==='netNeedResponse'||f.id==='netNeedWithdraw'){
+   await api.respondSharedNeed(selectedCoop,{interested:f.id==='netNeedResponse'&&values.interested==='on',can_help:f.id==='netNeedResponse'&&values.can_help==='on',preferences:f.id==='netNeedWithdraw'?'':values.preferences||''});
+   delete needDrafts[selectedCoop];
+  }
+  if(f.id==='netNeedProject'){
+   selectedCoop=await api.projectFromNeed(selectedCoop);resetEconomicFlowState();navigateNetwork('#/projects');
+  }
   if(f.id==='netTaskCreate'){await api.createProjectTask(selectedCoop,{title:values.title,details:values.details,assignee:values.assignee});taskDraft={title:'',details:'',assignee:''};}
+  if(f.classList.contains('netTaskHistory')){
+   const task=data.projectTasks.find(x=>x.id===values.task);if(!task)return;
+   const token=version,uid=currentUser()?.id;
+   const previous=taskHistories[task.id]?.revision===task.work_revision?taskHistories[task.id]:null;
+   const older=op==='more'&&previous?.more&&previous.rows.length;
+   try{
+    const page=await api.taskWorkHistory(task.id,older?previous.rows.at(-1).revision:null);
+    if(token!==version||currentUser()?.id!==uid)return;
+    taskHistories[task.id]={revision:task.work_revision,rows:older?[...previous.rows,...page.rows]:page.rows,more:page.more,error:false};
+   }catch(e){
+    if(token!==version||currentUser()?.id!==uid)return;
+    taskHistories[task.id]={revision:task.work_revision,rows:[],more:false,error:true};
+   }
+   taskNotificationJump={project:selectedCoop,task:task.id};notice='';return;
+  }
+  if(f.classList.contains('netTaskWork')){
+   try{await api.taskWorkAction(values.task,values.revision,op,values.note||'');delete taskWorkDrafts[values.task];}
+   catch(e){if(['TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_PENDING'].includes(e.code)){await load();notice=e.code==='TASK_BASIS_PENDING'?globalThis.FolkoopTaskWork.basisText(8):globalThis.FolkoopTaskWork.text(19);return;}throw e;}
+  }
   if(f.classList.contains('netTaskStatus'))await api.setProjectTaskStatus(values.task,values.status);
   if(f.classList.contains('netTaskAssign'))await api.assignProjectTask(values.task,values.assignee||null);
   if(f.id==='netProfile'){await api.saveProfile({name:values.name,skills:values.skills,about:values.about,listed:values.listed==='on'});profileDraft=null;}
@@ -1130,6 +1457,21 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netPost'){await api.publish(selected,values.body);delete postDrafts[selected];}
   await load();notice=t('saved');
  });
+});
+host.addEventListener('click',e=>{
+ const choice=e.target.closest('[data-for-you-wish],[data-for-you-mode]');
+ if(!choice||guestDemo||busy)return;
+ e.stopImmediatePropagation();
+ if(choice.dataset.forYouWish){
+  if(!globalThis.FolkoopForYou.wishes.includes(choice.dataset.forYouWish))return;
+  forYouWish=choice.dataset.forYouWish;
+ }else{
+  if(!['discover','work'].includes(choice.dataset.forYouMode))return;
+  forYouMode=choice.dataset.forYouMode;
+ }
+ const attr=choice.dataset.forYouWish?'data-for-you-wish':'data-for-you-mode',value=choice.getAttribute(attr);
+ render();
+ [...host.querySelectorAll('['+attr+']')].find(el=>el.getAttribute(attr)===value)?.focus({preventScroll:true});
 });
 host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-banner'}}));return;}const ab=e.target.closest('[data-auth]');if(ab){run(async()=>{
   if(ab.dataset.auth!=='google'||!api.googleOAuthEnabled)return;
@@ -1165,9 +1507,31 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='blockProvider')await api.block(id);
   if(a==='messageProvider'){selectedChat=await api.startDirect(id);navigateNetwork('#/messages');}
   if(a==='openLinkedChat'){selectedChat=id;navigateNetwork('#/messages');}
-  if(a==='openNotify'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openNotify'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(cb.dataset.task||(cb.dataset.targetKind||target?.kind)==='project'?'#/projects':'#/together');}
   await load();notice='';
+  if(a==='openNotify'&&cb.dataset.room)roomNotificationJump={target:id,request:cb.dataset.room};
+  if(a==='openNotify'&&cb.dataset.document)documentNotificationJump={project:id,document:cb.dataset.document};
+  if(a==='openNotify'&&cb.dataset.task)taskNotificationJump={project:id,task:cb.dataset.task};
+  if(a==='openNotify'&&cb.dataset.contribution)contributionNoticeJump={project:id,contribution:cb.dataset.contribution};
+  if(a==='openNotify'&&cb.dataset.meetingBudget)meetingBudgetNoticeJump=id;
  });return;}const b=e.target.closest('[data-net]');if(!b)return;const a=b.dataset.net,id=b.dataset.id;const guestAllowedNet=new Set(['back','open','backChats','openChat','refresh','logout']);if(guestDemo&&!guestAllowedNet.has(a)){guestRequireAccount();return;}
+ if(a==='olderMessages'){
+  if(busy)return;
+  const chat=selectedChat,epoch=version,uid=api.user()?.id,anchor=host.querySelector('[data-message-id]');
+  const anchorId=anchor?.dataset.messageId,top=anchor?.getBoundingClientRect().top;
+  if(!chat||!data.chatHasMore||!data.chatBefore)return;
+  run(async()=>{
+   const page=await api.chatMessagePage(chat,data.chatBefore);
+   if(epoch!==version||chat!==selectedChat||uid!==api.user()?.id)throw Object.assign(new Error('STALE'),{code:'STALE'});
+   const ids=new Set(data.chatMessages.map(m=>m.id));
+   data.chatMessages=[...page.messages.filter(m=>!ids.has(m.id)),...data.chatMessages];
+   data.chatBefore=page.before;data.chatHasMore=page.hasMore;notice='';
+  }).then(()=>{
+   if(chat!==selectedChat||epoch!==version)return;
+   const restored=[...host.querySelectorAll('[data-message-id]')].find(el=>el.dataset.messageId===anchorId);
+   if(restored&&Number.isFinite(top))window.scrollBy(0,restored.getBoundingClientRect().top-top);
+  });return;
+ }
  run(async()=>{
   if(a==='localGuest'){showLocalGuest=true;render();return;}
   if(a==='logout'&&guestDemo){window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:'guest-exit'}}));notice='';return;}
@@ -1230,6 +1594,18 @@ window.addEventListener('folkoop:subsection',e=>{
    target.focus({preventScroll:true});
   });
  }
+});
+host.addEventListener('click',e=>{
+ const button=e.target.closest?.('[data-project-next]');
+ if(!button||guestDemo||busy)return;
+ const selectors={tasks:'[data-coop-section="tasks"]',meeting:'.meeting-confirmations',decisions:'.project-decisions',budget:'.project-budget',meetingBudget:'.meeting-budget'};
+ const selector=selectors[button.dataset.projectNext];if(!selector)return;
+ const target=host.querySelector(selector);if(!target)return;
+ e.preventDefault();
+ for(let node=target;node&&node!==host;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true;
+ const focus=target.tagName==='DETAILS'?target.querySelector('summary'):target.querySelector('h3');
+ const destination=focus||target;destination.tabIndex=-1;
+ destination.focus({preventScroll:true});target.scrollIntoView({block:'start',behavior:'instant'});
 });
 document.addEventListener('click',e=>{
  if(!e.target.closest?.('[data-readiness-task]'))return;
@@ -1307,13 +1683,121 @@ document.addEventListener('click',e=>{
   card.hidden=!(matches&&searchMatch);
  });
 });
+const muraTogetherCopy={"ru":["Попробуем вместе","Что бы ты уточнил перед следующим шагом? Это проба в истории Муры: ничего не отправляется.","Уточнить условия","Считать уже готовым","Да. Сначала договоримся с людьми; открытая карточка ещё не означает согласия.","Пока рано: просмотр карточки не подтверждает договорённость.","К историям «Вместе»","Мне нужен плиткорез только на выходные. Найди в карточке, что и где я ищу. Осталось согласовать срок и возврат.","Я могу помочь с фотографиями. Посмотри, что предлагаю. Сначала нужно обсудить задачу и разрешение на съёмку.","Вот грузовой велосипед соседа. Посмотри, кому он принадлежит. Доступность, получение и возврат надо согласовать с владельцем.","Мы собираем общую закупку дров. Посмотри количество и участников. Участие в закупке не означает, что заказ оформлен или оплачен.","Обмен растениями начинался с идеи. Посмотри участников и задачи, открой чат проекта. Предложение помочь ещё нужно согласовать."],"en":["Let’s try together","What would you clarify next? This is practice in Mura’s story: nothing is sent.","Clarify the terms","Treat it as done","Yes. Agree with the people first; an open card is not consent.","Not yet: viewing a card does not confirm an agreement.","Back to Together stories","I need a tile cutter for one weekend. Find what and where I need it. We still need to agree on timing and return.","I can help with photos. See what I offer. We need to discuss the task and permission to take photos.","Here is a neighbour’s cargo bike. Look at its owner. Availability, collection and return need their agreement.","We are coordinating firewood. Look at quantities and participants. Joining does not mean an order is placed or paid.","Our plant exchange started as an idea. Explore people and tasks, and open its chat. An offer to help still needs agreement."],"sv":["Prova tillsammans","Vad vill du klargöra härnäst? Detta är en övning i Muras berättelse; inget skickas.","Klargör villkoren","Betrakta det som klart","Ja. Kom överens med personerna först; ett öppet kort är inget samtycke.","Inte än: att läsa kortet bekräftar ingen överenskommelse.","Tillbaka till berättelserna","Jag behöver en kakelskärare en helg. Hitta vad och var. Tid och återlämning måste avtalas.","Jag kan hjälpa med foton. Läs erbjudandet; uppgift och tillstånd att fotografera behöver diskuteras.","Här är grannens lastcykel. Se vem som äger den. Tillgänglighet, hämtning och återlämning kräver en överenskommelse.","Vi samordnar vedinköp. Titta på mängder och deltagare. Deltagande är ingen beställning eller betalning.","Vårt växtbyte började som en idé. Se deltagare och uppgifter och öppna chatten. Hjälpen behöver avtalas."],"uk":["Спробуймо разом","Що уточнити далі? Це вправа в історії Мури; нічого не надсилається.","Уточнити умови","Вважати завершеним","Так. Спочатку домовимося; відкрита картка не означає згоди.","Ще рано: перегляд не підтверджує домовленість.","До історій «Разом»","Мені потрібен плиткоріз на вихідні. Знайди місце й потребу; узгодьмо строк і повернення.","Я допомагаю з фото. Подивись пропозицію; потрібно обговорити завдання й дозвіл на зйомку.","Це вантажний велосипед сусіда. Знайди власника; отримання й повернення треба узгодити.","Купуємо дрова разом. Подивись кількість і учасників; участь не означає оплату чи замовлення.","Обмін рослинами почався з ідеї. Подивись завдання й чат; допомога потребує домовленості."],"es":["Probemos juntos","¿Qué aclararías? Es una práctica de la historia; no se envía nada.","Aclarar condiciones","Darlo por terminado","Sí. Primero hay que acordarlo; una tarjeta abierta no es consentimiento.","Todavía no: leer no confirma un acuerdo.","Volver a las historias","Necesito un cortador un fin de semana. Busca qué y dónde; falta acordar plazo y devolución.","Ofrezco fotos. Mira la oferta; hay que acordar la tarea y el permiso para fotografiar.","Es la bicicleta de carga de un vecino. Busca al dueño; hay que acordar recogida y devolución.","Coordinamos leña. Mira cantidades y participantes; unirse no es comprar ni pagar.","El intercambio empezó como idea. Mira tareas y abre el chat; ofrecer ayuda requiere acuerdo."],"fi":["Kokeillaan yhdessä","Mitä selvittäisit? Tämä on harjoitus; mitään ei lähetetä.","Selvitä ehdot","Pidä valmiina","Kyllä. Sovi ensin; avoin kortti ei ole suostumus.","Ei vielä: lukeminen ei vahvista sopimusta.","Takaisin tarinoihin","Tarvitsen laattaleikkurin viikonlopuksi. Etsi tarve ja paikka; sovi aika ja palautus.","Tarjoan valokuvausta. Katso tarjousta; sovi tehtävä ja kuvauslupa.","Tämä on naapurin tavarapyörä. Etsi omistaja; sovi nouto ja palautus.","Hankimme polttopuita. Katso määrät ja ihmiset; liittyminen ei ole tilaus tai maksu.","Kasvinvaihto alkoi ideasta. Katso tehtävät ja keskustelu; avusta pitää sopia."],"bs":["Probajmo zajedno","Šta treba razjasniti? Ovo je vježba; ništa se ne šalje.","Razjasniti uslove","Smatrati završenim","Da. Prvo se dogovorimo; otvorena kartica nije saglasnost.","Ne još: čitanje ne potvrđuje dogovor.","Nazad na priče","Treba mi rezač pločica za vikend. Pronađi potrebu i mjesto; dogovorimo rok i povrat.","Nudim fotografisanje. Pogledaj ponudu; dogovorimo zadatak i dozvolu za snimanje.","Ovo je susjedov teretni bicikl. Pronađi vlasnika; dogovorimo preuzimanje i povrat.","Nabavljamo drva zajedno. Pogledaj količine i učesnike; članstvo nije narudžba ni uplata.","Razmjena biljaka počela je idejom. Pogledaj zadatke i chat; pomoć treba dogovoriti."],"ar":["لنجرب معًا","ماذا توضح؟ هذا تمرين في القصة؛ لا يُرسل شيء.","توضيح الشروط","اعتباره منتهيًا","نعم، نتفق أولًا؛ البطاقة المفتوحة ليست موافقة.","ليس بعد: القراءة لا تؤكد الاتفاق.","العودة للقصص","أحتاج قاطع بلاط لعطلة الأسبوع. ابحث عن الحاجة والمكان؛ نتفق على المدة والإرجاع.","أعرض التصوير. اقرأ العرض؛ نتفق على المهمة وإذن التصوير.","هذه دراجة شحن لجار. ابحث عن المالك؛ نتفق على الاستلام والإرجاع.","ننسق شراء الحطب. انظر للكميات والمشاركين؛ الانضمام ليس طلبًا أو دفعًا.","بدأ تبادل النباتات بفكرة. انظر للمهام وافتح الدردشة؛ المساعدة تحتاج اتفاقًا."],"fa":["با هم امتحان کنیم","چه چیزی روشن شود؟ این تمرین است؛ چیزی ارسال نمی‌شود.","روشن کردن شرایط","تمام‌شده بدانیم","بله، اول توافق کنیم؛ کارت باز رضایت نیست.","هنوز نه: خواندن توافق را تأیید نمی‌کند.","بازگشت به داستان‌ها","کاشی‌بُر برای آخر هفته لازم دارم. نیاز و مکان را پیدا کن؛ زمان و بازگرداندن را توافق کنیم.","عکاسی پیشنهاد می‌کنم. پیشنهاد را ببین؛ درباره کار و اجازه عکاسی توافق کنیم.","این دوچرخه باری همسایه است. مالک را پیدا کن؛ تحویل و بازگرداندن توافق لازم دارد.","خرید هیزم را هماهنگ می‌کنیم. مقدار و افراد را ببین؛ پیوستن سفارش یا پرداخت نیست.","تبادل گیاه از ایده شروع شد. کارها و چت را ببین؛ کمک توافق لازم دارد."],"so":["Aan wada tijaabino","Maxaa la caddeeyaa? Waa tababar sheekada ku jira; waxba lama dirayo.","Caddee shuruudaha","U arag inay dhammaatay","Haa, marka hore heshiis; kaar furan ma aha oggolaansho.","Weli ma aha: akhrisku heshiis ma xaqiijiyo.","Ku noqo sheekooyinka","Waxaan u baahanahay qalab gooya marmarka dhammaadka toddobaadka. Eeg baahida iyo goobta; heshiis waqtiga iyo celinta.","Sawirro ayaan bixiyaa. Eeg dalabka; heshiis hawsha iyo oggolaanshaha sawirka.","Waa baaskiilka xamuulka ee deriska. Eeg milkiilaha; heshiis qaadashada iyo celinta.","Xaabo ayaan wada iibsanaynaa. Eeg tirada iyo dadka; ku biiristu ma aha dalab ama lacag bixin.","Dhir-isweydaarsigu fikrad ayuu ka bilowday. Eeg hawlaha iyo chat-ka; caawintu heshiis bay u baahan tahay."],"ku":["Bi hev re biceribînin","Çi zelal bikin? Ev ceribandin e; tiştek nayê şandin.","Mercan zelal bike","Qediyayî bihesibîne","Erê, pêşî li hev bikin; karta vekirî ne razîbûn e.","Hê ne: xwendin lihevkirinê piştrast nake.","Vegere çîrokan","Amûra fayansê ji bo dawiya hefteyê lazim e. Hewcedarî û cih bibîne; dem û vegerandin li hev bikin.","Ez wênekêşiyê pêşniyar dikim. Pêşniyarê bibîne; kar û destûra wêneyê li hev bikin.","Ev bisîkleta barê cîran e. Xwedî bibîne; wergirtin û vegerandin li hev bikin.","Em êzingê bi hev re dikirin. Mîqdar û mirovan bibîne; tevlîbûn ne siparîş an dayîn e.","Guherandina nebatan bi fikrekê dest pê kir. Erk û sohbetê bibîne; alîkarî lihevkirinê dixwaze."]};
+const muraCenterCopy={"ru":["Иногда я захожу к соседям просто поболтать. Открой публикации сообщества: какой разговор тебе хочется поддержать? Сначала знакомимся с темой и правилами — вступление не обязывает брать задачу.","Вот люди, с которыми меня уже что-то связывает. Посмотри интересы и историю знакомства. Кому хотелось бы написать и о чём? Общий интерес — повод спросить, а не обещание помощи.","Наш обмен растениями — повод увидеться. Посмотри участников и подготовку встречи. Перед тем как идти, уточни время, место и кто встретит. Это событие из истории Муры, не живая афиша города."],"en":["Sometimes I visit my neighbours just to chat. Open the community posts: which conversation would you join? Read the topic and rules first; membership does not require taking a task.","These are people I already know. Explore their interests and how we met. Who would you write to, and about what? A shared interest is a reason to ask, not a promise of help.","Our plant exchange is a chance to meet. Explore participants and preparations. Before going, clarify time, place and who will welcome you. This is Mura’s story, not a live city event listing."],"sv":["Ibland besöker jag grannarna bara för att prata. Öppna gemenskapens inlägg: vilket samtal lockar dig? Läs ämnet och reglerna först; medlemskap kräver ingen uppgift.","Här är människor jag känner. Se deras intressen och hur vi möttes. Vem vill du skriva till och om vad? Ett gemensamt intresse är en anledning att fråga, inget löfte om hjälp.","Vårt växtbyte är ett tillfälle att träffas. Se deltagare och förberedelser. Kontrollera tid, plats och vem som välkomnar dig. Detta är Muras berättelse, ingen aktuell evenemangskalender."],"uk":["Іноді просто спілкуюся із сусідами. Відкрий дописи спільноти: яку розмову підтримаєш? Спочатку тема й правила; членство не зобов’язує брати завдання.","Це мої знайомі. Подивись інтереси й історію знайомства. Кому й про що напишеш? Спільний інтерес — привід запитати, не обіцянка допомоги.","Обмін рослинами — привід зустрітися. Подивись учасників і підготовку. Уточни час, місце й хто зустріне. Це історія Мури, не актуальна афіша."],"fi":["Joskus vain juttelen naapureille. Avaa yhteisön julkaisut: mihin keskusteluun osallistuisit? Tutustu aiheeseen ja sääntöihin; jäsenyys ei vaadi tehtävää.","Tässä ovat tuttavani. Tutki kiinnostuksia ja tutustumistarinoita. Kenelle kirjoittaisit ja mistä? Yhteinen kiinnostus ei ole lupaus avusta.","Kasvinvaihto tuo meidät yhteen. Katso osallistujat ja valmistelut. Selvitä aika, paikka ja vastaanottaja. Tämä on Muran tarina, ei ajantasainen tapahtumakalenteri."],"bs":["Ponekad samo razgovaram sa susjedima. Otvori objave zajednice: kojem razgovoru bi se pridružio? Prvo pročitaj temu i pravila; članstvo ne zahtijeva zadatak.","Ovo su moji poznanici. Pogledaj interesovanja i kako smo se upoznali. Kome bi pisao i o čemu? Zajednički interes nije obećanje pomoći.","Razmjena biljaka je prilika za susret. Pogledaj učesnike i pripreme. Razjasni vrijeme, mjesto i ko te dočekuje. Ovo je Murina priča, ne aktuelni kalendar."],"es":["A veces solo charlo con vecinos. Abre las publicaciones: ¿en qué conversación participarías? Lee el tema y las normas; pertenecer no obliga a asumir tareas.","Son personas que conozco. Mira sus intereses y cómo nos conocimos. ¿A quién escribirías y sobre qué? Un interés común no promete ayuda.","El intercambio de plantas nos reúne. Mira participantes y preparativos. Aclara hora, lugar y quién te recibirá. Es la historia de Mura, no una agenda en directo."],"ar":["أحيانًا أتحدث فقط مع الجيران. افتح منشورات المجتمع: أي حديث يهمك؟ اقرأ الموضوع والقواعد؛ العضوية لا تفرض مهمة.","هؤلاء معارفي. انظر لاهتماماتهم وكيف تعرفنا. لمن تكتب وعن ماذا؟ الاهتمام المشترك ليس وعدًا بالمساعدة.","تبادل النباتات فرصة للقاء. انظر للمشاركين والتحضيرات. وضح الوقت والمكان ومن يستقبلك. هذه قصة مورا وليست أجندة حية."],"fa":["گاهی فقط با همسایه‌ها گپ می‌زنم. نوشته‌های اجتماع را باز کن: کدام گفت‌وگو را دوست داری؟ موضوع و قواعد را بخوان؛ عضویت کار اجباری ندارد.","این‌ها آشنایان من‌اند. علاقه‌ها و داستان آشنایی را ببین. به چه کسی و درباره چه می‌نویسی؟ علاقه مشترک وعده کمک نیست.","تبادل گیاه فرصتی برای دیدار است. افراد و آماده‌سازی را ببین. زمان، مکان و استقبال‌کننده را روشن کن. این داستان مورا است، نه تقویم زنده."],"so":["Mararka qaar deriska ayaan la sheekaystaa. Fur qoraallada bulshada: sheekadee ku xiiso gelisa? Akhri mawduuca iyo xeerarka; xubinnimadu hawl kuguma khasbayso.","Waa dad aan aqaan. Eeg xiisahooda iyo sida aan isku barannay. Yaad u qori lahayd, maxaase ku saabsan? Xiise wadaaggu ma aha ballan caawimo.","Dhir-isweydaarsigu waa fursad kulan. Eeg dadka iyo diyaarinta. Caddee waqtiga, goobta iyo qofka ku soo dhoweynaya. Waa sheekada Mura, ma aha jadwal toos ah."],"ku":["Carinan tenê bi cîranan re diaxivim. Nivîsên civakê veke: kîjan axaftin bala te dikişîne? Mijar û rêzikan bixwîne; endamtî erkê mecbûr nake.","Ev nasên min in. Eleqe û çîroka nasînê bibîne. Ji kê re û li ser çi dinivîsî? Eleqeya hevbeş ne soza alîkariyê ye.","Guherandina nebatan derfeta hevdîtinê ye. Mirov û amadekarî bibîne. Dem, cih û pêşwaziyê zelal bike. Ev çîroka Mura ye, ne salnameya zindî."]};
+const muraMessageCopy={"ru":["Лично","Группа","Чат проекта","Попробовать ответ","Это только черновик в истории — ничего не отправлено.","К историям сообщений","С Omar обсуждаю получение дров. Прочитай переписку и попробуй уточнить удобное время.","В группе планируем прогулку. Здесь можно просто общаться — брать задачу необязательно.","Здесь готовим обмен растениями. Обсуждение помогает договориться, а задачи остаются в проекте.","Во сколько тебе удобно встретиться?","Где встречаемся на прогулку?","Какая помощь ещё нужна для обмена?"],"en":["Personal","Group","Project chat","Try a reply","Story draft only — nothing sent.","Back to message stories","Omar and I discuss collecting firewood. Read our conversation and try asking about the time.","Our group plans a walk. You can simply chat; taking a task is optional.","We prepare the plant exchange here. Chat helps us agree; tasks stay in the project.","What time works for you?","Where shall we meet for the walk?","What help does the exchange still need?"],"sv":["Privat","Grupp","Projektchatt","Prova ett svar","Bara ett utkast i berättelsen — inget skickat.","Tillbaka till chattberättelser","Omar och jag pratar om vedhämtning. Läs samtalet och fråga om tiden.","Gruppen planerar en promenad. Det går bra att bara prata utan att ta en uppgift.","Här planerar vi växtbytet. Vi pratar i chatten; uppgifter finns i projektet.","Vilken tid passar dig?","Var träffas vi för promenaden?","Vilken hjälp behövs fortfarande?"],"uk":["Особисте","Група","Чат проєкту","Спробувати відповідь","Лише чернетка історії — нічого не надіслано.","До історій повідомлень","З Omar обговорюємо дрова. Прочитай і уточни час.","Плануємо прогулянку. Можна просто спілкуватися без завдання.","Готуємо обмін рослинами. Обговорення тут, завдання в проєкті.","Коли тобі зручно?","Де зустрінемося на прогулянку?","Яка допомога ще потрібна?"],"fi":["Yksityinen","Ryhmä","Projektikeskustelu","Kokeile vastausta","Vain tarinan luonnos — mitään ei lähetetty.","Takaisin keskustelutarinoihin","Puhun Omarin kanssa polttopuista. Lue ja kysy ajasta.","Suunnittelemme kävelyä. Voit vain jutella ilman tehtävää.","Valmistelemme kasvinvaihtoa. Keskustelu täällä, tehtävät projektissa.","Mikä aika sopii?","Missä tapaamme kävelyä varten?","Mitä apua vielä tarvitaan?"],"bs":["Privatno","Grupa","Projektni chat","Probaj odgovor","Samo nacrt priče — ništa nije poslano.","Nazad na priče poruka","S Omarom pričam o drvima. Pročitaj i pitaj za vrijeme.","Planiramo šetnju. Možeš samo razgovarati bez zadatka.","Pripremamo razmjenu biljaka. Razgovor je ovdje, zadaci u projektu.","Koje vrijeme ti odgovara?","Gdje se nalazimo za šetnju?","Kakva pomoć još treba?"],"es":["Personal","Grupo","Chat del proyecto","Probar respuesta","Solo un borrador de la historia; nada enviado.","Volver a las historias","Hablo con Omar sobre la leña. Lee y pregunta por la hora.","Planeamos un paseo. Puedes charlar sin asumir tareas.","Preparamos el intercambio de plantas. Hablamos aquí; las tareas están en el proyecto.","¿Qué hora te viene bien?","¿Dónde quedamos para el paseo?","¿Qué ayuda hace falta todavía?"],"ar":["خاص","مجموعة","دردشة المشروع","جرّب الرد","مسودة للقصة فقط؛ لم يُرسل شيء.","العودة لقصص الرسائل","أتحدث مع Omar عن الحطب. اقرأ واسأل عن الوقت.","نخطط لنزهة. يمكن الحديث دون مهمة.","نجهز تبادل النباتات. الحديث هنا والمهام في المشروع.","أي وقت يناسبك؟","أين نلتقي للنزهة؟","ما المساعدة المطلوبة؟"],"fa":["شخصی","گروه","چت پروژه","امتحان پاسخ","فقط پیش‌نویس داستان؛ چیزی ارسال نشد.","بازگشت به داستان پیام‌ها","با Omar درباره هیزم حرف می‌زنم. بخوان و زمان را بپرس.","برای پیاده‌روی برنامه می‌ریزیم. گفتگو بدون وظیفه هم ممکن است.","تبادل گیاه را آماده می‌کنیم. گفتگو اینجا و کارها در پروژه است.","چه زمانی مناسب است؟","برای پیاده‌روی کجا دیدار کنیم؟","چه کمکی هنوز لازم است؟"],"so":["Gaar","Koox","Chat-ka mashruuca","Tijaabi jawaab","Qabyo sheeko keliya; waxba lama dirin.","Ku noqo sheekooyinka farriimaha","Omar ayaan kala hadlayaa xaabada. Akhri oo waqtiga weydii.","Socod ayaan qorshaynaynaa. Waad sheekaysan kartaa hawl la’aan.","Dhir-isweydaarsi ayaan diyaarinaynaa. Sheekadu halkan, hawluhu mashruuca.","Waqtigee kugu habboon?","Xaggee socodka ku kulmaynaa?","Caawimo noocee ah baa weli loo baahan yahay?"],"ku":["Taybet","Kom","Sohbeta projeyê","Bersivê biceribîne","Tenê pêşnivîsa çîrokê; tiştek nehat şandin.","Vegere çîrokên peyaman","Bi Omar re li ser êzingê diaxivim. Bixwîne û demê bipirse.","Meşê plan dikin. Dikare bê erkê biaxivî.","Guherandina nebatan amade dikin. Axaftin li vir, erk di projeyê de ne.","Kîjan dem ji te re baş e?","Ji bo meşê li ku bicivin?","Hîn çi alîkarî lazim e?"]};
+globalThis.FolkoopMuraMessageLabels=code=>(muraMessageCopy[code]||muraMessageCopy.en).slice(0,3);
+let muraMessageStory=null;
+function muraMessagePractice(){
+ if(!guestDemo||!muraMessageStory||selectedChat!==muraMessageStory.chat)return '';
+ const c=muraMessageCopy[lang()]||muraMessageCopy.en,i=muraMessageStory.index;
+ return '<aside class="mura-message-story"><img src="./folkoop-guide-lean-in.webp" alt="" width="36" height="40"><div><strong id="muraMessageStoryTitle">'+esc(c[i])+'</strong><p>'+esc(c[6+i])+'</p><details><summary>'+esc(c[3])+'</summary><label class="sr-only" for="muraPracticeReply">'+esc(c[3])+'</label><textarea id="muraPracticeReply" class="mura-reply-preview" rows="2" maxlength="1000" autocomplete="off" aria-describedby="muraPracticeReplyNote">'+esc(c[9+i])+'</textarea><small id="muraPracticeReplyNote">'+esc(c[4])+'</small></details><button type="button" class="text-button" data-mura-message-return>'+esc(c[5])+'</button></div></aside>';
+}
+host.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-message-return]')){muraMessageStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-message-return'));}});
+window.addEventListener('folkoop:mura-message-open',e=>{
+ const index=['direct','group','project'].indexOf(e.detail?.kind);
+ if(!guestDemo||index<0)return;
+ selected=null;selectedCoop=null;selectedChat=null;
+ muraCenterKind=null;muraTogetherKind=null;
+ const snap=demoSnapshot(),links=new Set(snap.coopChats.map(x=>x.conversation_id));
+ const chat=index===2?snap.chats.find(x=>snap.coopChats.some(link=>link.conversation_id===x.id&&link.cooperation_id==='00000000-0000-4000-8000-000000000301')):snap.chats.find(x=>x.kind===(index===0?'direct':'group')&&!links.has(x.id));
+ if(!chat)return;
+ selectedChat=chat.id;muraMessageStory={index,chat:chat.id};data=demoSnapshot();
+ navigateNetwork('#/messages');render();
+ requestAnimationFrame(()=>{const title=host.querySelector('#muraMessageStoryTitle');if(title){title.tabIndex=-1;title.focus({preventScroll:true});title.scrollIntoView({block:'start',behavior:'instant'});}});
+});
+const muraProfileCopy={"ru":["Интересы","Навыки","Связи","Личные идеи","Люблю растения. Из этого вырос наш обмен с соседями. Посмотри мой профиль: что у нас с тобой общего?","Немного фотографирую и могу помочь соседскому делу. Навык в профиле — повод обсудить помощь, а не готовое обещание.","С этими людьми меня связывают прогулки и общие дела. Открой истории знакомств: с кем тебе было бы интересно поговорить?","Не каждую мысль сразу публикую. Внизу мои личные черновики. Выбери идею и попробуй описать её первый маленький шаг.","Попробовать заметку","Только пробная заметка на этой странице. Профиль и черновики Муры не меняются."],"en":["Interests","Skills","Connections","Private ideas","I love plants. That became our neighbourhood exchange. Look at my profile: what do we have in common?","I do some photography and can help a local project. A profile skill starts a conversation, not a commitment.","Walks and shared activities connect me to these people. Explore how we met: whom would you like to talk to?","I don’t publish every thought. My private drafts are below. Choose an idea and try describing its first small step.","Try a note","Practice note on this page only. Mura’s profile and drafts stay unchanged."],"sv":["Intressen","Färdigheter","Kontakter","Privata idéer","Jag gillar växter. Det blev vårt växtbyte. Se min profil: vad har vi gemensamt?","Jag fotograferar lite och kan hjälpa ett lokalt projekt. En färdighet öppnar ett samtal, inte ett åtagande.","Promenader och gemensamma saker förbinder mig med dessa människor. Se hur vi möttes: vem vill du prata med?","Jag publicerar inte varje tanke. Mina privata utkast finns nedan. Välj en idé och beskriv ett första litet steg.","Prova en anteckning","Bara en övningsanteckning på sidan. Muras profil och utkast ändras inte."],"uk":["Інтереси","Навички","Зв’язки","Особисті ідеї","Люблю рослини — так почався наш обмін. Подивись профіль: що в нас спільного?","Фотографую й допомагаю сусідам. Навичка — привід поговорити, не обіцянка.","Прогулянки й справи пов’язують мене з цими людьми. Подивись історії знайомств.","Не кожну думку публікую. Внизу чернетки. Обери ідею й опиши перший крок.","Спробувати нотатку","Лише вправа на сторінці. Профіль і чернетки Мури не змінюються."],"fi":["Kiinnostukset","Taidot","Yhteydet","Omat ideat","Pidän kasveista; siitä syntyi vaihtotapahtuma. Katso profiilia: mitä yhteistä meillä on?","Valokuvaan ja autan naapureita. Taito aloittaa keskustelun, ei sitoumusta.","Kävelyt ja yhteiset asiat yhdistävät meidät. Tutki tutustumistarinoita.","En julkaise jokaista ajatusta. Luonnokset ovat alla. Valitse idea ja kuvaa ensimmäinen askel.","Kokeile muistiinpanoa","Vain harjoitus sivulla. Muran profiili ja luonnokset eivät muutu."],"bs":["Interesovanja","Vještine","Veze","Lične ideje","Volim biljke; tako je nastala razmjena. Pogledaj profil: šta nam je zajedničko?","Fotografišem i pomažem susjedima. Vještina započinje razgovor, nije obaveza.","Šetnje i zajedničke aktivnosti nas povezuju. Istraži priče poznanstava.","Ne objavljujem svaku misao. Nacrti su ispod. Izaberi ideju i opiši prvi korak.","Probaj bilješku","Samo vježba na stranici. Murin profil i nacrti se ne mijenjaju."],"es":["Intereses","Habilidades","Conexiones","Ideas privadas","Me gustan las plantas; así nació el intercambio. Mira mi perfil: ¿qué compartimos?","Hago fotos y ayudo a vecinos. Una habilidad invita a hablar, no es un compromiso.","Paseos y actividades nos conectan. Explora cómo nos conocimos.","No publico cada idea. Abajo están mis borradores. Elige uno y describe el primer paso.","Probar una nota","Solo una práctica en esta página. El perfil y los borradores no cambian."],"ar":["اهتمامات","مهارات","علاقات","أفكار خاصة","أحب النباتات ومنها بدأ التبادل. انظر لملفي: ماذا يجمعنا؟","أصور وأساعد الجيران. المهارة دعوة للحديث وليست التزامًا.","النزهات والأنشطة تربطني بهؤلاء. استكشف قصص التعارف.","لا أنشر كل فكرة. المسودات أدناه. اختر فكرة وصف أول خطوة.","جرّب ملاحظة","تمرين بالصفحة فقط. لا يتغير ملف مورا أو مسوداتها."],"fa":["علاقه‌ها","مهارت‌ها","ارتباط‌ها","ایده‌های شخصی","گیاهان را دوست دارم و تبادل از همین شروع شد. چه علاقه مشترکی داریم؟","عکاسی می‌کنم و به همسایه‌ها کمک می‌کنم. مهارت دعوت به گفتگو است، نه تعهد.","پیاده‌روی و کارها ما را پیوند می‌دهند. داستان آشنایی‌ها را ببین.","همه فکرها را منتشر نمی‌کنم. پیش‌نویس‌ها پایین‌اند. یک ایده و گام اولش را انتخاب کن.","امتحان یادداشت","فقط تمرین در صفحه. پروفایل و پیش‌نویس‌های مورا تغییر نمی‌کنند."],"so":["Xiisaha","Xirfadaha","Xiriirrada","Fikradaha gaarka ah","Dhirta ayaan jeclahay; halkaas ayuu isweydaarsigu ka bilowday. Maxaa ina wada xiiseeya?","Sawirro ayaan qaadaa oo deriska caawiyaa. Xirfaddu waa sabab wada hadal, ma aha ballan.","Socodka iyo hawluhu way na xiriiriyaan. Eeg sida aan isku barannay.","Fikrad kasta ma daabaco. Qabyadu hoos ayay taal. Dooro fikrad iyo tallaabadeeda koowaad.","Tijaabi qoraal","Tababar boggan keliya. Borofaylka iyo qabyada Mura ma beddelmaan."],"ku":["Eleqe","Jêhatîbûn","Têkilî","Fikrên taybet","Ez ji nebatan hez dikim; guherandin ji vir dest pê kir. Çi eleqeya me hevbeş e?","Wêne dikêşim û alîkariya cîranan dikim. Jêhatîbûn sedema axaftinê ye, ne soz.","Meş û karên hevbeş me girê didin. Çîrokên nasînê bibîne.","Her fikrê belav nakim. Pêşnivîs li jêr in. Fikrekê hilbijêre û gava yekem binivîse.","Nîşeyekê biceribîne","Tenê ceribandina rûpelê. Profîl û pêşnivîsên Mura naguherin."]};
+globalThis.FolkoopMuraProfileLabels=code=>(muraProfileCopy[code]||muraProfileCopy.en).slice(0,4);
+let muraProfileStory=null;
+function muraProfilePractice(r){
+ if(!guestDemo||muraProfileStory===null||r!==(muraProfileStory===2?'people':'me'))return '';
+ const c=muraProfileCopy[lang()]||muraProfileCopy.en;
+ return '<aside class="mura-message-story mura-profile-story"><img src="./folkoop-guide-wink.webp" alt="" width="36" height="40"><div><strong id="muraProfileStoryTitle">'+esc(c[muraProfileStory])+'</strong><p>'+esc(c[4+muraProfileStory])+'</p><details><summary>'+esc(c[8])+'</summary><label class="sr-only" for="muraProfileNote">'+esc(c[8])+'</label><textarea id="muraProfileNote" rows="2" maxlength="1000" autocomplete="off" aria-describedby="muraProfileNoteHint"></textarea><small id="muraProfileNoteHint">'+esc(c[9])+'</small></details><button type="button" class="text-button" data-mura-profile-return>'+esc(t('profile'))+'</button></div></aside>';
+}
+host.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-profile-return]')){muraProfileStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-profile-return'));}});
+window.addEventListener('folkoop:mura-profile-open',e=>{
+ const index=['interests','skills','connections','ideas'].indexOf(e.detail?.kind);
+ if(!guestDemo||index<0)return;
+ selected=null;selectedCoop=null;selectedChat=null;
+ muraTogetherKind=null;muraCenterKind=null;muraMessageStory=null;
+ muraProfileStory=index;data=demoSnapshot();
+ navigateNetwork(index===2?'#/people':'#/me');render();
+ requestAnimationFrame(()=>{const title=host.querySelector('#muraProfileStoryTitle');if(title){title.tabIndex=-1;title.focus({preventScroll:true});title.scrollIntoView({block:'start',behavior:'instant'});}});
+});
+const muraCenterKinds=['communities','people','events'];
+let muraCenterKind=null;
+function muraCenterPractice(r){
+ if(!guestDemo||!muraCenterKind||r!==({communities:'communities',people:'people',events:'projects'})[muraCenterKind])return '';
+ const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
+ const stories=muraCenterCopy[document.documentElement.lang]||muraCenterCopy.en;
+ const back={ru:'К историям Центра',en:'Back to Center stories',sv:'Tillbaka till Center',uk:'До історій Центру',fi:'Takaisin Centeriin',bs:'Nazad u Centar',es:'Volver al Centro',ar:'العودة إلى المركز',fa:'بازگشت به مرکز',so:'Ku noqo Xarunta',ku:'Vegere Navendê'}[document.documentElement.lang]||'Back to Center stories';
+ return '<section class="card mura-center-practice" aria-labelledby="muraCenterPracticeTitle"><h2 id="muraCenterPracticeTitle">'+esc(c[0])+'</h2><p>'+esc(stories[muraCenterKinds.indexOf(muraCenterKind)])+'</p><p class="meta">'+esc(c[1])+'</p><div class="actions"><button type="button" class="button secondary" data-mura-center-answer="terms">'+esc(c[2])+'</button><button type="button" class="text-button" data-mura-center-answer="done">'+esc(c[3])+'</button></div><p data-mura-center-feedback role="status"></p><button type="button" class="text-button" data-mura-center-return>'+esc(back)+'</button></section>';
+}
+host.addEventListener('click',e=>{
+ const answer=e.target.closest('[data-mura-center-answer]');
+ if(answer&&guestDemo){
+  const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
+  answer.closest('.mura-center-practice').querySelector('[data-mura-center-feedback]').textContent=c[answer.dataset.muraCenterAnswer==='terms'?4:5];
+ }
+ if(e.target.closest('[data-mura-center-return]')&&guestDemo){
+  muraCenterKind=null;window.dispatchEvent(new CustomEvent('folkoop:mura-center-return'));
+ }
+});
+window.addEventListener('folkoop:mura-center-open',e=>{
+ if(!guestDemo||!muraCenterKinds.includes(e.detail?.kind))return;
+ selected=null;selectedChat=null;selectedCoop=null;muraTogetherKind=null;
+ const snapshot=demoSnapshot(),kind=e.detail.kind;
+ if(kind==='communities'){
+  const group=snapshot.groups[0];if(!group)return;selected=group.id;
+ }
+ if(kind==='events'){
+  const event=snapshot.cooperations.find(x=>x.id==='00000000-0000-4000-8000-000000000301');
+  if(!event)return;selectedCoop=event.id;
+ }
+ muraCenterKind=kind;data=demoSnapshot();
+ navigateNetwork(kind==='events'?'#/projects':'#/'+kind);render();
+ requestAnimationFrame(()=>{const title=host.querySelector('#muraCenterPracticeTitle');if(title){title.tabIndex=-1;title.focus({preventScroll:true});title.scrollIntoView({block:'start',behavior:'instant'});}});
+});
+const muraTogetherKinds=['need','offer','resource','purchase','project'];
+let muraTogetherKind=null;
+function muraTogetherPractice(coop){
+ if(!guestDemo||coop.kind!==muraTogetherKind)return '';
+ const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
+ return '<section class="card mura-together-practice" aria-labelledby="muraPracticeTitle"><h3 id="muraPracticeTitle">'+esc(c[0])+'</h3><p>'+esc(c[7+muraTogetherKinds.indexOf(coop.kind)])+'</p><p class="meta">'+esc(c[1])+'</p><div class="actions"><button type="button" class="button secondary" data-mura-answer="terms">'+esc(c[2])+'</button><button type="button" class="text-button" data-mura-answer="done">'+esc(c[3])+'</button></div><p data-mura-feedback role="status"></p><button type="button" class="text-button" data-mura-together-return>'+esc(c[6])+'</button></section>';
+}
+host.addEventListener('click',e=>{
+ const answer=e.target.closest('[data-mura-answer]');
+ if(answer&&guestDemo){
+  const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
+  answer.closest('.mura-together-practice').querySelector('[data-mura-feedback]').textContent=c[answer.dataset.muraAnswer==='terms'?4:5];
+ }
+ if(e.target.closest('[data-mura-together-return]')&&guestDemo){
+  muraTogetherKind=null;
+  window.dispatchEvent(new CustomEvent('folkoop:mura-together-return'));
+ }
+});
+window.addEventListener('folkoop:mura-together-open',e=>{
+ if(!guestDemo||!muraTogetherKinds.includes(e.detail?.kind))return;
+ muraCenterKind=null;
+ selected=null;selectedCoop=null;selectedChat=null;
+ const row=demoSnapshot().cooperations.find(x=>x.kind===e.detail.kind&&['open','active'].includes(x.status));
+ if(!row)return;
+ muraTogetherKind=e.detail.kind;
+ selectedCoop=row.id;data=demoSnapshot();
+ navigateNetwork(row.kind==='project'?'#/projects':'#/together');
+ render();
+ requestAnimationFrame(()=>{const title=host.querySelector('#muraPracticeTitle');if(title){title.tabIndex=-1;title.focus({preventScroll:true});title.scrollIntoView({block:'start',behavior:'instant'});}});
+});
 window.addEventListener('folkoop:mura-story',e=>{
+ muraProfileStory=null;
  // This adapter can only browse authored fixtures. Never select account data
  // or accept arbitrary object IDs from the tour.
  if(!guestDemo||!['profile','project','chat'].includes(e.detail?.scene))return;
  // Snapshot relations are scoped by the current selection. Clear that scope
  // before resolving the story so another open activity cannot hide its chat.
  selected=null;selectedCoop=null;selectedChat=null;
+ muraTogetherKind=null;
+ muraCenterKind=null;
  const snapshot=demoSnapshot();
  const project=snapshot.cooperations.find(x=>x.id==='00000000-0000-4000-8000-000000000301');
  const chat=snapshot.coopChats.find(x=>x.cooperation_id===project?.id);
@@ -1325,6 +1809,9 @@ window.addEventListener('folkoop:mura-story',e=>{
 });
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
+ muraProfileStory=null;
+ muraMessageStory=null;
+ muraCenterKind=null;muraTogetherKind=null;
  guestDemo=detail.enabled!==false;
  if(!guestDemo){
   showLocalGuest=detail.target==='local';document.body.classList.remove('guest-preview-open','network-login-open');
@@ -1337,10 +1824,33 @@ window.addEventListener('folkoop:guest-demo',e=>{
   else if(!guestDemo&&sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');
  }catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){showLocalGuest=false;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{navigateNetwork(target);if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();}).catch(()=>render());}else render();
+ if(guestDemo){showLocalGuest=false;const visitVersion=version;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{if(!guestDemo||version!==visitVersion)return;
+  // The tour restores its own route. An intermediate hashchange to /me can
+  // arrive after that restoration and clear the selected story/card.
+  if(detail.target!=='tour')navigateNetwork(target);
+  if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();if(detail.target==='tour')window.dispatchEvent(new CustomEvent('folkoop:mura-tour-ready'));}).catch(()=>render());}else if(detail.target==='account')run(async()=>{await api?.restore?.();if(currentUser())await load();});else render();
 });
+api?.onChange(()=>{documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';});
+// Refresh only a visible, idle real account. Never replace a form being edited.
+let liveRefreshAt=0,liveRefreshError=false;
+async function refreshAccount(){
+ if(guestDemo||!currentUser()||busy||document.visibilityState!=='visible'||navigator.onLine===false)return;
+ if(host.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select,[contenteditable]'))return;
+ if(document.querySelector('dialog[open]'))return;
+ if(Date.now()-liveRefreshAt<15000)return;
+ const pane=host.querySelector('.chat-messages');
+ if(pane&&pane.scrollHeight-pane.scrollTop-pane.clientHeight>80)return;
+ liveRefreshAt=Date.now();busy=true;const expected=version,uid=currentUser().id;
+ try{await load();if(expected!==version||currentUser()?.id!==uid)return;liveRefreshError=false;render();}
+ catch(e){if(expected===version&&currentUser()?.id===uid){liveRefreshError=true;render();}}
+ finally{busy=false;}
+}
+setInterval(refreshAccount,60000);
+window.addEventListener('focus',refreshAccount);
+window.addEventListener('online',refreshAccount);
+document.addEventListener('visibilitychange',refreshAccount);
 window.addEventListener('offline',()=>{if(!guestDemo&&data.meeting){data.meeting.stale=true;render();}});
-api?.onChange(()=>{meetingDraft=null;meetingOutcomeDraft=null;meetingRepeatDraft=null;});
+api?.onChange(()=>{meetingDraft=null;meetingOutcomeDraft=null;meetingRepeatDraft=null;decisionDrafts={};taskWorkDrafts={};taskHistories={};taskNotificationJump=null;needDrafts={};roomDrafts={};roomNotificationJump=null;});
 // Expire the visible snapshot without writing or manufacturing a live status.
 setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
@@ -1349,5 +1859,5 @@ if(emailLink){
  guestDemo=false;
  if(!emailLink.error){const pending=emailLink;api.inspectEmailLink(pending.token).then(who=>{if(emailLink!==pending)return;emailLinkIdentity=who;render();}).catch(()=>{if(emailLink!==pending)return;emailLink={error:true};emailLinkIdentity=null;render();});}
  render();
-}else if(guestDemo)load().then(render).catch(render);else render();
+}else if(guestDemo)load().then(render).catch(render);else run(async()=>{await api?.restore?.();if(currentUser())await load();});
 })();

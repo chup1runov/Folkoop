@@ -1,5 +1,23 @@
 # Account export report — 18 October 2026
 
+## 6 November 2026 — local paging update, not deployed
+
+The 43 current actor-filtered collections now traverse PostgREST pages with exact
+counts and primary-key tie-breakers. A server page shorter than the requested
+limit is not treated as complete while the exact count says more exists. Changing
+counts, repeated primary keys and interrupted requests fail the export. A safety
+cap of 100,000 records per collection raises EXPORT_TOO_LARGE rather than silently
+truncating. Missing counts remain `unknown` in the manifest; they never prove
+completeness. Tests cover 1001 same-timestamp messages across the old boundary.
+
+The export remains non-atomic: equal-count edits between pages cannot be fully
+detected. `completeAccountExport:false` remains correct because private/provider
+records and local drafts are not included. See the [operator process](../ACCOUNT_CLOSURE_RUNBOOK.md)
+for separate collection/delivery and explicit closure authorization. No actual
+account was exported or closed. The historical bounded-v2 description below is
+superseded only for paging; its privacy/scope restrictions remain in force.
+
+
 Priority: unified plan C04 (P0), bounded convenience-export transparency slice.
 This does not complete C03's wider cross-permission gate, the full operator
 access package, account-closure rehearsal or ordinary-participant launch.
