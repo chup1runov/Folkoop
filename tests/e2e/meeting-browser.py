@@ -63,8 +63,9 @@ async def main():
    await page.check('#netLogin [name=policyAccepted]')
    await page.click('#netLogin [value=verify]')
    await expect(page.locator('#netProfile')).to_be_visible()
-   await page.goto(BASE+'?intro=0#/projects')
-   # goto only changes hash here, retaining in-memory session.
+   # Route within the signed-in document. WebKit goto may reload and discard
+   # the intentionally memory-only session used by this synthetic contract.
+   await page.evaluate("location.hash='#/projects'")
    await page.locator('[data-coop="open"][data-id="'+P+'"]').click()
    await expect(page.locator('#meetingConfirmTitle')).to_be_visible()
    return context,page,errors
