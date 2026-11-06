@@ -62,6 +62,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
      try{detail=await response.json();}catch{}
     }
+    if(path==='/auth/v1/otp'&&response.status===429)throw fail('EMAIL_RATE_LIMIT');
     if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
@@ -85,7 +86,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   try{
    const response=await transport('/api/network/session'+(all?'?all=1':''),{method,headers:{Accept:'application/json',...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
    const result=await response.json();
-   if(!response.ok)throw fail(response.status===401?'AUTH_REQUIRED':result.message==='PILOT_INVITE_REQUIRED'?'INVITE_REQUIRED':'REQUEST_FAILED');
+   if(!response.ok)throw fail(response.status===401?(method==='POST'?'AUTH_LINK_EXPIRED':'AUTH_REQUIRED'):result.message==='PILOT_INVITE_REQUIRED'?'INVITE_REQUIRED':response.status===429?'AUTH_RATE_LIMIT':'AUTH_SERVER');
    return result;
   }catch(e){if(e.code)throw e;throw fail('NETWORK');}finally{clearTimeout(timer);}
  }

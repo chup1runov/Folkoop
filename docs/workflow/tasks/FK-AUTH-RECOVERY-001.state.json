@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "FK-AUTH-RECOVERY-001",
+  "updated": "2026-11-06",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-AUTH-RECOVERY-001.md",
+  "requirements": [
+    {
+      "id": "FK-AUTH-RECOVERY-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-RECOVERY-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-AUTH-RECOVERY-001-R03",
+      "checks": [
+        "C03"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-AUTH-RECOVERY-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-AUTH-RECOVERY-001-R01",
+        "FK-AUTH-RECOVERY-001-R02"
+      ],
+      "evidence": [
+        "FK-AUTH-RECOVERY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-RECOVERY-001-T02",
+      "status": "in_progress",
+      "requirements": [
+        "FK-AUTH-RECOVERY-001-R03"
+      ],
+      "evidence": [
+        "FK-AUTH-RECOVERY-001-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-AUTH-RECOVERY-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-AUTH-RECOVERY-001/local-tests.txt"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish reviewed code/wiki on existing free services; observe deployment. Do not send email; actual provider login remains separately pending.",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-06",
+    "scope": "Implement recovery and error messages, local tests without email, wiki updates, publication on existing free services."
+  }
+}

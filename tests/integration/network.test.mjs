@@ -71,7 +71,7 @@ test('logout clears memory even on revocation failure',async()=>{const s=setup(u
 test('expired session requires new login',async()=>{const s=setup();await s.login();s.expire();assert.equal(s.c.user(),null);await assert.rejects(s.c.communities(),e=>e.code==='AUTH_REQUIRED');});
 test('401 clears session',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?json({},401):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='AUTH_REQUIRED');assert.equal(s.c.user(),null);});
 test('403 differs from a successful empty directory',async()=>{const s=setup(url=>decodeURIComponent(url).includes('/rest/v1/fk_profiles?select=id,name,skills,about&listed=eq.true')?json({},403):null);await s.login();await assert.rejects(s.c.directory(),e=>e.code==='DENIED');});
-test('429 does not replay mutations',async()=>{const s=setup(url=>url.endsWith('/otp')?json({},429):null);await assert.rejects(s.c.requestCode('test@example.test'),e=>e.code==='RATE_LIMIT');assert.equal(s.calls.length,1);});
+test('429 does not replay mutations',async()=>{const s=setup(url=>url.endsWith('/otp')?json({},429):null);await assert.rejects(s.c.requestCode('test@example.test'),e=>e.code==='EMAIL_RATE_LIMIT');assert.equal(s.calls.length,1);});
 test('HTML rejected as API data',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?new Response('<html>error</html>'):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='INVALID_RESPONSE');});
 test('malformed data not treated as empty',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?json({error:'broken'}):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='INVALID_RESPONSE');});
 test('inflight reply cannot restore data after logout',async()=>{let release;const s=setup(url=>url.includes('/rest/v1/fk_communities')?new Promise(r=>release=()=>r(json([{name:'Private'}]))):null);await s.login();const pending=s.c.communities();await s.c.logout();release();await assert.rejects(pending,e=>e.code==='STALE');assert.equal(s.c.user(),null);});
@@ -180,4 +180,12 @@ test('export crosses the 1000-row boundary with a stable tie-breaker and no miss
  });await s.login();const result=await s.c.exportOwn();assert.equal(result.messages.length,1001);assert.equal(new Set(result.messages.map(m=>m.id)).size,1001);
  const section=result.manifest.sections.find(x=>x.collection==='fk_messages');assert.equal(section.pages,2);assert.equal(section.coverage,'visible-query-complete');assert.equal(result.manifest.atomicSnapshot,false);assert.equal(result.manifest.completeAccountExport,false);
  const query=s.calls.find(x=>x.url.includes('/fk_messages?')).url;assert(new URL(query).searchParams.get('order').includes('id.asc'));
+});
+
+test('email rate limit differs from general request failure',async()=>{const c=N.client(cfg,{transport:async()=>json({code:'over_email_send_rate_limit'},429)});await assert.rejects(c.requestCode('synthetic@example.test'),e=>e.code==='EMAIL_RATE_LIMIT');});
+test('session retry preserves supplied credentials and distinguishes terminal and transient errors',async()=>{
+ const calls=[];let status=503;const c=N.client({...cfg,serverSession:true},{transport:async(url,o)=>{calls.push(JSON.parse(o.body));return json(status===200?{id:uid,expiresAt:Date.now()+60000}:{message:'SESSION_UNAVAILABLE'},status);}});
+ await assert.rejects(c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh'),e=>e.code==='AUTH_SERVER');
+ status=200;await c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh');assert.deepEqual(calls[0],calls[1]);
+ status=401;await assert.rejects(c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh'),e=>e.code==='AUTH_LINK_EXPIRED');
 });

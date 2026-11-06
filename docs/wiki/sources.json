@@ -101,10 +101,10 @@
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
-      "status": "local-code",
+      "status": "local-recovery-verified-publication-pending",
       "checked_at": "2026-11-06",
-      "checked_scope": "FK-REL-001: route loading, busy gate, version invalidation and background refresh re-read. Delayed profile response reproduced lost navigation; queued latest-route load passes Chromium 1366/390. 463 Node checks passed; release CI pending.",
-      "sha256": "4bc7409043643ea0008cc673fa6d39d313288ab49ae41dea61b5286a1de83759"
+      "checked_scope": "Read recovery diff and local tests: 472 passed plus synthetic desktop/mobile retry, expiry and rate-limit scenarios; real login pending.",
+      "sha256": "53ed3524c10b5a0e984d0258642fc8e27c51edc0a86fb43dd98f560b4b5231ea"
     },
     {
       "id": "SRC-MURA-CSS",
@@ -213,10 +213,10 @@
     {
       "id": "SRC-SERVER-SESSION",
       "path": "server/auth/session.mjs",
-      "status": "deployed-real-login-pending",
+      "status": "local-recovery-verified-publication-pending",
       "checked_at": "2026-11-06",
-      "checked_scope": "Read current handler and diff; 7 session tests and 468 total tests passed. Cloudflare ea30746 deployed. Real email login/reload after fix blocked by provider email rate limit.",
-      "sha256": "9ee74254736bcd1a9db7d7145586ba32350051468867fe31b9db07bcdd4e4e01"
+      "checked_scope": "Read recovery diff and local tests: 472 passed plus synthetic desktop/mobile retry, expiry and rate-limit scenarios; real login pending.",
+      "sha256": "e1021c77a9c9ae17d0bd76322918190f461d10cc9da066b7d40aca7a18a12a66"
     },
     {
       "id": "SRC-STAB003-RESULTS",
@@ -229,10 +229,10 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "local-verified-not-deployed",
+      "status": "local-recovery-verified-publication-pending",
       "checked_at": "2026-11-06",
-      "checked_scope": "Paged table/export reads, command retries and server search; 462 Node checks and browser synthetic upstream, no production acceptance",
-      "sha256": "f4e992c96d94c54c62736f4994395fa8d9924a99d173c4483a9e4e69427eaaeb"
+      "checked_scope": "Read recovery diff and local tests: 472 passed plus synthetic desktop/mobile retry, expiry and rate-limit scenarios; real login pending.",
+      "sha256": "ff3ec04b9c1479d72d65704c2ac824bdb79332a9a28bbf184030b89ab0deb0cc"
     }
   ]
 }

@@ -11,3 +11,5 @@ test('expired, recovery, provider errors and malformed callbacks fail closed and
 test('email callback capture precedes analytics and all other application scripts',()=>{const html=readFileSync('apps/web/folkoop.html','utf8');assert.equal([...html.matchAll(/<script[^>]+src="([^"]+)"/g)][0][1],'./email-link.js');});
 
 test('Cloudflare root callback returns to account and scrubs tokens',()=>{const r=run(valid,'/');assert.equal(r.value.token,'x'.repeat(32));assert.equal(r.writes[0][2],'/?intro=0#/me');assert.equal(r.ctx.FolkoopEmailLink.take(),null);});
+
+test('transient retry retains refresh only in memory until explicit clear',()=>{const r=run(valid);assert.equal(r.value.takeRefresh(),'never-persist');assert.equal(r.value.takeRefresh(),'never-persist');assert(!JSON.stringify(r.value).includes('never-persist'));r.value.clear();assert.equal(r.value.takeRefresh(),null);assert.equal(r.value.token,null);});

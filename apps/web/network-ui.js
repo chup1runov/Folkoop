@@ -117,7 +117,18 @@ const emailLinkCopy={
  ku:['Girêdana têketinê bişîne','Girêdana e-peyamê veke. Heke li şûna wê kod hat, li jêr binivîse.','Bi vî hesabî têkeve','Girêdan ne derbasdar e an dema wê derbas bûye. E-peyameke nû bixwaze.','Hesabek din']
 };
 const linkText=i=>(emailLinkCopy[lang()]||emailLinkCopy.en)[i];
+const authRecoveryCopy={"en": ["Email sending is temporarily limited. Wait before requesting another email; repeated clicks will not help. The reset time is unknown.", "Sign-in is temporarily unavailable. Try signing in again here without requesting another email. If the link has expired, request a new one.", "The connection was interrupted. Try signing in again here; no new email is sent.", "Retry sign-in"], "ru": ["Отправка писем временно ограничена. Подожди перед новым запросом: повторные нажатия не помогут. Точное время снятия лимита неизвестно.", "Сервис входа временно недоступен. Повтори вход здесь без нового письма. Если ссылка истекла, запроси новую.", "Соединение прервалось. Повтори вход здесь: новое письмо не отправляется.", "Повторить вход"], "sv": ["Utskick av mejl är tillfälligt begränsade. Vänta innan du begär ett nytt; upprepade klick hjälper inte. Återställningstiden är okänd.", "Inloggningen är tillfälligt otillgänglig. Försök igen här utan nytt mejl. Begär en ny länk om den gamla har gått ut.", "Anslutningen avbröts. Försök logga in igen här; inget nytt mejl skickas.", "Försök igen"], "uk": ["Надсилання листів тимчасово обмежене. Зачекай: повторні натискання не допоможуть. Час зняття ліміту невідомий.", "Вхід тимчасово недоступний. Спробуй тут без нового листа. Якщо посилання прострочене, запроси нове.", "З’єднання перервано. Спробуй увійти тут знову; новий лист не надсилається.", "Повторити вхід"], "fi": ["Sähköpostien lähettämistä on rajoitettu tilapäisesti. Odota ennen uutta pyyntöä. Palautumisaikaa ei tiedetä.", "Kirjautuminen ei ole nyt käytettävissä. Yritä uudelleen tässä ilman uutta viestiä. Pyydä uusi linkki, jos vanha on vanhentunut.", "Yhteys katkesi. Yritä kirjautua uudelleen tässä; uutta viestiä ei lähetetä.", "Yritä uudelleen"], "es": ["El envío de correos está limitado temporalmente. Espera antes de pedir otro; repetir clics no ayuda. No conocemos la hora de restablecimiento.", "El acceso no está disponible temporalmente. Reintenta aquí sin pedir otro correo. Si el enlace caducó, solicita uno nuevo.", "Se interrumpió la conexión. Reintenta aquí; no se enviará otro correo.", "Reintentar acceso"], "bs": ["Slanje poruka je privremeno ograničeno. Sačekaj prije novog zahtjeva; ponovni klikovi ne pomažu. Vrijeme ukidanja ograničenja nije poznato.", "Prijava trenutno nije dostupna. Pokušaj ponovo ovdje bez nove poruke. Ako je link istekao, zatraži novi.", "Veza je prekinuta. Pokušaj prijavu ponovo ovdje; nova poruka se ne šalje.", "Pokušaj ponovo"], "ar": ["إرسال البريد محدود مؤقتاً. انتظر قبل طلب رسالة أخرى؛ تكرار النقر لا يساعد. وقت رفع الحد غير معروف.", "الدخول غير متاح مؤقتاً. حاول هنا دون طلب رسالة جديدة. إذا انتهت صلاحية الرابط، اطلب رابطاً جديداً.", "انقطع الاتصال. حاول الدخول هنا مجدداً؛ لن تُرسل رسالة جديدة.", "إعادة محاولة الدخول"], "fa": ["ارسال ایمیل موقتاً محدود شده است. پیش از درخواست بعدی صبر کن؛ کلیک مکرر کمکی نمی‌کند. زمان رفع محدودیت مشخص نیست.", "ورود موقتاً در دسترس نیست. همین‌جا بدون ایمیل جدید دوباره تلاش کن. اگر پیوند منقضی شده، پیوند تازه بخواه.", "ارتباط قطع شد. همین‌جا دوباره وارد شو؛ ایمیل تازه‌ای ارسال نمی‌شود.", "تلاش دوباره برای ورود"], "so": ["Dirista iimaylka si ku meel gaar ah ayaa loo xaddiday. Sug ka hor codsi kale; gujin badan ma caawinayso. Waqtiga xadka laga qaadayo lama yaqaan.", "Gelitaanku hadda ma shaqaynayo. Halkan mar kale isku day adigoon iimayl cusub dalban. Haddii xiriiriyuhu dhacay, mid cusub codso.", "Xiriirkii ayaa go’ay. Halkan mar kale isku day; iimayl cusub lama dirayo.", "Mar kale isku day"], "ku": ["Şandina e-peyaman demkî hatiye sînorkirin. Berî daxwazeke din li bendê bimîne; tikandinên dubare alîkar nînin. Dema rakirina sînorê nayê zanîn.", "Têketin niha ne berdest e. Li vir bê e-peyameke nû dîsa biceribîne. Heke dema girêdanê derbas bûye, ya nû bixwaze.", "Têkilî qut bû. Li vir dîsa biceribîne; e-peyameke nû nayê şandin.", "Têketinê dîsa biceribîne"]};
+const authRecoveryText=i=>(authRecoveryCopy[lang()]||authRecoveryCopy.en)[i];
 let emailLink=globalThis.FolkoopEmailLink?.take?.()||null,emailLinkIdentity=null;
+function clearEmailLink(){emailLink?.clear?.();emailLink=null;emailLinkIdentity=null;}
+function expireEmailLink(){clearEmailLink();emailLink={error:true};}
+async function inspectPendingEmailLink(){
+ const pending=emailLink;if(!pending||pending.error)return;
+ if(pending.expiresAt<=Date.now()){expireEmailLink();throw Object.assign(new Error('AUTH_LINK_EXPIRED'),{code:'AUTH_LINK_EXPIRED'});}
+ try{const who=await api.inspectEmailLink(pending.token);if(emailLink===pending)emailLinkIdentity=who;}
+ catch(e){if(emailLink!==pending)return;if(e.code==='AUTH_REQUIRED'){expireEmailLink();throw Object.assign(new Error('AUTH_LINK_EXPIRED'),{code:'AUTH_LINK_EXPIRED'});}throw Object.assign(e,{code:e.code==='NETWORK'?'AUTH_CONNECTION':'AUTH_SERVER'});}
+}
+
 let exportReport=null;
 api?.onChange(()=>{exportReport=null;});
 
@@ -1004,7 +1015,7 @@ function render(){
   const emailCodeOnly=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label><button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
   const emailFinish=`<div class="pilot-login-step"><label>${esc(t('code'))}<input name="code" inputmode="numeric" autocomplete="one-time-code" minlength="6" maxlength="10" value="${esc(otpCode)}"></label>${inviteField}${policyBlock}<button name="operation" value="verify" class="button">${esc(t('verify'))}</button></div>`;
   if(emailLink){
-   html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2>${emailLinkIdentity?`<p>${esc(linkText(2))} <strong>${esc(emailLinkIdentity.email)}</strong></p><form id="netEmailLink" class="editor card">${inviteField}${policyBlock}<button class="button">${esc(t('verify'))}</button></form>`:`<p role="status">${esc(emailLink.error?linkText(3):t('loading'))}</p>`}<button type="button" class="text-button" data-email-link-cancel>${esc(linkText(4))}</button></section>`;
+   html=`<section class="pilot-login-shell"><h2>${esc(t('login'))}</h2>${emailLinkIdentity?`<p>${esc(linkText(2))} <strong>${esc(emailLinkIdentity.email)}</strong></p><form id="netEmailLink" class="editor card">${inviteField}${policyBlock}<button class="button">${esc(t('verify'))}</button></form>`:`<p role="status">${esc(emailLink.error?linkText(3):busy?t('loading'):'')}</p>${!emailLink.error?`<button type="button" class="button" data-email-link-retry>${esc(authRecoveryText(3))}</button>`:''}`}<button type="button" class="text-button" data-email-link-cancel>${esc(emailLink.error?linkText(0):linkText(4))}</button></section>`;
   }else if(api.googleOAuthEnabled){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${inviteField}${policyBlock}<button type="button" class="button pilot-google" data-auth="google">${esc(t('google'))}</button><details class="pilot-alt-auth"${codeRequested?' open':''}><summary>${esc(t('email'))}</summary><div class="pilot-alt-auth-body">${emailStart}${codeRequested?emailCodeOnly:''}</div></details></form></section>`;
   }else{
@@ -1242,7 +1253,7 @@ async function run(fn){
  if(busy)return;busy=true;host.querySelectorAll('button').forEach(b=>b.disabled=true);
  if(!guestDemo){notice=t('busy');const status=host.querySelector('#netStatus');if(status)status.textContent=notice;}
  else notice='';
- try{await fn();}catch(e){notice=e.code==='MESSAGE_UNCONFIRMED'?(uncertainMessageCopy[lang()]||uncertainMessageCopy.en):t(({AUTH_REQUIRED:'auth',INVITE_REQUIRED:'inviteRequired',POLICY_REQUIRED:'policyRequired',DENIED:'denied',RATE_LIMIT:'limit',INVALID_INPUT:'invalid',STALE:'stale'})[e.code]||'error');}
+ try{await fn();}catch(e){notice=e.code==='EMAIL_RATE_LIMIT'?authRecoveryText(0):e.code==='AUTH_RATE_LIMIT'?t('limit'):e.code==='AUTH_SERVER'?authRecoveryText(1):e.code==='AUTH_CONNECTION'?authRecoveryText(2):e.code==='AUTH_LINK_EXPIRED'?linkText(3):e.code==='MESSAGE_UNCONFIRMED'?(uncertainMessageCopy[lang()]||uncertainMessageCopy.en):t(({AUTH_REQUIRED:'auth',INVITE_REQUIRED:'inviteRequired',POLICY_REQUIRED:'policyRequired',DENIED:'denied',RATE_LIMIT:'limit',INVALID_INPUT:'invalid',STALE:'stale'})[e.code]||'error');}
  finally{busy=false;if(routeLoadPending)loadCurrentRoute();else render();}
 }
 host.addEventListener('input',e=>{
@@ -1357,9 +1368,9 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
    await load();notice=globalThis.FolkoopMeetings.reminderText(sent?2:3);return;
   }
   if(f.id==='netEmailLink'){
-   if(!emailLinkIdentity||!emailLink?.token||emailLink.expiresAt<=Date.now()){emailLink={error:true};emailLinkIdentity=null;notice=linkText(3);return;}
-   await api.completeOAuth(emailLink.token,Math.floor((emailLink.expiresAt-Date.now())/1000),values.inviteCode||'',{termsAccepted:values.policyAccepted==='on',privacyAcknowledged:values.policyAccepted==='on'},emailLink.takeRefresh?.());
-   emailLink=null;emailLinkIdentity=null;await load();notice='';return;
+   if(!emailLinkIdentity||!emailLink?.token||emailLink.expiresAt<=Date.now()){expireEmailLink();notice=linkText(3);return;}
+   try{await api.completeOAuth(emailLink.token,Math.floor((emailLink.expiresAt-Date.now())/1000),values.inviteCode||'',{termsAccepted:values.policyAccepted==='on',privacyAcknowledged:values.policyAccepted==='on'},emailLink.takeRefresh?.());}catch(e){if(['AUTH_LINK_EXPIRED','AUTH_REQUIRED'].includes(e.code)){expireEmailLink();e.code='AUTH_LINK_EXPIRED';}else if(e.code==='NETWORK')e.code='AUTH_CONNECTION';throw e;}
+   clearEmailLink();await load();notice='';return;
   }
   if(['netMeetingTerms','netMeetingOutcome','netMeetingRepeat'].includes(f.id)||f.classList.contains('netMeetingResponse')||f.classList.contains('netMeetingRoom')){
    try{
@@ -1860,10 +1871,11 @@ api?.onChange(()=>{meetingDraft=null;meetingOutcomeDraft=null;meetingRepeatDraft
 // Expire the visible snapshot without writing or manufacturing a live status.
 setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-cancel]')){emailLink=null;emailLinkIdentity=null;pilotInvite='';policyAccepted=false;notice='';render();}});
+host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-cancel]')){clearEmailLink();pilotInvite='';policyAccepted=false;notice='';render();}});
+host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-retry]'))run(inspectPendingEmailLink);});
 if(emailLink){
  guestDemo=false;
- if(!emailLink.error){const pending=emailLink;api.inspectEmailLink(pending.token).then(who=>{if(emailLink!==pending)return;emailLinkIdentity=who;render();}).catch(()=>{if(emailLink!==pending)return;emailLink={error:true};emailLinkIdentity=null;render();});}
+ if(!emailLink.error)run(inspectPendingEmailLink);
  render();
 }else if(guestDemo)load().then(render).catch(render);else run(async()=>{await api?.restore?.();if(currentUser())await load();});
 })();
