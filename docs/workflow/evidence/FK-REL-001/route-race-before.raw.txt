@@ -1,0 +1,2 @@
+PASS newest 101, cursor older page, exact viewport reads/race, draft/scroll and chat isolation 1366
+PASS newest 101, cursor older page, exact viewport reads/race, draft/scroll and chat isolation 390

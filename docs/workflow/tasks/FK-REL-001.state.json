@@ -83,7 +83,7 @@
     }
   ],
   "open_questions": [
-    "Cloudflare login handoff pending"
+    "Cloudflare SESSIONS D1 production binding awaits action-time confirmation; HttpOnly client mode remains disabled"
   ],
-  "next_action": "Finish browser release regressions, create release PR and pass CI; Cloudflare login still pending. Hosted 25 migrations applied; no site release yet."
+  "next_action": "Finish PR #289 CI (navigation race and WebKit focus fixed), merge only after required checks; complete authorized Cloudflare configuration and verify deployment. Hosted migrations applied; site not released."
 }
