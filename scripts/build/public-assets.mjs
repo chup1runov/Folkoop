@@ -3,6 +3,10 @@
 // to the public artifact and which of those are core offline shell assets.
 
 export const BUILD_FILES=Object.freeze([
+  'network-budget.js',
+  'network-welcome.js',
+  'network-for-you.js',
+  'network-task-basis-notices.js',
   'email-link.js',
   'city-source.html','folkoop.html','styles.css','compact.css','about-project.css',
   'civic-core.js','daily-data.js','today.js','riksdagen.js','nvdb.js',
@@ -16,11 +20,15 @@ export const BUILD_FILES=Object.freeze([
   
   'folkoop-city.js','folkoop-mark.png',
   'folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-ui.js','auth-callback.html',
+  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','auth-callback.html',
   'auth-callback-core.mjs','auth-callback.mjs','home-welcome.js'
 ]);
 
 export const PRECACHE_PATHS=Object.freeze([
+  'network-budget.js',
+  'network-welcome.js',
+  'network-for-you.js',
+  'network-task-basis-notices.js',
   'email-link.js',
   '','index.html','styles.css','compact.css','about-project.css','civic-core.js',
   'daily-data.js','today.js','riksdagen.js','nvdb.js','goteborg-plans.js','app.js',
@@ -33,5 +41,5 @@ export const PRECACHE_PATHS=Object.freeze([
   
   'folkoop-city.js',
   'folkoop-mark.png','folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-ui.js','home-welcome.js'
+  'network-form-focus.js','network-activity.js','network-messaging.js','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','home-welcome.js'
 ]);

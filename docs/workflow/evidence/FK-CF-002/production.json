@@ -1,0 +1,17 @@
+{
+  "commit": "266fdfe93ac861436f6cda5ec1820ae9bbaa89f6",
+  "deployment": "6337663c-4911-4108-ac8d-9319643ab814",
+  "status": "success",
+  "site": "https://folkoop.pages.dev/",
+  "assets_match": true,
+  "real_email_login": "not verified: Proton delivery not observed",
+  "mail_send_events_utc": [
+    "2026-10-29T02:05:44Z",
+    "2026-10-29T02:09:44Z"
+  ],
+  "site_url": "https://folkoop.pages.dev/",
+  "redirect_urls": [
+    "https://folkoop.pages.dev/",
+    "https://chup1runov.github.io/Folkoop/"
+  ]
+}

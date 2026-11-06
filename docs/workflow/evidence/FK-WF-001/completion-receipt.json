@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "independent_review": "final-review.md",
+  "reviewed_candidate_sha256": "a23e83399c91aeb3d44ec6fab60ef1e8fe823be5ffb1aebe12136ba9afcb88d8",
+  "actual_state_sha256": "a23e83399c91aeb3d44ec6fab60ef1e8fe823be5ffb1aebe12136ba9afcb88d8",
+  "command": [
+    "node",
+    "scripts/knowledge/workflow.mjs",
+    "check",
+    "docs/workflow/tasks/FK-WF-001.state.json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 8,\n  \"tasks\": 7,\n  \"evidence\": 8,\n  \"checks\": 8,\n  \"sources\": 18,\n  \"markdownPages\": 16,\n  \"localLinks\": 185,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+  "stderr": "",
+  "baseline_files": 2971,
+  "missing": [],
+  "unexpected_changes": [],
+  "old_journal_preserved": true,
+  "limits": "Read-only structure/preservation after promoting the independently reviewed exact state. No product, browser, database, deployment or human-language recheck."
+}

@@ -70,7 +70,7 @@ async def main():
      state['chats']=[{'id':CHAT,'kind':'direct','owner_id':None,'title':'','created_at':'2026-09-25T10:00:00Z'}]
      state['chat_members']=[{'conversation_id':CHAT,'user_id':UID,'role':'member','joined_at':'2026-09-25T10:00:00Z','last_read_at':None},{'conversation_id':CHAT,'user_id':OTHER,'role':'member','joined_at':'2026-09-25T10:00:00Z','last_read_at':None}]
      result=CHAT
-    elif url.endswith('/fk_send_message'):
+    elif url.endswith('/fk_send_message_once'):
      state['chat_messages'].append({'id':MSG,'conversation_id':payload['p_conversation'],'author_id':UID,'body':payload['p_body'],'created_at':'2026-09-25T10:01:00Z'});result=MSG
     elif url.endswith('/fk_mark_chat_read'):
      for m in state['chat_members']:
@@ -448,7 +448,7 @@ async def main():
   assert await page.locator('#networkPanel script').count()==0
   assert await page.evaluate("window.__folkoopXssProbe") == 0
   assert any(url.endswith('/fk_start_direct') for url,_ in state['requests'])
-  assert any(url.endswith('/fk_send_message') for url,_ in state['requests'])
+  assert any(url.endswith('/fk_send_message_once') for url,_ in state['requests'])
   passed.append('Direct messaging uses server RPCs and escapes message HTML')
   await page.click('[data-net=logout]')
   await expect(page.locator('#netLogin')).to_be_visible()

@@ -47,8 +47,8 @@ test('activity domain exposes a narrow explicit API and computes badge counts',(
   button:()=>'<button>Open</button>',
   documentRef:{}
  });
- assert.deepEqual(JSON.parse(JSON.stringify(domain.counts())),{messages:4,together:3,projects:4});
- assert.deepEqual(Object.keys(domain).sort(),['activityLabel','counts','renderNotifications','syncBadges']);
+ assert.deepEqual(JSON.parse(JSON.stringify(domain.counts())),{messages:4,together:3,projects:4,rooms:0,contributions:0,meetingBudget:0});
+ assert.deepEqual(Object.keys(domain).sort(),['activityLabel','counts','renderNotifications','renderRoomNotifications','renderTaskActions','syncBadges']);
 });
 
 test('activity labels preserve actor and lifecycle semantics',()=>{

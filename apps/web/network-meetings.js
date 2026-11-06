@@ -38,9 +38,157 @@ function stockholmTime(local,offset){
  return date.toISOString();
 }
 function formValues(v){return {...v,startsAt:stockholmTime(v.start,v.offset),endsAt:stockholmTime(v.end,v.endOffset)};}
-function render({snapshot,user,owner,members,name,draft,outcomeDraft,repeatDraft,now=Date.now(),online=true}){
+const roomCopy={
+ ru:'Помещение для встречи|Помещение подтверждено по согласованным условиям|Помещение требует согласования или повторной привязки|Люди и помещение готовы|Встреча ещё не готова|Связать со встречей|Будет создана новая версия встречи. Всем потребуется подтвердить участие и роли заново.|Сначала согласуйте помещение. Время должно покрывать встречу, количество мест — её вместимость.',
+ en:'Meeting room|Room confirmed under agreed terms|Room needs agreement or relinking|People and room are ready|Meeting is not ready yet|Link to meeting|A new meeting version will be created. Everyone must reconfirm attendance and roles.|Agree the room first. Its time must cover the meeting and its places must cover capacity.',
+ sv:'Möteslokal|Lokalen är bekräftad enligt överenskomna villkor|Lokalen behöver överenskommelse eller ny koppling|Deltagare och lokal är redo|Mötet är inte redo än|Koppla till mötet|En ny mötesversion skapas. Alla måste bekräfta deltagande och roller igen.|Kom överens om lokalen först. Tiden måste täcka mötet och platserna dess kapacitet.',
+ uk:'Приміщення зустрічі|Приміщення підтверджено за погодженими умовами|Потрібне погодження або повторне прив’язування|Люди та приміщення готові|Зустріч ще не готова|Пов’язати із зустріччю|Буде нова версія зустрічі. Усім потрібно знову підтвердити участь і ролі.|Спочатку погодьте приміщення. Час і кількість місць мають покривати зустріч.',
+ fi:'Tapaamistila|Tila vahvistettu sovituin ehdoin|Tila vaatii sopimisen tai uuden liitoksen|Ihmiset ja tila ovat valmiina|Tapaaminen ei ole vielä valmis|Liitä tapaamiseen|Luodaan uusi versio. Kaikkien on vahvistettava osallistuminen ja roolit uudelleen.|Sovi tilasta ensin. Ajan ja paikkojen on riitettävä tapaamiseen.',
+ bs:'Prostor sastanka|Prostor potvrđen po dogovorenim uslovima|Potreban dogovor ili ponovno povezivanje|Ljudi i prostor su spremni|Sastanak još nije spreman|Poveži sa sastankom|Nastaje nova verzija. Svi ponovo potvrđuju dolazak i uloge.|Prvo dogovorite prostor. Vrijeme i broj mjesta moraju pokriti sastanak.',
+ es:'Sala de la reunión|Sala confirmada según lo acordado|La sala necesita acuerdo o una nueva vinculación|Personas y sala listas|La reunión aún no está lista|Vincular a la reunión|Se creará una nueva versión. Todos deben reconfirmar asistencia y funciones.|Acuerda primero la sala. El horario y las plazas deben cubrir la reunión.',
+ ar:'مكان اللقاء|المكان مؤكد بالشروط المتفق عليها|يحتاج المكان اتفاقًا أو ربطًا جديدًا|الأشخاص والمكان جاهزون|اللقاء غير جاهز بعد|ربط باللقاء|سيُنشأ إصدار جديد. على الجميع تأكيد الحضور والأدوار مجددًا.|اتفق على المكان أولًا. يجب أن يغطي الوقت والسعة اللقاء.',
+ fa:'مکان دیدار|مکان طبق شرایط توافق‌شده تأیید شد|مکان نیاز به توافق یا اتصال دوباره دارد|افراد و مکان آماده‌اند|دیدار هنوز آماده نیست|اتصال به دیدار|نسخه تازه ایجاد می‌شود. همه باید حضور و نقش‌ها را دوباره تأیید کنند.|ابتدا مکان را توافق کنید. زمان و ظرفیت باید دیدار را پوشش دهند.',
+ so:'Goobta kulanka|Goobta waxaa lagu xaqiijiyey shuruudaha la isku raacay|Goobtu waxay u baahan tahay heshiis ama xiriirin cusub|Dadka iyo goobtu waa diyaar|Kulanku weli diyaar ma aha|Ku xiriiri kulanka|Nooc cusub ayaa la samaynayaa. Qof walba ha xaqiijiyo imaanshaha iyo doorka mar kale.|Marka hore ku heshiiya goobta. Waqtiga iyo kuraastu ha daboolaan kulanka.',
+ ku:'Cihê civînê|Cih li gor şertên lihevhatî pejirandî ye|Cih lihevhatin an girêdana nû dixwaze|Kes û cih amade ne|Civîn hîn ne amade ye|Bi civînê ve girê bide|Guhertoyeke nû çêdibe. Divê hemû hatin û rolên xwe dîsa bipejirînin.|Pêşî li ser cih li hev bikin. Dem û cihên rûniştinê divê ji civînê re bes bin.'
+};
+function renderRoom({snapshot,owner,fresh,current,roomRequests,roomRequestsError,resources}){
+ const tx=i=>esc((roomCopy[document.documentElement.lang]||roomCopy.en).split('|')[i]),s=snapshot?.terms;
+ if(!s)return '';
+ const r=snapshot.room,confirmed=fresh&&current&&r?.confirmed===true;
+ let html=`<section class="card meeting-room"><h4>${tx(0)}</h4><p role="status">${!fresh?esc(text(19)):tx(confirmed?1:2)}</p><p><strong>${tx(fresh&&current&&(snapshot.people_room_ready??snapshot.ready)===true?3:4)}</strong></p>`;
+ if(r?.terms)html+=`<p class="meta">${esc(text(8))} ${esc(r.revision)}</p><p style="white-space:pre-wrap">${esc(r.terms.note)}</p>`;
+ if(owner&&current){
+  html+=`<p>${tx(6)}</p><p class="meta">${tx(7)}</p>`;
+  if(roomRequestsError)html+=`<p role="status">${esc(text(24))}</p>`;
+  else for(const request of roomRequests){
+   if(request.state!=='agreed'||Date.parse(request.starts_at)>Date.parse(s.starts_at)||Date.parse(request.ends_at)<Date.parse(s.ends_at)||request.people<s.capacity)continue;
+   if(confirmed&&r.request_id===request.id&&r.revision===request.revision)continue;
+   html+=`<form class="netMeetingRoom"><input type="hidden" name="version" value="${s.version}"><input type="hidden" name="request" value="${esc(request.id)}"><input type="hidden" name="revision" value="${request.revision}"><p>${esc(resources.find(x=>x.id===request.resource_id)?.title||request.resource_id)} · ${esc(text(8))} ${request.revision}</p><p style="white-space:pre-wrap">${esc(request.note)}</p><button class="button">${tx(5)}</button></form>`;
+  }
+ }
+ return html+'</section>';
+}
+const organizerCopy={
+ ru:'Ответы на текущие условия|Подтвердили участие|Ждём ответа|Отозвали подтверждение|Никого|Не хватает до минимума|Роли встречи|Нужно предложить роль|Ждём подтверждения роли|Нужно подтвердить участие|Роль подтверждена|Считаются только ответы на указанную версию. В ожидании — участники проекта без ответа, а не обещавшие прийти.|Предложенный человек больше не участник проекта|Роль отозвана',
+ en:'Responses to current terms|Attendance confirmed|Awaiting response|Confirmation withdrawn|Nobody|Still needed for minimum|Meeting roles|Propose someone for this role|Awaiting role confirmation|Attendance confirmation needed|Role confirmed|Only responses to this version count. Awaiting means project members without a response, not people who promised to attend.|Proposed person is no longer a project member|Role withdrawn',
+ sv:'Svar på aktuella villkor|Deltagande bekräftat|Väntar på svar|Bekräftelse återkallad|Ingen|Saknas till minimiantalet|Mötesroller|Föreslå någon för rollen|Väntar på rollbekräftelse|Deltagandet måste bekräftas|Rollen bekräftad|Endast svar på denna version räknas. Väntande är projektmedlemmar utan svar, inte löften om deltagande.|Föreslagen person är inte längre projektmedlem|Rollen återkallad',
+ uk:'Відповіді на поточні умови|Підтвердили участь|Чекаємо відповіді|Відкликали підтвердження|Нікого|Бракує до мінімуму|Ролі зустрічі|Потрібно запропонувати роль|Чекаємо підтвердження ролі|Потрібно підтвердити участь|Роль підтверджена|Враховуються лише відповіді на цю версію. Очікування — члени проєкту без відповіді, не обіцянка прийти.|Запропонована людина вже не учасник проєкту|Роль відкликана',
+ fi:'Vastaukset nykyisiin ehtoihin|Osallistuminen vahvistettu|Odottaa vastausta|Vahvistus peruttu|Ei ketään|Puuttuu vähimmäismäärästä|Tapaamisen roolit|Ehdota henkilöä rooliin|Odottaa roolin vahvistusta|Osallistuminen vahvistettava|Rooli vahvistettu|Vain tämän version vastaukset lasketaan. Odottavat ovat projektin jäseniä ilman vastausta, eivät osallistumislupauksia.|Ehdotettu henkilö ei ole enää projektin jäsen|Rooli peruttu',
+ bs:'Odgovori na trenutne uslove|Dolazak potvrđen|Čeka se odgovor|Potvrda povučena|Niko|Nedostaje do minimuma|Uloge sastanka|Predloži osobu za ulogu|Čeka se potvrda uloge|Potrebna potvrda dolaska|Uloga potvrđena|Računaju se samo odgovori na ovu verziju. Čekaju se članovi bez odgovora, ne obećanja dolaska.|Predložena osoba više nije član projekta|Uloga povučena',
+ es:'Respuestas a las condiciones actuales|Asistencia confirmada|Esperando respuesta|Confirmación retirada|Nadie|Faltan para el mínimo|Funciones de la reunión|Proponer a alguien|Esperando confirmación de función|Falta confirmar asistencia|Función confirmada|Solo cuentan respuestas a esta versión. Pendientes son miembros sin respuesta, no promesas de asistencia.|La persona propuesta ya no pertenece al proyecto|Función retirada',
+ ar:'الردود على الشروط الحالية|أكدوا الحضور|بانتظار الرد|سحبوا التأكيد|لا أحد|المتبقي للحد الأدنى|أدوار اللقاء|اقترح شخصًا للدور|بانتظار تأكيد الدور|يلزم تأكيد الحضور|الدور مؤكد|تُحسب ردود هذه النسخة فقط. الانتظار يعني أعضاء المشروع دون رد، وليس وعدًا بالحضور.|الشخص المقترح لم يعد عضوًا في المشروع|سُحب الدور',
+ fa:'پاسخ به شرایط فعلی|حضور تأیید شده|در انتظار پاسخ|تأیید پس گرفته شده|هیچ‌کس|باقی‌مانده تا حداقل|نقش‌های دیدار|فردی برای نقش پیشنهاد کنید|در انتظار تأیید نقش|تأیید حضور لازم است|نقش تأیید شده|فقط پاسخ‌های این نسخه حساب می‌شوند. منتظرها اعضای بدون پاسخ‌اند، نه کسانی که قول حضور داده‌اند.|فرد پیشنهادی دیگر عضو پروژه نیست|نقش پس گرفته شده',
+ so:'Jawaabaha shuruudaha hadda|Imaanshaha la xaqiijiyey|Jawaab baa la sugayaa|Xaqiijinta laga noqday|Qofna|Ka dhiman tirada ugu yar|Doorarka kulanka|Soo jeedi qof doorka qabta|Xaqiijinta doorka baa la sugayaa|Xaqiijinta imaanshaha ayaa loo baahan yahay|Doorka la xaqiijiyey|Jawaabaha noocan oo keliya ayaa la tirinayaa. Kuwa la sugayo waa xubnaha aan jawaabin, ma aha ballanqaad imaansho.|Qofka la soo jeediyey xubin mashruuca kama aha|Doorka waa laga noqday',
+ ku:'Bersivên şertên heyî|Hatina pejirandî|Li benda bersivê|Pejirandin paşve hatiye kişandin|Tu kes|Ji bo herî kêm kêmasî|Rolên civînê|Kesekî ji bo rolê pêşniyar bike|Li benda pejirandina rolê|Pejirandina hatinê lazim e|Rol pejirandî ye|Tenê bersivên vê guhertoyê tên hejmartin. Li bendê endamên bê bersiv in, ne sozên hatinê.|Kesê pêşniyarkirî êdî endamê projeyê nîne|Rol paşve hatiye kişandin'
+};
+const reminderCopy={
+ ru:'Напомнить|Личное напоминание внутри FOLKOOP, не чаще раза в сутки по каждой роли. Отозвавшим подтверждение не отправляется.|Напоминание отправлено|За последние сутки уже напоминали — повтор не отправлен|Организатор просит подтвердить|Открыть встречу',
+ en:'Remind|Private in-app reminder, at most once a day per role. Not sent after withdrawal.|Reminder sent|Already reminded in the last day — not sent again|The organizer asks you to confirm|Open meeting',
+ sv:'Påminn|Privat påminnelse i appen, högst en gång per dygn och roll. Skickas inte efter återkallande.|Påminnelse skickad|Redan påmind senaste dygnet — inget nytt skickat|Arrangören ber dig bekräfta|Öppna mötet',
+ uk:'Нагадати|Особисте нагадування в застосунку, не частіше разу на добу для ролі. Після відкликання не надсилається.|Нагадування надіслано|За останню добу вже нагадували — повтор не надіслано|Організатор просить підтвердити|Відкрити зустріч',
+ fi:'Muistuta|Yksityinen muistutus sovelluksessa, enintään kerran vuorokaudessa roolia kohti. Ei lähetetä perumisen jälkeen.|Muistutus lähetetty|Muistutettu jo viimeisen vuorokauden aikana — ei uutta lähetystä|Järjestäjä pyytää vahvistamaan|Avaa tapaaminen',
+ bs:'Podsjeti|Privatni podsjetnik u aplikaciji, najviše jednom dnevno po ulozi. Ne šalje se nakon povlačenja.|Podsjetnik poslan|Već podsjećeno tokom posljednjeg dana — nije ponovo poslano|Organizator traži potvrdu|Otvori sastanak',
+ es:'Recordar|Aviso privado en la aplicación, una vez al día por función como máximo. No se envía tras retirar la confirmación.|Recordatorio enviado|Ya se recordó en las últimas 24 horas — no se repitió|El organizador te pide confirmar|Abrir reunión',
+ ar:'تذكير|تذكير خاص داخل التطبيق، مرة يوميًا لكل دور كحد أقصى. لا يُرسل بعد سحب التأكيد.|أُرسل التذكير|أُرسل تذكير خلال اليوم الماضي — لم يُكرر|يطلب المنظم تأكيد|فتح اللقاء',
+ fa:'یادآوری|یادآوری خصوصی در برنامه، حداکثر روزی یک بار برای هر نقش. پس از پس‌گرفتن تأیید ارسال نمی‌شود.|یادآوری ارسال شد|در روز گذشته یادآوری شده — دوباره ارسال نشد|برگزارکننده تأیید می‌خواهد|بازکردن دیدار',
+ so:'Xusuusi|Xusuusin gaar ah gudaha app-ka, hal mar maalintii door kasta. Lama diro marka xaqiijinta laga noqdo.|Xusuusin waa la diray|Maalintii u dambaysay waa la xusuusiyey — mar kale lama dirin|Qabanqaabiyaha wuxuu kaa codsanayaa inaad xaqiijiso|Fur kulanka',
+ ku:'Bîr bîne|Bîranîna taybet di sepanê de, herî zêde rojê carekê ji bo her rolê. Piştî paşvekişandinê nayê şandin.|Bîranîn hat şandin|Di roja borî de hat bîranîn — dîsa nehat şandin|Organîzator dixwaze tu bipejirînî|Civînê veke'
+};
+const reminderText=i=>(reminderCopy[document.documentElement.lang]||reminderCopy.en).split('|')[i];
+function renderReminders({rows,error}){
+ if(!error&&!rows?.length)return '';
+ const title=esc(reminderText(4));
+ if(error)return `<section class="card"><h3>${title}</h3><p role="status">${esc(text(24))}</p></section>`;
+ return `<section class="card meeting-reminders"><h3>${title}</h3>${rows.map(r=>`<article><h4>${esc(r.project_title)}</h4><p>${esc(text(({attendee:1,facilitator:2,opener:3})[r.role]??28))} · ${esc(text(8))} ${r.version}</p><p class="meta">${esc(new Date(r.sent_at).toLocaleString())}</p><button class="button" data-coop="openNotify" data-target-kind="project" data-id="${esc(r.cooperation_id)}">${esc(reminderText(5))}</button></article>`).join('')}</section>`;
+}
+const reminderLogCopy={
+ ru:'Последние напоминания|Отправлено|Подтвердил после напоминания|Ждём ответа|Подтверждение отозвано|Старая версия — нужен новый ответ|Роль больше не назначена этому человеку|Больше не участник проекта|Подтверждено; связь с напоминанием не установлена|Последняя отправка по человеку и роли, не полная история. Прочтение не отслеживается.|Напоминаний пока нет|Показаны первые 1000 записей — список может быть неполным|Ответ|Ожидание приостановлено: проверь актуальность встречи и помещения',
+ en:'Latest reminders|Sent|Confirmed after reminder|Awaiting response|Confirmation withdrawn|Old version — new response needed|Role no longer assigned to this person|No longer a project member|Confirmed; link to reminder not established|Latest send per person and role, not full history. Reading is not tracked.|No reminders yet|First 1000 records shown — list may be incomplete|Response|Waiting paused: check meeting and room validity',
+ sv:'Senaste påminnelser|Skickat|Bekräftade efter påminnelsen|Väntar på svar|Bekräftelse återkallad|Äldre version — nytt svar behövs|Rollen är inte längre tilldelad personen|Inte längre projektmedlem|Bekräftat; samband med påminnelsen ej fastställt|Senaste utskick per person och roll, inte full historik. Läsning spåras inte.|Inga påminnelser ännu|Första 1000 posterna visas — listan kan vara ofullständig|Svar|Väntan pausad: kontrollera mötets och lokalens giltighet',
+ uk:'Останні нагадування|Надіслано|Підтвердив після нагадування|Чекаємо відповіді|Підтвердження відкликано|Стара версія — потрібна нова відповідь|Роль більше не призначена цій людині|Більше не учасник проєкту|Підтверджено; зв’язок із нагадуванням не встановлено|Останнє надсилання людині за роллю, не повна історія. Прочитання не відстежується.|Нагадувань ще немає|Перші 1000 записів — список може бути неповним|Відповідь|Очікування призупинено: перевір актуальність зустрічі й приміщення',
+ fi:'Viimeisimmät muistutukset|Lähetetty|Vahvisti muistutuksen jälkeen|Odottaa vastausta|Vahvistus peruttu|Vanha versio — uusi vastaus tarvitaan|Rooli ei enää kuulu henkilölle|Ei enää projektin jäsen|Vahvistettu; yhteyttä muistutukseen ei todettu|Viimeisin lähetys henkilöä ja roolia kohti, ei koko historia. Lukemista ei seurata.|Ei vielä muistutuksia|Ensimmäiset 1000 tietuetta — lista voi olla vajaa|Vastaus|Odotus keskeytetty: tarkista tapaaminen ja tila',
+ bs:'Posljednji podsjetnici|Poslano|Potvrdio nakon podsjetnika|Čeka se odgovor|Potvrda povučena|Stara verzija — potreban novi odgovor|Uloga više nije dodijeljena ovoj osobi|Više nije član projekta|Potvrđeno; veza s podsjetnikom nije utvrđena|Posljednje slanje po osobi i ulozi, ne puna historija. Čitanje se ne prati.|Još nema podsjetnika|Prvih 1000 zapisa — lista možda nije potpuna|Odgovor|Čekanje pauzirano: provjeri sastanak i prostor',
+ es:'Últimos recordatorios|Enviado|Confirmó después del recordatorio|Esperando respuesta|Confirmación retirada|Versión anterior: hace falta nueva respuesta|La función ya no está asignada a esta persona|Ya no pertenece al proyecto|Confirmado; sin vínculo establecido con el recordatorio|Último envío por persona y función, no historial completo. No se registra la lectura.|Aún no hay recordatorios|Primeros 1000 registros: la lista puede estar incompleta|Respuesta|Espera pausada: revisa la vigencia de la reunión y la sala',
+ ar:'آخر التذكيرات|أُرسل|أكد بعد التذكير|بانتظار الرد|سُحب التأكيد|نسخة قديمة — يلزم رد جديد|لم يعد الدور مسندًا لهذا الشخص|لم يعد عضوًا في المشروع|مؤكد؛ لم تثبت صلته بالتذكير|آخر إرسال لكل شخص ودور، وليس سجلًا كاملًا. لا تُتبع القراءة.|لا تذكيرات بعد|أول 1000 سجل — قد تكون القائمة ناقصة|الرد|الانتظار معلق: راجع صلاحية اللقاء والمكان',
+ fa:'آخرین یادآوری‌ها|ارسال شد|پس از یادآوری تأیید کرد|در انتظار پاسخ|تأیید پس گرفته شد|نسخه قدیمی — پاسخ تازه لازم است|نقش دیگر به این فرد سپرده نشده|دیگر عضو پروژه نیست|تأیید شده؛ ارتباط با یادآوری مشخص نیست|آخرین ارسال برای هر فرد و نقش، نه تاریخچه کامل. خواندن ردیابی نمی‌شود.|هنوز یادآوری نیست|نخستین ۱۰۰۰ رکورد — فهرست شاید کامل نباشد|پاسخ|انتظار متوقف است: اعتبار دیدار و مکان را بررسی کنید',
+ so:'Xusuusinnadii ugu dambeeyey|La diray|Xaqiijiyey xusuusinta ka dib|Jawaab baa la sugayaa|Xaqiijinta waa laga noqday|Nooc hore — jawaab cusub baa loo baahan yahay|Doorka qofkan looma qoondeyn hadda|Xubin mashruuca ma aha hadda|La xaqiijiyey; xiriirka xusuusinta lama oga|Diristii ugu dambaysay qof iyo door kasta, ma aha taariikh buuxda. Akhriska lama raaco.|Weli xusuusin ma jirto|1000-ka diiwaan ee hore — liisku wuu dhammaystirnaan waayi karaa|Jawaab|Sugiddu way hakad tahay: hubi kulanka iyo goobta',
+ ku:'Bîranînên dawî|Hat şandin|Piştî bîranînê pejirand|Li benda bersivê|Pejirandin paşve hat kişandin|Guhertoya kevn — bersiva nû lazim e|Rol êdî ne ya vî kesî ye|Êdî ne endamê projeyê ye|Pejirandî; têkiliya bi bîranînê ne diyar e|Şandina dawî ji bo her kes û rolê, ne dîroka tevahî. Xwendin nayê şopandin.|Hê bîranîn tune ne|1000 tomarên pêşîn — lîste dibe ku ne temam be|Bersiv|Li bendê rawestiyaye: civîn û cih kontrol bike'
+};
+function renderReminderLog({snapshot,owner,members,name,fresh,current}){
+ if(!owner||!snapshot?.terms)return '';
+ const tx=i=>esc((reminderLogCopy[document.documentElement.lang]||reminderLogCopy.en).split('|')[i]);
+ const log=snapshot.reminderLog,s=snapshot.terms;
+ let html=`<section class="card meeting-reminder-log"><h4>${tx(0)}</h4><p class="meta">${tx(9)}</p>`;
+ if(!fresh||!log||log.error)return html+`<p role="status">${esc(text(!fresh?19:24))}</p></section>`;
+ const ids=new Set(members.map(m=>m.user_id));
+ const date=v=>esc(new Date(v).toLocaleString());
+ if(log.possiblyTruncated)html+=`<p role="status">${tx(11)}</p>`;
+ if(!log.rows.length)return html+`<p>${tx(10)}</p></section>`;
+ return html+log.rows.map(r=>{
+  const reply=(snapshot.responses||[]).find(x=>x.version===r.version&&x.user_id===r.recipient_id&&x.role===r.role);
+  const attendance=(snapshot.responses||[]).find(x=>x.version===r.version&&x.user_id===r.recipient_id&&x.role==='attendee');
+  const assigned=r.role==='attendee'||(r.role==='facilitator'?s.facilitator_id:s.opener_id)===r.recipient_id;
+  let status=!ids.has(r.recipient_id)?7:r.version!==s.version?5:!assigned?6:reply?.confirmed===false||attendance?.confirmed===false?4:reply?.confirmed===true?(Date.parse(reply.responded_at)>=Date.parse(r.sent_at)?2:8):!current||snapshot.room?.confirmed!==true?13:3;
+  return `<article><h5>${esc(name(r.recipient_id))} · ${esc(text(({attendee:1,facilitator:2,opener:3})[r.role]??28))}</h5><p class="meta">${tx(1)}: ${date(r.sent_at)} · ${esc(text(8))} ${r.version}</p><p>${tx(status)}</p>${reply?.responded_at&&r.version===s.version?`<p class="meta">${tx(12)}: ${date(reply.responded_at)}</p>`:''}</article>`;
+ }).join('')+'</section>';
+}
+const historyCopy={
+ ru:'История напоминаний и условий|Начало записи истории|Напоминание отправлено|Ответ: подтверждено|Ответ: отозвано|Новая версия условий встречи|Изменение условий помещения|Помещение связано со встречей|Более ранние события|Общие события встречи|После напоминания №|История записывается с указанного начала. Прежние перезаписанные отправки и ответы не восстановлены. Общие изменения показаны как контекст, не как прочтение или согласие участника.|Изменены поля|Событие №',
+ en:'Reminder and terms history|History recording started|Reminder sent|Response: confirmed|Response: withdrawn|New meeting terms version|Room terms changed|Room linked to meeting|Earlier events|Shared meeting events|After reminder #|History is recorded from the indicated start. Earlier overwritten sends and responses are not recovered. Shared changes are context, not evidence of reading or consent.|Changed fields|Event #',
+ sv:'Historik över påminnelser och villkor|Historiken började registreras|Påminnelse skickad|Svar: bekräftat|Svar: återkallat|Ny version av mötesvillkoren|Lokalvillkor ändrade|Lokal kopplad till mötet|Tidigare händelser|Gemensamma möteshändelser|Efter påminnelse nr|Historiken registreras från angiven start. Tidigare överskrivna utskick och svar återställs inte. Gemensamma ändringar är sammanhang, inte läsning eller samtycke.|Ändrade fält|Händelse nr',
+ uk:'Історія нагадувань та умов|Початок запису історії|Нагадування надіслано|Відповідь: підтверджено|Відповідь: відкликано|Нова версія умов зустрічі|Зміна умов приміщення|Приміщення пов’язано із зустріччю|Раніші події|Спільні події зустрічі|Після нагадування №|Історія від указаного початку. Перезаписані надсилання й відповіді не відновлено. Спільні зміни — контекст, не прочитання чи згода.|Змінені поля|Подія №',
+ fi:'Muistutusten ja ehtojen historia|Historian tallennus alkoi|Muistutus lähetetty|Vastaus: vahvistettu|Vastaus: peruttu|Uusi tapaamisehtojen versio|Tilan ehdot muuttuivat|Tila liitetty tapaamiseen|Aiemmat tapahtumat|Yhteiset tapahtumat|Muistutuksen jälkeen nro|Historia alkaa ilmoitetusta ajasta. Ylikirjoitettuja lähetyksiä ja vastauksia ei palauteta. Yhteiset muutokset ovat taustaa, eivät lukemista tai suostumusta.|Muuttuneet kentät|Tapahtuma nro',
+ bs:'Historija podsjetnika i uslova|Početak bilježenja historije|Podsjetnik poslan|Odgovor: potvrđeno|Odgovor: povučeno|Nova verzija uslova sastanka|Uslovi prostora promijenjeni|Prostor povezan sa sastankom|Raniji događaji|Zajednički događaji sastanka|Nakon podsjetnika br.|Historija počinje označenim datumom. Prepisana slanja i odgovori nisu vraćeni. Zajedničke promjene su kontekst, ne čitanje ili saglasnost.|Promijenjena polja|Događaj br.',
+ es:'Historial de avisos y condiciones|Inicio del registro|Recordatorio enviado|Respuesta: confirmado|Respuesta: retirado|Nueva versión de condiciones|Condiciones de sala modificadas|Sala vinculada a la reunión|Eventos anteriores|Eventos comunes|Después del recordatorio n.º|Historial desde el inicio indicado. No se recuperan envíos ni respuestas sobrescritos. Los cambios comunes son contexto, no lectura ni consentimiento.|Campos modificados|Evento n.º',
+ ar:'سجل التذكيرات والشروط|بداية تسجيل السجل|أُرسل التذكير|الرد: تأكيد|الرد: سحب|نسخة جديدة لشروط اللقاء|تغيرت شروط المكان|رُبط المكان باللقاء|أحداث أقدم|أحداث اللقاء المشتركة|بعد التذكير رقم|يبدأ السجل من التاريخ المحدد. لم تُستعد الإرسالات والردود المستبدلة. التغييرات المشتركة سياق وليست قراءة أو موافقة.|الحقول المتغيرة|حدث رقم',
+ fa:'تاریخچه یادآوری و شرایط|آغاز ثبت تاریخچه|یادآوری ارسال شد|پاسخ: تأیید|پاسخ: پس‌گرفتن|نسخه تازه شرایط دیدار|شرایط مکان تغییر کرد|مکان به دیدار متصل شد|رویدادهای قدیمی‌تر|رویدادهای مشترک دیدار|پس از یادآوری شماره|تاریخچه از زمان مشخص‌شده است. ارسال‌ها و پاسخ‌های بازنویسی‌شده بازیابی نشده‌اند. تغییرات مشترک زمینه‌اند، نه خواندن یا رضایت.|فیلدهای تغییرکرده|رویداد شماره',
+ so:'Taariikhda xusuusinta iyo shuruudaha|Diiwaangelinta ayaa bilaabatay|Xusuusin la diray|Jawaab: la xaqiijiyey|Jawaab: laga noqday|Nooc cusub oo shuruudaha kulanka ah|Shuruudaha goobta isbeddeleen|Goobta kulanka lagu xiray|Dhacdooyin hore|Dhacdooyinka wadajirka ah|Xusuusinta ka dib lambarka|Taariikhdu waxay ka bilaabataa waqtiga la tilmaamay. Diris iyo jawaabo la dulqoray lama soo celin. Isbeddelladu waa macnaha guud, ma aha akhris ama oggolaansho.|Qaybaha isbeddeley|Dhacdo lambarka',
+ ku:'Dîroka bîranîn û şertan|Destpêka tomarkirina dîrokê|Bîranîn hat şandin|Bersiv: pejirandî|Bersiv: paşvekişandî|Guhertoya nû ya şertên civînê|Şertên cihê guherîn|Cih bi civînê ve hat girêdan|Bûyerên berê|Bûyerên hevpar|Piştî bîranîna jimare|Dîrok ji destpêka diyarkirî ye. Şandin û bersivên li ser wan hatine nivîsandin nehatine vegerandin. Guhertinên hevpar kontekst in, ne xwendin an razîbûn.|Qadên guherî|Bûyera jimare'
+};
+function renderMeetingHistory({snapshot,owner,members,name}){
+ if(!owner||!snapshot?.terms)return '';
+ const tx=i=>esc((historyCopy[document.documentElement.lang]||historyCopy.en).split('|')[i]),h=snapshot.history;
+ let html=`<section class="card meeting-history"><h4>${tx(0)}</h4><p class="meta">${tx(11)}</p>`;
+ if(!h||h.error)return html+`<p role="status">${esc(text(24))}</p></section>`;
+ const personal=e=>['reminder','confirmed','withdrawn'].includes(e.event_type);
+ const events=[...h.rows].reverse();
+ const keys=[...new Set([...members.map(m=>m.user_id),...events.filter(personal).map(e=>e.participant_id)])];
+ const label={history_started:1,reminder:2,confirmed:3,withdrawn:4,terms:5,room_terms:6,room_link:7};
+ const fieldLabel={starts_at:9,ends_at:10,place:12,conditions:13,minimum_attendees:14,capacity:15,facilitator_id:2,opener_id:3,people:15,note:13};
+ const row=e=>`<li><strong>${tx(label[e.event_type]??9)}</strong> · ${esc(new Date(e.recorded_at).toLocaleString())}<p class="meta">${tx(13)} ${e.id}${e.version?' · '+esc(text(8))+' '+e.version:''}${e.role?' · '+esc(text(({attendee:1,facilitator:2,opener:3})[e.role]??28)):''}${e.actor_id?' · '+esc(name(e.actor_id)):''}</p>${e.changed_fields?.length?`<p>${tx(12)}: ${e.changed_fields.map(k=>esc(fieldLabel[k]!==undefined?text(fieldLabel[k]):k)).join(', ')}</p>`:''}${e.room_state?`<p>${esc(globalThis.FolkoopRooms.text(({requested:12,offered:13,agreed:14,declined:15,cancelled:16})[e.room_state]))}</p>`:''}${e.prior_reminder_id?`<p>${tx(10)} ${e.prior_reminder_id}</p>`:''}</li>`;
+ html+=`<details><summary>${tx(9)}</summary><ol>${events.filter(e=>!personal(e)).map(row).join('')}</ol></details>`;
+ html+=keys.map(id=>`<details><summary>${esc(id?name(id):text(26))}</summary><ol>${events.filter(e=>!personal(e)||e.participant_id===id).map(row).join('')}</ol></details>`).join('');
+ if(h.more)html+=`<form class="netMeetingHistoryMore"><button class="button secondary">${tx(8)}</button></form>`;
+ return html+'</section>';
+}
+function renderOrganizer({snapshot,owner,user,members,name,fresh,current}){
+ const s=snapshot?.terms;
+ if(!owner||!s||snapshot.error)return '';
+ const tx=i=>esc((organizerCopy[document.documentElement.lang]||organizerCopy.en).split('|')[i]);
+ let html=`<section class="card meeting-organizer"><h4>${tx(0)} · ${esc(text(8))} ${s.version}</h4>`;
+ if(!fresh||!current)return html+`<p role="status">${esc(text(19))}</p></section>`;
+ if(snapshot.room?.confirmed!==true)html+=`<p role="status">${esc((roomCopy[document.documentElement.lang]||roomCopy.en).split('|')[2])}</p>`;
+ const ids=[...new Set(members.map(m=>m.user_id))];
+ const rows=(snapshot.responses||[]).filter(r=>r.version===s.version);
+ const answer=(id,role)=>rows.find(r=>r.user_id===id&&r.role===role);
+ const confirmed=ids.filter(id=>answer(id,'attendee')?.confirmed===true);
+ const waiting=ids.filter(id=>!answer(id,'attendee'));
+ const withdrawn=ids.filter(id=>answer(id,'attendee')?.confirmed===false);
+ const remind=(id,role)=>id!==user?.id&&snapshot.room?.confirmed===true?`<form class="netMeetingReminder"><input type="hidden" name="version" value="${s.version}"><input type="hidden" name="recipient" value="${esc(id)}"><input type="hidden" name="role" value="${role}"><button class="button secondary">${esc(reminderText(0))} · ${esc(name(id))}</button></form>`:'';
+ const list=(title,group)=>`<section><h5>${tx(title)} · ${group.length}</h5>${group.length?`<ul>${group.map(id=>`<li>${esc(name(id))}${title===2?remind(id,'attendee'):''}</li>`).join('')}</ul>`:`<p>${tx(4)}</p>`}</section>`;
+ html+=`<p class="meta">${esc(reminderText(1))}</p>`;
+ html+=`<p class="meta">${tx(11)}</p><div class="readiness-columns">${list(1,confirmed)}${list(2,waiting)}${list(3,withdrawn)}</div><p>${tx(5)}: ${Math.max(0,s.minimum_attendees-confirmed.length)}</p><h5>${tx(6)}</h5><ul>`;
+ for(const [role,label,id] of [['facilitator',2,s.facilitator_id],['opener',3,s.opener_id]]){
+  const response=answer(id,role);
+  const status=!id?7:!ids.includes(id)?12:response?.confirmed===false?13:answer(id,'attendee')?.confirmed!==true?9:response?.confirmed===true?10:8;
+  html+=`<li><strong>${esc(text(label))}</strong>${id?' · '+esc(name(id)):''} — ${tx(status)}${status===8?remind(id,role):''}</li>`;
+ }
+ return html+'</ul></section>';
+}
+function render({snapshot,user,owner,members,name,draft,outcomeDraft,repeatDraft,budget,budgetDraft,roomRequests=[],roomRequestsError=false,resources=[],now=Date.now(),online=true}){
  const tx=i=>esc(text(i)),s=snapshot?.terms,rows=snapshot?.responses||[];
- const fresh=!!snapshot&&!snapshot.error&&!snapshot.stale&&online&&now-(snapshot.loadedAt??Date.parse(snapshot.checked_at))<60000;
+ const loaded=snapshot?.loadedAt??Date.parse(snapshot?.checked_at);
+ const fresh=!!snapshot&&!snapshot.error&&!snapshot.stale&&online&&Number.isFinite(loaded)&&now-loaded>=0&&now-loaded<60000;
  const current=fresh&&snapshot.current===true&&Date.parse(s?.starts_at)>now;
  const yes=(id,role)=>rows.some(x=>x.user_id===id&&x.role===role&&x.confirmed);
  const label=id=>esc(id?name(id):text(26));
@@ -55,6 +203,9 @@ function render({snapshot,user,owner,members,name,draft,outcomeDraft,repeatDraft
    <ul>${members.map(m=>`<li>${label(m.user_id)} — ${tx(yes(m.user_id,'attendee')?7:6)}</li>`).join('')}</ul>${response('attendee')}</section>
    ${[['facilitator',2,s.facilitator_id],['opener',3,s.opener_id]].map(([role,i,id])=>`<section><h4>${tx(i)}</h4><p>${label(id)} — ${tx(yes(id,role)&&yes(id,'attendee')?7:6)}</p>${id===user.id?(yes(user.id,'attendee')||yes(user.id,role)?response(role):`<p>${tx(20)}</p>`):''}</section>`).join('')}</div>`;
  }
+ html+=renderOrganizer({snapshot,owner,user,members,name,fresh,current});
+ html+=renderReminderLog({snapshot,owner,members,name,fresh,current});
+ html+=renderMeetingHistory({snapshot,owner,members,name});
  if(owner&&snapshot&&!snapshot.error&&(!s||Date.parse(s.ends_at)>now)){
   const offset=iso=>iso?((new Date(localTime(iso)+'Z').getTime()-Date.parse(iso))/3600000===2?'+02:00':'+01:00'):'+01:00';
   const d=draft||{version:s?.version||0,start:localTime(s?.starts_at),end:localTime(s?.ends_at),offset:offset(s?.starts_at),endOffset:offset(s?.ends_at),place:s?.place||'',conditions:s?.conditions||'',minimum:s?.minimum_attendees||5,capacity:s?.capacity||5,facilitator:s?.facilitator_id||'',opener:s?.opener_id||''};
@@ -63,7 +214,7 @@ function render({snapshot,user,owner,members,name,draft,outcomeDraft,repeatDraft
   const zone=k=>`<label>${tx(11)}<select name="${k}">${['+01:00','+02:00'].map(z=>`<option${d[k]===z?' selected':''}>${z}</option>`).join('')}</select></label>`;
   html+=`<details${draft||!s?' open':''}><summary>${tx(22)}</summary><form id="netMeetingTerms" class="editor"><input type="hidden" name="version" value="${esc(d.version)}">${input(9,'start','datetime-local')}${zone('offset')}${input(10,'end','datetime-local')}${zone('endOffset')}${input(12,'place','text','maxlength="200"')}<label>${tx(13)}<textarea name="conditions" maxlength="1000">${esc(d.conditions)}</textarea></label>${input(14,'minimum','number','min="1" max="100"')}${input(15,'capacity','number','min="1" max="100"')}${select(2,'facilitator')}${select(3,'opener')}<p>${tx(16)}</p><button class="button"${fresh?'':' disabled'}>${tx(29)}</button></form></details>`;
  }
- return html+'</section>'+renderOutcome({snapshot,user,owner,name,fresh,outcomeDraft,repeatDraft});
+ return html+renderRoom({snapshot,owner,fresh,current,roomRequests,roomRequestsError,resources})+globalThis.FolkoopBudget.renderMeeting({snapshot,budget,owner,fresh,current,draft:budgetDraft,name})+'</section>'+renderOutcome({snapshot,user,owner,name,fresh,outcomeDraft,repeatDraft});
 }
 function renderOutcome({snapshot,user,owner,name,fresh,outcomeDraft,repeatDraft}){
  const o=snapshot?.outcome,s=snapshot?.terms,tx=i=>esc(outcomeText(i));
@@ -86,5 +237,31 @@ function renderOutcome({snapshot,user,owner,name,fresh,outcomeDraft,repeatDraft}
  }
  return html+'</section>';
 }
-globalThis.FolkoopMeetings=Object.freeze({render,text,formValues,stockholmTime,copy,outcomeCopy,outcomeText});
+const alertCopy={
+ ru:'Изменения помещения встречи|Помещение отменено|Условия помещения изменились|Было|Стало|Ждём организатора: нужно согласовать помещение и связать новые условия со встречей. Старые условия подтверждать не нужно.|Ознакомься с новой версией встречи и подтверди заново:|Открыть встречу|Это активные уведомления, не история прочтения. Они обновляются вместе с данными.|Новая версия встречи: проверь условия помещения',
+ en:'Meeting room changes|Room cancelled|Room terms changed|Before|After|Wait for the organizer to agree a room and link the new terms to the meeting. Do not confirm old terms.|Review the new meeting version and reconfirm:|Open meeting|These are active notices, not read history. They refresh with the data.|New meeting version: review room terms',
+ sv:'Ändringar i möteslokalen|Lokalen avbokad|Lokalvillkoren ändrades|Före|Efter|Vänta på att arrangören kommer överens om en lokal och kopplar nya villkor till mötet. Bekräfta inte gamla villkor.|Läs den nya mötesversionen och bekräfta igen:|Öppna mötet|Aktiva meddelanden, inte läshistorik. De uppdateras med uppgifterna.|Ny mötesversion: granska lokalvillkoren',
+ uk:'Зміни приміщення зустрічі|Приміщення скасовано|Умови приміщення змінилися|Було|Стало|Чекаємо організатора: потрібно погодити приміщення та пов’язати нові умови із зустріччю. Старі умови не підтверджуй.|Переглянь нову версію зустрічі та підтвердь знову:|Відкрити зустріч|Це активні сповіщення, не історія прочитання. Вони оновлюються разом із даними.|Нова версія зустрічі: перевір умови приміщення',
+ fi:'Tapaamistilan muutokset|Tila peruttu|Tilan ehdot muuttuivat|Ennen|Jälkeen|Odota, että järjestäjä sopii tilan ja liittää uudet ehdot tapaamiseen. Älä vahvista vanhoja ehtoja.|Lue uusi versio ja vahvista uudelleen:|Avaa tapaaminen|Aktiivisia ilmoituksia, ei lukuhistoriaa. Ne päivittyvät tietojen mukana.|Uusi tapaamisversio: tarkista tilan ehdot',
+ bs:'Promjene prostora sastanka|Prostor otkazan|Uslovi prostora promijenjeni|Prije|Poslije|Sačekaj da organizator dogovori prostor i poveže nove uslove. Ne potvrđuj stare uslove.|Pročitaj novu verziju i ponovo potvrdi:|Otvori sastanak|Aktivne obavijesti, ne historija čitanja. Osvježavaju se s podacima.|Nova verzija sastanka: provjeri uslove prostora',
+ es:'Cambios en la sala|Sala cancelada|Cambiaron las condiciones|Antes|Después|Espera a que el organizador acuerde una sala y vincule las nuevas condiciones. No confirmes las antiguas.|Revisa la nueva versión y vuelve a confirmar:|Abrir reunión|Avisos activos, no historial de lectura. Se actualizan con los datos.|Nueva versión: revisa las condiciones de la sala',
+ ar:'تغييرات مكان اللقاء|أُلغي المكان|تغيرت شروط المكان|قبل|بعد|انتظر اتفاق المنظم على مكان وربط الشروط الجديدة باللقاء. لا تؤكد الشروط القديمة.|راجع النسخة الجديدة وأكد مجددًا:|فتح اللقاء|إشعارات نشطة وليست سجل قراءة. تُحدّث مع البيانات.|نسخة جديدة للقاء: راجع شروط المكان',
+ fa:'تغییرات مکان دیدار|مکان لغو شد|شرایط مکان تغییر کرد|پیش از تغییر|پس از تغییر|منتظر توافق برگزارکننده درباره مکان و اتصال شرایط جدید باشید. شرایط قدیمی را تأیید نکنید.|نسخه تازه را بخوانید و دوباره تأیید کنید:|بازکردن دیدار|اعلان‌های فعال هستند، نه سابقه خواندن. همراه داده‌ها تازه می‌شوند.|نسخه تازه دیدار: شرایط مکان را بررسی کنید',
+ so:'Isbeddellada goobta kulanka|Goobta waa la joojiyey|Shuruudaha goobta way isbeddeleen|Hore|Hadda|Sug qabanqaabiyaha inuu ku heshiiyo goob oo ku xiro shuruudaha cusub. Ha xaqiijin kuwii hore.|Akhri nooca cusub oo mar kale xaqiiji:|Fur kulanka|Ogeysiisyo firfircoon, ma aha taariikhda akhriska. Xogta ayay la cusboonaadaan.|Nooca cusub ee kulanka: eeg shuruudaha goobta',
+ ku:'Guhertinên cihê civînê|Cih hat betalkirin|Şertên cihê guherîn|Berê|Niha|Li benda organîzator be ku li ser cih li hev bike û şertên nû girê bide. Şertên kevn nepejirîne.|Guhertoya nû bixwîne û dîsa bipejirîne:|Civînê veke|Ev agahiyên çalak in, ne dîroka xwendinê. Bi daneyan re nû dibin.|Guhertoya nû: şertên cihê kontrol bike'
+};
+function renderRoomAlerts({rows,error}){
+ if(!rows&&!error)return '';
+ if(!error&&!rows.length)return '';
+ const tx=i=>esc((alertCopy[document.documentElement.lang]||alertCopy.en).split('|')[i]);
+ if(error)return `<section class="card"><h3>${tx(0)}</h3><p role="status">${esc(text(24))}</p></section>`;
+ const fields=[['place',12],['starts_at',9],['ends_at',10],['people',15],['note',13]];
+ const value=(key,v)=>v==null?'—':esc(key.endsWith('_at')?localTime(v).replace('T',' ')+' · Europe/Stockholm':v);
+ return `<section class="card meeting-room-alerts"><h3>${tx(0)}</h3><p class="meta">${tx(8)}</p>${rows.map(n=>{
+  const before=n.before_terms||{},after=n.after_terms||{};
+  const changes=fields.filter(([key])=>before[key]!==after[key]);
+  return `<article class="card"><h4>${esc(n.project_title)}</h4><p>${tx(n.room_state==='cancelled'?1:changes.length?2:9)}</p><p class="meta">${esc(text(8))} ${n.meeting_version}</p>${changes.map(([key,label])=>`<section><strong>${esc(text(label))}</strong><p style="white-space:pre-wrap">${tx(3)}: ${value(key,before[key])}</p><p style="white-space:pre-wrap">${tx(4)}: ${value(key,after[key])}</p></section>`).join('')}<p>${tx(n.next_action==='confirm'?6:5)}${n.next_action==='confirm'?(n.roles||[]).map(role=>esc(text(({attendee:1,facilitator:2,opener:3})[role]??28))).join(', '):''}</p><button class="button" data-coop="openNotify" data-target-kind="project" data-id="${esc(n.project_id)}">${tx(7)}</button></article>`;
+ }).join('')}</section>`;
+}
+globalThis.FolkoopMeetings=Object.freeze({render,text,formValues,stockholmTime,copy,outcomeCopy,outcomeText,renderRoomAlerts,renderReminders,reminderText});
 })();

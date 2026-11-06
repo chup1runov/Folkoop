@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-const ctx=vm.createContext({URL,AbortController,setTimeout,clearTimeout});
+const ctx=vm.createContext({URL,crypto:globalThis.crypto,AbortController,setTimeout,clearTimeout});
 vm.runInContext(await readFile('apps/web/network-client.js','utf8'),ctx);
 const N=ctx.FolkoopNetwork;
 const cfg={enabled:true,url:'https://abcdefghijklmnopqrst.supabase.co',publishableKey:'sb_publishable_example_for_tests_only'};
@@ -21,13 +21,13 @@ test('explicit all-device logout revokes globally; normal logout remains local',
  assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=global')&&x.method==='POST'));assert.equal(s.c.user(),null);
  await s.login();await s.c.logout();assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=local')));
 });
-test('export has bounded actor-filtered queries and exact coverage without claiming a full account copy',async()=>{
+test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
  const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify([{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
- assert.equal(result.manifest.sections.length,20);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
- assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'truncated');
+ assert.equal(result.manifest.sections.length,43);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
- for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
+ for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid)||call.url.includes('.eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
  assert(!JSON.stringify(result).includes('test-token'));
 });
 test('export does not infer completeness from a short or empty response without an exact count',async()=>{
@@ -70,7 +70,7 @@ test('server policy denial clears the new session with a specific error',async()
 test('logout clears memory even on revocation failure',async()=>{const s=setup(url=>url.includes('/logout')?json({error:'SECRET DETAIL'},500):null);await s.login();await assert.rejects(s.c.logout(),e=>e.code==='REQUEST_FAILED'&&!e.message.includes('SECRET'));assert.equal(s.c.user(),null);await assert.rejects(s.c.communities(),e=>e.code==='AUTH_REQUIRED');});
 test('expired session requires new login',async()=>{const s=setup();await s.login();s.expire();assert.equal(s.c.user(),null);await assert.rejects(s.c.communities(),e=>e.code==='AUTH_REQUIRED');});
 test('401 clears session',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?json({},401):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='AUTH_REQUIRED');assert.equal(s.c.user(),null);});
-test('403 differs from a successful empty directory',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_profiles?select=id,name,skills,about&listed=eq.true')?json({},403):null);await s.login();await assert.rejects(s.c.directory(),e=>e.code==='DENIED');});
+test('403 differs from a successful empty directory',async()=>{const s=setup(url=>decodeURIComponent(url).includes('/rest/v1/fk_profiles?select=id,name,skills,about&listed=eq.true')?json({},403):null);await s.login();await assert.rejects(s.c.directory(),e=>e.code==='DENIED');});
 test('429 does not replay mutations',async()=>{const s=setup(url=>url.endsWith('/otp')?json({},429):null);await assert.rejects(s.c.requestCode('test@example.test'),e=>e.code==='RATE_LIMIT');assert.equal(s.calls.length,1);});
 test('HTML rejected as API data',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?new Response('<html>error</html>'):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='INVALID_RESPONSE');});
 test('malformed data not treated as empty',async()=>{const s=setup(url=>url.includes('/rest/v1/fk_communities')?json({error:'broken'}):null);await s.login();await assert.rejects(s.c.communities(),e=>e.code==='INVALID_RESPONSE');});
@@ -78,7 +78,7 @@ test('inflight reply cannot restore data after logout',async()=>{let release;con
 
 test('direct chat RPC derives sender on server and accepts only UUID target',async()=>{const s=setup();await s.login();await s.c.startDirect(cid);const q=s.calls.at(-1);assert(q.url.endsWith('/rest/v1/rpc/fk_start_direct'));assert.deepEqual(JSON.parse(q.body),{p_other:cid});assert.throws(()=>s.c.startDirect('not-a-uuid'),e=>e.code==='INVALID_INPUT');});
 test('group chat RPC validates title and deduplicates member ids',async()=>{const s=setup();await s.login();await s.c.createGroupChat('Workshop',[cid,cid]);const q=s.calls.at(-1);assert.deepEqual(JSON.parse(q.body),{p_title:'Workshop',p_members:[cid]});assert.throws(()=>s.c.createGroupChat('x',[cid]),e=>e.code==='INVALID_INPUT');assert.throws(()=>s.c.createGroupChat('Valid',[]),e=>e.code==='INVALID_INPUT');});
-test('message RPC has no caller-selectable author and enforces body bound',async()=>{const s=setup();await s.login();await s.c.sendMessage(cid,'hello');assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_conversation:cid,p_body:'hello'});assert.throws(()=>s.c.sendMessage(cid,''),e=>e.code==='INVALID_INPUT');assert.throws(()=>s.c.sendMessage(cid,'x'.repeat(4001)),e=>e.code==='INVALID_INPUT');});
+test('message RPC has no caller-selectable author and enforces body bound',async()=>{const s=setup();await s.login();await s.c.sendMessage(cid,'hello');const payload=JSON.parse(s.calls.at(-1).body);assert.match(payload.p_command,/^[0-9a-f-]{36}$/);assert.deepEqual({...payload,p_command:undefined},{p_conversation:cid,p_body:'hello',p_command:undefined});assert.throws(()=>s.c.sendMessage(cid,''),e=>e.code==='INVALID_INPUT');assert.throws(()=>s.c.sendMessage(cid,'x'.repeat(4001)),e=>e.code==='INVALID_INPUT');});
 test('message report and membership actions validate ids locally',async()=>{const s=setup();await s.login();await s.c.reportMessage(cid,'abuse');assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_message:cid,p_reason:'abuse'});assert.throws(()=>s.c.acceptChat('x'),e=>e.code==='INVALID_INPUT');assert.throws(()=>s.c.removeChatMember(cid,'x'),e=>e.code==='INVALID_INPUT');});
 
 
@@ -106,9 +106,78 @@ test('mark cooperation read validates cooperation id locally',async()=>{const s=
 
 test('Home feed and attention queries are scoped to visible rows and current user',async()=>{const s=setup(url=>url.endsWith('/rpc/fk_chat_inbox')||url.endsWith('/rpc/fk_activity_inbox')?json([]):null);await s.login();await s.c.homePosts();assert(s.calls.at(-1).url.includes('/rest/v1/fk_posts?select='));await s.c.assignedTasks();assert(s.calls.at(-1).url.includes('assignee_id=eq.'+uid));assert(s.calls.at(-1).url.includes('status=neq.done'));await s.c.myPurchaseConfirmations();assert(s.calls.at(-1).url.includes('user_id=eq.'+uid));await s.c.purchaseProcesses();assert(s.calls.at(-1).url.includes('/rest/v1/fk_purchase_process?select='));});
 
-test('Home UI stays bounded and action-first in source',async()=>{const s=await readFile('apps/web/network-ui.js','utf8');assert(s.includes('function renderHome'));assert(s.includes('slice(0,12)'));assert(s.includes("data-home=\"openCoop\""));assert(!/infiniteScroll|IntersectionObserver/.test(s));});
-test('no persistent tokens or implicit local draft upload',async()=>{const code=await readFile('apps/web/network-client.js','utf8');assert(!/localStorage|sessionStorage|indexedDB|sendBeacon/.test(code.replace(/\/\/[^\n]*/g,'')));assert(!/result\.refresh_token/.test(code));assert(!code.includes('folkoop-workspace-v1'));});
+test('Home UI stays bounded and action-first in source',async()=>{const s=await readFile('apps/web/network-ui.js','utf8');assert(s.includes('function renderHome'));assert(s.includes('slice(0,12)'));assert(s.includes("data-home=\"openCoop\""));assert(!/infiniteScroll/.test(s));});
+test('no persistent tokens or implicit local draft upload',async()=>{const code=await readFile('apps/web/network-client.js','utf8');assert(!/localStorage|sessionStorage|indexedDB|sendBeacon/.test(code.replace(/\/\/[^\n]*/g,'')));assert(code.includes('if(cfg.serverSession)return establish(result.access_token,result.refresh_token')); assert(!code.includes('folkoop-workspace-v1'));});
 
 test('email login uses deployment callback without putting email in URL',async()=>{const s=setup(null,{...cfg,emailRedirectUrl:'https://folkoop.pages.dev/'});await s.c.requestCode('synthetic@example.test');const u=new URL(s.calls[0].url);assert.equal(u.pathname,'/auth/v1/otp');assert.equal(u.searchParams.get('redirect_to'),'https://folkoop.pages.dev/');assert.equal([...u.searchParams].length,1);assert(!u.href.includes('synthetic'));assert.equal(JSON.parse(s.calls[0].body).email,'synthetic@example.test');});
 test('email callback configuration fails closed',()=>{for(const emailRedirectUrl of ['',null,'not a URL','http://example.test/','https://user:pass@example.test/','https://example.test/?next=elsewhere','https://example.test/#token','https://example.test:444/'])assert.throws(()=>N.client({...cfg,emailRedirectUrl}),e=>e.code==='CONFIG');});
 test('published email callback targets Cloudflare while Google remains disabled',async()=>{const c=vm.createContext({});vm.runInContext(await readFile('apps/web/network-config.js','utf8'),c);assert.equal(c.FolkoopNetworkConfig.emailRedirectUrl,'https://folkoop.pages.dev/');assert.equal(c.FolkoopNetworkConfig.googleOAuthEnabled,false);});
+
+test('chat pages include newest 99/100/101 records and preserve microsecond cursor',async()=>{
+ for(const count of [99,100,101]){
+  const records=Array.from({length:count},(_,i)=>({id:'a0000000-0000-4000-8000-'+String(count-i).padStart(12,'0'),conversation_id:cid,body:'message '+(count-i),created_at:'2026-11-01T12:00:00.123456+00:00'}));
+  const s=setup(url=>url.includes('/fk_messages?')?json(records):null);await s.login();
+  const page=await s.c.chatMessagePage(cid);
+  assert.equal(page.messages.length,Math.min(count,100));assert.equal(page.hasMore,count>100);
+  assert.equal(page.messages.at(-1).body,'message '+count);
+  assert.equal(page.messages[0].body,'message '+(count===101?2:1));
+  await s.c.chatMessagePage(cid,page.before);
+  const q=new URL(s.calls.at(-1).url).searchParams;
+  assert.equal(q.get('order'),'created_at.desc,id.desc');assert.equal(q.get('limit'),'101');
+  assert.equal(q.get('or'),`(created_at.lt.${page.before.created_at},and(created_at.eq.${page.before.created_at},id.lt.${page.before.id}))`);
+ }
+});
+test('chat cursor rejects filter injection; read receipt supplies exact IDs, no actor or timestamp',async()=>{
+ const s=setup();await s.login();
+ await assert.rejects(s.c.chatMessagePage(cid,{id:uid,created_at:'2026-11-01T12:00:00Z),id.neq.null'}),e=>e.code==='INVALID_INPUT');
+ await s.c.markChatRead(cid,[uid,uid]);
+ assert(s.calls.at(-1).url.endsWith('/fk_mark_messages_read'));
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_conversation:cid,p_messages:[uid]});
+ assert.throws(()=>s.c.markChatRead(cid,[]),e=>e.code==='INVALID_INPUT');
+});
+test('chat page completing after logout cannot leak into the next account',async()=>{
+ let release;const s=setup(url=>url.includes('/fk_messages?')?new Promise(r=>release=()=>r(json([]))):null);
+ await s.login();const pending=s.c.chatMessagePage(cid);await s.c.logout();release();
+ await assert.rejects(pending,e=>e.code==='STALE');
+});
+test('export assigns read receipts and message reports to their own keys',async()=>{
+ const s=setup(url=>url.includes('/fk_message_reads?')?json([{message_id:cid,user_id:uid}]):url.includes('/fk_message_reports?')?json([{reason:'synthetic'}]):null);
+ await s.login();const result=await s.c.exportOwn();
+ assert.equal(result.messageReads[0].message_id,cid);assert.equal(result.messageReports[0].reason,'synthetic');
+});
+
+// Approved server mode keeps refresh credentials off persistent browser storage.
+test('server session restores on a fresh client and uses cookie BFF without bearer',async()=>{
+ const calls=[];const transport=async(url,o)=>{calls.push({url,...o});return json(url.includes('/session')?{id:uid,expiresAt:Date.now()+60000}:[{id:uid}]);};
+ const c=N.client({...cfg,serverSession:true},{transport});await c.restore();assert.equal(c.user().id,uid);await c.profile();assert(calls.at(-1).url.startsWith('/api/network/rest/'));assert.equal(calls.at(-1).credentials,'same-origin');assert.equal(calls.at(-1).headers.Authorization,undefined);
+ await c.logout();assert.equal(calls.at(-1).method,'DELETE');assert.equal(c.user(),null);
+});
+test('server session establishment passes consent and refresh once; static host stays memory-only',async()=>{
+ const calls=[];const c=N.client({...cfg,serverSession:true},{transport:async(url,o)=>{calls.push({url,...o});return json({id:uid,expiresAt:Date.now()+60000});}});
+ await c.completeOAuth('a'.repeat(32),3600,'',acceptance,'synthetic-refresh');assert.equal(calls.length,1);assert.equal(calls[0].url,'/api/network/session');assert.equal(JSON.parse(calls[0].body).refresh_token,'synthetic-refresh');
+ const staticClient=N.client(cfg,{transport:()=>{throw Error('not called');}});assert.equal(await staticClient.restore(),null);
+});
+
+test('lost reply reuses command key; completed send gets a new key',async()=>{
+ let count=0;const s=setup(url=>url.endsWith('/fk_send_message_once')&&count++===0?Promise.reject(new Error('lost')):null);await s.login();
+ await assert.rejects(s.c.sendMessage(cid,'same'));const first=JSON.parse(s.calls.at(-1).body).p_command;
+ await s.c.sendMessage(cid,'same');assert.equal(JSON.parse(s.calls.at(-1).body).p_command,first);
+ await s.c.sendMessage(cid,'same');assert.notEqual(JSON.parse(s.calls.at(-1).body).p_command,first);
+});
+test('directory traverses exact-count pages even when server page is shorter than requested',async()=>{
+ const s=setup(url=>url.includes('/fk_profiles?')?(()=>{const p=new URL(url).searchParams,offset=Number(p.get('offset'));return new Response(JSON.stringify(offset===0?[{id:uid,name:'A'}]:[{id:cid,name:'B'}]),{headers:{'content-type':'application/json','content-range':offset+'-'+offset+'/2'}});})():null);await s.login();const rows=await s.c.directory();assert.equal(rows.length,2);assert.equal(rows.coverage.coverage,'visible-query-complete');assert(s.calls.at(-1).url.includes('offset=1'));
+});
+test('pagination refuses changing counts and repeated rows',async()=>{
+ for(const repeat of [true,false]){let n=0;const s=setup(url=>url.includes('/fk_profiles?')?new Response(JSON.stringify([{id:repeat?uid:n?cid:uid}]),{headers:{'content-type':'application/json','content-range':'0-0/'+(n++&&!repeat?3:2)}}):null);await s.login();await assert.rejects(s.c.directory(),e=>e.code==='DATA_CHANGED');}
+});
+test('remote search sends only query/cursor; sentinel is not shown as a result',async()=>{
+ const s=setup(url=>url.endsWith('/fk_search_account')?json(Array.from({length:51},(_,i)=>({key:'key'+i}))):null);await s.login();const page=await s.c.searchAccount('needle');assert.equal(page.rows.length,50);assert.equal(page.hasMore,true);assert.equal(page.after,'key49');assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_query:'needle',p_after:''});
+});
+test('export crosses the 1000-row boundary with a stable tie-breaker and no missing records',async()=>{
+ const s=setup(url=>{if(!url.includes('/rest/v1/fk_'))return null;const u=new URL(url);const offset=Number(u.searchParams.get('offset')||0);const messages=u.pathname.endsWith('/fk_messages');const total=messages?1001:0;
+  const records=messages?Array.from({length:Math.min(1000,total-offset)},(_,i)=>({id:'a0000000-0000-4000-8000-'+String(offset+i).padStart(12,'0'),author_id:uid,created_at:'2026-11-06T10:00:00Z',body:'Synthetic export'})):[];
+  return new Response(JSON.stringify(records),{headers:{'content-type':'application/json','content-range':(records.length?offset+'-'+(offset+records.length-1):'*')+'/'+total}});
+ });await s.login();const result=await s.c.exportOwn();assert.equal(result.messages.length,1001);assert.equal(new Set(result.messages.map(m=>m.id)).size,1001);
+ const section=result.manifest.sections.find(x=>x.collection==='fk_messages');assert.equal(section.pages,2);assert.equal(section.coverage,'visible-query-complete');assert.equal(result.manifest.atomicSnapshot,false);assert.equal(result.manifest.completeAccountExport,false);
+ const query=s.calls.find(x=>x.url.includes('/fk_messages?')).url;assert(new URL(query).searchParams.get('order').includes('id.asc'));
+});

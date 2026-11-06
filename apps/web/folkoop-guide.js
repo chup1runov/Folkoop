@@ -164,7 +164,7 @@ function layoutTour(target){
  // being explained.
  if(mobile){
   const targetLow=r.top+r.height/2>innerHeight/2;
-  const cardAtTop=helper||targetLow;
+  const cardAtTop=helper||(targetLow&&!!target.closest('.mobile-primary-nav,.mobile-context-dock'));
   card.style.top=cardAtTop?gap+'px':'auto';
   card.style.bottom=cardAtTop?'auto':gap+'px';
  }else{

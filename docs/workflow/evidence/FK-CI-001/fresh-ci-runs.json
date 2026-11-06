@@ -1,0 +1,52 @@
+{
+  "queried_on": "2026-10-29",
+  "method": "GET only",
+  "url": "https://api.github.com/repos/chup1runov/Folkoop/actions/workflows/pages.yml/runs?branch=main&per_page=5",
+  "runs": [
+    {
+      "id": 40679481253,
+      "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-28T11:22:44Z",
+      "html_url": "https://github.com/chup1runov/Folkoop/actions/runs/40679481253"
+    },
+    {
+      "id": 40490015744,
+      "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-27T10:38:14Z",
+      "html_url": "https://github.com/chup1runov/Folkoop/actions/runs/40490015744"
+    },
+    {
+      "id": 40313053283,
+      "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-26T11:10:23Z",
+      "html_url": "https://github.com/chup1runov/Folkoop/actions/runs/40313053283"
+    },
+    {
+      "id": 40182333947,
+      "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-25T09:50:51Z",
+      "html_url": "https://github.com/chup1runov/Folkoop/actions/runs/40182333947"
+    },
+    {
+      "id": 40082535294,
+      "head_sha": "800a1fe3127b76ae20b8dda753a7199fe553a359",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-24T09:35:07Z",
+      "html_url": "https://github.com/chup1runov/Folkoop/actions/runs/40082535294"
+    }
+  ]
+}

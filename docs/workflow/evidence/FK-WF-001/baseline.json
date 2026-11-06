@@ -1,0 +1,13 @@
+{
+  "id": "FK-WF-001-E01",
+  "checked_at": "2026-10-29",
+  "kind": "deterministic",
+  "result": "passed",
+  "scope": "Baseline captured before workflow writes; tracked + untracked nonignored regular files; Git internals and ignored files outside coverage. Installed knowledge SKILL separately backed up.",
+  "head": "37edc44173f2feb809ca6c46e6ab5c67b377fbce",
+  "branch": "codex/project-decisions-draft-20261018",
+  "file_count": 2971,
+  "baseline_sha256": "556e9b0e55eb5f279f0935738f75618f8c445729e33d3bac6313e9ca50361907",
+  "knowledge_skill_sha256": "fa9690f6c7f1802ebb93fffad88c97bd956d26c45e122d0f31ef69a796546a75",
+  "recovery": "Local sibling directory FOLKOOP_WORKFLOW_PILOT_20261029: baseline.json, status-before.txt, before/, folkoop-knowledge.before.md. Not a portable copy of the complete dirty checkout."
+}

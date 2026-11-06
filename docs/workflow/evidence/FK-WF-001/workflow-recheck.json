@@ -1,0 +1,55 @@
+{
+  "id": "FK-WF-001-E05",
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "changes": "Independent review: reject closing journal markers; require linked R-to-T-to-passed-E coverage at complete. Original expectations retained; two counterexamples added.",
+  "results": [
+    {
+      "command": [
+        "node",
+        "--check",
+        "scripts/knowledge/workflow.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "tests/workflow/workflow.test.mjs"
+      ],
+      "exit_code": 0,
+      "stdout": "✔ linked completed state is valid; unfinished or unverified completion is rejected (6.871417ms)\n✔ duplicate IDs and dangling requirement/evidence references fail closed (0.157291ms)\n✔ complete needs an actual requirement-task-passed-evidence chain, not orphan green evidence (0.102708ms)\n✔ missing resume instruction, authority and unknown check cannot masquerade as valid state (0.5415ms)\n✔ a changed source is stale even when its filename and date are unchanged (0.788625ms)\n✔ journal append preserves original bytes and repeated entry is byte-identical (0.244042ms)\n✔ journal rejects unknown sources and marker injection; source commands remain inert text (0.116083ms)\n✔ closing journal markers cannot make an accepted entry fail on identical replay (0.057542ms)\n✔ repository path validation rejects traversal and absolute references (0.153666ms)\nℹ tests 9\nℹ suites 0\nℹ pass 9\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 63.662625\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "scripts/knowledge/workflow.mjs",
+        "check",
+        "docs/workflow/tasks/FK-WF-001.state.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 8,\n  \"tasks\": 7,\n  \"evidence\": 3,\n  \"checks\": 8,\n  \"sources\": 18,\n  \"markdownPages\": 13,\n  \"localLinks\": 157,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "scripts/knowledge/workflow.mjs",
+        "record",
+        "docs/workflow/evidence/FK-WF-001/journal-entry.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"unchanged\",\"id\":\"FK-WF-001-LOG01\"}\n",
+      "stderr": ""
+    }
+  ],
+  "journal_replay_unchanged": true,
+  "fingerprints": {
+    "scripts/knowledge/workflow.mjs": "ef3f1e423cb9613b8e9a553d6e28e2946d13cb160e1b5174ca3e7f0a72d63251",
+    "tests/workflow/workflow.test.mjs": "08cf0c48cb9e39eb413602f19808f07e81ce796c005e805c9f4f399f44bbb683"
+  }
+}

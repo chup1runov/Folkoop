@@ -1,0 +1,12 @@
+{
+  "checked_on": "2026-10-29",
+  "result": "passed",
+  "method": "Parse complete before/after YAML with existing PyYAML; compare structures with sole expected runs-on change",
+  "only_semantic_change": "jobs.webkit.runs-on: ubuntu-latest -> ubuntu-24.04",
+  "playwright": "1.57.0 unchanged",
+  "smoke_scripts": 13,
+  "smoke_file_unchanged": true,
+  "deploy_dependencies_unchanged": true,
+  "no_skip_or_continue_on_error_added": true,
+  "limits": "Static configuration preservation; not an executed Ubuntu job."
+}

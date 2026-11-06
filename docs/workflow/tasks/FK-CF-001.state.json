@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "FK-CF-001",
+  "updated": "2026-10-29",
+  "phase": "complete",
+  "spec": "docs/workflow/tasks/FK-CF-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-10-29",
+    "scope": "Fix Cloudflare reload and City; browser checks; publish free, no paid services. Only scoped main patch."
+  },
+  "requirements": [
+    {
+      "id": "FK-CF-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-CF-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-CF-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-CF-001-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-CF-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-CF-001-R01"
+      ],
+      "evidence": [
+        "FK-CF-001-E01"
+      ]
+    },
+    {
+      "id": "FK-CF-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-CF-001-R02"
+      ],
+      "evidence": [
+        "FK-CF-001-E01"
+      ]
+    },
+    {
+      "id": "FK-CF-001-T03",
+      "status": "done",
+      "requirements": [
+        "FK-CF-001-R03",
+        "FK-CF-001-R04"
+      ],
+      "evidence": [
+        "FK-CF-001-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-CF-001-E01",
+      "kind": "agent-review",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "path": "docs/workflow/evidence/FK-CF-001/review.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Scoped fix published and verified. Continue separate project backlog; no full-product acceptance claim."
+}

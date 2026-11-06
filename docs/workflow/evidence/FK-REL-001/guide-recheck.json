@@ -1,0 +1,6 @@
+[
+  {
+    "test": "tests/e2e/guide-interactive-browser.py",
+    "exit": 0
+  }
+]

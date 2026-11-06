@@ -1,0 +1,15 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "tests/unit/mura-tour-progress.test.mjs",
+      "tests/unit/network-mura-home.test.mjs",
+      "tests/unit/first-contact-guest.test.mjs",
+      "tests/unit/mura-whole-system-story-map.test.mjs"
+    ],
+    "exit_code": 0,
+    "stdout": "✔ C provides a short guest welcome in every established locale (1.290792ms)\n✔ C is a separate opt-in URL, leaving A and B untouched (0.220917ms)\n✔ C preserves safe language selection, accessible focus and explicit demo boundary (0.22ms)\n✔ variant C does not add external write endpoints or real participant controls (4.576ms)\n✔ all 18 stories are traversed once, replay does not inflate progress (3.508625ms)\n✔ next skips visited stories and wraps to gaps after an arbitrary jump (0.844542ms)\n✔ stored story resumes exactly; chapter pause preserves the opened set (0.978125ms)\n✔ invalid storage and invalid story selections cannot corrupt progress (1.437ms)\n✔ whole-system Mura map contains exactly seven unique optional stories (1.27975ms)\n✔ every story uses known domain objects and canonical no-loss requirement IDs (0.440917ms)\n✔ story cross-links resolve and each story has truth/acceptance boundaries (0.100417ms)\n✔ four origin families are represented without making legacy source names product brands (0.115584ms)\n✔ Online Center story records v0 self-service coverage without pretending staffed/live/physical integration (0.328458ms)\n✔ City story records the v0 source-preserving bridge without upgrading it to first-class process truth (0.187417ms)\n✔ blockchain story is future-only and preserves privacy/independent-verification safeguards (0.148166ms)\n✔ Center acceptance contract and runtime are aligned for v0 while later operations remain explicit gaps (1.963292ms)\n✔ Mura Home is immersive, read-only and contains no registration CTA (1.438ms)\n✔ Mura Home only exposes safe deep-navigation hooks (0.20675ms)\n✔ Mura Home escapes account text at the presentation boundary (0.201625ms)\nℹ tests 19\nℹ suites 0\nℹ pass 19\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 75.344625\n",
+    "stderr": ""
+  }
+]

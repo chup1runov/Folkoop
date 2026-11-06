@@ -1,0 +1,770 @@
+{
+  "source_head": "37edc44173f2feb809ca6c46e6ab5c67b377fbce",
+  "main": "5ce4a9b0c326c6118e1d37fdeb2d5971908437d7",
+  "original_files_unchanged_before_wiki_pointer": 147,
+  "all_transferred_paths_present": true,
+  "original_21_migrations_byte_identical": true,
+  "main_files_byte_identical": [
+    "apps/web/network-config.js",
+    "apps/web/email-link.js",
+    "apps/web/sw-register.js",
+    "apps/web/network-form-focus.js"
+  ],
+  "conflicts_resolved": [
+    ".github/workflows/pages.yml",
+    "apps/web/folkoop.css",
+    "apps/web/network-ui.js"
+  ],
+  "conflict_resolution": "main comments; union of independent CSS additions; domain disabled semantics preserved",
+  "files": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha256": "7179479f49ab7231ab6e3d9ec5d68bf9401e2e4ff448ba110bb39bbb7f327e74",
+      "tracked": true
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "e4470860648c2451edd12c639291080a4c93843a18fe5ca76c4ed72b520fa9b5",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/folkoop.css",
+      "sha256": "0e31b41b560b4d890c293c8574148fb7ee5d66af17a8e0df209f7ce787afc5d7",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/folkoop.html",
+      "sha256": "165b40f1c57a36badc4730137a45a6ca2c8f9f6675bfdccdf3059e0de3422232",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/folkoop.js",
+      "sha256": "dd7afba971976b919c6b6f1fa63d5d78fc96e6d4831596e028e6a0a9cdb13397",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/network-activity.js",
+      "sha256": "2f240013e1cbc9ca97956fe89b7efa4df444d5217ebd4a654b8450a410b2f8d8",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/network-budget.js",
+      "sha256": "fb5646c1cb9c3ca6adcefb6cb79d0c80dd1bf14558b2220f1869702fe536fbe7",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-client.js",
+      "sha256": "59919084a7434b605df4dcd75247f4af31945b6ebf042fe267a5bd224e7317b2",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/network-decisions.js",
+      "sha256": "8f87cba145144e23272c2ea1e8366e1bf0a6281eac1c1f858e0bf926c1231b76",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-for-you.js",
+      "sha256": "2566ddc8e7d55517bf276c2fa14fabc64854870d9d169daf7fc4867cc6465b3a",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-meetings.js",
+      "sha256": "bf3564096f916053f550bd2b8a0363d307120b611be4d73719fe6434d0a953e7",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/network-needs.js",
+      "sha256": "3abea01ed494156eb5f1b31abd7cd16de8980c936ce78ef26b46b9fd273e23e0",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-room-requests.js",
+      "sha256": "af5a8c6e7abc04c283a6ed3399499a76971365107f4a8e60833d8580928d6a75",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-task-basis-notices.js",
+      "sha256": "fbdd0ff7a2efe7e5b98c91f4ebbfa1bdd48bfb93b04df4e4af794071cf4dafb2",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-task-work.js",
+      "sha256": "2906a01eece6dbef2f2855f7d6a9bea566dd539863f64ebe24b70dfe8af869db",
+      "tracked": false
+    },
+    {
+      "path": "apps/web/network-ui.js",
+      "sha256": "ca9cb23a302a41b3c6fd6196094002bbc8c91a1a017c99a183fca12ee371c105",
+      "tracked": true
+    },
+    {
+      "path": "apps/web/network-welcome.js",
+      "sha256": "a551b3c5826c4c7b913ac27e0170188cbc58854255bc487c811fdcb8d4f75632",
+      "tracked": false
+    },
+    {
+      "path": "docs/ACCOUNT_CLOSURE_RUNBOOK.md",
+      "sha256": "1ee7a9eb2fdb7254072a1e2b5e1ca33f5259c23dbb7efb31246a6e6fb3f30267",
+      "tracked": true
+    },
+    {
+      "path": "docs/CONTRIBUTION_NOTIFICATIONS_DRAFT_20261025.md",
+      "sha256": "e4103092810b3d70cba634b1157169ca2ab12b8cae8776eb5f6e082141b378e5",
+      "tracked": false
+    },
+    {
+      "path": "docs/DECISION_RULES_DRAFT_20261023.md",
+      "sha256": "f8a0549ff8f44654c4a7cd55ed1be8c4a2c5f29b0b4f735fede0144a4ee52d71",
+      "tracked": false
+    },
+    {
+      "path": "docs/DOCUMENT_CONSENTS_DRAFT_20261018.md",
+      "sha256": "9d7d9f87217fd29f98313d73fda8e018a684ddfa5ced812953e10e9e248522e6",
+      "tracked": false
+    },
+    {
+      "path": "docs/DOCUMENT_NOTIFICATIONS_DRAFT_20261018.md",
+      "sha256": "b1df7dfd80ad7af2b3d3c81a0fcfbffb49a7873d56276f57383364240e2c7912",
+      "tracked": false
+    },
+    {
+      "path": "docs/DOCUMENT_ORGANIZER_SUMMARY_DRAFT_20261018.md",
+      "sha256": "ec9882e5f9cedb27685b628f5b7553970ba57cb28f3fe4ce35a2697c1f4e3be9",
+      "tracked": false
+    },
+    {
+      "path": "docs/FOR_YOU_DRAFT_20261019.md",
+      "sha256": "f47a7580c22c79a7ad76a74a21cbc1a1b685925b3d1eb598b7df4dade37c9201",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_BUDGET_NOTIFICATIONS_DRAFT_20261026.md",
+      "sha256": "6aacb1e9c0cb6e69a45ee2d7374949a5b28bb87bbb6e78a64d6fde4481157f23",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_BUDGET_READINESS_DRAFT_20261025.md",
+      "sha256": "e43eb5069a63ad340c12ddf37d5623a8a0e826d29e270e7106955fc88f5ee96e",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_HISTORY_DRAFT_20261018.md",
+      "sha256": "b2e3ad5f8ff244b7f43132aa787ff91d5b28f1ad21f2047bb0a39f3c2b18eca5",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_ORGANIZER_OVERVIEW_DRAFT_20261018.md",
+      "sha256": "0974d43a01ad43a95eba6d30770997260851966b551109b933b0c09a4b733fa4",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_PARTICIPANT_ALERTS_DRAFT_20261018.md",
+      "sha256": "71a56106ef31cb5e0635acd0fee3f83a74cd4c996acb6c9b84c00010c60855ee",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_REMINDERS_DRAFT_20261018.md",
+      "sha256": "3b4f8b6436bc898f05d25ff2d917faae7108393aafd26f7a5b96f587035cdc09",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_REMINDER_LOG_DRAFT_20261018.md",
+      "sha256": "0def9fa6f7a5b5cbb27b0a040e08a99dc272bb39010446233996ab1905eb7fbf",
+      "tracked": false
+    },
+    {
+      "path": "docs/MEETING_ROOM_READINESS_DRAFT_20261018.md",
+      "sha256": "22dc0ba7a835df3c0f9d00f90778ac5e7e7706dc226ee5a142973c6a5f46629e",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_CENTER_STORIES_DRAFT_20261026.md",
+      "sha256": "0c478f05e682b26c9d88d5d98c5adee0dc19e7693e60bf6e43e458811c9d0074",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_CHAPTER_TOUR_DRAFT_20261026.md",
+      "sha256": "79329cb387dddfa6319079a4d0bef37b27d7842fd06ed3f94b1cf729424d217b",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_CITY_STORIES_DRAFT_20261027.md",
+      "sha256": "50e59fd7f6ef33424b84fc0580ab7258766a88ff9f653e978eff8618aff8cd31",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_MESSAGE_STORIES_DRAFT_20261027.md",
+      "sha256": "67d2792d2c1c6cdbe585935d3594eae884db7e351502d4fdf60cef60a90158a6",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_NEXT_STORY_DRAFT_20261027.md",
+      "sha256": "0d02ae22fc809dfffb2c1274f3d5892a00e6dd56e535811aaa180da7ca65c4c6",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_PROFILE_STORIES_DRAFT_20261027.md",
+      "sha256": "36bff4c08e04e5b1ae5454692e61104786af74f0681bb74e0e7dc0f67f7232dd",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_STORY_PROGRESS_DRAFT_20261028.md",
+      "sha256": "9d6409d06d257cb42f7f86c78277ff8d3b9f7263839b7a1c47f7e048dd16d56b",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_TOGETHER_STORIES_DRAFT_20261026.md",
+      "sha256": "6ebfec2ee5feb8e6c3a46e3ffd426fa6797da0ead0850d8e39cfeb9ceb383a4c",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_TOUR_FINALE_DRAFT_20261028.md",
+      "sha256": "6806a47a91568bd7863aaf356f70f0b153e12e4efc18084b53c4e07b638a111b",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_TOUR_MAP_DRAFT_20261027.md",
+      "sha256": "71892e196de21f20986fa754b8f9d2964100906dfd7803eaf8b1a148ee539f54",
+      "tracked": false
+    },
+    {
+      "path": "docs/MURA_TOUR_QA_20261028.md",
+      "sha256": "5a05d8b1d8c47abf1fb7d74bc0f6ec7ac12cdc3e62a3e552b3ee370802bf6983",
+      "tracked": false
+    },
+    {
+      "path": "docs/NEWCOMER_WELCOME_DRAFT_20261019.md",
+      "sha256": "0f54b017aa6eec721ba7a519b6b4740d457c4bbbbcf8e00ae3e8b54cae27d2af",
+      "tracked": false
+    },
+    {
+      "path": "docs/PRE_PILOT_PRIVACY_DATA_MAP.md",
+      "sha256": "86c22d816416615b7650a6c1d26a0f227cfc4fffd0c1bef046b6286822d61580",
+      "tracked": true
+    },
+    {
+      "path": "docs/PROJECT_BUDGET_DRAFT_20261025.md",
+      "sha256": "6aeb53a9443f9eb8dc164deca807ff35afef0542e8490491826837e4a6e86fa0",
+      "tracked": false
+    },
+    {
+      "path": "docs/PROJECT_DECISIONS_DRAFT_20261018.md",
+      "sha256": "e5b8e7fb5d6c5926a65292f8df768897f80836439d384c8cc6b47091dffd1770",
+      "tracked": false
+    },
+    {
+      "path": "docs/PROJECT_DOCUMENTS_DRAFT_20261018.md",
+      "sha256": "ba40a58d908cd7f2060818c1088bc83472bb5040ceb752f2b24f128ba5a4f498",
+      "tracked": false
+    },
+    {
+      "path": "docs/PROJECT_NEXT_STEP_DRAFT_20261023.md",
+      "sha256": "6b91067cf2dd83fb88cc04ff50cb2fd6126016f1cba43617fbc43749999a5b18",
+      "tracked": false
+    },
+    {
+      "path": "docs/PROJECT_OVERVIEW_DRAFT_20261018.md",
+      "sha256": "ceceff273c6a0df5b8e758bd42f30f4cc743ca3d67a4426dc5025ea03e865192",
+      "tracked": false
+    },
+    {
+      "path": "docs/ROOM_NOTIFICATIONS_DRAFT_20261018.md",
+      "sha256": "bd368cc0521c9052f16efb61a435adc314c4ca9a7bea36e1fca8ab8fc194f4fd",
+      "tracked": false
+    },
+    {
+      "path": "docs/ROOM_REQUEST_DRAFT_20261018.md",
+      "sha256": "6431dbe6ecb2982aa09cd6cd62b37a7716cda8415f9885cf17c446507087bf95",
+      "tracked": false
+    },
+    {
+      "path": "docs/SHARED_NEED_DRAFT_20261018.md",
+      "sha256": "fa5c4c18fdcb4fd7937c38b5121c61dbeb8ed043efa190f3df60ecd622bee9cc",
+      "tracked": false
+    },
+    {
+      "path": "docs/TASK_BASIS_NOTIFICATIONS_DRAFT_20261018.md",
+      "sha256": "30b692b4cd26602cf463de32de712a67f6cc70f043017b414f1faa5bbcee3dac",
+      "tracked": false
+    },
+    {
+      "path": "docs/TASK_EXECUTION_BASIS_DRAFT_20261018.md",
+      "sha256": "6c906115580b3da07a854d7b25720008c4af49cf4853b470b5595de6997d775e",
+      "tracked": false
+    },
+    {
+      "path": "docs/TASK_HISTORY_DRAFT_20261018.md",
+      "sha256": "fee1dcedcecafac46ad31664fd2cdb6bb10e666280145c028af980e9b9cd5eed",
+      "tracked": false
+    },
+    {
+      "path": "docs/TASK_NOTIFICATIONS_DRAFT_20261018.md",
+      "sha256": "815a570033d24bbc30b5ce00c26da11532077309fde2006a998e7fd1aae168ab",
+      "tracked": false
+    },
+    {
+      "path": "docs/TASK_WORK_DRAFT_20261018.md",
+      "sha256": "a9a0ef9f6f95797bd919852ab4aa4be2d1cb78bd6465e2d345423e7c22289744",
+      "tracked": false
+    },
+    {
+      "path": "docs/qa/mura-tour-20261028/desktop-finale.png",
+      "sha256": "d7d742b219c5d10687bc2d5304bdfbb20b7bb34d7a4073a405b81ffa29dc39d9",
+      "tracked": false
+    },
+    {
+      "path": "docs/qa/mura-tour-20261028/mobile-finale.png",
+      "sha256": "27fb0796d598e00ee439cf03931f6c555d994935e70b2437a9b4f4238c1520a9",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/AGENTS.md",
+      "sha256": "f0b3131714c359ae8c37757d8c2a28d343dc4cd5ed4131af1c23b036d54b6309",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/concept.md",
+      "sha256": "647b0f5d9f4906665597cd1f5dad1b4f5b5988550a63f21e1502678ccd9e3871",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/development-status.md",
+      "sha256": "abf2b9e6a3e4f6778dcb1d58e7068239baef4038856b459da6f2116181022b5e",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/index.md",
+      "sha256": "9247ff7848ba6629222678ee61bccfa18dcf9a231b4bae1e298c3ccf7374d01e",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/lessons.md",
+      "sha256": "697a658b409cd2d676ffb16b6aa6b4487e1f600700be6928e9e512562e4d5222",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/log.md",
+      "sha256": "d229d17d93818aa01139869bcad9b0b03e2670ddf584b6ea09b1cdf1330717fa",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/sources.json",
+      "sha256": "aa2717219b4e4d5a0c524a247b4b7414122a0ca4d7b46ba8204a282562d180b9",
+      "tracked": false
+    },
+    {
+      "path": "docs/wiki/tokarenko-map.md",
+      "sha256": "fcdbe3243db440bdc7e3f527c96f6cc663814d1d8c66cabcc5f4a75eeac5d629",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/README.md",
+      "sha256": "cf794f48c027d5a762b2374eaaecea5cf003c1bdcf0c4fc0d6a9592531b577ab",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/PLAN.md",
+      "sha256": "e9bff03aa7b652e0eaf7f317958cee0859f51d596d609b5509b82694df11cbcd",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/fix.patch",
+      "sha256": "750f5082d53861830de3afeed62a0495e9746da13d9aa54aeec0c710112a3924",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/production.json",
+      "sha256": "cf77f67e7864da766472dd804593cf3ccc7cdd0f220b3ef4817e2ffde4ea8cbd",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/review.md",
+      "sha256": "2d75af2d411a0d796dbc78b36253bacd553db81da8cba895ee683df95d6f44c6",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-002/PLAN.md",
+      "sha256": "9c4a7c9f7b83906a149f186eb5ab08609cb8bb789a5302092d9757e54ceed84e",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-002/fix.patch",
+      "sha256": "c9bb347b76ab590620f7a1d9b00b8eb8e909be3f0ca50029ab3f97988cf73f8a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-002/production.json",
+      "sha256": "28d4faecd2478e53f7f5b082c1b924927c6589db4027853f688e5b046771fff9",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/context.json",
+      "sha256": "1a577f1b1faf931a1762ef3d2ac6b5b4ddbe96a755a25cb16f65dd1ac49d452c",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/diagnosis.md",
+      "sha256": "a95bb65174d6e982574a1ec6d1e7592734f66cfc7f09e833b653327957808d7a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/execution-final-check.json",
+      "sha256": "f6e6e6f4a49cb8a2287100fcfc7f06b42a462c9e8efe521285bce21f07fa985a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/execution-review.md",
+      "sha256": "83b0b645ba667a850550a5709e8672c97e7d504c946cf03bf47cda627a1fbde8",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/fresh-ci-runs.json",
+      "sha256": "405a035809c3c93693abd95c1ab9c437ac5d7c43b9d80b4449c9137e6482ce4f",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/local-verification.json",
+      "sha256": "a8a07958a8fa970cad2914601b255a46b928dc2a1bb4c802a615c9cac9d24946",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/preparation-check.json",
+      "sha256": "bbbeea38d5f62004dabc280b8861128b12763a9fcce2ffc132b3dee043f0dbc9",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/preparation-review.md",
+      "sha256": "1276c37897da7f44ef1a08c6be5e9301144ad7b887d36bd381e1495a96d8e5c1",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CI-001/runner-contract-check.json",
+      "sha256": "eed813aec7728571b24432ac25968364410f99495f90a9116b9b255df9464b9c",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/baseline.json",
+      "sha256": "580fd7824ca9ee4a75d83051767840559c08da4e5b435d143e117b4ad377cd08",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/behavior-request.md",
+      "sha256": "8e73eb52d254c4f50b6106c0e8ac8254ad93124a8603e899537d5d80a30c2b69",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/behavior-response.md",
+      "sha256": "334f9832dca932883f85a9891abf5415a06050b9cdb401b6f336a50f3540c86a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/checks.json",
+      "sha256": "3a984fdb53dfe863a3fd7592d71f11a3a83e585527aefd85d83a6de20299d97a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/completion-receipt.json",
+      "sha256": "eac340804e008827e904a983d6e51697b1899a0a7d2b752f637263a990b6cd78",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/final-checks-before-completion.json",
+      "sha256": "fb342657ff8df8b1a53d1a8d7820d5e80dae7fd31f1c9f8871a78c79d8e2e93a",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/final-checks.json",
+      "sha256": "dde0651b20f93cad0814b259bc577e8901e9780daad6691f3e43362a6d3e193f",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/final-review.md",
+      "sha256": "31ffea7a355feab340c832a73ff3e4879f6cbe21882fb5dc07f79e6106b039c3",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/journal-entry.json",
+      "sha256": "d86c9c01f9694322d90573bed63077a696685db1af886f25e2a7bb163434ef01",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/journal-final-entry.json",
+      "sha256": "2a2e1dcf771ea26be454add8c6223dda3931a146818fa6fe683126299e5ea340",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/journal-idempotence.json",
+      "sha256": "eb6cb0769fdce1b92dc825f1aa34924eb92aed54922cd16d36bc9e60398f3ff3",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/mura-tests.raw.json",
+      "sha256": "6d746b3dd6908ab72dbb697a749a7119ab49ce621889a043320111b083c635f2",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/plan-review.md",
+      "sha256": "a577b297dafb4e2ac2cbaeff8086f07826be05a36050b1ca6bb1223f142edecf",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/preservation-initial.json",
+      "sha256": "4231c0bb61b0338c00a914881705683288faf594d43d55461da8f1beb2a77e39",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/preservation.json",
+      "sha256": "696badda95a9da24c330e2a2ab0fb4afdf8bd8bb869a36dc6494e78faab36e09",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/review.md",
+      "sha256": "5d1bec75a3b08f6773d6f7dfce7c60176bf41b620103e99ffbb659ae03897299",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/reviewer-regression-before-fix.json",
+      "sha256": "01c3354a06a012c6f379674c549ae861fed51d427986fc5bcbdbbdcdd5f782a7",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/skill-interfaces.json",
+      "sha256": "59e6856599068336f02cc0ff811287cd96ee15bd59903ffb849179e86c39db7f",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/skills.raw.json",
+      "sha256": "3f3a5401b04cd164edadc6e10b546f8327eb04abc3fb16dcab5f55bcf759c57d",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/workflow-recheck.json",
+      "sha256": "7e7ca955d35818073e69458c527b5ba024feff16c5e896bc423a000b1e8db330",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/evidence/FK-WF-001/workflow-tests.raw.json",
+      "sha256": "3d9ad67794349f6de31a77d0db99ab26e63e89b74a217b18a3a20c16c5165419",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/fixtures/review-sources.md",
+      "sha256": "759589b93d38249140e178fc45b3977b2e41db605b7e1b1e2a9d647399b33868",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-CF-001.md",
+      "sha256": "4f83bfd9e7b7148ce16cd0ca98b5bcb2f600e87f0e5af4d08f439333775a5fc6",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-CF-001.state.json",
+      "sha256": "b7a0b2050e01c7ce976e0608555aaefd9a9067f89fe7a56b44d6de4f01d4904d",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-CF-002.md",
+      "sha256": "f671fbd53738092c5dcaf7f84b85b86dad23cf470b185d6c4072b339559c4591",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-CI-001.md",
+      "sha256": "e969d2b12709fdab4a5fc0c87cd29e87c989339d209044cce27ceedd04c00b66",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-CI-001.state.json",
+      "sha256": "8b1a11bc15ae7c774e0a91dbd15c596d62e7e16e55e82c2b57a5e86bc6cedd78",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-WF-001.md",
+      "sha256": "4966e8e511dfb56f92ab196a7146ad05d0fdc9a464cc47518e71fec5c547441e",
+      "tracked": false
+    },
+    {
+      "path": "docs/workflow/tasks/FK-WF-001.state.json",
+      "sha256": "a23e83399c91aeb3d44ec6fab60ef1e8fe823be5ffb1aebe12136ba9afcb88d8",
+      "tracked": false
+    },
+    {
+      "path": "scripts/build/public-assets.mjs",
+      "sha256": "c5a8ed9c5f5861b0802eb43b2044405ca2c050793a9474e7eb8d1966fde268dc",
+      "tracked": true
+    },
+    {
+      "path": "scripts/knowledge/workflow.mjs",
+      "sha256": "ef3f1e423cb9613b8e9a553d6e28e2946d13cb160e1b5174ca3e7f0a72d63251",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018145149_folkoop_project_decisions.sql",
+      "sha256": "d27899044c641f8d34a0f58187ab35d2181e5e3106e8d6af06266fa19b852602",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018150158_task_self_claim_result.sql",
+      "sha256": "26f2e8f124631fc497902c4a62bb06c59504abacfc076079f72c28d1b22ef24d",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018150752_task_work_notifications.sql",
+      "sha256": "4ef6e516e7e65f81385348d99ef7f5c6e968f43ffc0f8c4fd8593f3eb7f67e9d",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018152052_shared_need_to_project.sql",
+      "sha256": "13c3b0aada6bc48de15323af45a32d3b377d7fc4b97a0cac36a8a425c0c7f6c4",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018153911_room_request_terms.sql",
+      "sha256": "d1459f61220a8d9cf678b1bea8c84360eb59d6386d1cc762383dd8bfb0cfae20",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018155135_room_notification_inbox.sql",
+      "sha256": "dcfbdffe32dd51c0bb47b1820c295a3ae60bb24f3edcdc364212885c081201fb",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018161028_meeting_room_readiness.sql",
+      "sha256": "3c643680124d7e1f45c6730f81e9ab25d28c46d5b8c149fd914cf52579f6f30e",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018170244_meeting_participant_room_notices.sql",
+      "sha256": "41a686deaa1c23d7f92de03af89d87fef12289209395fa8b479779af75a95f36",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018172618_meeting_reminders.sql",
+      "sha256": "076492fdab4a574380c08ddb034fdf7732ca444a5920cf94c5f48078be0deee6",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018173808_meeting_reminder_history.sql",
+      "sha256": "3baca453c00895cbaf18e5ce342d9dc49526db559bfbdf556454fef0251c8be9",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018190041_project_documents.sql",
+      "sha256": "3fbca4fc7cd08b86486ce6c54f7ff97b82805e416967df1137461eeb32b78ebd",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018191324_project_document_consents.sql",
+      "sha256": "8e7d5996e9f05fc2b3336100665d894b27bc9ad55723f0b462cdad6a318549d4",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018193528_document_revision_notifications.sql",
+      "sha256": "5d951729f52ed4049a1d582b8e4fade85632c1bd50f36b8e8b3af0d086067135",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018203254_task_execution_basis.sql",
+      "sha256": "b56e9f3223a066ea43feac3d5795e708afbecfa543d384cd338b52316da6e895",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261018211151_task_basis_notifications.sql",
+      "sha256": "e23e9e7f1c8b22ea26f055073c752f031828c2491b4b50ee986caa633b223783",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261019103435_newcomer_welcome.sql",
+      "sha256": "08dc9700812f730b35724eac1d5e48c223aef2a928d734e630fafe00b24e9847",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261022231942_project_decision_rules.sql",
+      "sha256": "a5116ec278d159a96271c843024af0a75963da3ce9838ac18cef263a80464dea",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261025191414_project_contributions_budget.sql",
+      "sha256": "6a7cde81bfc0534010b059540a7bae16b1700e164c02df92a1c300517f6958ee",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261025192438_contribution_notifications.sql",
+      "sha256": "e6941cb602a2eacf6894430e1cc3b9a1a205cd07ea7e764515eefc49e0068ab4",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261025224921_meeting_budget_readiness.sql",
+      "sha256": "402212449a0a2a7832ae2d77cc4577b2a4ca4f0e67bdf933b6a7d3b280a8e917",
+      "tracked": false
+    },
+    {
+      "path": "supabase/migrations/20261026002303_meeting_budget_change_notices.sql",
+      "sha256": "577ec49f089154a7859f2239cad3d8df085aefd107e889937ebabb1290185cd9",
+      "tracked": false
+    },
+    {
+      "path": "supabase/tests/network-security-definer.sql",
+      "sha256": "f06d65bbceea266d3e6cd221caf37d9c45ee863e61546cc28f8042ca6ac95f54",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/document-summary.test.mjs",
+      "sha256": "cb644bdd1a3d068fe6abd3134c1bf14d284ec19923c635f99d223697d7643e91",
+      "tracked": false
+    },
+    {
+      "path": "tests/unit/first-contact-guest.test.mjs",
+      "sha256": "8dd303178160c2ff8a207ca16c120de01bcad1103c428ba28d796fa17d7aebe7",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/for-you.test.mjs",
+      "sha256": "23556c646cf7c047c6cf02179513ec0cc639de0211673fefbf40afd3db23228f",
+      "tracked": false
+    },
+    {
+      "path": "tests/unit/mura-tour-progress.test.mjs",
+      "sha256": "49a8722284ef99b08421469bb1f44dfb07c2bf7eeb9ec6564eb62ba99169572b",
+      "tracked": false
+    },
+    {
+      "path": "tests/unit/network-meetings.test.mjs",
+      "sha256": "1712e53851d4f2cf0accb2b4eb0789ebba958d533494e6281e0e28e524181d15",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/newcomer-welcome.test.mjs",
+      "sha256": "9ab1fad1347cad693bf803999e29a2a95987b15483cc1b3387ea295c90391334",
+      "tracked": false
+    },
+    {
+      "path": "tests/unit/task-basis-notices.test.mjs",
+      "sha256": "95255d373496961c60d5f578587f0f505d32b08733e5b3b503af1212e01554c4",
+      "tracked": false
+    },
+    {
+      "path": "tests/unit/task-basis.test.mjs",
+      "sha256": "db1af3fdec5b28693020830caa33a1403d6326f37f7b4b2cf6c3e41b20ef8091",
+      "tracked": false
+    },
+    {
+      "path": "tests/workflow/workflow.test.mjs",
+      "sha256": "08cf0c48cb9e39eb413602f19808f07e81ce796c005e805c9f4f399f44bbb683",
+      "tracked": false
+    }
+  ],
+  "additional_historical_ignored_logs_preserved": [
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/red.log",
+      "sha256": "b283e3584f8e7b3508614bc4c0ea2844b5d441015999b96f7fe9b84352ce824e"
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-001/tests.log",
+      "sha256": "bdfa095f42a2267e0b3c84cad990787cd5141b387a53ed16249bdc18f3566604"
+    },
+    {
+      "path": "docs/workflow/evidence/FK-CF-002/tests.log",
+      "sha256": "c44669e4dba5e220312f23d3219f16a2c50550b2384ae8577fa65741e950bed4"
+    }
+  ]
+}

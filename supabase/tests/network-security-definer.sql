@@ -55,7 +55,7 @@ select fk_secdef_test.ok(
  'all public fk_* SECURITY DEFINER RPCs remain authenticated-only callable'
 );
 
--- Only helpers called by RLS policies may be executable by authenticated.
+-- Only reviewed RLS helpers and actor-checked private RPC implementations may be executable.
 select fk_secdef_test.ok(
  not exists(
   select 1
@@ -67,11 +67,18 @@ select fk_secdef_test.ok(
     and p.proname not in (
       'is_pilot','chat_member','coop_member','is_blocked','member_of',
       'shares_chat','shares_cooperation','selected_purchase_provider',
+      'resource_session_active','save_resource_requirement','save_resource_availability','remove_resource_plan','resource_availability_revision',
       'meeting_session_active','save_meeting_terms','respond_meeting','meeting_snapshot',
-      'report_meeting_outcome','meeting_outcome_snapshot','repeat_meeting'
+      'report_meeting_outcome','meeting_outcome_snapshot','repeat_meeting','mark_messages_read','send_message_once',
+      'propose_project_decision','respond_project_decision','finish_project_decision','task_work_action','task_action_inbox',
+      'respond_shared_need','project_from_need','room_request_action','room_notification_inbox','read_room_notifications','bind_meeting_room','meeting_ready_snapshot','meeting_room_alerts','send_meeting_reminder','meeting_reminder_inbox','save_project_document','respond_project_document',
+      'save_task_basis','respond_task_basis','task_bases_snapshot','save_project_welcome',
+      'propose_decision_rules','save_decision_objection','answer_decision_objection',
+      'project_budget_action','project_budget_snapshot','contribution_notice_inbox','read_contribution_notice',
+      'save_meeting_budget','meeting_budget_ready_snapshot','meeting_budget_notice_inbox','read_meeting_budget_notice'
     )
  ),
- 'authenticated cannot execute non-RLS private SECURITY DEFINER helpers'
+ 'authenticated cannot execute unreviewed private SECURITY DEFINER helpers'
 );
 
 -- Conversely, every whitelisted RLS helper must stay executable or policies break.

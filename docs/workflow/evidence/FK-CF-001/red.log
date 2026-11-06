@@ -1,0 +1,35 @@
+✔ SW leaves unrelated apps and external coordinate requests untouched (2.1445ms)
+✔ SW returns JSON 503, never HTML, on first-visit data failure (2.9345ms)
+✔ SW handles HTTP 500 with explicitly marked saved public data (1.4135ms)
+✔ SW rejects HTML 200 as data and does not poison the cache (0.577542ms)
+✔ SW storage denial does not discard a successful network response (0.627583ms)
+✖ redirected cached HTML can serve navigation at root and project subpath (53.486125ms)
+✔ navigation preserves ordinary responses and real redirect instructions (1.272208ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 176.951542
+
+✖ failing tests:
+
+test at tests/unit/sw.test.mjs:22:1
+✖ redirected cached HTML can serve navigation at root and project subpath (53.486125ms)
+  AssertionError [ERR_ASSERTION]: navigation must not replay followed-redirect metadata
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/paup/Documents/FOLKOOP_REVIEW_2026-10-12/FOLKOOP_CLOUDFLARE_PREFLIGHT_20261029/main/tests/unit/sw.test.mjs:38:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

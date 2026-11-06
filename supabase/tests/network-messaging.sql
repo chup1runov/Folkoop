@@ -97,8 +97,8 @@ select fk_msg_test.ok((select count(*)=0 from public.fk_messages where conversat
 select set_config('request.jwt.claim.sub','55555555-5555-4555-8555-555555555555',true);
 select fk_msg_test.ok(fk_msg_test.denied(format('select public.fk_remove_chat_member(%L,''44444444-4444-4444-8444-444444444444'')',:'group_id')),'member cannot remove group owner');
 select fk_msg_test.ok(fk_msg_test.rejected(format('select public.fk_leave_chat(%L)',:'direct_id')),'direct chat cannot use group leave');
-select public.fk_mark_chat_read(:'group_id');
-select fk_msg_test.ok((select last_read_at is not null from public.fk_conversation_members where conversation_id=:'group_id' and user_id='55555555-5555-4555-8555-555555555555'),'read marker is stored for member');
+select public.fk_mark_messages_read(:'group_id',array[:'owner_msg'::uuid]);
+select fk_msg_test.ok((select count(*)=1 from public.fk_message_reads where message_id=:'owner_msg' and user_id='55555555-5555-4555-8555-555555555555'),'exact visible-message receipt is stored for member');
 
 select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',true);
 select public.fk_delete_message(:'bob_msg');

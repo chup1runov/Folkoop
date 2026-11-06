@@ -1,4 +1,118 @@
+## Local update — 6 November 2026, FK-STAB-001
+
+New private `fk_message_reads` records: message ID, conversation ID, reader ID and
+server receipt timestamp. Purpose: acknowledge only displayed messages instead of
+clearing unseen messages by clock time; not proof of attention or comprehension.
+RLS permits only the reader's rows within an accessible chat; no direct client DML.
+Bounded account export includes own rows, closure inventory v20 counts them;
+message/membership/Auth deletion cascades these receipts. No production deployment.
+Meeting outcomes now survive membership removal, retaining disagreement; Auth
+closure still removes personal outcomes. A membership exit is not a deletion request.
+Local SQL/browser evidence: `docs/workflow/evidence/FK-STAB-001/results.md`.
+
 # FOLKOOP Pre-Pilot Privacy Data Map v1.1
+
+## Local unverified addendum — meeting budget change notices, 26 October 2026
+
+`fk_meeting_budget_changes` stores before/after selected need ID/title/kind/amount/mode
+and version/time. These are additional copies of need titles, not just foreign keys.
+`fk_meeting_budget_notices` stores recipient/version/read_at; no copied profile or
+payment identifier. Current members can read shared changes; only the addressed
+current member with an active session can read/mark their own notice. Recipients
+are fixed at creation, excluding the policy author; no historical backfill.
+Auth-recipient deletion cascades personal notices, not shared change snapshots.
+Policy/project deletion cascades snapshots. Existing retention applies; title copies
+need content/reidentification review for both need author and policy author.
+Inventory v19 covers these paths. Bounded personal notice export contains references
+and read state; operator export must add linked snapshots and inaccessible records.
+Read_at is not consent. No email/push/provider changes. See
+MEETING_BUDGET_NOTIFICATIONS_DRAFT_20261026.md. Migration unapplied, behavior untested.
+
+## Local unverified addendum — meeting budget policy, 25 October 2026
+
+`fk_meeting_budget_policies` stores project/meeting version, organizer author ID,
+selected need IDs and promise/receipt modes, creation time. No new free text or
+payment identifiers. Current project members can read immutable versions; current
+organizer writes through version-checked RPC. A changed selection creates new terms
+and no participant answers are copied. Budget readiness uses current member promises
+and separately confirmed receipts, not bank evidence. Auth deletion nulls author;
+project/terms deletion cascades. Existing retention/reidentification rules apply.
+Bounded own-policy export and operator inventory v18 are added. No external processor
+or notification channel. See MEETING_BUDGET_READINESS_DRAFT_20261025.md. Unapplied,
+untested, unpublished.
+
+## Local unverified addendum — contribution notices, 25 October 2026
+
+`fk_contribution_notices` stores event/project/recipient references, recipient role
+and optional read_at. No copied prose, bank data, new processor, email or push.
+The inbox joins existing budget events/contributions for display. Only the recipient
+with a live session and current project membership can read/mark read; organizer
+notices additionally require current ownership. Recipient is pinned at event time;
+ownership transfer does not copy another person's inbox. Self-events are omitted.
+Auth-recipient deletion cascades notices; event/project deletion also cascades.
+Existing retention applies; read_at is not proof of human comprehension or consent.
+Limited export includes own accessible notice rows (up to 1000); operator inventory
+v17 adds notice counts. Missing project access still requires operator-assisted
+export/review. See CONTRIBUTION_NOTIFICATIONS_DRAFT_20261025.md. Not applied/tested.
+
+## Local unverified addendum — contributions and budget, 25 October 2026
+
+`fk_project_budget_needs`, `fk_project_contributions`, `fk_project_expenses` and
+`fk_project_budget_events` hold purpose, fixed-unit quantities, personal promises,
+delivery claims, separate receipt confirmations, organizer-reported expenses,
+correction reasons and actor/timestamp history. No bank details, payment processor,
+receipt uploads or new analytics. Current admitted project members may read;
+writes go through authorized RPCs, not direct client table mutation.
+Do not put sensitive payment identifiers or personal information into free text.
+Leaving/removal preserves shared records but removes access. Auth deletion sets
+actor references null; prose and reidentification risk still require operator review.
+Project deletion cascades, so this is not an immutable accounting ledger.
+The personal bounded export adds four collections; history authored by other people
+or records outside current project access require an operator-assisted export.
+Inventory v16 wraps v15 and counts these references/content for review. No indefinite
+retention is introduced: apply the existing shared-content retention workflow.
+See PROJECT_BUDGET_DRAFT_20261025.md. Neither migration nor behavior verified/applied.
+
+## Local unverified addendum — decision rules, 23 October 2026
+
+New proposals retain a named decision maker and expected outcome deadline.
+fk_decision_objections contains author, objection, withdrawn state, revision,
+organizer disposition/reply, answerer and timestamps. Current admitted project
+members can read. Leaving/removal does not delete objections; deleting an Auth
+identity nulls references but requires prose review, not an automatic claim of
+anonymization. Withdrawal before discussion closes clears objection text.
+Project/proposal deletion cascades. Apply existing shared-content retention,
+not indefinite storage. No new processor or analytics. Bounded export includes
+own objections/answers; operator inventory v15 covers prose and decision-maker
+references. See DECISION_RULES_DRAFT_20261023.md. Not applied or verified.
+
+## Local unverified addendum — newcomer welcome, 19 October 2026
+
+`fk_project_welcome` stores the organizer's explicitly published name/nickname,
+joining instructions, host/account and project IDs, revision and update time.
+Visible to authenticated people allowed to see the project, including nonmembers
+for active invitations. No private profile/contact fields are copied. The form
+warns against publishing others' contacts and home addresses. Disabling clears
+name/instructions; deleting host account or project cascades the invitation.
+Personal export adds `projectWelcomes`; closure inventory v14 wraps v13.
+No new processor or tracking. Unverified local draft; migration not applied.
+See `NEWCOMER_WELCOME_DRAFT_20261019.md`.
+
+## Local unverified addendum — task execution bases, 18 October 2026
+
+`fk_task_bases` adds versioned task/decision/document references, author and time.
+`fk_task_basis_signers` adds required participant IDs, nullable personal response
+and response time. Current project members with live sessions can read; only
+the organizer sets requirements and only the named person can answer for themself.
+This is task-scoped consent, not a legal vote or automatic task assignment.
+Prior policy versions and latest answers per version remain shared project data;
+there is no claim of an immutable audit log of every response change.
+Account deletion nulls references, task/project deletion cascades. Leaving removes
+access but retains responses. Use existing shared-content retention policy and
+inventory v13; inspect residual links/timestamps during closure. Two bounded
+personal export sections added (authored bases and own signer rows); no new
+external processor, analytics event or public personal-data publication.
+See `TASK_EXECUTION_BASIS_DRAFT_20261018.md`. Migration not applied; no checks run.
 
 ## Addendum — meeting outcomes, 18 October 2026
 

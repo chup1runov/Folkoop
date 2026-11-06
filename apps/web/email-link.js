@@ -8,7 +8,8 @@
  const valid=!p.has('error')&&['magiclink','signup'].includes(p.get('type'))&&p.get('token_type')==='bearer'
   &&p.getAll('access_token').length===1&&token.length>=20&&token.length<=12000
   &&Number.isFinite(seconds)&&seconds>0&&seconds<=86400;
- let pending=valid?{token,expiresAt:Math.min(now+seconds*1000,absolute>0?absolute:Infinity)}:{error:true};
+ let refresh=valid?p.get('refresh_token'):null;
+ let pending=valid?{token,takeRefresh(){const value=refresh;refresh=null;return value;},expiresAt:Math.min(now+seconds*1000,absolute>0?absolute:Infinity)}:{error:true};
  if(pending.expiresAt<=now)pending={error:true};
  // Remove the complete callback, including refresh tokens and error descriptions.
  try{history.replaceState(null,'',location.pathname+'?intro=0#/me');}

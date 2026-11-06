@@ -46,7 +46,7 @@ test('rights: built artifact ships exact notices without changing application co
    const to=appSource?path.join(tmp,'apps','web',name):path.join(tmp,name);
    await copyFile(from,to);
   }
-  const run=spawnSync(process.execPath,['scripts/build/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
+  const run=spawnSync(process.execPath,['scripts/build/build-site.mjs','--shell-only'],{cwd:tmp,encoding:'utf8'});
   assert.equal(run.status,0,run.stderr);
   for(const name of files){
    if(name==='app.js')continue;
@@ -62,7 +62,7 @@ test('rights: built artifact ships exact notices without changing application co
   const expected=sourceApp.replace(/const APP_VERSION = '[^']+';/,`const APP_VERSION = '${pkg.version}';`);
   assert.equal(await readFile(path.join(tmp,'_site/app.js'),'utf8'),expected);
   const worker=await readFile(path.join(tmp,'_site/sw.js'),'utf8');
-  const rebuild=()=>spawnSync(process.execPath,['scripts/build/build-site.mjs'],{cwd:tmp,encoding:'utf8'});
+  const rebuild=()=>spawnSync(process.execPath,['scripts/build/build-site.mjs','--shell-only'],{cwd:tmp,encoding:'utf8'});
   assert.equal(rebuild().status,0);
   assert.equal(await readFile(path.join(tmp,'_site/sw.js'),'utf8'),worker,'identical builds keep the cache fingerprint');
   const css=path.join(tmp,'apps/web/folkoop-guide.css');

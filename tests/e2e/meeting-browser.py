@@ -30,7 +30,7 @@ async def main():
     elif '/fk_profiles?' in url:result=[{'id':x,'name':'Alice' if x==A else 'Bob','skills':'','about':'','listed':True} for x in [A,B]]
     elif '/fk_cooperations?' in url:result=[{'id':x,'owner_id':A,'kind':'project','title':'Synthetic Swedish meeting','description':'Synthetic only','status':'open','location_text':'Göteborg'} for x in ([P,N] if state['next'] else [P])]
     elif '/fk_cooperation_members?' in url:result=[{'cooperation_id':P,'user_id':x,'role':'owner' if x==A else 'member'} for x in [A,B]]+([{'cooperation_id':N,'user_id':A,'role':'owner'}] if state['next'] else [])
-    elif url.endswith('/fk_meeting_snapshot'):
+    elif url.endswith('/fk_meeting_ready_snapshot'):
      result={'terms':state['terms'],'responses':state['responses'],'current':True,'people_confirmed':False,'attendee_count':sum(x['confirmed'] and x['role']=='attendee' for x in state['responses']),'checked_at':datetime.now(timezone.utc).isoformat()}
      if v['p_cooperation']==N:result.update(terms=state['next'],responses=state['nextResponses'],attendee_count=len(state['nextResponses']))
     elif url.endswith('/fk_meeting_outcome_snapshot'):
@@ -63,8 +63,9 @@ async def main():
    await page.check('#netLogin [name=policyAccepted]')
    await page.click('#netLogin [value=verify]')
    await expect(page.locator('#netProfile')).to_be_visible()
-   await page.goto(BASE+'?intro=0#/projects')
-   # goto only changes hash here, retaining in-memory session.
+   # Route within the signed-in document. WebKit goto may reload and discard
+   # the intentionally memory-only session used by this synthetic contract.
+   await page.evaluate("location.hash='#/projects'")
    await page.locator('[data-coop="open"][data-id="'+P+'"]').click()
    await expect(page.locator('#meetingConfirmTitle')).to_be_visible()
    return context,page,errors
@@ -139,11 +140,15 @@ async def main():
   await expect(page.locator('.meeting-outcome')).to_contain_text('Сообщения участников')
   assert len(state['reports'])==1 and state['reports'][0]['user_id']==A
   await owner_page.locator('[data-coop=meetingRefresh]').click()
-  await owner_page.locator('.meeting-outcome summary').click()
+  await expect(owner_page.locator('[data-coop=meetingRefresh]')).to_be_enabled()
   repeat=owner_page.locator('#netMeetingRepeat')
+  if not await repeat.is_visible():
+   await owner_page.locator('.meeting-outcome summary').click()
+  await expect(repeat).to_be_visible()
   assert await repeat.locator('[name=start]').input_value()==''
   # The still-empty open form and focused field survive a background re-render.
   await repeat.locator('[name=start]').focus()
+  await expect(repeat.locator('[name=start]')).to_be_focused()
   await owner_page.evaluate("window.dispatchEvent(new Event('offline'))")
   await expect(repeat).to_be_visible()
   await expect(repeat.locator('[name=start]')).to_be_focused()

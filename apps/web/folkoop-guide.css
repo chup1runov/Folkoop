@@ -109,3 +109,16 @@
 @media(min-width:761px) and (max-height:520px){
  .guide-tour-open .chat-messages>article,.guide-tour-open .coop-next-step{max-width:44vw}
 }
+
+/* Release regression: a highlighted iframe must never paint above its narrator.
+   Story choices scroll inside the copy area; the chapter controls stay outside. */
+.guide-tour-open .onboarding{z-index:110}
+.guide-tour-open .onboarding-card{overflow:hidden}
+.guide-tour-open .onboarding-progress{white-space:normal;overflow-wrap:anywhere}
+.guide-tour-open .onboarding-actions{grid-template-columns:auto minmax(0,1fr) minmax(0,1fr)}
+.guide-tour-open .onboarding-copy>.actions{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}
+.guide-tour-open .onboarding-copy>.actions>.button{flex:0 0 auto}
+
+@media(min-width:761px) and (max-height:520px){
+ .guide-tour-open .tutorial-target:not(#cityWorkspace){max-width:44vw}
+}

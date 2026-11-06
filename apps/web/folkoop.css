@@ -725,6 +725,55 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .messages-call-symbol{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;margin:0 auto 20px;background:#346c7012;color:var(--accent);font-size:2rem}
 .messages-filter-row a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:24px;background:#346c7010;text-decoration:none;color:inherit}
 .chat-messages{display:flex;flex-direction:column;gap:10px;padding:16px 0}
+/* Compact message surfaces; keep readable text and touch targets. */
+.compact-messenger .mura-chat-grid{display:flex;flex-direction:column;gap:0}
+.compact-messenger .mura-chat-card{padding:10px 12px!important;border-radius:0;box-shadow:none;border-width:0 0 1px;gap:10px}
+.compact-messenger .mura-chat-card h3{margin:0;font-size:1rem}
+.compact-messenger .mura-chat-preview{margin:3px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.compact-messenger .messenger-avatar{width:40px;height:40px;flex-basis:40px}
+.compact-messenger .messenger-open{min-width:44px;min-height:44px}
+.compact-messenger .chat-messages{gap:6px;padding:10px 0}
+.compact-messenger .messenger-bubble{padding:8px 11px;box-shadow:none}
+.compact-messenger .messenger-bubble p{margin:4px 0;line-height:1.4}
+.compact-messenger .messenger-bubble .actions{gap:4px;margin-top:3px}
+.mura-message-story{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;margin-bottom:10px;border:1px solid #8884;border-radius:12px}
+.mura-message-story>img{flex-shrink:0;object-fit:contain}
+.mura-message-story>div{min-width:0;flex:1}
+.mura-profile-story textarea{box-sizing:border-box;width:100%;min-height:64px;margin:6px 0}
+.mura-profile-story details{margin-block:2px}
+.mura-tour-finale{box-sizing:border-box;width:min(480px,calc(100% - 24px));max-height:85dvh;overflow:auto;border:1px solid #8884;border-radius:22px;padding:24px;color:inherit;background:var(--bg,#fff);box-shadow:0 20px 70px #0003}
+.mura-tour-finale::backdrop{background:#15251e66}
+.mura-tour-finale>img{display:block;margin:0 auto 8px;object-fit:contain}
+.mura-tour-finale>h2{margin:6px 0;text-align:center}
+.mura-tour-finale>p{line-height:1.5;margin:10px 0 16px}
+.mura-tour-finale>[data-mura-stay]{width:100%;min-height:44px}
+.mura-finale-replay{margin-top:12px}
+.mura-finale-replay>summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.mura-finale-replay h3{font-size:1rem;margin:12px 0 4px}
+.mura-finale-replay button{min-height:44px}
+.mura-message-story{flex-wrap:wrap}
+[data-next-story-slot]{margin-top:8px;width:100%;flex-basis:100%}
+.mura-message-story>[data-next-story-slot]{flex:0 0 100%}
+.mura-story-position{margin:4px 0 6px;line-height:1.4}
+.mura-story-buttons{display:flex;flex-wrap:wrap;gap:6px}
+.mura-story-buttons>.button{flex:1 1 180px;min-height:44px;white-space:normal;text-align:start}
+.mura-story-buttons>.button:disabled{opacity:.5;cursor:default}
+[data-next-story-slot]>.button{min-height:44px;max-width:100%;white-space:normal;text-align:start}
+.mura-tour-map{margin-block:8px;border:1px solid #8884;border-radius:10px;padding:6px 10px}
+.mura-tour-map>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.mura-tour-map>section{border-top:1px solid #8883;padding-block:4px}
+.mura-tour-map section>div{padding-inline-start:12px}
+.mura-tour-map button{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;width:100%;text-align:start;background:transparent;border:0;border-radius:6px;padding:5px 6px;color:inherit;font:inherit;cursor:pointer}
+.mura-tour-map section>button{font-weight:600}
+.mura-tour-map small{font-size:.75rem;max-width:45%;text-align:end}
+.mura-tour-map button:hover{background:#56836b12}
+.mura-tour-map button:focus-visible{outline:2px solid currentColor;outline-offset:1px}
+.folkoop-helper-panel{max-height:min(620px,calc(100dvh - 230px));overflow:auto;overscroll-behavior:contain}
+.folkoop-helper-panel .mura-tour-map[open]{max-height:45vh;overflow:auto}
+.mura-message-story p{margin:4px 0;line-height:1.4}
+.mura-message-story summary,.mura-message-story button{min-height:44px}
+.mura-message-story summary{cursor:pointer;display:flex;align-items:center}
+.mura-reply-preview{padding:8px 10px;border-inline-start:3px solid #56836b;background:#56836b12;border-radius:8px}
 .chat-messages>.messenger-bubble{align-self:flex-start;max-width:85%;min-width:0;border-radius:18px 18px 18px 5px;box-shadow:0 2px 5px #00000008;overflow-wrap:anywhere}
 .chat-messages>.messenger-bubble.is-mine{align-self:flex-end;background:#e4f0e9;border-radius:18px 18px 5px 18px}
 [dir=rtl] .chat-messages>.messenger-bubble{border-radius:18px 18px 5px 18px}
@@ -761,6 +810,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .readiness-columns li>span:first-child{flex-shrink:0;font-weight:700}
 .readiness-columns .readiness-missing{background:#fff3df}
 .readiness-next{font-weight:600;margin-block:18px 12px}
+#muraProfileStoryTitle,#muraMessageStoryTitle,#muraPracticeTitle,#muraCenterPracticeTitle,#muraCityStoryTitle{scroll-margin-top:110px}
 .readiness-story-note{margin:16px 0 0}
 @media(max-width:800px){.readiness-columns{grid-template-columns:1fr}.project-readiness{padding:16px}}
 .meeting-confirmations .readiness-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-block:16px}
@@ -771,6 +821,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .meeting-confirmations .meta{overflow-wrap:anywhere}
 @media(max-width:800px){.meeting-confirmations .readiness-columns{grid-template-columns:1fr}}
 
+/* Interest-first home. Decorative artwork makes no claims about real venues. */
+.for-you-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:18px;width:fit-content;margin-block:8px 20px;background:#f1f5f3}
+.for-you-switch button{border:0;border-radius:13px;padding:12px 20px;background:transparent;color:#294d45;font:inherit;cursor:pointer}
+.for-you-switch button[aria-pressed=true]{background:#fff;box-shadow:0 2px 7px #193c3514;font-weight:700}
+.for-you-hero{position:relative;overflow:hidden;padding:clamp(24px,5vw,48px);border-radius:28px;background:linear-gradient(120deg,#e6f5ed,#f5f2dc);color:#173f35;margin-bottom:22px}
+.for-you-hero h1{font-size:clamp(28px,4vw,44px);line-height:1.15;max-width:700px;margin-block:12px}
+.for-you-hero p{max-width:600px;position:relative}.for-you-spark{position:absolute;inset-inline-end:18px;top:-24px;font-size:190px;opacity:.09;pointer-events:none}
+.for-you-wishes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:28px}
+.for-you-wishes button{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:112px;text-align:start;border:1px solid #cbdad3;border-radius:18px;padding:16px;background:#fff;color:#214239;cursor:pointer;font:inherit;transition:transform .15s,box-shadow .15s,background .15s}
+.for-you-wishes button>span{font-size:27px}.for-you-wishes button[aria-pressed=true]{background:#e3f1eb;border:2px solid #21644e;padding:15px;box-shadow:0 3px 10px #173f3510}
+.for-you-wishes button:active{transform:scale(.98)}
+.for-you :is(button,a):focus-visible,.for-you-switch button:focus-visible{outline:3px solid #246c57;outline-offset:4px}
+.for-you-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.for-you-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 4px 18px #173f3508;display:flex;flex-direction:column}
+.for-you-card-art{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:100px;padding:20px;background:#e5f2e9}.for-you-card-art>span:first-child{font-size:42px}.for-you-tone-1{background:#f5ecdc}.for-you-tone-2{background:#e9edf8}
+.for-you-card-content{padding:20px;display:flex;flex-direction:column;align-items:flex-start;flex:1;overflow-wrap:anywhere}.for-you-card-content h3{font-size:21px;margin:0 0 10px}.for-you-card-content p{margin:0 0 14px}.for-you-card-content .button{margin-top:auto;width:100%;display:flex;justify-content:space-between;gap:12px}
+.for-you-reason{font-size:13px;color:#426354;border-inline-start:3px solid #b6d3c4;padding-inline-start:10px}
+.for-you-empty{background:#f4f7f2;padding:30px;border-radius:22px;text-align:center}.for-you-empty>span{font-size:40px}.for-you-empty button{margin:6px}
+@media(hover:hover){.for-you-wishes button:hover{box-shadow:0 4px 12px #173f351a;transform:translateY(-2px)}}
+@media(max-width:1000px){.for-you-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.for-you-wishes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.for-you-grid{grid-template-columns:1fr}.for-you-wishes{grid-template-columns:repeat(2,minmax(0,1fr))}.for-you-wishes button:last-child{grid-column:1/-1;flex-direction:row;align-items:center;min-height:64px}.for-you-hero{border-radius:22px}.for-you-switch{width:100%}.for-you-switch button{flex:1}.for-you-card-art{min-height:80px}}
+@media(prefers-reduced-motion:reduce){.for-you-wishes button{transition:none;transform:none!important}}
+.meeting-budget{overflow-wrap:anywhere}.netMeetingBudget{display:grid;gap:14px;margin-block:14px}.netMeetingBudget label{display:grid;gap:8px}.netMeetingBudget select{box-sizing:border-box;width:100%;min-width:0}.meeting-budget :focus-visible{outline:3px solid #246c57;outline-offset:3px}
+.project-next-step{margin:16px 0;padding:18px;border:1px solid #b6d3c4;border-radius:16px;background:#eff7f1;overflow-wrap:anywhere}.project-next-step h4{margin-top:0}.project-next-step details{margin-top:16px}.project-next-step summary{cursor:pointer}.project-next-step li{padding-block:10px}.project-next-step :focus-visible{outline:3px solid #246c57;outline-offset:3px}
+.decision-rules{padding:14px;border-inline-start:3px solid #b6d3c4;background:#f4f7f2;border-radius:10px;margin-block:12px;overflow-wrap:anywhere}.decision-objection{padding:14px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.decision-objection .netDecision{display:grid;gap:10px}.decision-objection label{display:grid;gap:8px}.decision-objection textarea{box-sizing:border-box;width:100%;resize:vertical}
+.project-budget{overflow-wrap:anywhere}.budget-summary,.budget-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.budget-summary>div{padding:14px;background:#eff7f1;border-radius:12px;display:grid;gap:6px}.budget-summary strong{font-size:1.2rem}.budget-need{border:1px solid var(--line);border-radius:14px;padding:16px;margin-block:16px}.budget-need h4{margin:0 0 12px}.budget-need small{display:block;font-weight:400;margin-top:5px}.budget-metrics dt{font-size:.85rem;color:#426354}.budget-metrics dd{margin:4px 0;font-weight:600}.budget-contribution{border-top:1px solid var(--line);padding-block:12px}.netBudget{display:grid;gap:10px;max-width:36rem;margin-block:12px}.netBudget label{display:grid;gap:6px}.netBudget :is(input,select){box-sizing:border-box;width:100%;min-width:0}.netBudget button{justify-self:start}.project-budget summary{cursor:pointer;padding-block:10px}.project-budget :focus-visible{outline:3px solid #246c57;outline-offset:3px}.budget-example{border-top:1px dashed var(--line);margin-top:18px;padding-top:10px}.budget-example>summary{font-weight:600}@media(max-width:420px){.budget-summary,.budget-metrics{grid-template-columns:1fr}.budget-need{padding:12px}}
+.newcomer-welcome{box-sizing:border-box;width:100%;margin:12px 0;padding:16px;border:1px solid #b6d3c4;border-radius:16px;background:#eff7f1;color:#214737;overflow-wrap:anywhere}
+.newcomer-welcome p{margin:8px 0 0}.newcomer-welcome .newcomer-instructions{white-space:pre-wrap}.newcomer-welcome .meta{color:#426354;font-size:13px}
+.newcomer-welcome.is-compact{padding:12px;font-size:14px}.for-you-card-content .newcomer-welcome p{margin:8px 0 0}
+.newcomer-editor{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:16px}.newcomer-editor summary{cursor:pointer;font-weight:600}.netWelcome{display:grid;gap:12px;margin-top:14px}.netWelcome label{display:grid;gap:6px}.netWelcome label:has(input[type=checkbox]){display:flex;align-items:center;gap:10px}.netWelcome input[type=checkbox]{width:20px;height:20px;flex-shrink:0}.netWelcome :is(input:not([type=checkbox]),textarea){box-sizing:border-box;width:100%;min-width:0}.netWelcome textarea{resize:vertical}.netWelcome button{justify-self:start}.newcomer-editor :focus-visible{outline:3px solid #246c57;outline-offset:3px}
 
 /* Optional release notice: never interrupts an active form or guest tour. */
 .folkoop-update-notice:not([hidden]){

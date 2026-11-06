@@ -1,0 +1,528 @@
+RUN /tmp/folkoop-postgres-20261106/bootstrap-reuse-roles.sql
+PASS /tmp/folkoop-postgres-20261106/bootstrap-reuse-roles.sql
+RUN supabase/migrations/20260925111649_folkoop_network_v016.sql
+PASS supabase/migrations/20260925111649_folkoop_network_v016.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925111918_folkoop_first_pilot_bootstrap.sql
+PASS supabase/migrations/20260925111918_folkoop_first_pilot_bootstrap.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925113111_folkoop_rls_performance.sql
+PASS supabase/migrations/20260925113111_folkoop_rls_performance.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925130711_folkoop_messaging_v017.sql
+PASS supabase/migrations/20260925130711_folkoop_messaging_v017.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925131111_folkoop_messaging_indexes_v017.sql
+PASS supabase/migrations/20260925131111_folkoop_messaging_indexes_v017.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925150129_folkoop_cooperation_v018.sql
+PASS supabase/migrations/20260925150129_folkoop_cooperation_v018.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925153301_folkoop_purchase_offers_v019.sql
+PASS supabase/migrations/20260925153301_folkoop_purchase_offers_v019.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925160441_folkoop_purchase_lifecycle_v020.sql
+PASS supabase/migrations/20260925160441_folkoop_purchase_lifecycle_v020.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260925163534_folkoop_activity_chat_v021.sql
+PASS supabase/migrations/20260925163534_folkoop_activity_chat_v021.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260928144531_folkoop_pilot_invites_v024.sql
+PASS supabase/migrations/20260928144531_folkoop_pilot_invites_v024.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260928222427_folkoop_account_lifecycle_trigger.sql
+PASS supabase/migrations/20260928222427_folkoop_account_lifecycle_trigger.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260928223902_folkoop_account_closure_preflight.sql
+PASS supabase/migrations/20260928223902_folkoop_account_closure_preflight.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260929112851_folkoop_pilot_terms_acceptance.sql
+PASS supabase/migrations/20260929112851_folkoop_pilot_terms_acceptance.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20260930060734_folkoop_private_table_rls.sql
+PASS supabase/migrations/20260930060734_folkoop_private_table_rls.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql
+PASS supabase/migrations/20261004194921_folkoop_economic_flow_v0.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018084411_folkoop_meeting_confirmations.sql
+PASS supabase/migrations/20261018084411_folkoop_meeting_confirmations.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018122827_folkoop_closure_coordination_inventory.sql
+PASS supabase/migrations/20261018122827_folkoop_closure_coordination_inventory.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018132436_folkoop_meeting_outcome_repeat.sql
+PASS supabase/migrations/20261018132436_folkoop_meeting_outcome_repeat.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018145149_folkoop_project_decisions.sql
+PASS supabase/migrations/20261018145149_folkoop_project_decisions.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018150158_task_self_claim_result.sql
+PASS supabase/migrations/20261018150158_task_self_claim_result.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018150752_task_work_notifications.sql
+PASS supabase/migrations/20261018150752_task_work_notifications.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018152052_shared_need_to_project.sql
+PASS supabase/migrations/20261018152052_shared_need_to_project.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018153911_room_request_terms.sql
+PASS supabase/migrations/20261018153911_room_request_terms.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018155135_room_notification_inbox.sql
+PASS supabase/migrations/20261018155135_room_notification_inbox.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018161028_meeting_room_readiness.sql
+PASS supabase/migrations/20261018161028_meeting_room_readiness.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018170244_meeting_participant_room_notices.sql
+PASS supabase/migrations/20261018170244_meeting_participant_room_notices.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018172618_meeting_reminders.sql
+PASS supabase/migrations/20261018172618_meeting_reminders.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018173808_meeting_reminder_history.sql
+PASS supabase/migrations/20261018173808_meeting_reminder_history.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018190041_project_documents.sql
+PASS supabase/migrations/20261018190041_project_documents.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018191324_project_document_consents.sql
+PASS supabase/migrations/20261018191324_project_document_consents.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018193528_document_revision_notifications.sql
+PASS supabase/migrations/20261018193528_document_revision_notifications.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018203254_task_execution_basis.sql
+PASS supabase/migrations/20261018203254_task_execution_basis.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261018211151_task_basis_notifications.sql
+PASS supabase/migrations/20261018211151_task_basis_notifications.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261019103435_newcomer_welcome.sql
+PASS supabase/migrations/20261019103435_newcomer_welcome.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261022231942_project_decision_rules.sql
+PASS supabase/migrations/20261022231942_project_decision_rules.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261025191414_project_contributions_budget.sql
+PASS supabase/migrations/20261025191414_project_contributions_budget.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261025192438_contribution_notifications.sql
+PASS supabase/migrations/20261025192438_contribution_notifications.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261025224921_meeting_budget_readiness.sql
+PASS supabase/migrations/20261025224921_meeting_budget_readiness.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261026002303_meeting_budget_change_notices.sql
+PASS supabase/migrations/20261026002303_meeting_budget_change_notices.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261106180000_preserve_meeting_outcomes.sql
+PASS supabase/migrations/20261106180000_preserve_meeting_outcomes.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/migrations/20261106181000_message_pages_and_exact_reads.sql
+PASS supabase/migrations/20261106181000_message_pages_and_exact_reads.sql
+RUN supabase/tests/data-api-assert-after-migration.sql
+PASS supabase/tests/data-api-assert-after-migration.sql
+RUN supabase/tests/network-account-lifecycle.sql
+NOTICE:  PASS: preflight finds one owned community
+NOTICE:  PASS: preflight finds one standalone owned group chat
+NOTICE:  PASS: preflight finds one owned cooperation
+NOTICE:  PASS: preflight includes private pilot admission
+NOTICE:  PASS: participant role cannot execute operator preflight
+NOTICE:  PASS: FK-driven member removal records member_left with NULL actor
+NOTICE:  PASS: Auth delete cascades profile
+NOTICE:  PASS: Auth delete cascades pilot admission
+NOTICE:  PASS: Auth delete cascades write budget
+NOTICE:  PASS: invite row has no claimant FK and remains
+NOTICE:  PASS: non-owned community survives
+NOTICE:  PASS: deleted member membership is removed
+NOTICE:  PASS: deleted author post is removed
+NOTICE:  PASS: other reporter record survives with NULL deleted target
+NOTICE:  PASS: owned community is deleted
+NOTICE:  PASS: owned-community cascade removes another user post
+NOTICE:  PASS: non-owned group survives
+NOTICE:  PASS: deleted group member is removed
+NOTICE:  PASS: deleted author message is removed
+NOTICE:  PASS: message report survives with NULL deleted target
+NOTICE:  PASS: owned group is deleted
+NOTICE:  PASS: owned-group cascade removes another user message
+NOTICE:  PASS: non-owned cooperation survives
+NOTICE:  PASS: deleted author cooperation update is removed
+NOTICE:  PASS: task created by deleted user is removed
+NOTICE:  PASS: activity survives with actor SET NULL
+NOTICE:  PASS: owned cooperation is deleted
+NOTICE:  PASS: owned-cooperation cascade removes other membership
+NOTICE:  PASS: non-owned purchase cooperation survives
+NOTICE:  PASS: purchase commitment is removed
+NOTICE:  PASS: provider offer is removed
+NOTICE:  PASS: offer deletion cascades preferred-offer choice
+NOTICE:  PASS: purchase process survives non-owner deletion
+NOTICE:  PASS: purchase confirmation is removed
+PASS supabase/tests/network-account-lifecycle.sql
+RUN supabase/tests/network-activity-chat.sql
+NOTICE:  PASS: cooperation creates linked group conversation
+NOTICE:  PASS: owner is linked-chat owner
+NOTICE:  PASS: cooperation creation is journaled
+NOTICE:  PASS: joining cooperation joins linked chat
+NOTICE:  PASS: joining cooperation creates activity read marker
+NOTICE:  PASS: linked chat cannot be left independently
+NOTICE:  PASS: linked chat cannot be manually invited into
+NOTICE:  PASS: own activity does not count as unread
+NOTICE:  PASS: owner sees join and member update as unread activity
+NOTICE:  PASS: marking cooperation read clears activity unread count
+NOTICE:  PASS: sender has no unread count for own message
+NOTICE:  PASS: other cooperation member gets one unread message
+NOTICE:  PASS: chat read marker clears unread count
+NOTICE:  PASS: outsider cannot discover cooperation chat link
+NOTICE:  PASS: outsider cannot read activity journal
+NOTICE:  PASS: outsider cannot read linked chat messages
+NOTICE:  PASS: cooperation title updates linked chat title
+NOTICE:  PASS: project task is journaled
+NOTICE:  PASS: leaving cooperation removes linked-chat membership
+NOTICE:  PASS: leaving cooperation removes activity read marker
+NOTICE:  PASS: former member loses access to linked chat history
+NOTICE:  PASS: linked chat cannot be manually deleted
+NOTICE:  PASS: deleting cooperation deletes linked conversation
+PASS supabase/tests/network-activity-chat.sql
+RUN supabase/tests/network-closure-coordination.sql
+PASS supabase/tests/network-closure-coordination.sql
+RUN supabase/tests/network-cooperation.sql
+NOTICE:  PASS: owner membership created automatically
+NOTICE:  PASS: pilot can discover listed cooperation
+NOTICE:  PASS: nonmember cannot enumerate cooperation members
+NOTICE:  PASS: member sees participant list after joining
+NOTICE:  PASS: purchase member records quantity commitment
+NOTICE:  PASS: unjoined pilot still cannot enumerate members
+NOTICE:  PASS: unjoined pilot cannot read cooperation updates
+NOTICE:  PASS: unjoined pilot cannot commit quantity
+NOTICE:  PASS: assignee can change task status
+NOTICE:  PASS: outsider cannot read project tasks
+NOTICE:  PASS: outsider cannot change project task
+NOTICE:  PASS: cooperation owner can reassign task
+NOTICE:  PASS: owner updates cooperation details and status
+NOTICE:  PASS: member cannot remove cooperation owner
+NOTICE:  PASS: member cannot edit cooperation metadata
+NOTICE:  PASS: leaving project revokes task access
+NOTICE:  PASS: purchase requires target quantity and unit
+NOTICE:  PASS: project cannot accept purchase commitment
+NOTICE:  PASS: owner deletion cascades project
+PASS supabase/tests/network-cooperation.sql
+RUN supabase/tests/network-economic-flow-migration.sql
+NOTICE:  PASS: economic flow runtime tables come from the committed migration
+NOTICE:  PASS: economic flow mutation RPCs come from the committed migration
+NOTICE:  PASS: create starts in planning with immutable kind/provenance
+NOTICE:  PASS: creator gets coordinator role
+NOTICE:  PASS: shared purchase rejects production flow
+NOTICE:  PASS: need parent rejects economic flow
+NOTICE:  PASS: done parent rejects new economic flow
+NOTICE:  PASS: ordinary parent member can read flow
+NOTICE:  PASS: ordinary member cannot mutate flow
+NOTICE:  PASS: admitted nonmember cannot read flow
+NOTICE:  PASS: admitted nonmember cannot mutate role
+NOTICE:  PASS: authenticated non-pilot cannot read flow
+NOTICE:  PASS: authenticated non-pilot cannot create flow
+NOTICE:  PASS: planning can become active and summary can change while non-terminal
+NOTICE:  PASS: active cannot return to planning
+NOTICE:  PASS: active flow cannot be hard-deleted
+NOTICE:  PASS: terminal flow cannot reopen
+NOTICE:  PASS: terminal flow cannot be edited and blank summary is invalid
+NOTICE:  PASS: planning flow can be hard-deleted
+NOTICE:  PASS: duplicate flow role is idempotent
+NOTICE:  PASS: role target must already be parent member
+NOTICE:  PASS: role vocabulary is closed
+NOTICE:  PASS: parent member can read flow roles
+NOTICE:  PASS: nonmember cannot read flow roles
+NOTICE:  PASS: pilot revocation removes flow visibility
+NOTICE:  PASS: deleting a role user cascades the role row
+NOTICE:  PASS: deleting parent cooperation cascades economic flow
+NOTICE:  PASS: deleting parent cooperation cascades flow roles
+NOTICE:  PASS: twenty non-terminal flows enforce parent cap
+NOTICE:  PASS: terminal flow does not consume non-terminal cap
+NOTICE:  PASS: browser roles have no direct economic-flow DML
+NOTICE:  PASS: Data API table grants are explicit: authenticated SELECT only
+NOTICE:  PASS: mutation RPC execute privileges are authenticated-only
+NOTICE:  PASS: all economic mutation RPCs pin empty search_path
+NOTICE:  PASS: v0 stores no payment/accounting/KYC/verified-outcome fields
+NOTICE:  PASS: migration adds no economic activity event types
+PASS supabase/tests/network-economic-flow-migration.sql
+RUN supabase/tests/network-first-pilot.sql
+NOTICE:  PASS: legacy one-argument invite claim no longer exists
+NOTICE:  PASS: versioned invite claim is installed
+NOTICE:  PASS: terms acceptance is mandatory
+NOTICE:  PASS: stale terms version is denied
+NOTICE:  PASS: privacy acknowledgement is mandatory
+NOTICE:  PASS: policy denial does not consume the invite
+NOTICE:  PASS: first invited user is admitted only with current policy acceptance
+NOTICE:  PASS: existing pilot can re-enter without presenting a code but still presents active policy versions
+NOTICE:  PASS: unknown invite is denied
+NOTICE:  PASS: expired invite is denied
+NOTICE:  PASS: second invited user is admitted independently
+NOTICE:  PASS: legacy first-pilot RPC no longer admits new users
+NOTICE:  PASS: consumed one-time invite cannot be reused
+NOTICE:  PASS: exactly the two invited users are enabled pilots
+NOTICE:  PASS: every admitted pilot has current versioned acceptance evidence
+NOTICE:  PASS: first invite is consumed and disabled
+NOTICE:  PASS: second invite is consumed and disabled
+PASS supabase/tests/network-first-pilot.sql
+RUN supabase/tests/network-meeting-outcome.sql
+NOTICE:  PASS: cannot report a future meeting
+NOTICE:  PASS: cannot repeat before end
+NOTICE:  PASS: elapsed time does not imply success
+NOTICE:  PASS: repeat report idempotent
+NOTICE:  PASS: participant alone not confirmed outcome
+NOTICE:  PASS: member cannot repeat as organizer
+NOTICE:  PASS: direct write denied
+NOTICE:  PASS: organizer and participant agree
+NOTICE:  PASS: disagreement overrides positive count
+NOTICE:  PASS: uncertainty not counted as success
+NOTICE:  PASS: withdrawal removes corroboration
+NOTICE:  PASS: withdrawal clears note
+NOTICE:  PASS: past event cannot be overwritten
+NOTICE:  PASS: stale repeat version denied
+NOTICE:  PASS: invalid new date rolls back creation
+NOTICE:  PASS: retry returns same next meeting
+NOTICE:  PASS: only organizer belongs to next meeting
+NOTICE:  PASS: no consent copied, including organizer
+NOTICE:  PASS: no outcomes copied
+NOTICE:  PASS: new terms preserve place but not role assignments
+NOTICE:  PASS: permitted previous link
+NOTICE:  PASS: new meeting does not inherit reporting eligibility
+NOTICE:  PASS: joining next meeting is not consent
+NOTICE:  PASS: organizer cannot carry old participant consent forward
+NOTICE:  PASS: next meeting ready only after fresh personal consent
+NOTICE:  PASS: fresh agreement still is not a new outcome
+NOTICE:  PASS: new agreements leave the old result unchanged
+NOTICE:  PASS: outsider RLS hides outcomes
+NOTICE:  PASS: outsider cannot query snapshot
+NOTICE:  PASS: late joiner without attendance consent cannot report
+NOTICE:  PASS: next private meeting link hidden from nonmember
+NOTICE:  PASS: missing session denied
+NOTICE:  PASS: anonymous RPC denied
+NOTICE:  PASS: closure inventory remains private
+NOTICE:  PASS: export and closure inventory include outcome
+NOTICE:  PASS: closing synthetic participant removes their outcome
+NOTICE:  PASS: closure preserves both shared meetings
+PASS supabase/tests/network-meeting-outcome.sql
+RUN supabase/tests/network-meeting.sql
+NOTICE:  PASS: proposal does not confirm attendance or either role
+NOTICE:  PASS: role requires own attendance consent
+NOTICE:  PASS: all personal commitments confirmed
+NOTICE:  PASS: one person in three roles counts once
+NOTICE:  PASS: duplicate confirmation is idempotent
+NOTICE:  PASS: direct response mutation is denied
+NOTICE:  PASS: direct terms mutation is denied
+NOTICE:  PASS: outsider cannot read place or terms
+NOTICE:  PASS: outsider cannot fetch snapshot
+NOTICE:  PASS: capacity enforced on server
+NOTICE:  PASS: member cannot accept role proposed to someone else
+NOTICE:  PASS: only organizer proposes terms and roles
+NOTICE:  PASS: withdrawing attendance withdraws own roles
+NOTICE:  PASS: new terms do not inherit old confirmations
+NOTICE:  PASS: stale response is rejected
+NOTICE:  PASS: stale organizer cannot overwrite terms
+NOTICE:  PASS: proposed person personally accepts both roles
+NOTICE:  PASS: leave and rejoin cannot resurrect consent
+NOTICE:  PASS: departure removes readiness
+NOTICE:  PASS: changed project invalidates the meeting snapshot
+NOTICE:  PASS: changed parent cannot receive old consent
+NOTICE:  PASS: withdrawal remains possible when terms are stale
+NOTICE:  PASS: missing live session cannot read terms
+NOTICE:  PASS: missing live session cannot write
+NOTICE:  PASS: anonymous RPC denied
+NOTICE:  PASS: deleted user clears proposed identities
+NOTICE:  PASS: owner deletion cascades meeting terms
+PASS supabase/tests/network-meeting.sql
+RUN supabase/tests/network-message-visible-reads.sql
+NOTICE:  PASS: 101 equal-time messages start unread
+NOTICE:  PASS: unloaded older message remains unread
+NOTICE:  PASS: race survives repeated receipt with same timestamp
+NOTICE:  PASS: sending and legacy read do not clear unseen messages
+NOTICE:  PASS: read retries are idempotent
+NOTICE:  PASS: empty receipt batch rejected
+NOTICE:  PASS: client cannot forge or delete read state directly
+NOTICE:  PASS: oversized receipt batch rejected
+NOTICE:  PASS: null receipt id rejected
+NOTICE:  PASS: receipt privacy excludes outsider
+NOTICE:  PASS: outsider cannot mark another chat read
+NOTICE:  PASS: only exact remaining messages clear unread
+NOTICE:  PASS: anonymous RPC execution denied
+NOTICE:  PASS: closure cascades personal receipts
+PASS supabase/tests/network-message-visible-reads.sql
+RUN supabase/tests/network-messaging.sql
+NOTICE:  PASS: direct creator sees conversation
+NOTICE:  PASS: third pilot cannot see direct conversation
+NOTICE:  PASS: third pilot cannot read direct messages
+NOTICE:  PASS: direct recipient reads message
+NOTICE:  PASS: blocking prevents further direct messages
+NOTICE:  PASS: unlisted profile cannot receive new direct chat
+NOTICE:  PASS: group creator is the only initial member
+NOTICE:  PASS: group targets are invited, not auto-enrolled
+NOTICE:  PASS: invitee sees group metadata
+NOTICE:  PASS: invitee cannot read messages before accepting
+NOTICE:  PASS: accepted member reads group history
+NOTICE:  PASS: reporter sees own message report
+NOTICE:  PASS: declining removes own invitation
+NOTICE:  PASS: declined user cannot read group messages
+NOTICE:  PASS: accepted re-invite grants access
+NOTICE:  PASS: leaving group revokes history access
+NOTICE:  PASS: member cannot remove group owner
+NOTICE:  PASS: direct chat cannot use group leave
+NOTICE:  PASS: exact visible-message receipt is stored for member
+NOTICE:  PASS: group owner can moderate a member message
+NOTICE:  PASS: group owner cannot orphan chat
+NOTICE:  PASS: deleting group chat cascades membership
+NOTICE:  PASS: deleting group chat cascades messages
+PASS supabase/tests/network-messaging.sql
+RUN supabase/tests/network-outcome-membership-history.sql
+NOTICE:  PASS: disagreement is visible before exclusion
+NOTICE:  PASS: exclusion preserves all three reports
+NOTICE:  PASS: organizer cannot erase disagreement by exclusion
+NOTICE:  PASS: organizer cannot directly edit reports
+NOTICE:  PASS: excluded member cannot read group reports
+NOTICE:  PASS: excluded member cannot report again
+NOTICE:  PASS: voluntary departure preserves report too
+NOTICE:  PASS: departures do not resolve disagreement
+NOTICE:  PASS: explicit Auth closure still removes personal outcome
+PASS supabase/tests/network-outcome-membership-history.sql
+RUN supabase/tests/network-private-rls.sql
+NOTICE:  PASS: all three private pilot tables have RLS enabled
+NOTICE:  PASS: private pilot tables do not FORCE RLS on owner-executed SECURITY DEFINER functions
+NOTICE:  PASS: PUBLIC, anon and authenticated still have no direct private-table DML privileges
+NOTICE:  PASS: no browser-role RLS policy exposes private pilot tables
+PASS supabase/tests/network-private-rls.sql
+RUN supabase/tests/network-purchase-lifecycle.sql
+NOTICE:  PASS: selecting offer advances lifecycle
+NOTICE:  PASS: editing selected supplier terms clears the old choice
+NOTICE:  PASS: provider loses lifecycle visibility after its selection is cleared
+NOTICE:  PASS: edited selected offer returns process to collecting
+NOTICE:  PASS: owner starts final confirmation
+NOTICE:  PASS: commitments are snapshotted into confirmations
+NOTICE:  PASS: late join blocked after confirmation starts
+NOTICE:  PASS: buyer quantity frozen during confirmation
+NOTICE:  PASS: supplier terms frozen during confirmation
+NOTICE:  PASS: selected provider cannot inspect individual buyer decisions
+NOTICE:  PASS: selected provider can see lifecycle stage
+NOTICE:  PASS: owner cannot mark ordered while confirmations are pending
+NOTICE:  PASS: all-confirmed purchase can be marked externally ordered
+NOTICE:  PASS: confirmed quantity preserved
+NOTICE:  PASS: chosen offer frozen after confirmation
+NOTICE:  PASS: buyer cannot leave after final confirmation
+NOTICE:  PASS: owner marks external delivery result
+NOTICE:  PASS: member can mark own confirmed share collected
+NOTICE:  PASS: first collection advances distribution stage
+NOTICE:  PASS: unfinished collection requires an explanatory result note
+NOTICE:  PASS: owner can close with explicit result note
+NOTICE:  PASS: cooperation status closes with lifecycle
+NOTICE:  PASS: owner cancellation records lifecycle result
+NOTICE:  PASS: owner cancellation closes cooperation
+PASS supabase/tests/network-purchase-lifecycle.sql
+RUN supabase/tests/network-purchase-offers.sql
+NOTICE:  PASS: provider creates normalized offer
+NOTICE:  PASS: provider sees own offer without joining purchase
+NOTICE:  PASS: provider is not silently enrolled as buyer
+NOTICE:  PASS: outsider cannot enumerate supplier offers
+NOTICE:  PASS: unlisted profile cannot submit supplier offer
+NOTICE:  PASS: joined member sees active offers
+NOTICE:  PASS: ordinary purchase member cannot choose supplier offer
+NOTICE:  PASS: reporter sees own supplier report
+NOTICE:  PASS: other pilot cannot read reporter records
+NOTICE:  PASS: purchase owner selects one active offer
+NOTICE:  PASS: selected provider can see that its offer was chosen
+NOTICE:  PASS: provider can withdraw own offer
+NOTICE:  PASS: withdrawing selected offer clears owner choice
+NOTICE:  PASS: available quantity cannot be below minimum
+NOTICE:  PASS: expired supplier offer rejected
+NOTICE:  PASS: block relation prevents provider from reactivating offer
+PASS supabase/tests/network-purchase-offers.sql
+RUN supabase/tests/network-rls.sql
+NOTICE:  PASS: all tables use RLS
+NOTICE:  PASS: anonymous cannot read profiles
+NOTICE:  PASS: anonymous cannot mutate
+NOTICE:  PASS: uninvited authenticated user sees nothing
+NOTICE:  PASS: uninvited user cannot create
+NOTICE:  PASS: pilot list private
+NOTICE:  PASS: own private profile visible
+NOTICE:  PASS: direct profile writes forbidden
+NOTICE:  PASS: owner membership created atomically
+NOTICE:  PASS: cannot forge ownership
+NOTICE:  PASS: Bob cannot see private Alice profile
+NOTICE:  PASS: pilot discovers groups
+NOTICE:  PASS: nonmember cannot read posts
+NOTICE:  PASS: nonmember cannot post
+NOTICE:  PASS: cannot forge membership
+NOTICE:  PASS: double join idempotent; roster private
+NOTICE:  PASS: member reads posts
+NOTICE:  PASS: member cannot delete other author
+NOTICE:  PASS: reporter sees own report
+NOTICE:  PASS: blocked author content hidden
+NOTICE:  PASS: unhide restores content
+NOTICE:  PASS: leaving revokes read access
+NOTICE:  PASS: owner cannot read others reports
+NOTICE:  PASS: opt-in profile discoverable
+NOTICE:  PASS: owner cannot orphan group
+NOTICE:  PASS: owner can moderate post
+NOTICE:  PASS: banned member cannot read
+NOTICE:  PASS: leaving cannot erase ban
+NOTICE:  PASS: member cannot ban owner
+NOTICE:  PASS: nonowner cannot delete group
+NOTICE:  PASS: own profile deletion
+NOTICE:  PASS: empty profile rejected
+NOTICE:  PASS: invalid community name rejected
+NOTICE:  PASS: oversized profile rejected
+NOTICE:  PASS: group deletion cleans posts
+NOTICE:  PASS: group deletion cleans memberships
+NOTICE:  PASS: pilot revocation immediately hides rows
+NOTICE:  PASS: pilot revocation blocks writes
+PASS supabase/tests/network-rls.sql
+RUN supabase/tests/network-security-definer.sql
+NOTICE:  PASS: all FOLKOOP SECURITY DEFINER functions pin empty search_path
+NOTICE:  PASS: no SECURITY DEFINER function is executable by anon or PUBLIC
+NOTICE:  PASS: all public fk_* SECURITY DEFINER RPCs remain authenticated-only callable
+NOTICE:  PASS: authenticated cannot execute non-RLS private SECURITY DEFINER helpers
+NOTICE:  PASS: all eight private RLS helpers are explicitly executable by authenticated
+PASS supabase/tests/network-security-definer.sql
+RUN supabase/tests/network-z-data-api-grants.sql
+NOTICE:  DATA_API_EXPLICIT_GRANTS_VERIFIED: 56 FOLKOOP public tables
+PASS supabase/tests/network-z-data-api-grants.sql
+ALL PASSED: 41 migrations; 17 SQL suites

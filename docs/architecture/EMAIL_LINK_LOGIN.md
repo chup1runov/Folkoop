@@ -1,5 +1,11 @@
 # Email-link login — 18 October 2026
 
+2026-11-06 update: this historical description applies to static memory-only mode.
+The approved, locally implemented [Pages server session](SERVER_SESSION.md) now
+retains the refresh token briefly in a one-use memory closure and transfers it
+to the server on explicit sign-in. Server mode restores after reload; it remains
+disabled in deployment configuration pending private setup. No publication.
+
 The owner approved passwordless email links without paid services. Hosted Free
 email templates are read-only; the stock template sends a link rather than the
 code the original UI requested. Site URL was corrected from localhost:3000 to

@@ -37,8 +37,8 @@ test('Mura presence is local-only and keeps one authored canonical identity',asy
  const shell=await readFile('apps/web/folkoop.js','utf8');
  assert(shell.includes("folkoop-onboarding-v3"));
  assert(shell.includes("folkoop-language-choice-v1"));
- assert(shell.includes('target:\'[data-coop="openLinkedChat"]\''));
- assert(shell.includes("story:'chat',target:'.chat-messages > article:first-child'"));
+ assert(shell.includes("id:'chapter-together',route:'together'"));
+ assert(shell.includes("story:'chat',target:'#networkPanel article.card h2'"));
  assert(guide.includes("const CANONICAL_MURA='./folkoop-guide-confident.webp'"));
  for(const asset of ['folkoop-guide-wink.webp','folkoop-guide-inspect.webp','folkoop-guide-searching.webp','folkoop-guide-lean-in.webp','folkoop-guide-idea.webp'])assert(guide.includes(asset),asset);
  for(const asset of ['folkoop-guide-point-left.png','folkoop-guide-point-right.png','folkoop-guide-point-up.png','folkoop-guide-point-down.png','folkoop-guide-sit-edge.png'])assert(!guide.includes(asset),asset);

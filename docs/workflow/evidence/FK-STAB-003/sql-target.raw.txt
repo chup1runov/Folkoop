@@ -1,0 +1,17 @@
+RUN supabase/tests/network-search-message-retry.sql
+NOTICE:  PASS: lost-response retry returns same message
+NOTICE:  PASS: retry inserts no duplicate
+NOTICE:  PASS: same command with changed body rejected
+NOTICE:  PASS: server search finds unseen message
+NOTICE:  PASS: wildcards searched literally
+NOTICE:  PASS: unopened project task searchable
+NOTICE:  PASS: only current document revision searchable
+NOTICE:  PASS: search returns page plus sentinel
+NOTICE:  PASS: cursor advances beyond first 50
+NOTICE:  PASS: outsider cannot search private content
+NOTICE:  PASS: outsider cannot replay another sender command
+NOTICE:  PASS: deleted message retry retains original outcome
+NOTICE:  PASS: retry never resurrects a deleted message
+NOTICE:  PASS: operator inventory includes retry metadata
+NOTICE:  PASS: Auth closure cascades retry receipts
+PASS supabase/tests/network-search-message-retry.sql

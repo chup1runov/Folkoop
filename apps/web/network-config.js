@@ -1,6 +1,8 @@
 /* Public deployment configuration only. No secret/service-role keys. */
 globalThis.FolkoopNetworkConfig=Object.freeze({
  enabled:true,
+ // Enable only after the private Pages session binding and secret are configured.
+ serverSession:false,
  url:'https://cwvhkdqsrbllsykhccmb.supabase.co',
  publishableKey:'sb_publishable_rL8EeJ8NHM2rRZJqq19FiA_i9po0sFq',
  emailRedirectUrl:'https://folkoop.pages.dev/',

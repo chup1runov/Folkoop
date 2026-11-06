@@ -54,12 +54,11 @@ async def main():
     for x in state['activity_inbox']:
      if x['cooperation_id']==payload['p_cooperation']:x['unread_count']=0
     result=None
-   elif url.endswith('/fk_mark_chat_read'):
+   elif url.endswith('/fk_mark_messages_read'):
+    assert payload['p_messages']==[MSG]
     for x in state['chat_inbox']:
      if x['conversation_id']==payload['p_conversation']:x['unread_count']=0
-    for m in state['chat_members']:
-     if m['conversation_id']==payload['p_conversation'] and m['user_id']==UID:m['last_read_at']='2026-09-25T16:05:00Z'
-    result=None
+    result={'unread_count':0}
    elif '/fk_profiles?' in url:
     if 'id=eq.'+UID in url:result=state['profile']
     elif 'listed=eq.true' in url:result=state['profile']+[other]
@@ -131,7 +130,7 @@ async def main():
   await expect(page.locator('#networkPanel')).to_contain_text('Рабочий чат')
   await expect(page.locator('#mobilePrimaryNav a[href="#/messages"] .net-count')).to_have_count(0)
   assert state['chat_inbox'][0]['unread_count']==0
-  passed.append('Opening the linked work chat marks message unread separately')
+  passed.append('Displaying the linked work-chat message acknowledges its exact ID')
 
   assert errors==[],errors
   await context.close();await browser.close()

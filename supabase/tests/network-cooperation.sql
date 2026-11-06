@@ -49,6 +49,10 @@ select public.fk_create_cooperation('project','Community workshop','Build a shar
 select set_config('request.jwt.claim.sub','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',true);
 select public.fk_join_cooperation(:'project_id');
 select public.fk_create_project_task(:'project_id','Find a room','Compare partner spaces','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb') as task_id \gset
+-- This suite checks compatibility of historical tasks; new tasks use task_work_action.
+reset role;
+update public.fk_project_tasks set work_stage='legacy' where id=:'task_id';
+set local role authenticated;
 select public.fk_set_project_task_status(:'task_id','doing');
 select fk_coop_test.ok((select status='doing' from public.fk_project_tasks where id=:'task_id'),'assignee can change task status');
 

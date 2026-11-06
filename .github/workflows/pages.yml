@@ -13,6 +13,8 @@ concurrency:
   group: "pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'production' }}"
   cancel-in-progress: true
 jobs:
+  database:
+    uses: ./.github/workflows/network.yml
   validate:
     # Match WebKit's validated image during the ubuntu-latest 26.04 rollout.
     # Keep the pinned Playwright 1.57/Chromium browser contract deterministic.
@@ -45,28 +47,13 @@ jobs:
       - name: Install pinned browser test driver
         run: python -m pip install 'playwright==1.57.0'
       - name: Prepare static browser test build
-        run: node scripts/build/build-site.mjs
+        run: node scripts/build/build-site.mjs --shell-only
       - name: Audit built asset closure
         run: node scripts/ci/audit-built-assets.mjs
       - name: Browser interactions at actual project subpath
         run: bash scripts/ci/browser-smoke.sh
-      - name: Fetch Riksdagen once
-        run: node scripts/sources/fetch-riksdagen.mjs
-      - name: Fetch Gothenburg consultations once
-        run: node scripts/sources/fetch-goteborg-open-plans.mjs
-      - name: Validate normalized live feeds
-        run: |
-          node --input-type=module <<'JS'
-          import {readFile} from 'node:fs/promises';
-          import './apps/web/civic-core.js';
-          for(const [file,id,hosts] of [['riksdagen-decisions','riksdagen_open_data',['data.riksdagen.se']],['goteborg-open-plans','goteborg_open_plans',['goteborg.se','www.goteborg.se']]]){
-            const p=JSON.parse(await readFile(`data/${file}.json`,'utf8'));
-            FolkoopCityCore.feed(p,id,hosts);
-            console.log(`${id}: ${p.items.length} validated records`);
-          }
-          JS
-      - name: Final artifact with the same tested static files
-        run: node scripts/build/build-site.mjs
+      - name: Final production artifact with validated City feeds (same recipe as Cloudflare)
+        run: npm run build
       - name: Re-audit final built asset closure
         run: node scripts/ci/audit-built-assets.mjs
       - name: Retain QA evidence
@@ -98,7 +85,7 @@ jobs:
           python -m pip install 'playwright==1.57.0'
           python -m playwright install --with-deps webkit
       - name: Build the same static site
-        run: node scripts/build/build-site.mjs
+        run: node scripts/build/build-site.mjs --shell-only
       - name: WebKit FOLKOOP guide onboarding and geometry gate
         run: bash scripts/ci/webkit-smoke.sh
       - name: Retain WebKit QA evidence
@@ -130,7 +117,7 @@ jobs:
         run: node scripts/auth/probe-auth-readiness.mjs
   deploy:
     if: github.event_name != 'pull_request'
-    needs: [validate, webkit]
+    needs: [validate, webkit, database]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -146,6 +133,8 @@ jobs:
           sparse-checkout: |
             package.json
             scripts/ci/production-smoke.mjs
+            scripts/build/city-data.mjs
+            apps/web/civic-core.js
           sparse-checkout-cone-mode: false
       - name: Deploy tested artifact without fetching or rebuilding
         id: deployment

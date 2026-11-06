@@ -9,6 +9,8 @@ const source=file=>rootFiles.has(file)?file:`${APP_ROOT}/${file}`;
 const files=BUILD_FILES;
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const app=releaseVersion(await readFile(source('app.js'),'utf8'),pkg.version);
+const shellOnly=process.argv.includes('--shell-only');
+if(!shellOnly){const {validateCityData}=await import('./city-data.mjs');await validateCityData();}
 await rm('_site',{recursive:true,force:true});await mkdir('_site',{recursive:true});
 for(const file of files)await copyFile(source(file),'_site/'+file);
 await writeFile('_site/app.js',app);
@@ -16,7 +18,7 @@ await copyFile(source('folkoop.html'),'_site/index.html');
 const city=await readFile(source('city-source.html'),'utf8');
 if(!city.includes('</body>'))throw new Error('City source missing closing body');
 await writeFile('_site/city.html',city.replace('</body>','<script src="./folkoop-city.js"></script>\n</body>'));
-try{await cp('data','_site/data',{recursive:true});}catch(e){if(e.code!=='ENOENT')throw e;}
+if(!shellOnly)await cp('data','_site/data',{recursive:true});
 await writeFile('_site/.nojekyll','');
 // Hash the shipped shell, including generated files, not timestamps. An unchanged
 // rebuild stays stable; changed JS/CSS gets an isolated offline cache atomically.
@@ -28,4 +30,5 @@ for(const file of [...new Set([...files,'index.html','city.html'])].sort()){
 const worker=await readFile(source('sw.js'),'utf8');
 fingerprint.update(worker);
 await writeFile('_site/sw.js',worker.replace("const BUILD_ID='source';",`const BUILD_ID='${fingerprint.digest('hex').slice(0,20)}';`));
+console.log(shellOnly?'QA shell only: City feeds intentionally omitted; not a production artifact.':'Production City feeds validated and included.');
 console.log(`Prepared FOLKOOP v${pkg.version}: preserved City; network activation remains explicit.`);

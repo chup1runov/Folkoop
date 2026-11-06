@@ -20,5 +20,5 @@ test('npm metadata is dependency-free and lockfile matches package identity',()=
 });
 
 test('local start uses the repository Node dev server, not an external CLI',()=>{
-  assert.equal(pkg.scripts.start,'node scripts/build/build-site.mjs && node scripts/build/dev-server.mjs');
+  assert.equal(pkg.scripts.start,'node scripts/build/build-site.mjs --shell-only && node scripts/build/dev-server.mjs');
 });

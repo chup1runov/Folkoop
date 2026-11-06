@@ -1,0 +1,90 @@
+{
+  "id": "FK-WF-001-E08",
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "preservation": {
+    "baseline_files": 2971,
+    "missing": [],
+    "changed_existing": [
+      "AGENTS.md",
+      "docs/wiki/AGENTS.md",
+      "docs/wiki/development-status.md",
+      "docs/wiki/index.md",
+      "docs/wiki/log.md"
+    ],
+    "outside_allowlist": [],
+    "new_outside_scope": [],
+    "old_journal_unchanged_prefix": true,
+    "limits": "Regular nonignored files only; ignored files/Git internals/directory symlinks excluded."
+  },
+  "journal_replay": {
+    "first": {
+      "command": [
+        "node",
+        "scripts/knowledge/workflow.mjs",
+        "record",
+        "docs/workflow/evidence/FK-WF-001/journal-final-entry.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"appended\",\"id\":\"FK-WF-001-LOG02\"}\n",
+      "stderr": ""
+    },
+    "second": {
+      "command": [
+        "node",
+        "scripts/knowledge/workflow.mjs",
+        "record",
+        "docs/workflow/evidence/FK-WF-001/journal-final-entry.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"unchanged\",\"id\":\"FK-WF-001-LOG02\"}\n",
+      "stderr": ""
+    },
+    "all_wiki_bytes_unchanged": true
+  },
+  "skills_fingerprints_match": true,
+  "limits": [
+    "No new application/browser/device/database/deployment run",
+    "No full archive/source audit",
+    "Manual invocation verified; UI autodiscovery not tested",
+    "One independent behavioral sample, not general reliability",
+    "Final read-only independent metadata review is a separate step"
+  ],
+  "pre_completion_structure": {
+    "command": [
+      "node",
+      "scripts/knowledge/workflow.mjs",
+      "check",
+      "docs/workflow/tasks/FK-WF-001.state.json"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 8,\n  \"tasks\": 7,\n  \"evidence\": 7,\n  \"checks\": 8,\n  \"sources\": 18,\n  \"markdownPages\": 15,\n  \"localLinks\": 183,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+    "stderr": ""
+  },
+  "completed_state_structure": {
+    "command": [
+      "node",
+      "scripts/knowledge/workflow.mjs",
+      "check",
+      "docs/workflow/tasks/FK-WF-001.state.json"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"passed\",\n  \"requirements\": 8,\n  \"tasks\": 7,\n  \"evidence\": 8,\n  \"checks\": 8,\n  \"sources\": 18,\n  \"markdownPages\": 15,\n  \"localLinks\": 183,\n  \"limits\": \"Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness.\"\n}\n",
+    "stderr": ""
+  },
+  "final_metadata_fingerprints": {
+    "AGENTS.md": "e4470860648c2451edd12c639291080a4c93843a18fe5ca76c4ed72b520fa9b5",
+    "docs/wiki/AGENTS.md": "f0b3131714c359ae8c37757d8c2a28d343dc4cd5ed4131af1c23b036d54b6309",
+    "docs/wiki/index.md": "4b120cfd00022bc2afd4326ac30ab5544d8a1734b18f587da04b98f08740c34f",
+    "docs/wiki/development-status.md": "a3192e8d0ead79979def04608f441888a24eaac14818a8df9d764378ac0a052a",
+    "docs/wiki/log.md": "8b5eff750c83ca74ffe453eac38436ae929649da6d3b3d940e8cb96dff0206d7",
+    "docs/wiki/lessons.md": "697a658b409cd2d676ffb16b6aa6b4487e1f600700be6928e9e512562e4d5222",
+    "docs/wiki/sources.json": "c9ff453bfe946accdde556e5f28f00a6f1dfdffd7d89ea5fc3da7b7e4aa2798d",
+    "docs/workflow/README.md": "cf794f48c027d5a762b2374eaaecea5cf003c1bdcf0c4fc0d6a9592531b577ab",
+    "docs/workflow/tasks/FK-WF-001.md": "4966e8e511dfb56f92ab196a7146ad05d0fdc9a464cc47518e71fec5c547441e",
+    "docs/workflow/tasks/FK-WF-001.state.json": "a23e83399c91aeb3d44ec6fab60ef1e8fe823be5ffb1aebe12136ba9afcb88d8",
+    "scripts/knowledge/workflow.mjs": "ef3f1e423cb9613b8e9a553d6e28e2946d13cb160e1b5174ca3e7f0a72d63251",
+    "tests/workflow/workflow.test.mjs": "08cf0c48cb9e39eb413602f19808f07e81ce796c005e805c9f4f399f44bbb683"
+  },
+  "state_note": "Historical finalizing-state validation is preserved in final-checks-before-completion.json. Independently reviewed complete candidate promoted byte-for-byte; see final-review.md and completion-receipt.json."
+}

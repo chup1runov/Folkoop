@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "id": "FK-REL-001",
+  "updated": "2026-11-06",
+  "phase": "implementation",
+  "spec": "docs/workflow/tasks/FK-REL-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-06",
+    "scope": "Publish accumulated FOLKOOP work on existing GitHub/Cloudflare/Supabase free services; no billing, unrelated projects or deletion"
+  },
+  "requirements": [
+    {
+      "id": "FK-REL-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-REL-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-REL-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-REL-001-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-REL-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-REL-001-R01"
+      ],
+      "evidence": [
+        "FK-REL-001-E01"
+      ]
+    },
+    {
+      "id": "FK-REL-001-T02",
+      "status": "in_progress",
+      "requirements": [
+        "FK-REL-001-R02"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "FK-REL-001-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-REL-001-R03"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "FK-REL-001-T04",
+      "status": "in_progress",
+      "requirements": [
+        "FK-REL-001-R04"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-REL-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01"
+      ],
+      "path": "docs/workflow/evidence/FK-REL-001/hosted-migrations.json"
+    }
+  ],
+  "open_questions": [
+    "Cloudflare SESSIONS D1 production binding awaits action-time confirmation; HttpOnly client mode remains disabled"
+  ],
+  "next_action": "Finish PR #289 CI (navigation race and WebKit focus fixed), merge only after required checks; complete authorized Cloudflare configuration and verify deployment. Hosted migrations applied; site not released."
+}

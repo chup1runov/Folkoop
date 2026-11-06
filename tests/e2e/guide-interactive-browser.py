@@ -30,57 +30,46 @@ async def main():
      await page.click('[data-entry="guest"]')
      await expect(page.locator('#onboarding')).to_be_visible()
      await expect(page.locator('html')).to_have_attribute('dir','ltr' if lang=='ru' else 'rtl')
-     # Jumping directly into the chat must resolve the same project's objects.
+     # The accepted tour has five chapters, with Messages at index 4.
      await page.click('#onboardingProgress')
-     await page.select_option('#onboardingChapter','2')
+     await page.select_option('#onboardingChapter','4')
      await expect(page.locator('.chat-messages')).to_be_attached()
      await expect(page.locator('[data-coop="openNotify"]')).to_have_attribute('data-id','00000000-0000-4000-8000-000000000301')
-     for step in range(5):
+     groups=[('profile',4),('together',5),('center',3),('city',3),('message',3)]
+     for step,(kind,count) in enumerate(groups):
       await page.click('#onboardingProgress')
       await page.select_option('#onboardingChapter',str(step))
+      await expect(page.locator('[data-mura-'+kind+']')).to_have_count(count)
       await page.wait_for_timeout(220)
-      geometry=await page.evaluate('''() => {
-       const inside=e=>{const r=e.getBoundingClientRect();return r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
-       return {overflow:document.documentElement.scrollWidth>innerWidth+1,
-        card:inside(document.querySelector('.onboarding-card')),
-        controls:[...document.querySelectorAll('[data-onboarding]')].every(inside)};
-      }''')
+      geometry=await page.evaluate("() => {\n       const inside=e=>{const r=e.getBoundingClientRect();return r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};\n       return {overflow:document.documentElement.scrollWidth>innerWidth+1,\n        card:inside(document.querySelector('.onboarding-card')),\n        controls:[...document.querySelectorAll('[data-onboarding]')].every(inside)};\n      }")
       assert geometry=={'overflow':False,'card':True,'controls':True},(lang,width,step,geometry)
-      if step in (1,3):
-       await expect(page.locator('.coop-summary')).to_be_attached()
-       await expect(page.locator('[data-coop="openLinkedChat"]')).to_have_attribute('data-id','00000000-0000-4000-8000-000000000201')
-      if step==1:
-       await expect(page.locator('[data-onboarding="next"]')).to_be_hidden()
-       await page.locator('[data-coop="openLinkedChat"]').focus()
-       await page.keyboard.press('Enter')
-       await expect(page.locator('#onboardingChapter')).to_have_value('2')
-      if step==2:
+      if step==4:
        await expect(page.locator('.chat-messages > article')).to_have_count(4)
        await expect(page.locator('#netMessage')).to_have_count(0)
-      if step==3:
-       await expect(page.locator('.coop-next-step')).to_be_attached()
       await page.screenshot(path=str(OUT/f'story-{ENGINE}-{lang}-{width}-{step}.png'))
      await page.locator('[data-onboarding="skip"]').focus()
      await page.keyboard.press('Shift+Tab')
      await expect(page.locator('[data-onboarding="next"]')).to_be_focused()
      await page.keyboard.press('Tab')
      await expect(page.locator('[data-onboarding="skip"]')).to_be_focused()
-     await page.screenshot(path=str(OUT/f'guide-{ENGINE}-{lang}-{width}.png'))
      await page.click('[data-onboarding="next"]')
      await expect(page.locator('#onboarding')).to_be_hidden()
-     await expect(page.locator('.mura-home')).to_be_visible()
-     await page.wait_for_function('() => scrollY<2')
+     await expect(page.locator('#muraTourFinale')).to_be_visible()
+     await expect(page.locator('#muraTourFinale [data-tour-map-story]')).to_have_count(18)
+     await page.click('[data-mura-stay]')
+     await expect(page.locator('#muraTourFinale')).to_be_hidden()
+     await expect(page.locator('.chat-messages')).to_be_visible()
+     await expect(page.locator('#netLogin')).to_be_hidden()
+     # Explicit replay remains available after completion.
      await page.click('#folkoopGuideActor')
      await page.click('[data-helper="tour"]')
-     await expect(page.locator('#onboardingChapter')).to_have_value('0')
+     await expect(page.locator('#onboarding')).to_be_visible()
      await page.click('#onboardingProgress')
      await page.select_option('#onboardingChapter','2')
      await page.click('[data-onboarding="back"]')
      await expect(page.locator('#onboardingChapter')).to_have_value('1')
-     await expect(page.locator('[data-coop="openLinkedChat"]')).to_have_attribute('data-id','00000000-0000-4000-8000-000000000201')
      await page.click('[data-onboarding="skip"]')
-     await expect(page.locator('.mura-home')).to_be_visible()
-     await page.wait_for_function('() => scrollY<2')
+     await expect(page.locator('#onboarding')).to_be_hidden()
      await expect(page.locator('#netLogin')).to_be_hidden()
      assert not errors,(lang,width,errors)
      assert not writes,(lang,width,writes)

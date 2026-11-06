@@ -1,3 +1,4 @@
+import {CITY_FEEDS,validateCityFeed} from '../build/city-data.mjs';
 import assert from 'node:assert/strict';
 
 const base=(process.env.FOLKOOP_PRODUCTION_URL||'https://chup1runov.github.io/Folkoop/').replace(/\/?$/,'/');
@@ -27,4 +28,10 @@ assert.doesNotMatch(guide,/folkoop-guide-(?:point-left|point-right|point-up|poin
 assert.match(css,/\.folkoop-guide-actor\.is-tour::before\{display:none\}/,'production still contains old Mura bubble behavior');
 assert.match(register,/updateViaCache:'none'/,'production SW registration may reuse stale HTTP cache');
 assert.match(register,/SKIP_WAITING/,'production SW registration cannot activate a waiting release');
+for(const source of CITY_FEEDS){
+ const response=await fetch(new URL('data/'+source.file,base),{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
+ assert.equal(response.status,200,source.file);
+ assert.match(response.headers.get('content-type')||'',/\bjson\b/i,source.file+': must be JSON, not SPA fallback');
+ validateCityFeed(await response.json(),source);
+}
 console.log('Production smoke passed: FOLKOOP '+expected+' at '+base);

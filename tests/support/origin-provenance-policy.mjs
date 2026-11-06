@@ -6,7 +6,8 @@ const documents = Object.freeze([
   'docs/UNIFICATION.md',
   'docs/NO_LOSS_REQUIREMENTS_REGISTER.md',
   'docs/NO_LOSS_REQUIREMENTS_REGISTER.json',
-  'docs/architecture/adr/ADR-002-four-origin-foundation.md'
+  'docs/architecture/adr/ADR-002-four-origin-foundation.md',
+    'docs/wiki/concept.md'
 ]);
 const documentSet = new Set(documents);
 const originNames = new Set([

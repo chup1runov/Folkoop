@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "requirements": 6,
+  "tasks": 6,
+  "evidence": 6,
+  "checks": 6,
+  "sources": 25,
+  "markdownPages": 27,
+  "localLinks": 240,
+  "limits": "Structure and local file targets only; not semantic truth, anchors, external URLs or application readiness."
+}

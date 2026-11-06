@@ -1,0 +1,17 @@
+{
+  "id": "FK-WF-001-E04",
+  "checked_at": "2026-10-29",
+  "result": "passed",
+  "first": {
+    "result": "appended",
+    "id": "FK-WF-001-LOG01"
+  },
+  "second": {
+    "result": "unchanged",
+    "id": "FK-WF-001-LOG01"
+  },
+  "wiki_bytes_unchanged_on_repeat": true,
+  "old_log_unchanged_prefix": true,
+  "scope": "One real CLI journal entry replay plus negative unit tests; not a guarantee that arbitrary future prose edits are idempotent.",
+  "journal_sha256": "73987d00d1dede9696450048ef7e8a839fce9e935c48e17cb70ef72454ce0da7"
+}

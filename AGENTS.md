@@ -43,3 +43,13 @@ The normative protocol, per-locale pending/approved records and verification com
 Do not copy private conversation archives, founder negotiation positions, credentials, personal identifiers or participant/forum data into this public repository. Integration is not authorisation to rename the external forum or import its members/messages. Existing licensing and source attribution remain in force. Do not activate Google Auth or change infrastructure spending without the required owner/provider readiness decision.
 
 Report documentation decisions, code implementation, CI, deployment, real-device acceptance and human evidence separately.
+
+## Task context and continuity
+
+For nontrivial changes use `docs/workflow/README.md`; find the task's spec/state in
+`docs/workflow/tasks/`, then select sources through `docs/wiki/index.md` rather
+than loading the whole archive. Preserve existing dirty files and stable IDs.
+Local skills: `folkoop-knowledge` (sources/wiki), `folkoop-workflow` (plan/execute),
+`folkoop-verify` (plan/result review); manual invocation is documented in README.
+Record checks, limits and next action in task state. Skills do not grant deployment
+or migration authority. A simple fix can use the README's lightweight route.
