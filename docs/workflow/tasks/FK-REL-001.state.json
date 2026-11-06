@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-REL-001",
   "updated": "2026-11-06",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-REL-001.md",
   "authorization": {
     "status": "accepted",
@@ -68,7 +68,7 @@
     },
     {
       "id": "FK-REL-001-T04",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-REL-001-R04"
       ],
@@ -108,13 +108,13 @@
     {
       "id": "FK-REL-001-E04",
       "kind": "deterministic",
-      "result": "limited",
+      "result": "passed",
       "checks": [
         "C04"
       ],
-      "path": "docs/workflow/evidence/FK-REL-001/session-activation.json"
+      "path": "docs/workflow/evidence/FK-REL-001/real-auth-acceptance.json"
     }
   ],
   "open_questions": [],
-  "next_action": "After Supabase email rate limit resets, request one new email for the already-authorized test account; verify real sign-in, reload and fresh tab on folkoop.pages.dev. Do not reuse consumed callback or claim C04 passed. SESSION_KEY is saved; no new secret or paid service needed."
+  "next_action": "FK-REL-001 complete: production email login, reload, second tab and logout verified; final 9d6a137 CI and both deployments passed. Further product acceptance is a separate task."
 }

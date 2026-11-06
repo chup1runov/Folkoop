@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-06",
+  "revision": "9d6a137085bd5335047c1cd5c22b039e2d16502d",
+  "runtime_fix_revision": "ec4f8c9ff01ab49ad2ba03656a441880b010d637",
+  "site": "https://folkoop.pages.dev/",
+  "cloudflare": {
+    "deployment": "a3ca9c57-a862-46cf-940a-50376b6259de",
+    "result": "success",
+    "previous_attempt": "68a895ac-1e14-44b5-96d0-a5ea5d75981e failed because official City feed returned HTTP 503; retry succeeded without bypassing feed gate"
+  },
+  "real_browser": {
+    "browser": "Brave desktop",
+    "data_source": "Real authorized existing account, production Auth and D1; no mocked responses",
+    "email_callback": "passed",
+    "retry_same_callback_after_server_fix": "passed without another email",
+    "reload": "passed: same existing network profile",
+    "new_tab": "passed: same existing network profile",
+    "background_refresh_controls": "passed after update activation and switching tabs",
+    "logout": "passed: normal sign-out in one tab; reload both showed sign-in form and no authenticated profile controls"
+  },
+  "local_checks": {
+    "command": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs tests/workflow/*.test.mjs",
+    "passed": 475,
+    "failed": 0,
+    "refresh_regression_baseline": "new test fails against captured pre-fix source; passes against final",
+    "redirect_policy": "manual mode required; rejects 3xx at identity and proxy with no Location forwarded"
+  },
+  "github": {
+    "run": "https://github.com/chup1runov/Folkoop/actions/runs/42306115346",
+    "result": "passed: sources, database, WebKit, validate and deploy"
+  },
+  "review": "Author self-review, not independent review. Minimum transport and refresh-render changes; origin/consent/encryption/RLS checks retained.",
+  "boundaries": [
+    "No secrets or private account identifiers copied to evidence",
+    "No account/profile/project content changed or deleted",
+    "No paid services or billing enabled",
+    "Other-tab logout checked after reload, not instantaneous UI synchronization",
+    "Physical iPhone, long-duration refresh and native-language acceptance not tested"
+  ]
+}

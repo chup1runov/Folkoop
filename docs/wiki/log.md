@@ -425,3 +425,21 @@ code: [session handler](../../server/auth/session.mjs).
 подтверждения носителей. Публикация разрешена, результат развёртывания проверяется отдельно.
 
 Follow-up: the production email redirect query is covered explicitly; uncertain delivery asks the user to check inbox/spam before another request. 473 deterministic tests and the updated desktop/mobile browser scenarios passed. No email sent.
+
+## 2026-11-06 — FK-REL-001: real-auth acceptance and two fixes
+
+[Проверка FK-REL-001](../workflow/evidence/FK-REL-001/real-auth-acceptance.json):
+в Brave на production прошли вход по настоящему письму, восстановление после
+перезагрузки, тот же аккаунт в новой вкладке и выход с проверкой обеих вкладок
+после перезагрузки. Подмена ответов не использовалась; данные профиля не менялись.
+
+Исправлены две ошибки: неподдерживаемый Cloudflare режим redirect:error заменён
+на manual с явным отклонением 3xx; фоновое обновление теперь снимает блокировку
+перед перерисовкой кнопок. [Сервер](../../server/auth/session.mjs),
+[интерфейс](../../apps/web/network-ui.js), 475 локальных тестов PASS.
+Опубликовано на Cloudflare: 9d6a137, deployment a3ca9c57. Первая сборка этой
+ревизии упала на HTTP 503 городского источника; повтор прошёл без отключения
+проверки данных. Это не проверка физического iPhone, долгой сессии или
+мгновенного скрытия профиля во второй вкладке без перезагрузки.
+
+Final code CI 42306115346 passed: sources, database, WebKit, validate and deploy. Documentation-only receipt does not trigger another deployment.

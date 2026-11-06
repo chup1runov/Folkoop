@@ -12,3 +12,5 @@ are implemented by FK-AUTH-RECOVERY-001-T01. FK-AUTH-RECOVERY-001-R03 / C03 is
 tracked by FK-AUTH-RECOVERY-001-T02. Local evidence FK-AUTH-RECOVERY-001-E01:
 ../evidence/FK-AUTH-RECOVERY-001/local-tests.txt. Publication remains separately
 observable; local evidence does not certify hosted login.
+
+FK-AUTH-RECOVERY-001-E02: ../evidence/FK-AUTH-RECOVERY-001/deployment.json records Cloudflare publication and full GitHub validation/deployment for 20d5f61. This final observation is a local post-deployment checkpoint.

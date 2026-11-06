@@ -101,10 +101,10 @@
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
-      "status": "local-recovery-verified-publication-pending",
+      "status": "deployed-real-auth-verified",
       "checked_at": "2026-11-06",
-      "checked_scope": "Recovery diff reviewed; 473 tests and updated synthetic desktop/mobile recovery, expiry, email limit and uncertain-delivery scenarios passed. No real mail sent.",
-      "sha256": "3bca1bac677235192ff935dee46f8a9232942daf552e8f8a37ef95ee1a090bdd"
+      "checked_scope": "Read relevant transport/recovery/background-refresh code; 475 tests passed. Real production email login, reload, second tab and logout after both reloads passed in Brave on 9d6a137. Physical iPhone not tested.",
+      "sha256": "5d8c9b0ad4dc752e68c9ca2a7a8c90739c588a9dcc2151046053810e168eb0a8"
     },
     {
       "id": "SRC-MURA-CSS",
@@ -213,10 +213,10 @@
     {
       "id": "SRC-SERVER-SESSION",
       "path": "server/auth/session.mjs",
-      "status": "local-recovery-verified-publication-pending",
+      "status": "deployed-real-auth-verified",
       "checked_at": "2026-11-06",
-      "checked_scope": "Recovery diff reviewed; 473 tests and updated synthetic desktop/mobile recovery, expiry, email limit and uncertain-delivery scenarios passed. No real mail sent.",
-      "sha256": "e1021c77a9c9ae17d0bd76322918190f461d10cc9da066b7d40aca7a18a12a66"
+      "checked_scope": "Read relevant transport/recovery/background-refresh code; 475 tests passed. Real production email login, reload, second tab and logout after both reloads passed in Brave on 9d6a137. Physical iPhone not tested.",
+      "sha256": "91827cf32b9035ea8dc024883e55ef9e7da123a29fd6b29815ca059033dcbb3d"
     },
     {
       "id": "SRC-STAB003-RESULTS",
@@ -229,9 +229,9 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "local-recovery-verified-publication-pending",
+      "status": "deployed-real-auth-verified",
       "checked_at": "2026-11-06",
-      "checked_scope": "Recovery diff reviewed; 473 tests and updated synthetic desktop/mobile recovery, expiry, email limit and uncertain-delivery scenarios passed. No real mail sent.",
+      "checked_scope": "Read relevant transport/recovery/background-refresh code; 475 tests passed. Real production email login, reload, second tab and logout after both reloads passed in Brave on 9d6a137. Physical iPhone not tested.",
       "sha256": "b368770ef15dd7e64eee1b920b6661bdc92cc481934618ec6ffd15d88f7c54d7"
     }
   ]

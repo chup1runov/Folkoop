@@ -32,3 +32,21 @@ Fresh real-account acceptance is limited by provider email rate limiting. A
 follow-up UX gap remains: a failed email-link attempt consumes its in-memory
 refresh credential, so recovery currently requires a new link; do not claim retry
 works on the consumed callback. Do not silently persist tokens to work around it.
+
+2026-11-06 real-auth follow-up: email arrived; hosted login still failed at identity.
+Official Cloudflare Request documentation confirms redirect:error is unsupported
+and throws before sending. Replace with manual and explicitly reject 3xx (no
+credential forwarding); fixture checks request mode plus login/proxy redirects.
+474 Node tests passed. Published ec4f8c9; hosted acceptance still pending.
+Source: https://developers.cloudflare.com/workers/runtime-apis/request/ .
+Self-review: minimal server transport change, origin/consent/D1/privacy unchanged.
+
+Real acceptance C04 passed on production in Brave: same callback completed, reload
+and second tab restored the same profile; normal logout followed by reload of
+both tabs showed the sign-in form. Fixed a second bug: refreshAccount rendered
+while busy was still true, leaving all controls disabled; final render now runs
+after busy release. Regression fails before and passes after. 475 tests pass.
+Evidence E04: [real-auth acceptance](../evidence/FK-REL-001/real-auth-acceptance.json).
+Cloudflare deployment a3ca9c57 succeeded for 9d6a137. No identity/secret values in
+evidence. Historical blocked observations remain above; this checkpoint supersedes
+their current pending status. GitHub CI final result recorded separately.

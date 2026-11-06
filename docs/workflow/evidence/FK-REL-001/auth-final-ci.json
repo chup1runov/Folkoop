@@ -1,0 +1,11 @@
+{
+  "run_id": 42306115346,
+  "revision": "9d6a137085bd5335047c1cd5c22b039e2d16502d",
+  "jobs": {
+    "sources": "success",
+    "database / database": "success",
+    "webkit": "success",
+    "validate": "success",
+    "deploy": "success"
+  }
+}

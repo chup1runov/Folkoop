@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-AUTH-RECOVERY-001",
   "updated": "2026-11-06",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-AUTH-RECOVERY-001.md",
   "requirements": [
     {
@@ -38,12 +38,13 @@
     },
     {
       "id": "FK-AUTH-RECOVERY-001-T02",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-AUTH-RECOVERY-001-R03"
       ],
       "evidence": [
-        "FK-AUTH-RECOVERY-001-E01"
+        "FK-AUTH-RECOVERY-001-E01",
+        "FK-AUTH-RECOVERY-001-E02"
       ]
     }
   ],
@@ -58,10 +59,19 @@
         "C03"
       ],
       "path": "docs/workflow/evidence/FK-AUTH-RECOVERY-001/local-tests.txt"
+    },
+    {
+      "id": "FK-AUTH-RECOVERY-001-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-AUTH-RECOVERY-001/deployment.json"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish reviewed code/wiki on existing free services; observe deployment. Do not send email; actual provider login remains separately pending.",
+  "next_action": "Completed recovery/error-message implementation, local verification and free publication at 20d5f61. Real provider email login/reload remains the separate FK-REL-001 acceptance task; no emails sent in this task.",
   "authorization": {
     "status": "accepted",
     "date": "2026-11-06",

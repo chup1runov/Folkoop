@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-06",
+  "revision": "20d5f61f41a5f649a5bdfef797048adb8c3bdca5",
+  "cloudflare_deployment": "be351d3e-d624-464f-91f5-d4039c5aa029",
+  "cloudflare_result": "success",
+  "browser_observation": "After explicit cache update on folkoop.pages.dev, a synthetic error callback displays the expired/invalid link message and the new request-link button. No email submitted.",
+  "github_run": "https://github.com/chup1runov/Folkoop/actions/runs/42302822640",
+  "github_result": "all jobs passed including deploy and public-origin verification",
+  "real_auth": "not tested; local synthetic reload/new-tab tests are not production authentication proof"
+}
