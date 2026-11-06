@@ -13,7 +13,7 @@
   },
   {
     "test": "tests/e2e/guest-demo-browser.py",
-    "exit": 1
+    "exit": 0
   },
   {
     "test": "tests/e2e/network-form-focus-browser.py",
@@ -57,11 +57,11 @@
   },
   {
     "test": "tests/e2e/onboarding-browser.py",
-    "exit": 1
+    "exit": 0
   },
   {
     "test": "tests/e2e/home-browser.py",
-    "exit": 1
+    "exit": 0
   },
   {
     "test": "tests/e2e/home-welcome-browser.py",
@@ -77,7 +77,7 @@
   },
   {
     "test": "tests/e2e/onboarding-audit-browser.py",
-    "exit": 1
+    "exit": 0
   },
   {
     "test": "tests/e2e/i18n-route-matrix-browser.py",
@@ -97,7 +97,7 @@
   },
   {
     "test": "tests/e2e/guide-interactive-browser.py",
-    "exit": 1
+    "exit": 0
   },
   {
     "test": "tests/e2e/mura-cache-update-browser.py",

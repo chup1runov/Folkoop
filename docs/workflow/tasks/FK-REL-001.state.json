@@ -48,11 +48,13 @@
     },
     {
       "id": "FK-REL-001-T02",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-REL-001-R02"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-REL-001-E02"
+      ]
     },
     {
       "id": "FK-REL-001-T03",
@@ -80,10 +82,19 @@
         "C01"
       ],
       "path": "docs/workflow/evidence/FK-REL-001/hosted-migrations.json"
+    },
+    {
+      "id": "FK-REL-001-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C02"
+      ],
+      "path": "docs/workflow/evidence/FK-REL-001/release-ci.json"
     }
   ],
   "open_questions": [
     "Cloudflare SESSIONS D1 production binding awaits action-time confirmation; HttpOnly client mode remains disabled"
   ],
-  "next_action": "Finish PR #289 CI (navigation race and WebKit focus fixed), merge only after required checks; complete authorized Cloudflare configuration and verify deployment. Hosted migrations applied; site not released."
+  "next_action": "PR #289 merged as d8f2cdd82c04cca6432998342d1ce378110659c8 after successful CI. Verify production Cloudflare and GitHub deployments; SESSIONS binding approval and server-session configuration still pending."
 }

@@ -1,0 +1,110 @@
+[
+  {
+    "test": "tests/e2e/browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/about-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/folkoop-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/guest-demo-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/network-form-focus-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/network-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/marketplace-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/purchase-lifecycle-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/activity-chat-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/message-history-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/navigation-ia-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/meeting-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/email-link-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/theme-visual-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/onboarding-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/home-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/home-welcome-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/security-csp-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/entry-welcome-audit-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/onboarding-audit-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/i18n-route-matrix-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/entry-dependency-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/first-contact-preview-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/first-contact-guest-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/guide-interactive-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/mura-cache-update-browser.py",
+    "exit": 0
+  },
+  {
+    "test": "tests/e2e/account-search-browser.py",
+    "exit": 0
+  }
+]

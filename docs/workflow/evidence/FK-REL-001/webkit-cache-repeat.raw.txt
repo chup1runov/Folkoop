@@ -1,0 +1,6 @@
+ATTEMPT 0
+PASS same-version cache upgrade, preserved draft/session, cached shell with network unavailable
+ATTEMPT 1
+PASS same-version cache upgrade, preserved draft/session, cached shell with network unavailable
+ATTEMPT 2
+PASS same-version cache upgrade, preserved draft/session, cached shell with network unavailable

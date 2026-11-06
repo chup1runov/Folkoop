@@ -103,8 +103,8 @@
       "path": "apps/web/network-ui.js",
       "status": "local-code",
       "checked_at": "2026-11-06",
-      "checked_scope": "FK-STAB-003: scoped async search/refresh changes re-read; Mura search preserved in browser; 462 Node checks, local SQL and Chromium evidence. No hosted or native-language readiness claim.",
-      "sha256": "8a497b8722c6a468ddcc10de49e64e0a75a1c406a4ce75e73922b3dc808eac00"
+      "checked_scope": "FK-REL-001: route loading, busy gate, version invalidation and background refresh re-read. Delayed profile response reproduced lost navigation; queued latest-route load passes Chromium 1366/390. 463 Node checks passed; release CI pending.",
+      "sha256": "4bc7409043643ea0008cc673fa6d39d313288ab49ae41dea61b5286a1de83759"
     },
     {
       "id": "SRC-MURA-CSS",

@@ -1,0 +1,30 @@
+{
+  "pr": 289,
+  "head": "ac2263552616535e78334e6cd47fd8fced7b53d9",
+  "merge": "d8f2cdd82c04cca6432998342d1ce378110659c8",
+  "run": 42289873129,
+  "jobs": {
+    "validate": {
+      "id": 128140301176,
+      "result": "success"
+    },
+    "webkit": {
+      "id": 128140301170,
+      "result": "success"
+    },
+    "database": {
+      "id": 128140301308,
+      "result": "success"
+    },
+    "sources": {
+      "id": 128140300801,
+      "result": "success"
+    }
+  },
+  "local": {
+    "node": 463,
+    "chromium_subpath_scenarios": 27,
+    "webkit_limit": "Local whole-suite cache-update case failed intermittently; three standalone repetitions passed. Linux GitHub WebKit full suite passed."
+  },
+  "limit": "Merge and CI evidence, not deployment or physical iPhone acceptance."
+}
