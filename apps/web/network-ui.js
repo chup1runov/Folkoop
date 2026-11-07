@@ -1187,6 +1187,8 @@ async function load(){
  try{meetingBudgetNotices=await api.meetingBudgetNotices();if(!meetingBudgetNotices||!Array.isArray(meetingBudgetNotices.rows))throw new Error('INVALID_RESPONSE');meetingBudgetNotices.loadedAt=Date.now();}catch{meetingBudgetNotices={error:true};}
  try{contributionNotices=await api.contributionNotices();if(!contributionNotices||!Array.isArray(contributionNotices.rows))throw new Error('INVALID_RESPONSE');contributionNotices.loadedAt=Date.now();}catch{contributionNotices={error:true};}
  try{roomNotifications=await api.roomNotificationInbox();}catch{roomNotificationsError=true;}
+ let meetingActions=[],meetingActionsError=false;
+ try{meetingActions=await api.meetingActionInbox();}catch{meetingActionsError=true;}
  let meetingRoomAlerts=[],meetingRoomAlertsError=false;
  try{meetingRoomAlerts=await api.meetingRoomAlerts();}catch{meetingRoomAlertsError=true;}
  let meetingReminders=[],meetingRemindersError=false;
@@ -1232,6 +1234,7 @@ async function load(){
  }
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
  data={partialLoad:[...new Set([...sectionLoad.failed,...(api.takeCoverageWarnings?.()||[])])],chatHasMore:chatPage.hasMore,chatBefore:chatPage.before,profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting,decisions,taskActions,taskActionsError,sharedNeed,roomRequests,roomRequestsError,roomNotifications,roomNotificationsError,meetingRoomAlerts,meetingRoomAlertsError};
+ data.meetingActions=meetingActions;data.meetingActionsError=meetingActionsError;
  data.meetingReminders=meetingReminders;data.meetingRemindersError=meetingRemindersError;
  data.loadedAt=Date.now();liveRefreshError=false;
  data.projectDocuments=projectDocuments;

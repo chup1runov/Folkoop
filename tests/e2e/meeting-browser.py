@@ -13,7 +13,7 @@ N='dddddddd-dddd-4ddd-8ddd-dddddddddddd'
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(parents=True,exist_ok=True)
 async def main():
  async with async_playwright() as pw:
-  browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
+  browser=await pw.webkit.launch() if ENGINE=='webkit' else await pw.chromium.launch(executable_path=os.getenv('CHROMIUM_EXECUTABLE') or shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox'])
   state={'terms':None,'responses':[],'writes':[],'fail':False,'reports':[],'ended':False,'next':None,'nextResponses':[]}
   async def session(uid,width):
    context=await browser.new_context(service_workers='block',viewport={'width':width,'height':844},locale='ru-RU')
@@ -30,6 +30,14 @@ async def main():
     elif '/fk_profiles?' in url:result=[{'id':x,'name':'Alice' if x==A else 'Bob','skills':'','about':'','listed':True} for x in [A,B]]
     elif '/fk_cooperations?' in url:result=[{'id':x,'owner_id':A,'kind':'project','title':'Synthetic Swedish meeting','description':'Synthetic only','status':'open','location_text':'Göteborg'} for x in ([P,N] if state['next'] else [P])]
     elif '/fk_cooperation_members?' in url:result=[{'cooperation_id':P,'user_id':x,'role':'owner' if x==A else 'member'} for x in [A,B]]+([{'cooperation_id':N,'user_id':A,'role':'owner'}] if state['next'] else [])
+    elif url.endswith('/fk_meeting_action_inbox'):
+     if state.get('inboxFail'):
+      await req.fulfill(status=503,body='{}',content_type='application/json');return
+     t=state['terms']
+     if t and uid==B and not state['ended']:
+      own=[r for r in state['responses'] if r['user_id']==uid]
+      pending=[role for role in ['attendee','facilitator','opener'] if not any(r['role']==role for r in own)]
+      if pending:result=[{'project_id':P,'project_title':'Synthetic Swedish meeting','meeting_version':t['version'],'roles':pending,'after_terms':t,'before_terms':{'place':'Earlier place'},'next_action':'respond','total_count':1}]
     elif url.endswith('/fk_meeting_ready_snapshot'):
      result={'terms':state['terms'],'responses':state['responses'],'current':True,'people_confirmed':False,'attendee_count':sum(x['confirmed'] and x['role']=='attendee' for x in state['responses']),'checked_at':datetime.now(timezone.utc).isoformat()}
      if v['p_cooperation']==N:result.update(terms=state['next'],responses=state['nextResponses'],attendee_count=len(state['nextResponses']))
@@ -94,9 +102,34 @@ async def main():
   await page.locator('.netMeetingResponse button').click()
   await expect(page.locator('.netMeetingResponse button')).to_have_text('Отозвать')
   assert state['writes'][-1]=={'p_cooperation':P,'p_version':1,'p_role':'attendee','p_confirm':True}
+  # FK-LIVE-002-B01: edit terms in the organizer's existing document,
+  # then personally reconfirm the new version (without a reload).
+  if not await form.is_visible():
+   await page.locator('.meeting-confirmations summary').filter(has_text='Условия встречи').click()
+  await form.locator('[name=conditions]').fill('Changed access; each person must reconfirm.')
+  await form.locator('button').click()
+  await expect(page.locator('.netMeetingResponse button')).to_have_text('Я приду')
+  assert state['terms']['version']==2 and state['responses']==[]
+  before=len(state['writes'])
+  await page.locator('.netMeetingResponse button').click()
+  await expect(page.locator('.netMeetingResponse button')).to_have_text('Отозвать')
+  assert len(state['writes'])==before+1, state['writes'][before:]
+  assert state['writes'][-1]=={'p_cooperation':P,'p_version':2,'p_role':'attendee','p_confirm':True}
   assert not errors,errors
   await context.close()
   context,page,errors=await session(B,390)
+  # General inbox: opening does not write consent; compact mobile card and changes.
+  await page.evaluate("location.hash='#/me'")
+  inbox=page.locator('.meeting-action-inbox')
+  await expect(inbox).to_contain_text('Встречи ждут твоего ответа')
+  await expect(inbox).to_contain_text('Ведущий')
+  await inbox.locator('summary').click()
+  await expect(inbox).to_contain_text('Earlier place')
+  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+  writes_before=len(state['writes'])
+  await inbox.locator('button').click()
+  await expect(page.locator('#meetingConfirmTitle')).to_be_visible()
+  assert len(state['writes'])==writes_before
   assert await page.locator('#netMeetingTerms').count()==0
   await expect(page.locator('.meeting-confirmations')).to_contain_text('Перед принятием роли')
   await page.locator('.netMeetingResponse button').click()
@@ -109,6 +142,16 @@ async def main():
   await expect(opener.locator('button')).to_have_text('Отозвать')
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   await page.screenshot(path=str(OUT/f'meeting-{ENGINE}-mobile.png'),full_page=True)
+  await page.evaluate("location.hash='#/me'")
+  await expect(page.locator('.meeting-action-inbox')).to_have_count(0)
+  state['inboxFail']=True
+  await page.evaluate("location.hash='#/projects'")
+  await expect(page.locator('#meetingConfirmTitle')).to_be_visible()
+  await page.evaluate("location.hash='#/me'")
+  await expect(page.locator('.meeting-action-inbox')).to_contain_text('Не удалось')
+  state['inboxFail']=False
+  await page.evaluate("location.hash='#/projects'")
+  await expect(page.locator('#meetingConfirmTitle')).to_be_visible()
   state['fail']=True
   await opener.locator('button').click()
   await expect(page.locator('#netStatus')).to_contain_text('Не удалось')
@@ -161,7 +204,7 @@ async def main():
   await repeat.locator('button').click()
   await expect(owner_page.locator('.meeting-outcome')).to_contain_text('Предыдущая встреча')
   await expect(owner_page.locator('.netMeetingResponse button')).to_have_text('Я приду')
-  assert state['writes'][-1]=={'p_cooperation':P,'p_version':1,'p_starts_at':'2099-10-20T16:00:00.000Z','p_ends_at':'2099-10-20T17:00:00.000Z'}
+  assert state['writes'][-1]=={'p_cooperation':P,'p_version':2,'p_starts_at':'2099-10-20T16:00:00.000Z','p_ends_at':'2099-10-20T17:00:00.000Z'}
   assert await owner_page.locator('#netMeetingOutcome').count()==0
   await owner_page.locator('.netMeetingResponse button').click()
   await expect(owner_page.locator('.netMeetingResponse button')).to_have_text('Отозвать')

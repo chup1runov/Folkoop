@@ -287,6 +287,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   deleteChat(cid){return rpc('fk_delete_chat',{p_conversation:id(cid)});},
   cooperations(){return rows('fk_cooperations?select=id,owner_id,kind,title,description,location_text,status,target_quantity,unit,created_at,updated_at&order=created_at.desc&limit=200');},
   cooperationMembers(){return rows('fk_cooperation_members?select=cooperation_id,user_id,role,joined_at&limit=1000');},
+  meetingActionInbox(){return rpcRows('fk_meeting_action_inbox');},
   meetingRoomAlerts(){return rpcRows('fk_meeting_room_alerts');},
   meetingReminderInbox(){return rpcRows('fk_meeting_reminder_inbox');},
   async meetingHistory(cid,before){const result=await rows('fk_meeting_history?cooperation_id=eq.'+id(cid)+(before?'&id=lt.'+integer(before,1,Number.MAX_SAFE_INTEGER):'')+'&order=id.desc&limit=101');const page=result.slice(0,100);return {rows:page,more:result.length>100,cursor:page.at(-1)?.id};},

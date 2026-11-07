@@ -263,5 +263,31 @@ function renderRoomAlerts({rows,error}){
   return `<article class="card"><h4>${esc(n.project_title)}</h4><p>${tx(n.room_state==='cancelled'?1:changes.length?2:9)}</p><p class="meta">${esc(text(8))} ${n.meeting_version}</p>${changes.map(([key,label])=>`<section><strong>${esc(text(label))}</strong><p style="white-space:pre-wrap">${tx(3)}: ${value(key,before[key])}</p><p style="white-space:pre-wrap">${tx(4)}: ${value(key,after[key])}</p></section>`).join('')}<p>${tx(n.next_action==='confirm'?6:5)}${n.next_action==='confirm'?(n.roles||[]).map(role=>esc(text(({attendee:1,facilitator:2,opener:3})[role]??28))).join(', '):''}</p><button class="button" data-coop="openNotify" data-target-kind="project" data-id="${esc(n.project_id)}">${tx(7)}</button></article>`;
  }).join('')}</section>`;
 }
-globalThis.FolkoopMeetings=Object.freeze({render,text,formValues,stockholmTime,copy,outcomeCopy,outcomeText,renderRoomAlerts,renderReminders,reminderText});
+const actionCopy={
+ en:['Meetings awaiting your reply','Open meeting','Previous version','Current version','Opening a meeting does not confirm participation.'],
+ ru:['Встречи ждут твоего ответа','Открыть встречу','Предыдущая версия','Текущая версия','Открытие встречи не подтверждает участие.'],
+ sv:['Möten som väntar på ditt svar','Öppna mötet','Föregående version','Aktuell version','Att öppna mötet bekräftar inte deltagande.'],
+ uk:['Зустрічі чекають на твою відповідь','Відкрити зустріч','Попередня версія','Поточна версія','Відкриття зустрічі не підтверджує участь.'],
+ fi:['Vastaustasi odottavat tapaamiset','Avaa tapaaminen','Edellinen versio','Nykyinen versio','Tapaamisen avaaminen ei vahvista osallistumista.'],
+ bs:['Sastanci čekaju tvoj odgovor','Otvori sastanak','Prethodna verzija','Trenutna verzija','Otvaranje sastanka ne potvrđuje učešće.'],
+ es:['Reuniones que esperan tu respuesta','Abrir reunión','Versión anterior','Versión actual','Abrir la reunión no confirma tu participación.'],
+ ar:['لقاءات تنتظر ردك','افتح اللقاء','النسخة السابقة','النسخة الحالية','فتح اللقاء لا يؤكد المشاركة.'],
+ fa:['دیدارهای منتظر پاسخ شما','باز کردن دیدار','نسخهٔ پیشین','نسخهٔ کنونی','باز کردن دیدار به معنی تأیید شرکت نیست.'],
+ so:['Kulamada sugaya jawaabtaada','Fur kulanka','Noocii hore','Nooca hadda','Furitaanka kulanku ma xaqiijinayo ka qaybgalka.'],
+ ku:['Civînên ku li benda bersiva te ne','Civînê veke','Guhertoya berê','Guhertoya niha','Vekirina civînê beşdariyê napejirîne.'],
+};
+function renderActionInbox({rows,error}={}){
+ const words=actionCopy[document.documentElement.lang]||actionCopy.en;
+ const tx=i=>esc(words[i]);
+ if(error||!Array.isArray(rows))return `<section class="card meeting-action-inbox"><h3>${tx(0)}</h3><p role="status">${esc(text(24))}</p></section>`;
+ if(!rows.length)return '';
+ const fields=[['starts_at',9],['ends_at',10],['place',12],['conditions',13],['minimum_attendees',14],['capacity',15]];
+ const value=(key,v)=>esc(v==null?'—':key.endsWith('_at')?new Date(v).toLocaleString():String(v));
+ return `<section class="card meeting-action-inbox"><h3>${tx(0)} · ${rows.length}/${esc(rows[0].total_count||rows.length)}</h3><p class="meta">${tx(4)}</p>${rows.map(n=>{
+  const before=n.before_terms,after=n.after_terms||{};
+  const changed=fields.filter(([key])=>!before||before[key]!==after[key]);
+  return `<article class="card"><h4>${esc(n.project_title)}</h4><p class="meta">${esc(text(8))} ${esc(n.meeting_version)}</p><p>${esc(text(n.next_action==='wait'?19:6))}: ${(n.roles||[]).map(role=>esc(text(({attendee:1,facilitator:2,opener:3})[role]??28))).join(', ')}</p>${changed.length?`<details><summary>${esc(text(22))}</summary>${changed.map(([key,label])=>`<section><strong>${esc(text(label))}</strong>${before?`<p style="white-space:pre-wrap">${tx(2)}: ${value(key,before[key])}</p>`:''}<p style="white-space:pre-wrap">${tx(3)}: ${value(key,after[key])}</p></section>`).join('')}</details>`:''}<button class="button" data-coop="openNotify" data-target-kind="project" data-id="${esc(n.project_id)}">${tx(1)}</button></article>`;
+ }).join('')}</section>`;
+}
+globalThis.FolkoopMeetings=Object.freeze({renderActionInbox,actionCopy,render,text,formValues,stockholmTime,copy,outcomeCopy,outcomeText,renderRoomAlerts,renderReminders,reminderText});
 })();

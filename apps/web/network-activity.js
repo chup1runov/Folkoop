@@ -86,7 +86,7 @@ function create({
     const contributions=globalThis.FolkoopBudget?.renderInbox({snapshot:data.contributionNotices,name:id=>getProfile(id)?.name||cooperationText('noProfile')})||'';
     const meetingBudget=globalThis.FolkoopBudget?.renderPolicyInbox({snapshot:data.meetingBudgetNotices,name:id=>getProfile(id)?.name||cooperationText('noProfile')})||'';
     const reminders=(globalThis.FolkoopDecisions?.renderDocumentNotifications({rows:data.documentNotifications,error:data.documentNotificationsError})||'')+(globalThis.FolkoopMeetings?.renderReminders({rows:data.meetingReminders,error:data.meetingRemindersError})||'');
-    return meetingBudget+contributions+basis+reminders+(globalThis.FolkoopMeetings?.renderRoomAlerts({rows:data.meetingRoomAlerts,error:data.meetingRoomAlertsError})||'')+(globalThis.FolkoopRooms?.renderInbox({rows:data.roomNotifications,error:data.roomNotificationsError,name:id=>getProfile(id)?.name||cooperationText('noProfile')})||'');
+    return (globalThis.FolkoopMeetings?.renderActionInbox({rows:data.meetingActions??[],error:data.meetingActionsError})||'')+meetingBudget+contributions+basis+reminders+(globalThis.FolkoopMeetings?.renderRoomAlerts({rows:data.meetingRoomAlerts,error:data.meetingRoomAlertsError})||'')+(globalThis.FolkoopRooms?.renderInbox({rows:data.roomNotifications,error:data.roomNotificationsError,name:id=>getProfile(id)?.name||cooperationText('noProfile')})||'');
   }
   function renderNotifications(user=getCurrentUser()){
     const data=getData()||{};
