@@ -41,9 +41,25 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  const cfg=configuration(value);let session=null,epoch=0,authAttempt=0;
  const pendingMessages=new Map(),coverageWarnings=new Set();
  const controllers=new Set(),listeners=new Set();
- function notify(){for(const fn of listeners)fn(session?{id:session.id}:null);}
- function clear(){pendingMessages.clear();coverageWarnings.clear();session=null;epoch++;authAttempt++;for(const c of controllers)c.abort();analyticsReset();notify();}
- function user(){if(session&&session.expiresAt<=clock())clear();return session?{id:session.id}:null;}
+ let expiryTimer=null,channel=null;
+ const browser=globalThis.window,exitKey='folkoop-session-exit-v1';
+ // Only the shared cookie mode shares logout. Never transmit identity or credentials.
+ if(browser&&cfg?.serverSession){
+  try{channel=new BroadcastChannel(exitKey);channel.onmessage=e=>{if(e.data?.type==='signed-out')clear('signed-out');};}catch{}
+  browser.addEventListener('storage',e=>{if(!channel&&e.key===exitKey&&e.newValue)clear('signed-out');});
+ }
+ function signalExit(){
+  if(!browser||!cfg?.serverSession)return;
+  try{if(channel)channel.postMessage({type:'signed-out'});else{browser.localStorage.setItem(exitKey,crypto.randomUUID());browser.localStorage.removeItem(exitKey);}}catch{}
+ }
+ function notify(reason){
+  if(browser){clearTimeout(expiryTimer);expiryTimer=session?setTimeout(()=>{expiryTimer=null;user();},Math.max(0,Math.min(session.expiresAt-clock(),2147483647))):null;}
+  for(const fn of listeners)fn(session?{id:session.id}:null,reason);
+ }
+ if(browser){browser.addEventListener('focus',()=>user());browser.addEventListener('pageshow',()=>user());}
+
+ function clear(reason){pendingMessages.clear();coverageWarnings.clear();session=null;epoch++;authAttempt++;for(const c of controllers)c.abort();analyticsReset();notify(reason);}
+ function user(){if(session&&session.expiresAt<=clock())clear('expired');return session?{id:session.id}:null;}
  async function request(path,{method='GET',body,auth=true,token,withCount=false}={}){
   if(!cfg)throw fail('DISABLED');
   if(auth&&!user())throw fail('AUTH_REQUIRED');
@@ -62,8 +78,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(/\bjson\b/i.test(response.headers.get('content-type')||'')){
      try{detail=await response.json();}catch{}
     }
+    if(version!==epoch)throw fail('STALE');
     if(path.split('?')[0]==='/auth/v1/otp'&&response.status===429)throw fail('EMAIL_RATE_LIMIT');
-    if(response.status===401){if(auth)clear();throw fail('AUTH_REQUIRED');}
+    if(response.status===401){if(auth)clear('expired');throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
     if(['BUDGET_CONFLICT','DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN','WELCOME_CONFLICT','MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED','TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_CONFLICT','TASK_BASIS_PENDING','TASK_BASIS_CLOSED','INVALID_BASIS_LINK','INVALID_SIGNER'].includes(detail?.message))throw fail(detail.message);
@@ -216,9 +233,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   async restore(){
    if(!cfg?.serverSession)return null;const attempt=++authAttempt;
    try{const result=await serverSession('GET');if(attempt!==authAttempt)throw fail('STALE');session={id:id(result.id),expiresAt:result.expiresAt};notify();return user();}
-   catch(e){if(e.code==='AUTH_REQUIRED'){clear();return null;}throw e;}
+   catch(e){if(attempt!==authAttempt)throw fail('STALE');if(e.code==='AUTH_REQUIRED'){clear('expired');return null;}throw e;}
   },
-  async logout({allDevices=false}={}){bool(allDevices);const token=session?.token;clear();if(cfg?.serverSession){await serverSession('DELETE',undefined,allDevices);return;}if(token)await request('/auth/v1/logout?scope='+(allDevices?'global':'local'),{method:'POST',auth:false,token});},
+  async logout({allDevices=false}={}){bool(allDevices);const token=session?.token;clear('signed-out');signalExit();if(cfg?.serverSession){await serverSession('DELETE',undefined,allDevices);signalExit();return;}if(token)await request('/auth/v1/logout?scope='+(allDevices?'global':'local'),{method:'POST',auth:false,token});},
   profile(){return rows('fk_profiles?select=id,name,skills,about,listed&id=eq.'+id(user()?.id));},
   saveProfile(p){if(typeof p.listed!=='boolean')throw fail('INVALID_INPUT');return rpc('fk_save_profile',{p_name:text(p.name,60,1),p_skills:text(p.skills,200),p_about:text(p.about,600),p_listed:p.listed});},
   directory(){return rows('fk_profiles?select=id,name,skills,about&listed=eq.true&order=name.asc&limit=100');},
