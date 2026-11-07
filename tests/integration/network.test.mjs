@@ -22,7 +22,7 @@ test('explicit all-device logout revokes globally; normal logout remains local',
  await s.login();await s.c.logout();assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=local')));
 });
 test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
- const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
+ const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:url.includes('fk_project_document_consents?')?[{document_id:cid,cooperation_id:cid,revision:1,user_id:uid,document:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
  assert.equal(result.manifest.sections.length,43);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
@@ -224,4 +224,28 @@ test('export paginates embedded terms without dropping roles or historical versi
   return new Response(JSON.stringify([exportResponse(offset+1)]),{headers:{'content-type':'application/json','content-range':offset+'-'+offset+'/2'}});
  });await s.login();const result=await s.c.exportOwn();assert.equal(result.meetingResponses.length,2);
  assert.equal(result.meetingResponses[1].terms.version,2);assert.equal(result.manifest.sections.find(s=>s.collection==='fk_meeting_responses').coverage,'visible-query-complete');
+});
+
+const exportDocument=(revision,kind='rules')=>({document_id:cid,cooperation_id:cid,revision,kind,title:'Synthetic '+kind,body:'Revision '+revision,decision_id:null,task_ids:[],created_at:'2030-01-01T00:00:00Z'});
+const exportConsent=(revision,kind='rules')=>({document_id:cid,cooperation_id:cid,revision,user_id:uid,confirmed:revision===1,responded_at:'2030-01-02T00:00:00Z',document:exportDocument(revision,kind)});
+test('export includes exact rules and estimate revisions with old and withdrawn personal consent',async()=>{
+ const records=[exportConsent(1),exportConsent(2,'estimate')];records[0].document.author_id='not-added';
+ const s=setup(url=>url.includes('fk_project_document_consents?')?json(records):url.includes('fk_project_document_versions?')?json([{syntheticAuthored:true}]):null);
+ await s.login();const r=await s.c.exportOwn();assert.deepEqual(Array.from(r.documentConsents,c=>c.document.body),['Revision 1','Revision 2']);
+ assert.equal(r.documentConsents[0].confirmed,true);assert.equal(r.documentConsents[1].confirmed,false);assert.equal(r.documentConsents[1].document.kind,'estimate');
+ assert.equal(r.projectDocumentVersions[0].syntheticAuthored,true);assert.equal(r.manifest.documentConsentContext.linkedConsents,2);assert.equal(r.manifest.documentConsentContext.missing.length,0);assert(!JSON.stringify(r).includes('not-added'));
+ const query=new URL(s.calls.find(c=>c.url.includes('fk_project_document_consents?')).url).searchParams;
+ assert.equal(query.get('user_id'),'eq.'+uid);assert.match(query.get('select'),/^\*,document:fk_project_document_versions\(/);assert(!query.get('select').includes('!inner'));
+});
+test('export preserves consent with inaccessible document and makes the gap explicit',async()=>{
+ const s=setup(url=>url.includes('fk_project_document_consents?')?json([{...exportConsent(1),document:null}]):null);await s.login();const r=await s.c.exportOwn();
+ assert.equal(r.documentConsents[0].document,null);assert.equal(r.manifest.documentConsentContext.missing.length,1);assert.equal(r.manifest.documentConsentContext.linkedConsents,0);assert.equal(r.manifest.completeAccountExport,false);
+});
+test('document export rejects foreign consent, wrong revision/project, invalid kind and malformed embed',async()=>{
+ for(const patch of [{user_id:cid},{document:exportDocument(2)},{document:{...exportDocument(1),cooperation_id:uid}},{document:exportDocument(1,'report')},{document:[]},{document:{}},{document:undefined}]){
+ const s=setup(url=>url.includes('fk_project_document_consents?')?json([{...exportConsent(1),...patch}]):null);await s.login();await assert.rejects(s.c.exportOwn(),e=>e.code==='INVALID_RESPONSE');}
+});
+test('document consent context survives pagination',async()=>{
+ const s=setup(url=>{if(!url.includes('fk_project_document_consents?'))return null;const offset=Number(new URL(url).searchParams.get('offset'));return new Response(JSON.stringify([exportConsent(offset+1)]),{headers:{'content-type':'application/json','content-range':offset+'-'+offset+'/2'}});});
+ await s.login();const r=await s.c.exportOwn();assert.equal(r.documentConsents.length,2);assert.equal(r.documentConsents[1].document.revision,2);assert.equal(r.manifest.sections.find(x=>x.collection==='fk_project_document_consents').coverage,'visible-query-complete');
 });

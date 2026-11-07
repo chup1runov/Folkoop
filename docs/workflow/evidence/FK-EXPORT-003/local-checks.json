@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-07",
+  "checks": [
+    {
+      "command": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs",
+      "exit": 0,
+      "passed": 483
+    },
+    {
+      "command": "node scripts/build/build-site.mjs --shell-only",
+      "exit": 0,
+      "limit": "QA artifact only"
+    },
+    {
+      "command": "python tests/e2e/email-link-browser.py",
+      "exit": 0,
+      "engines": [
+        "Chromium 390",
+        "Chromium 1366",
+        "WebKit 390"
+      ],
+      "scope": "Synthetic Auth; actual browser download parsed; own old/withdrawn document revisions verified"
+    }
+  ],
+  "review": "folkoop-verify self-review: left embed and explicit column projection preserve existing RLS and 43 query reports; no newer version substitution; authored export unchanged; no independent review claimed. Existing Supabase FK/schema and current join docs from FK-EXPORT-002 checked.",
+  "limits": [
+    "Live fixture/download and publication pending",
+    "No full operator export, account closure or device/native-language acceptance"
+  ],
+  "fingerprints": {
+    "apps/web/network-client.js": "0e1bb606240b10aca6c036637ee050536b16f6343441c33d68ffd4e3cc783775",
+    "tests/integration/network.test.mjs": "475f314136c103d71d5583de022c79f65fde5fbfe6d60b8da2b6441c5eeb3b6a",
+    "tests/e2e/email-link-browser.py": "8eeaae78872c8d4b014ae2b284312f23e7d7721439fc999ff344566f57b9d348"
+  }
+}

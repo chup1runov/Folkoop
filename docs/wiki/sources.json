@@ -229,10 +229,10 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "published-scoped-export-context-verified",
+      "status": "local-document-context-verified",
       "checked_at": "2026-11-07",
-      "checked_scope": "FK-EXPORT-002 exportOwn diff and tests; 479 tests, Chromium 390/1366, WebKit 390, complete CI. Published e9a1cb1. Real QA organizer download: 12 own responses across versions 1–4 with matching terms. No wider operator-export, closure or full historical agreement acceptance. B02 evidence retained for unchanged inbox slice.",
-      "sha256": "d5f7d9bb7dfc982cebeadb14663edc4661da42dbd7da0d188f267567d405d1cb"
+      "checked_scope": "FK-EXPORT-003 exact document/revision/project join, actor filters, explicit fields/gaps. 483 tests and Chromium 390/1366 + WebKit passed. Live export/release pending; prior unchanged meeting-context/inbox evidence remains historical.",
+      "sha256": "0e1bb606240b10aca6c036637ee050536b16f6343441c33d68ffd4e3cc783775"
     }
   ]
 }

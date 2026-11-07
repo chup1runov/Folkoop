@@ -1,5 +1,22 @@
 # Account export report — 18 October 2026
 
+## 7 November 2026 — exact versions behind document consent
+
+FK-EXPORT-003 adds `documentConsents[].document`: exact document_id/revision
+content linked to each own consent (rules or estimate), including historical
+and withdrawn consent. A left embed retains inaccessible context as null;
+`manifest.documentConsentContext.missing` lists gaps and `linkedConsents`
+counts returned consents with context. No current-version substitution.
+Selected fields: document_id, revision, cooperation_id, kind, title, body,
+decision_id, task_ids, created_at. No author/editor identifiers added here.
+Existing `projectDocumentVersions` (own authored/edited versions) is unchanged.
+43 paginated collections, RLS, non-atomic/unknown/full-account exclusions remain.
+External attachments are not downloaded. Linked decisions/tasks are references,
+not automatically embedded snapshots. No migration or new privileges.
+[Checks](../workflow/evidence/FK-EXPORT-003/local-checks.json);
+[current release status](../workflow/tasks/FK-EXPORT-003.state.json).
+
+
 ## 7 November 2026 — versioned meeting response context
 
 FK-EXPORT-002 adds `meetingResponses[].terms`: the exact composite-FK-linked

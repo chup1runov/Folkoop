@@ -21,6 +21,8 @@ async def main():
    elif '/logout?scope=' in url:logout_scopes.append(url.split('scope=')[1]);result=None
    elif '/fk_meeting_responses?' in url:
     result=[{'cooperation_id':'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','version':v,'user_id':'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','role':'attendee','confirmed':True,'responded_at':'2030-01-01T00:00:00Z','terms':{'cooperation_id':'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','version':v,'starts_at':'2030-01-02T12:00:00Z','ends_at':'2030-01-02T13:00:00Z','place':'Synthetic room','conditions':'Version '+str(v),'minimum_attendees':2,'capacity':10,'created_at':'2030-01-01T00:00:00Z'}} for v in (1,2)]
+   elif '/fk_project_document_consents?' in url:
+    result=[{'document_id':'cccccccc-cccc-4ccc-8ccc-cccccccccccc','cooperation_id':'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','revision':v,'user_id':'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','confirmed':v==1,'responded_at':'2030-01-01T00:00:00Z','document':{'document_id':'cccccccc-cccc-4ccc-8ccc-cccccccccccc','cooperation_id':'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','revision':v,'kind':'rules' if v==1 else 'estimate','title':'Synthetic document','body':'Revision '+str(v),'decision_id':None,'task_ids':[],'created_at':'2030-01-01T00:00:00Z'}} for v in (1,2)]
    else:result=[]
    await r.fulfill(body=json.dumps(result),content_type='application/json',headers={'content-range':('0-'+str(len(result)-1)+'/'+str(len(result))) if isinstance(result,list) and result else '*/0'})
   await context.route('**/*',route)
@@ -47,6 +49,10 @@ async def main():
   assert [r['terms']['conditions'] for r in exported_data['meetingResponses']]==['Version 1','Version 2']
   assert exported_data['manifest']['meetingTermsContext']['linkedResponses']==2
   assert exported_data['manifest']['meetingTermsContext']['missing']==[]
+  assert [r['document']['body'] for r in exported_data['documentConsents']]==['Revision 1','Revision 2']
+  assert [r['confirmed'] for r in exported_data['documentConsents']]==[True,False]
+  assert exported_data['manifest']['documentConsentContext']['linkedConsents']==2
+  assert exported_data['manifest']['documentConsentContext']['missing']==[]
   await expect(page.locator('#networkExportReport')).to_contain_text('Это не полная копия аккаунта')
   assert TOKEN not in json.dumps(exported_data)
   await expect(page.locator('#networkExportReport a')).to_have_attribute('href','mailto:Chup1runov@gmail.com')

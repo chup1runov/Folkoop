@@ -472,7 +472,17 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const meetingReminders=await rows('fk_meeting_reminders?or=(recipient_id.eq.'+uid+',sender_id.eq.'+uid+')&order=sent_at.desc&limit=1000');
    const meetingHistory=await rows('fk_meeting_history?or=(participant_id.eq.'+uid+',actor_id.eq.'+uid+')&order=id.desc&limit=1000');
    const projectDocumentVersions=await rows('fk_project_document_versions?or=(author_id.eq.'+uid+',editor_id.eq.'+uid+')&order=created_at.desc&limit=1000');
-   const documentConsents=await rows('fk_project_document_consents?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000');
+   const documentFields=['document_id','revision','cooperation_id','kind','title','body','decision_id','task_ids','created_at'];
+   const documentConsents=await rows('fk_project_document_consents?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000&select=*,document:fk_project_document_versions('+documentFields.join(',')+')');
+   const missingDocuments=new Map();let linkedConsents=0;
+   for(const consent of documentConsents){
+    if(consent.user_id!==uid||!UUID.test(consent.document_id||'')||!UUID.test(consent.cooperation_id||'')||!Number.isInteger(consent.revision)||consent.revision<1)throw fail('INVALID_RESPONSE');
+    const document=consent.document;
+    if(document===null){missingDocuments.set(consent.document_id+':'+consent.revision,{document_id:consent.document_id,revision:consent.revision});continue;}
+    if(!document||Array.isArray(document)||document.document_id!==consent.document_id||document.revision!==consent.revision||document.cooperation_id!==consent.cooperation_id||!['rules','estimate'].includes(document.kind)||documentFields.some(key=>document[key]===undefined))throw fail('INVALID_RESPONSE');
+    consent.document=Object.fromEntries(documentFields.map(key=>[key,document[key]]));linkedConsents++;
+   }
+   const documentConsentContext={scope:'Exact versions for returned personal consents, including withdrawn consent; historical confirmation is not consent to newer versions',linkedConsents,missing:[...missingDocuments.values()],fields:documentFields};
    const taskBases=await rows('fk_task_bases?created_by=eq.'+uid+'&order=created_at.desc&limit=1000');
    const taskBasisSigners=await rows('fk_task_basis_signers?user_id=eq.'+uid+'&order=id.desc&limit=1000');
    const projectWelcomes=await rows('fk_project_welcome?host_id=eq.'+uid+'&order=updated_at.desc&limit=1000');
@@ -486,7 +496,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const meetingBudgetNotices=await rows('fk_meeting_budget_notices?recipient_id=eq.'+uid+'&order=cooperation_id,version&limit=1000');
    if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
    const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
-    completeAccountExport:false,atomicSnapshot:false,meetingTermsContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
+    completeAccountExport:false,atomicSnapshot:false,meetingTermsContext,documentConsentContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
     excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
     fullCopyContact:'Chup1runov@gmail.com'};
    return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};

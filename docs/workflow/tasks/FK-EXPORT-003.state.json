@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "id": "FK-EXPORT-003",
+  "updated": "2026-11-07",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-EXPORT-003.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-07",
+    "scope": "Exact document versions in export, real QA test, wiki and free release; no deletion or paid services"
+  },
+  "requirements": [
+    {
+      "id": "FK-EXPORT-003-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-EXPORT-003-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-EXPORT-003-R03",
+      "checks": [
+        "C03"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-EXPORT-003-T01",
+      "status": "done",
+      "requirements": [
+        "FK-EXPORT-003-R01"
+      ],
+      "evidence": [
+        "FK-EXPORT-003-E01"
+      ]
+    },
+    {
+      "id": "FK-EXPORT-003-T02",
+      "status": "done",
+      "requirements": [
+        "FK-EXPORT-003-R02"
+      ],
+      "evidence": [
+        "FK-EXPORT-003-E01"
+      ]
+    },
+    {
+      "id": "FK-EXPORT-003-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-EXPORT-003-R03"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-EXPORT-003-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02"
+      ],
+      "path": "docs/workflow/evidence/FK-EXPORT-003/local-checks.json"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish free and verify real QA download with old rules, estimate and withdrawal; record final evidence."
+}
