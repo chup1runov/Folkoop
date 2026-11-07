@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-EXPORT-003",
   "updated": "2026-11-07",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-EXPORT-003.md",
   "authorization": {
     "status": "accepted",
@@ -52,11 +52,13 @@
     },
     {
       "id": "FK-EXPORT-003-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-EXPORT-003-R03"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-EXPORT-003-E02"
+      ]
     }
   ],
   "evidence": [
@@ -69,8 +71,17 @@
         "C02"
       ],
       "path": "docs/workflow/evidence/FK-EXPORT-003/local-checks.json"
+    },
+    {
+      "id": "FK-EXPORT-003-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-EXPORT-003/release.json"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish free and verify real QA download with old rules, estimate and withdrawal; record final evidence."
+  "next_action": "Scoped task complete: exact rules/estimate versions and withdrawal verified in actual browser downloads; CI and free deployment passed. Wider operator export/account closure remains separate."
 }

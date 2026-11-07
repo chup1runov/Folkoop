@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-07",
+  "commit": "b1a39da2263ed83a050e82a49ee126e013178b93",
+  "cloudflare": {
+    "deployment": "51203c22-1a1f-4dd7-b8f4-acaa47fac390",
+    "status": "success",
+    "site": "https://folkoop.pages.dev/"
+  },
+  "ci": {
+    "run": "https://github.com/chup1runov/Folkoop/actions/runs/42382147094",
+    "status": "success",
+    "checks": [
+      "sources",
+      "database",
+      "database / database",
+      "validate",
+      "webkit",
+      "deploy",
+      "Cloudflare Pages"
+    ]
+  },
+  "hosted": {
+    "result": "passed",
+    "fixture_setup": "Two explicit QA-only documents authored via existing RPCs under authenticated QA participant role and existing session. No migration, real agreement, payment or real-event claim. Existing isolated QA project only.",
+    "browser_actions": "Existing QA organizer personally confirmed rules v1 and estimate v1 in Brave. Author created rules v2 via same RPC. UI showed v2 unconfirmed. Organizer downloaded export, then withdrew estimate consent through UI and downloaded again.",
+    "first_download": "2026-11-07T14:35:34.525Z",
+    "second_download": "2026-11-07T14:36:41.877Z",
+    "checks": [
+      "43 original collections preserved",
+      "2 personal consent records, rules and estimate",
+      "Rules v1 content retained after v2 publication; no v2 consent created",
+      "Estimate v1 retained after withdrawal with confirmed=false",
+      "Consumer is neither author nor editor; authored-document export empty",
+      "Exact document_id/revision/cooperation_id match",
+      "Whitelisted fields only in embedded documents",
+      "No missing document contexts",
+      "All consent user IDs match exported profile",
+      "No auth token/cookie markers in downloaded payload"
+    ],
+    "privacy": "Exports remain in local Downloads outside repo. Only aggregate evidence is committed. Test documents remain available; no deletion."
+  },
+  "limits": [
+    "Not a complete provider/private account export",
+    "No attachment download or complete referenced decision/task snapshots",
+    "No account closure, physical iPhone or human locale acceptance"
+  ],
+  "review": "Self-review, no independent agent"
+}

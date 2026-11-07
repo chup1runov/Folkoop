@@ -13,3 +13,11 @@ FK-EXPORT-003-T01: left embed document version through existing composite FK; ex
 
 ## Evidence / limits / rollback
 FK-EXPORT-003-E01 local checks; FK-EXPORT-003-E02 hosted/release. No private exports in repository. No current consent inferred from historical confirmation; no attachments fetched. Roll back only this change, preserve original wiki journal. Full privacy/closure and physical device/human locale acceptance remain separate.
+
+## Result — 2026-11-07
+483 unit/integration tests; Chromium 390/1366 and WebKit 390 passed. All GitHub
+checks and Cloudflare deployment passed for b1a39da. Two real browser downloads
+from existing QA organizer verified a non-authored old rules revision, estimate,
+then retained estimate context after withdrawal. New rules revision remained
+unconfirmed. FK-EXPORT-003-E02: release.json. No migration/deletion/paid service.
+Self-review only. Scoped task complete; wider operator export/closure not claimed.

@@ -229,9 +229,9 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "local-document-context-verified",
+      "status": "published-document-context-verified",
       "checked_at": "2026-11-07",
-      "checked_scope": "FK-EXPORT-003 exact document/revision/project join, actor filters, explicit fields/gaps. 483 tests and Chromium 390/1366 + WebKit passed. Live export/release pending; prior unchanged meeting-context/inbox evidence remains historical.",
+      "checked_scope": "FK-EXPORT-003 scoped diff: actor-filtered exact document/revision/project left embed and explicit gaps. 483 tests; Chromium 390/1366, WebKit and complete CI passed. Published b1a39da; two real QA browser downloads verified non-authored rules v1 despite unconfirmed v2, estimate and retained withdrawal context. No full operator export/closure claim; prior unchanged meeting/inbox evidence retained.",
       "sha256": "0e1bb606240b10aca6c036637ee050536b16f6343441c33d68ffd4e3cc783775"
     }
   ]
