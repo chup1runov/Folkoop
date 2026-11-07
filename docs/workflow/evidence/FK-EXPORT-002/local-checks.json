@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-07",
+  "scope": "Own meeting-response terms context; no full-account or closure acceptance",
+  "baseline": "a0abfabb43c0b3d46977e94b2ecee5fa3d2b6fe5",
+  "checks": [
+    {
+      "command": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs",
+      "exit": 0,
+      "passed": 479
+    },
+    {
+      "command": "node scripts/build/build-site.mjs --shell-only",
+      "exit": 0,
+      "limit": "QA shell only; not production artifact"
+    },
+    {
+      "command": "BASE_URL=http://127.0.0.1:4503/ python tests/e2e/email-link-browser.py",
+      "exit": 0,
+      "engines": [
+        "Chromium width 390",
+        "Chromium width 1366",
+        "WebKit width 390"
+      ],
+      "scope": "Synthetic Auth; real browser download parsed and historical conditions verified, logout and no credential persistence checked"
+    },
+    {
+      "query": "Read-only hosted composite FK inspection",
+      "result": "fk_meeting_responses(cooperation_id,version) references fk_meeting_terms(cooperation_id,version)"
+    }
+  ],
+  "review": {
+    "type": "self-review using folkoop-verify",
+    "findings": "No blocking findings in scoped diff. Left embed preserves missing related context, explicit fields exclude assigned-user IDs; actor filter and session checks retained. 43 collection reports retain original paging semantics. First test run failed only on VM-array prototype equality; assertion converted to host Array, expected values unchanged.",
+    "not_independent": true
+  },
+  "external_docs": {
+    "source": "https://supabase.com/docs/guides/database/joins-and-nesting",
+    "checked": "2026-11-07 via Supabase docs tool; left embed default and foreign-key inference verified",
+    "changelog": "Markdown fetch unsupported by web tool; not reviewed"
+  },
+  "limitations": [
+    "Live browser export and publication pending; Mac locked",
+    "No account closure, privileged export, device-iPhone or human locale approval",
+    "Room/budget/document snapshots not newly included"
+  ],
+  "fingerprints": {
+    "apps/web/network-client.js": "d5f7d9bb7dfc982cebeadb14663edc4661da42dbd7da0d188f267567d405d1cb",
+    "tests/integration/network.test.mjs": "8a9fd97ea03c813021457f92fe21f74f2b79338dc0cf911c102c4255411a2abe",
+    "tests/e2e/email-link-browser.py": "9ab65acdc714935229fe2783a460f89aabd8dcb276bcbcf1855296876c7a6e9d"
+  }
+}

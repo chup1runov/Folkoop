@@ -1,5 +1,28 @@
 # Account export report — 18 October 2026
 
+## 7 November 2026 — versioned meeting response context
+
+FK-EXPORT-002 adds `meetingResponses[].terms`: the exact composite-FK-linked
+conditions for each returned own response, including old versions and declined
+responses. The left embed does not discard a response when the terms are not
+visible: `terms:null` remains and `manifest.meetingTermsContext.missing` lists
+unique cooperation/version gaps. Unexpected/mismatched relation data fails the
+export. `linkedResponses` counts responses with context, not distinct meetings.
+
+Selected term fields: cooperation_id, version, starts_at, ends_at, place,
+conditions, minimum_attendees, capacity and created_at. Assigned-person IDs and
+other people's responses are not added. This is not a full historical agreement
+package: related room, budget and document snapshots are outside this change.
+There remain 43 paginated actor-filtered collections; context is embedded, not
+an additional independently counted collection. Existing unknown-count,
+non-atomic and incomplete-account warnings remain. No schema or access change.
+
+[Local verification and limits](../workflow/evidence/FK-EXPORT-002/local-checks.json).
+Publication and real-account download acceptance are recorded separately in the
+[task state](../workflow/tasks/FK-EXPORT-002.state.json). Earlier dated statuses
+below are historical, not the current deployment state.
+
+
 ## 6 November 2026 — local paging update, not deployed
 
 The 43 current actor-filtered collections now traverse PostgREST pages with exact

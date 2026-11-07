@@ -505,3 +505,10 @@ WebKit CI проверяет существующий сценарий экск�
 
 ## 2026-11-07 — Meeting inbox B02 released and accepted
 Published code e7ecd84; Cloudflare deployment 19e15217-d249-4961-8b30-6d3e56ac3a85 succeeded. GitHub CI (including WebKit, SQL, validation and deploy) passed. Two real isolated Brave sessions verified proposed role, personal answers, v4 changed terms, new required responses, and disappearance of the action after response. Opening a card never created consent. Existing v3 responses remained historical. No room binding was needed. No paid service or deletion. Details: [release evidence](../workflow/evidence/FK-LIVE-002/action-inbox-release.json).
+
+## 2026-11-07 — FK-EXPORT-002: контекст личных подтверждений
+
+Через folkoop-knowledge обновлены index и ACCOUNT_EXPORT_REPORT по exportOwn и
+проверкам FK-EXPORT-002. Исторические статусы сохранены. Добавлены условия точной
+версии встречи и явные пробелы, без расширения доступа и полной-копии заявлений.
+Локально 479 тестов, скачивание Chromium 390/1366; живой экспорт/публикация ожидаются.

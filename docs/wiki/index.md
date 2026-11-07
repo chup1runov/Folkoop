@@ -1,5 +1,13 @@
 # Рабочая вики FOLKOOP
 
+## 2026-11-07 — условия в личной выгрузке
+[FK-EXPORT-002](../workflow/tasks/FK-EXPORT-002.md): у собственных ответов встречи
+теперь выгружаются условия конкретной версии; недоступные условия отмечаются
+явно. 479 тестов и Chromium 390/1366 прошли локально. Публикация и настоящая
+выгрузка пока ожидаются — [состояние](../workflow/tasks/FK-EXPORT-002.state.json).
+Это узкое дополнение C04, не завершение полного экспорта/закрытия аккаунта.
+
+
 ## 2026-11-07 — Meeting inbox B02 released and accepted
 Published code e7ecd84; Cloudflare deployment 19e15217-d249-4961-8b30-6d3e56ac3a85 succeeded. GitHub CI (including WebKit, SQL, validation and deploy) passed. Two real isolated Brave sessions verified proposed role, personal answers, v4 changed terms, new required responses, and disappearance of the action after response. Opening a card never created consent. Existing v3 responses remained historical. No room binding was needed. No paid service or deletion. Details: [release evidence](../workflow/evidence/FK-LIVE-002/action-inbox-release.json).
 

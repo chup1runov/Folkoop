@@ -22,7 +22,7 @@ test('explicit all-device logout revokes globally; normal logout remains local',
  await s.login();await s.c.logout();assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=local')));
 });
 test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
- const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify([{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
+ const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
  assert.equal(result.manifest.sections.length,43);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
@@ -192,4 +192,36 @@ test('session retry preserves supplied credentials and distinguishes terminal an
 
 test('production redirect query retains email rate classification and uncertain delivery never retries automatically',async()=>{
  for(const [status,code] of [[429,'EMAIL_RATE_LIMIT'],[503,'EMAIL_DELIVERY_UNKNOWN']]){let count=0;const c=N.client({...cfg,emailRedirectUrl:'https://example.test/'},{transport:async(url)=>{count++;assert(url.includes('/otp?redirect_to='));return json({},status);}});await assert.rejects(c.requestCode('synthetic@example.test'),e=>e.code===code);assert.equal(count,1);}
+});
+
+const exportTerms=version=>({cooperation_id:cid,version,starts_at:'2030-01-01T12:00:00Z',ends_at:'2030-01-01T13:00:00Z',place:'Synthetic room',conditions:'Version '+version,minimum_attendees:2,capacity:10,created_at:'2029-12-01T00:00:00Z'});
+const exportResponse=(version,role='attendee')=>({cooperation_id:cid,version,user_id:uid,role,confirmed:version===2,responded_at:'2029-12-02T00:00:00Z',terms:exportTerms(version)});
+test('export keeps exact old and new meeting terms with each personal role and decline',async()=>{
+ const records=[exportResponse(1),exportResponse(2),exportResponse(2,'facilitator')];records[0].terms.facilitator_id='must-not-export';
+ const s=setup(url=>url.includes('fk_meeting_responses?')?json(records):null);await s.login();const result=await s.c.exportOwn();
+ assert.deepEqual(Array.from(result.meetingResponses,r=>r.terms.conditions),['Version 1','Version 2','Version 2']);
+ assert.equal(result.meetingResponses[0].confirmed,false);assert.equal(result.meetingResponses[2].role,'facilitator');
+ assert.equal(result.manifest.meetingTermsContext.linkedResponses,3);assert.equal(result.manifest.meetingTermsContext.missing.length,0);
+ assert(!JSON.stringify(result).includes('must-not-export'));
+ const query=new URL(s.calls.find(c=>c.url.includes('fk_meeting_responses?')).url).searchParams;
+ assert.equal(query.get('user_id'),'eq.'+uid);assert.match(query.get('select'),/^\*,terms:fk_meeting_terms\(/);assert(!query.get('select').includes('!inner'));
+});
+test('export retains personal responses when terms are inaccessible and reports unique missing versions',async()=>{
+ const records=[exportResponse(1),exportResponse(1,'facilitator')].map(r=>({...r,terms:null}));
+ const s=setup(url=>url.includes('fk_meeting_responses?')?json(records):null);await s.login();const result=await s.c.exportOwn();
+ assert.equal(result.meetingResponses.length,2);assert.equal(result.meetingResponses[0].terms,null);
+ assert.equal(result.manifest.meetingTermsContext.missing.length,1);assert.equal(result.manifest.meetingTermsContext.linkedResponses,0);
+ assert.equal(result.manifest.completeAccountExport,false);
+});
+test('export fails closed for a foreign personal response or mismatched/malformed embedded terms',async()=>{
+ for(const patch of [{user_id:cid},{terms:exportTerms(2)},{terms:[]},{terms:{}},{terms:undefined}]){
+  const s=setup(url=>url.includes('fk_meeting_responses?')?json([{...exportResponse(1),...patch}]):null);await s.login();
+  await assert.rejects(s.c.exportOwn(),e=>e.code==='INVALID_RESPONSE');
+ }
+});
+test('export paginates embedded terms without dropping roles or historical versions',async()=>{
+ const s=setup(url=>{if(!url.includes('fk_meeting_responses?'))return null;const offset=Number(new URL(url).searchParams.get('offset'));
+  return new Response(JSON.stringify([exportResponse(offset+1)]),{headers:{'content-type':'application/json','content-range':offset+'-'+offset+'/2'}});
+ });await s.login();const result=await s.c.exportOwn();assert.equal(result.meetingResponses.length,2);
+ assert.equal(result.meetingResponses[1].terms.version,2);assert.equal(result.manifest.sections.find(s=>s.collection==='fk_meeting_responses').coverage,'visible-query-complete');
 });

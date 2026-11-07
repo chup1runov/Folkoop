@@ -421,6 +421,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   deleteProfile(){return rpc('fk_delete_profile');},
   async exportOwn(){
    const uid=id(user()?.id),exportEpoch=epoch,startedAt=new Date(clock()).toISOString(),sections=[];
+   const termFields=['cooperation_id','version','starts_at','ends_at','place','conditions','minimum_attendees','capacity','created_at'];
    // Traverse each visible query; not a privileged or atomic account archive.
    async function rows(path){
     const records=await pagedRows(path,100000);
@@ -447,7 +448,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_purchase_confirmations?user_id=eq.'+uid+'&limit=500'),
    rows('fk_economic_flows?created_by=eq.'+uid+'&order=created_at.desc&limit=500'),
    rows('fk_economic_flow_roles?user_id=eq.'+uid+'&order=created_at.desc&limit=500'),
-   rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000'),
+   rows('fk_meeting_responses?user_id=eq.'+uid+'&order=responded_at.desc&limit=1000&select=*,terms:fk_meeting_terms('+termFields.join(',')+')'),
    rows('fk_meeting_outcomes?user_id=eq.'+uid+'&order=reported_at.desc&limit=1000'),
    rows('fk_project_decisions?or=(created_by.eq.'+uid+',decided_by.eq.'+uid+',decision_maker.eq.'+uid+')&order=created_at.desc&limit=1000'),
    rows('fk_project_decision_responses?user_id=eq.'+uid+'&order=updated_at.desc&limit=1000'),
@@ -457,6 +458,17 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_room_request_versions?actor_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_room_notification_reads?user_id=eq.'+uid+'&order=read_at.desc&limit=1000')
   ]);
+   // A left embed retains the personal response even if related terms are no longer visible.
+   // Never replace historical conditions with the project's current version.
+   const missingTerms=new Map();let linkedResponses=0;
+   for(const response of meetingResponses){
+    if(response.user_id!==uid||!UUID.test(response.cooperation_id||'')||!Number.isInteger(response.version)||response.version<1)throw fail('INVALID_RESPONSE');
+    const terms=response.terms;
+    if(terms===null){missingTerms.set(response.cooperation_id+':'+response.version,{cooperation_id:response.cooperation_id,version:response.version});continue;}
+    if(!terms||Array.isArray(terms)||terms.cooperation_id!==response.cooperation_id||terms.version!==response.version||termFields.some(key=>terms[key]===undefined))throw fail('INVALID_RESPONSE');
+    response.terms=Object.fromEntries(termFields.map(key=>[key,terms[key]]));linkedResponses++;
+   }
+   const meetingTermsContext={scope:'Conditions for returned personal responses only; not a full historical agreement package',linkedResponses,missing:[...missingTerms.values()],fields:termFields};
    const meetingReminders=await rows('fk_meeting_reminders?or=(recipient_id.eq.'+uid+',sender_id.eq.'+uid+')&order=sent_at.desc&limit=1000');
    const meetingHistory=await rows('fk_meeting_history?or=(participant_id.eq.'+uid+',actor_id.eq.'+uid+')&order=id.desc&limit=1000');
    const projectDocumentVersions=await rows('fk_project_document_versions?or=(author_id.eq.'+uid+',editor_id.eq.'+uid+')&order=created_at.desc&limit=1000');
@@ -474,7 +486,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const meetingBudgetNotices=await rows('fk_meeting_budget_notices?recipient_id=eq.'+uid+'&order=cooperation_id,version&limit=1000');
    if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
    const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
-    completeAccountExport:false,atomicSnapshot:false,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
+    completeAccountExport:false,atomicSnapshot:false,meetingTermsContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
     excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
     fullCopyContact:'Chup1runov@gmail.com'};
    return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};
