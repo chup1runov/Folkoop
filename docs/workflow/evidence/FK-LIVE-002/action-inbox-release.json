@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-07",
+  "authorization": "User accepted the next step: publish scoped inbox correction and real test-account acceptance.",
+  "base": "3d2af949a076f8e2a6543ff4577349b0ad485efa",
+  "code_commit": "f4ec6b4a3c5ad4d9c4ed17fe0bde6a1e8e3c3ebd",
+  "inventory_fix_commit": "e7ecd84f6493c5d5ed00813291f3bad0c1f0f9e6",
+  "tree_verified": "252a0542df120f04ec5d71ff7a7918411bbb434b matched local release tree before push",
+  "migration": "meeting_action_inbox applied successfully, public invoker/private definer, empty search_path, anon denied, authenticated granted, no-identity lookup empty",
+  "local_tests": "475 Node unit/integration tests passed on release checkout; all 20 SQL scenario files passed after inventory correction",
+  "ci": "https://github.com/chup1runov/Folkoop/actions/runs/42377342641",
+  "failures": [
+    "First CI refused unregistered private helper. Added reviewed function to explicit inventory; full SQL run and hosted CI SQL passed.",
+    "Cloudflare then failed TRANSIENT_HTTP_503 from fetch-goteborg-open-plans; retry started."
+  ],
+  "cloudflare_retry": "889c2735-9373-43ed-90a3-37f1575f7d72",
+  "status": "published and hosted two-account acceptance passed",
+  "paid_changes": false,
+  "cloudflare_deployment": "19e15217-d249-4961-8b30-6d3e56ac3a85",
+  "cloudflare_status": "success",
+  "github_ci": "all checks successful",
+  "migration_version": "20261107132732",
+  "hosted_browser": {
+    "engine": "Brave",
+    "isolation": "regular organizer window and private participant window; existing real authenticated accounts",
+    "checks": [
+      "participant sees v3 attendance/facilitator action without any room binding",
+      "card shows previous/current terms",
+      "opening card leaves v3 response count zero",
+      "participant confirms attendance then facilitator; two server records for v3",
+      "profile action disappears after own answers",
+      "organizer saves v4 through browser; zero v4 answers before response",
+      "participant profile automatically shows v4 pending attendance and facilitator",
+      "expanded card shows actual v3/v4 conditions",
+      "opening v4 card leaves response count zero",
+      "participant separately confirms attendance and facilitator for v4",
+      "profile is loaded with correct participant identity and no remaining meeting action"
+    ],
+    "database_readback": "v3 and v4 each retain attendee=true and facilitator=true; no copying before personal answers",
+    "side_effects": "only pre-existing isolated QA project and two authorized test identities; no real event or external invitation"
+  },
+  "limits": [
+    "Not a physical iPhone",
+    "No push/email notification scope",
+    "Self-review, not independent reviewer",
+    "Existing global Supabase advisor warnings unchanged; no new inbox finding"
+  ]
+}

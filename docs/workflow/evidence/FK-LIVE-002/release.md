@@ -5,3 +5,7 @@ Authorized next step: release the locally tested B02 fix and verify with two iso
 The inbox derives pending personal answers for the current meeting version independently of room requests. A declined answer is not unanswered. Reading does not write consent. Existing membership/session guards apply, anonymous execution is revoked, and only the current user's required roles are returned. Previous/current meeting terms are available from the card.
 
 Local verification: 475 unit/integration tests passed on this release checkout. Prior scoped SQL tests and Chromium/WebKit meeting UI scenarios passed on matching runtime files. Supabase migration applied successfully on 2026-11-07; no-identity lookup returns zero rows. Browser hosted acceptance is pending at this commit. No payment or billing settings changed.
+
+
+## 2026-11-07 — Meeting inbox B02 released and accepted
+Published code e7ecd84; Cloudflare deployment 19e15217-d249-4961-8b30-6d3e56ac3a85 succeeded. GitHub CI (including WebKit, SQL, validation and deploy) passed. Two real isolated Brave sessions verified proposed role, personal answers, v4 changed terms, new required responses, and disappearance of the action after response. Opening a card never created consent. Existing v3 responses remained historical. No room binding was needed. No paid service or deletion. Details: [release evidence](action-inbox-release.json).

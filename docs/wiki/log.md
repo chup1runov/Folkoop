@@ -501,3 +501,7 @@ WebKit CI проверяет существующий сценарий экск�
 асинхронного прочтения; тест теперь ждёт RPC и исчезновения счётчика в UI.
 
 Публикация проверки `bc319eb`: Cloudflare успешно; все задания [CI 42367039053](https://github.com/chup1runov/Folkoop/actions/runs/42367039053) прошли. Бесплатная инфраструктура сохранена. Итоговая запись вики публикуется отдельно без повторной сборки сайта.
+
+
+## 2026-11-07 — Meeting inbox B02 released and accepted
+Published code e7ecd84; Cloudflare deployment 19e15217-d249-4961-8b30-6d3e56ac3a85 succeeded. GitHub CI (including WebKit, SQL, validation and deploy) passed. Two real isolated Brave sessions verified proposed role, personal answers, v4 changed terms, new required responses, and disappearance of the action after response. Opening a card never created consent. Existing v3 responses remained historical. No room binding was needed. No paid service or deletion. Details: [release evidence](../workflow/evidence/FK-LIVE-002/action-inbox-release.json).
