@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-07",
+  "browser": {
+    "result": "passed",
+    "widths": [
+      1366,
+      390
+    ],
+    "engine": "Chromium",
+    "backend": "synthetic HTTP fixture",
+    "checks": [
+      "search opens project",
+      "nonmember cannot see confirmation controls",
+      "join does not confirm attendance",
+      "participant confirms attendance and offered facilitator role",
+      "in-app update visible on profile",
+      "open notification returns to meeting and clears unread badge"
+    ],
+    "file_sha256": "5f4e3e0af719383913ad9f564417bd1c259b73cf21b52be4b6dbb29d2acd627a"
+  },
+  "hosted_database": {
+    "result": "passed",
+    "backend": "existing Supabase PostgreSQL",
+    "auth_context": "two isolated synthetic actors with authenticated role and session claims inside a rollback transaction; no browser login",
+    "checks": [
+      "project discovered through fk_search_account",
+      "private meeting terms hidden before join",
+      "membership alone leaves attendee_count zero",
+      "own attendee and facilitator confirmations stored for version 2",
+      "organizer update produces unread activity",
+      "mark read clears unread activity",
+      "post-rollback synthetic_users_remaining=0"
+    ],
+    "script": "hosted-rollback.sql"
+  },
+  "self_review": "Initial browser assertion ran before async read RPC completed. Test now awaits RPC and visible unread badge removal. No product expectation weakened. No application bug found in scoped journey.",
+  "limits": [
+    "UI HTTP contract and hosted SQL checked separately, not one authenticated production browser end-to-end run",
+    "No push or email notifications tested",
+    "Not a physical iPhone",
+    "Auxiliary project domains are outside this fixture",
+    "No product code or schema changes"
+  ],
+  "publication": {
+    "commit": "bc319eb37f61215ce122a1f37ab53c21e76e6be3",
+    "ci": "https://github.com/chup1runov/Folkoop/actions/runs/42367039053",
+    "status": "passed",
+    "cloudflare": {
+      "status": "success",
+      "deployment": "d8e15770-731c-48c9-8438-60182a253e9e",
+      "site": "https://folkoop.pages.dev/"
+    },
+    "ci_jobs": {
+      "sources": "success",
+      "webkit": "success",
+      "validate": "success",
+      "database / database": "success",
+      "deploy": "success"
+    }
+  }
+}

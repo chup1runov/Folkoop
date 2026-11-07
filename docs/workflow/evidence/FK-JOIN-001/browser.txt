@@ -1,0 +1,2 @@
+PASS 1366: search -> join without consent -> attendance -> own offered role -> in-app update -> open/read
+PASS 390: search -> join without consent -> attendance -> own offered role -> in-app update -> open/read

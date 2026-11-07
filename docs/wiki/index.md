@@ -1,5 +1,7 @@
 # Рабочая вики FOLKOOP
 
+7 ноября: [путь нового участника](../workflow/tasks/FK-JOIN-001.md) проверен в UI 1366/390 и отдельно в настоящей базе с откатом тестовых данных. [Границы проверки](../workflow/evidence/FK-JOIN-001/results.json).
+
 7 ноября: [синхронный выход между вкладками](../workflow/tasks/FK-AUTH-TABS-001.md) опубликован: 482 локальных теста, Chromium 1366/390, CI и настоящий вход с выходом из двух вкладок в Brave прошли. [Результат публикации](../workflow/evidence/FK-AUTH-TABS-001/deployment.json).
 
 [Восстановление входа](../workflow/tasks/FK-AUTH-RECOVERY-001.md): локальные проверки и публикация завершены; [настоящий вход и выход](../workflow/evidence/FK-REL-001/real-auth-acceptance.json) проверены 6 ноября в Brave.

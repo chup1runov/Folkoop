@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "FK-JOIN-001",
+  "updated": "2026-11-07",
+  "phase": "complete",
+  "spec": "docs/workflow/tasks/FK-JOIN-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-07",
+    "scope": "Verify newcomer journey, fix failures, update wiki and publish free; isolated test data only"
+  },
+  "requirements": [
+    {
+      "id": "FK-JOIN-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-JOIN-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-JOIN-001-R03",
+      "checks": [
+        "C03"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-JOIN-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-JOIN-001-R01"
+      ],
+      "evidence": [
+        "FK-JOIN-001-E01"
+      ]
+    },
+    {
+      "id": "FK-JOIN-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-JOIN-001-R02"
+      ],
+      "evidence": [
+        "FK-JOIN-001-E02"
+      ]
+    },
+    {
+      "id": "FK-JOIN-001-T03",
+      "status": "done",
+      "requirements": [
+        "FK-JOIN-001-R03"
+      ],
+      "evidence": [
+        "FK-JOIN-001-E03"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-JOIN-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01"
+      ],
+      "path": "docs/workflow/evidence/FK-JOIN-001/results.json"
+    },
+    {
+      "id": "FK-JOIN-001-E02",
+      "kind": "historical",
+      "result": "passed",
+      "checks": [
+        "C02"
+      ],
+      "path": "docs/workflow/evidence/FK-JOIN-001/results.json"
+    },
+    {
+      "id": "FK-JOIN-001-E03",
+      "kind": "historical",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-JOIN-001/results.json"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Scoped split-layer verification and free release complete. Remaining separate acceptance: one hosted browser journey with two real authenticated accounts; not claimed here."
+}
