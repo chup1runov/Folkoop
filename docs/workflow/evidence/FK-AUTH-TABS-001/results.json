@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-07",
+  "status": "local-pass-not-published",
+  "node_tests": {
+    "passed": 482,
+    "failed": 0,
+    "command": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs tests/workflow/*.test.mjs"
+  },
+  "build": "node scripts/build/build-site.mjs --shell-only: passed (QA shell, not production feeds)",
+  "browser": {
+    "engine": "Chromium",
+    "widths": [
+      1366,
+      390
+    ],
+    "backend": "Loopback BFF/SQLite, synthetic upstream",
+    "passed": [
+      "two tabs cleared without reload",
+      "search dialog and private network form removed",
+      "local workspace with a saved draft unchanged",
+      "server logout verified by reloading",
+      "Mura unchanged",
+      "simulated expiry hides private UI and leaves sign-in enabled"
+    ]
+  },
+  "files": {
+    "apps/web/network-client.js": "4f5433421dc9cf745742b9fbdc6f05bf651491e5f56a79437fc4a87c9e2a6ff7",
+    "apps/web/network-ui.js": "9a586c9ff811d43275d19e20362e37c6dfef5da34919127a358e3fe2b45e03fe",
+    "tests/integration/session-tabs.test.mjs": "19cdfe3e6151bdc7de4e8561ab1992d77cd19f09877e6359aa776817ac2a1ec8",
+    "tests/integration/network.test.mjs": "ac92cf96756bdfbe7558952237cf7bc70efa0277398f0a2759c03562c14c3a73",
+    "tests/e2e/session-tabs-browser.py": "b75c0be5f36c5f9c5dcfc8a53a68ae00107e8a25dc63b72e8663e5e276636470"
+  },
+  "review": "review.md — self-review, not independent",
+  "not_run": [
+    "Production login and deployment",
+    "WebKit and physical iPhone"
+  ],
+  "limitations": [
+    "Frozen/background-suspended tabs process events when able to execute",
+    "If both BroadcastChannel and localStorage are unavailable, immediate cross-tab signals cannot be guaranteed",
+    "No native-language approval; existing sign-in-again copy reused"
+  ]
+}

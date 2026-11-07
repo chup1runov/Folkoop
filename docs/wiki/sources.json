@@ -101,10 +101,10 @@
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
-      "status": "deployed-real-auth-verified",
-      "checked_at": "2026-11-06",
-      "checked_scope": "Read relevant transport/recovery/background-refresh code; 475 tests passed. Real production email login, reload, second tab and logout after both reloads passed in Brave on 9d6a137. Physical iPhone not tested.",
-      "sha256": "5d8c9b0ad4dc752e68c9ca2a7a8c90739c588a9dcc2151046053810e168eb0a8"
+      "status": "published-hosted-tab-exit-verified",
+      "checked_at": "2026-11-07",
+      "checked_scope": "Read session invalidation and UI reset diff. 482 Node tests plus Chromium 1366/390 two-tab local BFF checks passed; no hosted claims.",
+      "sha256": "9a586c9ff811d43275d19e20362e37c6dfef5da34919127a358e3fe2b45e03fe"
     },
     {
       "id": "SRC-MURA-CSS",
@@ -229,10 +229,10 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "deployed-real-auth-verified",
-      "checked_at": "2026-11-06",
-      "checked_scope": "Read relevant transport/recovery/background-refresh code; 475 tests passed. Real production email login, reload, second tab and logout after both reloads passed in Brave on 9d6a137. Physical iPhone not tested.",
-      "sha256": "b368770ef15dd7e64eee1b920b6661bdc92cc481934618ec6ffd15d88f7c54d7"
+      "status": "published-hosted-tab-exit-verified",
+      "checked_at": "2026-11-07",
+      "checked_scope": "Read session invalidation and UI reset diff. 482 Node tests plus Chromium 1366/390 two-tab local BFF checks passed; no hosted claims.",
+      "sha256": "4f5433421dc9cf745742b9fbdc6f05bf651491e5f56a79437fc4a87c9e2a6ff7"
     }
   ]
 }

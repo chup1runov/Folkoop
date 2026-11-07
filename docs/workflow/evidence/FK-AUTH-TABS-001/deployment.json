@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-07",
+  "status": "published-hosted-verified",
+  "code_commit": "999920eab180efabb041f08faafb5eab89ff2129",
+  "site": "https://folkoop.pages.dev/",
+  "cloudflare_deployment": "dd583d8b-5b90-442a-81d3-ef7d981f2534",
+  "cloudflare_result": "success after retry of transient Gothenburg feed HTTP 503",
+  "ci_url": "https://github.com/chup1runov/Folkoop/actions/runs/42366028485",
+  "ci_jobs": {
+    "webkit": "success",
+    "database": "success",
+    "sources": "success",
+    "validate": "success",
+    "deploy": "success"
+  },
+  "hosted_browser": "Brave, existing authorized test account, real email login",
+  "passed": [
+    "Email login",
+    "Account retained after reload and site update",
+    "Same account restored in new tab",
+    "Logout in tab A removed private profile and open search in tab B without reload",
+    "Tab B reload remained signed out"
+  ],
+  "limits": [
+    "Actual seven-day expiry not tested in production; simulated locally",
+    "Physical iPhone not tested",
+    "WebKit CI covers its existing onboarding gate, not real email multi-tab flow"
+  ],
+  "billing_changes": false,
+  "account_content_changes": false
+}

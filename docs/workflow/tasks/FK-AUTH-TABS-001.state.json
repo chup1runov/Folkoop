@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "id": "FK-AUTH-TABS-001",
+  "updated": "2026-11-07",
+  "phase": "complete",
+  "spec": "docs/workflow/tasks/FK-AUTH-TABS-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-07",
+    "scope": "Implement, verify and publish on existing free services; current follow-up authorizes hosted real-account multi-tab verification. No billing or account-content mutation."
+  },
+  "requirements": [
+    {
+      "id": "FK-AUTH-TABS-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-AUTH-TABS-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-AUTH-TABS-001-R01"
+      ],
+      "evidence": [
+        "FK-AUTH-TABS-001-E01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-AUTH-TABS-001-R02"
+      ],
+      "evidence": [
+        "FK-AUTH-TABS-001-E01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-T03",
+      "status": "done",
+      "requirements": [
+        "FK-AUTH-TABS-001-R03"
+      ],
+      "evidence": [
+        "FK-AUTH-TABS-001-E01"
+      ]
+    },
+    {
+      "id": "FK-AUTH-TABS-001-T04",
+      "status": "done",
+      "requirements": [
+        "FK-AUTH-TABS-001-R04"
+      ],
+      "evidence": [
+        "FK-AUTH-TABS-001-E02"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-AUTH-TABS-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-AUTH-TABS-001/results.json"
+    },
+    {
+      "id": "FK-AUTH-TABS-001-E02",
+      "kind": "historical",
+      "result": "passed",
+      "checks": [
+        "C04"
+      ],
+      "path": "docs/workflow/evidence/FK-AUTH-TABS-001/deployment.json"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Release and hosted acceptance complete. Select next product priority from the project plan."
+}

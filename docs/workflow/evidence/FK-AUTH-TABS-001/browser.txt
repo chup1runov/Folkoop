@@ -1,0 +1,4 @@
+PASS 1366px: two real local cookie tabs, logout without reload, search/private form cleared, local workspace preserved, server logout verified by reload
+PASS 1366px: Mura unaffected, simulated expiry hides profile and shows enabled sign-in without reload
+PASS 390px: two real local cookie tabs, logout without reload, search/private form cleared, local workspace preserved, server logout verified by reload
+PASS 390px: Mura unaffected, simulated expiry hides profile and shows enabled sign-in without reload
