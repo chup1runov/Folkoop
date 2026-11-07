@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-07",
+  "commit": "e9a1cb1efaaf4cf2bbb9a103628d82c634535f8c",
+  "site": "https://folkoop.pages.dev/",
+  "cloudflare": {
+    "deployment": "b3de254a-d67c-4cbb-8b3b-fe4b99e38141",
+    "status": "success"
+  },
+  "ci": {
+    "run": "https://github.com/chup1runov/Folkoop/actions/runs/42381269270",
+    "status": "success",
+    "passed": [
+      "sources",
+      "database / database",
+      "database",
+      "webkit",
+      "validate",
+      "deploy",
+      "Cloudflare Pages"
+    ]
+  },
+  "hosted_download": {
+    "result": "passed",
+    "account": "Existing isolated QA organizer; no new account or email needed",
+    "started_at": "2026-11-07T14:25:12.478Z",
+    "sections": 43,
+    "own_meeting_responses": 12,
+    "meeting_versions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "linked_responses": 12,
+    "missing_contexts": 0,
+    "checks": [
+      "All response user IDs equal exported profile ID",
+      "All embedded cooperation IDs and versions equal their parent response",
+      "Only listed term fields are present",
+      "No access_token, refresh_token or session-cookie marker in downloaded JSON",
+      "completeAccountExport remains false"
+    ],
+    "privacy": "Downloaded payload stays outside repository; this report contains only non-identifying aggregate evidence"
+  },
+  "limits": [
+    "No account closure or complete provider/private export acceptance",
+    "No newly added room/budget/document historical package",
+    "No physical iPhone or native-language acceptance"
+  ]
+}

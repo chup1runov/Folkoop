@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-EXPORT-002",
   "updated": "2026-11-07",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-EXPORT-002.md",
   "authorization": {
     "status": "accepted",
@@ -52,11 +52,13 @@
     },
     {
       "id": "FK-EXPORT-002-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-EXPORT-002-R03"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-EXPORT-002-E02"
+      ]
     }
   ],
   "evidence": [
@@ -69,8 +71,17 @@
         "C02"
       ],
       "path": "docs/workflow/evidence/FK-EXPORT-002/local-checks.json"
+    },
+    {
+      "id": "FK-EXPORT-002-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-EXPORT-002/release.json"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish tested changes via free CI/Pages; inspect real-account browser download after Mac unlock and record release."
+  "next_action": "Scoped task complete: free deployment and real-account download verified. Separate next candidate: exact document versions behind personal consents; full operator export/closure remains a separate acceptance scope."
 }

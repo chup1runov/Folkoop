@@ -17,3 +17,12 @@ Left join is essential: inner join would silently discard a response when terms 
 
 ## Evidence and rollback
 FK-EXPORT-002-E01 local checks; FK-EXPORT-002-E02 hosted acceptance and release. Never commit exports, credentials or participant identifiers. Roll back only this scoped change; retain old wiki log prefix and unrelated dirty checkout. Next action: implement and verify.
+
+## Result — 2026-11-07
+479 unit/integration tests; Chromium 390/1366 and WebKit 390 downloads passed.
+GitHub validation, browser, SQL and deploy checks passed at e9a1cb1.
+Cloudflare production b3de254a-d67c-4cbb-8b3b-fe4b99e38141 succeeded.
+Existing real QA organizer exported 43 collections and 12 own responses across
+versions 1–4, all with exact matching terms and no missing contexts. No new
+account/email/migration/cost/deletion. See FK-EXPORT-002-E02 release.json.
+Self-review only, no independent-review claim. Scope complete; wider C04 remains open.
