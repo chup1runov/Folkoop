@@ -22,6 +22,7 @@ python3 tests/e2e/activity-chat-browser.py
 python3 tests/e2e/message-history-browser.py
 python3 tests/e2e/navigation-ia-browser.py
 python3 tests/e2e/meeting-browser.py
+python3 tests/e2e/newcomer-meeting-browser.py
 python3 tests/e2e/email-link-browser.py
 python3 tests/e2e/theme-visual-browser.py
 python3 tests/e2e/onboarding-browser.py
