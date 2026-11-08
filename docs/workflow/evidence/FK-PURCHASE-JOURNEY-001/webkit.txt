@@ -1,0 +1,2 @@
+PASS purchase route, disclosure, no demo writes, viewport 390
+PASS purchase route, disclosure, no demo writes, viewport 1366

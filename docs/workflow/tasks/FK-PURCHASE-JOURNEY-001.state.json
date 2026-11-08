@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "FK-PURCHASE-JOURNEY-001",
+  "updated": "2026-11-08",
+  "phase": "finalizing",
+  "spec": "docs/workflow/tasks/FK-PURCHASE-JOURNEY-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-08",
+    "scope": "Purchase scenario UI, checks, wiki and free publication"
+  },
+  "requirements": [
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-PURCHASE-JOURNEY-001-R01",
+        "FK-PURCHASE-JOURNEY-001-R02",
+        "FK-PURCHASE-JOURNEY-001-R03",
+        "FK-PURCHASE-JOURNEY-001-R04"
+      ],
+      "evidence": [
+        "FK-PURCHASE-JOURNEY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-PURCHASE-JOURNEY-001-R01",
+        "FK-PURCHASE-JOURNEY-001-R02",
+        "FK-PURCHASE-JOURNEY-001-R03",
+        "FK-PURCHASE-JOURNEY-001-R04"
+      ],
+      "evidence": [
+        "FK-PURCHASE-JOURNEY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-PURCHASE-JOURNEY-001-R01",
+        "FK-PURCHASE-JOURNEY-001-R02",
+        "FK-PURCHASE-JOURNEY-001-R03",
+        "FK-PURCHASE-JOURNEY-001-R04"
+      ],
+      "evidence": [
+        "FK-PURCHASE-JOURNEY-001-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-PURCHASE-JOURNEY-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "path": "docs/workflow/evidence/FK-PURCHASE-JOURNEY-001/journey.txt"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish and verify live Mura purchase; record release separately."
+}

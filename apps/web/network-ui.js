@@ -895,6 +895,7 @@ function renderCooperation(u,r){
   }
   if(!guestDemo&&!member&&['open','active'].includes(coop.status))html+=`<p class="notice">${esc(globalThis.FolkoopForYou.text(18))}</p>`;
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
+  if(coop.kind==='purchase')html+=globalThis.FolkoopPurchaseJourney.render({coop,data,user:u,member,escape:esc,language:lang(),lifecycleText:lt,formatWhen,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo});
   if(myNextTask&&!(guestDemo&&coop.id===MEETING_PROJECT))html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderOverview({coop,decisions:data.decisions,meeting:data.meeting,tasks:data.projectTasks,members,name:id=>coopProfile(id)?.name||ct('noProfile'),loadedAt:data.loadedAt,online:navigator.onLine,taskBases:data.taskBases});
   html+=renderMeetingReadiness(coop,guestDemo);
@@ -905,7 +906,7 @@ function renderCooperation(u,r){
   if(guestDemo&&coop.id===MEETING_PROJECT)html+=`<section class="card"><h3>${esc(globalThis.FolkoopNeeds.text(0))} → ${esc(globalThis.FolkoopNeeds.text(11))}</h3><p>${esc(globalThis.FolkoopNeeds.text(12))}</p><p class="meta">${esc(globalThis.FolkoopNeeds.text(9))}</p></section>`;
   if(guestDemo&&coop.id===MEETING_PROJECT){const ot=globalThis.FolkoopMeetings.outcomeText;html+=`<section class="card meeting-outcome-story"><h3>${esc(ot(0))}</h3><p>${esc(ot(19))}</p><p class="meta">${esc(ot(9))}</p><details><summary>${esc(ot(14))}</summary><p>${esc(ot(16))}</p></details></section>`;}
   if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopMeetings.render({snapshot:data.meeting,user:u,owner,members,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),draft:meetingDraft?.cooperationId===coop.id?meetingDraft:null,outcomeDraft:meetingOutcomeDraft?.cooperationId===coop.id?meetingOutcomeDraft:null,repeatDraft:meetingRepeatDraft?.cooperationId===coop.id?meetingRepeatDraft:null,budget:data.projectBudget,budgetDraft:meetingBudgetDrafts[coop.id+':'+data.meeting?.terms?.version],roomRequests:data.roomRequests||[],roomRequestsError:data.roomRequestsError,resources:data.cooperations,online:navigator.onLine});
-  if(myPendingConfirmation)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
+  if(myPendingConfirmation&&!globalThis.FolkoopPurchaseJourney)html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(ht('confirmation'))}</strong><p>${esc(String(myPendingConfirmation.quantity||0))} ${esc(coop.unit||'')}</p></aside>`;
   if(member&&linkedChat)html+=`<div class="actions">${abtn('openLinkedChat','workChat',linkedChat.conversation_id)}${guestDemo?'':`<span class="meta">${esc(at('managedChat'))}</span>`}</div>`;
   if(member&&['project','purchase'].includes(coop.kind)){
    const economicBody=economicFlowDomain.render({user:u,coop,owner,members,flows:data.economicFlows,flowRoles:data.economicFlowRoles,createDraft:economicFlowDraft,editDrafts:economicFlowEditDrafts,roleDrafts:economicRoleDrafts,readOnly:guestDemo});
@@ -1096,7 +1097,7 @@ function render(){
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  const keep='[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice))b.hidden=true;});
  }
@@ -1900,3 +1901,13 @@ if(emailLink){
  render();
 }else if(guestDemo)load().then(render).catch(render);else run(async()=>{await api?.restore?.();if(currentUser())await load();});
 })();
+
+// Presentation-only jump: existing permission-checked forms remain authoritative.
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-purchase-jump]');if(!b)return;
+ const key=b.dataset.purchaseJump;if(!['offers','members','purchase-progress'].includes(key))return;
+ const section=document.querySelector('[data-coop-section="'+key+'"]');if(!section)return;section.open=true;
+ const selectors={quantity:'#netCommitment:not([hidden])',consent:'#netPurchaseConfirm:not([hidden]), #netPurchaseStart:not([hidden])',collection:'#netPurchaseCollected:not([hidden]), #netPurchaseDeliveryPlan:not([hidden]), #netPurchaseDelivered:not([hidden])',outcome:'.card'};
+ const target=section.querySelector(selectors[b.dataset.purchaseAction]||'summary')||section.querySelector('summary');
+ target?.scrollIntoView({block:'center',behavior:'instant'});target?.querySelector('input,button')?.focus({preventScroll:true});
+});

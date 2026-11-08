@@ -103,16 +103,16 @@
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
-      "sha256": "217098c197d72ca2ec5c0beca970d3d7c5fd8faa44c109f5b0e962dbb83680b9"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence; FK-PURCHASE-JOURNEY-001 summary insertion, safe jump and guest preservation",
+      "sha256": "b8bf15101e8d54780078898840134eb7fff5a0450bd7474b076314ba3f5538c6"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
-      "sha256": "82d8d970391ed92072ff80672761c1b629676e238c2d4e0523964f8b40021108"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence; FK-PURCHASE-JOURNEY-001 scoped four-step/facts/next-action layout checked at 390/1366",
+      "sha256": "0a3bdc8f053aeba61dd15170b7aae1fc444dbff0967d1fc0815072f91f5c28e9"
     },
     {
       "id": "SRC-TEST-PROGRESS",

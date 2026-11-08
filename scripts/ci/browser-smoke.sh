@@ -43,3 +43,5 @@ python3 tests/e2e/compact-profile-browser.py
 python3 tests/e2e/city-theme-scroll-browser.py
 
 python3 tests/e2e/navigation-settings-browser.py
+
+python3 tests/e2e/purchase-journey-browser.py

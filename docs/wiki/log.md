@@ -603,3 +603,10 @@ First attempt hit HTTP 403 at GitHub SQL-check API; explicit retry succeeded wit
 weakening the gate. Live Göteborg search now returns the city only, with regional
 fallback labelled; selection/save/reload header confirmed. Navigation modes and
 single City panel confirmed; messages screenshot retained locally. No paid services.
+
+### 2026-11-08 — FK-PURCHASE-JOURNEY-001
+Previous 35522fd hosted CI is now fully passed (validate, WebKit, database, deploy).
+Purchase route summary now connects existing offers, quantity, consent and collection
+with one contextual disclosure jump. All existing RPC/permission controls retained.
+497 tests and synthetic lifecycle + Chromium/WebKit desktop/mobile journey passed.
+No real financial/account mutations, no human language certification. Publication pending.

@@ -182,3 +182,32 @@ function create({escape,getLanguage,getProfile}){
 
 globalThis.FolkoopNetworkEconomicFlow=Object.freeze({create});
 })();
+
+/* A read-only route through the existing purchase controls; never creates consent. */
+(() => {
+'use strict';
+const COPY={
+ ru:['Как идёт закупка','Условия','Количество','Согласие','Получение','Следующий шаг','Посмотреть условия','Указать количество','Проверить согласие','Посмотреть получение','Цена пока не выбрана','Место выдачи ещё не согласовано','Организатор','Заявлено','Осталось до цели','Это количество, а не оплата или окончательный заказ.','Указано организатором; подтверждения площадки здесь нет.','Экономия не рассчитана: нет сопоставимой подтверждённой розничной цены.','Открыть участников','Итог закупки','Закупка отменена','Найти место в Центре','Ресурсы города','Сначала присоединись к закупке выше.','История Муры: условия и участники — пример.','Доставка оплачивается отдельно; распределение стоимости нужно уточнить.'],
+ en:['Purchase journey','Terms','Quantity','Consent','Collection','Next step','Review terms','Set quantity','Review consent','Review collection','No price selected yet','Pickup place is not agreed yet','Organiser','Pledged','Remaining to target','This is a quantity pledge, not payment or a final order.','Specified by the organiser; venue confirmation is not recorded here.','Savings are not calculated: no comparable verified retail price.','View participants','Purchase outcome','Purchase cancelled','Find a place in Center','City resources','First join the purchase above.','Mura’s story: illustrative terms and participants.','Delivery is separate; clarify how its cost is shared.'],
+ sv:['Inköpets steg','Villkor','Antal','Samtycke','Hämtning','Nästa steg','Granska villkor','Ange antal','Granska samtycke','Granska hämtning','Inget pris valt ännu','Hämtningsplats är inte överenskommen','Samordnare','Anmält','Kvar till målet','Detta är anmält antal, inte betalning eller slutlig beställning.','Angivet av samordnaren; lokalens bekräftelse registreras inte här.','Besparing beräknas inte: jämförbart verifierat butikspris saknas.','Visa deltagare','Inköpets resultat','Inköpet avbrutet','Hitta plats i Center','Stadens resurser','Gå först med i inköpet ovan.','Muras berättelse: exempel på villkor och deltagare.','Leverans tillkommer; klargör hur kostnaden fördelas.']
+};
+function model({coop,data,user,member}){
+ const process=data.purchaseProcess?.[0]||{},stage=process.stage||(data.purchaseChoice?.length?'offer_selected':'collecting');
+ const offer=data.purchaseOffers?.find(x=>x.id===data.purchaseChoice?.[0]?.offer_id)||null;
+ const pledges=data.commitments||[],responses=data.purchaseConfirmations||[];
+ const amount=x=>Number.isFinite(Number(x))&&Number(x)>0?Number(x):0;
+ const total=pledges.reduce((n,x)=>n+amount(x.quantity),0),mine=pledges.find(x=>x.user_id===user.id),answer=responses.find(x=>x.user_id===user.id);
+ const terminal=['done','cancelled'].includes(stage)||['done','cancelled'].includes(coop.status);
+ const step=terminal?3:['ordered','delivered','distributing'].includes(stage)?3:stage==='confirming'?2:offer?1:0;
+ const action=terminal?'outcome':!member?'join':stage==='confirming'?'consent':['ordered','delivered','distributing'].includes(stage)?'collection':!offer?'terms':!mine?'quantity':'consent';
+ return {stage,offer,process,total,remaining:Math.max(0,amount(coop.target_quantity)-total),mine,answer,step,action,terminal};
+}
+function render(args){
+ const {escape:e,language,coop,user,data,member,name,demo,lifecycleText,formatWhen}=args,c=COPY[language]||COPY.en,m=model(args);
+ const section=m.action==='terms'?'offers':m.action==='join'?'members':'purchase-progress';
+ const actionText={terms:6,quantity:7,consent:8,collection:9,outcome:19,join:18}[m.action];
+ const price=m.offer?`${m.offer.unit_price} ${m.offer.currency} / ${coop.unit}`:c[10];
+ return `<section class="purchase-journey card" aria-label="${e(c[0])}" data-purchase-journey data-stage="${e(m.stage)}"><h3>${e(c[0])}</h3><ol class="purchase-steps">${c.slice(1,5).map((label,i)=>`<li${i===m.step?' aria-current="step"':''}><span aria-hidden="true">${i+1}</span>${e(label)}</li>`).join('')}</ol><dl class="purchase-facts"><div><dt>${e(c[1])}</dt><dd>${e(price)}</dd></div><div><dt>${e(c[12])}</dt><dd>${e(name(coop.owner_id)||'—')}</dd></div><div><dt>${e(c[13])}</dt><dd>${e(String(m.total))} / ${e(String(coop.target_quantity||0))} ${e(coop.unit||'')}</dd></div><div><dt>${e(c[14])}</dt><dd>${e(String(m.remaining))} ${e(coop.unit||'')}</dd></div></dl>${m.answer&&lifecycleText?`<p><strong>${e(lifecycleText(m.answer.decision))}</strong> · ${e(String(m.answer.quantity))} ${e(coop.unit)}</p>`:''}${m.process.confirmation_deadline&&lifecycleText&&formatWhen?`<p class="meta">${e(lifecycleText('confirmationDeadline'))}: ${e(formatWhen(m.process.confirmation_deadline))}</p>`:''}<p class="meta">${e(c[15])}</p><p>${e(m.process.pickup_place||c[11])}</p>${m.process.pickup_place?`<p class="meta">${e(c[16])}</p>`:''}${m.offer?`<p class="meta">${e(c[25])} ${e(String(m.offer.delivery_fee??0))} ${e(m.offer.currency)}</p>`:''}<div class="purchase-next"><strong>${e(m.stage==='cancelled'||coop.status==='cancelled'?c[20]:c[5])}</strong>${member?`<button type="button" class="button" data-purchase-jump="${section}" data-purchase-action="${m.action}">${e(c[actionText])}</button>`:`<p>${e(c[23])}</p>`}</div><details><summary>${e(c[1])}</summary><p>${e(c[17])}</p>${demo?`<p>${e(c[24])}</p>`:''}<div class="actions"><a href="#/center">${e(c[21])}</a><a href="#/city">${e(c[22])}</a></div></details></section>`;
+}
+globalThis.FolkoopPurchaseJourney=Object.freeze({model,render});
+})();
