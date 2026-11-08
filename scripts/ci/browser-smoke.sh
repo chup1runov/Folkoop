@@ -40,3 +40,4 @@ python3 tests/e2e/mura-cache-update-browser.py
 python3 tests/e2e/account-search-browser.py
 
 python3 tests/e2e/compact-profile-browser.py
+python3 tests/e2e/city-theme-scroll-browser.py

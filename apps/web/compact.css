@@ -99,3 +99,21 @@ html[dir="rtl"] .compact-service-body>p.daily-note{padding-left:14px;padding-rig
 .city-entry-card strong{font-size:.88rem;line-height:1.2}
 .city-entry-card small{color:var(--muted);font-size:.72rem;line-height:1.35}
 @media(max-width:430px){.city-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:9px 0 11px}.city-entry-card{min-height:56px;padding:8px 9px;gap:8px}.city-entry-icon{width:32px;height:32px}.city-entry-card small{display:none}.city-entry-card strong{font-size:.8rem}}
+
+/* Shared-shell City: one document scroll and matching accessible surfaces. */
+html[data-folkoop-embedded-city="1"],html[data-folkoop-embedded-city="1"] body{height:auto;min-height:0;overflow:hidden}
+html[data-folkoop-embedded-city="1"] .app-shell{min-height:0;height:auto;margin:0;padding:0;background:transparent;overflow:visible;border-radius:0}
+html[data-folkoop-embedded-city="1"] .bottom-nav{position:static;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:none;backdrop-filter:none}
+html[data-folkoop-embedded-city="1"] .screen{max-width:none;padding:18px 0 24px}
+html[data-folkoop-embedded-city="1"]{--text:var(--ink);--accent:var(--teal);--soft:var(--teal-soft)}
+html[data-folkoop-embedded-city="1"][data-theme="dark"]{color-scheme:dark;--bg:#000;--ink:#f5f5f5;--muted:#c2c7cf;--line:#51545b;--surface:#121212;--surface-soft:#1c1c1c;--teal:#9de3da;--teal-strong:#b9fff3;--teal-soft:#153431;--teal-line:#527d76;--warm:#382b18;--focus:#ffe18b;background:#000}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.result,.daily-card,.compact-row-group,.compact-weather,.weather-panel,.icon-button,.action.secondary,.plan-card,.report-live-intro,.report-route-card,.about-card,.service-card,input,select,textarea,.language-dialog){background:var(--surface);color:var(--ink);border-color:var(--line)}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.compact-active-warnings,.source-unavailable,.source-health--stale,.source-health--unknown,.plan-deadline,.report-route-note){background:#302618;color:#ffe0ad!important;border-color:#806b48}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] .source-health--fresh{background:var(--teal-soft);color:#b9fff3;border-color:var(--teal-line)}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.action:not(.secondary),.report-open-link){background:#9de3da;color:#061d1a}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.about-card ul,.ios-install-steps span){color:var(--muted)}
+html[data-folkoop-embedded-city="1"][data-reduce-motion="true"] *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.field-label,.location-chip,.product-note,.chevron){color:var(--muted)}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.source,.back,.file-label,.language-button,.language-option,.sheet-close,.status-bar){background:var(--surface);color:var(--ink);border-color:var(--line)}
+html[data-folkoop-embedded-city="1"][data-theme="dark"] .road-warning{background:var(--warm);color:#ffe0ad}

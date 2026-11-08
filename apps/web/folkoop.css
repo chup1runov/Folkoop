@@ -871,3 +871,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .city-inline-title{font-size:1.15rem;margin:0 0 6px}
 body[data-page="city"] #cityWorkspace{margin:0}
 body[data-page="city"] #cityFrame{display:block;border:0;border-radius:0;box-shadow:none;height:max(680px,calc(100dvh - 200px))}
+
+body[data-page="city"] #cityFrame{min-height:0;overflow:hidden}
+#cityWorkspace{scroll-margin-top:80px}

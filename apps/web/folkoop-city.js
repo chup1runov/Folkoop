@@ -32,6 +32,8 @@ function refreshBrand(){
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||e.source!==parent||e.data?.type!=='folkoop:city')return;
  const v=e.data;
+ if(['light','dark'].includes(v.theme))document.documentElement.dataset.theme=v.theme;
+ document.documentElement.dataset.reduceMotion=String(v.reduceMotion===true);
  if(['home','ansvar','rapportera','nara','beslut'].includes(v.screen)&&v.screen!==currentScreen&&typeof navigate==='function')navigate(v.screen);
  if(cityNames[v.language]&&v.language!==document.documentElement.lang&&typeof applyLanguage==='function')applyLanguage(v.language);
  if(v.visible===false){globalThis.FolkoopCityToday?.stop();wasHidden=true;}
@@ -39,5 +41,18 @@ window.addEventListener('message',e=>{
 });
 new MutationObserver(refreshBrand).observe(document.body,{childList:true,subtree:true});
 new MutationObserver(refreshBrand).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-refreshBrand();
+// Measure the content box, never the iframe viewport (which would prevent shrinking).
+const shell=document.querySelector('.app-shell');
+let sizeFrame=0,lastHeight=0;
+function reportSize(){
+ cancelAnimationFrame(sizeFrame);
+ sizeFrame=requestAnimationFrame(()=>{
+  const height=Math.ceil(shell?.getBoundingClientRect().height||0);
+  if(height>0&&height!==lastHeight){lastHeight=height;parent.postMessage({type:'folkoop:city-size',height},location.origin);}
+ });
+}
+if(shell)new ResizeObserver(reportSize).observe(shell);
+window.addEventListener('load',reportSize);
+window.addEventListener('hashchange',()=>{reportSize();parent.postMessage({type:'folkoop:city-route'},location.origin);});
+refreshBrand();reportSize();
 })();

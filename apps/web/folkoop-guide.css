@@ -145,7 +145,7 @@ body[data-page="together"] #networkPanel,body[data-page="projects"] #networkPane
 [data-together-card]{padding:16px!important;border-radius:16px!important}[data-together-card] h3{margin-block:8px;font-size:1.05rem}.compact-description summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--muted)}
 .mobile-context-dock a,.mobile-context-dock button{transition:background-color .15s,transform .15s}.mobile-context-dock a:active,.mobile-context-dock button:active{transform:scale(.97)}
 html[data-reduce-motion="true"] *,html[data-reduce-motion="true"] *::before,html[data-reduce-motion="true"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-html[data-theme="dark"]{color-scheme:dark;--ink:#f0f1f3;--muted:#b3b7be;--paper:#13161b;--line:#3b414b;--accent:#ffad97;--soft:#3d2927;--surface:#20252d;background:var(--paper);color:var(--ink)}
+html[data-theme="dark"]{color-scheme:dark;--ink:#f5f5f5;--muted:#c2c7cf;--paper:#000000;--line:#51545b;--accent:#9de3da;--soft:#153431;--surface:#121212;background:var(--paper);color:var(--ink)}
 html[data-theme="dark"] :is(.topbar,.sidebar,.card,.mobile-primary-nav,.mobile-context-dock,.mobile-demo-popover,.compact-section,.mura-entry,.mura-story-card,.mura-person-card,.mura-note,.mura-conversation,.mura-spark-card,.together-hub,.together-action-grid button,.home-section,.home-welcome,.entry-gate,.onboarding-card,.guide-bubble,.my-place-hero){background:var(--surface);color:var(--ink);border-color:var(--line)}
 html[data-theme="dark"] :is(input,select,textarea,.button.secondary,.text-button){background:#191e25;color:var(--ink);border-color:var(--line)}
 html[data-theme="dark"] :is(.meta,.muted,.mura-status){color:var(--muted)}
@@ -156,3 +156,11 @@ html[data-theme="dark"] :is(.meta,.muted,.mura-status){color:var(--muted)}
 html[data-theme="dark"] #globalSearchButton{background:var(--surface);color:var(--ink)}html[data-theme="dark"] .folkoop-guide-actor{color:#1f1f1f}html[data-theme="dark"] .mura-entry-paths article{background:var(--surface);border-color:var(--line)}
 
 .demo-profile-card>.badge{display:none}.demo-profile-card .mura-profile-head{justify-content:flex-start;gap:14px;align-items:center}.demo-profile-card .mura-profile-head h2{margin:0 0 4px}.demo-profile-card p{margin-block:8px}.demo-profile-card .mura-profile-stats{margin-top:12px;padding-top:12px}.mura-entry-paths article{display:grid;grid-template-columns:1fr auto;column-gap:8px;align-items:center}.mura-entry-paths article h3{grid-column:1;margin:0}.mura-entry-paths article p{grid-column:1;margin:4px 0;font-size:.875rem}.mura-entry-paths article a{grid-column:2;grid-row:1 / 3;max-width:100px;padding:8px!important;min-height:44px}.mura-entry>p{font-size:.9rem}.mura-entry h2{font-size:1.2rem!important}.mura-profile-head img{object-fit:contain;flex-shrink:0}.mura-entry-story>summary{min-height:44px;cursor:pointer}
+
+html[data-theme="dark"] body{background:#000;color:var(--ink)}
+html[data-theme="dark"] :is(.button:not(.secondary),.quick){background:#9de3da;color:#061d1a;border-color:#9de3da}
+html[data-theme="dark"] :is(.mobile-primary-nav a,.mobile-context-dock a,.mobile-context-dock button){color:var(--muted)}
+html[data-theme="dark"] :is(.mobile-primary-nav a[aria-current="page"],.mobile-context-dock [aria-current="page"]){background:var(--soft);color:#b9fff3}
+html[data-theme="dark"] #globalStartButton,html[data-theme="dark"] .net-count{color:#061d1a;background:#9de3da}
+html[data-theme="dark"] .folkoop-guide-actor.is-home::after{background:var(--surface);color:var(--ink);border-color:var(--line)}
+html[data-theme="dark"] :is(.mobile-primary-nav,.mobile-context-dock) svg{color:inherit}

@@ -579,3 +579,6 @@ Cloudflare и GitHub Pages обновлены до 1dd9f80. GitHub run 424783988
 отсутствия ссылки и рамки. Код выпуска df2698f; статус публикации отдельно.
 
 Cloudflare deployment 7b266591-5084-4574-8a2f-dc421d0d28ad succeeded for df2698f. Live browser applied the visible update and confirmed the inline City tools without the full-page link or introductory block. Hosted SQL checks passed; the wider GitHub browser jobs were still running at this checkpoint. No database changes or paid services.
+
+### 2026-11-08 - FK-CITY-THEME-001
+City now follows the shell theme and uses content-measured frame height with one outer document scroll. Black background, readable surfaces/labels and mint accents. 495 unit/integration tests and Chromium/WebKit 390/1366 resize/theme/contrast checks passed. Details: docs/workflow/tasks/FK-CITY-THEME-001.md. Publication pending at this checkpoint; no real iPhone or independent accessibility audit claimed.

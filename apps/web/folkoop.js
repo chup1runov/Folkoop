@@ -343,7 +343,7 @@ const appearanceCopy={
 let themeChoice='system',quietMotion=false;
 try{const v=storage?.getItem('folkoop-theme-v1');if(['light','dark','system'].includes(v))themeChoice=v;quietMotion=storage?.getItem('folkoop-reduce-motion-v1')==='true';}catch{}
 const darkMedia=globalThis.matchMedia?.('(prefers-color-scheme: dark)');
-function applyAppearance(){document.documentElement.dataset.theme=themeChoice==='system'?(darkMedia?.matches?'dark':'light'):themeChoice;document.documentElement.dataset.reduceMotion=String(quietMotion);}
+function applyAppearance(){document.documentElement.dataset.theme=themeChoice==='system'?(darkMedia?.matches?'dark':'light'):themeChoice;document.documentElement.dataset.reduceMotion=String(quietMotion);if(frame)sendCity();}
 darkMedia?.addEventListener?.('change',applyAppearance);applyAppearance();
 function settingsPage(){
  const c=appearanceCopy[lang]||appearanceCopy.en;
@@ -1251,7 +1251,7 @@ function sendCity(){
  // Route commands belong to explicit subsection clicks, not visibility/language updates.
  // Keeping the iframe alive must also preserve its current screen and report draft.
  const ready=frame?.dataset.ready==='true';
- frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,screen:ready?pendingCityScreen:undefined,visible:current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity())},location.origin);
+ frame?.contentWindow?.postMessage({type:'folkoop:city',language:lang,theme:document.documentElement.dataset.theme,reduceMotion:quietMotion,screen:ready?pendingCityScreen:undefined,visible:current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity())},location.origin);
  if(ready)pendingCityScreen=undefined;
 }
 function render(focus=false){
@@ -1524,6 +1524,15 @@ document.addEventListener('submit',e=>{
 });
 window.addEventListener('message',e=>{
  if(!frame||e.origin!==location.origin||e.source!==frame.contentWindow)return;
+ if(e.data?.type==='folkoop:city-size'){
+  const height=e.data.height;
+  if(Number.isFinite(height)&&height>=1&&height<=100000)frame.style.height=Math.ceil(height)+'px';
+  return;
+ }
+ if(e.data?.type==='folkoop:city-route'){
+  if(current==='city'&&!$('#cityWorkspace').hidden)$('#cityWorkspace').scrollIntoView({block:'start',behavior:'instant'});
+  return;
+ }
  if(e.data?.type==='folkoop:city-language'){
   if(C.LANGS.includes(e.data.language)&&e.data.language!==lang)changeLanguage(e.data.language);
   return;
