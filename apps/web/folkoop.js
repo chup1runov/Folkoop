@@ -71,14 +71,14 @@ let initialCityHash=legacyRoutes.includes(location.hash.slice(1))?location.hash.
 if(initialCityHash!=='home'){current='city';history.replaceState(null,'','#/city');}
 const GOTEBORG_FORUM_URL='https://t.me/+YlokNMBafp8wM2Vi';
 const actionIcons={need:'M12 3v18M3 12h18',offer:'M12 21V3M5 10l7-7 7 7',project:'M4 19V5h16v14H4Zm4-7h8M12 8v8',purchase:'M4 6h2l2 9h9l2-6H8M10 20h.01M17 20h.01',resource:'M5 7h14v12H5V7Zm3 0V4h8v3'};
-const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8.5 12.5 2.2 2.2a2 2 0 0 0 2.8 0l5.2-5.2a2.8 2.8 0 0 0-4-4l-2 2m3 4-2.2-2.2a2 2 0 0 0-2.8 0l-5.2 5.2a2.8 2.8 0 0 0 4 4l2-2',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8M4 12h2M18 12h2M12 4v2M12 18v2',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
+const icons={home:'M3 10 12 3l9 7v11h-6v-7H9v7H3Z',people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M15 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.9',communities:'M4 19v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M8 7a4 4 0 1 0 8 0',together:'m8.5 12.5 2.2 2.2a2 2 0 0 0 2.8 0l5.2-5.2a2.8 2.8 0 0 0-4-4l-2 2m3 4-2.2-2.2a2 2 0 0 0-2.8 0l-5.2 5.2a2.8 2.8 0 0 0 4 4l2-2',projects:'M3 7h18v14H3ZM8 7V3h8v4M3 12h18',city:'M3 21V9h6v12M9 21V3h6v18M15 21V7h6v14',center:'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',me:'M4 21v-2a8 8 0 0 1 16 0v2',messages:'M3 3h18v14H9l-6 4Z',settings:'m9 3-.5 2-2 1L4.5 5 3 8l1.5 1.5v3L3 14l1.5 3 2-.5 2 1 .5 2h4l.5-2 2-1 2 .5 1.5-3-1.5-1.5v-3L21 8l-1.5-3-2 1-2-1-.5-2Z M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0',about:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M12 11v5M12 8h.01',arrow:'M5 12h14m-6-6 6 6-6 6',plus:'M12 5v14M5 12h14'};
 Object.assign(icons,{language:'M3 5h12M9 3v2M5 5c0 6 4 10 9 12M13 5c0 5-4 10-10 12M14 21l4-10 4 10M16 17h4',tasks:'m3 6 2 2 4-4M12 6h9M3 14l2 2 4-4M12 14h9M12 20h9',updates:'M4 4h16v16H4ZM8 8h8M8 12h8M8 16h4'});
 Object.assign(icons,{map:'M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2ZM9 3v16M15 5v16',calendar:'M4 5h16v16H4ZM8 3v4M16 3v4M4 10h16M8 14h2M14 14h2',transport:'M5 3h14v15H5ZM5 11h14M8 18l-3 3M16 18l3 3M8 15h.01M16 15h.01'});
 function icon(k){const path=actionIcons[k]||icons[k]||icons.plus;return `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${path}"/>${k==='people'?'<circle cx="9" cy="7" r="4"/>':k==='me'?'<circle cx="12" cy="7" r="4"/>':''}</svg>`;}
 icons.phone='M5 3h4l2 5-3 2a15 15 0 0 0 6 6l2-3 5 2v4a2 2 0 0 1-2 2C9 21 3 15 3 5a2 2 0 0 1 2-2Z';
 const t=k=>I.COPY[lang][k]||I.COPY.en[k]||k;
-const selectedCity=()=>{if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
-const citySupported=city=>/^(göteborg|goteborg|gothenburg)$/i.test((city||'').trim());
+const selectedCity=()=>{const place=globalThis.FolkoopPreferences?.location();if(place?.city)return place.city;if(muraVisitActive||entryModeNow()==='guest')return 'Göteborg';return store.get().profile.city||'';};
+const citySupported=city=>(!globalThis.FolkoopPreferences?.location()?.country||globalThis.FolkoopPreferences.location().country==='SE')&&/^(göteborg|goteborg|gothenburg|гётеборг|гетеборг)$/i.test((city||'').trim());
 const CITY_HANDOFF_SOURCES=Object.freeze({
  goteborg_open_plans:Object.freeze({kind:'planning',name:'Göteborgs Stad',hosts:Object.freeze(['goteborg.se','www.goteborg.se'])}),
  riksdagen_open_data:Object.freeze({kind:'decision',name:'Sveriges riksdag',hosts:Object.freeze(['data.riksdagen.se'])})
@@ -95,7 +95,7 @@ function normalizeCityHandoff(value){
 }
 const navText=k=>k==='city'&&selectedCity()?t('city')+' · '+selectedCity():(k==='about'?t('aboutPage'):t(k));
 const MOBILE_PRIMARY=NAV_ORDER;
-const CITY_SECTIONS=['city-overview','city-services','city-transport','city-reports','city-decisions'];
+const CITY_SECTIONS=['city-overview','city-services','city-transport','city-nearby','city-reports','city-decisions'];
 const CENTER_SECTIONS=['center','communities','center-map','people','center-events'];
 const SPACE_COPY={
  ru:['Гётеборг','Службы','Транспорт','Обращения','Решения','Карта','Афиша','Открыть источник','Откроется внешний сайт. Даты, цены и доступность проверяй у организатора.','В календаре есть карта, выбор дат и фильтр бесплатных событий.'],
@@ -110,10 +110,10 @@ const SPACE_COPY={
  so:['Göteborg','Adeegyada','Gaadiidka','Warbixin','Go’aamada','Khariidad','Dhacdooyin','Fur isha','Bog dibadda ah ayaa furmaya. Ka hubi qabanqaabiyaha taariikhaha, qiimaha iyo helitaanka.','Jadwalku wuxuu leeyahay khariidad, doorashada taariikhda iyo shaandhaynta dhacdooyinka bilaashka ah.'],
  ku:['Göteborg','Xizmet','Veguhestin','Rapor','Biryar','Nexşe','Bûyer','Çavkaniyê veke','Malperek derveyî vedibe. Dîrok, biha û berdestbûnê bi organîzator re kontrol bike.','Salname nexşe, hilbijartina dîrokê û parzûna bûyerên belaş heye.']
 };
-const spaceLabel=k=>{const i=[...CITY_SECTIONS,'center-map','center-events'].indexOf(k);return i<0?'':SPACE_COPY[lang][i];};
+const spaceLabel=k=>{if(k==='city-overview')return t('city');if(k==='city-nearby')return ({ru:'Рядом',en:'Nearby',sv:'Nära',uk:'Поруч',fi:'Lähellä',es:'Cerca',bs:'U blizini',ar:'بالقرب',fa:'نزدیک',so:'Dhow',ku:'Nêzîk'})[lang];const i=['city-overview','city-services','city-transport','city-reports','city-decisions','center-map','center-events'].indexOf(k);return i<0?'':SPACE_COPY[lang][i];};
 const MOBILE_CONTEXT={
  home:['me','settings'],
- together:['together','projects-overview','projects-mine','projects-tasks','projects-updates'],
+ together:['together','projects-overview','projects-tasks','projects-updates'],
  city:CITY_SECTIONS,
  center:CENTER_SECTIONS,
  messages:['messages-contacts','messages-calls','messages-chats'],
@@ -181,10 +181,10 @@ function renderMobileChrome(){
  const virtualTarget=k=>subsectionParent(k)||k;
  const isVirtualSubsection=k=>subsectionParent(k)!=='';
  const selectedSubsection=['messages-direct','messages-groups','messages-invites'].includes(subsection)?'messages-chats':subsection;
- const subIcons={'city-overview':'city','city-services':'center','city-transport':'transport','city-reports':'updates','city-decisions':'tasks','center-map':'map','center-events':'calendar','home-overview':'home','projects-overview':'projects','projects-mine':'me','projects-tasks':'tasks','projects-updates':'updates','messages-chats':'messages','messages-direct':'me','messages-groups':'communities','messages-invites':'people'};
+ const subIcons={'city-nearby':'map','city-overview':'city','city-services':'center','city-transport':'transport','city-reports':'updates','city-decisions':'tasks','center-map':'map','center-events':'calendar','home-overview':'home','projects-overview':'projects','projects-mine':'me','projects-tasks':'tasks','projects-updates':'updates','messages-chats':'messages','messages-direct':'me','messages-groups':'communities','messages-invites':'people'};
  subIcons['messages-contacts']='people';subIcons['messages-calls']='phone';
  const language=active==='home'?'<button type="button" data-mobile-action="language">'+icon('language')+'<span>'+esc(t('language'))+'</span></button>':'';
- const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&selectedSubsection===k):((target===current||k==='me'&&current==='home')&&!(k==='center'&&subsectionParent(subsection)==='center'));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+'>'+icon(subIcons[k]||k)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
+ const items=context.map(k=>{const target=virtualTarget(k);const selected=isVirtualSubsection(k)?(target===current&&selectedSubsection===k):((target===current||k==='me'&&current==='home')&&!(k==='center'&&subsectionParent(subsection)==='center'));return '<a href="#/'+target+'" data-mobile-subnav="'+k+'" data-subsection="'+k+'" data-section="'+active+'"'+(selected?' aria-current="page"':'')+' aria-label="'+esc(subLabel(k))+'" title="'+esc(subLabel(k))+'">'+icon(subIcons[k]||k)+'<span>'+esc(subLabel(k))+'</span></a>';}).join('');
  const demo=guest?'<button class="mobile-demo-chip" type="button" data-mobile-action="demo" aria-expanded="false">'+icon('settings')+'<span>'+esc(t('settings'))+'</span></button>':'';
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
  const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));
@@ -347,7 +347,7 @@ function applyAppearance(){document.documentElement.dataset.theme=themeChoice===
 darkMedia?.addEventListener?.('change',applyAppearance);applyAppearance();
 function settingsPage(){
  const c=appearanceCopy[lang]||appearanceCopy.en;
- return '<section class="compact-settings"><h1>'+esc(t('settings'))+'</h1><section class="card"><h2>'+esc(c[0])+'</h2><label>'+esc(c[0])+'<select id="appearanceTheme">'+['light','dark','system'].map((v,i)=>'<option value="'+v+'"'+(v===themeChoice?' selected':'')+'>'+esc(c[i+1])+'</option>').join('')+'</select></label><label class="checkbox"><input id="appearanceMotion" type="checkbox"'+(quietMotion?' checked':'')+'>'+esc(c[4])+'</label><p class="meta">'+esc(c[5])+'</p></section><section class="card"><h2>'+esc(t('language'))+'</h2><button type="button" class="button secondary" data-mobile-action="language">'+esc(LANGUAGE_NAMES[lang])+'</button></section><section class="card"><h2>'+esc(t('repeatTutorial'))+'</h2><button class="button secondary" type="button" data-action="tutorial">'+esc(t('repeatTutorial'))+'</button>'+a('about','aboutPage','text-link')+(isMuraVisit()?'<button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||"Leave Mura’s account")+'</button>':'')+'</section></section>';
+ return '<section class="compact-settings"><h1>'+esc(t('settings'))+'</h1>'+globalThis.FolkoopPreferences.render(lang,t('save'))+'<section class="card"><h2>'+esc(c[0])+'</h2><label>'+esc(c[0])+'<select id="appearanceTheme">'+['light','dark','system'].map((v,i)=>'<option value="'+v+'"'+(v===themeChoice?' selected':'')+'>'+esc(c[i+1])+'</option>').join('')+'</select></label><label class="checkbox"><input id="appearanceMotion" type="checkbox"'+(quietMotion?' checked':'')+'>'+esc(c[4])+'</label><p class="meta">'+esc(c[5])+'</p></section><section class="card"><h2>'+esc(t('language'))+'</h2><button type="button" class="button secondary" data-mobile-action="language">'+esc(LANGUAGE_NAMES[lang])+'</button></section><section class="card"><h2>'+esc(t('repeatTutorial'))+'</h2><button class="button secondary" type="button" data-action="tutorial">'+esc(t('repeatTutorial'))+'</button>'+a('about','aboutPage','text-link')+(isMuraVisit()?'<button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||"Leave Mura’s account")+'</button>':'')+'</section></section>';
 }
 function legacySettingsPage(){
  return head('settingsTitle','settingsText')+`<div class="feature-grid"><article class="card"><span class="small-icon">${icon('settings')}</span><h2>${esc(t('language'))}</h2><p>${esc(I.NAMES[lang]||lang)}</p></article><article class="card"><span class="small-icon">${icon('me')}</span><h2>${esc(t('cityProfile'))}</h2><p>${esc(selectedCity()||t('cityMissingText'))}</p>${a('me','profileLink','text-link')}</article><article class="card"><span class="small-icon">${icon('about')}</span><h2>${esc(t('repeatTutorial'))}</h2><button class="button secondary" type="button" data-action="tutorial">${esc(t('repeatTutorial'))}</button></article></div>`;
@@ -468,10 +468,10 @@ function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
  gate.querySelector('#entryGateBody').textContent=guideTrial?guide.intro:(afterMuraExit?x.exitBody:x.body);
  gate.querySelector('#entryGateNote').textContent=noteOverride||(guideTrial?guide.note:(afterMuraExit?x.exitNote:x.note));
  gate.querySelector('#entryLanguageLabel').textContent=x.language;
- gate.querySelector('#entryLanguageLabel').hidden=guideTrial;
- choices.hidden=guideTrial;
+ gate.querySelector('#entryLanguageLabel').hidden=true;
+ choices.hidden=true;
  choices.innerHTML=C.LANGS.map(code=>'<button type="button" class="entry-language-choice'+(code===lang?' is-current':'')+'" data-entry-language="'+code+'" aria-pressed="'+String(code===lang)+'"><strong>'+esc(LANGUAGE_NAMES[code])+'</strong><span>'+code.toUpperCase()+'</span></button>').join('');
- pickerLabel.hidden=!guideTrial;
+ pickerLabel.hidden=true;
  if(guideTrial){
   gate.querySelector('#entryGuestLanguageTitle').textContent=guide.language;
   picker.innerHTML=C.LANGS.map(code=>'<option value="'+code+'"'+(code===lang?' selected':'')+'>'+esc(LANGUAGE_NAMES[code])+'</option>').join('');
@@ -1304,7 +1304,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('#globalStartMenu,#gl
 function openSubsection(key){
  const parent=subsectionParent(key);if(!parent)return;
  subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
- if(parent==='city')pendingCityScreen=({'city-overview':'home','city-services':'ansvar','city-reports':'rapportera','city-decisions':'beslut'})[key];
+ if(parent==='city')pendingCityScreen=({'city-nearby':'nara','city-overview':'home','city-services':'ansvar','city-reports':'rapportera','city-decisions':'beslut'})[key];
  if(current!==parent){current=parent;history.replaceState(null,'','#/'+parent);}
  render();
  window.dispatchEvent(new CustomEvent('folkoop:subsection',{detail:{key,parent}}));
@@ -1498,6 +1498,7 @@ document.addEventListener('click',e=>{
   capture();const file=new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(file);const link=document.createElement('a');link.href=url;link.download='folkoop-my-data.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  }
 });
+window.addEventListener('folkoop:preferences',()=>{render();});
 document.addEventListener('input',e=>{
  if(e.target.id==='draftSearch'){query=e.target.value;$('#draftList').innerHTML=drafts(current==='projects'?['project']:['need','offer','purchase','resource']);}
 });
@@ -1530,6 +1531,7 @@ window.addEventListener('message',e=>{
   return;
  }
  if(e.data?.type==='folkoop:city-route'){
+  const key=({home:'city-overview',nara:'city-nearby',ansvar:'city-services',rapportera:'city-reports',beslut:'city-decisions'})[e.data.screen];if(key&&current==='city'){subsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}renderMobileChrome();}
   if(current==='city'&&!$('#cityWorkspace').hidden)$('#cityWorkspace').scrollIntoView({block:'start',behavior:'instant'});
   return;
  }

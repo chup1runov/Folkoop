@@ -4,13 +4,10 @@
 if(new URL(location.href).searchParams.get('embedded')!=='1')return;
 document.documentElement.dataset.folkoopEmbeddedCity='1';
 
-// In the embedded City view, the legacy bottom-fixed navigation could sit
-// outside the iframe viewport. Reuse the same controls, but place them before
-// the City content and keep them sticky at the top. No handlers or labels are
-// replaced, so the existing City behaviour stays intact.
+// Embedded City is controlled by the shared shell navigation. Standalone keeps its tabs.
 const tabs=document.querySelector('.bottom-nav');
 const content=document.querySelector('#view');
-if(tabs&&content)content.before(tabs);
+if(tabs)tabs.hidden=true;
 
 const cityNames={sv:'Stad',en:'City',ar:'المدينة',so:'Magaalada',fa:'شهر',fi:'Kaupunki',bs:'Grad',ku:'Bajar',es:'Ciudad',ru:'Город',uk:'Місто'};
 let lastLanguage='', wasHidden=false;
@@ -53,6 +50,6 @@ function reportSize(){
 }
 if(shell)new ResizeObserver(reportSize).observe(shell);
 window.addEventListener('load',reportSize);
-window.addEventListener('hashchange',()=>{reportSize();parent.postMessage({type:'folkoop:city-route'},location.origin);});
+window.addEventListener('hashchange',()=>{reportSize();parent.postMessage({type:'folkoop:city-route',screen:location.hash.slice(1)},location.origin);});
 refreshBrand();reportSize();
 })();

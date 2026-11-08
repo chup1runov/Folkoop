@@ -1,0 +1,4 @@
+PASS Public Home leads with three visually distinct, text-and-icon coded cooperation intents
+PASS Home project intent preserves local-only consent and existing Profile behavior
+PASS Language changes are idempotent; public Home fits 320, 390 and 1280 pixels
+PASS Mobile contextual actions are visibly attached to their selected primary section

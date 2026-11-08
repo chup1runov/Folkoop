@@ -117,3 +117,5 @@ html[data-folkoop-embedded-city="1"][data-reduce-motion="true"] *{scroll-behavio
 html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.field-label,.location-chip,.product-note,.chevron){color:var(--muted)}
 html[data-folkoop-embedded-city="1"][data-theme="dark"] :is(.source,.back,.file-label,.language-button,.language-option,.sheet-close,.status-bar){background:var(--surface);color:var(--ink);border-color:var(--line)}
 html[data-folkoop-embedded-city="1"][data-theme="dark"] .road-warning{background:var(--warm);color:#ffe0ad}
+/* The embedded application uses the shared outer navigation; standalone retains its own. */
+html[data-folkoop-embedded-city="1"] .bottom-nav{display:none!important}

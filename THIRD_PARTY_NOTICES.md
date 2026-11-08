@@ -15,3 +15,14 @@ The root LICENSE applies only to original protected material whose relevant righ
 Before incorporating another dependency, copied excerpt, media asset or substantive outside contribution, record its source, version, licence and required notices. Do not remove an existing licence, grant, attribution or copyright notice. Verify compatibility with the intended distribution separately. If bundled software requires inclusion of its licence text, ship that actual upstream text; this boundary note is not a replacement.
 
 This document is a limited inventory and preservation rule, not certification that every existing line and transitive dependency has been audited. Report a missing attribution through the contact in LICENSING.md, without disclosing confidential case information.
+
+## Location selector (2026-11-08)
+`apps/web/location-regions.json` is a derived country/region extract of
+[Countries States Cities Database](https://github.com/dr5hn/countries-states-cities-database),
+files `json/countries.json` and `json/countries+states.json`, accessed 2026-11-08.
+250 country/territory entries. Distributed under ODbL; full license is in
+`apps/web/LOCATION_DATA_LICENSE.md`. Source dataset and this extract remain available.
+Names and administrative completeness follow the source; manual entry is supported.
+City lookup uses Open-Meteo Geocoding / GeoNames only on explicit search; no credentials
+or account data are sent. Free non-commercial endpoint for this prototype, no paid
+subscription. Commercial operation requires a fresh provider/licensing decision.

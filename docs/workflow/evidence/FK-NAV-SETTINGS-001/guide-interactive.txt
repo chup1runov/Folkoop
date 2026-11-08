@@ -1,0 +1,12 @@
+PASS chromium ru 320 568
+PASS chromium ru 390 844
+PASS chromium ru 844 390
+PASS chromium ru 1366 900
+PASS chromium ar 320 568
+PASS chromium ar 390 844
+PASS chromium ar 844 390
+PASS chromium ar 1366 900
+PASS chromium fa 320 568
+PASS chromium fa 390 844
+PASS chromium fa 844 390
+PASS chromium fa 1366 900

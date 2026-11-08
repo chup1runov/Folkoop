@@ -71,7 +71,7 @@ const inertBefore=new Map();
 const focusables=root=>Array.from(root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')).filter(e=>!e.closest('[hidden],[inert]')&&e.getClientRects().length);
 function focusModal(){
  if(!modal)return;
- const preferred=modalAction||modal.querySelector('[data-onboarding="next"]:not([hidden])')||modal.querySelector('.is-current')||focusables(modal)[0];
+ const preferred=modalAction||modal.querySelector('[data-onboarding="next"]:not([hidden])')||focusables(modal).find(e=>e.classList.contains('is-current'))||focusables(modal)[0];
  (preferred||modal).focus({preventScroll:true});
 }
 function closeModal(restore=true){

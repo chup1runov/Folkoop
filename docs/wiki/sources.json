@@ -95,24 +95,24 @@
       "path": "apps/web/folkoop.js",
       "status": "local-code",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification",
-      "sha256": "587fb5c116b7de8edceaeb4272ab541e8169295047314d5311979b111ae44737"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
+      "sha256": "e833398b79c8cc04dbf904d6e71cb4df29ca69db7d2cc3f98414a879ebaf30f6"
     },
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
-      "sha256": "2fd2f023aa1f9a0b209abce2c0b28a3291a8222c008ca19307be8ab2896e8f51"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
+      "sha256": "217098c197d72ca2ec5c0beca970d3d7c5fd8faa44c109f5b0e962dbb83680b9"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification",
-      "sha256": "c17fd215a65f376985bd9a0fb20d4c4c4889150ab63cd485d6114cb5870f9c8a"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
+      "sha256": "82d8d970391ed92072ff80672761c1b629676e238c2d4e0523964f8b40021108"
     },
     {
       "id": "SRC-TEST-PROGRESS",

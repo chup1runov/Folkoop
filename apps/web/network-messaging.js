@@ -81,7 +81,7 @@ function create({
       }).join('')||`<p class="empty">${escape(chatText('noPeople'))}</p>`}</div></section>`;
     }
 
-    let html=`<div class="row"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div>${guestDemo?'':`<div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div>`}</div>`;
+    let html=`<div class="row messenger-heading"><div><h2>${escape(chatText('messagesTitle'))}</h2><p class="meta">${escape(chatText('messagesDesc'))}</p></div>${guestDemo?'':`<div>${networkButton('refresh','refresh')}${networkButton('logout','out')}</div>`}</div>`;
 
     if(chat){
       html+=`<button class="button secondary" type="button" data-net="backChats">${escape(chatText('conversation'))}</button><article class="card"><div class="row"><h2>${escape(chatLabel(chat,user))}</h2>${linked?`<span class="badge">${escape(activityText('workChat'))}</span>`:''}</div>${!guestDemo&&chatText('notEncrypted')?`<p class="meta">${escape(chatText('notEncrypted'))}</p>`:''}`;

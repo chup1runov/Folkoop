@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """FOLKOOP shell regression. Chromium emulation; no live accounts or real submissions."""
 import asyncio,json,os,shutil
 from pathlib import Path
@@ -18,7 +24,7 @@ async def main():
   page.on('pageerror',lambda error:errors.append(str(error)))
   await page.goto(BASE)
   await expect(page.locator('#mobilePrimaryNav a')).to_have_count(5)
-  await page.select_option('#language','ru')
+  await set_fixture_language(page, 'ru')
   await expect(page.locator('h1')).to_contain_text('Моё место')
   await expect(page.locator('.my-place-hero')).to_be_visible()
   assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
@@ -62,11 +68,11 @@ async def main():
   city=page.frame_locator('#cityFrame')
   await expect(city.locator('.brand')).to_have_text('FOLKOOP')
   await expect(city.locator('html')).to_have_attribute('lang','ru')
-  await city.locator('.bottom-nav [data-screen="rapportera"]').click()
+  await page.locator('[data-subsection="city-reports"]').click()
   await city.locator('#reportDescription').fill('Private test draft — do not submit')
   await page.evaluate("location.hash='#/me'");await page.evaluate("location.hash='#/city'")
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
-  await page.select_option('#language','en')
+  await set_fixture_language(page, 'en')
   await expect(city.locator('html')).to_have_attribute('lang','en')
   await expect(city.locator('#reportDescription')).to_have_value('Private test draft — do not submit')
   results.append('City stays integrated and retains an unsubmitted report across navigation/language changes')
@@ -130,7 +136,7 @@ async def main():
   await expect(page.locator('.future-architecture a')).to_have_attribute('href','https://github.com/chup1runov/Folkoop/blob/main/docs/architecture/TRUST_IDENTITY_WEB4_ARCHITECTURE.md')
   results.append('About makes the approved future architecture visible while labelling it planned and non-crypto-first')
   for lang in ['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk']:
-   await page.select_option('#language',lang)
+   await set_fixture_language(page, lang)
    for width in [320,390,1280]:
     await page.set_viewport_size({'width':width,'height':844})
     assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth'),f'{lang}/{width} overflow'
@@ -138,7 +144,7 @@ async def main():
    assert await page.locator('#workspace').get_attribute('lang')==lang
    await expect(page.locator('#translationNote')).to_be_hidden()
   results.append('All eleven full-interface languages, RTL, and no horizontal overflow at 320/390/1280px')
-  await page.select_option('#language','ru');await page.set_viewport_size({'width':390,'height':844})
+  await set_fixture_language(page, 'ru');await page.set_viewport_size({'width':390,'height':844})
   await page.evaluate("location.hash='#/me'")
   await page.locator('.my-place-hero [data-action="toggle-my-place-editor"]').click()
   await expect(page.locator('#myPlaceEditorPanel')).to_be_visible()

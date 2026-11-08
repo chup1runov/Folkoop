@@ -37,7 +37,7 @@ test('every primary destination has a second-line context definition',async()=>{
  const js=await readFile('apps/web/folkoop.js','utf8');
  for(const entry of [
   "home:['me','settings']",
-  "together:['together','projects-overview','projects-mine','projects-tasks','projects-updates']",
+  "together:['together','projects-overview','projects-tasks','projects-updates']",
   "city:CITY_SECTIONS",
   "center:CENTER_SECTIONS",
   "messages:['messages-contacts','messages-calls','messages-chats']"

@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """P0 entry load-order regression in Chromium and WebKit.
 One declared negative control restores the old shell-before-provider order.
 No Auth, participant records, external requests or server writes are used.
@@ -60,7 +66,7 @@ async def attempt(browser, old_order=False):
             await expect(page.locator('#entryThreePaths')).to_be_visible()
             await expect(page.locator('.entry-three-card')).to_have_count(3)
             assert not errors, errors
-            await page.locator('[data-entry-language="sv"]').click()
+            await set_fixture_language(page, 'sv')
             await expect(page.locator('#entryThreePaths')).to_be_visible()
             await page.screenshot(path=str(
                 OUT / ('entry-order-' + ENGINE + '.png')))

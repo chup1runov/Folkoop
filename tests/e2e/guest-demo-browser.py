@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """FOLKOOP Mura visit + read-only guided-space browser contract.
 No live accounts and no external API requests.
 """
@@ -39,7 +45,7 @@ async def main():
 
   await expect(page.locator('#folkoopEntryGate')).to_be_visible()
   assert await page.locator('[data-entry-language]').count()==11
-  await page.click('[data-entry-language="ru"]')
+  await set_fixture_language(page, 'ru')
   await expect(page.locator('#entryGateTitle')).to_have_text('Привет! Я Мура')
   await expect(page.locator('#entryGateBody')).to_contain_text('покажу свой FOLKOOP изнутри')
   await expect(page.locator('[data-entry="email"]')).to_be_hidden()

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "FK-NAV-SETTINGS-001",
+  "updated": "2026-11-08",
+  "phase": "finalizing",
+  "spec": "docs/workflow/tasks/FK-NAV-SETTINGS-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-08",
+    "scope": "UI, tests, wiki, free publication"
+  },
+  "requirements": [
+    {
+      "id": "FK-NAV-SETTINGS-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R05",
+      "checks": [
+        "C05"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R06",
+      "checks": [
+        "C06"
+      ]
+    },
+    {
+      "id": "FK-NAV-SETTINGS-001-R07",
+      "checks": [
+        "C07"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-NAV-SETTINGS-001-T01",
+      "status": "in_progress",
+      "requirements": [
+        "FK-NAV-SETTINGS-001-R01",
+        "FK-NAV-SETTINGS-001-R02",
+        "FK-NAV-SETTINGS-001-R03",
+        "FK-NAV-SETTINGS-001-R04",
+        "FK-NAV-SETTINGS-001-R05",
+        "FK-NAV-SETTINGS-001-R06",
+        "FK-NAV-SETTINGS-001-R07"
+      ],
+      "evidence": [
+        "FK-NAV-SETTINGS-001-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-NAV-SETTINGS-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07"
+      ],
+      "path": "docs/workflow/evidence/FK-NAV-SETTINGS-001/settings-final.txt"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish authorized UI change and verify live site; record deployment separately."
+}

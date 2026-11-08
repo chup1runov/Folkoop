@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """Public Home regression. No live account, message or external service is used."""
 import asyncio
 import json
@@ -60,13 +66,13 @@ async def main():
         await page.evaluate("location.hash='#/home'")
 
         for language in ('sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'):
-            await page.select_option('#language', language)
+            await set_fixture_language(page, language)
             await expect(page.locator('.first-actions .first-action')).to_have_count(3)
             for width in (320,390,1280):
                 await page.set_viewport_size({'width':width,'height':960})
                 assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth'), (language,width)
         passed.append('Language changes are idempotent; public Home fits 320, 390 and 1280 pixels')
-        await page.select_option('#language','ru')
+        await set_fixture_language(page, 'ru')
         await page.screenshot(path=str(OUT/'folkoop-home-guest-desktop.png'), full_page=True)
         await page.set_viewport_size({'width':390,'height':844})
         await page.locator('#mobilePrimaryNav [data-mobile-nav="together"]').click()

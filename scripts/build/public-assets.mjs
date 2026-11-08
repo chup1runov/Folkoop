@@ -3,6 +3,7 @@
 // to the public artifact and which of those are core offline shell assets.
 
 export const BUILD_FILES=Object.freeze([
+  'folkoop-preferences.js','location-regions.json','LOCATION_DATA_LICENSE.md',
   'network-budget.js',
   'network-welcome.js',
   'network-for-you.js',
@@ -25,6 +26,7 @@ export const BUILD_FILES=Object.freeze([
 ]);
 
 export const PRECACHE_PATHS=Object.freeze([
+  'folkoop-preferences.js','location-regions.json','LOCATION_DATA_LICENSE.md',
   'network-budget.js',
   'network-welcome.js',
   'network-for-you.js',

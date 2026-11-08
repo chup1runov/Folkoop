@@ -173,7 +173,7 @@ async def audit(browser,width,height):
  await page.goto(BASE+'city.html?embedded=1&mura=1')
  await expect(page.locator('html')).to_have_attribute('data-folkoop-embedded-city','1')
  await expect(page.locator('.topbar')).to_be_hidden()
- await expect(page.locator('.bottom-nav')).to_be_visible()
+ await expect(page.locator('.bottom-nav')).to_be_hidden()
  await expect(page.locator('.bottom-nav button')).to_have_count(4)
  city_text=(await page.locator('body').inner_text()).lower()
  for banned in ['демо','пилот','прототип']:

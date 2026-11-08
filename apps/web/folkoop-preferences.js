@@ -1,0 +1,47 @@
+/* Browser-local display preferences. No account/profile writes or geolocation. */
+(() => {
+'use strict';
+const esc=globalThis.FolkoopCore.escape,KEY='folkoop-place-v1',NAV='folkoop-nav-style-v1';
+let place=null,mode='both',dataset=null;
+try{const p=JSON.parse(localStorage.getItem(KEY));if(p&&/^[A-Z]{2}$/.test(p.country)&&typeof p.city==='string')place=p;const n=localStorage.getItem(NAV);if(['both','icons','text'].includes(n))mode=n;}catch{}
+const copy={
+ru:['Место и навигация','Страна','Область / регион','Город / населённый пункт','Найти город','Сохранить','Значки и текст','Только значки','Только текст','Выбери или введи регион','Можно указать населённый пункт вручную. Выбор хранится в этом браузере; публичный профиль не меняется.','Ничего не найдено. Проверь регион или сохрани название вручную.','Поиск недоступен. Можно сохранить место вручную.','Сохранено','Не удалось сохранить на устройстве; выбор действует до закрытия страницы.','Поиск…','Поиск передаёт название места в Open-Meteo / GeoNames.','Выбор города не подключает его городские службы автоматически.'],
+en:['Place and navigation','Country','State / region','City / locality','Find city','Save','Icons and text','Icons only','Text only','Choose or enter a region','You can enter any locality manually. Saved in this browser; your public profile is unchanged.','No matches. Check the region or save the name manually.','Search unavailable. You can save the place manually.','Saved','Could not save on this device; applies until this page closes.','Searching…','Search sends the place name to Open-Meteo / GeoNames.','Choosing a city does not automatically connect its municipal services.'],
+sv:['Plats och navigering','Land','Län / region','Stad / ort','Sök ort','Spara','Ikoner och text','Bara ikoner','Bara text','Välj eller skriv region','Du kan ange en ort manuellt. Sparas i webbläsaren; din offentliga profil ändras inte.','Inga träffar. Kontrollera regionen eller spara namnet manuellt.','Sökningen är inte tillgänglig. Spara platsen manuellt.','Sparat','Kunde inte spara på enheten; gäller tills sidan stängs.','Söker…','Sökningen skickar ortnamnet till Open-Meteo / GeoNames.','Val av stad ansluter inte automatiskt dess kommunala tjänster.']
+};
+// Core labels for all advertised locales; detailed notices fall back explicitly to English.
+const labels={uk:['Місце й навігація','Країна','Область / регіон','Місто / населений пункт','Знайти місто','Зберегти','Значки й текст','Лише значки','Лише текст'],fi:['Paikka ja navigointi','Maa','Alue','Kaupunki / paikkakunta','Hae kaupunki','Tallenna','Kuvakkeet ja teksti','Vain kuvakkeet','Vain teksti'],es:['Lugar y navegación','País','Estado / región','Ciudad / localidad','Buscar ciudad','Guardar','Iconos y texto','Solo iconos','Solo texto'],bs:['Mjesto i navigacija','Država','Regija','Grad / mjesto','Pronađi grad','Sačuvaj','Ikone i tekst','Samo ikone','Samo tekst'],ar:['المكان والتنقل','الدولة','المنطقة','المدينة','ابحث عن مدينة','حفظ','رموز ونص','رموز فقط','نص فقط'],fa:['مکان و پیمایش','کشور','استان / منطقه','شهر','یافتن شهر','ذخیره','نماد و متن','فقط نماد','فقط متن'],so:['Goobta iyo hagidda','Dalka','Gobolka','Magaalada','Raadi magaalo','Kaydi','Astaamo iyo qoraal','Astaamo keliya','Qoraal keliya'],ku:['Cih û gerîn','Welat','Herêm','Bajar','Bajar bibîne','Tomar bike','Îkon û nivîs','Tenê îkon','Tenê nivîs']};
+function text(lang){return copy[lang]||[...(labels[lang]||copy.en.slice(0,9)),...copy.en.slice(9)];}
+function apply(){document.documentElement.dataset.navStyle=mode;}
+apply();
+function render(lang){
+ const c=text(lang);requestAnimationFrame(()=>mount(lang));
+ return `<section class="card preference-card"><h2>${esc(c[0])}</h2><label>${esc(c[0])}<select id="navigationStyle">${['both','icons','text'].map((x,i)=>`<option value="${x}"${x===mode?' selected':''}>${esc(c[i+6])}</option>`).join('')}</select></label><form id="placeForm"><label>${esc(c[1])}<select id="placeCountry" required><option value="">—</option></select></label><label>${esc(c[2])}<input id="placeRegion" list="placeRegions" maxlength="120" disabled placeholder="${esc(c[9])}"><datalist id="placeRegions"></datalist></label><label>${esc(c[3])}<input id="placeCity" type="search" maxlength="120" required disabled autocomplete="off"></label><div class="actions"><button type="button" class="button secondary" id="findPlace" disabled>${esc(c[4])}</button><button type="submit" class="button" id="savePlace" disabled>${esc(c[5])}</button></div><p id="placeStatus" class="meta" role="status"></p><div id="placeResults" class="place-results"></div><p class="meta">${esc(c[10])}</p><details><summary>${esc(c[16])}</summary><p>${esc(c[17])}</p><p><a href="https://github.com/dr5hn/countries-states-cities-database" target="_blank" rel="noopener noreferrer">Countries States Cities Database</a> · <a href="./LOCATION_DATA_LICENSE.md">ODbL</a> · <a href="https://open-meteo.com/en/docs/geocoding-api" target="_blank" rel="noopener noreferrer">Open-Meteo / GeoNames</a></p></details></form></section>`;
+}
+async function mount(lang){
+ const form=document.getElementById('placeForm');if(!form||form.dataset.mounted)return;form.dataset.mounted='1';
+ const c=text(lang),q=id=>form.querySelector('#'+id),country=q('placeCountry'),region=q('placeRegion'),city=q('placeCity'),status=q('placeStatus'),results=q('placeResults');
+ let request=0,controller=null;
+ const clear=()=>{request++;controller?.abort();results.replaceChildren();status.textContent='';};
+ document.getElementById('navigationStyle').onchange=e=>{mode=e.target.value;apply();try{localStorage.setItem(NAV,mode);}catch{status.textContent=c[14];}};
+ // Minimal ISO list also works if the optional region dataset fails to load.
+ const codes='AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW'.split(' ');
+ let names;try{names=new Intl.DisplayNames([lang],{type:'region'});}catch{names=new Intl.DisplayNames(['en'],{type:'region'});}
+ country.innerHTML='<option value="">—</option>'+codes.map(code=>({code,name:names.of(code)})).sort((a,b)=>a.name.localeCompare(b.name,lang)).map(x=>`<option value="${x.code}">${esc(x.name)}</option>`).join('');
+ function regions(){q('placeRegions').innerHTML=(dataset?.find(x=>x.code===country.value)?.regions||[]).map(x=>`<option value="${esc(x)}"></option>`).join('');}
+ function enabled(){region.disabled=!country.value;city.disabled=!country.value; q('findPlace').disabled=!country.value||city.value.trim().length<2;q('savePlace').disabled=!country.value||!city.value.trim();}
+ country.onchange=()=>{clear();region.value='';city.value='';regions();enabled();};region.oninput=()=>{clear();city.value='';enabled();};city.oninput=()=>{clear();enabled();};
+ if(place){country.value=place.country;region.value=place.region||'';city.value=place.city;}enabled();
+ q('findPlace').onclick=async()=>{
+  clear();const version=request;controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);status.textContent=c[15];
+  const url=new URL('https://geocoding-api.open-meteo.com/v1/search');url.search=new URLSearchParams({name:city.value.trim()+(region.value.trim()?', '+region.value.trim():''),countryCode:country.value,language:lang,count:'30'});
+  try{const response=await fetch(url,{signal:controller.signal,credentials:'omit',referrerPolicy:'no-referrer'});if(!response.ok)throw Error('search');const data=await response.json();if(version!==request||!form.isConnected)return;
+   const matches=(Array.isArray(data.results)?data.results:[]).filter(x=>x.country_code===country.value&&typeof x.name==='string');status.textContent=matches.length?'':c[11];
+   for(const item of matches){const button=document.createElement('button');button.type='button';button.className='button secondary';button.textContent=[item.name,item.admin1,item.admin2].filter(Boolean).join(' · ');button.onclick=()=>{clear();city.value=item.name.slice(0,120);region.value=String(item.admin1||region.value).slice(0,120);enabled();};results.append(button);}
+  }catch{if(version===request&&form.isConnected)status.textContent=c[12];}finally{clearTimeout(timeout);}
+ };
+ form.onsubmit=e=>{e.preventDefault();if(!form.reportValidity())return;clear();place={country:country.value,region:region.value.trim(),city:city.value.trim()};let saved=true;try{localStorage.setItem(KEY,JSON.stringify(place));}catch{saved=false;}window.dispatchEvent(new CustomEvent('folkoop:preferences'));requestAnimationFrame(()=>{const out=document.getElementById('placeStatus');if(out)out.textContent=saved?c[13]:c[14];});};
+ try{if(!dataset){const response=await fetch('./location-regions.json');if(!response.ok)throw Error('regions');dataset=await response.json();}if(form.isConnected)regions();}catch{/* Country list and manual region/city entry remain available. */}
+}
+globalThis.FolkoopPreferences=Object.freeze({render,location:()=>place});
+})();

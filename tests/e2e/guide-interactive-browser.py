@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """Interactive tour acceptance in real engines, including RTL; no external writes."""
 import asyncio, os, json, shutil
 from pathlib import Path
@@ -26,7 +32,7 @@ async def main():
      page=await context.new_page();errors=[]
      page.on('pageerror',lambda error:errors.append(str(error)))
      await page.goto(BASE+'?first-contact=guest-guide')
-     await page.select_option('#entryGuestLanguage',lang)
+     await set_fixture_language(page, lang)
      await page.click('[data-entry="guest"]')
      await expect(page.locator('#onboarding')).to_be_visible()
      await expect(page.locator('html')).to_have_attribute('dir','ltr' if lang=='ru' else 'rtl')

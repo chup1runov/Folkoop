@@ -1,0 +1,4 @@
+ENGINE chromium
+PASS Mura tour ends inside her immersive account without exposing account/admin routes
+PASS Replaying Mura tour returns to Mura rather than converting the visitor into an account flow
+PASS Desktop Mura walk-through remains usable without horizontal overflow

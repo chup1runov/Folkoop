@@ -1,0 +1,3 @@
+PASS three equal paths, 11 languages, RTL and 3 viewports (chromium)
+PASS read-only browse actions, no registration or mutation (chromium)
+PASS traditional Mura guided tour remains the optional path (chromium)

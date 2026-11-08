@@ -1,0 +1,31 @@
+PASS First visit leads into Mura without surfacing registration
+PASS Visiting Mura launches an in-character walk through her own account
+PASS Explicit visit to Mura restarts her tour even when onboarding was completed before
+PASS Mura Home is a lived-in account surface with no signup, pilot or technical chrome
+PASS Mura and Profile are one personal hub with working Profile/Settings secondary navigation
+PASS Mura visit context has an explicit exit and no registration CTA inside the account
+PASS Mura People shows relationships rather than a generic directory
+PASS Mobile route tabs keep Center people/communities separate from Together without stale selection
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura firewood story exposes Economic Flow roles read-only
+PASS Mura Communities contains four lived-in places with current activity
+PASS Mura Messages contains five conversations tied to different parts of her life
+PASS Mura Messages opens an existing conversation with no login/server/security boilerplate
+PASS Mura City opens Göteborg official-source tools with Center available as a separate primary space
+PASS Mura City source can continue read-only into authored Center context with the official source preserved
+PASS Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims
+PASS Mura Profile is a personal life map with drafts, Göteborg and private drafts preserved and Settings available
+PASS Project starts with summary/next step and keeps tasks, participants and activity collapsible
+PASS Mura project view shows people, tasks, activity and chat without mutation or technical clutter
+PASS Mura Home stays exploratory and does not surface registration or mutation CTAs
+PASS Skip link targets the visible Mura content surface
+PASS Mura Home conversation preview opens the selected conversation
+PASS Project and message subtabs clear stale open entity details
+PASS Registration appears only after the visitor explicitly leaves Mura
+PASS Leaving Mura creates a clear account boundary without pilot copy, Mura chip, demo badges or City handoff state
+PASS Explicit visit to Mura restarts the tour even when onboarding was completed before
+PASS Explicitly visiting Mura always starts her tour even after onboarding was completed earlier
+PASS Implicit browser language is accepted when entering Mura and reload does not reopen first contact
+PASS Mura retains Göteborg in memory when Storage access is blocked

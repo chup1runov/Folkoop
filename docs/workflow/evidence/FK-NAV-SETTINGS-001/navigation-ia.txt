@@ -1,0 +1,3 @@
+PASS five-space labelled navigation keeps stacked chrome within the viewport budget
+PASS Mura Home stays immersive while Projects remain reachable under Together
+PASS City and Center are distinct primary spaces without duplicating the underlying routes

@@ -584,3 +584,11 @@ Cloudflare deployment 7b266591-5084-4574-8a2f-dc421d0d28ad succeeded for df2698f
 City now follows the shell theme and uses content-measured frame height with one outer document scroll. Black background, readable surfaces/labels and mint accents. 495 unit/integration tests and Chromium/WebKit 390/1366 resize/theme/contrast checks passed. Details: docs/workflow/tasks/FK-CITY-THEME-001.md. Publication pending at this checkpoint; no real iPhone or independent accessibility audit claimed.
 
 Release follow-up: dbf8563 deployed successfully on Cloudflare Pages (d1bf0b81-d07e-41dc-ae01-816a939f72d0). Live City dark rendering and outer scroll checked with current source data; frame content/client heights matched at 1255 px. Hosted WebKit, sources and database checks passed; validate still running at this checkpoint. Local Chromium/WebKit cover expansion/collapse; live iframe semantic click was blocked by the automation provider. No paid services or database changes.
+
+### 2026-11-08 — FK-NAV-SETTINGS-001
+Owner-requested compact navigation/settings implemented. Local place preferences and
+licensed country/region snapshot; explicit Open-Meteo city search with manual fallback.
+Language picker only in Settings, icon/text modes, corner badges, unified City tabs
+and dense messages. 495 tests and Chromium/WebKit settings scenarios passed; entry
+locale fixtures updated to preserve translation checks without obsolete pickers.
+See task spec/evidence for scope, self-review and limits. Publication pending.

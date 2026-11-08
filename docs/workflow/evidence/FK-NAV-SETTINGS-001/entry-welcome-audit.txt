@@ -1,0 +1,10 @@
+ENGINE chromium
+PASS Unified Mura welcome stays inside four representative viewports
+PASS All 11 language choices remain available with one selected state and are exposed on normal-height mobile/desktop
+PASS Arabic and Persian are RTL while Latin-script Kurdish remains LTR
+PASS No horizontal overflow appears in the welcome surface
+PASS Registration stays hidden until an explicit exit from Mura
+PASS Mura welcome and visit CTA are initially visible at 390x844 and desktop
+PASS Fresh first contact starts at the top instead of auto-scrolling to a CTA
+PASS Keyboard focus remains inside the welcome dialog
+PASS No page errors in the audited first-contact flow

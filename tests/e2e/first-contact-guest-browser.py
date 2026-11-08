@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """Opt-in C guest-first navigation: real browser checks, not human comprehension."""
 import asyncio
 import json
@@ -45,7 +51,7 @@ async def intro(browser,width,height):
   await expect(gate).to_have_attribute('aria-modal','true')
   await expect(page.locator('#entryThreePaths')).to_be_hidden()
   await expect(page.locator('#entryLanguageChoices')).to_be_hidden()
-  await expect(page.locator('#entryGuestLanguage')).to_be_visible()
+  await expect(page.locator('#entryGuestLanguage')).to_be_hidden()
   await expect(page.locator('[data-entry="email"]')).to_be_hidden()
   await expect(page.locator('[data-entry="guest"]')).to_be_visible()
   await expect(page.locator('[data-entry="paths"]')).to_be_visible()
@@ -66,13 +72,13 @@ async def intro(browser,width,height):
   assert geometry['paths']['fullyVisible'],('ALTERNATIVE_BELOW_FIRST_FOLD',width,height,geometry)
   assert not geometry['hasGlobalOverflow'],('GLOBAL_OVERFLOW',width,height,geometry)
   for lang in LANGS:
-   await page.select_option('#entryGuestLanguage',lang)
+   await set_fixture_language(page, lang)
    await expect(page.locator('html')).to_have_attribute('lang',lang)
    expected=await page.evaluate('(l)=>FolkoopFirstContactPreview.guestCopy[l].title',lang)
    await expect(page.locator('#entryGateTitle')).to_have_text(expected)
    await expect(gate).to_have_attribute('dir','rtl' if lang in RTL else 'ltr')
    assert await page.locator('#entryThreePaths').is_hidden()
-  await page.select_option('#entryGuestLanguage','en')
+  await set_fixture_language(page, 'en')
   await page.screenshot(path=str(OUT/f'c-guest-intro-{width}-{ENGINE}.png'))
   await page.click('[data-entry="paths"]')
   await expect(page.locator('#entryThreePaths')).to_be_visible()
@@ -82,7 +88,7 @@ async def intro(browser,width,height):
   await expect(page.locator('#entryThreePaths')).to_be_focused()
   await expect(page.locator('.entry-guest-demo')).to_contain_text('examples')
   await page.screenshot(path=str(OUT/f'c-guest-choices-{width}-{ENGINE}.png'))
-  await page.select_option('#entryGuestLanguage','ru')
+  await set_fixture_language(page, 'ru')
   await expect(page.locator('.entry-three-card')).to_have_count(3)
   await expect(page.locator('#entryThreePaths')).to_be_visible()
   await page.click('[data-entry="paths"]')

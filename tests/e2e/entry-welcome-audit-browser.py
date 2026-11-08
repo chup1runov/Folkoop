@@ -1,3 +1,9 @@
+
+# Locale fixtures exercise translated entry/story content; user language selection
+# moved to Settings and is exercised by navigation-settings-browser.py.
+async def set_fixture_language(page, code):
+ await page.evaluate("""code=>{const gate=document.querySelector('#folkoopEntryGate'),opened=gate&&!gate.hidden,exited=opened&&!gate.querySelector('[data-entry=\"email\"]').hidden;const select=document.querySelector('#language');select.value=code;select.dispatchEvent(new Event('change',{bubbles:true}));if(opened)window.dispatchEvent(new CustomEvent('folkoop:open-entry',{detail:{source:exited?'guest-exit':'fixture'}}));}""", code)
+
 """Visual and geometry gate for the unified first-contact Mura welcome.
 
 This checks the real first screen in all 11 languages and four representative
@@ -38,7 +44,7 @@ GEOMETRY="""() => {
   currentCount:document.querySelectorAll('[data-entry-language][aria-pressed="true"]').length,
   languagesClipped:!!q('#entryLanguageChoices')&&q('#entryLanguageChoices').scrollHeight>q('#entryLanguageChoices').clientHeight+1,
   card,mura,title,body,langs,guest,email,note,
-  horizontalInside:[mura,title,body,langs,guest,note].every(inside),
+  horizontalInside:[mura,title,body,guest,note].every(inside),
   cardOutside:!card||card.x<-.5||card.y<-.5||card.x+card.w>innerWidth+.5||card.y+card.h>innerHeight+.5,
   horizontalOverflow:q('#folkoopEntryGate').scrollWidth>q('#folkoopEntryGate').clientWidth+1,
   guestVisible:visible(guest),emailVisible:visible(email),titleVisible:visible(title),muraVisible:visible(mura),
@@ -66,7 +72,7 @@ async def main():
    initial_scroll=await page.locator('.entry-welcome-card').evaluate('e=>e.scrollTop')
    if initial_scroll>1: failures.append(f'{width}x{height}: fresh welcome auto-scrolled to {initial_scroll}px')
    for code in LANGS:
-    await page.click(f'[data-entry-language="{code}"]')
+    await set_fixture_language(page, code)
     await page.wait_for_timeout(40)
     record=await page.evaluate(GEOMETRY)
     record.update(width=width,height=height,language=code)
@@ -78,14 +84,14 @@ async def main():
     if record['cardOutside']: failures.append(f'{width}x{height} {code}: welcome card outside viewport')
     if not record['horizontalInside']: failures.append(f'{width}x{height} {code}: welcome content exceeds card horizontally')
     if record['horizontalOverflow']: failures.append(f'{width}x{height} {code}: document has horizontal overflow')
-    if width>=390 and height>=800 and record['languagesClipped']: failures.append(f'{width}x{height} {code}: not all 11 language choices are exposed')
+    if await page.locator('#entryLanguageChoices').is_visible(): failures.append('Language picker must only appear in Settings')
     if width>=390 and height>=800 and (not record['guestVisible'] or not record['titleVisible'] or not record['muraVisible']):
      failures.append(f'{width}x{height} {code}: Mura welcome or visit CTA not initially visible')
     if record['emailVisible']: failures.append(f'{width}x{height} {code}: registration CTA leaked into first contact')
     await page.locator('#entryGateTitle').scroll_into_view_if_needed()
    # Keep a small, reviewable screenshot set rather than 44 nearly identical images.
    for code in ['ru','ar','ku']:
-    await page.click(f'[data-entry-language="{code}"]')
+    await set_fixture_language(page, code)
     await page.locator('#entryGateTitle').scroll_into_view_if_needed()
     await page.screenshot(path=str(OUT/f'entry-welcome-{ENGINE}-{width}x{height}-{code}.png'))
    # Modal focus must remain inside the welcome dialog.
