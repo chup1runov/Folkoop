@@ -569,3 +569,13 @@ Cloudflare и GitHub Pages обновлены до 1dd9f80. GitHub run 424783988
 после перезагрузки и анонимная недоступная страница без входа. В task/state
 отмечено завершение; реальные аккаунты не публиковались, iPhone и носители
 языков не тестировали. Подробности и границы — evidence/FK-MURA-ENTRY-001/release.json.
+
+### 2026-11-08 — Город без предложения открыть отдельное окно
+По запросу владельца cityShell показывает инструменты сразу под общей
+навигацией: убраны большой вводный блок, ссылка «на весь экран» и рамка.
+Прямой URL оставлен для совместимости. Источники данных и городские действия
+не менялись. Проверены 495 Node-тестов и navigation-ia-browser.py на узких
+и широких размерах; добавлены проверки видимости встроенного города,
+отсутствия ссылки и рамки. Код выпуска df2698f; статус публикации отдельно.
+
+Cloudflare deployment 7b266591-5084-4574-8a2f-dc421d0d28ad succeeded for df2698f. Live browser applied the visible update and confirmed the inline City tools without the full-page link or introductory block. Hosted SQL checks passed; the wider GitHub browser jobs were still running at this checkpoint. No database changes or paid services.

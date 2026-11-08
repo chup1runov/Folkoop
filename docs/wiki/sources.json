@@ -95,8 +95,8 @@
       "path": "apps/web/folkoop.js",
       "status": "local-code",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
-      "sha256": "7d4d62c2a49025c68329679b18944d5b7575c3faa3511fc39c73ff7899576341"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed",
+      "sha256": "91db1d1b8de56606894d6b662a49a15e909bbd612b27ef2261895df509a6ad1f"
     },
     {
       "id": "SRC-NETWORK-UI",
@@ -111,8 +111,8 @@
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
-      "sha256": "80c09e14d304b47f3bbf90a4accbb07cc3913b0bf15056e6e60aeea6789cf37b"
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed",
+      "sha256": "00d16a4f0dc91c884dc1b82e66d2fd49201f9a109e7d76d0a5d54a63ea13236b"
     },
     {
       "id": "SRC-TEST-PROGRESS",
