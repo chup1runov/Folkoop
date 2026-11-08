@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {recoverPublishedPlans} from '../../scripts/sources/published-plans-fallback.mjs';
+const now=Date.parse('2026-11-08T12:00:00Z');
+const feed={schemaVersion:1,adapterVersion:'goteborg-open-plans-v1',sourceId:'goteborg_open_plans',sourceUrl:'https://goteborg.se/planochbyggprojekt',sourceName:'Göteborgs Stad',fetchedAt:'2026-11-08T10:00:00Z',effectiveDate:'2026-11-08',itemCount:0,items:[]};
+const transient=new Error('TRANSIENT_HTTP_503');
+const send=async()=>({ok:true,json:async()=>structuredClone(feed)});
+test('source outage reuses fresh validated feed without refreshing its timestamp',async()=>{const result=await recoverPublishedPlans(transient,{send,now});assert.deepEqual(result,feed);});
+test('stale cached feed cannot unlock deployment',async()=>{await assert.rejects(recoverPublishedPlans(transient,{send,now:now+86400000}),/STALE_CITY_FEED/);});
+test('parse failures and authorization errors never use fallback',async()=>{for(const message of ['OPEN_PLANS_PARSE_MISMATCH','Göteborgs Stad returned 403']){let calls=0;await assert.rejects(recoverPublishedPlans(new Error(message),{send:async()=>{calls++;return send();},now}));assert.equal(calls,0);}});
+test('wrong source and malformed data remain rejected',async()=>{await assert.rejects(recoverPublishedPlans(transient,{send:async()=>({ok:true,json:async()=>({...feed,sourceId:'other'})}),now}));});

@@ -97,3 +97,12 @@ remain denied, new projection has zero rows. Advisory categories remain private
 RLS without policies (intentional deny), authenticated SECURITY DEFINER RPCs
 (actor-checked and explicitly granted), and existing password-protection warning.
 Free website deployment and live acceptance are the remaining step.
+
+### Release recovery
+Commit 8c4ebf1 reached GitHub. Cloudflare first failed on a GitHub network timeout,
+then twice on official Göteborg HTTP 503. Added a bounded recovery path only for
+transient source/network failures: reuse the existing public plans snapshot only
+if the normal source/schema and 24-hour freshness validation passes. Its fetchedAt
+is preserved, never rewritten; parse mismatches, 403, malformed and stale feeds
+still fail. Four targeted tests and the full 495-test suite pass. This preserves
+the existing freshness threshold rather than publishing an empty City section.

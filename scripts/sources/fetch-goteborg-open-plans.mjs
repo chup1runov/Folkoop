@@ -1,5 +1,6 @@
 import { fetchBounded } from './http.mjs';
 import { pathToFileURL } from 'node:url';
+import {recoverPublishedPlans} from './published-plans-fallback.mjs';
 const SOURCE_URL = 'https://goteborg.se/planochbyggprojekt';
 const SOURCE_FETCH_URLS = [
   SOURCE_URL,
@@ -159,7 +160,16 @@ async function fetchOpenPlansSection() {
 }
 
 async function main() {
-  const section = await fetchOpenPlansSection();
+  let section;
+  try { section = await fetchOpenPlansSection(); }
+  catch (error) {
+    const cached = await recoverPublishedPlans(error);
+    const {mkdir,writeFile} = await import('node:fs/promises');
+    await mkdir('data',{recursive:true});
+    await writeFile('data/goteborg-open-plans.json',JSON.stringify(cached,null,2)+'\n','utf8');
+    console.warn(`Official host temporarily unavailable; retained validated published plans from ${cached.fetchedAt} (under 24 hours).`);
+    return;
+  }
   const sectionText = textFromHtml(section);
 
   if (!/samråd|granskning/i.test(sectionText)) {
