@@ -6,7 +6,8 @@ purchase next-action transfers focus to its opened summary or visible enabled
 form control. Hidden/disabled controls are skipped. Existing permissions unchanged.
 Regression reproduced before the fix, then passed in Chromium and WebKit at
 390/1366; two focused unit tests and shell build passed. Self-review only;
-physical iPhone/VoiceOver acceptance remains open. Publication pending.
+physical iPhone/VoiceOver acceptance remains open. Published 53b2ded; Cloudflare success.
+New full hosted validate/WebKit still running at release.
 
 ## 2026-11-08 - purchase polish
 Themed stat chips replace the fixed light background. Mura illustrative purchase

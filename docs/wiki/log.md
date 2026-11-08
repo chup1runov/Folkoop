@@ -635,3 +635,6 @@ form control. Hidden/disabled controls are skipped. Existing permissions unchang
 Regression reproduced before the fix, then passed in Chromium and WebKit at
 390/1366; two focused unit tests and shell build passed. Self-review only;
 physical iPhone/VoiceOver acceptance remains open. Publication pending.
+
+2026-11-08 release confirmation: focus fix 53b2ded deployed successfully by Cloudflare.
+New hosted database/sources passed; validate/WebKit still running. Previous release CI all passed.
