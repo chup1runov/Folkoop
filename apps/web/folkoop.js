@@ -370,7 +370,7 @@ function cityShell(){
  if(!city)return head('cityMissingTitle','cityMissingText')+`<div class="actions">${a('me','profileLink')}</div>`;
  if(!citySupported(city))return head('cityUnsupportedTitle','cityUnsupportedText')+`<article class="card"><h2>${esc(city)}</h2><p>${esc(t('cityUnsupportedText'))}</p><div class="actions">${a('me','profileLink','button secondary')}</div></article>`;
  if(subsection==='city-transport')return externalSpace(subsection);
- return head('city','cityText')+`<a class="text-link" href="./city.html?embedded=1" target="_blank" rel="noopener">${esc(t('cityFull'))} ↗</a>`;
+ return `<h1 class="city-inline-title" tabindex="-1">${esc(t('city'))}</h1>`;
 }
 function externalSpace(key){
  const copy=SPACE_COPY[lang],transport=key==='city-transport';

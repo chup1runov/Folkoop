@@ -109,6 +109,10 @@ async def audit(browser,width,height):
 
  await page.click('#mobilePrimaryNav a[href="#/city"]')
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="city"]')).to_have_attribute('aria-current','page')
+ await expect(page.locator('#cityFrame')).to_be_visible()
+ await expect(page.locator('#workspace a[href*="city.html"]')).to_have_count(0)
+ assert await page.locator('#cityFrame').evaluate("el=>getComputedStyle(el).borderTopWidth")=='0px'
+ await expect(page.locator('.city-inline-title')).to_be_visible()
  await page.click('[data-subsection="city-services"]')
  await expect(page.locator('[data-subsection="city-services"]')).to_have_attribute('aria-current','page')
  await page.wait_for_function("() => document.querySelector('#cityFrame').contentWindow.location.hash === '#ansvar'")

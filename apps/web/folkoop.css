@@ -866,3 +866,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .folkoop-update-notice button:focus-visible{outline:3px solid #ffd95b;outline-offset:2px}
 .folkoop-update-notice[hidden]{display:none!important}
 @media(min-width:800px){.folkoop-update-notice:not([hidden]){bottom:18px}}
+
+/* Open civic tools directly in the shared shell, without an external-page prompt. */
+.city-inline-title{font-size:1.15rem;margin:0 0 6px}
+body[data-page="city"] #cityWorkspace{margin:0}
+body[data-page="city"] #cityFrame{display:block;border:0;border-radius:0;box-shadow:none;height:max(680px,calc(100dvh - 200px))}
