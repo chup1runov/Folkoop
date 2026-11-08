@@ -135,7 +135,7 @@
 /* v0.38 — summary-first cooperation/workspace */
 .coop-summary{margin-top:14px}.coop-summary-description{max-width:760px}
 .coop-summary-stats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 2px}
-.coop-summary-stats>span{display:grid;gap:1px;min-width:86px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#faf8f4}
+.coop-summary-stats>span{display:grid;gap:1px;min-width:86px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink)}
 .coop-summary-stats strong{font-size:1rem;line-height:1.2}.coop-summary-stats small{font-size:.68rem;color:var(--muted)}
 .coop-next-step{margin:12px 0 16px;padding:15px 16px;border:1px solid #e8c9bb;border-radius:14px;background:var(--soft)}
 .coop-next-step .eyebrow{display:block;margin:0 0 5px;font-size:.62rem}.coop-next-step strong{display:block;font-size:1rem}.coop-next-step p{margin:5px 0 0;color:var(--muted);font-size:.86rem}

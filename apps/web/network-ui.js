@@ -405,6 +405,8 @@ function renderMeetingReadiness(coop,illustrative){
  return `<section class="project-readiness" aria-labelledby="meetingReadinessTitle" data-readiness="story-pending"><h3 id="meetingReadinessTitle">${esc(meetingText(0))}</h3><p class="meta">${esc(meetingText(12))} · <time datetime="2026-10-14T12:00:00Z">2026-10-14</time></p><div class="readiness-columns"><section><h4>${esc(meetingText(2))}</h4><ul>${item(5,'○')}${item(13,'○')}</ul></section><section><h4>${esc(meetingText(3))}</h4><ul>${item(6,'✓')}${item(7,'✓')}${item(8,'✓')}</ul></section><section class="readiness-missing"><h4>${esc(meetingText(4))}</h4><ul>${item(9,'?')}</ul></section></div><p class="readiness-next">${esc(meetingText(10))}</p><a href="#meetingAccessTask" class="button" data-readiness-task>${esc(meetingText(14))}</a><p class="meta readiness-story-note">${esc(meetingText(11))}</p></section>`;
 }
 
+// Illustrative deadline only: stable during this page session, never a server deadline.
+const demoPurchaseDeadline=new Date(Date.now()+3*24*60*60*1000).toISOString();
 function demoSnapshot(all=false){
  const A='00000000-0000-4000-8000-000000000002',B='00000000-0000-4000-8000-000000000003',C='00000000-0000-4000-8000-000000000004',D='00000000-0000-4000-8000-000000000005',E='00000000-0000-4000-8000-000000000006',F='00000000-0000-4000-8000-000000000007';
  const G='00000000-0000-4000-8000-000000000101',G2='00000000-0000-4000-8000-000000000102',G3='00000000-0000-4000-8000-000000000103',G4='00000000-0000-4000-8000-000000000104';
@@ -551,7 +553,7 @@ function demoSnapshot(all=false){
   cooperations,coopMembers,coopChats:[{cooperation_id:PROJECT,conversation_id:CHAT,created_at:'2026-09-28T10:00:00Z'},{cooperation_id:TOOLS,conversation_id:TOOL_CHAT,created_at:'2026-09-30T16:00:00Z'}],activityInbox:activity,
   homePosts:allPosts,assignedTasks:tasks.filter(x=>x.assignee_id===DEMO_UID&&x.status!=='done'),
   myConfirmations:[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'}],
-  allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:'2026-10-01T18:00:00Z',external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
+  allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:demoPurchaseDeadline,external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
  };
  const chosen=all?null:selectedCoop;
  return {...base,

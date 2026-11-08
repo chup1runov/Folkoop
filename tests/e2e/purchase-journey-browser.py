@@ -16,6 +16,14 @@ async def main():
    await p.locator('#mobilePrimaryNav [href="#/together"]').click();await p.locator('[data-coop="open"][data-id="00000000-0000-4000-8000-000000000302"]').click()
    journey=p.locator('[data-purchase-journey]');await expect(journey).to_be_visible();await expect(journey.locator('[aria-current="step"]')).to_have_text('3Согласие')
    await expect(journey).to_contain_text('Место выдачи ещё не согласовано')
+   assert '1 окт. 2026' not in await journey.inner_text()
+   contrast=await p.locator('.coop-summary-stats').evaluate(r"""el=>{
+    const rgb=s=>s.match(/[\d.]+/g).slice(0,3).map(Number);
+    const luminance=s=>rgb(s).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+    return [...el.querySelectorAll('strong,small')].map(n=>{const a=luminance(getComputedStyle(n).color),b=luminance(getComputedStyle(n.parentElement).backgroundColor);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)});
+   }""")
+   assert contrast and min(contrast)>=4.5,contrast
+   print('PASS dark stat contrast',min(contrast))
    await journey.locator('[data-purchase-jump]').click();await expect(p.locator('[data-coop-section="purchase-progress"]')).to_have_attribute('open','')
    assert await p.locator('#networkPanel form:visible').count()==0
    await journey.scroll_into_view_if_needed();await p.screenshot(path=str(OUT/f'purchase-{width}.png'))

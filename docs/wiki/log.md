@@ -618,3 +618,10 @@ FK-PURCHASE-JOURNEY-001: код 000eea9, Cloudflare success. В опублико
 Hosted validate/WebKit ещё выполнялись при фиксации; database/sources passed.
 Отдельные следующие улучшения: контраст старых плашек статистики в тёмной
 теме и устаревшая дата подтверждения в демонстрационных данных Муры.
+
+## 2026-11-08 - purchase polish
+Themed stat chips replace the fixed light background. Mura illustrative purchase
+deadline is 72 hours after page load, stable during that page session. Historical
+records and real participant deadlines remain unchanged. Shell build, two focused
+unit tests and Chromium/WebKit 390/1366 passed; dark stat text contrast 12.36:1.
+No real orders or consent writes. Publication pending.
