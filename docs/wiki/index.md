@@ -4,7 +4,8 @@ Themed stat chips replace the fixed light background. Mura illustrative purchase
 deadline is 72 hours after page load, stable during that page session. Historical
 records and real participant deadlines remain unchanged. Shell build, two focused
 unit tests and Chromium/WebKit 390/1366 passed; dark stat text contrast 12.36:1.
-No real orders or consent writes. Publication pending.
+No real orders or consent writes. Published 1e83eeb; Cloudflare success.
+Hosted database/sources passed; full validate/WebKit still running at release.
 
 
 ## 2026-11-08 — понятный маршрут закупки
