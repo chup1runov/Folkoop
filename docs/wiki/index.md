@@ -7,7 +7,8 @@ path preserved. Preview and explicit copy; no external submission or automatic
 text/address transfer. Edits invalidate prepared results. RU/EN/SV new copy,
 English fallback for other locales; human language approval remains pending.
 Chromium/WebKit 390/1366: handoff, unknown/municipal route, empty input, escaping,
-result invalidation passed. Shell build passed. Publication pending.
+result invalidation passed. Shell build and 14 City unit tests passed.
+Published 7d8965f, Cloudflare success; full hosted validate/WebKit pending.
 Source checked: https://goteborg.se/wps/portal/kontakta-oss (official contact hub).
 Transport and other City integrations are outside this patch.
 

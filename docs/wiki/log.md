@@ -650,3 +650,6 @@ Chromium/WebKit 390/1366: handoff, unknown/municipal route, empty input, escapin
 result invalidation passed. Shell build passed. Publication pending.
 Source checked: https://goteborg.se/wps/portal/kontakta-oss (official contact hub).
 Transport and other City integrations are outside this patch.
+
+2026-11-08: FK-CITY-HANDOFF-001 published as 7d8965f, Cloudflare success.
+14 City unit tests passed. Hosted database/sources passed; full validate/WebKit pending.
