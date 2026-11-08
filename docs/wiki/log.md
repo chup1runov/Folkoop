@@ -610,3 +610,11 @@ Purchase route summary now connects existing offers, quantity, consent and colle
 with one contextual disclosure jump. All existing RPC/permission controls retained.
 497 tests and synthetic lifecycle + Chromium/WebKit desktop/mobile journey passed.
 No real financial/account mutations, no human language certification. Publication pending.
+
+## 2026-11-08 — опубликован маршрут закупки
+FK-PURCHASE-JOURNEY-001: код 000eea9, Cloudflare success. В опубликованной
+карточке Муры проверены четыре шага и переход к подтверждениям без реальной
+отправки согласия. 497 локальных тестов, Chromium/WebKit 390/1366 passed.
+Hosted validate/WebKit ещё выполнялись при фиксации; database/sources passed.
+Отдельные следующие улучшения: контраст старых плашек статистики в тёмной
+теме и устаревшая дата подтверждения в демонстрационных данных Муры.

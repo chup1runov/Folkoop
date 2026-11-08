@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-PURCHASE-JOURNEY-001",
   "updated": "2026-11-08",
-  "phase": "finalizing",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-PURCHASE-JOURNEY-001.md",
   "authorization": {
     "status": "accepted",
@@ -64,7 +64,7 @@
     },
     {
       "id": "FK-PURCHASE-JOURNEY-001-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-PURCHASE-JOURNEY-001-R01",
         "FK-PURCHASE-JOURNEY-001-R02",
@@ -91,5 +91,5 @@
     }
   ],
   "open_questions": [],
-  "next_action": "Publish and verify live Mura purchase; record release separately."
+  "next_action": "Completed; follow up existing dark-theme header stat contrast and dated Mura fixture separately."
 }

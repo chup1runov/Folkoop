@@ -25,3 +25,11 @@ human language certification. No real order, account/participant write or real i
 Checks: 497 unit/integration tests; purchase lifecycle synthetic browser; new journey
 390/1366 Chromium and WebKit, disclosure navigation, Mura no-write and overflow.
 Static smoke, built asset closure/secret-pattern audit passed. Publication pending.
+
+Release acceptance: 000eea92be210681ca0173be7634e11bc02c3f3f published free
+to https://folkoop.pages.dev/; Cloudflare deployment 9bbee242-d4af-4004-ab84-7fe46360983e success.
+Live Mura card after update: four steps, 820 SEK/m³, 8/10 m³, unknown pickup;
+Check consent opens existing participant confirmations with no real submit controls.
+Hosted database/sources passed; validate/WebKit still running at acceptance (local runs passed).
+Follow-up observations, not fixed here: existing purchase-header stat chips have poor
+dark-theme contrast; Mura example confirmation deadline remains dated 1 October 2026.
