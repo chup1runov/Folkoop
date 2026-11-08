@@ -1,0 +1,13 @@
+PASS FOLKOOP root, brand asset and eleven ordered destinations
+PASS My page saves in memory without a compulsory account or storage consent
+PASS Create and search a private project; HTML entered by a user is text, not executable
+PASS Opt-in browser storage restores profile and drafts
+PASS Export contains local profile city and private FOLKOOP workspace
+PASS City stays integrated and retains an unsubmitted report across navigation/language changes
+PASS City source can continue into FOLKOOP with its official link and cooperative routes without auto-publishing
+PASS Online Center connects current routes without fictitious venue, synchronized forum data, payments or message delivery, and never fabricates Göteborg context for another city
+PASS About makes the approved future architecture visible while labelling it planned and non-crypto-first
+PASS All eleven full-interface languages, RTL, and no horizontal overflow at 320/390/1280px
+PASS Erase removes only FOLKOOP local data; mobile screens captured
+PASS Blocked storage does not prevent starting or editing My page
+PASS Installed shell and embedded City entry load offline; no fabricated source success

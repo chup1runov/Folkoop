@@ -16,9 +16,9 @@ async def main():
      requests.append(r.request.url)
      if 'Offline' in r.request.url:
       await r.abort();return
-     if 'Missing' in r.request.url:
+     if 'Missing' in r.request.url or '%2C' in r.request.url:
       await r.fulfill(json={'results':[]});return
-     await r.fulfill(json={'results':[{'name':'Paris','country_code':'FR','admin1':'Île-de-France'},{'name':'Paris','country_code':'US','admin1':'Texas'}]})
+     await r.fulfill(json={'results':[{'name':'Paris','feature_code':'PPLC','country_code':'FR','admin1':'Île-de-France'},{'name':'Paris','feature_code':'PPLC','country_code':'US','admin1':'Texas'},{'name':'Paris Airport','country_code':'FR','feature_code':'AIRP'}]})
     elif r.request.url.startswith(BASE):await r.continue_()
     else:await r.abort()
    await ctx.route('**/*',route)

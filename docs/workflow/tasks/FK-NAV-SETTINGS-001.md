@@ -46,3 +46,10 @@ not a guarantee of exhaustive settlements or universal municipal integration.
 Preferences are local to this browser, not synced or published profile data.
 Detailed new notices are RU/EN/SV; other locales retain localized core controls and
 English fallback notices. No human localization certification.
+
+Live release 438e178: Cloudflare succeeded. Real geocoder exposed mismatched
+regional aliases and POI results for Göteborg. Follow-up normalizes Göteborg aliases
+to Gothenburg, restricts results to populated places (GeoNames PPL*) and retries by
+country if regional lookup is empty, explicitly labelling the wider results.
+Chromium/WebKit at both sizes rechecked with region-empty fallback, wrong-country
+and airport filtering, empty/error search and manual saving. Final live acceptance pending.

@@ -592,3 +592,8 @@ Language picker only in Settings, icon/text modes, corner badges, unified City t
 and dense messages. 495 tests and Chromium/WebKit settings scenarios passed; entry
 locale fixtures updated to preserve translation checks without obsolete pickers.
 See task spec/evidence for scope, self-review and limits. Publication pending.
+
+Live search follow-up: initial UI release 438e178 deployed successfully. Actual
+Göteborg lookup revealed a regional-name mismatch and POI matches. Added populated-place
+filter, Göteborg aliases and explicit country-wide fallback. Local Chromium/WebKit
+checks passed again. Live provider behavior is tested separately from synthetic tests.
