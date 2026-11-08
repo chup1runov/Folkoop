@@ -597,3 +597,9 @@ Live search follow-up: initial UI release 438e178 deployed successfully. Actual
 Göteborg lookup revealed a regional-name mismatch and POI matches. Added populated-place
 filter, Göteborg aliases and explicit country-wide fallback. Local Chromium/WebKit
 checks passed again. Live provider behavior is tested separately from synthetic tests.
+
+Release accepted: 35522fd deployed in Cloudflare ad272935-9621-4bb8-8d02-f11eae37c115.
+First attempt hit HTTP 403 at GitHub SQL-check API; explicit retry succeeded without
+weakening the gate. Live Göteborg search now returns the city only, with regional
+fallback labelled; selection/save/reload header confirmed. Navigation modes and
+single City panel confirmed; messages screenshot retained locally. No paid services.

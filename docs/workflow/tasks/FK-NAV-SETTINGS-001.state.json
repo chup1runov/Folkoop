@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-NAV-SETTINGS-001",
   "updated": "2026-11-08",
-  "phase": "finalizing",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-NAV-SETTINGS-001.md",
   "authorization": {
     "status": "accepted",
@@ -56,7 +56,7 @@
   "tasks": [
     {
       "id": "FK-NAV-SETTINGS-001-T01",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-NAV-SETTINGS-001-R01",
         "FK-NAV-SETTINGS-001-R02",
@@ -89,5 +89,5 @@
     }
   ],
   "open_questions": [],
-  "next_action": "Publish authorized UI change and verify live site; record deployment separately."
+  "next_action": "Complete. Published 35522fd; live city search, saved header and navigation confirmed. Broader hosted browser CI status recorded separately."
 }

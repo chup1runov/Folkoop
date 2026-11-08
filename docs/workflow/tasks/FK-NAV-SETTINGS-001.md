@@ -53,3 +53,16 @@ to Gothenburg, restricts results to populated places (GeoNames PPL*) and retries
 country if regional lookup is empty, explicitly labelling the wider results.
 Chromium/WebKit at both sizes rechecked with region-empty fallback, wrong-country
 and airport filtering, empty/error search and manual saving. Final live acceptance pending.
+
+## Release acceptance
+2026-11-08: 35522fd6116c561c092af8cbcbd80c4bacde6215 deployed successfully,
+Cloudflare ad272935-9621-4bb8-8d02-f11eae37c115. Initial follow-up deployment
+failed on GitHub SQL-check API HTTP 403; retry succeeded with protections unchanged.
+Live browser: real SE → Västra Götaland → Göteborg lookup now returns only the
+Гётеборг populated-place result, with explicit country-wide fallback notice.
+Selected and saved it; header survived reload. Icon-only mode hid labels; restored
+both. City has six outer entries and no internal nav. Dense messages visually checked.
+No real account/database writes, real iPhone acceptance or all-world search guarantee.
+
+Hosted SQL/database and sources checks passed for 35522fd; hosted validate/WebKit
+were still running at final checkpoint. Local Chromium/WebKit results above are complete.
