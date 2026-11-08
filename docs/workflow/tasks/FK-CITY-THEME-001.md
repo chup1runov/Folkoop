@@ -25,4 +25,11 @@ Files: folkoop.js, folkoop-city.js, folkoop.css, folkoop-guide.css, compact.css.
 Rollback: scoped baseline outside repo at city-theme-baseline-20261108; no reset
 or unrelated files. No schema, paid services, auth or source-data changes.
 
-Release: pending at this checkpoint.
+Release: dbf8563a526a8a77229860456270e0147c36b845 deployed successfully to
+https://folkoop.pages.dev/#/city, Cloudflare deployment
+d1bf0b81-d07e-41dc-ae01-816a939f72d0. Live browser verified dark rendering,
+readable current source data and outer scrolling; frame content/client heights
+both 1255 px. Live iframe semantic clicks were unavailable through the browser
+automation provider; expansion/collapse is covered by local Chromium/WebKit.
+Hosted WebKit, sources and database checks passed; wider validate job was still
+running at this checkpoint. No paid services or database changes.
