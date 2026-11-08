@@ -3,19 +3,19 @@
   "base": "20b0786cfa3bc9209b03f2c2201a2446992791e0",
   "review": "self-review; no independent agent",
   "checks": {
-    "unit_integration": "491 passed",
+    "unit_integration": "495 passed (including 4 transient-source fallback tests)",
     "database": "46 migrations and 21 SQL suites passed on fresh local PostgreSQL",
     "browser": "22 Chromium suites passed; onboarding and purchase final reruns supersede failures in batch log",
     "compact_profile": "390/1366; synthetic API publication, preview, anonymous read, unpublish; SQL permissions separately real local PostgreSQL",
     "webkit": "navigation-ia-browser.py passed with BROWSER_ENGINE=webkit",
     "locales": "121/121 routes passed; 0/11 human approved",
-    "production_database": "public_personal_pages applied; public/edit rows 0; anon reads selected projection only; anon account read and mutation false"
+    "production_database": "public_personal_pages applied; public/edit rows 0; anon reads selected projection only; anon account read and mutation false",
+    "production_website": "Cloudflare deployment 5f336334-5b78-429a-9fcc-a5c745a14b58 / 1dd9f80499f7892545c107fc605521997f224b07 succeeded; browser observed upgrade, compact Mura profile, purchase link, theme reload and unavailable anonymous page without login prompt"
   },
   "limits": [
     "No real iPhone",
     "No new email-login attempt",
-    "Public editor browser test uses synthetic API, not a real hosted account",
-    "Production website not deployed at this checkpoint"
+    "Public editor browser test uses synthetic API, not a real hosted account"
   ],
   "fingerprints": {
     "apps/web/person.html": "89cf99cc4902d3404576f1f8c2f424ef00b2143dc3ab674d10aea9ad5ceee4dd",
@@ -58,6 +58,14 @@
     "tests/integration/network.test.mjs": "d63f3f68bf3d0cc8e36a83623225bc7b622906f008a46e8f994989e6d7ab9d4e",
     "tests/unit/my-three-modes.test.mjs": "24aba4bbd7cddd3f9ece4180a14211edcb976a4d0b0fc079c55db52cc34c9b10",
     "tests/unit/navigation-ia.test.mjs": "eb0a736cec22cd67809f25f388bfa67434fdf924d79e175e45e3e8554a1353bd",
-    "tests/unit/network-profile.test.mjs": "9379389893ddd8d95c158284a0a73b3bb18ab527e8ea8ca42a6a73a90bc4f04f"
+    "tests/unit/network-profile.test.mjs": "9379389893ddd8d95c158284a0a73b3bb18ab527e8ea8ca42a6a73a90bc4f04f",
+    "scripts/sources/fetch-goteborg-open-plans.mjs": "7cf8cca2baf22bcee2fe08f337c1231c09c49af8ac42e5f74c3e6022bd2db08c",
+    "scripts/sources/published-plans-fallback.mjs": "b5296bdb8dc8a3e74aff656604cacdf141294c0f1a8a4122990f8006985c5784",
+    "tests/unit/published-plans-fallback.test.mjs": "5c057edb52fd1dab20f81518044eb0c08a2f6136b850d6f53330e3535e1697c1"
+  },
+  "production_migration": {
+    "local_file": "20261108112642_public_personal_pages.sql",
+    "hosted_version": "20261108115334",
+    "name": "public_personal_pages"
   }
 }

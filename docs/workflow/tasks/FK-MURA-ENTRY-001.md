@@ -106,3 +106,11 @@ if the normal source/schema and 24-hour freshness validation passes. Its fetched
 is preserved, never rewritten; parse mismatches, 403, malformed and stale feeds
 still fail. Four targeted tests and the full 495-test suite pass. This preserves
 the existing freshness threshold rather than publishing an empty City section.
+
+## Completed release
+1dd9f80499f7892545c107fc605521997f224b07 is deployed on Cloudflare and GitHub Pages.
+GitHub run 42478398841 passed validate, sources, WebKit, SQL and production smoke.
+[Release evidence](../evidence/FK-MURA-ENTRY-001/release.json) includes observed
+live interactions and CI excerpts. 495 unit/integration tests pass. No changes to
+spending, existing participant visibility or private data publication. Limits
+remain real iPhone, native language review and hosted-owner publication testing.

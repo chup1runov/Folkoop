@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-MURA-ENTRY-001",
   "updated": "2026-11-08",
-  "phase": "finalizing",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-MURA-ENTRY-001.md",
   "authorization": {
     "status": "accepted",
@@ -70,12 +70,13 @@
     },
     {
       "id": "FK-MURA-ENTRY-001-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-MURA-ENTRY-001-R03"
       ],
       "evidence": [
-        "FK-MURA-ENTRY-001-E01"
+        "FK-MURA-ENTRY-001-E01",
+        "FK-MURA-ENTRY-001-E02"
       ]
     },
     {
@@ -110,14 +111,15 @@
     },
     {
       "id": "FK-MURA-ENTRY-001-T07",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-MURA-ENTRY-001-R04",
         "FK-MURA-ENTRY-001-R05",
         "FK-MURA-ENTRY-001-R06"
       ],
       "evidence": [
-        "FK-MURA-ENTRY-001-E01"
+        "FK-MURA-ENTRY-001-E01",
+        "FK-MURA-ENTRY-001-E02"
       ]
     }
   ],
@@ -134,8 +136,17 @@
         "C06"
       ],
       "path": "docs/workflow/evidence/FK-MURA-ENTRY-001/verification.json"
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/evidence/FK-MURA-ENTRY-001/release.json"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish verified scoped changes for free and verify Cloudflare/GitHub deployment; record release evidence. Production public page migration already applied; do not reapply. Hosted owner editing and real iPhone remain explicit limits."
+  "next_action": "Complete for accepted scope: Cloudflare and GitHub Pages published 1dd9f80; full CI passed. Future acceptance: real iPhone and hosted owner publication. No existing user was made public automatically."
 }
