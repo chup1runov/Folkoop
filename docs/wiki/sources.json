@@ -103,8 +103,8 @@
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
       "checked_at": "2026-11-08",
-      "checked_scope": "Purchase polish: themed stat chips and session-stable illustrative deadline; scoped Chromium/WebKit 390/1366.",
-      "sha256": "5b9dbbe3fa760b188cec8445e3ff205563671ec494649bcb543333315cdeee8b"
+      "checked_scope": "Purchase jump focus: summary fallback, visible enabled form controls; Chromium/WebKit 390/1366 regression.",
+      "sha256": "af6af4bac89ad593d0eaeceaf5af53bcc6051a8d97658b83c8b8617f6c44eabb"
     },
     {
       "id": "SRC-MURA-CSS",

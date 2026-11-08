@@ -26,6 +26,7 @@ async def main():
    print('PASS dark stat contrast',min(contrast))
    await journey.locator('[data-purchase-jump]').click();await expect(p.locator('[data-coop-section="purchase-progress"]')).to_have_attribute('open','')
    assert await p.locator('#networkPanel form:visible').count()==0
+   assert await p.locator('[data-coop-section="purchase-progress"] > summary').evaluate('(el)=>el===document.activeElement')
    await journey.scroll_into_view_if_needed();await p.screenshot(path=str(OUT/f'purchase-{width}.png'))
    assert await p.evaluate('document.documentElement.scrollWidth<=innerWidth')
    assert not errors,errors

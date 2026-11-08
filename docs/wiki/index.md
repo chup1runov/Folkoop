@@ -1,4 +1,13 @@
 # Рабочая вики FOLKOOP
+## 2026-11-08 - P0-B purchase keyboard focus
+Previous release 1e83eeb: all hosted checks passed, including validate, WebKit
+and deployment. Next bounded task selected from MASTER_PLAN P0-B accessibility:
+purchase next-action transfers focus to its opened summary or visible enabled
+form control. Hidden/disabled controls are skipped. Existing permissions unchanged.
+Regression reproduced before the fix, then passed in Chromium and WebKit at
+390/1366; two focused unit tests and shell build passed. Self-review only;
+physical iPhone/VoiceOver acceptance remains open. Publication pending.
+
 ## 2026-11-08 - purchase polish
 Themed stat chips replace the fixed light background. Mura illustrative purchase
 deadline is 72 hours after page load, stable during that page session. Historical

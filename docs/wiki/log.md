@@ -626,3 +626,12 @@ records and real participant deadlines remain unchanged. Shell build, two focuse
 unit tests and Chromium/WebKit 390/1366 passed; dark stat text contrast 12.36:1.
 No real orders or consent writes. Published 1e83eeb; Cloudflare success.
 Hosted database/sources passed; full validate/WebKit still running at release.
+
+## 2026-11-08 - P0-B purchase keyboard focus
+Previous release 1e83eeb: all hosted checks passed, including validate, WebKit
+and deployment. Next bounded task selected from MASTER_PLAN P0-B accessibility:
+purchase next-action transfers focus to its opened summary or visible enabled
+form control. Hidden/disabled controls are skipped. Existing permissions unchanged.
+Regression reproduced before the fix, then passed in Chromium and WebKit at
+390/1366; two focused unit tests and shell build passed. Self-review only;
+physical iPhone/VoiceOver acceptance remains open. Publication pending.

@@ -1911,5 +1911,10 @@ document.addEventListener('click',e=>{
  const section=document.querySelector('[data-coop-section="'+key+'"]');if(!section)return;section.open=true;
  const selectors={quantity:'#netCommitment:not([hidden])',consent:'#netPurchaseConfirm:not([hidden]), #netPurchaseStart:not([hidden])',collection:'#netPurchaseCollected:not([hidden]), #netPurchaseDeliveryPlan:not([hidden]), #netPurchaseDelivered:not([hidden])',outcome:'.card'};
  const target=section.querySelector(selectors[b.dataset.purchaseAction]||'summary')||section.querySelector('summary');
- target?.scrollIntoView({block:'center',behavior:'instant'});target?.querySelector('input,button')?.focus({preventScroll:true});
+ if(!target)return;
+ const control=[...target.querySelectorAll('input:not([type=hidden]),select,textarea,button')].find(el=>!el.disabled&&!el.closest('[hidden],[inert]')&&el.getClientRects().length);
+ const destination=control||target;
+ if(!destination.matches('summary,input,select,textarea,button,a[href],[tabindex]'))destination.tabIndex=-1;
+ destination.focus({preventScroll:true});
+ destination.scrollIntoView({block:'center',behavior:'instant'});
 });

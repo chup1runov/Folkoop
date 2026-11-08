@@ -33,3 +33,10 @@ Check consent opens existing participant confirmations with no real submit contr
 Hosted database/sources passed; validate/WebKit still running at acceptance (local runs passed).
 Follow-up observations, not fixed here: existing purchase-header stat chips have poor
 dark-theme contrast; Mura example confirmation deadline remains dated 1 October 2026.
+
+2026-11-08 follow-up, lightweight P0-B accessibility fix (MASTER_PLAN section 5).
+Acceptance: next-action focus follows the opened destination, no hidden/disabled
+field focus, Mura no-write preserved; no schema or scope changes. Baseline 4b6c6ab.
+New browser assertion failed before patch and passed after, Chromium/WebKit
+390/1366. Existing two unit tests and shell build passed. Self-review; physical
+VoiceOver not tested. Backup /tmp/folkoop-purchase-focus-backup.
