@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "id": "FK-MURA-ENTRY-001",
+  "updated": "2026-11-08",
+  "phase": "finalizing",
+  "spec": "docs/workflow/tasks/FK-MURA-ENTRY-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-08",
+    "scope": "Implement clear Mura entry and shared purchase story; compact unified profile, settings, Together and Projects; anonymous public pages with registered owner-controlled publication; preserve features, verify, wiki and free deployment."
+  },
+  "requirements": [
+    {
+      "id": "FK-MURA-ENTRY-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-R05",
+      "checks": [
+        "C05"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-R06",
+      "checks": [
+        "C06"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-MURA-ENTRY-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R01"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R02"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R03"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T04",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R04"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T05",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R05"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T06",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R06"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-ENTRY-001-T07",
+      "status": "in_progress",
+      "requirements": [
+        "FK-MURA-ENTRY-001-R04",
+        "FK-MURA-ENTRY-001-R05",
+        "FK-MURA-ENTRY-001-R06"
+      ],
+      "evidence": [
+        "FK-MURA-ENTRY-001-E01"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-MURA-ENTRY-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C04",
+        "C05",
+        "C06"
+      ],
+      "path": "docs/workflow/evidence/FK-MURA-ENTRY-001/verification.json"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish verified scoped changes for free and verify Cloudflare/GitHub deployment; record release evidence. Production public page migration already applied; do not reapply. Hosted owner editing and real iPhone remain explicit limits."
+}

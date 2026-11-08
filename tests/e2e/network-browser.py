@@ -190,7 +190,7 @@ async def main():
   passed.append('Normal UI blocks admission before policy acceptance and preserves the OTP only in tab memory')
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
-  await expect(page.locator('#netProfile')).to_be_visible()
+  await expect(page.locator('.personal-identity')).to_be_visible()
   expected_policy={
    'p_code':'FOLK-TEST-INVITE-01',
    'p_terms_version':'2026-09-29-v1',
@@ -203,9 +203,17 @@ async def main():
   xss_short='<img src=x onerror=window.__folkoopXssProbe=7>'
   xss='<img src=x onerror="window.__folkoopXssProbe=7"><script>window.__folkoopXssProbe=8<\\/script>'
   await page.evaluate("window.__folkoopXssProbe=0")
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.fill('#netProfile [name=name]',xss_short+' Alice')
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.fill('#netProfile [name=skills]',xss_short+' Design')
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.fill('#netProfile [name=about]',xss+' About')
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.click('#netProfile button')
   await expect(page.locator('#netStatus')).to_contain_text('Сохранено на сервере')
   assert state['profile'][0]['listed'] is False
@@ -239,8 +247,9 @@ async def main():
   await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="me"]')).to_have_attribute('aria-current','page')
   await expect(page.locator('#mobileContextDock [data-mobile-subnav="settings"]')).to_be_visible()
-  await expect(page.locator('#mobileContextDock [data-mobile-subnav="about"]')).to_be_visible()
-  await page.click('#mobileContextDock [data-mobile-action="language"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
+  await expect(page.locator('#workspace a[href="#/about"]')).to_be_visible()
+  await page.click('#workspace [data-mobile-action="language"]')
   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_visible()
   await page.click('[data-folkoop-guide-lang="en"]')
   await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
@@ -401,7 +410,7 @@ async def main():
   state['chat_invites']=[{'conversation_id':invited,'user_id':UID}]
   state['coop_chats']=[{'cooperation_id':PROJECT,'conversation_id':work}]
   await page.evaluate("location.hash='#/me'")
-  await expect(page.locator('#netProfile')).to_be_visible()
+  await expect(page.locator('.personal-identity')).to_be_visible()
   await page.evaluate("location.hash='#/messages'")
   await expect(page.locator('[data-message-card]')).to_have_count(3)
   await expect(page.locator('[data-message-kind="work"]')).to_have_attribute('aria-pressed','false')
@@ -443,6 +452,8 @@ async def main():
   assert any(url.endswith('/fk_start_direct') for url,_ in state['requests'])
   assert any(url.endswith('/fk_send_message_once') for url,_ in state['requests'])
   passed.append('Direct messaging uses server RPCs and escapes message HTML')
+  await page.click('#mobilePrimaryNav [data-mobile-nav="home"]')
+  await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
   await page.click('[data-net=logout]')
   await expect(page.locator('#netLogin')).to_be_visible()
   assert await page.locator('#networkPanel').get_by_text('Test workshop',exact=True).count()==0

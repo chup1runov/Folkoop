@@ -24,7 +24,7 @@ test('explicit all-device logout revokes globally; normal logout remains local',
 test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
  const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:url.includes('fk_project_document_consents?')?[{document_id:cid,cooperation_id:cid,revision:1,user_id:uid,document:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
- assert.equal(result.manifest.sections.length,43);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.length,44);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
  for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid)||call.url.includes('.eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
@@ -249,3 +249,6 @@ test('document consent context survives pagination',async()=>{
  const s=setup(url=>{if(!url.includes('fk_project_document_consents?'))return null;const offset=Number(new URL(url).searchParams.get('offset'));return new Response(JSON.stringify([exportConsent(offset+1)]),{headers:{'content-type':'application/json','content-range':offset+'-'+offset+'/2'}});});
  await s.login();const r=await s.c.exportOwn();assert.equal(r.documentConsents.length,2);assert.equal(r.documentConsents[1].document.revision,2);assert.equal(r.manifest.sections.find(x=>x.collection==='fk_project_document_consents').coverage,'visible-query-complete');
 });
+
+test('public page reads need no login and never carry the current account token',async()=>{const s=setup();await s.c.publicPage(uid);let call=s.calls.at(-1);assert.equal(call.method,'GET');assert.equal(call.headers.Authorization,undefined);await s.login();await s.c.publicPage(uid);call=s.calls.at(-1);assert.equal(call.headers.Authorization,undefined);assert.equal(call.credentials,'omit');});
+test('public-page export retains private editing content only in the owner archive',async()=>{const state={revision:2,published:true,content:{name:'Alias',ideas:'private'},visible:['name']};const s=setup(url=>url.endsWith('/rpc/fk_my_public_page')?json(state):null);await s.login();const result=await s.c.exportOwn();assert.deepEqual(JSON.parse(JSON.stringify(result.publicPage)),state);assert.equal(result.manifest.sections.find(x=>x.collection==='publicPage').coverage,'visible-query-complete');});

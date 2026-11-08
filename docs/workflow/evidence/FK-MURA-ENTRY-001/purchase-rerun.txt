@@ -1,0 +1,5 @@
+PASS Selected supplier offer exposes final-confirmation step
+PASS Starting confirmation snapshots participant quantity and changes stage
+PASS Organizer mark is explicitly external/self-reported, not a fake order submission
+PASS Delivery and participant collection are separate self-reported states
+PASS Purchase closes with result note and no payment or checkout request

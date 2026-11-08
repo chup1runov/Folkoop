@@ -20,8 +20,8 @@ test('one five-item primary navigation hierarchy serves desktop and mobile',asyn
 test('Profile is nested under the personal Home hub while legacy route stays addressable',async()=>{
  const js=await readFile('apps/web/folkoop.js','utf8');
  assert.match(js,/\['me','settings','about'\]\.includes\(route\)\?'home'/);
- assert(js.includes("home:['home-overview','me','settings']"));
- assert(js.includes("home:['home-overview','me']"));
+ assert(js.includes("home:['me','settings']"));
+ assert(js.includes("home:['me','settings']"));
  assert(js.includes("personalPrimaryLabel=t('me')"));
 });
 
@@ -36,7 +36,7 @@ test('Center is a primary space while Projects are nested under Together',async(
 test('every primary destination has a second-line context definition',async()=>{
  const js=await readFile('apps/web/folkoop.js','utf8');
  for(const entry of [
-  "home:['home-overview','me','settings']",
+  "home:['me','settings']",
   "together:['together','projects-overview','projects-mine','projects-tasks','projects-updates']",
   "city:CITY_SECTIONS",
   "center:CENTER_SECTIONS",

@@ -83,7 +83,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(response.status===401){if(auth)clear('expired');throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
-    if(['BUDGET_CONFLICT','DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN','WELCOME_CONFLICT','MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED','TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_CONFLICT','TASK_BASIS_PENDING','TASK_BASIS_CLOSED','INVALID_BASIS_LINK','INVALID_SIGNER'].includes(detail?.message))throw fail(detail.message);
+    if(['VERSION_CONFLICT','PROFILE_REQUIRED','BUDGET_CONFLICT','DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN','WELCOME_CONFLICT','MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED','TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_CONFLICT','TASK_BASIS_PENDING','TASK_BASIS_CLOSED','INVALID_BASIS_LINK','INVALID_SIGNER'].includes(detail?.message))throw fail(detail.message);
     throw fail(response.status===429?'RATE_LIMIT':response.status===403?'DENIED':'REQUEST_FAILED');
    }
    if(response.status===204)return null;
@@ -236,6 +236,9 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    catch(e){if(attempt!==authAttempt)throw fail('STALE');if(e.code==='AUTH_REQUIRED'){clear('expired');return null;}throw e;}
   },
   async logout({allDevices=false}={}){bool(allDevices);const token=session?.token;clear('signed-out');signalExit();if(cfg?.serverSession){await serverSession('DELETE',undefined,allDevices);signalExit();return;}if(token)await request('/auth/v1/logout?scope='+(allDevices?'global':'local'),{method:'POST',auth:false,token});},
+  publicPage(uid){return request('/rest/v1/fk_public_pages?select=id,content&id=eq.'+id(uid)+'&limit=1',{auth:false});},
+  myPublicPage(){return rpc('fk_my_public_page');},
+  savePublicPage(p){return rpc('fk_save_public_page',{p_revision:integer(p.revision,0,2147483646),p_published:bool(p.published),p_content:p.content,p_visible:p.visible});},
   profile(){return rows('fk_profiles?select=id,name,skills,about,listed&id=eq.'+id(user()?.id));},
   saveProfile(p){if(typeof p.listed!=='boolean')throw fail('INVALID_INPUT');return rpc('fk_save_profile',{p_name:text(p.name,60,1),p_skills:text(p.skills,200),p_about:text(p.about,600),p_listed:p.listed});},
   directory(){return rows('fk_profiles?select=id,name,skills,about&listed=eq.true&order=name.asc&limit=100');},
@@ -494,12 +497,15 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const contributionNotices=await rows('fk_contribution_notices?recipient_id=eq.'+uid+'&order=event_id&limit=1000');
    const meetingBudgetPolicies=await rows('fk_meeting_budget_policies?author_id=eq.'+uid+'&order=created_at.desc&limit=1000');
    const meetingBudgetNotices=await rows('fk_meeting_budget_notices?recipient_id=eq.'+uid+'&order=cooperation_id,version&limit=1000');
+   let publicPage=null;
+   try{const page=await rpc('fk_my_public_page');if(page&&Number.isInteger(page.revision)&&page.content&&Array.isArray(page.visible))publicPage=page;}catch(error){if(['AUTH_REQUIRED','STALE','POLICY_REQUIRED','INVITE_REQUIRED'].includes(error.code))throw error;}
+   sections.push({collection:'publicPage',visibleTotal:publicPage?(publicPage.revision?1:0):null,returned:publicPage?.revision?1:0,coverage:publicPage?'visible-query-complete':'unknown',pages:1});
    if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
    const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
     completeAccountExport:false,atomicSnapshot:false,meetingTermsContext,documentConsentContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
     excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
     fullCopyContact:'Chup1runov@gmail.com'};
-   return {profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};
+   return {publicPage,profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};
   }
  });
 }

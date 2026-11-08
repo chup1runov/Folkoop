@@ -57,7 +57,7 @@ async def main():
    await page.goto(BASE+'?intro=0#/me')
    await page.fill('#netLogin [name=email]','synthetic@example.test');await page.click('#netLogin [value=code]')
    await page.fill('#netLogin [name=code]','123456');await page.check('#netLogin [name=policyAccepted]');await page.click('#netLogin [value=verify]')
-   await expect(page.locator('#netProfile')).to_be_visible()
+   await expect(page.locator('.personal-identity')).to_be_visible()
    if os.getenv('INJECT_UNRELATED_FAILURE')=='1':await expect(page.locator('.notice[role=status]')).to_be_visible()
    await page.evaluate("location.hash='#/messages'")
    await page.locator('[data-net="openChat"][data-id="'+CHAT+'"]').click()

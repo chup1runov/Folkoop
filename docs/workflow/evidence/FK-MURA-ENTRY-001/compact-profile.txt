@@ -1,0 +1,1 @@
+PASS: 390/1366 compact Mura, purchase link, settings persistence, no overflow; synthetic owner publication/preview, anonymous read, reload, unpublish. SQL permission checks are separate.

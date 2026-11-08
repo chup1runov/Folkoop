@@ -25,7 +25,8 @@ begin
     if not has_table_privilege('authenticated', t.oid, 'SELECT') then
       raise exception 'EXPLICIT_AUTH_SELECT_GRANT_REQUIRED: %', t.relname;
     end if;
-    if has_table_privilege('anon', t.oid, 'SELECT')
+    -- Owner-approved public projection is the only anonymous SELECT exception.
+    if (t.relname <> 'fk_public_pages' and has_table_privilege('anon', t.oid, 'SELECT'))
        or has_table_privilege('anon', t.oid, 'INSERT')
        or has_table_privilege('anon', t.oid, 'UPDATE')
        or has_table_privilege('anon', t.oid, 'DELETE') then

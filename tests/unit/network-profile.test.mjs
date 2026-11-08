@@ -8,7 +8,7 @@ context.globalThis=context;
 vm.runInContext(await readFile('apps/web/network-profile.js','utf8'),context,{filename:'network-profile.js'});
 const create=context.FolkoopNetworkProfile.create;
 test('global sign-out is explicit and never shown in Mura',()=>{
- assert.match(domain(fixture()).render({id:'alice'}),/data-net="logoutAll"/);
+ assert.match(domain(fixture()).render({id:'alice'},{settings:true}),/data-net="logoutAll"/);
  assert.doesNotMatch(domain(fixture()).render({id:'alice'},{guestDemo:true}),/data-net="logoutAll"/);
 });
 test('export report covers all locales and separates truncation from unknown completeness',()=>{
@@ -64,7 +64,7 @@ test('profile domain exposes only render responsibility',()=>{
 
 test('signed-in profile rendering preserves form/action hooks and escapes profile text',()=>{
  const f=fixture(),d=domain(f);
- const html=d.render({id:'me'});
+ const html=d.render({id:'me'})+d.render({id:'me'},{settings:true});
  assert(html.includes('id="netProfile"'));
  assert(html.includes('name="listed" checked'));
  assert(html.includes('data-net="deleteProfile"'));
@@ -95,7 +95,7 @@ test('guest profile renders Mura life without signup or server mutation controls
  assert(html.includes('Mura · Göteborg'));
  assert(!html.includes('data-demo="register"'));
  assert(!/learning example|sign in|register/i.test(html));
- assert(html.includes('data-net="logout"'));
+ assert(!html.includes('data-net="logoutAll"')); // Exit remains in Mura Settings.
  assert(html.includes('data-activity'));
  assert(html.includes('My city'));
  assert(html.includes('Göteborg'));
@@ -110,7 +110,7 @@ test('guest profile renders Mura life without signup or server mutation controls
 
 test('empty block list remains valid and does not invent placeholders',()=>{
  const f=fixture();f.data.blocks=[];
- const html=domain(f).render({id:'me'});
+ const html=domain(f).render({id:'me'},{settings:true});
  assert(html.includes('Hidden participants'));
  assert(!html.includes('data-net="unblock"'));
 });

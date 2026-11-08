@@ -75,7 +75,7 @@ async def main():
    await page.fill('#netLogin [name=code]','123456')
    await page.check('#netLogin [name=policyAccepted]')
    await page.click('#netLogin [value=verify]')
-   await expect(page.locator('#netProfile')).to_be_visible()
+   await expect(page.locator('.personal-identity')).to_be_visible()
    if uid==A:
     await page.evaluate("location.hash='#/projects'")
     await page.locator('[data-coop="open"][data-id="'+P+'"]').click()

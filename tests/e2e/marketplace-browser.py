@@ -68,9 +68,13 @@ async def main():
   await page.fill('#netLogin [name=code]','123456')
   await page.check('#netLogin [name=policyAccepted]')
   await page.click('#netLogin [value=verify]')
-  await expect(page.locator('#netProfile')).to_be_visible()
+  await expect(page.locator('.personal-identity')).to_be_visible()
 
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.fill('#netProfile [name=name]','Synthetic Buyer')
+  await page.locator('.profile-editor').wait_for()
+  if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
   await page.click('#netProfile button')
   await page.evaluate("location.hash='#/together'")
   # Together is browse-first: creation appears only after an explicit participant action.

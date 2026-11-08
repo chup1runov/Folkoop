@@ -31,20 +31,20 @@ async def audit(browser,width,height):
  await expect(page.locator('.sidebar')).to_be_hidden()
  await expect(page.locator('#mobilePrimaryNav a[href="#/center"]')).to_have_count(1)
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-label','Профиль')
- await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
+ await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_have_attribute('aria-current','page')
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_contain_text('Профиль')
  await expect(page.locator('.mura-home')).to_be_visible()
- await page.click('[data-mobile-action="language"]')
+ await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
+ await page.click('#workspace [data-mobile-action="language"]')
  await expect(page.locator('[data-folkoop-guide-lang="sv"]')).to_contain_text('🇸🇪 Svenska')
  await expect(page.locator('[data-folkoop-guide-lang="ar"]')).to_contain_text('🇸🇦')
  await expect(page.locator('[data-folkoop-guide-lang="ku"]')).to_contain_text('☀️')
  assert await page.locator('[data-folkoop-guide-lang="ku"] strong').evaluate("el => getComputedStyle(el,'::before').backgroundImage")!='none'
  await page.click('[data-folkoop-guide-lang="ru"]')
  await expect(page.locator('#folkoopGuideLanguageGate')).to_be_hidden()
- await page.click('[data-mobile-action="demo"]')
- await expect(page.locator('.mobile-demo-popover [data-action="tutorial"]')).to_be_visible()
+ await expect(page.locator('#workspace [data-action="tutorial"]')).to_be_visible()
  await expect(page.locator('[data-mobile-action="exitmura"]')).to_be_visible()
- await page.click('[data-mobile-action="demo"]')
+ await page.click('#mobileContextDock [data-mobile-subnav="me"]')
  if width<=760 or (width<=900 and height<=480):
   chrome=await page.evaluate("""() => {
    const primaryEl=document.querySelector('#mobilePrimaryNav');
@@ -72,9 +72,9 @@ async def audit(browser,width,height):
  await expect(page.locator('.demo-profile-card')).to_be_visible()
  await expect(page.locator('#mobilePrimaryNav [data-mobile-nav="home"]')).to_have_attribute('aria-current','page')
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_have_attribute('aria-current','page')
- await page.click('#mobileContextDock [data-subsection="home-overview"]')
+ await page.click('#mobileContextDock [data-subsection="me"]')
  await expect(page.locator('.mura-home')).to_be_visible()
- await expect(page.locator('#mobileContextDock [data-subsection="home-overview"]')).to_have_attribute('aria-current','page')
+ await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_have_attribute('aria-current','page')
 
  await page.click('#mobilePrimaryNav a[href="#/together"]')
  await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(3)

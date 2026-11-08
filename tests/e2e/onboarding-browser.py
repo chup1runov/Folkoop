@@ -62,9 +62,9 @@ async def mobile_flow(browser,passed):
  assert await page.evaluate("sessionStorage.getItem('folkoop-entry-mode-v1')==='guest'")
  await page.evaluate("location.hash='#/home'")
  await expect(page.locator('.mura-home')).to_be_visible()
- await expect(page.locator('.mura-hero')).to_contain_text('Мура')
- await expect(page.locator('.mura-hero')).to_contain_text('Göteborg')
- assert await page.locator('#mobileContextDock [data-mobile-subnav="settings"]').count()==0
+ await expect(page.locator('.demo-profile-card')).to_contain_text('Мура')
+ await expect(page.locator('.demo-profile-card')).to_contain_text('Göteborg')
+ assert await page.locator('#mobileContextDock [data-mobile-subnav="settings"]').count()==1
  assert await page.locator('#mobileContextDock [data-mobile-subnav="about"]').count()==0
  assert await page.locator('#mobileContextDock [data-mobile-subnav="center"]').count()==0
  passed.append('Mura tour ends inside her immersive account without exposing account/admin routes')

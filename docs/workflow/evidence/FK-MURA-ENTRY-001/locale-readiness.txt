@@ -1,0 +1,13 @@
+SV: PENDING
+EN: PENDING
+AR: PENDING
+SO: PENDING
+FA: PENDING
+FI: PENDING
+BS: PENDING
+KU: PENDING
+ES: PENDING
+RU: PENDING
+UK: PENDING
+Approved 0/11; pending 11/11.
+Technical QA is separate; do NOT claim native approval.

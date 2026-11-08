@@ -39,7 +39,7 @@ EXPECTED_JS="""({lang,route}) => {
  const p=registry?.languages?.[lang],g=registry?.muraGuest?.[lang],h=registry?.muraHome?.[lang];
  if(!p||!g||!h)return null;
  const map={
-  home:h.lead,
+  home:p.shell?.together,
   together:g.coop?.togetherTitle,
   projects:g.coop?.projectsTitle,
   messages:g.chat?.messagesTitle,
@@ -47,7 +47,7 @@ EXPECTED_JS="""({lang,route}) => {
   communities:g.base?.groups,
   city:p.shell?.city,
   center:p.shell?.centerOnlineTitle,
-  me:g.base?.profile,
+  me:p.shell?.together,
   settings:p.shell?.settingsTitle,
   about:p.shell?.aboutTitle
  };

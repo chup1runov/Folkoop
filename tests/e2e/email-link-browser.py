@@ -38,14 +38,15 @@ async def main():
   await page.locator('#netEmailLink [name=policyAccepted]').check()
   await page.locator('#netEmailLink [name=inviteCode]').fill('SYNTHETIC-INVITE')
   await page.locator('#netEmailLink button').click()
-  await expect(page.locator('#netProfile')).to_be_visible()
+  await expect(page.locator('.personal-identity')).to_be_visible()
   assert len(claims)==1 and claims[0]['p_accept_terms'] is True
+  await page.click('#mobileContextDock [data-mobile-subnav="settings"]')
   async with page.expect_download() as exported:
    await page.locator('[data-net=export]').click()
   download=await exported.value
   exported_data=json.loads(Path(await download.path()).read_text())
   assert exported_data['manifest']['completeAccountExport'] is False
-  assert len(exported_data['manifest']['sections'])==43
+  assert len(exported_data['manifest']['sections'])==44
   assert [r['terms']['conditions'] for r in exported_data['meetingResponses']]==['Version 1','Version 2']
   assert exported_data['manifest']['meetingTermsContext']['linkedResponses']==2
   assert exported_data['manifest']['meetingTermsContext']['missing']==[]

@@ -94,25 +94,25 @@
       "id": "SRC-MURA-JS",
       "path": "apps/web/folkoop.js",
       "status": "local-code",
-      "checked_at": "2026-11-06",
-      "checked_scope": "FK-REL-001: chapter targets, chapter/finish/resume handlers and release regression diff reread; browser verification ongoing",
-      "sha256": "dc5adf886ada00236a130b4a7f58bbec87a6d56c5a706a5461aca2a81cf0a180"
+      "checked_at": "2026-11-08",
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
+      "sha256": "7d4d62c2a49025c68329679b18944d5b7575c3faa3511fc39c73ff7899576341"
     },
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
-      "checked_at": "2026-11-07",
-      "checked_scope": "B02 scoped diff reviewed, active session/member derived meeting inbox; complete CI passed and two real test-account role/terms/response flow verified. Prior unrelated claims retain their historical limits.",
-      "sha256": "68e8fa66c3c792f5442a073d2a19bde4f13b52772526ff53e652d8049fe76c19"
+      "checked_at": "2026-11-08",
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
+      "sha256": "2fd2f023aa1f9a0b209abce2c0b28a3291a8222c008ca19307be8ab2896e8f51"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
-      "checked_at": "2026-11-06",
-      "checked_scope": "Reconciled independent local feature styles and main PWA notice; targeted geometry/PWA checks, not a new full visual audit",
-      "sha256": "dd87ef99c26b57825bc63914deb70d195c70d228bb05c89e61a8d0d662c913e7"
+      "checked_at": "2026-11-08",
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
+      "sha256": "80c09e14d304b47f3bbf90a4accbb07cc3913b0bf15056e6e60aeea6789cf37b"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -230,9 +230,9 @@
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
       "status": "published-document-context-verified",
-      "checked_at": "2026-11-07",
-      "checked_scope": "FK-EXPORT-003 scoped diff: actor-filtered exact document/revision/project left embed and explicit gaps. 483 tests; Chromium 390/1366, WebKit and complete CI passed. Published b1a39da; two real QA browser downloads verified non-authored rules v1 despite unconfirmed v2, estimate and retained withdrawal context. No full operator export/closure claim; prior unchanged meeting/inbox evidence retained.",
-      "sha256": "0e1bb606240b10aca6c036637ee050536b16f6343441c33d68ffd4e3cc783775"
+      "checked_at": "2026-11-08",
+      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
+      "sha256": "943c283a8ff8b585433641fd8f2ec79b0e34818cce052ff0f01d832aa471c73b"
     }
   ]
 }

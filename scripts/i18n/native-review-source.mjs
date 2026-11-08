@@ -65,7 +65,7 @@ export async function getReviewCorpus(){
    'apps/web/home-welcome.js','apps/web/network-ui.js',
    'apps/web/auth-callback.mjs','apps/web/app.js',
    'apps/web/today.js','apps/web/about-copy.js',
-    'apps/web/first-contact-preview.js'
+    'apps/web/first-contact-preview.js','apps/web/public-profile.js'
   ];
   const content=await Promise.all(paths.map(p=>readFile(p,'utf8')));
   const src=Object.fromEntries(paths.map((p,i)=>[p,content[i]]));
@@ -74,6 +74,8 @@ export async function getReviewCorpus(){
     '\n'+src['apps/web/folkoop-copy.js']);
   const extra=shell.FolkoopExtraCopy.languages;
   const main=src['apps/web/folkoop.js'];
+  const publicProfile=parse(src['apps/web/public-profile.js'],'copy');
+  const appearance=parse(main,'appearanceCopy');
   const tutorial=parse(main,'tutorialCopy');
   const tutorialTitles=parse(main,'tutorialTitles');
   const helper=parse(main,'helperCopy');
@@ -132,7 +134,9 @@ export async function getReviewCorpus(){
     add(key,b.flat.get(key),canonical.get(key),'schema-v2');
    for(const [key,value] of Object.entries(firstContact.copy.en))
      add('firstContactPreview.'+key,firstContact.copy[lang]?.[key],value,'first-contact-opt-in');
-    const englishModes=homeModes.en||{};
+    for(let i=0;i<publicProfile.en.length;i++)add('publicProfile.'+i,publicProfile[lang]?.[i],publicProfile.en[i],'public-profile');
+   for(let i=0;i<appearance.en.length;i++)add('appearance.'+i,appearance[lang]?.[i],appearance.en[i],'appearance');
+   const englishModes=homeModes.en||{};
    for(const [key,value] of Object.entries(englishModes))
     add('homeModes.'+key,homeModes[lang]?.[key],value,'network-home-modes');
    for(const name of CITY_DICTIONARIES){

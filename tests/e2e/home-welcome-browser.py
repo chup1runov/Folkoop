@@ -38,7 +38,7 @@ async def main():
         await page.goto(BASE+'?intro=0#/home')
         actions = page.locator('.first-actions .first-action')
         await expect(actions).to_have_count(3)
-        await expect(page.locator('.first-actions')).to_contain_text('FOLKOOP')
+        await expect(page.locator('#firstActionsTitle')).to_be_visible()
         assert await page.locator('.first-action[data-intent=need] svg').count()==1
         assert await page.locator('.first-action[data-intent=offer] svg').count()==1
         assert await page.locator('.first-action[data-intent=project] svg').count()==1

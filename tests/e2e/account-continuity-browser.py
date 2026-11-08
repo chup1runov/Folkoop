@@ -52,7 +52,9 @@ async def main():
    await page.goto(BASE+'?intro=0#/me')
    await page.fill('#netLogin [name=email]','synthetic@example.test');await page.click('#netLogin [value=code]')
    await page.fill('#netLogin [name=code]','123456');await page.check('#netLogin [name=policyAccepted]');await page.click('#netLogin [value=verify]')
-   await expect(page.locator('#netProfile')).to_be_visible()
+   await expect(page.locator('.personal-identity')).to_be_visible()
+   await page.locator('.profile-editor').wait_for()
+   if await page.locator('.profile-editor').get_attribute('open') is None: await page.locator('.profile-editor > summary').click()
    await page.fill('#netProfile [name=name]','Keep unsaved name')
    before=profile_loads;await page.evaluate("window.dispatchEvent(new Event('focus'))")
    await page.wait_for_timeout(200);assert profile_loads==before
