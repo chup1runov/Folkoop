@@ -1168,6 +1168,26 @@ function shell(title, subtitle, body) {
   </section>`;
 }
 
+// Manual handoff is local preparation, never recipient verification or submission.
+const cityActionCopy={
+ ru:['Подготовить обращение','Продолжить без GPS','Выбери официальный канал','Не знаю, кто отвечает','Улицы, площади и парки Гётеборга','Государственная дорога — Trafikverket','Подготовить текст','Получатель не определён автоматически. Выбери канал только если знаешь, что он подходит; иначе обратись в контакт-центр.','Открыть контакт-центр Гётеборга','Подготовленный текст','Описание и адрес остаются здесь до обновления страницы. На внешний сайт они автоматически не передаются.'],
+ en:['Prepare a report','Continue without GPS','Choose an official channel','I do not know who is responsible','Gothenburg streets, squares and parks','State road — Trafikverket','Prepare text','The recipient has not been identified automatically. Choose a channel only if you know it applies; otherwise contact the city contact centre.','Open Gothenburg contact centre','Prepared text','Description and address stay here until page reload. They are not automatically sent to the external website.'],
+ sv:['Förbered en anmälan','Fortsätt utan GPS','Välj officiell kanal','Jag vet inte vem som ansvarar','Göteborgs gator, torg och parker','Statlig väg — Trafikverket','Förbered text','Mottagaren har inte fastställts automatiskt. Välj en kanal bara om du vet att den passar; kontakta annars stadens kontaktcenter.','Öppna Göteborgs kontaktcenter','Förberedd text','Beskrivning och adress finns här tills sidan laddas om. De skickas inte automatiskt till den externa webbplatsen.']
+};
+const cat=i=>(cityActionCopy[currentLanguage]||cityActionCopy.en)[i];
+const CITY_CONTACT='https://goteborg.se/wps/portal/kontakta-oss';
+function manualReport(container){
+ const description=document.getElementById('reportDescription').value;
+ const place=document.getElementById('reportPlace').value;
+ if(!description.trim()){container.textContent=rpt('descriptionRequired');document.getElementById('reportDescription').focus();return;}
+ const choice=document.getElementById('manualRecipient').value;
+ const url=choice==='municipal'?REPORT_ROUTES.goteborg:choice==='state'?REPORT_ROUTES.trafikverket:CITY_CONTACT;
+ const packageText=reportPackage(description,place);
+ container.innerHTML=`<div class="report-route-card"><h2>${cat(9)}</h2><p style="white-space:pre-wrap;overflow-wrap:anywhere">${escapeHtml(packageText)}</p><p>${cat(7)}</p><button type="button" class="action secondary" data-copy-manual>${rpt('copyText')}</button><p><a class="report-open-link" href="${url}" target="_blank" rel="noopener noreferrer">${choice==='unknown'?cat(8):rpt('open')} ↗</a></p><p>${rpt('notSent')}</p><p class="help-text">${cat(10)}</p></div>`;
+ container.querySelector('[data-copy-manual]').onclick=e=>copyTextToClipboard(packageText,e.currentTarget);
+ container.tabIndex=-1;container.focus({preventScroll:true});container.scrollIntoView({block:'nearest'});
+}
+
 function responsibilityScreen() {
   shell(
     t('responsibilityTitle'),
@@ -1184,10 +1204,13 @@ function responsibilityScreen() {
     </div>`
   );
 
+  document.getElementById('issue').addEventListener('input',()=>document.getElementById('ownerResult').replaceChildren());
   document.getElementById('findOwner').onclick = () => {
     const text = document.getElementById('issue').value;
     const container = document.getElementById('ownerResult');
-    container.innerHTML = resultMarkup(text);
+    if(!text.trim()){container.textContent=rpt('descriptionRequired');document.getElementById('issue').focus();return;}
+    container.innerHTML = resultMarkup(text)+`<button type="button" class="action" id="prepareCityReport">${cat(0)}</button><p><a href="${CITY_CONTACT}" target="_blank" rel="noopener noreferrer">${cat(8)} ↗</a></p>`;
+    document.getElementById('prepareCityReport').onclick=()=>{uiDrafts.set('reportDescription',text);navigate('rapportera');};
     bindRoadResolver(container);
   };
 }
@@ -1353,6 +1376,12 @@ function reportScreen() {
         <input id="reportPlace" class="input" placeholder="${rpt('placeLabel')}" aria-describedby="reportPlaceHelp">
         <p id="reportPlaceHelp" class="help-text">${at('memo')}</p>
       </div>
+      <details open><summary>${cat(1)}</summary>
+        <label class="field-label" for="manualRecipient">${cat(2)}</label>
+        <select id="manualRecipient" class="input"><option value="unknown">${cat(3)}</option><option value="municipal">${cat(4)}</option><option value="state">${cat(5)}</option></select>
+        <p class="help-text">${cat(7)}</p>
+        <button id="prepareManualReport" type="button" class="action">${cat(6)}</button>
+      </details>
       <button id="routeRoadReport" class="action" type="button">
         ${icon('pin')}<span>${rpt('route')}</span>
       </button>
@@ -1364,6 +1393,8 @@ function reportScreen() {
   const button = document.getElementById('routeRoadReport');
   const container = document.getElementById('reportRouteResult');
 
+  document.getElementById('prepareManualReport').onclick=()=>manualReport(container);
+  for(const input of document.querySelectorAll('#reportDescription,#reportPlace,#manualRecipient'))input.addEventListener('input',()=>container.replaceChildren());
   if (!navigator.geolocation || !window.FolkoopCityNVDB) {
     button.disabled = true;
     container.innerHTML = `<div class="road-warning">${rt('serviceError')}</div>`;
@@ -1698,7 +1729,7 @@ function aboutScreen() {
 
 // Drafts exist only in memory; switching language/routes must not silently erase typing.
 const uiDrafts = new Map();
-const DRAFT_IDS=['issue','reportDescription','reportPlace','pilotFeedbackTask','pilotFeedbackNotes','pilotFeedbackResult'];
+const DRAFT_IDS=['issue','reportDescription','reportPlace','manualRecipient','pilotFeedbackTask','pilotFeedbackNotes','pilotFeedbackResult'];
 function render(screen, updateState = true) {
   for (const id of DRAFT_IDS) {const el=document.getElementById(id);if(el)uiDrafts.set(id,el.value);}
   FolkoopCityToday.stop();

@@ -1,4 +1,16 @@
 # Рабочая вики FOLKOOP
+## 2026-11-08 - City service/report handoff
+Implemented local preparation from Services to Reports, carrying the description.
+Manual official-channel selection works without GPS; unknown recipient leads to
+Gothenburg contact centre, never claims verified responsibility. Existing NVDB
+path preserved. Preview and explicit copy; no external submission or automatic
+text/address transfer. Edits invalidate prepared results. RU/EN/SV new copy,
+English fallback for other locales; human language approval remains pending.
+Chromium/WebKit 390/1366: handoff, unknown/municipal route, empty input, escaping,
+result invalidation passed. Shell build passed. Publication pending.
+Source checked: https://goteborg.se/wps/portal/kontakta-oss (official contact hub).
+Transport and other City integrations are outside this patch.
+
 ## 2026-11-08 - P0-B purchase keyboard focus
 Previous release 1e83eeb: all hosted checks passed, including validate, WebKit
 and deployment. Next bounded task selected from MASTER_PLAN P0-B accessibility:
