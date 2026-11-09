@@ -955,3 +955,17 @@ body[data-page="messages"] .messages-filter-row a{padding:6px 10px;font-size:.8r
 
 #onboardingCopy .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;white-space:normal}
 #onboardingCopy .actions button{min-width:0;white-space:normal;text-align:start;line-height:1.3}
+
+/* Mura is a nonmodal companion chat, not a fullscreen tour. */
+#onboarding{position:fixed;inset:0;pointer-events:none;background:none;padding:0}
+#onboarding .onboarding-backdrop,#onboarding .onboarding-spotlight{display:none!important}
+#onboarding .onboarding-card,#onboarding .onboarding-card[data-side]{position:fixed!important;inset:auto 10px calc(138px + env(safe-area-inset-bottom)) auto!important;width:min(340px,calc(100vw - 24px))!important;max-width:340px;max-height:min(46dvh,400px)!important;display:flex;flex-direction:column;padding:12px!important;border:1px solid var(--line);border-radius:16px!important;pointer-events:auto;box-shadow:0 8px 30px #0005;background:var(--surface,#fff)}
+#onboarding .onboarding-copy{min-height:0;overflow-y:auto;flex:1}
+#onboarding .onboarding-card h2{font-size:.9rem;margin:2px 0 6px}
+#onboarding .onboarding-head{flex-shrink:0}
+#onboarding .onboarding-portrait{width:28px;height:32px}
+#onboarding .onboarding-actions{padding-top:6px;margin-top:6px;flex-shrink:0}
+#onboardingBody[aria-busy=true]{letter-spacing:4px;min-height:38px}
+.mura-tour-finale{position:fixed;inset:auto 10px calc(138px + env(safe-area-inset-bottom)) auto;margin:0;width:min(340px,calc(100vw - 24px));max-height:46dvh;z-index:110}
+@media(min-width:761px){#onboarding .onboarding-card,#onboarding .onboarding-card[data-side],.mura-tour-finale{bottom:88px!important}}
+@media(max-height:550px){#onboarding .onboarding-card,#onboarding .onboarding-card[data-side],.mura-tour-finale{bottom:8px!important;max-height:65dvh!important}}

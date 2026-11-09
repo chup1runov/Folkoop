@@ -95,8 +95,8 @@
       "path": "apps/web/folkoop.js",
       "status": "local-code",
       "checked_at": "2026-11-09",
-      "checked_scope": "Screenshot-driven scoped contrast, compact surfaces and chapter dialogue; Chromium/WebKit 390/1366.",
-      "sha256": "ae3a05ea21c96028046622b299c83766d640a03196a3fabf6de4fee6e0c1ca7b"
+      "checked_scope": "Nonmodal Mura chat, typing indicator, pause on independent navigation; 18 replies/progress/finale Chromium and WebKit.",
+      "sha256": "346cc404774bdfdf86ee074dec18fbb2681652e670266caf7f8b34d552a5e8a5"
     },
     {
       "id": "SRC-NETWORK-UI",
@@ -111,8 +111,8 @@
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-09",
-      "checked_scope": "Screenshot-driven scoped contrast, compact surfaces and chapter dialogue; Chromium/WebKit 390/1366.",
-      "sha256": "baf9dfecc32b1a044a3ae0021f712c21e84b1a038d3f021dd2b1468ed1ffce51"
+      "checked_scope": "Nonmodal Mura chat, typing indicator, pause on independent navigation; 18 replies/progress/finale Chromium and WebKit.",
+      "sha256": "a05937c9d6fd7944cdac89a3459d297376f8ce1e3771fa0863eecc5afeb4e3c5"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -158,9 +158,9 @@
       "id": "SRC-CI-WEBKIT-SMOKE",
       "path": "scripts/ci/webkit-smoke.sh",
       "status": "local-ci-configuration",
-      "checked_at": "2026-10-29",
-      "checked_scope": "Full launcher read, 13 script calls preserved, shell syntax checked; only two selected scripts executed on macOS",
-      "sha256": "b2f7150523fd7eba9dfc2bc4a5f6d6055b3e5dd02aa1aaa621db733de7bfa83d"
+      "checked_at": "2026-11-09",
+      "checked_scope": "Added all-18-reply Mura chat regression; existing WebKit checks preserved.",
+      "sha256": "8be86b67769fc96b4a666f9f7e82299f97d2501c0689aab62a30e7636218ccaf"
     },
     {
       "id": "SRC-STAB-SPEC",

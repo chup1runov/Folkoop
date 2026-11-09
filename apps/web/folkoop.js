@@ -1016,7 +1016,7 @@ function showTourFinale(){
  dialog.setAttribute('aria-describedby','muraFinaleBody');
  dialog.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  dialog.innerHTML='<img src="./folkoop-guide-confident.webp" alt="" width="100" height="110"><h2 id="muraFinaleTitle">'+esc(c[0])+'</h2><p id="muraFinaleBody">'+esc(c[1])+'</p><button type="button" class="button" data-mura-stay autofocus>'+esc(c[2])+'</button><details class="mura-finale-replay"><summary>'+esc(c[3])+'</summary>'+onboardingSteps.map((step,i)=>'<section><h3>'+esc(tutorialTitle(step))+'</h3><div class="actions">'+TOUR_STORIES[i].slice(1).map(story=>'<button type="button" class="text-button" data-tour-map-chapter="'+i+'" data-tour-map-story="'+story+'">'+esc(tourStoryLabel(i,story))+'</button>').join('')+'</div></section>').join('')+'</details>';
- if(!dialog.open)dialog.showModal();
+ if(!dialog.open)dialog.show();
 }
 function nextStoryMarkup(){
  const c=nextStoryCopy[lang]||nextStoryCopy.en,p=storyProgressCopy[lang]||storyProgressCopy.en,next=nextUnopenedStory();
@@ -1097,39 +1097,19 @@ function onboardingTarget(step){
 }
 function positionOnboarding(step){
  if(!onboardingOpen)return;
- const dialog=ensureOnboarding(),spot=dialog.querySelector('#onboardingSpotlight'),target=onboardingTarget(step);
+ const dialog=ensureOnboarding();
+ dialog.querySelector('#onboardingSpotlight').hidden=true;
+ dialog.querySelector('.onboarding-card').setAttribute('aria-modal','false');
  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
- if(!target){spot.hidden=false;dialog.dataset.noTarget='1';spot.style.left='12px';spot.style.top='12px';spot.style.width='1px';spot.style.height='1px';globalThis.FolkoopGuide?.syncModal?.();return;}
- if(step.id!=='helper')target.classList.add('tutorial-target');
- if(step.id!=='helper'){
-  // WebKit may ignore scrollIntoView() for a target inside content that is
-  // currently inert because the modal tour owns focus. Move the document
-  // explicitly so every highlighted target is actually visible before guide
-  // geometry is calculated.
-  const r=target.getBoundingClientRect();
-  const mobile=innerWidth<=760;
-  const dockReserve=mobile?(document.body.classList.contains('mobile-context-visible')?126:76):24;
-  const safeTop=mobile?72:24;
-  const safeBottom=innerHeight-dockReserve;
-  if(r.top<safeTop||r.bottom>safeBottom){
-   const desired=(safeTop+safeBottom)/2;
-   const locked=document.body.classList.contains('guide-tour-open');
-   if(locked)document.body.classList.remove('guide-tour-open');
-   window.scrollBy(0,r.top+r.height/2-desired);
-   if(locked)document.body.classList.add('guide-tour-open');
-  }
- }
- requestAnimationFrame(()=>{
-  if(!onboardingOpen||onboardingSteps[onboardingStep]!==step)return;
-  const rect=target.getBoundingClientRect(),pad=7;
-  spot.hidden=false;dialog.dataset.noTarget='0';
-  spot.style.left=Math.max(6,rect.left-pad)+'px';
-  spot.style.top=Math.max(6,rect.top-pad)+'px';
-  spot.style.width=Math.min(innerWidth-12,rect.width+pad*2)+'px';
-  spot.style.height=Math.min(innerHeight-12,rect.height+pad*2)+'px';
-  dialog.querySelector('.onboarding-card').dataset.side=rect.left+rect.width/2<innerWidth/2?'right':'left';
-  if(step.id!=='helper')globalThis.FolkoopGuide?.teleportTo(target,{mode:step.motion||'point',pose:step.pose||null});
- });
+ globalThis.FolkoopGuide?.syncModal?.();
+}
+let muraTypingTimer;
+function typeMuraLine(node,text){
+ clearTimeout(muraTypingTimer);
+ node.setAttribute('aria-live','polite');
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches){node.removeAttribute('aria-busy');node.textContent=text;return;}
+ node.textContent='•••';node.setAttribute('aria-busy','true');
+ muraTypingTimer=setTimeout(()=>{node.textContent=text;node.removeAttribute('aria-busy');updateOnboardingScrollCue();},420);
 }
 function updateOnboardingScrollCue(){
  const dialog=ensureOnboarding(),copy=dialog.querySelector('#onboardingCopy'),cue=dialog.querySelector('#onboardingScrollCue');
@@ -1158,7 +1138,7 @@ function showOnboarding(step=0){
  picker.setAttribute('aria-label',t('tutorialProgress'));
  picker.innerHTML=onboardingSteps.map((entry,index)=>`<option value="${index}">${index+1}. ${esc(tutorialTitle(entry))}</option>`).join('');
  picker.value=String(onboardingStep);
- dialog.querySelector('#onboardingBody').textContent=(muraDialogue[lang]||[])[onboardingStep]||tutorialText(item);
+ typeMuraLine(dialog.querySelector('#onboardingBody'),(muraDialogue[lang]||[])[onboardingStep]||tutorialText(item));
  let detail=dialog.querySelector('.mura-dialog-detail');if(!detail){detail=document.createElement('details');detail.className='mura-dialog-detail';dialog.querySelector('#onboardingBody').after(detail);}
  detail.open=false;detail.innerHTML='<summary>'+esc(({ru:'Расскажи подробнее',sv:'Berätta mer',en:'Tell me more'})[lang]||'Tell me more')+'</summary><p>'+esc(tutorialText(item))+'</p>';
  let stories=dialog.querySelector('#muraTogetherStories');
@@ -1369,7 +1349,7 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{if(onboardingOpen&&C.route(location.hash)!==onboardingSteps[onboardingStep].route){saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;globalThis.FolkoopGuide?.syncModal?.();}capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
  if(mobileAction){

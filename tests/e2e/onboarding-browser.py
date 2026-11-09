@@ -48,7 +48,7 @@ async def mobile_flow(browser,passed):
  for idx,title in enumerate(titles):
   await expect(page.locator('#onboardingTitle')).to_have_text(title)
   await expect(page.locator('#onboardingProgress')).to_contain_text(f'{idx+1} / 5')
-  await expect(page.locator('#onboardingSpotlight')).to_be_visible()
+  await expect(page.locator('#onboardingSpotlight')).to_be_hidden()
   await expect(page.locator('.onboarding-portrait')).to_be_visible()
   if idx in semantic:
    route_name,visible_text=semantic[idx]
@@ -103,7 +103,7 @@ async def desktop_flow(browser,passed):
  await expect(page.locator('#onboardingTitle')).to_have_text('Profile')
  await expect(page.locator('.onboarding-portrait')).to_be_visible()
  await page.click('[data-onboarding="next"]')
- await expect(page.locator('#onboardingSpotlight')).to_be_visible()
+ await expect(page.locator('#onboardingSpotlight')).to_be_hidden()
  assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth')
  await page.click('[data-onboarding="skip"]')
  assert not errors,errors

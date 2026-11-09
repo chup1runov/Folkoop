@@ -19,6 +19,7 @@ python3 tests/e2e/onboarding-browser.py
 python3 tests/e2e/security-csp-browser.py
 python3 tests/e2e/entry-welcome-audit-browser.py
 python3 tests/e2e/onboarding-audit-browser.py
+python3 tests/e2e/mura-chat-browser.py
 python3 tests/e2e/entry-dependency-browser.py
 python3 tests/e2e/first-contact-preview-browser.py
 python3 tests/e2e/first-contact-guest-browser.py

@@ -65,7 +65,7 @@ async def main():
    for index in range(5):
     # The read-only account renders asynchronously. Measure the actual story
     # target after layout, not the portrait fallback during a slow CI render.
-    await expect(page.locator('.tutorial-target')).to_be_visible()
+    await expect(page.locator('.onboarding-card')).to_have_attribute('aria-modal','false')
     await page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
     record = await page.evaluate(GEOMETRY)
     record.update(width=width,height=height,step=index+1)
@@ -73,8 +73,6 @@ async def main():
     if record['outside']: failures.append(f'{width} step {index+1}: actor/card outside viewport')
     if record['animation']!='none': failures.append(f'{width} step {index+1}: reduced motion ignored')
     # City is a full embedded workspace, unlike the compact heading targets.
-    covered=record['targetOverlap']/(record['target']['w']*record['target']['h'])
-    if (record['targetIsContext'] and covered>.65) or (not record['targetIsContext'] and record['targetOverlap']>4): failures.append(f'{width} step {index+1}: highlighted target covered by explanation')
     if record['actorOverlap']>4: failures.append(f'{width} step {index+1}: character covered by explanation')
     if not record['controlsVisible']: failures.append(f'{width} step {index+1}: title or buttons clipped before clicking/scrolling')
     if record['copyHeight']<18: failures.append(f'{width} step {index+1}: explanation viewport too short to read')
@@ -82,10 +80,9 @@ async def main():
     # Chapter stories and map intentionally scroll; fixed headings/actions must remain reachable.
     if width==390 and height==844 and record['cardRatio']>.48: failures.append(f'{width} step {index+1}: story card still occupies too much of the viewport ({record["cardRatio"]:.2f})')
     if index==0:
-     await page.locator('[data-onboarding="skip"]').focus()
-     await page.keyboard.press('Shift+Tab')
-     if not await page.evaluate("!!document.activeElement.closest('.onboarding-card')"):
-      failures.append(f'{width}: tour leaks keyboard focus')
+     await page.locator('#globalSearchButton').focus()
+     if not await page.locator('#globalSearchButton').evaluate('el=>el===document.activeElement'):
+      failures.append(f'{width}: companion chat blocks page focus')
     # Retain the complete 390x844 physical-iPhone review set; other viewports
     # keep representative/problem screenshots to limit artifact size.
     if (width==390 and height==844) or index in (0,2,3,4) or record['targetOverlap']>4 or record['actorOverlap']>4 or not record['controlsVisible']:
@@ -109,7 +106,7 @@ async def main():
    await context.close()
   await browser.close()
  if not failures:
-  passed=['Chapter stories scroll inside the card while fixed controls remain reachable; portrait cards stay under 48% of viewport height', 'Keyboard focus stays in the tour', 'Reduced motion disables character animation', 'Compact heading targets remain unobscured and the embedded City context remains mostly exposed at four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No XP/signup language leaks into the Mura tour', 'No page errors in tested guest flows']
+  passed=['Chapter stories scroll inside the card while fixed controls remain reachable; portrait cards stay under 48% of viewport height', 'Nonmodal chat permits focus on page controls', 'Reduced motion disables character animation', 'Companion card and character remain within four viewport sizes', 'Headings and navigation buttons stay visible without scrolling the card', 'Scrollable explanations reset to their beginning on every step', 'An interrupted teleport leaves the helper visible', 'No XP/signup language leaks into the Mura tour', 'No page errors in tested guest flows']
  result={'passed':passed,'failures':failures,'geometry':records,'limits':[('WebKit engine on Linux; real iOS Safari and physical devices not tested' if ENGINE=='webkit' else 'Chromium emulation only; real iOS Safari and physical devices not tested'),'No signed-in/account mutation in this audit','Geometry and CSS state do not prove authentic pointing or sitting artwork']}
  (OUT/'onboarding-audit-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  print('ENGINE '+ENGINE)

@@ -87,6 +87,7 @@ function closeModal(restore=true){
  }
 }
 function openModal(root){
+ if(root?.id==='onboarding'){closeModal(false);root.querySelector('[role="dialog"]')?.setAttribute('aria-modal','false');return;}
  const action=storyAction(root);
  if(modal===root&&modalAction===action){if(!inModal(document.activeElement)||document.activeElement.closest('[hidden]'))focusModal();return;}
  closeModal(false);returnFocus=document.activeElement;modal=root;

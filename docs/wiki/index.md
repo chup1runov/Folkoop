@@ -1,4 +1,16 @@
 # Рабочая вики FOLKOOP
+## 2026-11-09 - Mura companion chat
+Tour is a bounded nonmodal companion window, without overlay, inert page or focus
+trap. Typing dots last 420ms; reduced motion shows text immediately. Independent
+route changes pause the tour instead of pulling the user back. Finale is nonmodal.
+All 18 map replies, reload progress, chapter jump and stay after finale passed
+in Chromium/WebKit at 390x844. Geometry audit passed at four sizes; 497 tests
+passed. Guest demo and replay checks passed locally. Physical iPhone not tested.
+Previous CI c0323b0 validate failed on the former long chapter text; the assertion
+now checks the short question AND the original detail disclosure. Old modal-focus
+audit updated to assert page focus remains accessible, per explicit user request.
+Publication and new remote CI recorded separately.
+
 ## 2026-11-09 - Compact theme and Mura dialogue
 User iPhone screenshots revealed inherited light text on hard-coded white
 backgrounds: source cards, Center hero, people shortcut and tour finale.
