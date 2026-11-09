@@ -53,7 +53,7 @@ test('only selected resource needs appear as contributions; no ranking or mutati
  assert.match(f.render(a),/Твой вклад/);assert.doesNotMatch(f.render(a),/<form|data-coop="join"/);
 });
 test('Mura is authored illustration and known notices remain event-specific',()=>{
- const f=setup(),a=meeting();const html=f.render({...a,demo:true,demoMeeting:true});assert.match(html,/вымышленные данные/);assert.doesNotMatch(html,/<form/);
+ const f=setup(),a=meeting();const html=f.render({...a,demo:true,demoMeeting:true});assert.match(html,/вымышленные данные/);assert.doesNotMatch(html,/<form/);assert.doesNotMatch(html,/Нужно обновить данные/);assert.match(html,/shared-progress-next[^]*data-shared-step="meeting"/);
  assert.equal(f.notice('task_verified','t'),'Подтверждён результат задачи');assert.equal(f.notice('collection_changed','not_collected'),null);assert.equal(f.notice('purchase_stage','done'),'Организатор описал итог закупки');assert.equal(f.notice('member_joined','x'),null);
 });
 test('all 37 copy entries exist in each supported locale',()=>{for(const l of ['ru','en','sv','uk','fi','bs','es','ar','fa','so','ku'])for(let i=0;i<37;i++)assert.ok(setup(l).text(i),l+':'+i);});

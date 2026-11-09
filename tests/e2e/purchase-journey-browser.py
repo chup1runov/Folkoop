@@ -38,6 +38,7 @@ async def main():
    print('PASS purchase route, disclosure, no demo writes, viewport',width)
    await p.locator('[data-coop=back]').click();await p.locator('[data-coop=open][data-id="00000000-0000-4000-8000-000000000310"]').click()
    shared=p.locator('[data-shared-progress]');await expect(shared).to_contain_text('вымышленные данные')
+   await expect(shared).not_to_contain_text('Нужно обновить данные');await shared.locator('.shared-progress-next [data-shared-step]').click();assert await p.locator('#meetingReadinessTitle').evaluate('(n)=>n===document.activeElement')
    for key,target in [('people','.project-readiness'),('room','.project-readiness'),('resources','.project-budget'),('outcome','.meeting-outcome-story')]:
     await shared.locator(f'[data-shared-key={key}] summary').click();await shared.locator(f'[data-shared-key={key}] [data-shared-step]').click()
     assert await p.locator(target+' h3').first.evaluate('(n)=>n===document.activeElement'),key

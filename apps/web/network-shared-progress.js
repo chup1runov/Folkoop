@@ -35,7 +35,7 @@ function model({coop,data,user,members=[],demo=false,demoMeeting=false,now=Date.
   const taskStep=row('tasks',9,taskRows.length&&verified.length===taskRows.length?'done':'pending','tasks',verified.map(x=>({actor:x.assignee_id,reviewer:x.reviewed_by,title:x.title,label:27})),`${verified.length} / ${taskRows.length}`);
   if(demoMeeting){
    // Same authored story as renderMeetingReadiness. No fabricated response records.
-   steps=[row('people',5,'done','meeting',[],''),row('room',6,'pending','meeting'),row('resources',7,'unknown','budget'),row('outcome',8,'pending','outcome')];
+   steps=[row('people',5,'done','meeting',[],''),row('room',6,'pending','meeting'),row('resources',7,'pending','budget'),row('outcome',8,'pending','outcome')];
   }else if(terms){
    const snapshotFresh=!meeting.error&&!meeting.stale&&fresh(meeting.loadedAt,now),current=snapshotFresh&&meeting.current===true&&Date.parse(terms.starts_at)>now;
    // Response identity is (user, role), not user alone.

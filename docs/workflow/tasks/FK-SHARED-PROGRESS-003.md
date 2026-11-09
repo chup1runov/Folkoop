@@ -95,3 +95,11 @@ membership; changed it to purchase-progress, which includes amounts and netCommi
 passed again; browser assertions now require the actual contribution form for the
 isolated signed-in fixture, and no visible forms for Mura. Final route patch CI/live
 acceptance pending.
+
+2026-11-09 final Mura consistency review: 85c48fe is live on Cloudflare; purchase
+next-step now opens quantities correctly. In the authored Swedish meeting, an
+unconfigured illustrative budget is pending (not a failed data refresh), so the
+next action follows the existing story: room access first. This is only demo copy/
+state; real snapshot error handling is unchanged. 523 unit/integration checks and
+Chromium Mura 390/1366 passed with an explicit no-false-refresh and room-focus
+assertion. Hosted final acceptance still pending.
