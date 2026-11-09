@@ -753,3 +753,12 @@ pause/manual resume with visible helper; no application behavior changed.
 Follow-up CI pending; first hosted run is not recorded as passed.
 
 Follow-up local WebKit tour passed all stories and both automatic/manual resume; first run Chromium validate and production build passed. Hosted test follow-up pending.
+
+2026-11-09 FK-FOR-YOU-001 acceptance: Cloudflare runtime 67eeac3 published; live
+390px browser walkthrough passed intent → Swedish opportunity → local proposal
+→ illustrative continuation → return (existing cached client updated via the banner).
+Follow-up b67e4ff has identical application code. Validate, WebKit, sources and
+both database jobs passed: https://github.com/chup1runov/Folkoop/actions/runs/42617057762 .
+503 local unit/integration checks passed; local browser runs recorded in the task.
+No live participant publication was sent. No physical iPhone, native-speaker or
+engagement-effect certification. Self-review, no independent agent. Historical log preserved.

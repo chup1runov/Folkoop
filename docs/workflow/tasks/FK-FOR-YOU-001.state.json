@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-FOR-YOU-001",
   "updated": "2026-11-09",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-FOR-YOU-001.md",
   "authorization": {
     "status": "accepted",
@@ -68,11 +68,13 @@
     },
     {
       "id": "FK-FOR-YOU-001-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-FOR-YOU-001-R05"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-FOR-YOU-001-E02"
+      ]
     }
   ],
   "evidence": [
@@ -87,8 +89,17 @@
         "C04"
       ],
       "path": "docs/workflow/tasks/FK-FOR-YOU-001.md"
+    },
+    {
+      "id": "FK-FOR-YOU-001-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/tasks/FK-FOR-YOU-001.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish authorized free runtime; await CI and verify live Mura path; record E02."
+  "next_action": "Complete: runtime 67eeac3 published on Cloudflare; b67e4ff identical app passed hosted CI; live mobile Mura example checked, wiki updated. Real-account writes and physical iPhone not tested."
 }

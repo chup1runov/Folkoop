@@ -52,7 +52,15 @@ count, so a latest own event must not hide earlier unread activity.
 Browser fixtures cannot certify live database mutations. No real posts sent. Physical
 phone, native-speaker approval and engagement/retention effects are not established.
 
-FK-FOR-YOU-001-E02 — publication and live read-only verification pending.
+FK-FOR-YOU-001-E02 — passed:
+Cloudflare published runtime 67eeac3. Live 390px browser walkthrough passed:
+Profile / For me → Swedish → terms → local example → continuation → return.
+Existing cache updated via the update banner; no real participant writes.
+Follow-up b67e4ff changes only test/docs, with identical application tree.
+[Hosted run 42617057762](https://github.com/chup1runov/Folkoop/actions/runs/42617057762):
+validate, WebKit, sources and both database checks passed. Workflow metadata/link/
+source validator passed (5 requirements/checks, 30 sources, 49 markdown pages).
+No paid infrastructure or new services added.
 
 
 ## Hosted CI follow-up
@@ -64,4 +72,4 @@ all 18 stories passed before helper became hidden. `folkoop.js` explicitly
 resumes an active tour after reload. Test now waits for automatic restoration,
 asserts the restored group story, pauses it explicitly and tests manual resume
 with the helper visibly open. No application behavior or assertions removed.
-Follow-up local WebKit passed all stories and restoration/finale, exit 0. Hosted follow-up pending.
+Follow-up local WebKit passed all stories and restoration/finale, exit 0. Hosted follow-up passed: run 42617057762.
