@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-STORIES-004",
   "updated": "2026-11-09",
-  "phase": "blocked",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-STORIES-004.md",
   "authorization": {
     "status": "accepted",
@@ -66,13 +66,14 @@
     },
     {
       "id": "FK-STORIES-004-T03",
-      "status": "blocked",
+      "status": "done",
       "requirements": [
         "FK-STORIES-004-R05"
       ],
       "evidence": [
         "FK-STORIES-004-E01",
-        "FK-STORIES-004-E02"
+        "FK-STORIES-004-E02",
+        "FK-STORIES-004-E03"
       ]
     }
   ],
@@ -97,8 +98,17 @@
         "C05"
       ],
       "path": "docs/workflow/tasks/FK-STORIES-004.md"
+    },
+    {
+      "id": "FK-STORIES-004-E03",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/tasks/FK-STORIES-004.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Core implementation, local/hosted test jobs, hosted migration and Cloudflare runtime 1347be2 accepted. Remaining GitHub Pages deployment blocked by repeated provider Internal server error (runs 42670580212, 42673076327); retry after provider recovery, without runtime changes or paid services."
+  "next_action": "Complete. Publication residual cleared by runtime 8470588 and full successful CI/deploy 42680313379. Adoption measurement and media extensions remain future product work, not unfinished acceptance."
 }

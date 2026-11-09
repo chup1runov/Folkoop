@@ -173,3 +173,13 @@ Final documentation self-review passed: workflow structure (5 requirements, 3 ta
 2 evidence records), all 35 source hashes, 52 Markdown pages and 414 local links;
 `git diff --check` and prior journal prefix/unique appended entry check passed.
 These checks establish local consistency, not external-link or product-effect truth.
+
+### FK-STORIES-004-E03 — GitHub Pages residual cleared
+Later runtime `8470588d74cb2024a9cc38c60554018ddb514763` changes only the compact
+navigation positioning plus documentation, retaining Stories. On 9 November,
+[run 42680313379](https://github.com/chup1runov/Folkoop/actions/runs/42680313379)
+completed successfully: validate, WebKit, database, sources and deploy. Cloudflare
+also deployed this revision successfully. The former external publication blocker
+is cleared; T03 and FK-STORIES-004 are complete. Earlier failed runs stay recorded,
+not rewritten as successes. This adds publication evidence, not a new two-participant
+live story test or a measured retention benefit.
