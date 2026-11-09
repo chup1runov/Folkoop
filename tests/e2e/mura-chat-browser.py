@@ -74,7 +74,15 @@ async def main():
     print('PASS persistent reply and practice',chapter,story,flush=True)
   await p.locator('[data-onboarding="back"]').click()
   await expect(p.locator('#onboardingTitle')).to_contain_text('Групп')
-  await p.reload();await p.locator('#folkoopGuideActor').click()
+  # An active tour resumes automatically after reload. Wait for that documented
+  # outcome before testing manual resume; clicking the helper during the delayed
+  # startup raced startFullIntroduction on CI WebKit and hid the helper panel.
+  await p.reload()
+  await expect(p.locator('#muraChatStory')).to_be_visible()
+  await expect(p.locator('#onboardingTitle')).to_contain_text('Групп')
+  await p.locator('[data-onboarding=skip]').click()
+  await p.locator('#folkoopGuideActor').click()
+  await expect(p.locator('#folkoopHelperPanel')).to_be_visible()
   await expect(p.locator('#folkoopHelperPanel .mura-tour-map summary')).to_contain_text('18/18')
   await p.locator('#folkoopHelperTour').click()
   await expect(p.locator('#muraChatStory')).to_be_visible()

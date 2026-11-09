@@ -54,3 +54,14 @@ phone, native-speaker approval and engagement/retention effects are not establis
 
 FK-FOR-YOU-001-E02 — publication and live read-only verification pending.
 
+
+## Hosted CI follow-up
+Runtime 67eeac3 deployed to Cloudflare. Live mobile Mura For me → Swedish →
+example proposal → example continuation → return verified in browser.
+Run 42615973598 WebKit failed in existing `mura-chat-browser.py:79`: the test
+clicked the helper during the 120ms automatic active-tour restoration. Logs show
+all 18 stories passed before helper became hidden. `folkoop.js` explicitly
+resumes an active tour after reload. Test now waits for automatic restoration,
+asserts the restored group story, pauses it explicitly and tests manual resume
+with the helper visibly open. No application behavior or assertions removed.
+Follow-up local WebKit passed all stories and restoration/finale, exit 0. Hosted follow-up pending.

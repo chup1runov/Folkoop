@@ -745,3 +745,11 @@ human-language review remain outside this acceptance. Historical entries preserv
 
 
 Previous runtime 21703d4: all seven hosted checks including validate, WebKit and Cloudflare succeeded (run 42611907908).
+
+2026-11-09 FK-FOR-YOU-001 hosted follow-up: runtime 67eeac3 deployed; live mobile
+Mura loop passed. Existing tour test raced automatic active-tour restoration
+after reload (WebKit run 42615973598). Added explicit auto-resume assertion, then
+pause/manual resume with visible helper; no application behavior changed.
+Follow-up CI pending; first hosted run is not recorded as passed.
+
+Follow-up local WebKit tour passed all stories and both automatic/manual resume; first run Chromium validate and production build passed. Hosted test follow-up pending.
