@@ -103,7 +103,7 @@
       "path": "apps/web/network-ui.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit",
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "1f69e40b29160411251aec26e3473183960dc19c34d559c4017c5972cb5ab71d"
     },
     {
@@ -111,7 +111,7 @@
       "path": "apps/web/folkoop.css",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "4a6e2df06cca926e1f17a2eb603fafe197e069065e6943be649070ecb2fb89b5"
     },
     {
@@ -159,7 +159,7 @@
       "path": "scripts/ci/webkit-smoke.sh",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "b38c5b60c705c0c07701f23d97c2334320606518b577d2a33f8c4f187e99c585"
     },
     {
@@ -239,7 +239,7 @@
       "path": "apps/web/network-for-you.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "38762c51a1939f517394ca8e3d53f1b4404c1ffad097e1a477e2ba5e477b73a1"
     },
     {
@@ -261,9 +261,9 @@
     {
       "id": "SRC-SHARED-PROGRESS",
       "path": "apps/web/network-shared-progress.js",
-      "status": "implemented-tested",
+      "status": "implemented-tested-deployed",
       "checked_at": "2026-11-09",
-      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; quantity source jump reaches actual quantity form; hosted/live 3b4e110 checkpoint; demo pending budget follows authored room-first story, not a refresh failure",
+      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; quantity source jump reaches actual quantity form; hosted/live 3b4e110 checkpoint; demo pending budget follows authored room-first story, not a refresh failure; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "7d46a52ed2ed7738b0fc1a3b560f01d0719f4a691f8be525433953abdc949e03"
     }
   ]

@@ -833,3 +833,24 @@ next action follows the existing story: room access first. This is only demo cop
 state; real snapshot error handling is unchanged. 523 unit/integration checks and
 Chromium Mura 390/1366 passed with an explicit no-false-refresh and room-focus
 assertion. Hosted final acceptance still pending.
+
+2026-11-09 b92d175 Cloudflare/live acceptance: normal update banner succeeded;
+Mura purchase shows named pledges/own badge and its next-step reaches quantities.
+The Swedish meeting now proposes room access and focuses the source heading, with
+no false budget refresh warning. Screenshot saved locally as review evidence.
+No live account write, no new agreement accepted, no paid services. Chromium/
+WebKit hosted jobs are still running; source and both database checks passed.
+
+2026-11-09 FK-SHARED-PROGRESS-003 complete: runtime b92d175468a3ff7c5c063451182e923a47b20f78.
+All seven hosted checks succeeded: validate, WebKit, sources, reusable database,
+standalone database, GitHub Pages deploy and Cloudflare Pages. Main run:
+https://github.com/chup1runov/Folkoop/actions/runs/42643020388 ; standalone SQL:
+https://github.com/chup1runov/Folkoop/actions/runs/42643020295 .
+Live folkoop.pages.dev Mura acceptance passed normal client update, named/own
+purchase contributions, quantity source navigation, meeting milestones and
+room-first next step. 523 local unit/integration checks passed; local Chromium/
+WebKit coverage and isolated/live limits are recorded above. No physical phone,
+native-language certification, retention effect measurement or live account
+consent/receipt posting. Author self-review only. Source fingerprints reconciled;
+old journal preserved; new FK-LESSON-004/005 record concrete prevention measures.
+Final documentation commit is separate and skips redundant build/publication.

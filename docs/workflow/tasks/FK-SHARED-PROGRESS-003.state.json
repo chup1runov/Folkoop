@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-SHARED-PROGRESS-003",
   "updated": "2026-11-09",
-  "phase": "finalizing",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-SHARED-PROGRESS-003.md",
   "authorization": {
     "status": "accepted",
@@ -68,11 +68,13 @@
     },
     {
       "id": "FK-SHARED-PROGRESS-003-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-SHARED-PROGRESS-003-R05"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-SHARED-PROGRESS-003-E02"
+      ]
     }
   ],
   "evidence": [
@@ -87,8 +89,17 @@
         "C04"
       ],
       "path": "docs/workflow/tasks/FK-SHARED-PROGRESS-003.md"
+    },
+    {
+      "id": "FK-SHARED-PROGRESS-003-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/tasks/FK-SHARED-PROGRESS-003.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Publish checked patch freely; wait hosted CI and verify live Mura, then finalize wiki."
+  "next_action": "Complete: b92d175 passed all seven hosted checks and both free deployments; live Mura purchase/meeting accepted. Physical device, new live-account confirmations, native-speaker acceptance and retention impact are outside this technical acceptance and remain unverified."
 }
