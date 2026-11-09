@@ -919,6 +919,10 @@ body[data-page="messages"] .messenger-bubble p{margin:4px 0}
 @media(max-width:760px){.mobile-context-dock{padding:2px 4px}.mobile-context-dock>a>span:not(.net-count){font-size:.59rem}.topbar{gap:8px}.topbar .brand{font-size:.85rem}.topbar .location:not([hidden]){max-width:26vw;font-size:.75rem}}
 html[data-reduce-motion="true"] :is(.mobile-primary-nav,.mobile-context-dock)>a{transition:none;transform:none}
 @media(prefers-reduced-motion:reduce){.mobile-primary-nav>a,.mobile-context-dock>a{transition:none;transform:none}}
+/* Compact subnavigation grows inward from its primary destination. */
+.mobile-context-dock{width:max-content;max-width:min(892px,calc(100% - 8px));right:auto;transform:none;padding:2px 4px;gap:3px;justify-content:flex-start}
+.mobile-context-dock[data-expand="start"]{flex-direction:row-reverse}
+.mobile-context-dock>a{flex:0 1 auto;width:clamp(44px,calc((100vw - 28px)/5),76px);min-width:44px}
 body[data-page="messages"] .messenger-heading p.meta{display:none}
 body[data-page="messages"] .messenger-chat-copy>.row{flex-wrap:nowrap;align-items:center;gap:6px}
 body[data-page="messages"] .messenger-chat-copy h3{min-width:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:.92rem}

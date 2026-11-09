@@ -149,6 +149,19 @@ const entryModeNow=()=>{try{return sessionStorage.getItem(ENTRY_KEY)||entryModeM
 entryModeMemory=entryModeNow();
 let muraVisitActive=entryModeNow()==='guest';
 const isMuraVisit=()=>muraVisitActive||entryModeNow()==='guest'||document.body.classList.contains('guest-preview-open');
+function positionContextDock(){
+ const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');
+ const active=primary?.querySelector('[aria-current="page"]'),first=dock?.querySelector('a');
+ if(!active||!first||dock.hidden)return;
+ const rail=primary.getBoundingClientRect(),parent=active.getBoundingClientRect();
+ const group=dock.getBoundingClientRect(),item=first.getBoundingClientRect();
+ if(!rail.width||!group.width)return;
+ // Keep the first destination beside its parent; the middle group stays centred.
+ // Measure physical geometry so RTL and resized desktop rails work the same way.
+ const offset=dock.dataset.parentSection==='center'?group.width/2:item.left+item.width/2-group.left;
+ const left=Math.max(rail.left+4,Math.min(parent.left+parent.width/2-offset,rail.right-4-group.width));
+ dock.style.left=Math.round(left)+'px';
+}
 function renderMobileChrome(){
  const primary=$('#mobilePrimaryNav'),dock=$('#mobileContextDock');if(!primary||!dock)return;
  const active=mobilePrimaryFor(current);
@@ -171,6 +184,7 @@ function renderMobileChrome(){
   :(MOBILE_CONTEXT[active]||[]);
  const context=guest?(guestContext[active]||[]):accountContext;
  dock.dataset.parentSection=active;
+ dock.dataset.expand=MOBILE_PRIMARY.indexOf(active)>2?'start':'end';
  const subLabel=k=>{
   const messageIndex=['messages-contacts','messages-calls','messages-chats'].indexOf(k);
   if(messageIndex>=0)return globalThis.FolkoopNetworkMessaging.copy(lang)[messageIndex];
@@ -192,8 +206,9 @@ function renderMobileChrome(){
  dock.innerHTML=items;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
+ positionContextDock();
  globalThis.FolkoopGuide?.refresh?.();
- requestAnimationFrame(()=>globalThis.FolkoopGuide?.refresh?.());
+ requestAnimationFrame(()=>{positionContextDock();globalThis.FolkoopGuide?.refresh?.();});
 }
 function closeMobileDemo(){
  const dock=$('#mobileContextDock'),pop=dock?.querySelector('.mobile-demo-popover'),button=dock?.querySelector('[data-mobile-action="demo"]');
@@ -1613,7 +1628,7 @@ $('#skip').addEventListener('click',e=>{
  visibleMain?.focus();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!ensureEntryGate().hidden){const mode=sessionStorage.getItem(ENTRY_KEY);if(mode)hideEntryGate();return;}if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
-window.addEventListener('resize',()=>{if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
+window.addEventListener('resize',()=>{positionContextDock();if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
 ensureHelper();
 globalThis.FolkoopGuide?.home({instant:true});
 render();
