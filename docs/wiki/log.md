@@ -862,3 +862,15 @@ Final documentation commit is separate and skips redundant build/publication.
 
 Источники реестра: SRC-STORIES, SRC-STORIES-SQL, SRC-NETWORK-UI, SRC-NETWORK-CLIENT.
 <!-- /workflow-entry:FK-STORIES-004-LOCAL -->
+
+<!-- workflow-entry:FK-STORIES-004-PUBLISHED -->
+## [2026-11-09] FK-STORIES-004-PUBLISHED | Истории опубликованы на основном сайте; GitHub Pages заблокирован внешним сбоем
+
+Реализация и проверка FK-STORIES-004 завершены: 527 локальных unit/integration, 22 SQL-набора, Chromium/WebKit, тёмная/светлая темы и RTL. Миграция participant_stories применена к рабочему Supabase, права прочитаны обратно; никаких реальных историй, жалоб, сообщений или закрытий аккаунтов при проверке не создавали. Runtime 1347be2 опубликован бесплатно на folkoop.pages.dev и проверен в браузере после штатного обновления. Устранены неправильный язык примеров и закрытие окна при позднем ответе загрузки; добавлена регрессия порядка запросов (FK-LESSON-006).
+
+Все тестовые задания runtime CI 42670580212 успешны, но workflow остановился перед deploy с GitHub Internal server error. Контрольный документационный commit 988c85f запустил 42673076327 с неизменным runtime; тот же сбой до любых заданий. Поэтому общий статус не green, а FK-STORIES-004 остаётся blocked только на публикации копии GitHub Pages. Основной Cloudflare работает; финальная документационная фиксация пропускает повторные сборки. Ранние pending-записи остаются историческими.
+
+Самопроверка, не независимое ревью. Сценарии авторизованных публикаций — изолированные HTTP-фикстуры плюс SQL; физический iPhone, новая реальная публикация двух участников, носители 11 языков и эффект на удержание не проверены. Пока текстовые истории; фото/видео, реакции, автоматический дайджест и интерфейс модератора не реализованы. Формат основан на официально описанных Telegram/Instagram Stories; популярность FOLKOOP этим не доказана.
+
+Источники реестра: SRC-STORIES, SRC-STORIES-SQL, SRC-NETWORK-UI, SRC-NETWORK-CLIENT, SRC-CI-WEBKIT-SMOKE.
+<!-- /workflow-entry:FK-STORIES-004-PUBLISHED -->

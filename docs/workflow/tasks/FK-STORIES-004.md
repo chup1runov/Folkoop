@@ -147,3 +147,29 @@ The failed-jobs retry API returned 403 `This workflow run cannot be retried`.
 This is not a green whole workflow or a successful GitHub Pages deployment.
 A documentation-only checkpoint will trigger a fresh GitHub run with unchanged
 runtime; Cloudflare build is skipped for that checkpoint. Final outcome follows.
+
+### FK-STORIES-004-E02 — final hosted/live evidence (limited GitHub mirror)
+Documentation checkpoint `988c85fa5cb0a809f2cf169d1aa3c8814135c656` leaves all runtime
+files identical to 1347be2. Its [fresh run 42673076327](https://github.com/chup1runov/Folkoop/actions/runs/42673076327)
+failed at 18:20:39 UTC before any job was created, with `Internal server error`,
+correlation `4bdc7e0e-90dc-4471-9420-0371cbbab2cb`. No runtime-test failure is reported
+in this retry; no test success is inferred from it. The generic GitHub Status page
+showed operational at lookup, so no causal connection to earlier incidents is claimed.
+
+Delivered: migration + security readback, tested runtime 1347be2, successful Cloudflare
+production deployment and live Mura UI acceptance described above. Local 527 tests,
+22 SQL suites, both browser engines and all actual test jobs of runtime run 42670580212
+passed. Remaining: GitHub Pages deployment, blocked by provider failure. T03 and task
+remain blocked for that exact residual, not because the core feature is unpublished.
+No paid upgrade, workflow gate removal or new authentication permission was used.
+Final wiki/traceability check and diff review follow; documentation-only commit skips
+both providers' redundant builds. Prior journal entries remain byte-for-byte intact.
+
+Product validation still needed: whether readers open a related project, send a
+useful reply and subsequently contribute. Evaluate these outcomes before adding more
+media or increasing frequency; no causal retention claim or new analytics collection.
+
+Final documentation self-review passed: workflow structure (5 requirements, 3 tasks,
+2 evidence records), all 35 source hashes, 52 Markdown pages and 414 local links;
+`git diff --check` and prior journal prefix/unique appended entry check passed.
+These checks establish local consistency, not external-link or product-effect truth.

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-STORIES-004",
   "updated": "2026-11-09",
-  "phase": "finalizing",
+  "phase": "blocked",
   "spec": "docs/workflow/tasks/FK-STORIES-004.md",
   "authorization": {
     "status": "accepted",
@@ -66,11 +66,14 @@
     },
     {
       "id": "FK-STORIES-004-T03",
-      "status": "in_progress",
+      "status": "blocked",
       "requirements": [
         "FK-STORIES-004-R05"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-STORIES-004-E01",
+        "FK-STORIES-004-E02"
+      ]
     }
   ],
   "evidence": [
@@ -85,8 +88,17 @@
         "C04"
       ],
       "path": "docs/workflow/tasks/FK-STORIES-004.md"
+    },
+    {
+      "id": "FK-STORIES-004-E02",
+      "kind": "deterministic",
+      "result": "limited",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/tasks/FK-STORIES-004.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Local checks passed; additive hosted migration applied. Read back privileges, publish, wait hosted CI and accept live Mura; then finish wiki."
+  "next_action": "Core implementation, local/hosted test jobs, hosted migration and Cloudflare runtime 1347be2 accepted. Remaining GitHub Pages deployment blocked by repeated provider Internal server error (runs 42670580212, 42673076327); retry after provider recovery, without runtime changes or paid services."
 }
