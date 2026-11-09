@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "FK-FOR-YOU-001",
+  "updated": "2026-11-09",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-FOR-YOU-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-09",
+    "scope": "For me loop, verify, wiki and free publication"
+  },
+  "requirements": [
+    {
+      "id": "FK-FOR-YOU-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-R05",
+      "checks": [
+        "C05"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-FOR-YOU-001-T01",
+      "status": "done",
+      "requirements": [
+        "FK-FOR-YOU-001-R01",
+        "FK-FOR-YOU-001-R02",
+        "FK-FOR-YOU-001-R03"
+      ],
+      "evidence": [
+        "FK-FOR-YOU-001-E01"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-T02",
+      "status": "done",
+      "requirements": [
+        "FK-FOR-YOU-001-R02",
+        "FK-FOR-YOU-001-R03",
+        "FK-FOR-YOU-001-R04"
+      ],
+      "evidence": [
+        "FK-FOR-YOU-001-E01"
+      ]
+    },
+    {
+      "id": "FK-FOR-YOU-001-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-FOR-YOU-001-R05"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-FOR-YOU-001-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-FOR-YOU-001.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Publish authorized free runtime; await CI and verify live Mura path; record E02."
+}

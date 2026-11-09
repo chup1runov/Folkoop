@@ -822,26 +822,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:800px){.meeting-confirmations .readiness-columns{grid-template-columns:1fr}}
 
 /* Interest-first home. Decorative artwork makes no claims about real venues. */
-.for-you-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:18px;width:fit-content;margin-block:8px 20px;background:#f1f5f3}
-.for-you-switch button{border:0;border-radius:13px;padding:12px 20px;background:transparent;color:#294d45;font:inherit;cursor:pointer}
-.for-you-switch button[aria-pressed=true]{background:var(--surface,#fff);box-shadow:0 2px 7px #193c3514;font-weight:700}
-.for-you-hero{position:relative;overflow:hidden;padding:clamp(24px,5vw,48px);border-radius:28px;background:linear-gradient(120deg,#e6f5ed,#f5f2dc);color:#173f35;margin-bottom:22px}
-.for-you-hero h1{font-size:clamp(28px,4vw,44px);line-height:1.15;max-width:700px;margin-block:12px}
-.for-you-hero p{max-width:600px;position:relative}.for-you-spark{position:absolute;inset-inline-end:18px;top:-24px;font-size:190px;opacity:.09;pointer-events:none}
-.for-you-wishes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:28px}
-.for-you-wishes button{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:112px;text-align:start;border:1px solid #cbdad3;border-radius:18px;padding:16px;background:var(--surface,#fff);color:#214239;cursor:pointer;font:inherit;transition:transform .15s,box-shadow .15s,background .15s}
-.for-you-wishes button>span{font-size:27px}.for-you-wishes button[aria-pressed=true]{background:#e3f1eb;border:2px solid #21644e;padding:15px;box-shadow:0 3px 10px #173f3510}
+.for-you-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:18px;width:fit-content;margin-block:8px 12px;background:var(--paper)}
+/* Bounded discovery and an explicit small contribution, using both theme palettes. */
+.for-you-switch button{border:0;border-radius:10px;padding:9px 14px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.for-you-switch button[aria-pressed=true]{background:var(--surface,#fff);box-shadow:0 1px 5px #0002;font-weight:700}
+.for-you-hero{position:relative;overflow:hidden;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface,#fff);color:var(--ink);margin-bottom:12px}
+.for-you-hero h2{font-size:1.25rem;margin-block:4px 8px}.for-you-hero p{max-width:600px;margin-bottom:0;position:relative}.for-you-hero .eyebrow{margin-bottom:6px}.for-you-spark{position:absolute;inset-inline-end:10px;top:-16px;font-size:100px;opacity:.07;pointer-events:none}
+.for-you-wishes{display:flex;flex-wrap:wrap;gap:6px;margin-block:12px}
+.for-you-wishes button{display:flex;align-items:center;gap:6px;min-height:44px;text-align:start;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--surface,#fff);color:var(--ink);cursor:pointer;font:inherit;font-size:.85rem;transition:transform .15s,background .15s}
+.for-you-wishes button>span{font-size:18px}.for-you-wishes button[aria-pressed=true]{background:var(--soft);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .for-you-wishes button:active{transform:scale(.98)}
-.for-you :is(button,a):focus-visible,.for-you-switch button:focus-visible{outline:3px solid #246c57;outline-offset:4px}
-.for-you-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.for-you-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--surface,#fff);box-shadow:0 4px 18px #173f3508;display:flex;flex-direction:column}
-.for-you-card-art{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:100px;padding:20px;background:#e5f2e9}.for-you-card-art>span:first-child{font-size:42px}.for-you-tone-1{background:#f5ecdc}.for-you-tone-2{background:#e9edf8}
-.for-you-card-content{padding:20px;display:flex;flex-direction:column;align-items:flex-start;flex:1;overflow-wrap:anywhere}.for-you-card-content h3{font-size:21px;margin:0 0 10px}.for-you-card-content p{margin:0 0 14px}.for-you-card-content .button{margin-top:auto;width:100%;display:flex;justify-content:space-between;gap:12px}
-.for-you-reason{font-size:13px;color:#426354;border-inline-start:3px solid #b6d3c4;padding-inline-start:10px}
-.for-you-empty{background:#f4f7f2;padding:30px;border-radius:22px;text-align:center}.for-you-empty>span{font-size:40px}.for-you-empty button{margin:6px}
-@media(hover:hover){.for-you-wishes button:hover{box-shadow:0 4px 12px #173f351a;transform:translateY(-2px)}}
-@media(max-width:1000px){.for-you-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.for-you-wishes{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){.for-you-grid{grid-template-columns:1fr}.for-you-wishes{grid-template-columns:repeat(2,minmax(0,1fr))}.for-you-wishes button:last-child{grid-column:1/-1;flex-direction:row;align-items:center;min-height:64px}.for-you-hero{border-radius:22px}.for-you-switch{width:100%}.for-you-switch button{flex:1}.for-you-card-art{min-height:80px}}
+.for-you :is(button,a):focus-visible,.for-you-switch button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.for-you-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.for-you-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--surface,#fff);color:var(--ink);display:flex;flex-direction:column}
+.for-you-card-art{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px 0}.for-you-card-art>span:first-child{font-size:20px}
+.for-you-card-content{padding:12px;display:flex;flex-direction:column;align-items:flex-start;flex:1;overflow-wrap:anywhere}.for-you-card-content h3{font-size:1rem;margin:0 0 6px}.for-you-card-content p{margin:0 0 8px;font-size:.875rem}.for-you-card-content .button{margin-top:auto;width:100%;display:flex;justify-content:space-between;gap:8px}
+.for-you-card-content .for-you-reason{font-size:.75rem;color:var(--muted);border-inline-start:2px solid var(--line);padding-inline-start:8px}
+.for-you-empty{background:var(--surface,#fff);color:var(--ink);padding:16px;border:1px solid var(--line);border-radius:14px;text-align:center}.for-you-empty>span{font-size:24px}.for-you-empty button{margin:4px}
+.for-you-explanation{font-size:.8rem;margin-bottom:12px;color:var(--muted)}.for-you-explanation summary{cursor:pointer;padding-block:6px}
+.for-you-demo{margin-block:12px;border:1px solid var(--line);border-radius:14px;padding:0 12px}.for-you-demo>summary{padding-block:12px;font-weight:700;cursor:pointer}
+.for-you-journey{border:1px solid var(--line);border-radius:14px;padding:14px;margin-block:12px;background:var(--surface,#fff);color:var(--ink);overflow-wrap:anywhere}
+.for-you-journey header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.for-you-journey p{margin-block:8px;font-size:.9rem}
+.for-you-progress{display:flex;flex-wrap:wrap;list-style:none;padding:0;gap:6px;margin-block:10px;font-size:.75rem;color:var(--muted)}.for-you-progress li{padding:4px 7px;border-radius:7px;border:1px solid var(--line)}.for-you-progress [aria-current]{background:var(--soft);color:var(--ink);border-color:var(--accent);font-weight:700}
+.for-you-journey label{display:grid;gap:6px;font-weight:600}.for-you-journey textarea{width:100%;min-width:0;resize:vertical;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}
+.for-you-result{padding:10px;border-inline-start:3px solid var(--accent);background:var(--paper);border-radius:8px;white-space:pre-wrap}.for-you-result time{font-size:.75rem;color:var(--muted)}
+.for-you-continuations{border:1px solid var(--line);border-radius:14px;padding:10px;margin-block:12px;background:var(--soft);color:var(--ink)}.for-you-continuations button{display:flex;flex-direction:column;align-items:flex-start;text-align:start;gap:3px;width:100%;padding:10px;border:0;border-radius:9px;background:var(--surface,#fff);color:var(--ink);margin-top:6px;overflow-wrap:anywhere}.for-you-continuations small{color:var(--muted)}
+@media(max-width:700px){.for-you-grid{grid-template-columns:1fr}.for-you-switch{width:100%}.for-you-switch button{flex:1}}
 @media(prefers-reduced-motion:reduce){.for-you-wishes button{transition:none;transform:none!important}}
 .meeting-budget{overflow-wrap:anywhere}.netMeetingBudget{display:grid;gap:14px;margin-block:14px}.netMeetingBudget label{display:grid;gap:8px}.netMeetingBudget select{box-sizing:border-box;width:100%;min-width:0}.meeting-budget :focus-visible{outline:3px solid #246c57;outline-offset:3px}
 .project-next-step{margin:16px 0;padding:18px;border:1px solid #b6d3c4;border-radius:16px;background:#eff7f1;overflow-wrap:anywhere}.project-next-step h4{margin-top:0}.project-next-step details{margin-top:16px}.project-next-step summary{cursor:pointer}.project-next-step li{padding-block:10px}.project-next-step :focus-visible{outline:3px solid #246c57;outline-offset:3px}

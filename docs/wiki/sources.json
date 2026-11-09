@@ -103,16 +103,16 @@
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
       "checked_at": "2026-11-09",
-      "checked_scope": "Continuous Mura story mounting/restoration, tutorial event delegation, nonmodal chat and contextual pose/motion paths; not a full application audit",
-      "sha256": "a463448e8156804eb59888d02a7ffb079e9e93a60ce96cf0cdd0230295fafbbe"
+      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
+      "sha256": "107ac479ab8019d971884de60136db2bab625cc340e225f0fcf73ba400de9af6"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-09",
-      "checked_scope": "Continuous Mura story mounting/restoration, tutorial event delegation, nonmodal chat and contextual pose/motion paths; not a full application audit",
-      "sha256": "dcea0292925b1fd8238282c0111d8057c123f576929ed33a0e71c8b8090ba074"
+      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
+      "sha256": "7b837e2aca97d3a560387825a48fe4558f6b688c0994d568e79ffbc886058592"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -159,8 +159,8 @@
       "path": "scripts/ci/webkit-smoke.sh",
       "status": "local-ci-configuration",
       "checked_at": "2026-11-09",
-      "checked_scope": "Added all-18-reply Mura chat regression; existing WebKit checks preserved.",
-      "sha256": "8be86b67769fc96b4a666f9f7e82299f97d2501c0689aab62a30e7636218ccaf"
+      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
+      "sha256": "f80c38c8a6a8620ffd6b004ea11986e60b32381b916c5c50d5159202dc7dd726"
     },
     {
       "id": "SRC-STAB-SPEC",
@@ -233,6 +233,14 @@
       "checked_at": "2026-11-08",
       "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
       "sha256": "943c283a8ff8b585433641fd8f2ec79b0e34818cce052ff0f01d832aa471c73b"
+    },
+    {
+      "id": "SRC-FOR-YOU-LOOP",
+      "path": "apps/web/network-for-you.js",
+      "status": "implemented-tested-locally",
+      "checked_at": "2026-11-09",
+      "checked_scope": "FK-FOR-YOU-001 selection/progress/continuation helpers, 11 locale labels, failure and Mura semantics; no engagement or human language claim.",
+      "sha256": "52f9a3028510c4d20627b0ca95317d5f321431cbee50a82f55125b31dca989a7"
     }
   ]
 }

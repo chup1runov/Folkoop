@@ -723,3 +723,25 @@ Live mobile 390x844 verified after update: purchase terms -> response in same ch
 human-language review remain outside this acceptance. Historical entries preserved.
 
 2026-11-09 update notice fix: entry modal could make the update banner inert and steal its focus. Exclude only .folkoop-update-notice from modal isolation and include its controls in keyboard navigation. Local browser reproduction passed focus/click while entry remains open. Existing cached clients may need to enter Mura first to release their old modal before clicking Update now.
+
+2026-11-09 FK-FOR-YOU-001: [FK-FOR-YOU-001](../workflow/tasks/FK-FOR-YOU-001.md): до трёх открытых
+возможностей по выбранному желанию; если совпадений меньше, список не дополняется.
+После просмотра условий — явное вступление и предложение темы/помощи через
+существующее обновление проекта. Результат — сохранённый текст с датой, а не
+подтверждение посещения, согласия или выполненной задачи. Продолжение приходит
+из существующей ленты непрочитанных событий; отправки push/email не добавлены.
+В профиле Муры есть компактное «Для меня» с локальным примером, без запросов записи.
+Выбор и черновик живут в текущей странице; реальные записи остаются в проекте.
+Сбой отправки сохраняет черновик; успешная запись с неудачным чтением предлагает
+обновить данные и не открывает повторную форму. Недоступные данные не выдаются
+за пустой каталог. Другие разделы, экскурсия и задачи сохранены.
+Источники: [подбор и маршрут](../../apps/web/network-for-you.js),
+[интеграция](../../apps/web/network-ui.js), [API](../../apps/web/network-client.js),
+[браузерный сценарий](../../tests/e2e/for-you-browser.py),
+[проверки логики](../../tests/unit/for-you.test.mjs).
+Локально: 503 теста кода; Chromium/WebKit 390/1366; прежний Home и 18 историй Муры
+прошли. Это изолированные API-данные, не прогон записи в живой базе. Тексты добавлены
+для 11 языков, проверка носителями не выполнена. Публикация и свежий удалённый CI ожидаются.
+
+
+Previous runtime 21703d4: all seven hosted checks including validate, WebKit and Cloudflare succeeded (run 42611907908).

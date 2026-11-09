@@ -756,7 +756,8 @@ function renderMuraPeople(u){
  return `<section class="mura-people-page"><div class="mura-section-head"><div><p class="eyebrow">MURA · ${esc(t('directory'))}</p><h2>${esc(t('directory'))}</h2></div><p>${esc(intro)}</p></div><div class="mura-people-page-grid">${people.map(card).join('')}</div></section>`;
 }
 
-let forYouWish='browse',forYouMode='discover';
+let forYouWish='browse',forYouMode='discover',forYouSelected=null,forYouDrafts={},forYouSamples={},forYouPending={},forYouFocus=null;
+function renderForYou(u){return globalThis.FolkoopForYou.render({items:data.cooperations,members:data.coopMembers,user:u.id,wish:forYouWish,welcome:data.projectWelcomes,loadedAt:guestDemo?Date.now():data.loadedAt,online:guestDemo||navigator.onLine,kindLabel,refreshLabel:t('refresh'),inbox:data.activityInbox,demo:guestDemo,available:!data.partialLoad?.some(x=>['cooperations','cooperationMembers','activityInbox'].includes(x))});}
 function renderHome(u){
  const unreadMessages=data.chatInbox.reduce((a,x)=>a+Number(x.unread_count||0),0);
  const invites=data.chatInvites.filter(x=>x.user_id===u.id).length;
@@ -825,7 +826,7 @@ function renderHome(u){
  const discovery=globalThis.FolkoopForYou;
  const homeOverview=!['home-attention','home-feed','home-actions'].includes(view);
  const switcher=`<div class="for-you-switch" role="group" aria-label="${esc(ht('title'))}"><button type="button" data-for-you-mode="discover" aria-pressed="${forYouMode==='discover'}">${esc(discovery.text(0))}</button><button type="button" data-for-you-mode="work" aria-pressed="${forYouMode==='work'}">${esc(discovery.text(19))}</button></div>`;
- const discover=homeOverview&&forYouMode==='discover'?discovery.render({items:data.cooperations,members:data.coopMembers,user:u.id,wish:forYouWish,welcome:data.projectWelcomes,loadedAt:data.loadedAt,online:navigator.onLine,kindLabel,refreshLabel:t('refresh')}):'';
+ const discover=homeOverview&&forYouMode==='discover'?renderForYou(u):'';
  const body=view==='home-attention'?attentionView:view==='home-feed'?feedView:view==='home-actions'?actionsView:forYouMode==='discover'?discover:modeCards+overview+overviewDetails;
  return `<section class="home-dashboard" data-home-view="${esc(view)}">${homeOverview?switcher:''}${homeOverview&&forYouMode==='discover'?'':header}${body}</section>`;
 }
@@ -891,6 +892,7 @@ function renderCooperation(u,r){
   const unreadActivity=Number(data.activityInbox.find(x=>x.cooperation_id===coop.id)?.unread_count||0);
   html+=cbtn('back','back');
   html+=muraTogetherPractice(coop);
+  if(forYouSelected===coop.id)html+=globalThis.FolkoopForYou.journey({coop,user:u.id,member:!!member,updates:data.coopUpdates,activity:data.coopActivity,loadedAt:guestDemo?Date.now():data.loadedAt,online:navigator.onLine,draft:forYouDrafts[coop.id]||'',demo:guestDemo,sample:forYouSamples[coop.id]||0,pending:!!forYouPending[coop.id]});
   if(!guestDemo&&coop.kind==='project'){
    html+=globalThis.FolkoopWelcome.card(coop,data.projectWelcomes);
    if(owner)html+=globalThis.FolkoopWelcome.editor(coop,data.projectWelcomes,welcomeDrafts[coop.id]);
@@ -1037,7 +1039,7 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'||r==='me'){html=profileDomain.render(u,{profileDraft,guestDemo})+(guestDemo?muraHomeDomain.render(u,{compact:true}):globalThis.FolkoopPublicProfile.editor(u.id,publicPageDraft||publicPageState,data.profile)+globalThis.FolkoopPublicProfile.render(Object.fromEntries(Object.entries(publicPageState?.content||{}).filter(([key])=>['thoughts','resources','ideas','achievements'].includes(key))),{identity:false})+renderHome(u));}
+ else if(r==='home'||r==='me'){html=profileDomain.render(u,{profileDraft,guestDemo})+(guestDemo?`<details class="for-you-demo" data-home-section="for-you"><summary>✦ ${esc(globalThis.FolkoopForYou.text(0))}</summary>${renderForYou(u)}</details>`+muraHomeDomain.render(u,{compact:true}):globalThis.FolkoopPublicProfile.editor(u.id,publicPageDraft||publicPageState,data.profile)+globalThis.FolkoopPublicProfile.render(Object.fromEntries(Object.entries(publicPageState?.content||{}).filter(([key])=>['thoughts','resources','ideas','achievements'].includes(key))),{identity:false})+renderHome(u));}
  else if(r==='settings'){html=guestDemo?'':profileDomain.render(u,{profileDraft,settings:true})+profileDomain.renderExportReport(exportReport);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
@@ -1058,7 +1060,7 @@ function render(){
    if(pane)meetingOpen[id]=pane.open;
   }
  }
- const homeScope=['home','me'].includes(r)&&u&&!guestDemo?`home:${u.id}`:'';
+ const homeScope=['home','me'].includes(r)&&u?`home:${u.id}`:'';
  const openProfileEditors=homeScope&&host.dataset.homeScope===homeScope?['.profile-editor','.public-profile-editor','.public-preview'].filter(selector=>host.querySelector(selector)?.open):[];
  const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
  host.innerHTML=demoBanner+muraProfilePractice(r)+muraCenterPractice(r)+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
@@ -1099,7 +1101,7 @@ function render(){
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  const keep='[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice))b.hidden=true;});
  }
@@ -1108,6 +1110,7 @@ function render(){
  if(!guestDemo&&busy)host.querySelectorAll('button').forEach(b=>{b.disabled=true;});
  if(!guestDemo&&currentUser()&&liveRefreshAt){const freshness=document.createElement('p');freshness.className='meta';freshness.setAttribute('role','status');freshness.textContent=liveRefreshError?t('error'):t('refresh')+' · '+new Date(data.loadedAt||liveRefreshAt).toLocaleTimeString();host.prepend(freshness);}
  if(!guestDemo&&data.partialLoad?.length){const warning=document.createElement('p');warning.className='notice';warning.setAttribute('role','status');warning.textContent=t('error');host.prepend(warning);}
+ if(forYouFocus===selectedCoop&&!busy){const panel=host.querySelector('.for-you-journey');if(panel){forYouFocus=null;panel.tabIndex=-1;panel.focus({preventScroll:true});panel.scrollIntoView({block:'start',behavior:'instant'});}}
  syncBadges();
  observeVisibleMessages();
  if(!guestDemo&&r==='messages'&&messageScrollTarget===selectedChat){messageScrollTarget=null;queueMicrotask(()=>host.querySelector('[data-message-id]:last-child')?.scrollIntoView({block:'end',behavior:'instant'}));}
@@ -1256,6 +1259,7 @@ async function load(){
  data.meetingActions=meetingActions;data.meetingActionsError=meetingActionsError;
  data.meetingReminders=meetingReminders;data.meetingRemindersError=meetingRemindersError;
  data.loadedAt=Date.now();liveRefreshError=false;
+ if(forYouPending[selectedCoop]&&data.coopUpdates.some(x=>x.id===forYouPending[selectedCoop]))delete forYouPending[selectedCoop];
  data.projectDocuments=projectDocuments;
  data.taskBases=taskBases;
  data.projectWelcomes=projectWelcomes;
@@ -1313,6 +1317,7 @@ host.addEventListener('input',e=>{
  if(f.id==='netCoopCreate'){coopDraft={kind:v.kind||'project',title:v.title||'',description:v.description||'',location:v.location||'',targetQuantity:v.targetQuantity||'',unit:v.unit||''};if(e.target.name==='kind')render();}
  if(f.id==='netCoopEdit')coopEditDraft={title:v.title||'',description:v.description||'',location:v.location||'',status:v.status||'open',targetQuantity:v.targetQuantity||'',unit:v.unit||''};
  if(f.id==='netCoopUpdate')coopUpdateDraft=v.body||'';
+ if(f.id==='netForYouContribution')forYouDrafts[selectedCoop]=v.body||'';
  if(f.id==='netTaskCreate')taskDraft={title:v.title||'',details:v.details||'',assignee:v.assignee||''};
  if(f.id==='netCommitment')commitDraft={quantity:v.quantity||'',note:v.note||''};
  if(f.id==='netEconomicFlowCreate')economicFlowDraft={kind:v.kind||'service',summary:v.summary||''};
@@ -1413,6 +1418,11 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.id==='netMessage'){await api.sendMessage(selectedChat,values.body);delete messageDrafts[selectedChat];messageScrollTarget=selectedChat;}
   if(f.id==='netCoopCreate'){const fd=new FormData(f),kind=String(fd.get('kind')||'project');selectedCoop=await api.createCooperation({kind,title:String(fd.get('title')||''),description:String(fd.get('description')||''),location:String(fd.get('location')||''),targetQuantity:String(fd.get('targetQuantity')||''),unit:String(fd.get('unit')||'')});coopDraft={kind:kind==='project'?'project':'need',title:'',description:'',location:'',targetQuantity:'',unit:''};coopCreateOpen=false;}
   if(f.id==='netCoopEdit'){const coop=data.cooperations.find(x=>x.id===selectedCoop);await api.updateCooperation(selectedCoop,{kind:coop.kind,title:values.title,description:values.description,location:values.location,status:values.status,targetQuantity:values.targetQuantity,unit:values.unit});coopEditDraft=null;}
+  if(f.id==='netForYouContribution'){
+   const id=selectedCoop,body=String(values.body||'').trim();
+   if(body.length<2||body.length>1000)throw Object.assign(new Error('INVALID_INPUT'),{code:'INVALID_INPUT'});
+   forYouPending[id]=await api.addCooperationUpdate(id,body);delete forYouDrafts[id];forYouFocus=id;
+  }
   if(f.id==='netCoopUpdate'){await api.addCooperationUpdate(selectedCoop,values.body);coopUpdateDraft='';}
   if(f.id==='netCommitment'){await api.setPurchaseCommitment(selectedCoop,values.quantity,values.note);commitDraft={quantity:'',note:''};}
   if(f.id==='netEconomicFlowCreate'){economicSectionOpen=true;await api.createEconomicFlow(selectedCoop,{kind:values.kind,summary:values.summary});economicFlowDraft={kind:'service',summary:''};}
@@ -1500,8 +1510,14 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
  });
 });
 host.addEventListener('click',e=>{
+ const sample=e.target.closest('[data-for-you-sample]'),back=e.target.closest('[data-for-you-back]');
+ if(sample&&guestDemo&&forYouSelected===selectedCoop){
+  e.stopImmediatePropagation();forYouSamples[selectedCoop]=Number(sample.dataset.forYouSample);render();
+  const panel=host.querySelector('.for-you-journey');if(panel){panel.tabIndex=-1;panel.focus({preventScroll:true});}return;
+ }
+ if(back){e.stopImmediatePropagation();navigateNetwork('#/home');run(async()=>{await load();render();const pane=host.querySelector('.for-you-demo');if(pane)pane.open=true;host.querySelector('.for-you')?.scrollIntoView({block:'start'});});return;}
  const choice=e.target.closest('[data-for-you-wish],[data-for-you-mode]');
- if(!choice||guestDemo||busy)return;
+ if(!choice||busy)return;
  e.stopImmediatePropagation();
  if(choice.dataset.forYouWish){
   if(!globalThis.FolkoopForYou.wishes.includes(choice.dataset.forYouWish))return;
@@ -1521,7 +1537,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(!popup){notice=t('popupBlocked');return;}
   oauthPopup=popup;notice=t('oauthWaiting');
  });return;}const hb=e.target.closest('[data-home]');if(hb){const a=hb.dataset.home,id=hb.dataset.id;if(guestDemo&&a==='createCoop'){guestRequireAccount();return;}run(async()=>{
-  if(a==='openCoop'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
+  if(a==='openCoop'){if(selectedCoop!==id)resetEconomicFlowState();if(hb.hasAttribute('data-for-you-open')){forYouSelected=id;forYouFocus=id;}selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');}
   if(a==='openCommunity'){selected=id;navigateNetwork('#/communities');}
   if(a==='createCoop'){const kind=hb.dataset.kind;coopDraft={kind,title:'',description:'',location:'',targetQuantity:'',unit:''};coopCreateOpen=true;selectedCoop=null;resetEconomicFlowState();navigateNetwork(kind==='project'?'#/projects':'#/together');}
   await load();notice='';
@@ -1873,7 +1889,7 @@ window.addEventListener('folkoop:guest-demo',e=>{
   if(detail.target!=='tour')navigateNetwork(target);
   if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();if(detail.target==='tour')window.dispatchEvent(new CustomEvent('folkoop:mura-tour-ready'));}).catch(()=>render());}else if(detail.target==='account')run(async()=>{await api?.restore?.();if(currentUser())await load();});else render();
 });
-api?.onChange(()=>{documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';});
+api?.onChange(()=>{documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';forYouSelected=null;forYouDrafts={};forYouSamples={};forYouPending={};forYouFocus=null;});
 // Refresh only a visible, idle real account. Never replace a form being edited.
 let liveRefreshAt=0,liveRefreshError=false;
 async function refreshAccount(){
