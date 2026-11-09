@@ -29,7 +29,7 @@ test('task results require another reviewer, valid date and the exact project',(
  a.data.projectTasks[0].reviewed_by='b';a.data.projectTasks[0].work_stage='legacy';a.data.projectTasks[0].status='done';assert.equal(step(f.model(a),'tasks').state,'pending');
  a.data.projectTasks[0].cooperation_id='other';assert.equal(step(f.model(a),'tasks'),undefined);
 });
-function purchase(){return {coop:{id:'p',kind:'purchase',owner_id:'a',status:'active',target_quantity:0.3,unit:'kg'},user:{id:'a'},members:[{user_id:'a'},{user_id:'b'}],name:id=>id,now,data:{loadedAt:now,purchaseProcess:[{cooperation_id:'p',stage:'confirming'}],purchaseChoice:[{cooperation_id:'p',offer_id:'offer',selected_by:'a'}],purchaseOffers:[{cooperation_id:'p',id:'offer',valid_until:iso(now+10000)}],commitments:[{cooperation_id:'p',user_id:'a',quantity:.1},{cooperation_id:'p',user_id:'b',quantity:.2}],purchaseConfirmations:[{cooperation_id:'p',user_id:'a',decision:'confirmed',quantity:.1},{cooperation_id:'p',user_id:'b',decision:'pending',quantity:.2}]}};}
+function purchase(){return {coop:{id:'p',kind:'purchase',owner_id:'a',status:'active',target_quantity:0.3,unit:'kg'},user:{id:'a'},members:[{user_id:'a'},{user_id:'b'}],name:id=>id,now,data:{loadedAt:now,purchaseProcess:[{cooperation_id:'p',stage:'confirming'}],purchaseChoice:[{cooperation_id:'p',offer_id:'offer',selected_by:'a'}],purchaseOffers:[{cooperation_id:'p',id:'offer',valid_until:'2026-11-10'}],commitments:[{cooperation_id:'p',user_id:'a',quantity:.1},{cooperation_id:'p',user_id:'b',quantity:.2}],purchaseConfirmations:[{cooperation_id:'p',user_id:'a',decision:'confirmed',quantity:.1},{cooperation_id:'p',user_id:'b',decision:'pending',quantity:.2}]}};}
 test('pledges, personal consents, collection and organizer outcome stay separate',()=>{
  const f=setup(),a=purchase();let m=f.model(a);assert.equal(step(m,'quantity').state,'done');assert.equal(step(m,'quantity').detail,'0.3 / 0.3 kg');assert.equal(step(m,'consent').state,'pending');assert.equal(step(m,'collection').state,'pending');
  a.data.purchaseConfirmations[1].decision='confirmed';assert.equal(step(f.model(a),'consent').state,'done');
@@ -39,9 +39,9 @@ test('pledges, personal consents, collection and organizer outcome stay separate
  a.data.purchaseConfirmations[1].collected_at=null;assert.equal(step(f.model(a),'collection').state,'pending');
 });
 test('expired offer and old consent before confirmation do not count',()=>{
- const f=setup(),a=purchase();a.data.purchaseConfirmations[1].decision='confirmed';a.data.purchaseOffers[0].valid_until=iso(now);
+ const f=setup(),a=purchase();a.data.purchaseConfirmations[1].decision='confirmed';a.data.purchaseOffers[0].valid_until='2026-11-08';
  assert.equal(step(f.model(a),'terms').state,'pending');assert.equal(step(f.model(a),'consent').state,'pending');
- a.data.purchaseOffers[0].valid_until=iso(now+1000);a.data.purchaseProcess[0].stage='collecting';assert.equal(step(f.model(a),'consent').state,'pending');
+ a.data.purchaseOffers[0].valid_until='2026-11-10';a.data.purchaseProcess[0].stage='collecting';assert.equal(step(f.model(a),'consent').state,'pending');
  a.coop.status='cancelled';assert.ok(f.model(a).steps.every(s=>s.state==='unknown'));assert.equal(f.model(a).active,false);
 });
 test('unavailable and partial data never display success or stale named evidence',()=>{
@@ -62,4 +62,11 @@ test('cancellation belongs to the selected project and receipt needs another con
  const f=setup(),a=meeting();a.data.purchaseProcess=[{cooperation_id:'other',stage:'cancelled'}];assert.equal(f.model(a).active,true);
  a.data.meeting.budget.requirements=[{need:'n'}];a.data.projectBudget.contributions=[{cooperation_id:'p',need_id:'n',contributor_id:'a',status:'received',received_by:'a'}];assert.equal(step(f.model(a),'resources').evidence[0].label,31);
  a.data.projectBudget.contributions[0].received_by='b';assert.equal(step(f.model(a),'resources').evidence[0].label,32);
+});
+
+test('offer expiry follows SQL inclusive DATE and nullable expiry, not midnight timestamp',()=>{
+ const f=setup(),a=purchase(),o=a.data.purchaseOffers[0];
+ for(const value of [null,'2026-11-09','2026-11-10']){o.valid_until=value;assert.equal(step(f.model(a),'terms').state,'done');}
+ for(const value of ['2026-11-08','2026-02-31','bad','']){o.valid_until=value;assert.equal(step(f.model(a),'terms').state,'pending');}
+ o.valid_until=null;o.withdrawn_at=iso(now);assert.equal(step(f.model(a),'terms').state,'pending');
 });

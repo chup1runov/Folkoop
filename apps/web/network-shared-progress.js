@@ -17,7 +17,9 @@ function model({coop,data,user,members=[],demo=false,demoMeeting=false,now=Date.
   const answers=unique(ownRows(data.purchaseConfirmations).filter(x=>memberIds.has(x.user_id)),'user_id');
   const confirmed=answers.filter(x=>x.decision==='confirmed'),collected=confirmed.filter(x=>Number.isFinite(Date.parse(x.collected_at))&&Date.parse(x.collected_at)<=now);
   const total=xs=>xs.reduce((n,x)=>n+amount(x.quantity),0),enough=xs=>target>0&&total(xs)+1e-9>=target;
-  const termsValid=!!offer&&Number.isFinite(Date.parse(offer.valid_until))&&Date.parse(offer.valid_until)>now;
+  // SQL valid_until is an inclusive DATE (UTC database), and NULL means no expiry.
+  const until=offer?.valid_until;
+  const termsValid=!!offer&&!offer.withdrawn_at&&(until==null||(/^\d{4}-\d{2}-\d{2}$/.test(until)&&Number.isFinite(Date.parse(until))&&new Date(Date.parse(until)).toISOString().slice(0,10)===until&&until>=new Date(now).toISOString().slice(0,10)));
   const continuing=['ordered','delivered','distributing','done'].includes(p.stage);
   const agreement=!!offer&&((p.stage==='confirming'&&termsValid)||continuing);
   const proof=(xs,key)=>xs.map(x=>({actor:x.user_id,label:key,quantity:amount(x.quantity),unit:coop.unit}));

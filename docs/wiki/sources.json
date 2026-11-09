@@ -103,8 +103,8 @@
       "path": "apps/web/network-ui.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
-      "sha256": "2058cb78de593da7ade122c3aad61b7a102a7257d59c9bf2e0137f0f18e7a8fb"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit",
+      "sha256": "1f69e40b29160411251aec26e3473183960dc19c34d559c4017c5972cb5ab71d"
     },
     {
       "id": "SRC-MURA-CSS",
@@ -263,8 +263,8 @@
       "path": "apps/web/network-shared-progress.js",
       "status": "implemented-tested",
       "checked_at": "2026-11-09",
-      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation",
-      "sha256": "898933fbffeeb431362c44cbd6c1d6a37bc8549bd44b988a975a19373f1af046"
+      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit",
+      "sha256": "64e5b231e871cd099e3ec33fb68193389f546c5e3c9c639ef43e56154d4e8437"
     }
   ]
 }

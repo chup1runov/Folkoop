@@ -802,3 +802,15 @@ prompt. Expanded assertions passed: 522 unit/integration and shared-progress
 Chromium/WebKit 320/1366. This supersedes the preceding unchanged-code retry plan;
 the follow-up contains this small application fix. GitHub Pages 47dae36 deployed,
 Cloudflare still pending a successful retry.
+
+2026-11-09 purchase-date follow-up: read the actual SQL contract in
+supabase/migrations/20260925160441_folkoop_purchase_lifecycle_v020.sql:
+valid_until is nullable DATE, inclusive through current_date. Shared-progress now
+uses that contract (UTC database day), handles withdrawn/invalid offers and does
+not expire a same-day quote at midnight. Mura authored quote receives a relative
+illustrative expiry consistent with its relative confirmation deadline. Live
+GitHub walkthrough exposed the historic Mura quote; no real quote was changed.
+523 unit/integration checks and Chromium/WebKit shared-progress + Mura scenarios
+passed. This fix supersedes runtime 5ea961e; its sources, WebKit and database checks
+passed, full validate was still running at follow-up preparation. Cloudflare failed
+a second time; log access awaits action-time agreement confirmation.

@@ -34,7 +34,7 @@ async def main():
     elif url.endswith('/fk_project_decisions'):result={'decisions':[],'responses':[]}
     elif url.endswith('/fk_project_budget_snapshot'):result={'needs':[],'contributions':[],'expenses':[]}
     elif '/fk_project_tasks?' in url:result=[{'id':T,'cooperation_id':P,'assignee_id':A,'creator_id':A,'title':'Prepare discussion cards','details':'','status':'done','work_stage':'verified','reviewed_by':B,'reviewed_at':stamp(-10)}]
-    elif '/fk_purchase_offers?' in url:result=[{'id':O,'cooperation_id':Q,'provider_id':B,'unit_price':20,'currency':'SEK','min_quantity':3,'available_quantity':10,'valid_until':stamp(120)}]
+    elif '/fk_purchase_offers?' in url:result=[{'id':O,'cooperation_id':Q,'provider_id':B,'unit_price':20,'currency':'SEK','min_quantity':3,'available_quantity':10,'valid_until':now.date().isoformat()}]
     elif '/fk_purchase_offer_choice?' in url:result=[{'cooperation_id':Q,'offer_id':O,'selected_by':B}]
     elif '/fk_purchase_commitments?' in url:result=[{'cooperation_id':Q,'user_id':uid,'quantity':q} for uid,q in [(A,1),(B,2)]]
     elif '/fk_purchase_process?' in url:result=[{'cooperation_id':Q,'stage':state['stage'],'result_note':'Organiser report' if state['stage']=='done' else ''}]
