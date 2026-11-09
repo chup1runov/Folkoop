@@ -93,3 +93,17 @@ search_path is set, feed is invoker. Security advisor delta: three expected
 for publish/withdraw/report (actor checks and isolated positive/negative tests reviewed).
 Six intentionally restricted private-table INFO findings and the existing password
 protection notice are unchanged. No RLS-disabled new object finding.
+
+### First hosted/live checkpoint and corrections
+Cloudflare deployed `e41bd7f`. Both hosted SQL jobs and sources passed; WebKit
+stopped in the earlier email-link/export browser test at an obsolete 44-section
+expectation. Corrected to 46 with explicit `fk_stories` / `fk_story_reports` manifest
+and exported-array assertions; targeted email-link checks passed Chromium/WebKit.
+Live IAB verified normal Update now activation and purchase handoff. It also found
+that authored Mura stories retained the pre-hydration Swedish body in a Russian UI,
+and that the first fictional author had no authored direct chat. Examples now
+re-localize on read/refresh without touching personal text; the purchase invitation
+uses the existing participant/contact Omar, and demo replies require an existing
+contact. Browser regression explicitly simulates late locale hydration and opens
+Omar's actual authored chat. This fixes the observed product faults; no live messages
+were sent and no participant record was changed. Final CI/deployment pending below.

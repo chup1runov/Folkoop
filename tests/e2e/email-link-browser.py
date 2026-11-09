@@ -46,7 +46,9 @@ async def main():
   download=await exported.value
   exported_data=json.loads(Path(await download.path()).read_text())
   assert exported_data['manifest']['completeAccountExport'] is False
-  assert len(exported_data['manifest']['sections'])==44
+  assert len(exported_data['manifest']['sections'])==46
+  assert exported_data['stories']==[] and exported_data['storyReports']==[]
+  assert {'fk_stories','fk_story_reports'} <= {s['collection'] for s in exported_data['manifest']['sections']}
   assert [r['terms']['conditions'] for r in exported_data['meetingResponses']]==['Version 1','Version 2']
   assert exported_data['manifest']['meetingTermsContext']['linkedResponses']==2
   assert exported_data['manifest']['meetingTermsContext']['missing']==[]

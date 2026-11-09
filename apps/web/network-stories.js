@@ -32,8 +32,12 @@ function modal(title,body){close();opener=document.activeElement;dialog=document
 function message(value){const p=dialog?.querySelector('.story-status')||ctx?.container?.querySelector('.story-status');if(p)p.textContent=value;}
 function samples(c){
  const purchase=c.cooperations.find(x=>x.kind==='purchase'),meeting=c.cooperations.find(x=>x.kind==='project'&&/швед|swedish|svensk/i.test(x.title))||c.cooperations.find(x=>x.kind==='project');
- return [purchase,meeting,null].map((item,i)=>({id:'mura-story-'+i,author_id:i===0&&item?.owner_id?item.owner_id:c.user,author_name:i===0&&item?.owner_id!==c.user?(c.profiles.find(p=>p.id===item.owner_id)?.name||'Omar'):'Mura',body:text(32+i),tone:tones[i],audience:'network',cooperation_id:item?.id||null,created_at:new Date(Date.now()-i*60000).toISOString(),expires_at:new Date(Date.now()+86400000).toISOString()}));
+ const purchaseAuthor=c.members.find(m=>m.cooperation_id===purchase?.id&&m.user_id!==c.user&&c.contactIds?.includes(m.user_id))?.user_id||purchase?.owner_id||c.user;
+ return [purchase,meeting,null].map((item,i)=>{const author=i===0?purchaseAuthor:c.user;return {id:'mura-story-'+i,author_id:author,author_name:author===c.user?'Mura':(c.profiles.find(p=>p.id===author)?.name||'Mura'),body:text(32+i),tone:tones[i],audience:'network',cooperation_id:item?.id||null,created_at:new Date(Date.now()-i*60000).toISOString(),expires_at:new Date(Date.now()+86400000).toISOString()};});
 }
+// The document language may settle after the first account render. Re-localize
+// authored examples only; never translate or replace a participant's own text.
+function localStory(s){const match=/^mura-story-([0-2])$/.exec(s.id);if(match)s.body=text(32+Number(match[1]));return s;}
 function draw(){
  if(!ctx?.container.isConnected)return;
  const list=groups(active(feed),seen);
@@ -46,12 +50,12 @@ function draw(){
 }
 async function refresh(){
  if(!ctx)return;const expected=epoch,c=ctx;
- if(c.demo){if(!examples.length)examples=samples(c);feed=examples;draw();return;}
+ if(c.demo){if(!examples.length)examples=samples(c);feed=examples.map(localStory);draw();return;}
  c.container.innerHTML=`<p class="story-status" role="status">${tx(0)}…</p>`;
  try{const rows=await c.api.stories();if(epoch!==expected)return;feed=rows.slice(0,60);draw();}
  catch{if(epoch!==expected)return;feed=[];draw();message(text(18));}
 }
-async function current(s){if(ctx.demo)return s;const rows=await ctx.api.story(s.id);if(rows.length!==1)throw Error('unavailable');return rows[0];}
+async function current(s){if(ctx.demo)return localStory(s);const rows=await ctx.api.story(s.id);if(rows.length!==1)throw Error('unavailable');return rows[0];}
 async function view(rows,index,ownArchive=false){
  if(!ctx||index<0||index>=rows.length)return;const expected=epoch,s=rows[index];
  const d=modal(esc(s.author_name),`<p role="status">…</p>`);
@@ -61,7 +65,7 @@ async function view(rows,index,ownArchive=false){
   if(!live&&!ownArchive){message(text(18));return;}
   if(!ownArchive){seen[item.id]=Date.now();try{localStorage.setItem(key(),JSON.stringify(Object.fromEntries(Object.entries(seen).slice(-100))));}catch{}draw();}
   const related=ctx.cooperations.find(x=>x.id===item.cooperation_id);
-  d.querySelector('p[role=status]').outerHTML=`<div class="story-position">${index+1} / ${rows.length}${ctx.demo?' · '+tx(24):''}</div><article class="story-paper story-${tones.includes(item.tone)?item.tone:'teal'}"><p>${esc(item.body)}</p><small>${tx(6)}: ${tx(item.audience==='project'?8:7)}</small></article><p class="meta">${tx(41)} ${esc(new Date(item.expires_at).toLocaleString(document.documentElement.lang))}${item.withdrawn_at?' · '+tx(22):''}</p><div class="story-actions">${related?`<button type="button" class="button" data-story-link>${tx(13)} · ${esc(related.title)}</button>`:''}${item.author_id!==ctx.user&&(ctx.profiles.some(p=>p.id===item.author_id)||ctx.contactIds?.includes(item.author_id))?`<button type="button" class="button secondary" data-story-reply>${tx(14)}</button>`:''}</div><nav class="story-navigation"><button type="button" data-story-prev ${index===0?'disabled':''}>← ${tx(11)}</button><button type="button" data-story-next ${index===rows.length-1?'disabled':''}>${tx(12)} →</button></nav><details class="story-more"><summary>•••</summary><small>${tx(25)}</small>${item.author_id===ctx.user&&live?`<button type="button" data-story-withdraw>${tx(15)}</button>`:''}${item.author_id!==ctx.user&&live?`<button type="button" data-story-report>${tx(16)}</button>`:''}</details>`;
+  d.querySelector('p[role=status]').outerHTML=`<div class="story-position">${index+1} / ${rows.length}${ctx.demo?' · '+tx(24):''}</div><article class="story-paper story-${tones.includes(item.tone)?item.tone:'teal'}"><p>${esc(item.body)}</p><small>${tx(6)}: ${tx(item.audience==='project'?8:7)}</small></article><p class="meta">${tx(41)} ${esc(new Date(item.expires_at).toLocaleString(document.documentElement.lang))}${item.withdrawn_at?' · '+tx(22):''}</p><div class="story-actions">${related?`<button type="button" class="button" data-story-link>${tx(13)} · ${esc(related.title)}</button>`:''}${item.author_id!==ctx.user&&((!ctx.demo&&ctx.profiles.some(p=>p.id===item.author_id))||ctx.contactIds?.includes(item.author_id))?`<button type="button" class="button secondary" data-story-reply>${tx(14)}</button>`:''}</div><nav class="story-navigation"><button type="button" data-story-prev ${index===0?'disabled':''}>← ${tx(11)}</button><button type="button" data-story-next ${index===rows.length-1?'disabled':''}>${tx(12)} →</button></nav><details class="story-more"><summary>•••</summary><small>${tx(25)}</small>${item.author_id===ctx.user&&live?`<button type="button" data-story-withdraw>${tx(15)}</button>`:''}${item.author_id!==ctx.user&&live?`<button type="button" data-story-report>${tx(16)}</button>`:''}</details>`;
   if(!ownArchive)expiryTimer=setTimeout(()=>{if(dialog===d){d.querySelectorAll('article,.story-actions,.story-more').forEach(el=>el.remove());message(text(18));void refresh();}},Math.max(0,Math.min(Date.parse(item.expires_at)-Date.now(),2147483647)));
   d.querySelector('[data-story-prev]').onclick=()=>view(rows,index-1,ownArchive);
   d.querySelector('[data-story-next]').onclick=()=>view(rows,index+1,ownArchive);
@@ -74,7 +78,7 @@ async function view(rows,index,ownArchive=false){
 }
 async function archive(){
  const expected=epoch,d=modal(tx(2),`<p role="status">…</p>`);
- try{const rows=ctx.demo?examples.filter(s=>s.author_id===ctx.user):await ctx.api.storyArchive();if(epoch!==expected||dialog!==d)return;
+ try{const rows=ctx.demo?examples.filter(s=>s.author_id===ctx.user).map(localStory):await ctx.api.storyArchive();if(epoch!==expected||dialog!==d)return;
  d.querySelector('p[role=status]').outerHTML=`<p class="meta">${tx(29)}</p><div class="story-archive">${rows.map((s,i)=>`<button type="button" data-story-index="${i}"><strong>${esc(s.body.slice(0,75))}</strong><small>${esc(new Date(s.created_at).toLocaleDateString())}${s.withdrawn_at?' · '+tx(22):''}</small></button>`).join('')||`<p>${tx(19)}</p>`}</div>`;
  d.querySelectorAll('[data-story-index]').forEach(b=>b.onclick=()=>view(rows,Number(b.dataset.storyIndex),true));
  }catch{if(epoch===expected&&dialog===d)message(text(18));}

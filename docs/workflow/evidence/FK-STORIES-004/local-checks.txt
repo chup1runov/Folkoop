@@ -94,3 +94,19 @@ PASS Explicit visit to Mura restarts the tour even when onboarding was completed
 PASS Explicitly visiting Mura always starts her tour even after onboarding was completed earlier
 PASS Implicit browser language is accepted when entering Mura and reload does not reopen first contact
 PASS Mura retains Göteborg in memory when Storage access is blocked
+
+Final correction checks
+PASS 320/dark/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 1366/light/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 390/dark/ar: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS Mura stories, local composer, archive, reload and zero external writes
+
+PASS email-link identity, URL cleanup, explicit consent, no credential storage, reload and invalid link (chromium)
+
+PASS 320/dark/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 1366/light/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 390/dark/ar: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS Mura stories, local composer, archive, reload and zero external writes
+
+PASS email-link identity, URL cleanup, explicit consent, no credential storage, reload and invalid link (webkit)
+

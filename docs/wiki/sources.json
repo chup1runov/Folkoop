@@ -271,8 +271,8 @@
       "path": "apps/web/network-stories.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "Full new module/schema: audience/expiry/idempotency, bounded UI and Mura isolation. No native-language or retention-effect certification.",
-      "sha256": "899edaedbe784b3121380296445d1476828404659324a3062845e14b188e7b02"
+      "checked_scope": "Full new module/schema: audience/expiry/idempotency, bounded UI and Mura isolation. No native-language or retention-effect certification. Late locale hydration and demo contact-only replies reviewed after live acceptance findings.",
+      "sha256": "e039e2cece6839a49df5e272d7528b7d23cb087ed7096bd2b696bdf416db72df"
     },
     {
       "id": "SRC-STORIES-SQL",
