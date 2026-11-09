@@ -18,6 +18,7 @@ async def main():
    await ctx.add_init_script("localStorage.setItem('folkoop-language',"+json.dumps(lang)+");localStorage.setItem('folkoop-language-choice-v1','done');localStorage.setItem('folkoop-theme',"+json.dumps(theme)+")")
    stories=[{'id':f'55555555-5555-4555-8555-{i:012d}','author_id':OTHER,'author_name':'Story friend','body':'Invitation '+str(i)+' <img src=x onerror=alert(1)>','tone':'teal' if i==1 else 'plum','audience':'network','cooperation_id':PROJECT if i==1 else None,'created_at':moment(-i),'expires_at':moment(24-i)} for i in [1,2]]
    state={'sent':[],'fail':True,'report':0,'reply':0,'feedError':False}
+   refresh_started=asyncio.Event();refresh_release=asyncio.Event()
    projects=[{'id':PROJECT,'owner_id':UID,'kind':'project','title':'Synthetic story project','description':'Test only','status':'active','created_at':moment(-2)}]
    members=[{'cooperation_id':PROJECT,'user_id':UID},{'cooperation_id':PROJECT,'user_id':OTHER}]
    async def routing(route):
@@ -28,7 +29,9 @@ async def main():
     if path.endswith('/verify'):result={'access_token':'synthetic-stories','expires_in':3600}
     elif path.endswith('/user'):result={'id':UID}
     elif path.endswith('/fk_claim_first_pilot'):result=True
-    elif '/fk_profiles?' in url:result=[{'id':UID,'name':'Story author','listed':True},{'id':OTHER,'name':'Story friend','listed':True}]
+    elif '/fk_profiles?' in url:
+     if state.get('holdRefresh'):refresh_started.set();await refresh_release.wait()
+     result=[{'id':UID,'name':'Story author','listed':True},{'id':OTHER,'name':'Story friend','listed':True}]
     elif '/fk_cooperations?' in url:result=projects
     elif '/fk_cooperation_members?' in url:result=members
     elif '/fk_conversations?' in url:result=[{'id':CHAT,'kind':'direct','owner_id':UID}]
@@ -59,7 +62,16 @@ async def main():
    await page.fill('#netLogin [name=email]','synthetic@example.test');await page.click('#netLogin [value=code]')
    await page.fill('#netLogin [name=code]','123456');await page.check('#netLogin [name=policyAccepted]');await page.click('#netLogin [value=verify]')
    await expect(page.locator('.story-circle')).to_have_count(1)
+   state['holdRefresh']=True
+   await page.evaluate("window.dispatchEvent(new Event('focus'))")
+   await asyncio.wait_for(refresh_started.wait(),5)
    await page.click('.story-circle');await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')
+   async with page.expect_response(lambda r:r.url.endswith('/fk_story_feed')):
+    state['holdRefresh']=False;refresh_release.set()
+   await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')
+   # A late event for the already mounted route must not close a new viewer.
+   await page.evaluate("window.dispatchEvent(new Event('hashchange'))")
+   await expect(page.locator('.story-paper')).to_be_visible()
    assert await page.locator('.story-paper img').count()==0
    await page.click('[data-story-next]');await expect(page.locator('.story-paper')).to_contain_text('Invitation 2')
    await page.click('[data-story-prev]');await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')

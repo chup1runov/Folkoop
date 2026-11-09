@@ -107,3 +107,26 @@ uses the existing participant/contact Omar, and demo replies require an existing
 contact. Browser regression explicitly simulates late locale hydration and opens
 Omar's actual authored chat. This fixes the observed product faults; no live messages
 were sent and no participant record was changed. Final CI/deployment pending below.
+
+### Final live runtime checkpoint
+`8e477fe` successfully deployed to Cloudflare on 9 November 2026. Hosted migration
+history records `20261109173828 participant_stories` (provider-assigned version;
+source migration remains `20261109171800_participant_stories.sql`).
+Live IAB at folkoop.pages.dev accepted ordinary Update now activation, the Russian
+purchase story, Omar direct-chat handoff with no sent message, creation of a local
+Mura example, its own archive entry, removal on page reload, Russian authored
+archive excerpts, manual next/previous and bounded readable dark viewer. No real
+participant story/report was written. Automated 320/390/1366 coverage is separate
+from this live visual check and is not a physical iPhone claim.
+
+### Hosted timing regression
+The full `8e477fe` CI failed in stories on Linux Chromium/WebKit: a previously
+started account load could re-render the same route and remove the viewer/composer
+while interacting. This is a product lifecycle defect, not a relaxed test target.
+Mount now preserves an open dialog for the same account/route, refreshes its row
+with a separate request revision, and still closes on account/actual route change.
+A late hashchange event for the already mounted route cannot dismiss a newly opened
+viewer; a completed reply handoff closes only its own original dialog. A deterministic
+browser case holds the account/profile response, opens a story, releases the response
+and checks that the story remains, then emits a late same-route event. Existing
+publication/reply/archive checks remain. Both local engines passed the extended case.

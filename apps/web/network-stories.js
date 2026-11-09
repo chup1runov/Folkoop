@@ -23,7 +23,7 @@ function groups(rows,seen={}) {
  return [...map.values()].map(items=>({items,name:items[0].author_name,id:items[0].author_id,unseen:items.some(s=>!seen[s.id])})).sort((a,b)=>Number(b.unseen)-Number(a.unseen)||Date.parse(b.items[0].created_at)-Date.parse(a.items[0].created_at));
 }
 function readSeen(key){try{const value=JSON.parse(localStorage.getItem(key)||'{}');return Object.fromEntries(Object.entries(value).filter(([id,at])=>/^[\w-]{1,80}$/.test(id)&&Number.isFinite(at)&&at>Date.now()-2*86400000).slice(-100));}catch{return {};}}
-let ctx=null,epoch=0,feed=[],dialog=null,draft=null,draftOwner='',examples=[],seen={},opener=null,collapsed=false,expiryTimer=null;
+let ctx=null,epoch=0,feedRevision=0,mountedRoute='',feed=[],dialog=null,draft=null,draftOwner='',examples=[],seen={},opener=null,collapsed=false,expiryTimer=null;
 const tx=i=>esc(text(i));
 const key=()=>`folkoop-stories-seen-v1:${ctx.demo?'mura':ctx.user}`;
 function close(){clearTimeout(expiryTimer);expiryTimer=null;if(dialog){dialog.close();dialog.remove();dialog=null;}if(opener?.isConnected)opener.focus({preventScroll:true});}
@@ -49,11 +49,11 @@ function draw(){
  ctx.container.querySelectorAll('[data-story-author]').forEach(b=>b.onclick=()=>{const ordered=list.flatMap(g=>g.items);view(ordered,ordered.findIndex(s=>s.author_id===b.dataset.storyAuthor));});
 }
 async function refresh(){
- if(!ctx)return;const expected=epoch,c=ctx;
+ if(!ctx)return;const expected=epoch,revision=++feedRevision,c=ctx;
  if(c.demo){if(!examples.length)examples=samples(c);feed=examples.map(localStory);draw();return;}
  c.container.innerHTML=`<p class="story-status" role="status">${tx(0)}…</p>`;
- try{const rows=await c.api.stories();if(epoch!==expected)return;feed=rows.slice(0,60);draw();}
- catch{if(epoch!==expected)return;feed=[];draw();message(text(18));}
+ try{const rows=await c.api.stories();if(epoch!==expected||revision!==feedRevision)return;feed=rows.slice(0,60);draw();}
+ catch{if(epoch!==expected||revision!==feedRevision)return;feed=[];draw();message(text(18));}
 }
 async function current(s){if(ctx.demo)return localStory(s);const rows=await ctx.api.story(s.id);if(rows.length!==1)throw Error('unavailable');return rows[0];}
 async function view(rows,index,ownArchive=false){
@@ -71,7 +71,7 @@ async function view(rows,index,ownArchive=false){
   d.querySelector('[data-story-next]').onclick=()=>view(rows,index+1,ownArchive);
   d.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;const delta=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(delta){e.preventDefault();view(rows,index+delta,ownArchive);}});
   const link=d.querySelector('[data-story-link]');if(link)link.onclick=()=>{const fn=ctx.onOpen;close();fn(item.cooperation_id);};
-  const reply=d.querySelector('[data-story-reply]');if(reply)reply.onclick=async()=>{reply.disabled=true;try{await current(item);if(epoch!==expected||dialog!==d)return;await ctx.onReply(item.author_id);close();}catch{message(text(18));reply.disabled=false;}};
+  const reply=d.querySelector('[data-story-reply]');if(reply)reply.onclick=async()=>{reply.disabled=true;try{await current(item);if(epoch!==expected||dialog!==d)return;await ctx.onReply(item.author_id);if(dialog===d)close();}catch{if(epoch===expected&&dialog===d){message(text(18));reply.disabled=false;}}};
   const withdraw=d.querySelector('[data-story-withdraw]');if(withdraw)withdraw.onclick=async()=>{withdraw.disabled=true;try{if(ctx.demo)item.withdrawn_at=new Date().toISOString();else await ctx.api.withdrawStory(item.id);if(epoch!==expected||dialog!==d)return;close();await refresh();message(text(22));}catch{message(text(18));withdraw.disabled=false;}};
   const report=d.querySelector('[data-story-report]');if(report)report.onclick=async()=>{if(!confirm(text(17)))return;report.disabled=true;try{if(!ctx.demo)await ctx.api.reportStory(item.id);if(epoch===expected&&dialog===d)message(text(23));}catch{message(text(18));report.disabled=false;}};
  }catch{if(epoch===expected&&dialog===d)message(text(18));}
@@ -110,12 +110,17 @@ function compose(){
  };
 }
 function mount(context){
+ // Account loads may finish after a viewer/composer has opened. Refresh its
+ // surrounding row without dismissing the person's current interaction.
+ const route=globalThis.location?.hash||'';
+ if(context&&ctx&&context.user===ctx.user&&context.demo===ctx.demo&&route===mountedRoute&&dialog?.open){ctx=context;void refresh();return;}
+ mountedRoute=route;
  epoch++;close();ctx=context;
  if(!ctx?.container){ctx=null;return;}
  const scope=(ctx.demo?'mura:':'real:')+ctx.user;
  if(scope!==draftOwner){draft=null;examples=[];collapsed=false;draftOwner=scope;}
  seen=readSeen(key());void refresh();
 }
-globalThis.addEventListener?.('hashchange',()=>{epoch++;close();});
+globalThis.addEventListener?.('hashchange',()=>{if(mountedRoute!==(globalThis.location?.hash||'')){epoch++;close();}});
 globalThis.FolkoopStories=Object.freeze({mount,reset,active,groups,text,copy});
 })();
