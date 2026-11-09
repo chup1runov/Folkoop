@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-MURA-CHAT-002",
   "updated": "2026-11-09",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-MURA-CHAT-002.md",
   "authorization": {
     "status": "accepted",
@@ -52,11 +52,13 @@
     },
     {
       "id": "FK-MURA-CHAT-002-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-MURA-CHAT-002-R03"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-MURA-CHAT-002-E02"
+      ]
     }
   ],
   "evidence": [
@@ -69,8 +71,17 @@
         "C02"
       ],
       "path": "docs/workflow/tasks/FK-MURA-CHAT-002.md"
+    },
+    {
+      "id": "FK-MURA-CHAT-002-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C03"
+      ],
+      "path": "docs/workflow/tasks/FK-MURA-CHAT-002.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Finish extended dark WebKit and interactive matrix; publish and verify hosted CI/live site."
+  "next_action": "Complete: deployed aae03d5, CI passed, live mobile purchase -> response -> project remained in chat; wiki updated."
 }

@@ -17,3 +17,28 @@ Self-review (folkoop-verify, not independent): authored fixture nodes reused; on
 FK-MURA-CHAT-002-E01 local: unit/integration 497/497; guest-demo and onboarding-audit passed; continuous Chromium and WebKit passed all 18 map choices, both Together/Center answers, editable practice, city marks, reload/finale. Latest extended dark run and hosted CI pending.
 
 Final local evidence: tests/e2e/mura-chat-browser.py Chromium + dark WebKit exit 0; all 18 choices and both practice answers; previous/next, resume exact story, finale, four sizes. guide-interactive-browser.py RU/AR/FA × four sizes exit 0; guest-demo-browser.py and onboarding-audit-browser.py exit 0. node --test tests/unit/*.test.mjs tests/integration/*.test.mjs: 497 pass, zero failures. build-site.mjs --shell-only exit 0; workflow check passed; git diff --check passed.
+
+## Pose and animation inspection
+Inspected original WebP assets visually: please, confident, wink, inspect, idea,
+searching, lean-in, wave, idle. Entry previously used please (hands together);
+now confident (relaxed upright stance). Old wave/idle assets are lower-detail and
+were not introduced. Profile uses confident, personal ideas/projects use idea,
+Together/Center and feedback use inspect, city transport uses searching, chats
+use wink. The old lean-in story decoration remains in source but is hidden when
+the actual practice panel lives inside chat; one contextual portrait replaces it.
+Finale keeps confident. No asset deleted or character identity regenerated.
+Idle bobbing disabled; reaction is a finite 2px/opacity transition, 240ms. Motion
+respects both system reduced-motion and the existing application preference.
+
+Publication evidence (CI final result pending): runtime aae03d5 deployed by
+Cloudflare Pages successfully. Live mobile 390x844 after Update now: resume purchase,
+clarify terms -> authored response remains in chat; Next story -> plant project,
+with chat still open. These are illustrative actions, no live writes.
+
+FK-MURA-CHAT-002-E02 final acceptance, 2026-11-09: runtime
+`aae03d5d61a13e1b3151ee104c831df09f296d43` published. All checks successful:
+Cloudflare Pages, validate, webkit, sources, database / database, standalone
+database and GitHub deploy. CI: https://github.com/chup1runov/Folkoop/actions/runs/42610408681
+Live acceptance described above passed. C01/C02/C03 met within browser emulation,
+self-review and authored fixture scope; no physical iPhone or native-language
+certification. Task complete. Documentation-only acceptance update skips rebuild.

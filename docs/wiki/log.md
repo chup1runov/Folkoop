@@ -715,3 +715,9 @@ No real messages, purchases or account changes made. No paid services added.
 
 
 FK-MURA-CHAT-002: extended dark WebKit and RU/AR/FA × four-size interactive matrix passed; final 497/497 unit/integration pass. Publication/remote CI pending.
+
+2026-11-09 FK-MURA-CHAT-002 final: published runtime aae03d5. Cloudflare Pages,
+validate, webkit, sources, database and GitHub deploy succeeded; run 42610408681.
+Live mobile 390x844 verified after update: purchase terms -> response in same chat
+-> next project story without closing. Task complete; real iPhone and fluent
+human-language review remain outside this acceptance. Historical entries preserved.
