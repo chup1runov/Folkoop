@@ -52,7 +52,7 @@ async def main():
    state['room']=False;await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel.locator('[data-shared-key=room]')).to_have_attribute('data-shared-state','pending')
    await panel.locator('.shared-progress-next [data-shared-step=meeting]').click();assert await page.locator('#meetingConfirmTitle').evaluate('(n)=>n===document.activeElement')
    terms['starts_at']=stamp(-120);terms['ends_at']=stamp(-60);state['ended']=True;state['resultState']='participant_confirmed';state['reports']=[{'user_id':uid,'version':2,'result':'held'} for uid in [A,B]]
-   await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel.locator('[data-shared-key=outcome]')).to_have_attribute('data-shared-state','done')
+   await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel.locator('[data-shared-key=outcome]')).to_have_attribute('data-shared-state','done');assert await panel.locator('.shared-progress-next').count()==0
    state['resultState']='unclear';state['reports'][1]['result']='not_held';await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel.locator('[data-shared-key=outcome]')).to_have_attribute('data-shared-state','disputed')
    state['fail']=True;await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel).to_contain_text('Нужно обновить данные')
    await page.locator('[data-coop=back]').click();await page.locator('#mobilePrimaryNav a[href="#/together"]').click();await page.locator(f'[data-coop=open][data-id="{Q}"]').click()

@@ -17,8 +17,8 @@ test('room revocation and requirement version changes reopen their own stage',()
 test('outcome is not a self-report, a prior version or a majority over an objection',()=>{
  const f=setup(),a=meeting(),m=a.data.meeting;m.terms.starts_at=iso(now-2000);m.terms.ends_at=iso(now-1000);m.current=false;
  m.outcome={version:2,ended:true,state:'participant_confirmed',reports:[{user_id:'a',version:2,result:'held'},{user_id:'b',version:2,result:'held'}]};
- assert.equal(step(f.model(a),'outcome').state,'done');assert.equal(step(f.model(a),'people').state,'unknown');
- m.outcome.reports[1].version=1;assert.equal(step(f.model(a),'outcome').state,'reported');
+ assert.equal(step(f.model(a),'outcome').state,'done');assert.equal(step(f.model(a),'people').state,'unknown');assert.doesNotMatch(f.render(a),/class="shared-progress-next"/);
+ m.outcome.reports[1].version=1;assert.equal(step(f.model(a),'outcome').state,'reported');assert.match(f.render(a),/shared-progress-next[^]*data-shared-step="outcome"/);
  m.outcome.reports[1].version=2;m.outcome.reports[1].result='not_held';m.outcome.state='unclear';assert.equal(step(f.model(a),'outcome').state,'disputed');
  m.outcome.error=true;assert.equal(step(f.model(a),'outcome').state,'unknown');
 });

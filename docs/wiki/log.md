@@ -786,3 +786,19 @@ Tests initially failed on an ambiguous nested heading locator and assumed fallba
 wording; corrected selectors/expectations without changing working UI behavior.
 Index/development-status/source registry updated after relevant source diff review.
 Publication and hosted checks pending; previous journal unchanged. No paid services.
+
+2026-11-09 hosted checkpoint: runtime 47dae36 passed validate (including full
+production City feeds), WebKit and both database checks in run 42638483577.
+Sources failed on a bounded Trafikverket timeout; the same source probe then
+passed locally. Cloudflare build failed; its detailed log is behind an expired
+session, so the cause is not yet established. Retrying the existing Git integration
+with this documentation checkpoint; application code is unchanged. No acceptance
+of a new agreement or bypass of database/asset release gates. Live acceptance pending.
+
+Final review follow-up: after a meeting starts, preparation stages are historical
+and no longer selected as the next action. Pending outcome/task work remains
+reachable; an agreed outcome with all tasks verified offers no false preparation
+prompt. Expanded assertions passed: 522 unit/integration and shared-progress
+Chromium/WebKit 320/1366. This supersedes the preceding unchanged-code retry plan;
+the follow-up contains this small application fix. GitHub Pages 47dae36 deployed,
+Cloudflare still pending a successful retry.
