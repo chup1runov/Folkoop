@@ -9,7 +9,7 @@ passed. Guest demo and replay checks passed locally. Physical iPhone not tested.
 Previous CI c0323b0 validate failed on the former long chapter text; the assertion
 now checks the short question AND the original detail disclosure. Old modal-focus
 audit updated to assert page focus remains accessible, per explicit user request.
-Publication and new remote CI recorded separately.
+Published runtime: `1f34966`. Cloudflare and all CI jobs passed; [run 42605776469](https://github.com/chup1runov/Folkoop/actions/runs/42605776469). Live 390x844 chat/purchase transition checked after update. Full acceptance appended to the journal.
 
 ## 2026-11-09 - Compact theme and Mura dialogue
 User iPhone screenshots revealed inherited light text on hard-coded white
