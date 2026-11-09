@@ -103,16 +103,16 @@
       "path": "apps/web/network-ui.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
-      "sha256": "1f69e40b29160411251aec26e3473183960dc19c34d559c4017c5972cb5ab71d"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification; FK-STORIES-004 reviewed scoped diff: compact story integration, safe Mura actions, account-scoped export and explicit RPCs; local checks; publication pending",
+      "sha256": "fba0eb5d602c07d7bbb1c406c3a72ddfee05166d36fcef724767f1f4cb83f6b3"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
-      "sha256": "4a6e2df06cca926e1f17a2eb603fafe197e069065e6943be649070ecb2fb89b5"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification; FK-STORIES-004 reviewed scoped diff: compact story integration, safe Mura actions, account-scoped export and explicit RPCs; local checks; publication pending",
+      "sha256": "296796c30fe0eae0e7ddbd55b2456b99d723df21955a06d1d9841430d08b2f70"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -159,8 +159,8 @@
       "path": "scripts/ci/webkit-smoke.sh",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
-      "sha256": "b38c5b60c705c0c07701f23d97c2334320606518b577d2a33f8c4f187e99c585"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification; Read full script: adds separate stories browser invocation after existing shared-progress, retains all earlier tests.",
+      "sha256": "10f51b59ff95adbdedacf968ce77921001fe3359f873580bd4ee73612890de13"
     },
     {
       "id": "SRC-STAB-SPEC",
@@ -231,8 +231,8 @@
       "path": "apps/web/network-client.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
-      "sha256": "591b8a2ddc2a7df61dc8de0303f135ad0ad4ce35d8064c284a74df5a29b55146"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-STORIES-004 reviewed scoped diff: compact story integration, safe Mura actions, account-scoped export and explicit RPCs; local checks; publication pending",
+      "sha256": "55e624209b92b7a22f82702e16a154d62bd852233d252e436c1486e12e73c4de"
     },
     {
       "id": "SRC-FOR-YOU-LOOP",
@@ -265,6 +265,22 @@
       "checked_at": "2026-11-09",
       "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; quantity source jump reaches actual quantity form; hosted/live 3b4e110 checkpoint; demo pending budget follows authored room-first story, not a refresh failure; final FK-SHARED-PROGRESS-003 runtime b92d175 passed hosted tests/deployments and live Mura acceptance, superseding pending checkpoints; no native-language or retention certification",
       "sha256": "7d46a52ed2ed7738b0fc1a3b560f01d0719f4a691f8be525433953abdc949e03"
+    },
+    {
+      "id": "SRC-STORIES",
+      "path": "apps/web/network-stories.js",
+      "status": "implemented-tested-locally",
+      "checked_at": "2026-11-09",
+      "checked_scope": "Full new module/schema: audience/expiry/idempotency, bounded UI and Mura isolation. No native-language or retention-effect certification.",
+      "sha256": "899edaedbe784b3121380296445d1476828404659324a3062845e14b188e7b02"
+    },
+    {
+      "id": "SRC-STORIES-SQL",
+      "path": "supabase/migrations/20261109171800_participant_stories.sql",
+      "status": "implemented-tested-locally",
+      "checked_at": "2026-11-09",
+      "checked_scope": "Full new module/schema: audience/expiry/idempotency, bounded UI and Mura isolation. No native-language or retention-effect certification.",
+      "sha256": "b29e99a515be8d8979e4a9e5b584e98c67bbfc8cf8b00941634107ff56600faf"
     }
   ]
 }

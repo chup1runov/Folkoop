@@ -31,3 +31,4 @@ python3 tests/e2e/for-you-browser.py
 python3 tests/e2e/discovery-browser.py
 
 python3 tests/e2e/shared-progress-browser.py
+python3 tests/e2e/stories-browser.py

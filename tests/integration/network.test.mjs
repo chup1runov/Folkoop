@@ -24,10 +24,13 @@ test('explicit all-device logout revokes globally; normal logout remains local',
 test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
  const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:url.includes('fk_project_document_consents?')?[{document_id:cid,cooperation_id:cid,revision:1,user_id:uid,document:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
- assert.equal(result.manifest.sections.length,44);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.length,46);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
  for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid)||call.url.includes('.eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
+ assert.equal(result.stories.length,1);assert.equal(result.storyReports.length,1);
+ assert(s.calls.some(x=>x.url.includes('fk_stories?')&&x.url.includes('author_id=eq.'+uid)));
+ assert(s.calls.some(x=>x.url.includes('fk_story_reports?')&&x.url.includes('reporter_id=eq.'+uid)));
  assert(!JSON.stringify(result).includes('test-token'));
 });
 test('export does not infer completeness from a short or empty response without an exact count',async()=>{
@@ -252,3 +255,13 @@ test('document consent context survives pagination',async()=>{
 
 test('public page reads need no login and never carry the current account token',async()=>{const s=setup();await s.c.publicPage(uid);let call=s.calls.at(-1);assert.equal(call.method,'GET');assert.equal(call.headers.Authorization,undefined);await s.login();await s.c.publicPage(uid);call=s.calls.at(-1);assert.equal(call.headers.Authorization,undefined);assert.equal(call.credentials,'omit');});
 test('public-page export retains private editing content only in the owner archive',async()=>{const state={revision:2,published:true,content:{name:'Alias',ideas:'private'},visible:['name']};const s=setup(url=>url.endsWith('/rpc/fk_my_public_page')?json(state):null);await s.login();const result=await s.c.exportOwn();assert.deepEqual(JSON.parse(JSON.stringify(result.publicPage)),state);assert.equal(result.manifest.sections.find(x=>x.collection==='publicPage').coverage,'visible-query-complete');});
+
+test('stories use explicit audience, stable retry ID and no client actor/time',async()=>{
+ const s=setup();await s.login();const value={id:cid,body:'A story',tone:'teal',audience:'network',cooperation:null};
+ await s.c.publishStory(value);const first=JSON.parse(s.calls.at(-1).body);await s.c.publishStory(value);
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body),first);
+ assert.deepEqual(Object.keys(first).sort(),['p_audience','p_body','p_cooperation','p_id','p_tone']);
+ assert.throws(()=>s.c.publishStory({...value,audience:'project'}),e=>e.code==='INVALID_INPUT');
+ assert.throws(()=>s.c.publishStory({...value,tone:'<script>'}),e=>e.code==='INVALID_INPUT');
+ await s.c.storyArchive();assert(s.calls.at(-1).url.includes('author_id=eq.'+uid));
+});

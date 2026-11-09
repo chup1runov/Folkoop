@@ -854,3 +854,11 @@ native-language certification, retention effect measurement or live account
 consent/receipt posting. Author self-review only. Source fingerprints reconciled;
 old journal preserved; new FK-LESSON-004/005 record concrete prevention measures.
 Final documentation commit is separate and skips redundant build/publication.
+
+<!-- workflow-entry:FK-STORIES-004-LOCAL -->
+## [2026-11-09] FK-STORIES-004-LOCAL | Компактные истории — реализация и локальная проверка
+
+Добавлены текстовые истории с выбором аудитории, сроком 24 часа, архивом, переходом к делу/переписке, ручным листанием и локальными примерами Муры. Проверки и ограничения связаны с FK-STORIES-004; опубликованность пока не утверждается. Старые источники и записи сохранены. Это самопроверка, не независимое ревью и не доказательство роста удержания.
+
+Источники реестра: SRC-STORIES, SRC-STORIES-SQL, SRC-NETWORK-UI, SRC-NETWORK-CLIENT.
+<!-- /workflow-entry:FK-STORIES-004-LOCAL -->

@@ -6,7 +6,7 @@ BASE=os.getenv('BASE_URL','http://127.0.0.1:4507/')
 API='https://abcdefghijklmnopqrst.supabase.co'
 UID='11111111-1111-4111-8111-111111111111'
 OTHER='22222222-2222-4222-8222-222222222222'
-READ_RPCS={'fk_chat_inbox','fk_activity_inbox','fk_my_public_page','fk_meeting_budget_notice_inbox','fk_contribution_notice_inbox','fk_room_notification_inbox','fk_meeting_action_inbox','fk_meeting_room_alerts','fk_task_basis_notifications','fk_document_revision_notifications','fk_meeting_reminder_inbox','fk_task_action_inbox'}
+READ_RPCS={'fk_story_feed','fk_chat_inbox','fk_activity_inbox','fk_my_public_page','fk_meeting_budget_notice_inbox','fk_contribution_notice_inbox','fk_room_notification_inbox','fk_meeting_action_inbox','fk_meeting_room_alerts','fk_task_basis_notifications','fk_document_revision_notifications','fk_meeting_reminder_inbox','fk_task_action_inbox'}
 OUT=Path(os.getenv('QA_OUTPUT','qa-output'));OUT.mkdir(parents=True,exist_ok=True)
 async def main():
  async with async_playwright() as pw:

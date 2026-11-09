@@ -1,0 +1,96 @@
+Unit/integration
+ℹ tests 527
+ℹ suites 0
+ℹ pass 527
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1237.54325
+
+SQL
+PASS supabase/tests/network-account-lifecycle.sql
+PASS supabase/tests/network-activity-chat.sql
+PASS supabase/tests/network-closure-coordination.sql
+PASS supabase/tests/network-cooperation.sql
+PASS supabase/tests/network-economic-flow-migration.sql
+PASS supabase/tests/network-first-pilot.sql
+PASS supabase/tests/network-meeting-action-inbox.sql
+PASS supabase/tests/network-meeting-outcome.sql
+PASS supabase/tests/network-meeting.sql
+PASS supabase/tests/network-message-visible-reads.sql
+PASS supabase/tests/network-messaging.sql
+PASS supabase/tests/network-outcome-membership-history.sql
+PASS supabase/tests/network-private-rls.sql
+PASS supabase/tests/network-project-domains.sql
+PASS supabase/tests/network-public-pages.sql
+PASS supabase/tests/network-purchase-lifecycle.sql
+PASS supabase/tests/network-purchase-offers.sql
+PASS supabase/tests/network-rls.sql
+PASS supabase/tests/network-search-message-retry.sql
+PASS supabase/tests/network-security-definer.sql
+PASS supabase/tests/network-stories.sql
+PASS supabase/tests/network-z-data-api-grants.sql
+
+Chromium
+PASS 320/dark/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 1366/light/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 390/dark/ar: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS Mura stories, local composer, archive, reload and zero external writes
+
+WebKit
+PASS 320/dark/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 1366/light/ru: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS 390/dark/ar: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds
+PASS Mura stories, local composer, archive, reload and zero external writes
+
+Discovery
+PASS 320/dark: finite pages, save/reload, hide/restore, scope, verified goal, partial data, zero writes
+PASS 390/light: finite pages, save/reload, hide/restore, scope, verified goal, partial data, zero writes
+PASS 1366/dark: finite pages, save/reload, hide/restore, scope, verified goal, partial data, zero writes
+
+For you
+PASS 390: intent, join, failure/draft, saved result, real-record continuation, read, partial data, geometry
+PASS 1366: intent, join, failure/draft, saved result, real-record continuation, read, partial data, geometry
+PASS Mura local example, continuation, return and zero writes
+
+Mura purchase
+PASS dark stat contrast 12.364235153523834
+PASS purchase route, disclosure, no demo writes, viewport 390
+PASS Mura meeting source jumps 390
+PASS dark stat contrast 12.364235153523834
+PASS purchase route, disclosure, no demo writes, viewport 1366
+PASS Mura meeting source jumps 1366
+
+Mura regression
+PASS First visit leads into Mura without surfacing registration
+PASS Visiting Mura launches an in-character walk through her own account
+PASS Explicit visit to Mura restarts her tour even when onboarding was completed before
+PASS Mura Home is a lived-in account surface with no signup, pilot or technical chrome
+PASS Mura and Profile are one personal hub with working Profile/Settings secondary navigation
+PASS Mura visit context has an explicit exit and no registration CTA inside the account
+PASS Mura People shows relationships rather than a generic directory
+PASS Mobile route tabs keep Center people/communities separate from Together without stale selection
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura can browse Communities, Messages and Cooperation without product-meta chrome
+PASS Mura firewood story exposes Economic Flow roles read-only
+PASS Mura Communities contains four lived-in places with current activity
+PASS Mura Messages contains five conversations tied to different parts of her life
+PASS Mura Messages opens an existing conversation with no login/server/security boilerplate
+PASS Mura City opens Göteborg official-source tools with Center available as a separate primary space
+PASS Mura City source can continue read-only into authored Center context with the official source preserved
+PASS Mura Center opens authored Göteborg context without live forum sync, copied messages or venue claims
+PASS Mura Profile is a personal life map with drafts, Göteborg and private drafts preserved and Settings available
+PASS Project starts with summary/next step and keeps tasks, participants and activity collapsible
+PASS Mura project view shows people, tasks, activity and chat without mutation or technical clutter
+PASS Mura Home stays exploratory and does not surface registration or mutation CTAs
+PASS Skip link targets the visible Mura content surface
+PASS Mura Home conversation preview opens the selected conversation
+PASS Project and message subtabs clear stale open entity details
+PASS Registration appears only after the visitor explicitly leaves Mura
+PASS Leaving Mura creates a clear account boundary without pilot copy, Mura chip, demo badges or City handoff state
+PASS Explicit visit to Mura restarts the tour even when onboarding was completed before
+PASS Explicitly visiting Mura always starts her tour even after onboarding was completed earlier
+PASS Implicit browser language is accepted when entering Mura and reload does not reopen first contact
+PASS Mura retains Göteborg in memory when Storage access is blocked

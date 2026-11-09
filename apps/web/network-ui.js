@@ -1065,7 +1065,13 @@ function render(){
  const homeScope=['home','me'].includes(r)&&u?`home:${u.id}`:'';
  const openProfileEditors=homeScope&&host.dataset.homeScope===homeScope?['.profile-editor','.public-profile-editor','.public-preview'].filter(selector=>host.querySelector(selector)?.open):[];
  const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
+ const showStories=u&&(['home','me'].includes(r)||(r==='together'&&!selectedCoop));
+ if(showStories)html='<section id="accountStories"></section>'+html;
  host.innerHTML=demoBanner+muraProfilePractice(r)+muraCenterPractice(r)+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
+ globalThis.FolkoopStories.mount(showStories?{container:host.querySelector('#accountStories'),api,user:u.id,demo:guestDemo,cooperations:data.cooperations||[],members:data.coopMembers||[],profiles:data.directory||[],contactIds:(data.chatMembers||[]).filter(m=>m.user_id!==u.id&&data.chats.some(c=>c.kind==='direct'&&c.id===m.conversation_id)).map(m=>m.user_id),
+  onOpen:id=>run(async()=>{if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;const target=data.cooperations.find(x=>x.id===id);navigateNetwork(target?.kind==='project'?'#/projects':'#/together');await load();notice='';}),
+  onReply:async id=>{if(guestDemo){const chat=data.chats.find(c=>c.kind==='direct'&&data.chatMembers.some(m=>m.conversation_id===c.id&&m.user_id===id));if(!chat)throw new Error('UNAVAILABLE');selectedChat=chat.id;}else selectedChat=await api.startDirect(id);navigateNetwork('#/messages');await load();render();}
+ }:null);
  // Resolve notification targets in the newly rendered DOM, including read-only tasks.
  if(meetingBudgetNoticeJump===selectedCoop&&!busy&&r==='projects'){
   meetingBudgetNoticeJump=null;
@@ -1105,7 +1111,8 @@ function render(){
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
   const keep='[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-discovery],[data-shared-step],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
-  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice))b.hidden=true;});
+  // Stories own their local-only Mura actions; keep those controls usable.
+  host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice)&&!b.closest('#accountStories'))b.hidden=true;});
  }
  // Busy may add a temporary restriction, but never erase a domain-disabled
  // state (stale/offline/role/meeting conditions) when busy becomes false.
@@ -1918,7 +1925,7 @@ window.addEventListener('folkoop:guest-demo',e=>{
   if(detail.target!=='tour')navigateNetwork(target);
   if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();if(detail.target==='tour')window.dispatchEvent(new CustomEvent('folkoop:mura-tour-ready'));}).catch(()=>render());}else if(detail.target==='account')run(async()=>{await api?.restore?.();if(currentUser())await load();});else render();
 });
-api?.onChange(()=>{documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';forYouSelected=null;forYouDrafts={};forYouSamples={};forYouPending={};forYouFocus=null;});
+api?.onChange(()=>{globalThis.FolkoopStories.reset();documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';forYouSelected=null;forYouDrafts={};forYouSamples={};forYouPending={};forYouFocus=null;});
 // Refresh only a visible, idle real account. Never replace a form being edited.
 let liveRefreshAt=0,liveRefreshError=false;
 async function refreshAccount(){

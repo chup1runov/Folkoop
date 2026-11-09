@@ -1,5 +1,28 @@
 # FOLKOOP Account Closure Operator Runbook
 
+## Stories — 9 November 2026
+
+After application of `20261109171800_participant_stories.sql`, use cumulative
+`folkoop_private.account_closure_inventory_v22(uuid)` (wraps v21). It adds authored
+stories and reports submitted by the user. Profile deletion cascades stories and
+their reports, plus the departing user's reports on other stories. Project deletion
+also removes its linked stories. Preserve the existing separate closure approval,
+session revocation and shared-content review; this feature authorizes no account deletion.
+
+Browser export now includes actor-filtered `stories` and `storyReports` (46 sections,
+including publicPage). Expired/withdrawn own stories remain exportable; other people's
+reports are not exposed. Existing manifest exclusions and operator-complete-copy duties
+remain. A 24-hour story expiry ends audience access; it does not erase the private archive.
+
+Operators inspect `fk_story_reports` through the already restricted database/operator
+path, joining only the reported story and minimum identity needed for the incident.
+The participant UI records a report; it promises neither immediate review nor an
+automatic notification. Investigate under the existing incident procedure, record the
+case privately and, when justified, withdraw the reported story using `withdrawn_at`.
+Never publish story bodies/reporters in GitHub. Keep archive/erasure requests and
+incident evidence under existing rights and retention procedures; no new moderation
+dashboard, automatic enforcement, email or retention purge is implemented here.
+
 ## Local audit 11–15 continuation — 6 November 2026
 
 After separately authorized migration, inventory v21 adds private message-command

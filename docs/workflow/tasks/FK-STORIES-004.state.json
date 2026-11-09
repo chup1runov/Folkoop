@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "FK-STORIES-004",
+  "updated": "2026-11-09",
+  "phase": "finalizing",
+  "spec": "docs/workflow/tasks/FK-STORIES-004.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-09",
+    "scope": "Implement useful social engagement in continuation of owner-authorized work, verify, wiki and free publication. Text stories first; no paid services, no real participant test messages."
+  },
+  "requirements": [
+    {
+      "id": "FK-STORIES-004-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-R05",
+      "checks": [
+        "C05"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-STORIES-004-T01",
+      "status": "done",
+      "requirements": [
+        "FK-STORIES-004-R01",
+        "FK-STORIES-004-R02"
+      ],
+      "evidence": [
+        "FK-STORIES-004-E01"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-T02",
+      "status": "done",
+      "requirements": [
+        "FK-STORIES-004-R03",
+        "FK-STORIES-004-R04"
+      ],
+      "evidence": [
+        "FK-STORIES-004-E01"
+      ]
+    },
+    {
+      "id": "FK-STORIES-004-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-STORIES-004-R05"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-STORIES-004-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-STORIES-004.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Local checks passed; additive hosted migration applied. Read back privileges, publish, wait hosted CI and accept live Mura; then finish wiki."
+}

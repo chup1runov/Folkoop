@@ -62,6 +62,21 @@ Depending on how you use the pilot:
 - tasks;
 - activity/read state needed for the workspace.
 
+Feature clarification, 9 November 2026: optional text stories store your author ID,
+chosen display name at publication, text, colour, optional linked activity, audience,
+publication/expiry time and withdrawal time. You choose all admitted participants or
+current participants in the linked activity. Viewing does not confirm participation.
+Stories are visible to that audience for 24 hours, subject to blocks and current
+activity access. Expired/withdrawn stories remain in your private archive while the
+account is active, until handled through an erasure/closure request; 24 hours is not
+a deletion promise. Project deletion also removes its linked stories. Your own stories
+and submitted reports are included in the account export. The operator can inspect
+reported content under the existing safety procedure. No public viewer list is stored:
+viewed IDs/times are kept only in the current browser, scoped to the account. Only
+marks from the preceding two days are used; local storage remains until refreshed
+or cleared in the browser. Mura's fictional practice publications remain in page memory only.
+This feature clarification does not certify the remaining pilot legal/release gates.
+
 The first core-loop pilot does not need payment or escrow data.
 
 ### Safety and moderation
