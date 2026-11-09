@@ -95,24 +95,24 @@
       "path": "apps/web/folkoop.js",
       "status": "local-code",
       "checked_at": "2026-11-09",
-      "checked_scope": "Nonmodal Mura chat, typing indicator, pause on independent navigation; 18 replies/progress/finale Chromium and WebKit.",
-      "sha256": "346cc404774bdfdf86ee074dec18fbb2681652e670266caf7f8b34d552a5e8a5"
+      "checked_scope": "Continuous Mura story mounting/restoration, tutorial event delegation, nonmodal chat and contextual pose/motion paths; not a full application audit",
+      "sha256": "3e0f18c1943433b82d729eac4ddffe2575b2dff1ccf26b4531d943b1f51f4ab2"
     },
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
       "status": "published-scoped-meeting-inbox-verified",
-      "checked_at": "2026-11-08",
-      "checked_scope": "Purchase jump focus: summary fallback, visible enabled form controls; Chromium/WebKit 390/1366 regression.",
-      "sha256": "af6af4bac89ad593d0eaeceaf5af53bcc6051a8d97658b83c8b8617f6c44eabb"
+      "checked_at": "2026-11-09",
+      "checked_scope": "Continuous Mura story mounting/restoration, tutorial event delegation, nonmodal chat and contextual pose/motion paths; not a full application audit",
+      "sha256": "a463448e8156804eb59888d02a7ffb079e9e93a60ce96cf0cdd0230295fafbbe"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
       "checked_at": "2026-11-09",
-      "checked_scope": "Nonmodal Mura chat, typing indicator, pause on independent navigation; 18 replies/progress/finale Chromium and WebKit.",
-      "sha256": "a05937c9d6fd7944cdac89a3459d297376f8ce1e3771fa0863eecc5afeb4e3c5"
+      "checked_scope": "Continuous Mura story mounting/restoration, tutorial event delegation, nonmodal chat and contextual pose/motion paths; not a full application audit",
+      "sha256": "dcea0292925b1fd8238282c0111d8057c123f576929ed33a0e71c8b8090ba074"
     },
     {
       "id": "SRC-TEST-PROGRESS",

@@ -693,3 +693,25 @@ Final local unit/integration run: 497 passed, zero failures. Navigation pause an
 resume passed in Chromium and WebKit. Structure/link check passed (47 pages,
 336 local links); this is not a claim of full semantic or physical iPhone review.
 No real messages, purchases or account changes made. No paid services added.
+
+## 2026-11-09 — Непрерывные истории Муры
+Принято и реализовано по запросу владельца: все 18 историй остаются в маленьком
+немодальном чате. `mountMuraStory` переносит существующую локализованную практику
+в окно, а реальная иллюстративная карточка открывается на фоне. После выбора видны
+реплика пользователя, ответ Муры и следующий шаг. Заметки и пробные сообщения
+остаются только в текущей странице; ничего не отправляется. Пропуск возвращает
+панель на страницу. Карта, назад/далее, восстановление истории и финал сохранены.
+Приветствие: confident вместо please; в разговоре — confident/inspect/idea/searching/wink
+по контексту. Старые изображения сохранены. Вечное покачивание отключено, смена
+позы мягкая и короткая; учитываются системное и пользовательское уменьшение движения.
+Источники: [задача](../workflow/tasks/FK-MURA-CHAT-002.md),
+[оболочка](../../apps/web/folkoop.js), [практика](../../apps/web/network-ui.js),
+[позы](../../apps/web/folkoop-guide.js), [проверка](../../tests/e2e/mura-chat-browser.py).
+Локально: все истории/пробные ответы, восстановление и финал Chromium/WebKit;
+497 тестов кода, прежний гостевой сценарий и аудит геометрии прошли. Последний
+тёмный WebKit и новый удалённый CI/публикация пока ожидаются. Новые ответы на
+заметку/пробное сообщение: RU/EN/SV, английский fallback для остальных языков;
+это не подтверждение проверки носителями языка или физическим iPhone.
+
+
+FK-MURA-CHAT-002: extended dark WebKit and RU/AR/FA × four-size interactive matrix passed; final 497/497 unit/integration pass. Publication/remote CI pending.

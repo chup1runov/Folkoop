@@ -1734,7 +1734,7 @@ function muraMessagePractice(){
  const c=muraMessageCopy[lang()]||muraMessageCopy.en,i=muraMessageStory.index;
  return '<aside class="mura-message-story"><img src="./folkoop-guide-lean-in.webp" alt="" width="36" height="40"><div><strong id="muraMessageStoryTitle">'+esc(c[i])+'</strong><p>'+esc(c[6+i])+'</p><details><summary>'+esc(c[3])+'</summary><label class="sr-only" for="muraPracticeReply">'+esc(c[3])+'</label><textarea id="muraPracticeReply" class="mura-reply-preview" rows="2" maxlength="1000" autocomplete="off" aria-describedby="muraPracticeReplyNote">'+esc(c[9+i])+'</textarea><small id="muraPracticeReplyNote">'+esc(c[4])+'</small></details><button type="button" class="text-button" data-mura-message-return>'+esc(c[5])+'</button></div></aside>';
 }
-host.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-message-return]')){muraMessageStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-message-return'));}});
+document.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-message-return]')){muraMessageStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-message-return'));}});
 window.addEventListener('folkoop:mura-message-open',e=>{
  const index=['direct','group','project'].indexOf(e.detail?.kind);
  if(!guestDemo||index<0)return;
@@ -1755,7 +1755,7 @@ function muraProfilePractice(r){
  const c=muraProfileCopy[lang()]||muraProfileCopy.en;
  return '<aside class="mura-message-story mura-profile-story"><img src="./folkoop-guide-wink.webp" alt="" width="36" height="40"><div><strong id="muraProfileStoryTitle">'+esc(c[muraProfileStory])+'</strong><p>'+esc(c[4+muraProfileStory])+'</p><details><summary>'+esc(c[8])+'</summary><label class="sr-only" for="muraProfileNote">'+esc(c[8])+'</label><textarea id="muraProfileNote" rows="2" maxlength="1000" autocomplete="off" aria-describedby="muraProfileNoteHint"></textarea><small id="muraProfileNoteHint">'+esc(c[9])+'</small></details><button type="button" class="text-button" data-mura-profile-return>'+esc(t('profile'))+'</button></div></aside>';
 }
-host.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-profile-return]')){muraProfileStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-profile-return'));}});
+document.addEventListener('click',e=>{if(guestDemo&&e.target.closest('[data-mura-profile-return]')){muraProfileStory=null;window.dispatchEvent(new CustomEvent('folkoop:mura-profile-return'));}});
 window.addEventListener('folkoop:mura-profile-open',e=>{
  const index=['interests','skills','connections','ideas'].indexOf(e.detail?.kind);
  if(!guestDemo||index<0)return;
@@ -1774,11 +1774,12 @@ function muraCenterPractice(r){
  const back={ru:'К историям Центра',en:'Back to Center stories',sv:'Tillbaka till Center',uk:'До історій Центру',fi:'Takaisin Centeriin',bs:'Nazad u Centar',es:'Volver al Centro',ar:'العودة إلى المركز',fa:'بازگشت به مرکز',so:'Ku noqo Xarunta',ku:'Vegere Navendê'}[document.documentElement.lang]||'Back to Center stories';
  return '<section class="card mura-center-practice" aria-labelledby="muraCenterPracticeTitle"><h2 id="muraCenterPracticeTitle">'+esc(c[0])+'</h2><p>'+esc(stories[muraCenterKinds.indexOf(muraCenterKind)])+'</p><p class="meta">'+esc(c[1])+'</p><div class="actions"><button type="button" class="button secondary" data-mura-center-answer="terms">'+esc(c[2])+'</button><button type="button" class="text-button" data-mura-center-answer="done">'+esc(c[3])+'</button></div><p data-mura-center-feedback role="status"></p><button type="button" class="text-button" data-mura-center-return>'+esc(back)+'</button></section>';
 }
-host.addEventListener('click',e=>{
+document.addEventListener('click',e=>{
  const answer=e.target.closest('[data-mura-center-answer]');
  if(answer&&guestDemo){
   const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
   answer.closest('.mura-center-practice').querySelector('[data-mura-center-feedback]').textContent=c[answer.dataset.muraCenterAnswer==='terms'?4:5];
+  window.dispatchEvent(new CustomEvent('folkoop:mura-feedback',{detail:{text:c[answer.dataset.muraCenterAnswer==='terms'?4:5],choice:answer.textContent}}));
  }
  if(e.target.closest('[data-mura-center-return]')&&guestDemo){
   muraCenterKind=null;window.dispatchEvent(new CustomEvent('folkoop:mura-center-return'));
@@ -1806,11 +1807,12 @@ function muraTogetherPractice(coop){
  const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
  return '<section class="card mura-together-practice" aria-labelledby="muraPracticeTitle"><h3 id="muraPracticeTitle">'+esc(c[0])+'</h3><p>'+esc(c[7+muraTogetherKinds.indexOf(coop.kind)])+'</p><p class="meta">'+esc(c[1])+'</p><div class="actions"><button type="button" class="button secondary" data-mura-answer="terms">'+esc(c[2])+'</button><button type="button" class="text-button" data-mura-answer="done">'+esc(c[3])+'</button></div><p data-mura-feedback role="status"></p><button type="button" class="text-button" data-mura-together-return>'+esc(c[6])+'</button></section>';
 }
-host.addEventListener('click',e=>{
+document.addEventListener('click',e=>{
  const answer=e.target.closest('[data-mura-answer]');
  if(answer&&guestDemo){
   const c=muraTogetherCopy[document.documentElement.lang]||muraTogetherCopy.en;
   answer.closest('.mura-together-practice').querySelector('[data-mura-feedback]').textContent=c[answer.dataset.muraAnswer==='terms'?4:5];
+  window.dispatchEvent(new CustomEvent('folkoop:mura-feedback',{detail:{text:c[answer.dataset.muraAnswer==='terms'?4:5],choice:answer.textContent}}));
  }
  if(e.target.closest('[data-mura-together-return]')&&guestDemo){
   muraTogetherKind=null;

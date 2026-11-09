@@ -969,3 +969,31 @@ body[data-page="messages"] .messages-filter-row a{padding:6px 10px;font-size:.8r
 .mura-tour-finale{position:fixed;inset:auto 10px calc(138px + env(safe-area-inset-bottom)) auto;margin:0;width:min(340px,calc(100vw - 24px));max-height:46dvh;z-index:110}
 @media(min-width:761px){#onboarding .onboarding-card,#onboarding .onboarding-card[data-side],.mura-tour-finale{bottom:88px!important}}
 @media(max-height:550px){#onboarding .onboarding-card,#onboarding .onboarding-card[data-side],.mura-tour-finale{bottom:8px!important;max-height:65dvh!important}}
+
+/* One continuous conversation, with the illustrative page still usable behind it. */
+#muraChatChoice{max-width:88%;margin:4px 0 8px auto;padding:7px 10px;border-radius:12px 12px 3px 12px;background:var(--accent-soft,var(--surface));border:1px solid var(--line);font-size:.8rem;line-height:1.35}
+[dir=rtl] #muraChatChoice{margin-inline-start:auto;margin-inline-end:0}
+#muraChatStory>:is(section,aside){display:block;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:none}
+#muraChatStory :is(h2,h3,img,[data-chat-intro],.mura-story-navigation,[data-mura-feedback],[data-mura-center-feedback]){display:none}
+#muraChatStory .mura-message-story>div>strong{display:none}
+#muraChatStory p.meta{font-size:.72rem;margin:6px 0}
+#muraChatStory textarea{min-height:64px;max-height:100px;font-size:.85rem}
+#muraChatStory fieldset{margin:8px 0;padding:8px;font-size:.8rem}
+#muraChatStory details{font-size:.8rem;margin:8px 0}
+#onboarding[data-chat-story=true] .onboarding-actions{display:grid;grid-template-columns:1fr auto 1fr;gap:6px}
+#onboarding[data-chat-story=true] .onboarding-actions button{font-size:.72rem;padding:7px 5px}
+#onboarding .onboarding-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#onboarding .onboarding-guide{display:flex;align-items:center;gap:7px}
+#onboarding .onboarding-portrait{width:38px;height:42px;object-fit:contain}
+#onboarding:not([hidden])~.folkoop-guide-actor{display:none!important}
+body:has(#onboarding:not([hidden])) #folkoopGuideActor{display:none!important}
+/* No perpetual bouncing or distracting spin; a small one-shot acknowledgement. */
+.folkoop-guide-actor>img,.folkoop-guide-language-character img{animation:none!important}
+.mura-portrait-enter,.entry-mura img{animation:mura-calm-arrive .24s ease-out both}
+@keyframes mura-calm-arrive{from{opacity:.65;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.mura-portrait-enter,.entry-mura img,.folkoop-guide-actor{animation:none!important;transition:none!important}}
+html[data-reduce-motion=true] .mura-portrait-enter,html[data-reduce-motion=true] .entry-mura img{animation:none!important}
+
+.folkoop-guide-actor.mura-react-step img,.folkoop-guide-actor.mura-react-done img{animation:mura-calm-arrive .24s ease-out both!important}
+@media(prefers-reduced-motion:reduce){.folkoop-guide-actor.mura-react-step img,.folkoop-guide-actor.mura-react-done img{animation:none!important}}
+html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}

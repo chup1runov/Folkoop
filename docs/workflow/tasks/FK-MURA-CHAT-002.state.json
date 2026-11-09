@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "id": "FK-MURA-CHAT-002",
+  "updated": "2026-11-09",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-MURA-CHAT-002.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-09",
+    "scope": "Continuous Mura chat, poses, verification, wiki, free publication"
+  },
+  "requirements": [
+    {
+      "id": "FK-MURA-CHAT-002-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-MURA-CHAT-002-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-MURA-CHAT-002-R03",
+      "checks": [
+        "C03"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-MURA-CHAT-002-T01",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-CHAT-002-R01"
+      ],
+      "evidence": [
+        "FK-MURA-CHAT-002-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-CHAT-002-T02",
+      "status": "done",
+      "requirements": [
+        "FK-MURA-CHAT-002-R02"
+      ],
+      "evidence": [
+        "FK-MURA-CHAT-002-E01"
+      ]
+    },
+    {
+      "id": "FK-MURA-CHAT-002-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-MURA-CHAT-002-R03"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-MURA-CHAT-002-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02"
+      ],
+      "path": "docs/workflow/tasks/FK-MURA-CHAT-002.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Finish extended dark WebKit and interactive matrix; publish and verify hosted CI/live site."
+}

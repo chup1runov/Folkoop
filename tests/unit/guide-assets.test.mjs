@@ -26,7 +26,7 @@ test('runtime guide states use one Mura identity with authored pose artwork',asy
  const runtime=await readFile('apps/web/folkoop-guide.js','utf8');
  assert.match(runtime,/const CANONICAL_MURA='\.\/folkoop-guide-confident\.webp'/);
  const expected=[
-  "welcome:'./folkoop-guide-wink.webp'",
+  "welcome:CANONICAL_MURA",
   "idle:CANONICAL_MURA",
   "confident:'./folkoop-guide-confident.webp'",
   "inspect:'./folkoop-guide-inspect.webp'",

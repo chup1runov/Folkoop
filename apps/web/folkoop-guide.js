@@ -3,7 +3,7 @@
 'use strict';
 const CANONICAL_MURA='./folkoop-guide-confident.webp';
 const ASSETS=Object.freeze({
- welcome:'./folkoop-guide-wink.webp',
+ welcome:CANONICAL_MURA,
  idle:CANONICAL_MURA,
  confident:'./folkoop-guide-confident.webp',
  inspect:'./folkoop-guide-inspect.webp',
@@ -24,7 +24,7 @@ function setArt(el,src){
  artState.set(el,src);
  el.src=src;el.style.visibility='visible';
 }
-const reduced=()=>globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
+const reduced=()=>document.documentElement.dataset.reduceMotion==='true'||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 let actor=null,img=null,currentTarget=null,currentMode='home',currentPose=null,teleportTimer=0,motionGeneration=0,refreshFrame=0;
 
@@ -265,6 +265,10 @@ function refresh(){
  if(currentMode==='home'){applyPosition(null,'home',currentPose);layoutTour(actor);}
  else if(currentTarget?.isConnected){layoutTour(currentTarget);applyPosition(currentTarget,currentMode,currentPose);}
 }
+function portraitPose(name){
+ const portrait=document.querySelector('#onboarding .onboarding-portrait');
+ if(portrait){setArt(portrait,ASSETS[name]||ASSETS.idle);portrait.dataset.pose=name;portrait.classList.remove('mura-portrait-enter');void portrait.offsetWidth;if(!reduced())portrait.classList.add('mura-portrait-enter');}
+}
 function react(kind='step'){
  ensureActor();
  if(reduced())return;
@@ -325,5 +329,5 @@ window.addEventListener('scroll',()=>{
  });
 },{passive:true,capture:true});
 globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',refresh);
-globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,setExpanded,syncModal});
+globalThis.FolkoopGuide=Object.freeze({element,teleportTo,home,welcome,showLanguageGate,hideLanguageGate,refresh,react,portraitPose,setExpanded,syncModal});
 })();

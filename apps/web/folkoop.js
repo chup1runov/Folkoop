@@ -451,7 +451,7 @@ function ensureEntryGate(){
  gate=document.createElement('section');
  gate.id='folkoopEntryGate';gate.className='entry-gate';gate.hidden=true;
  gate.setAttribute('role','dialog');gate.setAttribute('aria-modal','true');gate.setAttribute('aria-labelledby','entryGateTitle');
- gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-please.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><label id="entryGuestLanguageLabel" class="entry-guest-language" hidden><span id="entryGuestLanguageTitle"></span><select id="entryGuestLanguage" aria-labelledby="entryGuestLanguageTitle"></select></label><div id="entryThreePaths" hidden tabindex="-1"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="paths" aria-controls="entryThreePaths" aria-expanded="false" hidden></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
+ gate.innerHTML='<div class="entry-gate-backdrop"></div><div class="entry-gate-card entry-welcome-card"><div class="entry-mura"><img src="./folkoop-guide-confident.webp" alt="" width="192" height="208"></div><div class="entry-welcome-copy"><p class="eyebrow">FOLKOOP</p><h1 id="entryGateTitle"></h1><p id="entryGateBody" class="entry-gate-body"></p><p id="entryLanguageLabel" class="entry-language-label"></p><div id="entryLanguageChoices" class="entry-language-choices"></div><label id="entryGuestLanguageLabel" class="entry-guest-language" hidden><span id="entryGuestLanguageTitle"></span><select id="entryGuestLanguage" aria-labelledby="entryGuestLanguageTitle"></select></label><div id="entryThreePaths" hidden tabindex="-1"></div><div class="entry-gate-actions"><button type="button" class="button" data-entry="guest"></button><button type="button" class="button secondary" data-entry="paths" aria-controls="entryThreePaths" aria-expanded="false" hidden></button><button type="button" class="button secondary" data-entry="email"></button></div><p id="entryGateNote" class="meta entry-learning-note"></p></div></div>';
  document.body.append(gate);return gate;
 }
 function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
@@ -1068,6 +1068,68 @@ function updateHelper(){
  if(!map){map=document.createElement('div');map.dataset.tourMapHost='';panel.append(map);}
  map.innerHTML=isMuraVisit()?nextStoryMarkup()+tourMapMarkup():'';
 }
+// Reuse authored, localized practice panels in the companion, not a second story model.
+let activeMuraStory=null,muraPracticeMount=null;
+function restoreMuraPractice(){
+ if(muraPracticeMount){
+  const {root,marker}=muraPracticeMount;
+  if(marker.isConnected)marker.replaceWith(root);else root.remove();
+  muraPracticeMount=null;
+ }
+ const slot=document.getElementById('muraChatStory');if(slot)slot.replaceChildren();
+ document.body.classList.remove('mura-chat-story-open');
+}
+function storyPose(chapter,story){
+ if(story==='ideas'||story==='project')return 'idea';
+ if(chapter===3)return story==='city-transport'?'searching':'inspect';
+ if(chapter===4)return 'wink';
+ return chapter===0?'confident':'inspect';
+}
+function mountMuraStory(){
+ if(!activeMuraStory||!onboardingOpen)return;
+ const {chapter,story,choice}=activeMuraStory,dialog=ensureOnboarding();
+ const selector=['.mura-profile-story','.mura-together-practice','.mura-center-practice','[aria-labelledby="muraCityStoryTitle"]','.mura-message-story:not(.mura-profile-story)'][chapter];
+ const root=[...document.querySelectorAll(selector)].find(el=>!dialog.contains(el)&&!el.closest('[hidden]')&&el.getClientRects().length);
+ if(!root)return;
+ restoreMuraPractice();
+ const marker=document.createComment('Mura practice returns here when chat is paused');root.before(marker);
+ muraPracticeMount={root,marker};
+ let slot=dialog.querySelector('#muraChatStory');
+ if(!slot){slot=document.createElement('div');slot.id='muraChatStory';dialog.querySelector('#onboardingBody').after(slot);}
+ slot.append(root);
+ dialog.dataset.chatStory='true';document.body.classList.add('mura-chat-story-open');
+ dialog.querySelectorAll('#onboardingCopy > .actions,.mura-dialog-detail').forEach(el=>el.hidden=true);
+ let chosen=dialog.querySelector('#muraChatChoice');
+ if(!chosen){chosen=document.createElement('p');chosen.id='muraChatChoice';chosen.className='mura-user-reply';dialog.querySelector('#onboardingBody').before(chosen);}
+ chosen.hidden=false;chosen.textContent=choice;
+ const intro=root.querySelector(':scope > p:not(.meta),:scope > div > p');
+ if(intro){intro.dataset.chatIntro='';typeMuraLine(dialog.querySelector('#onboardingBody'),intro.textContent);}
+ dialog.querySelector('#onboardingTitle').textContent=tourStoryLabel(chapter,story);
+ const progress=storyPosition();
+ dialog.querySelector('#onboardingProgress').textContent=(progress.index+1)+' / 18';
+ const previous=dialog.querySelector('[data-onboarding="back"]');previous.disabled=!progress.previous;previous.textContent=(storyProgressCopy[lang]||storyProgressCopy.en)[0];
+ const next=nextUnopenedStory(),forward=dialog.querySelector('[data-onboarding="next"]');
+ forward.textContent=next?(nextStoryCopy[lang]||nextStoryCopy.en)[0]:(tourFinaleCopy[lang]||tourFinaleCopy.en)[4];
+ dialog.querySelector('[data-tour-map-host]').innerHTML=tourMapMarkup();
+ dialog.querySelector('#onboardingCopy').scrollTop=0;
+ globalThis.FolkoopGuide?.portraitPose?.(storyPose(chapter,story));
+ positionOnboarding(onboardingSteps[chapter]);
+}
+function muraChatFeedback(text,choice){
+ if(!activeMuraStory||!onboardingOpen)return;
+ const dialog=ensureOnboarding();
+ if(choice)dialog.querySelector('#muraChatChoice').textContent=choice;
+ typeMuraLine(dialog.querySelector('#onboardingBody'),text,()=>{dialog.querySelector('#onboardingCopy').scrollTop=0;});
+ globalThis.FolkoopGuide?.portraitPose?.('inspect');
+ dialog.querySelector('#onboardingCopy').scrollTop=0;
+}
+window.addEventListener('folkoop:mura-feedback',e=>{if(isMuraVisit())muraChatFeedback(e.detail?.text||'',e.detail?.choice);});
+document.addEventListener('change',e=>{
+ if(!activeMuraStory||!e.target.closest('#muraChatStory'))return;
+ const c=({ru:['Интересно! Можешь вернуться к этой мысли позже. Посмотрим следующую историю?','Так можно начать разговор. Здесь это проба: сообщение никому не отправлено. Пойдём дальше?','Хорошо, отметка осталась в этой истории. Она не создаёт заявку или бронь. Посмотрим дальше?'],sv:['Intressant! Du kan återvända till tanken senare. Ska vi se nästa berättelse?','Så kan ett samtal börja. Detta är en övning; inget meddelande har skickats. Fortsätter vi?','Markeringen gäller denna berättelse, inte en ansökan eller bokning. Fortsätter vi?'],en:['Interesting! You can return to that thought later. Shall we see the next story?','That could start a conversation. This is practice; no message was sent. Shall we continue?','The mark belongs to this story, not an application or booking. Shall we continue?']})[lang]||['Interesting! Shall we see the next story?','This is practice; no message was sent. Shall we continue?','This mark does not make an application or booking. Shall we continue?'];
+ if(e.target.matches('textarea'))muraChatFeedback(c[activeMuraStory.chapter===4?1:0]);
+ if(e.target.matches('input[type="checkbox"]'))muraChatFeedback(c[2]);
+});
 function ensureOnboarding(){
  let dialog=document.getElementById('onboarding');
  if(dialog)return dialog;
@@ -1104,12 +1166,12 @@ function positionOnboarding(step){
  globalThis.FolkoopGuide?.syncModal?.();
 }
 let muraTypingTimer;
-function typeMuraLine(node,text){
+function typeMuraLine(node,text,after){
  clearTimeout(muraTypingTimer);
  node.setAttribute('aria-live','polite');
- if(matchMedia('(prefers-reduced-motion: reduce)').matches){node.removeAttribute('aria-busy');node.textContent=text;return;}
+ if(quietMotion||matchMedia('(prefers-reduced-motion: reduce)').matches){node.removeAttribute('aria-busy');node.textContent=text;after?.();return;}
  node.textContent='•••';node.setAttribute('aria-busy','true');
- muraTypingTimer=setTimeout(()=>{node.textContent=text;node.removeAttribute('aria-busy');updateOnboardingScrollCue();},420);
+ muraTypingTimer=setTimeout(()=>{node.textContent=text;node.removeAttribute('aria-busy');updateOnboardingScrollCue();after?.();},420);
 }
 function updateOnboardingScrollCue(){
  const dialog=ensureOnboarding(),copy=dialog.querySelector('#onboardingCopy'),cue=dialog.querySelector('#onboardingScrollCue');
@@ -1119,6 +1181,8 @@ function updateOnboardingScrollCue(){
  cue.hidden=!overflow||atEnd;
 }
 function showOnboarding(step=0){
+ restoreMuraPractice();activeMuraStory=null;
+ const previousDialog=document.getElementById('onboarding');if(previousDialog){delete previousDialog.dataset.chatStory;previousDialog.querySelector('#muraChatChoice')?.setAttribute('hidden','');}
  onboardingOpen=true;
  onboardingStep=Math.max(0,Math.min(onboardingSteps.length-1,step));
  saveTourProgress('active');
@@ -1140,7 +1204,7 @@ function showOnboarding(step=0){
  picker.value=String(onboardingStep);
  typeMuraLine(dialog.querySelector('#onboardingBody'),(muraDialogue[lang]||[])[onboardingStep]||tutorialText(item));
  let detail=dialog.querySelector('.mura-dialog-detail');if(!detail){detail=document.createElement('details');detail.className='mura-dialog-detail';dialog.querySelector('#onboardingBody').after(detail);}
- detail.open=false;detail.innerHTML='<summary>'+esc(({ru:'Расскажи подробнее',sv:'Berätta mer',en:'Tell me more'})[lang]||'Tell me more')+'</summary><p>'+esc(tutorialText(item))+'</p>';
+ detail.hidden=false;detail.open=false;detail.innerHTML='<summary>'+esc(({ru:'Расскажи подробнее',sv:'Berätta mer',en:'Tell me more'})[lang]||'Tell me more')+'</summary><p>'+esc(tutorialText(item))+'</p>';
  let stories=dialog.querySelector('#muraTogetherStories');
  if(!stories){stories=document.createElement('div');stories.id='muraTogetherStories';stories.className='actions';dialog.querySelector('#onboardingBody').after(stories);}
  stories.hidden=item.id!=='chapter-together';
@@ -1180,9 +1244,11 @@ function showOnboarding(step=0){
   window.scrollTo({top:0,behavior:'instant'});
   globalThis.FolkoopGuide?.refresh?.();
  });
+ globalThis.FolkoopGuide?.portraitPose?.(['confident','inspect','wink','searching','wink'][onboardingStep]);
  globalThis.FolkoopGuide?.react?.('step');
 }
 function finishOnboarding(completed=false){
+ restoreMuraPractice();activeMuraStory=null;
  saveTourProgress(completed?'done':'paused');
  const temporaryTour=tourReturnMode!==null;
  const explicitMuraVisit=isMuraVisit()&&!temporaryTour;
@@ -1280,7 +1346,7 @@ function render(focus=false){
  root.innerHTML=muraCityPractice()+body;if(current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity()))showCity();else sendCity();
  attachNextStory();
  updateHelper();
- if(onboardingOpen)showOnboarding(onboardingStep);
+ if(onboardingOpen){if(activeMuraStory)requestAnimationFrame(mountMuraStory);else showOnboarding(onboardingStep);}
  if(focus)root.querySelector('h1')?.focus({preventScroll:true});
 }
 function changeLanguage(value){capture();lang=C.LANGS.includes(value)?value:'sv';try{storage?.setItem('folkoop-language',lang);storage?.setItem(LANGUAGE_KEY,'done');}catch{}render();if(onboardingOpen)showOnboarding(onboardingStep);}
@@ -1331,6 +1397,7 @@ window.addEventListener('folkoop:language-picked',e=>{
 window.addEventListener('folkoop:open-entry',e=>{entryGateAfterMuraExit=e.detail?.source==='guest-exit';showEntryGate(e.detail?.note||'',entryGateAfterMuraExit);});
 window.addEventListener('folkoop:network-rendered',e=>{
  attachNextStory();
+ if(activeMuraStory&&onboardingOpen)requestAnimationFrame(mountMuraStory);
  if(!onboardingOpen)return;
  if(onboardingSteps[onboardingStep].id==='project'&&e.detail?.guestDemo&&e.detail?.route==='messages'&&document.querySelector('.chat-messages')){
   showOnboarding(onboardingStep+1);return;
@@ -1349,7 +1416,7 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{if(onboardingOpen&&C.route(location.hash)!==onboardingSteps[onboardingStep].route){saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;globalThis.FolkoopGuide?.syncModal?.();}capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{if(onboardingOpen&&C.route(location.hash)!==(activeMuraStory?.route||onboardingSteps[onboardingStep].route)){restoreMuraPractice();activeMuraStory=null;saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;globalThis.FolkoopGuide?.syncModal?.();}capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
  if(mobileAction){
@@ -1436,12 +1503,9 @@ document.addEventListener('click',e=>{
   const chapter=profileStory?0:togetherStory?1:centerStory?2:cityStory?3:4;
   const story=profileStory?.dataset.muraProfile||togetherStory?.dataset.muraTogether||centerStory?.dataset.muraCenter||cityStory?.dataset.muraCity||messageStory?.dataset.muraMessage;
   rememberTour(chapter,story);
-  // Release the modal so the visitor can use the real illustrative card.
-  // Keep any temporary-tour return context; do not switch to their account.
-  saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;
-  globalThis.FolkoopGuide?.syncModal?.();
-  document.querySelectorAll('.tutorial-target').forEach(x=>x.classList.remove('tutorial-target'));
-  globalThis.FolkoopGuide?.home({instant:true});
+  restoreMuraPractice();
+  activeMuraStory={chapter,story,choice:(profileStory||togetherStory||centerStory||cityStory||messageStory).textContent,route:null};
+  onboardingStep=chapter;onboardingOpen=true;ensureOnboarding().hidden=false;saveTourProgress('active');
   if(profileStory){
    muraCityStory=null;
    window.dispatchEvent(new CustomEvent('folkoop:mura-profile-open',{detail:{kind:profileStory.dataset.muraProfile}}));
@@ -1458,12 +1522,15 @@ document.addEventListener('click',e=>{
    muraCityStory=null;
    window.dispatchEvent(new CustomEvent(centerStory?'folkoop:mura-center-open':'folkoop:mura-together-open',{detail:{kind:centerStory?centerStory.dataset.muraCenter:togetherStory.dataset.muraTogether}}));
   }
+  activeMuraStory.route=C.route(location.hash);
+  mountMuraStory();requestAnimationFrame(mountMuraStory);
   return;
  }
  const onboarding=e.target.closest('[data-onboarding]');
  if(onboarding){
   const action=onboarding.dataset.onboarding;
   if(action==='skip'){finishOnboarding();return;}
+  if(activeMuraStory&&(action==='back'||action==='next')){const target=action==='back'?storyPosition().previous:nextUnopenedStory();if(target)openMappedStory(target.chapter,target.story);else if(action==='next')showTourFinale();return;}
   if(action==='back'){showOnboarding(onboardingStep-1);return;}
   if(action==='next'){
    if(onboardingStep>=onboardingSteps.length-1)showTourFinale();else showOnboarding(onboardingStep+1);return;
