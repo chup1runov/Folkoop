@@ -1,0 +1,36 @@
+const {chromium}=require('playwright');const fs=require('node:fs');
+const BASE=process.env.BASE_URL||'http://127.0.0.1:4186/';
+(async()=>{const browser=await chromium.launch();const results=[];try{for(const width of [320,390,1366]){
+ const ctx=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block'}),errors=[],writes=[];
+ await ctx.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().method());return r.abort();}return r.request().url().startsWith(BASE)?r.continue():r.abort();});
+ const p=await ctx.newPage();p.on('pageerror',e=>errors.push(String(e)));await p.goto(BASE+'booking-component-test');await p.setContent('<!doctype html><html lang="ru"><head><link rel="stylesheet" href="'+BASE+'folkoop.css"></head><body></body></html>');await p.addScriptTag({url:BASE+'folkoop-core.js'});await p.addScriptTag({url:BASE+'network-room-requests.js'});
+ await p.evaluate(()=>{
+  const resource={id:'r',kind:'resource',owner_id:'keeper',title:'Инструменты',status:'active'},project={id:'p',kind:'project',owner_id:'organizer',title:'Мастерская',status:'active'};
+  window.bookingOptions={coop:resource,user:{id:'keeper'},owner:true,member:true,resources:[resource,project],rows:[],drafts:{},policies:{loadedAt:Date.now(),rows:[{resource_id:'r',owner_id:'keeper',revision:2,unit:'piece',capacity:2,available_from:'2030-01-01T00:00Z',available_until:'2030-02-01T00:00Z',conditions:'Вернуть чистыми <img src=x onerror=alert(1)>'}]}};
+  window.renderBooking=()=>document.body.innerHTML='<main>'+FolkoopRooms.renderBookings(bookingOptions)+'</main>';renderBooking();
+ });
+ const policy=p.locator('.netBookingPolicy');await policy.locator('..').locator('summary').click();
+ if(await policy.locator('[name="revision"]').inputValue()!=='2')throw Error('Wrong policy revision');
+ await policy.locator('[name="capacity"]').fill('3');await policy.locator('[name="from"]').fill('2030-01-01T09:00');
+ if(!await policy.evaluate(f=>f.checkValidity()))throw Error('Invalid policy form');
+ if(await p.locator('img').count())throw Error('Unescaped conditions');
+ await p.evaluate(()=>{bookingOptions.coop=bookingOptions.resources[1];bookingOptions.user={id:'organizer'};renderBooking();});
+ const request=p.locator('.netBookingAction[data-new]');await request.locator('..').locator('summary').click();
+ await request.locator('[name="quantity"]').fill('2');await request.locator('[name="start"]').fill('2030-01-02T12:00');await request.locator('[name="end"]').fill('2030-01-02T13:00');await request.locator('[name="note"]').fill('Нужны два инструмента');
+ if(!await request.evaluate(f=>f.checkValidity()))throw Error('Invalid request');
+ if(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Active form overflow');
+ if(await request.locator('[name="unit"]').inputValue()!=='piece'||await request.locator('[name="people"]').inputValue()!=='1')throw Error('Quantity confused with people');
+ await p.evaluate(()=>{bookingOptions.rows=[{id:'q',resource_id:'r',project_id:'p',resource_owner_id:'keeper',requester_id:'organizer',state:'offered',revision:4,booking_policy_revision:2,booking_quantity:2,booking_unit:'piece',people:1,note:'Tools',starts_at:'2030-01-02T12:00Z',ends_at:'2030-01-02T13:00Z',offer_expires_at:'2030-01-01T12:00Z',booking_policy:bookingOptions.policies.rows[0]}];renderBooking();});
+ if(await p.locator('button[value="accept"]').count()!==1)throw Error('Current offer not acceptable');
+ await p.evaluate(()=>{bookingOptions.policies.rows[0].revision=3;bookingOptions.drafts['booking:q']={quantity:2,unit:'piece',note:'Сохранённый черновик'};renderBooking();});
+ if(await p.locator('button[value="accept"]').count())throw Error('Stale offer accepted');
+ if(await p.locator('[name="note"]').inputValue()!=='Сохранённый черновик')throw Error('Draft lost');
+ await p.evaluate(()=>{bookingOptions.policies.rows[0].unit='place';renderBooking();});
+ if(await p.locator('[name="quantity"]').inputValue()!=='')throw Error('Unit silently converted');
+ await p.evaluate(()=>{bookingOptions.user={id:'member'};bookingOptions.owner=false;renderBooking();});
+ if(await p.locator('form').count())throw Error('Member has owner controls');
+ await p.evaluate(()=>{bookingOptions.user={id:'organizer'};bookingOptions.owner=true;bookingOptions.policies.loadedAt=Date.now()-61000;renderBooking();});
+ if(await p.locator('form').count())throw Error('Stale snapshot has actions');
+ if(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Overflow');
+ if(errors.length||writes.length)throw Error(JSON.stringify({errors,writes}));results.push({width,passed:true,errors,writes});await ctx.close();
+}}finally{await browser.close();}fs.writeFileSync('/tmp/fk-t06-booking-browser.json',JSON.stringify(results,null,2));console.log(results);})().catch(e=>{console.error(e);process.exit(1)});

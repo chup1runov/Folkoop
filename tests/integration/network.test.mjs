@@ -22,9 +22,9 @@ test('explicit all-device logout revokes globally; normal logout remains local',
  await s.login();await s.c.logout();assert(s.calls.some(x=>x.url.endsWith('/auth/v1/logout?scope=local')));
 });
 test('export traverses bounded actor-filtered pages without claiming a full account copy',async()=>{
- const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify(url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:url.includes('fk_project_document_consents?')?[{document_id:cid,cooperation_id:cid,revision:1,user_id:uid,document:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
+ const s=setup((url,o)=>o.headers.Prefer==='count=exact'?new Response(JSON.stringify((url.includes('fk_contribution_terms?')||url.includes('fk_resource_booking_policies?'))?[]:url.includes('fk_meeting_responses?')?[{cooperation_id:cid,version:1,user_id:uid,role:'attendee',terms:null}]:url.includes('fk_project_document_consents?')?[{document_id:cid,cooperation_id:cid,revision:1,user_id:uid,document:null}]:[{synthetic:true}]),{headers:{'content-type':'application/json','content-range':(url.includes('fk_contribution_terms?')||url.includes('fk_resource_booking_policies?'))?'*/0':url.includes('fk_messages?')?'0-0/3':'0-0/1'}}):null);
  await s.login();const result=await s.c.exportOwn();
- assert.equal(result.manifest.sections.length,46);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
+ assert.equal(result.manifest.sections.length,49);assert.equal(result.manifest.completeAccountExport,false);assert.equal(result.manifest.atomicSnapshot,false);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').coverage,'visible-query-complete');assert.equal(result.manifest.sections.find(x=>x.collection==='fk_messages').returned,3);
  assert.equal(result.manifest.sections.find(x=>x.collection==='fk_profiles').coverage,'visible-query-complete');
  for(const call of s.calls.filter(x=>x.headers.Prefer)){assert(call.url.includes('=eq.'+uid)||call.url.includes('.eq.'+uid));assert.match(call.url,/&limit=(500|1000)/);assert.equal(call.method,'GET');}
@@ -264,4 +264,57 @@ test('stories use explicit audience, stable retry ID and no client actor/time',a
  assert.throws(()=>s.c.publishStory({...value,audience:'project'}),e=>e.code==='INVALID_INPUT');
  assert.throws(()=>s.c.publishStory({...value,tone:'<script>'}),e=>e.code==='INVALID_INPUT');
  await s.c.storyArchive();assert(s.calls.at(-1).url.includes('author_id=eq.'+uid));
+});
+test('contribution terms commands send canonical fields without caller-selectable consent actor',async()=>{
+ const s=setup();await s.login();await s.c.budgetAction(cid,uid,'terms',{need:uid,revision:0,document:cid,document_revision:1,due_at:'2030-01-01T12:00Z',participation:'Bring materials',actor:'forged'});
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body).p_data,{need:uid,revision:0,document:cid,document_revision:1,due_at:'2030-01-01T12:00:00.000Z',participation:'Bring materials'});
+ await s.c.budgetAction(cid,uid,'accept_terms',{contribution:uid,revision:1,terms_revision:2,user_id:cid});
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body).p_data,{contribution:uid,revision:1,terms_revision:2});
+ assert.throws(()=>s.c.budgetAction(cid,uid,'terms',{need:uid,revision:0,document:cid,document_revision:1,due_at:'invalid',participation:'Bring materials'}),e=>e.code==='INVALID_INPUT');
+});
+test('contribution export retains exact historical terms and whitelists their document',async()=>{
+ const doc={document_id:cid,revision:1,cooperation_id:cid,author_id:uid,editor_id:uid,kind:'rules',title:'Rules',body:'Old conditions',decision_id:null,task_ids:[],created_at:'2030-01-01T00:00:00Z',private_extra:'omit'};
+ const terms={need_id:uid,revision:1,cooperation_id:cid,document_id:cid,document_revision:1,due_at:'2030-01-01T12:00:00Z',participation:'Bring half',created_by:uid,created_at:'2030-01-01T00:00:00Z',document:doc,private_extra:'omit'};
+ let wrong=false;
+ const s=setup(url=>url.includes('fk_project_contributions?')?json([{id:uid,need_id:uid,cooperation_id:cid,terms_revision:1,terms:{...terms,revision:wrong?2:1}}]):null);
+ await s.login();const result=await s.c.exportOwn();assert.equal(result.contributions[0].terms.revision,1);assert.equal(result.contributions[0].terms.document.body,'Old conditions');assert.equal(result.manifest.contributionTermsContext.linked,1);assert(!JSON.stringify(result).includes('private_extra'));
+ wrong=true;await assert.rejects(s.c.exportOwn(),e=>e.code==='INVALID_RESPONSE');
+});
+test('booking commands keep units separate from people and do not accept caller authority',async()=>{
+ const s=setup();await s.login();
+ await s.c.saveBookingPolicy({resource:cid,revision:0,unit:'piece',capacity:2,from:'2030-01-01T12:00Z',until:'2030-01-02T12:00Z',conditions:'Return clean',owner_id:'forged'});
+ assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_resource:cid,p_revision:0,p_unit:'piece',p_capacity:2,p_from:'2030-01-01T12:00:00.000Z',p_until:'2030-01-02T12:00:00.000Z',p_conditions:'Return clean'});
+ assert.throws(()=>s.c.saveBookingPolicy({resource:cid,revision:0,unit:'piece',capacity:2,from:'2030-01-02',until:'2030-01-01',conditions:'XX'}),e=>e.code==='INVALID_INPUT');
+ const v={id:uid,project:uid,resource:cid,revision:1,start:'2030-01-01T13:00Z',end:'2030-01-01T14:00Z',people:5,quantity:2,unit:'piece',note:'Tools',expires:'2030-01-01T12:00Z'};
+ await s.c.resourceUseAction(v,'offer');let b=JSON.parse(s.calls.at(-1).body);assert.equal(b.p_quantity,2);assert.equal(b.p_people,5);assert.equal(b.p_unit,'piece');assert(!('p_owner' in b));
+ await s.c.resourceUseAction(v,'accept');b=JSON.parse(s.calls.at(-1).body);assert.equal(b.p_quantity,null);assert.equal(b.p_unit,null);assert.equal(b.p_revision,1);
+ assert.throws(()=>s.c.resourceUseAction({...v,unit:'hour'},'offer'),e=>e.code==='INVALID_INPUT');
+});
+test('booking conflicts are preserved for refresh without blind retry',async()=>{
+ for(const code of ['BOOKING_POLICY_CONFLICT','BOOKING_CAPACITY_CONFLICT','ROOM_REVISION_CONFLICT','OWNER_CHANGED']){
+  const s=setup(url=>url.endsWith('/fk_resource_use_action')?json({message:code},400):null);await s.login();
+  await assert.rejects(s.c.resourceUseAction({id:uid,project:uid,resource:cid,revision:1},'accept'),e=>e.code===code);
+  assert.equal(s.calls.filter(c=>c.url.endsWith('/fk_resource_use_action')).length,1);
+ }
+});
+test('booking export retains exact historical policy, reports missing context and rejects a substituted version',async()=>{
+ const policy={resource_id:cid,revision:1,owner_id:uid,unit:'piece',capacity:2,available_from:'2030-01-01',available_until:'2030-01-02',conditions:'Old rules',created_at:'2026-11-09',private_extra:'must-not-export'};
+ for(const scenario of ['exact','missing','wrong']){
+  const s=setup(url=>url.includes('fk_room_requests?')?json([{id:uid,resource_id:cid,booking_policy_revision:1,booking_unit:'piece',booking_policy:scenario==='missing'?null:{...policy,revision:scenario==='wrong'?2:1}}]):url.includes('fk_resource_booking_policies?')?json([policy]):null);await s.login();
+  if(scenario==='wrong'){await assert.rejects(s.c.exportOwn(),e=>e.code==='INVALID_RESPONSE');continue;}
+  const result=await s.c.exportOwn();assert(!JSON.stringify(result).includes('must-not-export'));assert.equal(result.bookingPolicies[0].revision,1);
+  assert.equal(result.manifest.bookingPolicyContext.linked,scenario==='exact'?1:0);assert.equal(result.manifest.bookingPolicyContext.missing.length,scenario==='missing'?1:0);
+  assert(s.calls.some(c=>c.url.includes('booking_policy_basis')));
+ }
+});
+test('handoff commands bind both revisions and never accept a caller-selected actor',async()=>{
+ const s=setup();await s.login();const v={request:cid,booking_revision:3,revision:2,quantity:1,note:'Clean and complete',actor_id:'forged'};
+ await s.c.resourceHandoffAction(v,'receive');assert.deepEqual(JSON.parse(s.calls.at(-1).body),{p_request:cid,p_booking_revision:3,p_revision:2,p_action:'receive',p_quantity:1,p_note:'Clean and complete',p_correction:null});
+ await s.c.resourceHandoffAction({...v,quantity:0,issued:2,received:1,return_claimed:1,return_confirmed:0},'correct');assert.deepEqual(JSON.parse(s.calls.at(-1).body).p_correction,{issued:2,received:1,return_claimed:1,return_confirmed:0});
+ assert.throws(()=>s.c.resourceHandoffAction({...v,quantity:1.5},'issue'),e=>e.code==='INVALID_INPUT');assert.throws(()=>s.c.resourceHandoffAction(v,'delete'),e=>e.code==='INVALID_INPUT');
+});
+test('handoff conflict codes are preserved and history reads are scoped',async()=>{
+ for(const code of ['HANDOFF_PENDING','HANDOFF_CONFLICT','HANDOFF_QUANTITY']){const s=setup(url=>url.endsWith('/fk_resource_handoff_action')?json({message:code},400):null);await s.login();await assert.rejects(s.c.resourceHandoffAction({request:cid,booking_revision:3,revision:1,quantity:1,note:'Condition'},'receive'),e=>e.code===code);}
+ const s=setup();await s.login();await s.c.resourceHandoffHistory(cid);assert(s.calls.at(-1).url.includes('request_id=eq.'+cid));assert(s.calls.at(-1).url.includes('order=revision.desc'));
+ const r=await s.c.exportOwn();assert(Array.isArray(r.resourceHandoffEvents));assert(s.calls.some(c=>c.url.includes('fk_resource_handoff_events?actor_id=eq.'+uid)));
 });

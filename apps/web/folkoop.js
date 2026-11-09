@@ -18,12 +18,14 @@ const ONBOARDING_KEY='folkoop-onboarding-v3';
 const LANGUAGE_KEY='folkoop-language-choice-v1';
 const ENTRY_KEY='folkoop-entry-mode-v1';
 const introParam=new URL(location.href).searchParams.get('intro');
+const workshopEntry=new URL(location.href).searchParams.get('demo')==='workshop';
+if(workshopEntry){try{lang=sessionStorage.getItem('folkoop-workshop-language')||'ru';}catch{lang='ru';}if(!C.LANGS.includes(lang))lang='ru';}
 // An explicit opt-in URL permits a side-by-side comprehension study;
 // the ordinary first-contact welcome stays unchanged for everyone else.
 const firstContactPreview=new URL(location.href).searchParams.get('first-contact')==='three-paths';
 const firstContactGuest=new URL(location.href).searchParams.get('first-contact')==='guest-guide';
 const firstContactTrial=firstContactPreview||firstContactGuest;
-const onboardingSuppressed=introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactTrial);
+const onboardingSuppressed=workshopEntry||introParam==='0'||(navigator.webdriver&&introParam!=='1'&&!firstContactTrial);
 let guestPathsExpanded=false;
 let onboardingOpen=false,onboardingStep=0,menuOpen=false,helperOpen=false,firstVisitFlow=false,languageOnlyFlow=false,tourReturnMode=null,entryGateAfterMuraExit=false;
 const onboardingSteps=[
@@ -470,6 +472,7 @@ function ensureEntryGate(){
  document.body.append(gate);return gate;
 }
 function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
+ if(afterMuraExit&&workshopEntry){try{sessionStorage.removeItem('folkoop-workshop-visit');}catch{}}
  const gate=ensureEntryGate(),x=muraEntrySource(),choices=gate.querySelector('#entryLanguageChoices');
  const emailButton=gate.querySelector('[data-entry="email"]'),guestButton=gate.querySelector('[data-entry="guest"]');
  const pathsButton=gate.querySelector('[data-entry="paths"]'),actions=gate.querySelector('.entry-gate-actions');
@@ -522,6 +525,7 @@ function showEntryGate(noteOverride='',afterMuraExit=entryGateAfterMuraExit){
   trialPanel.removeAttribute('aria-label');
   trialPanel.replaceChildren();
  }
+ if(workshopEntry&&!afterMuraExit){const w=globalThis.FolkoopWorkshop.entry(lang);gate.querySelector('#entryGateTitle').textContent=w.title;gate.querySelector('#entryGateBody').textContent=w.body;gate.querySelector('#entryGateNote').textContent=w.note;guestButton.textContent=w.start;}
  gate.dir=['ar','fa'].includes(lang)?'rtl':'ltr';
  gate.hidden=false;document.body.classList.add('entry-gate-open');
  globalThis.FolkoopGuide?.element?.().setAttribute('hidden','');globalThis.FolkoopGuide?.syncModal?.();
@@ -536,7 +540,7 @@ function setEntryMode(mode,browseRoute='',focusKind=''){
  try{sessionStorage.setItem(ENTRY_KEY,mode);if(mode==='guest')storage?.setItem(LANGUAGE_KEY,'done');}catch{}
  hideEntryGate();
  if(mode==='guest'&&!target){pendingTourStep=tourMap.last?.chapter??(tourProgress.state==='done'?0:tourProgress.step);pendingTourStory=tourMap.last?.story||null;}
- window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?(target||'tour'):mode,focusKind:target==='together'?focusKind:''}}));
+ window.dispatchEvent(new CustomEvent('folkoop:guest-demo',{detail:{enabled:mode==='guest',target:mode==='guest'?(target||'tour'):mode,focusKind:target==='together'?focusKind:'',workshop:workshopEntry&&target==='projects'}}));
  if(mode==='guest'){
   if(target){current=target;location.hash='#/'+target;render();requestAnimationFrame(()=>$('#mobilePrimaryNav a[aria-current="page"]')?.focus({preventScroll:true}));return;}
   location.hash='#/me';
@@ -1471,6 +1475,7 @@ document.addEventListener('click',e=>{
     try{sessionStorage.setItem(ENTRY_KEY,'guest');}catch{}
     current='home';history.replaceState(null,'','#/home');render();return;
    }
+   if(workshopEntry){try{sessionStorage.setItem('folkoop-workshop-visit','active');sessionStorage.setItem('folkoop-workshop-language',lang);}catch{}setEntryMode('guest','projects');return;}
    setEntryMode('guest');return;
   }
   if(action==='email'){
@@ -1650,6 +1655,7 @@ try{
  languageChosen=storage?.getItem(LANGUAGE_KEY)==='done';
 }catch{}
 let entryMode='';try{entryMode=sessionStorage.getItem(ENTRY_KEY)||'';}catch{}
+if(workshopEntry){let resume=false;try{resume=sessionStorage.getItem('folkoop-workshop-visit')==='active'&&entryMode==='guest';}catch{}if(resume)setEntryMode('guest','projects');else setTimeout(startFirstVisit,120);}
 if(!onboardingSuppressed){
  if(introParam==='1')setTimeout(startFullIntroduction,120);
  else if(!languageChosen)setTimeout(startFirstVisit,120);

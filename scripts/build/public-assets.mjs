@@ -4,7 +4,7 @@
 
 export const BUILD_FILES=Object.freeze([
   'folkoop-preferences.js','location-regions.json','LOCATION_DATA_LICENSE.md',
-  'network-budget.js',
+  'network-feature-copy.js','network-budget.js','network-workshop.js','network-feedback.js',
   'network-welcome.js',
   'network-stories.js','network-shared-progress.js','network-discovery.js','network-for-you.js',
   'network-task-basis-notices.js',
@@ -21,13 +21,13 @@ export const BUILD_FILES=Object.freeze([
   
   'folkoop-city.js','folkoop-mark.png',
   'folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','public-profile.js','person.html','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','auth-callback.html',
+  'network-form-focus.js','network-activity.js','network-messaging.js','public-profile.js','person.html','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-exchange.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','auth-callback.html',
   'auth-callback-core.mjs','auth-callback.mjs','home-welcome.js'
 ]);
 
 export const PRECACHE_PATHS=Object.freeze([
   'folkoop-preferences.js','location-regions.json','LOCATION_DATA_LICENSE.md',
-  'network-budget.js',
+  'network-feature-copy.js','network-budget.js','network-workshop.js','network-feedback.js',
   'network-welcome.js',
   'network-stories.js','network-shared-progress.js','network-discovery.js','network-for-you.js',
   'network-task-basis-notices.js',
@@ -43,5 +43,5 @@ export const PRECACHE_PATHS=Object.freeze([
   
   'folkoop-city.js',
   'folkoop-mark.png','folkoop-icon-512.png','network-config.js','analytics.js','network-client.js',
-  'network-form-focus.js','network-activity.js','network-messaging.js','public-profile.js','person.html','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','home-welcome.js'
+  'network-form-focus.js','network-activity.js','network-messaging.js','public-profile.js','person.html','network-profile.js','network-communities.js','network-mura-home.js','network-purchase-lifecycle.js','network-meetings.js','network-decisions.js','network-exchange.js','network-task-work.js','network-needs.js','network-room-requests.js','network-ui.js','home-welcome.js'
 ]);

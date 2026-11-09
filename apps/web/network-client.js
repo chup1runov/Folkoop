@@ -83,7 +83,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     if(response.status===401){if(auth)clear('expired');throw fail('AUTH_REQUIRED');}
     if(response.status===403&&detail?.message==='PILOT_INVITE_REQUIRED')throw fail('INVITE_REQUIRED');
     if(response.status===403&&['PILOT_TERMS_REQUIRED','PILOT_PRIVACY_REQUIRED'].includes(detail?.message))throw fail('POLICY_REQUIRED');
-    if(['RATE_LIMIT','VERSION_CONFLICT','PROFILE_REQUIRED','BUDGET_CONFLICT','DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN','WELCOME_CONFLICT','MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED','TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_CONFLICT','TASK_BASIS_PENDING','TASK_BASIS_CLOSED','INVALID_BASIS_LINK','INVALID_SIGNER'].includes(detail?.message))throw fail(detail.message);
+    if(['RATE_LIMIT','VERSION_CONFLICT','PROFILE_REQUIRED','HANDOFF_PENDING','HANDOFF_CONFLICT','HANDOFF_QUANTITY','BOOKING_POLICY_CONFLICT','BOOKING_CAPACITY_CONFLICT','ROOM_REVISION_CONFLICT','OWNER_CHANGED','BUDGET_CONFLICT','DECISION_CONFLICT','DECISION_CLOSED','OBJECTIONS_PENDING','DISCUSSION_OPEN','WELCOME_CONFLICT','MEETING_VERSION_CONFLICT','MEETING_FULL','MEETING_CLOSED','ATTENDANCE_REQUIRED','TASK_REVISION_CONFLICT','TASK_UNAVAILABLE','TASK_BASIS_CONFLICT','TASK_BASIS_PENDING','TASK_BASIS_CLOSED','INVALID_BASIS_LINK','INVALID_SIGNER'].includes(detail?.message))throw fail(detail.message);
     throw fail(response.status===429?'RATE_LIMIT':response.status===403?'DENIED':'REQUEST_FAILED');
    }
    if(response.status===204)return null;
@@ -152,7 +152,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
  const rpc=(name,args={})=>request('/rest/v1/rpc/'+name,{method:'POST',body:args});
  async function trackedRpc(name,args,event,properties){const result=await rpc(name,args);track(event,properties);return result;}
  async function rpcRows(name,args={}){const data=await rpc(name,args);if(!Array.isArray(data))throw fail('INVALID_RESPONSE');return data;}
- const primaryKeys={"fk_stories":["id"],"fk_story_reports":["id"],"fk_blocks":["user_id","target_id"],"fk_communities":["id"],"fk_contribution_notices":["event_id","recipient_id"],"fk_conversation_invites":["conversation_id","user_id"],"fk_conversation_members":["conversation_id","user_id"],"fk_conversations":["id"],"fk_cooperation_activity":["id"],"fk_cooperation_chats":["cooperation_id"],"fk_cooperation_members":["cooperation_id","user_id"],"fk_cooperation_reads":["cooperation_id","user_id"],"fk_cooperation_updates":["id"],"fk_cooperations":["id"],"fk_decision_objections":["id"],"fk_economic_flow_roles":["flow_id","user_id","role"],"fk_economic_flows":["id"],"fk_meeting_budget_changes":["cooperation_id","version"],"fk_meeting_budget_notices":["cooperation_id","version","recipient_id"],"fk_meeting_budget_policies":["cooperation_id","version"],"fk_meeting_history":["id"],"fk_meeting_outcomes":["cooperation_id","version","user_id"],"fk_meeting_reminders":["cooperation_id","recipient_id","role"],"fk_meeting_repeats":["cooperation_id","version"],"fk_meeting_responses":["cooperation_id","version","user_id","role"],"fk_meeting_rooms":["cooperation_id","version"],"fk_meeting_terms":["cooperation_id","version"],"fk_memberships":["community_id","user_id"],"fk_message_reads":["message_id","user_id"],"fk_message_reports":["id"],"fk_messages":["id"],"fk_need_projects":["need_id"],"fk_need_responses":["cooperation_id","user_id"],"fk_posts":["id"],"fk_profiles":["id"],"fk_project_budget_events":["id"],"fk_project_budget_needs":["id"],"fk_project_contributions":["id"],"fk_project_decision_responses":["decision_id","user_id"],"fk_project_decisions":["id"],"fk_project_document_consents":["document_id","revision","user_id"],"fk_project_document_versions":["document_id","revision"],"fk_project_expenses":["id"],"fk_project_tasks":["id"],"fk_project_welcome":["cooperation_id"],"fk_purchase_commitments":["cooperation_id","user_id"],"fk_purchase_confirmations":["cooperation_id","user_id"],"fk_purchase_offer_choice":["cooperation_id"],"fk_purchase_offer_reports":["id"],"fk_purchase_offers":["id"],"fk_purchase_process":["cooperation_id"],"fk_reports":["id"],"fk_room_notification_reads":["request_id","user_id"],"fk_room_request_versions":["request_id","revision"],"fk_room_requests":["id"],"fk_task_bases":["task_id","revision"],"fk_task_basis_signers":["id"],"fk_task_work_events":["task_id","revision"]};
+ const primaryKeys={"fk_stories":["id"],"fk_story_reports":["id"],"fk_blocks":["user_id","target_id"],"fk_communities":["id"],"fk_contribution_notices":["event_id","recipient_id"],"fk_conversation_invites":["conversation_id","user_id"],"fk_conversation_members":["conversation_id","user_id"],"fk_conversations":["id"],"fk_cooperation_activity":["id"],"fk_cooperation_chats":["cooperation_id"],"fk_cooperation_members":["cooperation_id","user_id"],"fk_cooperation_reads":["cooperation_id","user_id"],"fk_cooperation_updates":["id"],"fk_cooperations":["id"],"fk_decision_objections":["id"],"fk_economic_flow_roles":["flow_id","user_id","role"],"fk_economic_flows":["id"],"fk_meeting_budget_changes":["cooperation_id","version"],"fk_meeting_budget_notices":["cooperation_id","version","recipient_id"],"fk_meeting_budget_policies":["cooperation_id","version"],"fk_meeting_history":["id"],"fk_meeting_outcomes":["cooperation_id","version","user_id"],"fk_meeting_reminders":["cooperation_id","recipient_id","role"],"fk_meeting_repeats":["cooperation_id","version"],"fk_meeting_responses":["cooperation_id","version","user_id","role"],"fk_meeting_rooms":["cooperation_id","version"],"fk_meeting_terms":["cooperation_id","version"],"fk_memberships":["community_id","user_id"],"fk_message_reads":["message_id","user_id"],"fk_message_reports":["id"],"fk_messages":["id"],"fk_need_projects":["need_id"],"fk_need_responses":["cooperation_id","user_id"],"fk_posts":["id"],"fk_profiles":["id"],"fk_project_budget_events":["id"],"fk_project_budget_needs":["id"],"fk_project_contributions":["id"],"fk_project_decision_responses":["decision_id","user_id"],"fk_project_decisions":["id"],"fk_project_document_consents":["document_id","revision","user_id"],"fk_project_document_versions":["document_id","revision"],"fk_project_expenses":["id"],"fk_project_tasks":["id"],"fk_project_welcome":["cooperation_id"],"fk_purchase_commitments":["cooperation_id","user_id"],"fk_purchase_confirmations":["cooperation_id","user_id"],"fk_purchase_offer_choice":["cooperation_id"],"fk_purchase_offer_reports":["id"],"fk_purchase_offers":["id"],"fk_purchase_process":["cooperation_id"],"fk_reports":["id"],"fk_room_notification_reads":["request_id","user_id"],"fk_room_request_versions":["request_id","revision"],"fk_room_requests":["id"],"fk_task_bases":["task_id","revision"],"fk_task_basis_signers":["id"],"fk_task_work_events":["task_id","revision"],"fk_resource_handoff_events":["request_id","revision"],"fk_resource_booking_policies":["resource_id","revision"],"fk_contribution_terms":["need_id","revision"]};
  async function pagedRows(path,cap=10000){
   const pagingUser=user()?.id,pagingEpoch=epoch;
   const [table,query='']=path.split('?'),params=new URL('https://pagination.invalid/?'+query).searchParams,keys=primaryKeys[table];
@@ -322,10 +322,13 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   projectBudget(cid){return rpc('fk_project_budget_snapshot',{p_project:id(cid)});},
   budgetAction(cid,requestId,action,v){
    const payload={};
-   if(!['need','pledge','expense','cancel_need','void_expense','submit','confirm','return','withdraw','reopen'].includes(action))throw fail('INVALID_INPUT');
+   if(!['need','pledge','expense','cancel_need','void_expense','submit','confirm','return','withdraw','reopen','terms','accept_terms'].includes(action))throw fail('INVALID_INPUT');
    if(['need','pledge','expense'].includes(action))payload.amount=integer(v.amount,1,100000000);
    if(action==='need'){if(!['money','items','time','space'].includes(v.kind))throw fail('INVALID_INPUT');payload.kind=v.kind;payload.title=text(v.title,160,2);}
    if(['pledge','expense','cancel_need'].includes(action))payload.need=id(v.need);
+   if(action==='terms'){payload.need=id(v.need);payload.revision=integer(v.revision,0,49);payload.document=id(v.document);payload.document_revision=integer(v.document_revision,1,50);payload.due_at=timestamp(v.due_at,{required:true});payload.participation=text(v.participation,500,2);}
+   if(action==='accept_terms'){payload.contribution=id(v.contribution);payload.revision=integer(v.revision,1,2147483646);payload.terms_revision=integer(v.terms_revision,1,50);}
+   if(action==='pledge'&&v.terms_revision!=null)payload.terms_revision=integer(v.terms_revision,1,50);
    if(action==='void_expense')payload.expense=id(v.expense);
    if(['submit','confirm','return','withdraw','reopen'].includes(action)){payload.contribution=id(v.contribution);payload.revision=integer(v.revision,1,2147483646);}
    if(['expense','void_expense','return','reopen'].includes(action))payload.note=text(v.note,500,2);
@@ -401,7 +404,21 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
   ]);if(responses.length>200)throw fail('INVALID_RESPONSE');return {responses,links};},
   respondSharedNeed(cid,v){return rpc('fk_respond_shared_need',{p_need:id(cid),p_interested:bool(v.interested),p_can_help:bool(v.can_help),p_preferences:text(v.preferences||'',500)});},
   projectFromNeed(cid){return rpc('fk_project_from_need',{p_need:id(cid)});},
-  async roomRequests(cid,isResource){const result=await rows('fk_room_requests?select=*&'+(isResource?'resource_id':'project_id')+'=eq.'+id(cid)+'&order=updated_at.desc,id.asc&limit=201');if(result.length>200)throw fail('INVALID_RESPONSE');return result;},
+  resourceHandoffAction(v,action){
+   if(!['issue','receive','return','confirm_return','note','dispute','resolve','correct','accept_correction','reject_correction'].includes(action))throw fail('INVALID_INPUT');
+   const correction=action==='correct'?Object.fromEntries(['issued','received','return_claimed','return_confirmed'].map(k=>[k,integer(v[k],0,10000)])):null;
+   return rpc('fk_resource_handoff_action',{p_request:id(v.request),p_booking_revision:integer(v.booking_revision,1,100),p_revision:integer(v.revision,0,999),p_action:action,p_quantity:integer(v.quantity,0,10000),p_note:text(v.note,1000,2),p_correction:correction});
+  },
+  async resourceHandoffHistory(request){const result=await rows('fk_resource_handoff_events?request_id=eq.'+id(request)+'&order=revision.desc&limit=1001');if(result.length>1000)throw fail('INVALID_RESPONSE');return result;},
+  async bookingPolicies(){const result=await rpcRows('fk_current_booking_policies');if(result.length>500)throw fail('INVALID_RESPONSE');return result;},
+  saveBookingPolicy(v){if(!['piece','place'].includes(v.unit))throw fail('INVALID_INPUT');const [from,until]=pickupWindow(v.from,v.until);if(!from||!until||Date.parse(until)<=Date.parse(from))throw fail('INVALID_INPUT');return rpc('fk_save_resource_booking_policy',{p_resource:id(v.resource),p_revision:integer(v.revision,0,99),p_unit:v.unit,p_capacity:integer(v.capacity,1,10000),p_from:from,p_until:until,p_conditions:text(v.conditions,1000,2)});},
+  resourceUseAction(v,action){
+   if(!['request','offer','accept','decline','cancel'].includes(action))throw fail('INVALID_INPUT');
+   const edit=['request','offer'].includes(action);if(edit&&!['piece','place'].includes(v.unit))throw fail('INVALID_INPUT');
+   return rpc('fk_resource_use_action',{p_id:id(v.id),p_project:id(v.project),p_resource:id(v.resource),p_revision:integer(v.revision,0,100),p_action:action,
+    p_start:edit?timestamp(v.start,{required:true}):null,p_end:edit?timestamp(v.end,{required:true}):null,p_people:edit?integer(v.people||1,1,200):null,p_note:edit?text(v.note,1000,2):null,p_expires:action==='offer'?timestamp(v.expires,{required:true}):null,p_quantity:edit?integer(v.quantity,1,10000):null,p_unit:edit?v.unit:null});
+  },
+  async roomRequests(cid,isResource){const result=await rows('fk_room_requests?select=*,booking_policy:fk_resource_booking_policies!booking_policy_basis(*)&'+(isResource?'resource_id':'project_id')+'=eq.'+id(cid)+'&order=updated_at.desc,id.asc&limit=201');if(result.length>200)throw fail('INVALID_RESPONSE');return result;},
   roomRequestAction(v,action){
    if(!['request','offer','accept','decline','cancel'].includes(action))throw fail('INVALID_INPUT');
    const edit=['request','offer'].includes(action);
@@ -464,7 +481,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    rows('fk_project_decision_responses?user_id=eq.'+uid+'&order=updated_at.desc&limit=1000'),
    rows('fk_task_work_events?actor_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_need_responses?user_id=eq.'+uid+'&order=updated_at.desc&limit=1000'),
-   rows('fk_room_requests?or=(requester_id.eq.'+uid+',resource_owner_id.eq.'+uid+')&order=updated_at.desc&limit=1000'),
+   rows('fk_room_requests?select=*,booking_policy:fk_resource_booking_policies!booking_policy_basis(resource_id,revision,owner_id,unit,capacity,available_from,available_until,conditions,created_at)&or=(requester_id.eq.'+uid+',resource_owner_id.eq.'+uid+')&order=updated_at.desc&limit=1000'),
    rows('fk_room_request_versions?actor_id=eq.'+uid+'&order=created_at.desc&limit=1000'),
    rows('fk_room_notification_reads?user_id=eq.'+uid+'&order=read_at.desc&limit=1000')
   ]);
@@ -479,6 +496,20 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
     response.terms=Object.fromEntries(termFields.map(key=>[key,terms[key]]));linkedResponses++;
    }
    const meetingTermsContext={scope:'Conditions for returned personal responses only; not a full historical agreement package',linkedResponses,missing:[...missingTerms.values()],fields:termFields};
+   const resourceHandoffEvents=await rows('fk_resource_handoff_events?actor_id=eq.'+uid+'&order=created_at.desc&limit=1000');
+   const bookingFields=['resource_id','revision','owner_id','unit','capacity','available_from','available_until','conditions','created_at'];
+   const bookingPolicies=await rows('fk_resource_booking_policies?owner_id=eq.'+uid+'&order=resource_id.asc,revision.desc&limit=1000&select='+bookingFields.join(','));
+   const bookingPolicyContext={linked:0,missing:[],scope:'Exact policy versions for returned requests; no physical handoff or external reservation verification'};
+   const checkBookingPolicy=(p,resource,revision,unit)=>{
+    if(!p||Array.isArray(p)||p.resource_id!==resource||p.revision!==revision||p.unit!==unit||bookingFields.some(k=>p[k]===undefined))throw fail('INVALID_RESPONSE');
+    return Object.fromEntries(bookingFields.map(k=>[k,p[k]]));
+   };
+   for(let i=0;i<bookingPolicies.length;i++){const p=bookingPolicies[i];bookingPolicies[i]=checkBookingPolicy(p,p.resource_id,p.revision,p.unit);}
+   for(const r of roomRequests){
+    if(r.booking_policy_revision==null){delete r.booking_policy;continue;}
+    if(r.booking_policy===null){bookingPolicyContext.missing.push({request:r.id,resource:r.resource_id,revision:r.booking_policy_revision});continue;}
+    r.booking_policy=checkBookingPolicy(r.booking_policy,r.resource_id,r.booking_policy_revision,r.booking_unit);bookingPolicyContext.linked++;
+   }
    const meetingReminders=await rows('fk_meeting_reminders?or=(recipient_id.eq.'+uid+',sender_id.eq.'+uid+')&order=sent_at.desc&limit=1000');
    const meetingHistory=await rows('fk_meeting_history?or=(participant_id.eq.'+uid+',actor_id.eq.'+uid+')&order=id.desc&limit=1000');
    const projectDocumentVersions=await rows('fk_project_document_versions?or=(author_id.eq.'+uid+',editor_id.eq.'+uid+')&order=created_at.desc&limit=1000');
@@ -498,7 +529,24 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const projectWelcomes=await rows('fk_project_welcome?host_id=eq.'+uid+'&order=updated_at.desc&limit=1000');
    const decisionObjections=await rows('fk_decision_objections?or=(author_id.eq.'+uid+',answered_by.eq.'+uid+')&order=updated_at.desc&limit=1000');
    const budgetNeeds=await rows('fk_project_budget_needs?created_by=eq.'+uid+'&order=created_at.desc&limit=1000');
-   const contributions=await rows('fk_project_contributions?or=(contributor_id.eq.'+uid+',received_by.eq.'+uid+')&order=created_at.desc&limit=1000');
+   const termsFields=['need_id','revision','cooperation_id','document_id','document_revision','due_at','participation','created_by','created_at'];
+   const termsSelection=termsFields.join(',')+',document:fk_project_document_versions('+documentFields.join(',')+')';
+   const contributionTerms=await rows('fk_contribution_terms?created_by=eq.'+uid+'&order=need_id.asc,revision.desc&limit=1000&select='+termsSelection);
+   const contributions=await rows('fk_project_contributions?or=(contributor_id.eq.'+uid+',received_by.eq.'+uid+')&order=created_at.desc&limit=1000&select=*,terms:fk_contribution_terms!fk_contribution_terms_basis('+termsSelection+')');
+   const contributionTermsContext={linked:0,missing:[]};
+   const checkTerms=(t,need,revision,project)=>{
+    if(!t||Array.isArray(t)||t.need_id!==need||t.revision!==revision||t.cooperation_id!==project||termsFields.some(k=>t[k]===undefined))throw fail('INVALID_RESPONSE');
+    const d=t.document;
+    if(d!==null&&(!d||Array.isArray(d)||d.document_id!==t.document_id||d.revision!==t.document_revision||d.cooperation_id!==project||documentFields.some(k=>d[k]===undefined)))throw fail('INVALID_RESPONSE');
+    return {...Object.fromEntries(termsFields.map(k=>[k,t[k]])),document:d===null?null:Object.fromEntries(documentFields.map(k=>[k,d[k]]))};
+   };
+   for(let i=0;i<contributionTerms.length;i++){const t=contributionTerms[i];contributionTerms[i]=checkTerms(t,t.need_id,t.revision,t.cooperation_id);}
+   for(const c of contributions){
+    if(c.terms_revision==null){delete c.terms;continue;}
+    if(c.terms===null){contributionTermsContext.missing.push({contribution:c.id,need:c.need_id,revision:c.terms_revision});continue;}
+    c.terms=checkTerms(c.terms,c.need_id,c.terms_revision,c.cooperation_id);contributionTermsContext.linked++;
+    if(c.terms.document===null)contributionTermsContext.missing.push({contribution:c.id,document:c.terms.document_id,revision:c.terms.document_revision});
+   }
    const projectExpenses=await rows('fk_project_expenses?recorded_by=eq.'+uid+'&order=created_at.desc&limit=1000');
    const budgetEvents=await rows('fk_project_budget_events?actor_id=eq.'+uid+'&order=created_at.desc&limit=1000');
    const contributionNotices=await rows('fk_contribution_notices?recipient_id=eq.'+uid+'&order=event_id&limit=1000');
@@ -511,10 +559,10 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    sections.push({collection:'publicPage',visibleTotal:publicPage?(publicPage.revision?1:0):null,returned:publicPage?.revision?1:0,coverage:publicPage?'visible-query-complete':'unknown',pages:1});
    if(user()?.id!==uid||epoch!==exportEpoch)throw fail('STALE');
    const manifest={format:'folkoop-visible-records-v2',startedAt,finishedAt:new Date(clock()).toISOString(),
-    completeAccountExport:false,atomicSnapshot:false,meetingTermsContext,documentConsentContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
+    completeAccountExport:false,atomicSnapshot:false,bookingPolicyContext,meetingTermsContext,documentConsentContext,contributionTermsContext,sections:sections.sort((a,b)=>a.collection.localeCompare(b.collection)),
     excluded:['Auth identity and sessions','Private pilot admission and policy records','Local device drafts','Records outside the listed queries or current access permissions','Provider logs'],
     fullCopyContact:'Chup1runov@gmail.com'};
-   return {stories,storyReports,publicPage,profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};
+   return {stories,storyReports,publicPage,profile,memberships,posts,blocks,reports,chatMemberships,messages,messageReads,messageReports,chatInvites,cooperationMemberships,cooperationUpdates,tasks,commitments,purchaseOffers,purchaseOfferReports,purchaseConfirmations,economicFlows,economicFlowRoles,meetingResponses,meetingOutcomes,projectDecisions,decisionResponses,taskWorkEvents,needResponses,roomRequests,roomRequestVersions,roomNotificationReads,meetingReminders,meetingHistory,projectDocumentVersions,documentConsents,taskBases,taskBasisSigners,projectWelcomes,decisionObjections,budgetNeeds,contributions,contributionTerms,projectExpenses,budgetEvents,contributionNotices,meetingBudgetPolicies,meetingBudgetNotices,bookingPolicies,resourceHandoffEvents,manifest,scope:'Paginated visible records; see manifest coverage and exclusions. Request provider/private records from the operator.'};
   }
  });
 }

@@ -74,7 +74,7 @@ select fk_secdef_test.ok(
       'respond_shared_need','project_from_need','room_request_action','room_notification_inbox','read_room_notifications','bind_meeting_room','meeting_ready_snapshot','meeting_room_alerts','send_meeting_reminder','meeting_reminder_inbox','save_project_document','respond_project_document',
       'save_task_basis','respond_task_basis','task_bases_snapshot','save_project_welcome',
       'propose_decision_rules','save_decision_objection','answer_decision_objection',
-      'project_budget_action','project_budget_snapshot','contribution_notice_inbox','read_contribution_notice',
+      'resource_handoff_action','resource_use_action','save_resource_booking_policy','project_budget_action','project_budget_snapshot','contribution_notice_inbox','read_contribution_notice',
       'save_meeting_budget','meeting_budget_ready_snapshot','meeting_budget_notice_inbox','read_meeting_budget_notice'
     )
  ),

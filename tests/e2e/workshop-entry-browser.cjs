@@ -1,0 +1,45 @@
+const {chromium}=require('playwright');
+const fs=require('node:fs');
+const BASE=process.env.BASE_URL||'http://127.0.0.1:4186/';
+(async()=>{const browser=await chromium.launch();const results=[];try{
+for(const width of [320,390,1366]){
+ const context=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block'});const writes=[],errors=[];
+ await context.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().method());return r.abort();}return r.request().url().startsWith(BASE)?r.continue():r.abort();});
+ const page=await context.newPage();page.on('pageerror',e=>errors.push(String(e)));
+ await page.goto(BASE+'?demo=workshop');
+ await page.locator('#folkoopEntryGate:not([hidden])').waitFor();
+ if(await page.locator('html').getAttribute('lang')!=='ru')throw Error('Not Russian default');
+ if(await page.locator('[data-entry="email"]:visible').count())throw Error('Premature sign-in');
+ await page.locator('[data-entry="guest"]').click();
+ await page.locator('.workshop-story').waitFor();
+ if(await page.locator('.workshop-story li').count()!==1)throw Error('Not short route');
+ await page.locator('[data-workshop="next"]').click();
+ await page.waitForFunction(()=>document.querySelector('.workshop-story ol')?.start===2);
+ await page.reload();await page.waitForFunction(()=>document.querySelector('.workshop-story ol')?.start===2);
+ await page.locator('[data-workshop="pause"]').click();await page.locator('#workshopResume').waitFor();
+ await page.reload();await page.locator('#workshopResume').waitFor();
+ if(await page.locator('.workshop-story').count())throw Error('Pause not restored');
+ await page.locator('[data-workshop="resume"]').click();await page.waitForFunction(()=>document.querySelector('.workshop-story ol')?.start===2);
+ await page.locator('[data-workshop="restart"]').click();await page.waitForFunction(()=>document.querySelector('.workshop-story ol')?.start===1);
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Overflow');
+ await page.locator('[data-workshop="exit"]').click();await page.locator('[data-entry="email"]:visible').waitFor();
+ await page.reload();await page.locator('#folkoopEntryGate:not([hidden])').waitFor();
+ if(await page.locator('[data-entry="email"]:visible').count())throw Error('Exit must clear auto-resume');
+ await page.locator('[data-entry-language="en"]').click();await page.locator('[data-entry="guest"]').click();
+ await page.getByRole('heading',{name:'Shared workshop: the first repair day',exact:true}).waitFor();
+ if(errors.length||writes.length)throw Error(JSON.stringify({errors,writes}));
+ results.push({width,passed:true,writes,errors});await context.close();
+}
+const account=await browser.newContext({serviceWorkers:'block'});
+ await account.route('**/*',r=>r.request().url().startsWith(BASE)?r.continue():r.abort());
+ await account.addInitScript(()=>{sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-onboarding-v3','done');localStorage.setItem('folkoop-mura-map-v1','sentinel');});
+ const ap=await account.newPage();await ap.goto(BASE+'?demo=workshop');await ap.locator('#folkoopEntryGate:not([hidden])').waitFor();
+ if(await ap.evaluate(()=>sessionStorage.getItem('folkoop-entry-mode-v1'))!=='account')throw Error('Account mode changed without opt-in');
+ if(await ap.evaluate(()=>localStorage.getItem('folkoop-mura-map-v1'))!=='sentinel')throw Error('Tour progress changed');
+ results.push({accountModePreservedBeforeOptIn:true,tourStoragePreserved:true});await account.close();
+ const full=await browser.newContext({serviceWorkers:'block'});
+ await full.route('**/*',r=>r.request().url().startsWith(BASE)?r.continue():r.abort());
+ const fp=await full.newPage();await fp.goto(BASE+'?first-contact=guest-guide');await fp.locator('#entryGuestLanguage').selectOption('ru');await fp.locator('[data-entry="guest"]').click();await fp.locator('#onboarding:not([hidden])').waitFor();
+ if(await fp.locator('.workshop-story').count())throw Error('Short route replaced full tour');
+ results.push({fullTourEntryPreserved:true});await full.close();
+}finally{await browser.close();}fs.writeFileSync('/tmp/fk-t03-browser.json',JSON.stringify(results,null,2));console.log(results);})().catch(e=>{console.error(e);process.exit(1)});

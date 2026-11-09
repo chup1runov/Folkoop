@@ -1,0 +1,73 @@
+{
+  "format": "folkoop-selected-objects",
+  "version": 1,
+  "generated_at": "2026-11-09T12:00:00.000Z",
+  "records": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "type": "need",
+      "title": "Synthetic need",
+      "quantity": {
+        "value": "1.250",
+        "unit": "kg"
+      },
+      "period": null,
+      "place": {
+        "precision": "unspecified",
+        "label": ""
+      },
+      "conditions": "",
+      "source": {
+        "system": "FOLKOOP",
+        "object_id": "00000000-0000-4000-8000-000000000001",
+        "updated_at": null,
+        "observed_at": "2026-11-09T11:59:50.000Z",
+        "declaration": "exporter_statement"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "type": "offer",
+      "title": "Synthetic offer",
+      "quantity": null,
+      "period": null,
+      "place": {
+        "precision": "unspecified",
+        "label": ""
+      },
+      "conditions": "",
+      "source": {
+        "system": "FOLKOOP",
+        "object_id": "00000000-0000-4000-8000-000000000002",
+        "updated_at": null,
+        "observed_at": "2026-11-09T11:59:50.000Z",
+        "declaration": "exporter_statement"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "type": "resource",
+      "title": "Synthetic resource",
+      "quantity": {
+        "value": "2",
+        "unit": "piece"
+      },
+      "period": {
+        "from": "2030-01-01T10:00:00.000Z",
+        "until": "2030-01-01T12:00:00.000Z"
+      },
+      "place": {
+        "precision": "area",
+        "label": "Example district"
+      },
+      "conditions": "Synthetic test only; temporary use",
+      "source": {
+        "system": "FOLKOOP",
+        "object_id": "00000000-0000-4000-8000-000000000003",
+        "updated_at": null,
+        "observed_at": "2026-11-09T11:59:50.000Z",
+        "declaration": "exporter_statement"
+      }
+    }
+  ]
+}

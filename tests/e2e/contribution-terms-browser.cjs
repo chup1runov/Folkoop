@@ -1,0 +1,25 @@
+const {chromium}=require('playwright');const fs=require('node:fs');
+const BASE=process.env.BASE_URL||'http://127.0.0.1:4186/';
+(async()=>{const browser=await chromium.launch();const results=[];try{for(const width of [320,390,1366]){
+ const ctx=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block'}),errors=[],writes=[];
+ await ctx.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().method());return r.abort();}return r.request().url().startsWith(BASE)?r.continue():r.abort();});
+ const p=await ctx.newPage();p.on('pageerror',e=>errors.push(String(e)));await p.goto(BASE+'terms-component-test');await p.setContent('<!doctype html><html lang="ru"><head><link rel="stylesheet" href="'+BASE+'folkoop.css"></head><body></body></html>');await p.addScriptTag({url:BASE+'folkoop-core.js'});await p.addScriptTag({url:BASE+'network-budget.js'});
+ await p.evaluate(()=>{document.documentElement.lang='ru';document.body.innerHTML='<main id="testTerms"></main>';const doc={document_id:'d',cooperation_id:'p',revision:2,kind:'rules',title:'Правила'};
+ window.termsOptions={coop:{id:'p',owner_id:'owner',status:'active'},user:{id:'owner'},owner:true,name:id=>id,documents:{rows:[doc]},snapshot:{terms_version:1,loadedAt:Date.now(),needs:[{id:'n',cooperation_id:'p',title:'Крепления',kind:'items',amount:1200}],contributions:[],expenses:[],events:[],terms:[{need_id:'n',cooperation_id:'p',revision:2,document_id:'d',document_revision:2,due_at:'2030-01-01T12:00:00Z',participation:'Принести крепления'}],documents:[doc],consents:[]}};
+ window.renderTerms=()=>document.getElementById('testTerms').innerHTML=FolkoopBudget.render(window.termsOptions);window.renderTerms();});
+ const terms=p.locator('form[data-action="terms"]');await terms.locator('..').locator('summary').click();
+ await terms.locator('[name="due_at"]').fill('2030-01-02T14:00');await terms.locator('[name="participation"]').fill('Передать две отдельные партии');
+ if(!await terms.evaluate(f=>f.checkValidity()))throw Error('Publish form invalid');
+ if(await terms.locator('[name="revision"]').inputValue()!=='2')throw Error('Lost optimistic revision');
+ await p.evaluate(()=>{termsOptions.owner=false;termsOptions.user={id:'member'};termsOptions.snapshot.contributions=[{id:'c',cooperation_id:'p',need_id:'n',contributor_id:'member',status:'promised',revision:3,terms_revision:1,terms_current:false,amount:600}];termsOptions.snapshot.terms.unshift({...termsOptions.snapshot.terms[0],revision:1});renderTerms();});
+ if(await p.locator('form[data-action="submit"],form[data-action="pledge"],form[data-action="accept_terms"],form[data-action="terms"]').count())throw Error('Action available before personal consent');
+ await p.evaluate(()=>{termsOptions.snapshot.consents=[{document_id:'d',cooperation_id:'p',revision:2,user_id:'member',confirmed:true}];renderTerms();});
+ const accept=p.locator('form[data-action="accept_terms"]');await accept.waitFor();
+ if(await accept.evaluate(f=>f.checkValidity()))throw Error('Acceptance checkbox not required');
+ await accept.locator('[name="accept"]').check();if(!await accept.evaluate(f=>f.checkValidity()))throw Error('Explicit acceptance invalid');
+ if(await accept.locator('[name="terms_revision"]').inputValue()!=='2')throw Error('Wrong revision');
+ if(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Overflow');
+ await p.evaluate(()=>{termsOptions.snapshot.contributions[0].status='received';renderTerms();});
+ if(await p.locator('form[data-action="accept_terms"]').count())throw Error('Historical receipt rebound');
+ if(errors.length||writes.length)throw Error(JSON.stringify({errors,writes}));results.push({width,passed:true,errors,writes});await ctx.close();
+}}finally{await browser.close();}fs.writeFileSync('/tmp/fk-t05-terms-browser.json',JSON.stringify(results,null,2));console.log(results);})().catch(e=>{console.error(e);process.exit(1)});
