@@ -1,4 +1,16 @@
 # Рабочая вики FOLKOOP
+## 2026-11-09 - Compact theme and Mura dialogue
+User iPhone screenshots revealed inherited light text on hard-coded white
+backgrounds: source cards, Center hero, people shortcut and tour finale.
+Replaced those surfaces with theme tokens, compacted source cards/Center/Together.
+Mura chapter introduction now asks a short question with action-backed replies.
+Full chapter detail is expandable; map, skip/resume and existing stories retained.
+New chapter copy RU/EN/SV; other locales retain existing localized narrative.
+Checks: shell build, 12 tour/story unit tests, City theme regression; new
+Chromium/WebKit 390/1366 test covers late source-card fixture contrast, Center,
+people shortcut, dialogue choice opening purchase, and synthetic finale contrast.
+Not a full physical iPhone or human language acceptance. Publication pending.
+
 ## 2026-11-08 - City service/report handoff
 Implemented local preparation from Services to Reports, carrying the description.
 Manual official-channel selection works without GPS; unknown recipient leads to

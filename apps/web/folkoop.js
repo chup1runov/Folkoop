@@ -914,6 +914,12 @@ function tutorialTitle(step){
  const titles=(isMuraVisit()||tourReturnMode!==null)?(muraTutorialTitles[lang]||globalThis.FolkoopExtraCopy?.muraNarrative?.[lang]?.titles||muraTutorialTitles.en):(tutorialTitles[lang]||tutorialTitles.en);
  return titles[step.id]||navText(step.route);
 }
+const muraDialogue={
+ ru:['Я Мура. Люблю растения и фотографирую. С чего познакомимся?','Мы с соседями закупаем дрова и делимся вещами. Что показать?','Здесь мои соседи и сообщества. С кем познакомимся?','Город тоже может помочь нашему делу. Что тебе интересно?','Договорённости начинаются с разговора. Какую переписку откроем?'],
+ en:['I’m Mura. I love plants and photography. What would you like to know?','My neighbours and I buy firewood and share things. What shall I show you?','Here are my neighbours and communities. Who shall we meet?','The city can help with our plans too. What interests you?','Plans begin with a conversation. Which chat shall we open?'],
+ sv:['Jag är Mura. Jag gillar växter och foto. Vad vill du veta?','Vi köper ved tillsammans och delar saker. Vad vill du se?','Här finns mina grannar och gemenskaper. Vem vill du träffa?','Staden kan också hjälpa oss. Vad är du nyfiken på?','Planer börjar med ett samtal. Vilken chatt vill du öppna?']
+};
+const dialogueAnswer=label=>({ru:'Покажи: ',en:'Show me: ',sv:'Visa: '}[lang]||'')+label;
 function tutorialText(step){
  if(step.id.startsWith('chapter-'))return chapterText(4+onboardingSteps.indexOf(step));
  if(muraStoryCopy[lang]?.[step.id])return muraStoryCopy[lang][step.id][1];
@@ -1057,7 +1063,7 @@ function updateHelper(){
  if(!restart){restart=document.createElement('button');restart.type='button';restart.className='text-button';restart.dataset.helper='restart';shell.querySelector('#folkoopHelperTour').after(restart);}
  restart.textContent=chapterText(2);restart.hidden=!tourMap.last;
  shell.querySelector('#folkoopHelperIntro').textContent=source.intro;
- shell.querySelector('#folkoopHelperBody').textContent=helperTip();
+ shell.querySelector('#folkoopHelperBody').textContent=isMuraVisit()?((muraDialogue[lang]||[])[onboardingSteps.findIndex(s=>s.route===current)]||helperTip()):helperTip();
  let map=shell.querySelector('[data-tour-map-host]');
  if(!map){map=document.createElement('div');map.dataset.tourMapHost='';panel.append(map);}
  map.innerHTML=isMuraVisit()?nextStoryMarkup()+tourMapMarkup():'';
@@ -1152,7 +1158,9 @@ function showOnboarding(step=0){
  picker.setAttribute('aria-label',t('tutorialProgress'));
  picker.innerHTML=onboardingSteps.map((entry,index)=>`<option value="${index}">${index+1}. ${esc(tutorialTitle(entry))}</option>`).join('');
  picker.value=String(onboardingStep);
- dialog.querySelector('#onboardingBody').textContent=tutorialText(item);
+ dialog.querySelector('#onboardingBody').textContent=(muraDialogue[lang]||[])[onboardingStep]||tutorialText(item);
+ let detail=dialog.querySelector('.mura-dialog-detail');if(!detail){detail=document.createElement('details');detail.className='mura-dialog-detail';dialog.querySelector('#onboardingBody').after(detail);}
+ detail.open=false;detail.innerHTML='<summary>'+esc(({ru:'Расскажи подробнее',sv:'Berätta mer',en:'Tell me more'})[lang]||'Tell me more')+'</summary><p>'+esc(tutorialText(item))+'</p>';
  let stories=dialog.querySelector('#muraTogetherStories');
  if(!stories){stories=document.createElement('div');stories.id='muraTogetherStories';stories.className='actions';dialog.querySelector('#onboardingBody').after(stories);}
  stories.hidden=item.id!=='chapter-together';
@@ -1175,6 +1183,7 @@ function showOnboarding(step=0){
  profileStories.hidden=item.id!=='chapter-profile';
  const profileLabels=globalThis.FolkoopMuraProfileLabels?.(lang)||[];
  profileStories.innerHTML=item.id==='chapter-profile'?['interests','skills','connections','ideas'].map((kind,i)=>'<button type="button" class="button secondary" data-mura-profile="'+kind+'">'+esc(profileLabels[i]||t('me'))+' →</button>').join(''):'';
+ for(const group of [stories,centerStories,cityStories,messageStories,profileStories])for(const button of group.querySelectorAll('button'))button.textContent=(lang==='ru'?({need:'Что тебе нужно?',offer:'Чем ты помогаешь?',resource:'Покажи общие вещи',purchase:'Как покупаете вместе?',project:'Покажи проекты'})[button.dataset.muraTogether]:null)||dialogueAnswer(button.textContent.replace(/ →$/,''));
  const copy=dialog.querySelector('#onboardingCopy');if(copy){copy.scrollTop=0;copy.onscroll=updateOnboardingScrollCue;}
  let map=dialog.querySelector('[data-tour-map-host]');
  if(!map){map=document.createElement('div');map.dataset.tourMapHost='';profileStories.after(map);}

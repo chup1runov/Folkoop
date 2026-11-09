@@ -94,9 +94,9 @@
       "id": "SRC-MURA-JS",
       "path": "apps/web/folkoop.js",
       "status": "local-code",
-      "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance; City inline follow-up: cityShell header/link and frame presentation reviewed; navigation regression passed; FK-CITY-THEME-001: shared theme and authenticated frame messaging, resize styles, Chromium/WebKit verification; FK-NAV-SETTINGS-001 scoped navigation/settings/messages changes and local regression evidence",
-      "sha256": "e833398b79c8cc04dbf904d6e71cb4df29ca69db7d2cc3f98414a879ebaf30f6"
+      "checked_at": "2026-11-09",
+      "checked_scope": "Screenshot-driven scoped contrast, compact surfaces and chapter dialogue; Chromium/WebKit 390/1366.",
+      "sha256": "ae3a05ea21c96028046622b299c83766d640a03196a3fabf6de4fee6e0c1ca7b"
     },
     {
       "id": "SRC-NETWORK-UI",
@@ -110,9 +110,9 @@
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "local-code",
-      "checked_at": "2026-11-08",
-      "checked_scope": "Purchase polish: themed stat chips and session-stable illustrative deadline; scoped Chromium/WebKit 390/1366.",
-      "sha256": "093d4d31c2c05ef3917a110b0a3823d073e97f9e25436ee3b338466c57f4e17a"
+      "checked_at": "2026-11-09",
+      "checked_scope": "Screenshot-driven scoped contrast, compact surfaces and chapter dialogue; Chromium/WebKit 390/1366.",
+      "sha256": "baf9dfecc32b1a044a3ae0021f712c21e84b1a038d3f021dd2b1468ed1ffce51"
     },
     {
       "id": "SRC-TEST-PROGRESS",
