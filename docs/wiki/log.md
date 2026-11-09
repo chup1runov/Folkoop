@@ -721,3 +721,5 @@ validate, webkit, sources, database and GitHub deploy succeeded; run 42610408681
 Live mobile 390x844 verified after update: purchase terms -> response in same chat
 -> next project story without closing. Task complete; real iPhone and fluent
 human-language review remain outside this acceptance. Historical entries preserved.
+
+2026-11-09 update notice fix: entry modal could make the update banner inert and steal its focus. Exclude only .folkoop-update-notice from modal isolation and include its controls in keyboard navigation. Local browser reproduction passed focus/click while entry remains open. Existing cached clients may need to enter Mura first to release their old modal before clicking Update now.

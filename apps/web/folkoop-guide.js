@@ -66,7 +66,7 @@ function pointPose(targetRect,actorRect){
 let modal=null,returnFocus=null,redirectingFocus=false;
 let modalAction=null;
 const storyAction=root=>root?.dataset.interactive==='chat'?document.querySelector('#networkPanel [data-coop="openLinkedChat"]'):null;
-const inModal=target=>modal?.contains(target)||modalAction?.contains(target);
+const inModal=target=>modal?.contains(target)||modalAction?.contains(target)||!!target?.closest?.('.folkoop-update-notice');
 const inertBefore=new Map();
 const focusables=root=>Array.from(root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')).filter(e=>!e.closest('[hidden],[inert]')&&e.getClientRects().length);
 function focusModal(){
@@ -96,7 +96,7 @@ function openModal(root){
  root.tabIndex=-1;
  document.body.classList.toggle('guide-tour-open',root.id==='onboarding');
  const isolate=parent=>{for(const el of parent.children){
-  if(el===root||el===action||['SCRIPT','STYLE','LINK'].includes(el.tagName))continue;
+  if(el===root||el===action||el.classList.contains('folkoop-update-notice')||['SCRIPT','STYLE','LINK'].includes(el.tagName))continue;
   if(el.contains(root)||(action&&el.contains(action))){isolate(el);continue;}
   inertBefore.set(el,el.inert);el.inert=true;
  }};
@@ -109,7 +109,7 @@ document.addEventListener('focusin',event=>{
 },true);
 document.addEventListener('keydown',event=>{
  if(!modal||modal.hidden||event.key!=='Tab')return;
- const controls=[...focusables(modal),...(modalAction?.isConnected?[modalAction]:[])];
+ const controls=[...focusables(modal),...Array.from(document.querySelectorAll('.folkoop-update-notice:not([hidden])')).flatMap(focusables),...(modalAction?.isConnected?[modalAction]:[])];
  if(!controls.length){event.preventDefault();modal.focus({preventScroll:true});return;}
  // WebKit may skip buttons under the host's keyboard-navigation preference.
  // Cycle explicitly so the modal remains usable under either OS preference.
