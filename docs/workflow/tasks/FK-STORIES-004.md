@@ -130,3 +130,20 @@ viewer; a completed reply handoff closes only its own original dialog. A determi
 browser case holds the account/profile response, opens a story, releases the response
 and checks that the story remains, then emits a late same-route event. Existing
 publication/reply/archive checks remain. Both local engines passed the extended case.
+
+Live final patch checkpoint: Cloudflare deployed `1347be2`. In IAB the normal update
+button activated the revised client; the compact row collapsed/expanded and Omar's
+Russian purchase story opened with project/reply actions. This repeats live visual
+acceptance after the lifecycle fix; full hosted CI outcome is recorded below.
+
+### Hosted pipeline checkpoint — external GitHub error
+At runtime `1347be21f750694f4ad2e0629b0a945fb2a47220`, all four test jobs in
+[run 42670580212](https://github.com/chup1runov/Folkoop/actions/runs/42670580212)
+passed (validate, WebKit, SQL and sources); separate SQL run 42670579537 also passed.
+Cloudflare successfully deployed runtime 1347be2 (deployment eaae19d1-608f-4c1f-a68f-d6d39a4a50f1).
+GitHub's workflow-level annotation reports `Internal server error`, correlation
+`e5b1a96f-a8a8-43a0-9805-7c3eed35c382`, before the deploy job received an ID.
+The failed-jobs retry API returned 403 `This workflow run cannot be retried`.
+This is not a green whole workflow or a successful GitHub Pages deployment.
+A documentation-only checkpoint will trigger a fresh GitHub run with unchanged
+runtime; Cloudflare build is skipped for that checkpoint. Final outcome follows.
