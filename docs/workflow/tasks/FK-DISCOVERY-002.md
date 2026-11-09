@@ -44,3 +44,23 @@ change. Existing RLS and paginated adapter reused. Browser executes the real ada
 against isolated responses; no claim of a new live-account mutation test.
 No physical iPhone, independent agent or native-speaker review; effect on retention unknown.
 Research pointers: docs/research/DISCOVERY_MECHANICS_20261109.md.
+
+## Hosted publication and read-only acceptance
+Runtime 691895897a8d79250d7ec9bb45226ad4f3b0a55a published by Cloudflare Pages
+(successful check). Live folkoop.pages.dev inspected through normal browser UI:
+update banner applies new shell; Mura For me → Swedish → save → hide → restore
+→ reload → Saved retains the same illustrative meeting. No real participant writes.
+Personal verified-result goal tested against isolated API fixtures, not a newly
+completed live-account task. Full hosted CI still pending at this checkpoint.
+
+FK-DISCOVERY-002-E02 — hosted verification passed at runtime 6918958:
+[run 42632585274](https://github.com/chup1runov/Folkoop/actions/runs/42632585274):
+validate, WebKit, sources and database gates passed. Separate database run
+42632585387 also passed. Cloudflare publication and read-only live acceptance
+completed as described above. No claim of live participant writes, physical
+iPhone acceptance, native language review or measured retention lift.
+
+Final acceptance: all seven checks success, including GitHub Pages deploy and
+Cloudflare Pages. Documentation-only follow-up does not change the tested runtime.
+Workflow validator: 5 requirements/checks, 32 sources, 50 markdown pages, 380 local
+links passed; append-only log prefix preserved; git diff whitespace check passed.

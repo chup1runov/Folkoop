@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "FK-DISCOVERY-002",
   "updated": "2026-11-09",
-  "phase": "verification",
+  "phase": "complete",
   "spec": "docs/workflow/tasks/FK-DISCOVERY-002.md",
   "authorization": {
     "status": "accepted",
@@ -68,11 +68,13 @@
     },
     {
       "id": "FK-DISCOVERY-002-T03",
-      "status": "in_progress",
+      "status": "done",
       "requirements": [
         "FK-DISCOVERY-002-R05"
       ],
-      "evidence": []
+      "evidence": [
+        "FK-DISCOVERY-002-E02"
+      ]
     }
   ],
   "evidence": [
@@ -87,8 +89,17 @@
         "C04"
       ],
       "path": "docs/workflow/tasks/FK-DISCOVERY-002.md"
+    },
+    {
+      "id": "FK-DISCOVERY-002-E02",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C05"
+      ],
+      "path": "docs/workflow/tasks/FK-DISCOVERY-002.md"
     }
   ],
   "open_questions": [],
-  "next_action": "Finish final target browser rerun, publish and check CI/live; append final evidence."
+  "next_action": "Complete: runtime 6918958 passed all hosted checks and both free deployments; Mura live save/hide/restore/reload checked, goal verified in isolated API fixtures. Physical phone, new live-account task completion, native language approval and retention impact remain untested."
 }

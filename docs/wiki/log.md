@@ -764,3 +764,15 @@ No live participant publication was sent. No physical iPhone, native-speaker or
 engagement-effect certification. Self-review, no independent agent. Historical log preserved.
 
 2026-11-09 FK-DISCOVERY-002 local implementation: saved/hidden browser-scoped IDs, finite diversified recommendations, optional seven-day verified-task goal. Initial unit/browser checks passed; final rerun/CI/deployment pending. Sources and causal-evidence limits: [research](../research/DISCOVERY_MECHANICS_20261109.md), [task](../workflow/tasks/FK-DISCOVERY-002.md). Old records preserved. No paid services or participant test posts.
+
+2026-11-09 FK-DISCOVERY-002 hosted checkpoint: runtime 6918958 Cloudflare success.
+Live Mura save, hide/restore and Saved after reload passed through UI after normal
+update banner. CI database/source gates passed; full browser CI pending.
+
+2026-11-09 FK-DISCOVERY-002 complete: runtime 6918958, all seven hosted checks
+passed (validate, WebKit, sources, two database checks, Cloudflare, GitHub deploy).
+[Run](https://github.com/chup1runov/Folkoop/actions/runs/42632585274). 510 local
+tests; targeted Chromium/WebKit 320/390/1366; existing contribution and Home
+regressions passed. Live Mura save/hide/restore/reload passed. Wiki current status
+updated; historical entries retained. Goal is verified in isolated API fixtures,
+not a new live-account completion; physical iPhone/human locale/retention unknown.
