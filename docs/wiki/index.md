@@ -9,7 +9,8 @@ New chapter copy RU/EN/SV; other locales retain existing localized narrative.
 Checks: shell build, 12 tour/story unit tests, City theme regression; new
 Chromium/WebKit 390/1366 test covers late source-card fixture contrast, Center,
 people shortcut, dialogue choice opening purchase, and synthetic finale contrast.
-Not a full physical iPhone or human language acceptance. Publication pending.
+Not a full physical iPhone or human language acceptance. Published c0323b0;
+Cloudflare success. All 497 unit/integration tests passed locally; hosted full CI pending.
 
 ## 2026-11-08 - City service/report handoff
 Implemented local preparation from Services to Reports, carrying the description.

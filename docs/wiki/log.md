@@ -665,3 +665,6 @@ Checks: shell build, 12 tour/story unit tests, City theme regression; new
 Chromium/WebKit 390/1366 test covers late source-card fixture contrast, Center,
 people shortcut, dialogue choice opening purchase, and synthetic finale contrast.
 Not a full physical iPhone or human language acceptance. Publication pending.
+
+2026-11-09 release: c0323b0 deployed successfully by Cloudflare. All 497 local
+unit/integration tests passed. Hosted database/sources passed; validate/WebKit pending.
