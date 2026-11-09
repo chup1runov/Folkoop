@@ -25,7 +25,7 @@ function model({coop,data,user,members=[],demo=false,demoMeeting=false,now=Date.
   const proof=(xs,key)=>xs.map(x=>({actor:x.user_id,label:key,quantity:amount(x.quantity),unit:coop.unit}));
   steps=[
    row('terms',11,termsValid?'done':continuing&&offer?'reported':'pending','offers',choice?[{actor:choice.selected_by,label:11}]:[]),
-   row('quantity',12,enough(quantities)?'done':'pending','members',proof(quantities,31),`${Number(total(quantities).toFixed(6))} / ${target} ${coop.unit||''}`),
+   row('quantity',12,enough(quantities)?'done':'pending','purchase-progress',proof(quantities,31),`${Number(total(quantities).toFixed(6))} / ${target} ${coop.unit||''}`),
    row('consent',13,agreement&&enough(confirmed)&&answers.length>0&&!answers.some(x=>x.decision==='pending')?'done':'pending','purchase-progress',proof(confirmed,13),`${Number(total(confirmed).toFixed(6))} / ${target} ${coop.unit||''}`),
    row('collection',14,['delivered','distributing','done'].includes(p.stage)&&confirmed.length>0&&collected.length===confirmed.length&&enough(collected)?'done':'pending','purchase-progress',proof(collected,28),`${collected.length} / ${confirmed.length}`),
    row('purchase-result',15,p.stage==='done'&&String(p.result_note||'').trim()?'reported':'pending','purchase-progress',p.result_note?[{actor:coop.owner_id,title:p.result_note,label:16}]:[])

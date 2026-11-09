@@ -84,3 +84,14 @@ GitHub walkthrough exposed the historic Mura quote; no real quote was changed.
 passed. This fix supersedes runtime 5ea961e; its sources, WebKit and database checks
 passed, full validate was still running at follow-up preparation. Cloudflare failed
 a second time; log access awaits action-time agreement confirmation.
+
+2026-11-09 live acceptance checkpoint: 3b4e110 deployed successfully on Cloudflare.
+Existing cached client updated through the normal banner. Mura purchase shows a
+current selected quote (1/5), named pledges and own-contribution badge. No Cloudflare
+login or agreement acceptance was needed; causes of the two earlier build failures
+remain unknown. A source-navigation check found the quantity action opened only
+membership; changed it to purchase-progress, which includes amounts and netCommitment.
+523 unit/integration checks plus Chromium/WebKit shared-progress and Mura scenarios
+passed again; browser assertions now require the actual contribution form for the
+isolated signed-in fixture, and no visible forms for Mura. Final route patch CI/live
+acceptance pending.

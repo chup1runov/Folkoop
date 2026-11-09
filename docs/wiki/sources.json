@@ -263,8 +263,8 @@
       "path": "apps/web/network-shared-progress.js",
       "status": "implemented-tested",
       "checked_at": "2026-11-09",
-      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit",
-      "sha256": "64e5b231e871cd099e3ec33fb68193389f546c5e3c9c639ef43e56154d4e8437"
+      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending; started meeting no longer directs participants back to preparation; SQL nullable inclusive date review and relative authored Mura quote; 523 checks plus Chromium/WebKit; quantity source jump reaches actual quantity form; hosted/live 3b4e110 checkpoint",
+      "sha256": "f9de7897c3208c7243e34673839dcfaaef7bae36cc29442a23c496def90f288b"
     }
   ]
 }

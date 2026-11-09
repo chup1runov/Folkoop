@@ -15,6 +15,7 @@ async def main():
    await p.goto(BASE+'#/settings');await p.locator('#appearanceTheme').select_option('dark')
    await p.locator('#mobilePrimaryNav [href="#/together"]').click();await p.locator('[data-coop="open"][data-id="00000000-0000-4000-8000-000000000302"]').click()
    shared=p.locator('[data-shared-progress]');await expect(shared).to_contain_text('вымышленные данные');await expect(shared.locator('[data-shared-key=terms]')).to_have_attribute('data-shared-state','done')
+   await shared.locator('.shared-progress-next [data-shared-step]').click();await expect(p.locator('[data-coop-section=purchase-progress]')).to_have_attribute('open','')
    await shared.locator('[data-shared-key=consent] summary').click();await shared.locator('[data-shared-key=consent] [data-shared-step]').click()
    await expect(p.locator('[data-coop-section=purchase-progress]')).to_have_attribute('open','')
    assert await p.locator('#networkPanel form:visible').count()==0

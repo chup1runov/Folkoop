@@ -31,7 +31,7 @@ test('task results require another reviewer, valid date and the exact project',(
 });
 function purchase(){return {coop:{id:'p',kind:'purchase',owner_id:'a',status:'active',target_quantity:0.3,unit:'kg'},user:{id:'a'},members:[{user_id:'a'},{user_id:'b'}],name:id=>id,now,data:{loadedAt:now,purchaseProcess:[{cooperation_id:'p',stage:'confirming'}],purchaseChoice:[{cooperation_id:'p',offer_id:'offer',selected_by:'a'}],purchaseOffers:[{cooperation_id:'p',id:'offer',valid_until:'2026-11-10'}],commitments:[{cooperation_id:'p',user_id:'a',quantity:.1},{cooperation_id:'p',user_id:'b',quantity:.2}],purchaseConfirmations:[{cooperation_id:'p',user_id:'a',decision:'confirmed',quantity:.1},{cooperation_id:'p',user_id:'b',decision:'pending',quantity:.2}]}};}
 test('pledges, personal consents, collection and organizer outcome stay separate',()=>{
- const f=setup(),a=purchase();let m=f.model(a);assert.equal(step(m,'quantity').state,'done');assert.equal(step(m,'quantity').detail,'0.3 / 0.3 kg');assert.equal(step(m,'consent').state,'pending');assert.equal(step(m,'collection').state,'pending');
+ const f=setup(),a=purchase();let m=f.model(a);assert.equal(step(m,'quantity').state,'done');assert.equal(step(m,'quantity').target,'purchase-progress');assert.equal(step(m,'quantity').detail,'0.3 / 0.3 kg');assert.equal(step(m,'consent').state,'pending');assert.equal(step(m,'collection').state,'pending');
  a.data.purchaseConfirmations[1].decision='confirmed';assert.equal(step(f.model(a),'consent').state,'done');
  a.data.purchaseProcess[0].stage='distributing';for(const x of a.data.purchaseConfirmations)x.collected_at=iso(now);
  assert.equal(step(f.model(a),'collection').state,'done');

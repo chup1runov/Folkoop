@@ -57,6 +57,7 @@ async def main():
    state['fail']=True;await page.locator('[data-coop=meetingRefresh]').first.click();await expect(panel).to_contain_text('Нужно обновить данные')
    await page.locator('[data-coop=back]').click();await page.locator('#mobilePrimaryNav a[href="#/together"]').click();await page.locator(f'[data-coop=open][data-id="{Q}"]').click()
    await expect(panel.locator('[data-shared-key=quantity]')).to_have_attribute('data-shared-state','done');await expect(panel.locator('[data-shared-key=collection]')).to_have_attribute('data-shared-state','pending')
+   await panel.locator('[data-shared-key=quantity] summary').click();await panel.locator('[data-shared-key=quantity] [data-shared-step]').click();await expect(page.locator('#netCommitment')).to_be_visible()
    await panel.locator('[data-shared-key=consent] summary').click();await panel.locator('[data-shared-key=consent] [data-shared-step]').click();await expect(page.locator('[data-coop-section=purchase-progress]')).to_have_attribute('open','')
    state['stage']='done';state['collected']=True;await page.locator('[data-net=refresh]').first.click()
    await expect(panel.locator('[data-shared-key=collection]')).to_have_attribute('data-shared-state','done');await expect(panel.locator('[data-shared-key=purchase-result]')).to_have_attribute('data-shared-state','reported')
