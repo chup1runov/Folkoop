@@ -63,5 +63,86 @@ function renderInbox({rows,error,name}){
  const list=rows||[];
  return `<section class="card room-notifications"><h3>${tx(0)}</h3><button class="button secondary" data-coop="roomRefresh">${esc(text(22))}</button>${error?`<p role="status">${tx(10)}</p>`:`<p>${tx(12)}: ${Number(list[0]?.unread_count||0)} · ${tx(13)}: ${list.length} / ${Number(list[0]?.total_count||0)}</p>${list.map(n=>`<article class="card"><h4>${tx(n.action==='request'?(n.revision===1?1:2):({offer:3,decline:4,accept:5,cancel:6})[n.action])}${n.is_unread?' •':''}</h4><p>${esc(n.resource_title)} · ${esc(n.project_title)}</p><p class="meta">${esc(name(n.actor_id))} · ${esc(new Date(n.created_at).toLocaleString())} · ${n.revision}</p>${n.is_current?'':`<p>${tx(11)}</p>`}<button class="button secondary" data-coop="openNotify" data-id="${esc(n.target_id)}" data-target-kind="${esc(n.target_kind)}" data-room="${esc(n.request_id)}">${tx(7)}</button>${n.is_unread?`<form class="netRoomNotificationRead"><input name="request" type="hidden" value="${esc(n.request_id)}"><input name="revision" type="hidden" value="${n.revision}"><button class="button secondary">${tx(8)}</button></form>`:''}</article>`).join('')||`<p>${tx(9)}</p>`}`}</section>`;
 }
-globalThis.FolkoopRooms=Object.freeze({render,text,renderInbox});
+// Draft booking translations; human language approval remains pending.
+const bookingCopy={ru:['Использование ресурсов','Правила бронирования','Одновременная вместимость','Штуки','Места','Доступно с — время устройства','Доступно до — время устройства','Правила использования','Опубликовать правила','Правила будут видны пользователям с доступом к ресурсу. Личные сведения о доступности не публикуются автоматически.','Количество','Запросить ресурс','Бронирование подтверждено','Ещё не забронировано','Условия предложения устарели: владелец должен предложить их заново.','Данные изменились или вместимость занята. Данные обновлены; проверьте период, количество и условия.','Редакция правил','Это резерв внутри FOLKOOP. Реальный доступ и право распоряжаться ресурсом независимо не проверены.','Правила пока не опубликованы','Сначала разрешите старые будущие соглашения. Нельзя уменьшить вместимость ниже подтверждённой загрузки.'],en:['Resource use','Booking rules','Simultaneous capacity','Items','Places','Available from — device time','Available until — device time','Use conditions','Publish rules','Rules will be visible to users with access to the resource. Personal availability is not published automatically.','Quantity','Request resource','Reservation confirmed','Not reserved yet','Offer terms are outdated: the owner must offer them again.','Data changed or capacity is taken. Data refreshed; check the period, quantity and conditions.','Rules revision','This is a reservation within FOLKOOP. Physical access and authority over the resource are not independently verified.','No published rules yet','Resolve old future agreements first. Capacity cannot be reduced below confirmed usage.']};
+Object.assign(bookingCopy,globalThis.FolkoopFeatureCopy?.booking||{});
+const bookingText=i=>(bookingCopy[document.documentElement.lang]||bookingCopy.en)[i];
+const bookingLanguage=()=>Object.hasOwn(bookingCopy,document.documentElement.lang)?document.documentElement.lang:'en';
+const policyFor=(policies,id)=>policies.filter(p=>p.resource_id===id).sort((a,b)=>b.revision-a.revision)[0];
+const bookingFresh=s=>s&&!s.error&&!s.stale&&Array.isArray(s.rows)&&Number.isFinite(s.loadedAt)&&Date.now()-s.loadedAt>=0&&Date.now()-s.loadedAt<60000&&globalThis.navigator?.onLine!==false;
+function renderBookings({coop,user,rows=[],error,resources=[],drafts={},histories={},owner,member,policies,name=id=>id||'—'}){
+ const tx=i=>esc(bookingText(i)),old=i=>esc(text(i)),unit=u=>tx(u==='piece'?3:4),hidden=v=>Object.entries(v).map(([k,x])=>`<input type="hidden" name="${k}" value="${esc(x)}">`).join('');
+ let html=`<section class="card resource-bookings" lang="${bookingLanguage()}" dir="${['ar','fa'].includes(bookingLanguage())?'rtl':'ltr'}"><h3>${tx(0)}</h3><p>${tx(17)}</p><button type="button" class="button secondary" data-coop="roomRefresh">${old(22)}</button>`;
+ if(error||!bookingFresh(policies))return html+`<p role="status">${old(21)}</p></section>`;
+ const all=policies.rows,active=['open','active'].includes(coop.status);
+ const describe=p=>`<p>${tx(16)} ${p.revision} · ${tx(2)}: ${p.capacity} ${unit(p.unit)}</p><p>${esc(new Date(p.available_from).toLocaleString())} — ${esc(new Date(p.available_until).toLocaleString())}</p><p style="white-space:pre-wrap">${esc(p.conditions)}</p>`;
+ if(coop.kind==='resource'){
+  const p=policyFor(all,coop.id),d=drafts['booking-policy:'+coop.id]||{};
+  html+=`<h4>${tx(1)}</h4>${p?describe(p):`<p>${tx(18)}</p>`}`;
+  if(owner&&active)html+=`<details><summary>${tx(8)}</summary><p>${tx(9)}</p><p>${tx(19)}</p><form class="netBookingPolicy">${hidden({resource:coop.id,revision:p?.revision||0})}<label>${tx(2)}<input name="capacity" type="number" min="1" max="10000" required value="${esc(d.capacity||p?.capacity||1)}"></label><label>${tx(10)}<select name="unit">${['piece','place'].map(u=>`<option value="${u}"${(d.unit||p?.unit||'piece')===u?' selected':''}>${unit(u)}</option>`).join('')}</select></label><label>${tx(5)}<input name="from" type="datetime-local" required value="${esc(d.from||local(p?.available_from))}"></label><label>${tx(6)}<input name="until" type="datetime-local" required value="${esc(d.until||local(p?.available_until))}"></label><label>${tx(7)}<textarea name="conditions" required minlength="2" maxlength="1000">${esc(d.conditions||p?.conditions||'')}</textarea></label><button class="button">${tx(8)}</button></form></details>`;
+ }
+ const fields=(d,p,offer)=>`<label>${old(2)}<input type="datetime-local" name="start" required value="${esc(d.start||'')}"></label><label>${old(3)}<input type="datetime-local" name="end" required value="${esc(d.end||'')}"></label>${hidden({unit:p.unit})}<label>${tx(10)} · ${unit(p.unit)}<input name="quantity" type="number" min="1" max="${p.capacity}" required value="${esc(d.unit&&d.unit!==p.unit?'':d.quantity||1)}"></label>${hidden({people:d.people||1})}<label>${old(5)}<textarea name="note" required minlength="2" maxlength="1000">${esc(d.note||'')}</textarea></label>${offer?`<label>${old(11)}<input name="expires" type="datetime-local" required value="${esc(d.expires||'')}"></label>`:''}`;
+ for(const r of rows.filter(r=>r.booking_policy_revision||policyFor(all,r.resource_id))){
+  const p=policyFor(all,r.resource_id),resource=resources.find(x=>x.id===r.resource_id),project=resources.find(x=>x.id===r.project_id);
+  const current=p&&p.owner_id===resource?.owner_id&&r.resource_owner_id===resource?.owner_id&&r.requester_id===project?.owner_id;
+  const offer=current&&r.resource_owner_id===user.id,request=current&&r.requester_id===user.id;
+  const d=drafts['booking:'+r.id]||{start:local(r.starts_at),end:local(r.ends_at),people:r.people,note:r.note,expires:local(r.offer_expires_at),quantity:r.booking_quantity||(p?.unit==='place'?r.people:1),unit:r.booking_unit};
+  const values={id:r.id,project:r.project_id,resource:r.resource_id,revision:r.revision};
+  html+=`<article class="card"><h4>${esc(resource?.title||r.resource_id)}</h4><p>${esc(project?.title||r.project_id)} · ${esc(name(r.requester_id))} → ${esc(name(r.resource_owner_id))}</p><p>${old(({requested:12,offered:13,agreed:14,declined:15,cancelled:16})[r.state])} · ${r.revision}</p><p>${esc(new Date(r.starts_at).toLocaleString())} — ${esc(new Date(r.ends_at).toLocaleString())}</p><p>${r.booking_quantity||r.people} ${unit(r.booking_unit||'place')} · ${tx(r.state==='agreed'&&r.booking_policy_revision?12:13)}</p><p>${esc(r.note)}</p>${r.booking_policy?`<details><summary>${tx(16)} ${r.booking_policy_revision}</summary>${describe(r.booking_policy)}</details>`:''}${p?`<details><summary>${tx(1)}</summary>${describe(p)}</details>`:`<p role="status">${old(21)}</p>`}`;
+  if(r.state==='offered'&&p&&r.booking_policy_revision!==p.revision)html+=`<p>${tx(14)}</p>`;
+  if(handoffPending(r))html+=`<p role="status">${esc(handoffText(21))}</p>`;
+  if(!handoffPending(r)&&active&&request&&r.state==='offered'&&r.booking_policy_revision===p.revision&&Date.parse(r.offer_expires_at)>Date.now()&&Date.parse(r.starts_at)>Date.now())html+=`<form class="netBookingAction">${hidden(values)}<button class="button" value="accept">${old(8)}</button></form>`;
+  if(!handoffPending(r)&&active&&p&&((offer&&['requested','offered','agreed'].includes(r.state))||request))html+=`<details><summary>${old(offer?7:23)}</summary><form class="netBookingAction">${hidden(values)}${fields(d,p,offer)}<p>${old(25)}</p><button class="button" value="${offer?'offer':'request'}">${old(offer?7:23)}</button></form></details>`;
+  if(offer&&['requested','offered'].includes(r.state))html+=`<form class="netBookingAction">${hidden(values)}<button class="button secondary" value="decline">${old(9)}</button></form>`;
+  if(!handoffPending(r)&&(offer||request)&&!['cancelled','declined'].includes(r.state))html+=`<form class="netBookingAction">${hidden(values)}<button class="button secondary" value="cancel">${old(10)}</button></form>`;
+  html+=renderHandoff(r,user,current,active,drafts,histories);
+  html+='</article>';
+ }
+ if(active&&coop.kind==='project'&&owner&&member)for(const p of all){
+  const resource=resources.find(x=>x.id===p.resource_id);
+  if(!resource||resource.owner_id===user.id||resource.owner_id!==p.owner_id||!['open','active'].includes(resource.status)||Date.parse(p.available_until)<=Date.now()||rows.some(r=>r.resource_id===p.resource_id))continue;
+  const d=drafts['booking-new:'+coop.id+':'+p.resource_id]||{};
+  html+=`<details><summary>${tx(11)}: ${esc(resource.title)}</summary>${describe(p)}<form class="netBookingAction" data-new="true">${hidden({project:coop.id,resource:p.resource_id,revision:0})}${fields(d,p,false)}<button class="button" value="request">${tx(11)}</button></form></details>`;
+ }
+ return html+'</section>';
+}
+
+const handoffCopy={ru:['Выдача и возврат','Выдано','Получено','Возврат заявлен','Возврат подтверждён','Состояние предмета / пояснение','Отметить выдачу','Подтвердить получение','Заявить возврат','Подтвердить возврат','Записать замечание','Открыть спор','Закрыть свой спор','Предложить исправление количеств','Принять исправление другой стороны','Отклонить / отозвать исправление','История передачи','Возврат просрочен','Открыт спор: подтверждение возврата приостановлено.','Исправление ждёт второй стороны. Количества ещё не изменены.','Это записи сторон о временном пользовании, не передача собственности и не независимая проверка.','Есть невозвращенные вещи или незавершённое разбирательство. Изменение и отмена брони заблокированы.','Данные передачи изменились. Обновлены текущие значения; проверьте их перед повтором.','История недоступна или устарела — загрузите её заново.','Количество в этой операции'],en:['Handoff and return','Issued','Received','Return reported','Return confirmed','Item condition / explanation','Record issue','Confirm receipt','Report return','Confirm return','Record note','Open dispute','Resolve my dispute','Propose quantity correction','Accept the other party’s correction','Reject / withdraw correction','Handoff history','Return overdue','A dispute is open: return confirmation is paused.','Correction awaits the other party. Quantities have not changed yet.','These are party reports of temporary use, not an ownership transfer or independent verification.','Outstanding items or an unresolved issue block booking changes and cancellation.','Handoff data changed. Current values refreshed; review them before retrying.','History unavailable or outdated — load it again.','Quantity in this operation']};
+Object.assign(handoffCopy,globalThis.FolkoopFeatureCopy?.handoff||{});
+const handoffText=i=>(handoffCopy[document.documentElement.lang]||handoffCopy.en)[i];
+const handoffPending=r=>(r.issued||0)>(r.return_confirmed||0)||r.owner_disputed||r.requester_disputed||r.correction!=null;
+function renderHandoff(r,user,current,active,drafts,histories){
+ if(r.booking_unit!=='piece'||r.state!=='agreed')return '';
+ const tx=i=>esc(handoffText(i)),owner=current&&r.resource_owner_id===user.id,receiver=current&&r.requester_id===user.id,party=owner||receiver;
+ const counters=['issued','received','return_claimed','return_confirmed'];
+ const summary=v=>counters.map((k,i)=>`${tx(i+1)}: ${esc(v[k]||0)}`).join(' · ');
+ let html=`<section class="resource-handoff"><h5>${tx(0)}</h5><p>${tx(20)}</p><p>${summary(r)}</p>`;
+ if((r.issued||0)>(r.return_confirmed||0)&&Date.parse(r.ends_at)<Date.now())html+=`<p role="status">${tx(17)}: ${r.issued-r.return_confirmed}</p>`;
+ if(r.owner_disputed||r.requester_disputed)html+=`<p role="status">${tx(18)}</p>`;
+ if(r.correction)html+=`<p role="status">${tx(19)}</p><p>${summary(r.correction)}</p>`;
+ const form=(action,label,max=0,correction=false)=>{
+  const d=drafts['handoff:'+r.id+':'+action]||{};
+  return `<details><summary>${tx(label)}</summary><form class="netHandoff" data-action="${action}"><input type="hidden" name="request" value="${esc(r.id)}"><input type="hidden" name="booking_revision" value="${r.revision}"><input type="hidden" name="revision" value="${r.handoff_revision||0}">${max?`<label>${tx(24)}<input type="number" name="quantity" min="1" max="${max}" required value="${esc(d.quantity||1)}"></label>`:'<input type="hidden" name="quantity" value="0">'}${correction?counters.map((k,i)=>`<label>${tx(i+1)}<input type="number" name="${k}" min="0" max="${r.booking_quantity}" required value="${esc(d[k]??r[k]??0)}"></label>`).join(''):''}<label>${tx(5)}<textarea name="note" minlength="2" maxlength="1000" required>${esc(d.note||'')}</textarea></label><button class="button">${tx(label)}</button></form></details>`;
+ };
+ if(party){
+  if(!r.correction){
+   if(owner&&active&&!r.owner_disputed&&!r.requester_disputed&&Date.parse(r.starts_at)<=Date.now()&&Date.parse(r.ends_at)>Date.now()&&r.booking_quantity>(r.issued||0))html+=form('issue',6,r.booking_quantity-(r.issued||0));
+   if(receiver&&(r.issued||0)>(r.received||0))html+=form('receive',7,r.issued-(r.received||0));
+   if(receiver&&(r.received||0)>(r.return_claimed||0))html+=form('return',8,r.received-(r.return_claimed||0));
+   if(owner&&!r.owner_disputed&&!r.requester_disputed&&(r.return_claimed||0)>(r.return_confirmed||0))html+=form('confirm_return',9,r.return_claimed-(r.return_confirmed||0));
+   html+=form('correct',13,0,true);
+  }else{
+   if(r.correction_by&&r.correction_by!==user.id&&!r.owner_disputed&&!r.requester_disputed)html+=form('accept_correction',14);
+   html+=form('reject_correction',15);
+  }
+  html+=form('note',10)+form((owner?r.owner_disputed:r.requester_disputed)?'resolve':'dispute',(owner?r.owner_disputed:r.requester_disputed)?12:11);
+ }
+ const history=histories[r.id];
+ html+=`<details><summary>${tx(16)}</summary><button type="button" class="button secondary" data-coop="handoffHistory" data-id="${esc(r.id)}">${tx(16)}</button>`;
+ if(history?.error||(history&&history.revision!==r.handoff_revision))html+=`<p>${tx(23)}</p>`;
+ else if(history?.rows)html+=history.rows.map(e=>`<article><p>${e.revision} · ${esc(new Date(e.created_at).toLocaleString())} · ${esc(e.actor_id||'—')} · ${tx(({issue:6,receive:7,return:8,confirm_return:9,note:10,dispute:11,resolve:12,correct:13,accept_correction:14,reject_correction:15})[e.action])}${e.quantity?' · '+e.quantity:''}</p><p>${esc(e.note)}</p><p>${summary(e.snapshot)}</p></article>`).join('');
+ return html+'</details></section>';
+}
+
+globalThis.FolkoopRooms=Object.freeze({render,text,renderInbox,renderBookings,bookingText,handoffText});
 })();

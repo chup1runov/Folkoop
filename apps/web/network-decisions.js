@@ -53,7 +53,40 @@ function renderRules(d,{objections,user,owner,name,drafts,project,active}){
  }
  return html+'</details>';
 }
-function render({snapshot,user,owner,organizer,name,tasks=[],drafts={},project,demo=false,active=true}){
+// Read-only projection of existing authority and exact task basis. No new voting model.
+const pathCopy={ru:['Путь решения','Автор предложения','Откликнулись — ответом или возражением','Откликов пока нет; это не согласие','Решение фиксирует','Организатор проекта после обсуждения. Ответы консультативные; это не голосование кругов.','Зафиксировал решение','Не разобраны возражения','Связанные задачи','Исполнитель','Пока не назначен','Назначение ещё не означает принятия задачи','Основание задачи','Основание не задано; применяется существующий процесс задачи','Данные основания недоступны или устарели','Редакция документа','Текущая редакция','Нужны обновление основания и новые согласия','Ожидаются необходимые согласия','Необходимые согласия получены по загруженным данным','Основание ссылается на другое решение — проверьте связь','Открыть задачи и условия','Данные об участнике недоступны','Назначенный принимающий решение больше не является организатором. Нужно новое предложение.','Связанных задач пока нет'],en:['Decision path','Proposal author','Responded — with an answer or objection','No responses yet; this is not consent','Decision recorded by','The project organizer decides after discussion. Responses are advisory; this is not circle voting.','Recorded the decision','Unanswered objections','Linked tasks','Assignee','Not assigned yet','Assignment does not mean task acceptance','Task basis','No basis set; the existing task workflow applies','Basis data unavailable or stale','Document revision','Current revision','Update the basis and collect new consents','Required consents pending','Required consents received in the loaded data','The basis refers to another decision — check the link','Open tasks and conditions','Participant data unavailable','The named decision maker is no longer the organizer. A new proposal is required.','No linked tasks yet']};
+Object.assign(pathCopy,globalThis.FolkoopFeatureCopy?.path||{});
+function renderPath(d,{responses=[],objections=[],tasks=[],taskBases,name,organizer,now=Date.now()}){
+ const locale=Object.hasOwn(pathCopy,document.documentElement.lang)?document.documentElement.lang:'en',tx=i=>esc(pathCopy[locale][i]);
+ const who=id=>id?esc(name(id)):tx(22);
+ const participants=[...new Set([...responses.filter(r=>r.decision_id===d.id).map(r=>r.user_id),...objections.filter(o=>o.decision_id===d.id).map(o=>o.author_id)])];
+ const pending=objections.filter(o=>o.decision_id===d.id&&!o.withdrawn&&!o.disposition);
+ const fresh=taskBases&&!taskBases.error&&Array.isArray(taskBases.rows)&&Number.isFinite(taskBases.loadedAt)&&now>=taskBases.loadedAt&&now-taskBases.loadedAt<60000&&globalThis.navigator?.onLine!==false;
+ let out=`<section class="decision-path" lang="${locale}" dir="${['ar','fa'].includes(locale)?'rtl':'ltr'}"><h5>${tx(0)}</h5><p>${tx(1)}: ${who(d.created_by)}</p><p>${tx(2)}: ${participants.length?participants.map(who).join(', '):tx(3)}</p><p>${tx(4)}: ${who(d.rules_version===1?d.decision_maker:d.decided_by||organizer)}</p><p>${tx(5)}</p>`;
+ if(d.decided_at)out+=`<p>${tx(6)}: ${who(d.decided_by)}</p>`;
+ if(d.rules_version===1&&d.decision_maker!==organizer&&!d.decided_at)out+=`<p role="status">${tx(23)}</p>`;
+ out+=`<p${pending.length?' role="status"':''}>${tx(7)}: ${pending.length}${pending.length?' — '+pending.map(o=>who(o.author_id)).join(', '):''}</p><h5>${tx(8)}</h5>`;
+ const linked=tasks.filter(t=>t.source_decision_id===d.id);
+ if(!linked.length)out+=`<p>${tx(24)}</p>`;
+ for(const task of linked){
+  const b=fresh?taskBases.rows.find(b=>b.task_id===task.id):null;
+  out+=`<article><strong>${esc(task.title)}</strong><p>${tx(9)}: ${task.assignee_id?who(task.assignee_id):tx(10)}</p>${task.assignee_id&&(!task.work_stage||['legacy','available'].includes(task.work_stage))?`<p>${tx(11)}</p>`:''}<p>${tx(12)}: `;
+  if(!fresh)out+=tx(14);
+  else if(!b)out+=tx(13);
+  else{
+   out+=`${esc(b.document?.title||pathCopy[locale][14])} · ${tx(15)} ${esc(b.document_revision)} · ${tx(16)} ${esc(b.latest_document_revision??'—')}`;
+   if(b.decision_id!==d.id)out+=`</p><p role="status">${tx(20)}`;
+   else if(!b.document||!b.decision)out+=`</p><p role="status">${tx(14)}`;
+   else if(b.document_revision!==b.latest_document_revision)out+=`</p><p role="status">${tx(17)}`;
+   else out+=`</p><p>${tx(b.ready===true?19:18)}`;
+  }
+  out+='</p></article>';
+ }
+ if(linked.length)out+=`<button type="button" class="button secondary" data-project-next="tasks">${tx(21)}</button>`;
+ return out+'</section>';
+}
+
+function render({snapshot,user,owner,organizer,name,tasks=[],taskBases,drafts={},project,demo=false,active=true}){
  const locale=copy[document.documentElement.lang]?document.documentElement.lang:'en',tx=i=>esc(copy[locale][i]);
  const input=(label,key,d,max=160)=>`<label>${tx(label)}<input name="${key}" maxlength="${max}" required value="${esc(d[key]||'')}"></label>`;
  const area=(label,key,d,max,required=true)=>`<label>${tx(label)}<textarea name="${key}" maxlength="${max}"${required?' required':''}>${esc(d[key]||'')}</textarea></label>`;
@@ -71,6 +104,7 @@ function render({snapshot,user,owner,organizer,name,tasks=[],drafts={},project,d
   const pendingObjections=objections.filter(o=>o.decision_id===d.id&&!o.withdrawn&&!o.disposition).length;
   const canFinish=owner&&(d.rules_version!==1||d.decision_maker===user.id);
   html+=`<article class="card"><h4>${esc(d.question)}</h4><p>${esc(d.purpose)}</p><p class="meta">${esc(new Date(d.closes_at).toLocaleString())} · ${tx(done?18:closed?20:6)}</p><ol>${d.options.map((o,i)=>`<li>${esc(o)} — ${rows.filter(r=>r.option_index===i).length}</li>`).join('')}</ol>`;
+  html+=renderPath(d,{responses,objections,tasks,taskBases,name,organizer});
   html+=renderRules(d,{objections,user,owner,name,drafts,project,active});
   html+=`<details><summary>${tx(19)} (${rows.length})</summary><ul>${rows.map(r=>`<li>${esc(name(r.user_id))}: ${esc(d.options[r.option_index])}${r.note?` — ${esc(r.note)}`:''}</li>`).join('')}</ul><p class="meta">${tx(26)}</p></details>`;
   if(!closed&&!done&&active)html+=`<form class="editor netDecision" data-operation="response" data-decision="${esc(d.id)}">${select(d,response.option)}${area(12,'note',response,500,false)}<button class="button" value="save">${tx(13)}</button>${mine?`<button class="button secondary" value="withdraw" formnovalidate>${tx(14)}</button>`:''}</form>`;
@@ -195,6 +229,53 @@ function renderOverview({coop,decisions,meeting,tasks=[],members=[],name,loadedA
  html+=tasks.length?`<ul>${tasks.map(t=>`<li><strong>${esc(t.title)}</strong> — ${esc(t.work_stage&&t.work_stage!=='legacy'?globalThis.FolkoopTaskWork.label(t):t.status)} · ${t.assignee_id?esc(name(t.assignee_id)):tx(8)}</li>`).join('')}</ul>`:`<p>${tx(7)}</p>`;
  return html+'</section>';
 }
+const progressCopy={ru:['Действия и итог проекта','Задачи с подтверждённым результатом','Старая отметка «выполнено» — без нового подтверждения','Вещи без подтверждённого возврата','Это записи участников. Завершение задач и возврат вещей сами по себе не доказывают внешний результат проекта.','Ваш следующий шаг','Открыть раздел','Проверить задачу и условия, затем принять её','Описать выполненную работу и передать на проверку','Проверить результат другого исполнителя','Проверить условия задачи и необходимые согласия','Подтвердить фактически полученное количество','Проверить срок пользования и заявить фактический возврат','Проверить состояние возвращённых вещей и подтвердить полученное количество','Разобрать спор или предложение исправления с другой стороной','Сообщить, как прошла встреча','Посмотреть сообщения об итоге встречи','Организатор может создать повтор с новыми сроками','Повтор не переносит согласия, резервы и подтверждения передачи. Незавершённые возвраты остаются обязательствами старого проекта.','Данные недоступны или устарели — обновите обзор','Итог встречи не настроен; результат проекта не определён автоматически','Сейчас нет отдельного действия для вас в загруженных данных. Проверьте общий следующий шаг проекта.','Перейти к повтору','Проект закрыт: завершите расчёты по выданным вещам в разделе ресурсов; новые задачи здесь недоступны.'],en:['Project actions and outcome','Tasks with a confirmed result','Legacy done mark — no new confirmation','Items without confirmed return','These are participant records. Completed tasks and returned items do not by themselves prove the project’s external outcome.','Your next step','Open section','Review the task and conditions, then accept it','Describe the work and submit it for review','Review another assignee’s result','Review task conditions and required consents','Confirm the quantity actually received','Check the due time and report the actual return','Check returned item condition and confirm the quantity received','Resolve the dispute or correction proposal with the other party','Report how the meeting went','Review participant outcome reports','The organizer can create a repeat with new times','A repeat does not carry over consents, reservations or handoff confirmations. Outstanding returns remain obligations of the old project.','Data unavailable or stale — refresh the overview','No meeting outcome configured; the project result is not determined automatically','No separate action for you in the loaded data. Review the overall next project step.','Open the repeat','Project closed: settle outstanding item returns in resources; new tasks are unavailable here.']};
+Object.assign(progressCopy,globalThis.FolkoopFeatureCopy?.progress||{});
+function renderProgress({coop,user,tasks=[],taskBases,roomRequests=[],roomRequestsError,resources=[],meeting,loadedAt,online=true,name=id=>id,now=Date.now()}){
+ const locale=Object.hasOwn(progressCopy,document.documentElement.lang)?document.documentElement.lang:'en',tx=i=>esc(progressCopy[locale][i]);
+ const fresh=s=>s&&!s.error&&!s.stale&&Number.isFinite(s.loadedAt)&&now>=s.loadedAt&&now-s.loadedAt<60000;
+ let out=`<section class="card project-progress" lang="${locale}" dir="${['ar','fa'].includes(locale)?'rtl':'ltr'}"><h3>${tx(0)}</h3><p>${tx(4)}</p>`;
+ if(!online||!fresh({loadedAt}))return out+`<p role="status">${tx(19)}</p><button type="button" data-net="refresh" class="button secondary">${tx(6)}</button></section>`;
+ const active=['open','active'].includes(coop.status),actions=[];
+ const add=(label,target,title='')=>actions.push(`<li>${title?esc(title)+' — ':''}${tx(label)} <button type="button" class="button secondary" data-project-next="${target}">${tx(6)}</button></li>`);
+ out+=`<p>${tx(1)}: ${tasks.filter(t=>t.work_stage==='verified').length}</p><p>${tx(2)}: ${tasks.filter(t=>t.status==='done'&&(!t.work_stage||t.work_stage==='legacy')).length}</p>`;
+ if(active)for(const t of tasks){
+  const mine=t.assignee_id===user.id,review=t.work_stage==='submitted'&&!mine&&t.assignee_id&&(coop.owner_id===user.id||coop.owner_id===t.assignee_id);
+  if((mine&&['available','working','changes'].includes(t.work_stage))||review){
+   const b=fresh(taskBases)&&Array.isArray(taskBases.rows)?taskBases.rows.find(b=>b.task_id===t.id):null;
+   const allowed=fresh(taskBases)&&Array.isArray(taskBases.rows)&&(!b||(b.ready===true&&b.document_revision===b.latest_document_revision));
+   add(!allowed?10:review?9:t.work_stage==='available'?7:8,'tasks',t.title);
+  }
+ }
+ if(roomRequestsError)out+=`<p role="status">${tx(3)}: ${tx(19)}</p>`;
+ else{
+  const rows=roomRequests.filter(r=>r.booking_unit==='piece'),outstanding=rows.reduce((sum,r)=>sum+Math.max(0,(r.issued||0)-(r.return_confirmed||0)),0);
+  out+=`<p>${tx(3)}: ${outstanding}</p>`;
+  for(const r of rows){
+   const owner=r.resource_owner_id===user.id,receiver=r.requester_id===user.id;if(!owner&&!receiver)continue;
+   const title=resources.find(x=>x.id===r.resource_id)?.title||r.resource_id||'';
+   if(r.owner_disputed||r.requester_disputed||r.correction)add(14,'resources',title);
+   else if(receiver&&(r.issued||0)>(r.received||0))add(11,'resources',title);
+   else if(receiver&&(r.received||0)>(r.return_claimed||0))add(12,'resources',title);
+   else if(owner&&(r.return_claimed||0)>(r.return_confirmed||0))add(13,'resources',title);
+  }
+ }
+ if(!fresh(meeting)||meeting.current!==true||meeting.outcome?.error)out+=`<p role="status">${tx(19)}</p>`;
+ else if(!meeting.terms)out+=`<p>${tx(20)}</p>`;
+ else if(meeting.outcome){
+  const o=meeting.outcome;
+  out+=`<p>${esc(globalThis.FolkoopMeetings.outcomeText(({unreported:5,self_reported:6,participant_confirmed:7,unclear:8})[o.state]??8))}</p>`;
+  if(o.ended){
+   add(o.can_report?15:16,'meeting');
+   out+=`<p>${tx(18)}</p>`;
+   if(o.next_id)out+=`<button type="button" class="button secondary" data-coop="open" data-id="${esc(o.next_id)}">${tx(22)}</button>`;
+   else if(active&&coop.owner_id===user.id)add(17,'meeting');
+  }
+ }else out+=`<p role="status">${tx(19)}</p>`;
+ if(!active)out+=`<p>${tx(23)}</p>`;
+ return out+`<h4>${tx(5)} · ${esc(name(user.id))}</h4>${actions.length?'<ul>'+actions.join('')+'</ul>':`<p>${tx(21)}</p>`}</section>`;
+}
+
 const documentCopy={
  ru:'Документы проекта|Правила|Смета|Отчёт|Создать документ|Название|Текст|Связанное решение|Связанные задачи — до 20|Сохранить новую версию|Редактировать|История версий|Без связи|Версия|Сохранение и связь не означают одобрение. Смета — текст, суммы автоматически не проверяются. Все версии видны участникам проекта.|Документов пока нет|Связанный объект недоступен|Автор редакции',
  en:'Project documents|Rules|Estimate|Report|Create document|Title|Text|Related decision|Related tasks — up to 20|Save new version|Edit|Version history|No link|Version|Saving and linking do not mean approval. Estimates are text; amounts are not checked automatically. All versions are visible to project members.|No documents yet|Linked object unavailable|Revision author',
@@ -317,5 +398,5 @@ function renderDocumentNotifications({rows,error}){
  }
  return html+'</section>';
 }
-globalThis.FolkoopDecisions=Object.freeze({render,lines,ruleText,renderOverview,renderDocuments,renderDocumentNotifications,renderDocumentSummary});
+globalThis.FolkoopDecisions=Object.freeze({render,renderPath,lines,ruleText,renderOverview,renderProgress,renderDocuments,renderDocumentNotifications,renderDocumentSummary});
 })();

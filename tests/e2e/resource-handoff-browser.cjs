@@ -1,0 +1,33 @@
+const {chromium}=require('playwright');const fs=require('node:fs');
+const BASE=process.env.BASE_URL||'http://127.0.0.1:4186/';
+(async()=>{const browser=await chromium.launch(),results=[];try{for(const width of [320,390,1366]){
+ const ctx=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block'}),errors=[],writes=[];
+ await ctx.route('**/*',r=>{if(!['GET','HEAD'].includes(r.request().method())){writes.push(r.request().method());return r.abort();}return r.request().url().startsWith(BASE)?r.continue():r.abort();});
+ const p=await ctx.newPage();p.on('pageerror',e=>errors.push(String(e)));await p.goto(BASE+'handoff-component-test');await p.setContent('<!doctype html><html lang="ru"><head><link rel="stylesheet" href="'+BASE+'folkoop.css"></head><body></body></html>');await p.addScriptTag({url:BASE+'folkoop-core.js'});await p.addScriptTag({url:BASE+'network-room-requests.js'});
+ await p.evaluate(()=>{
+  const resource={id:'r',kind:'resource',owner_id:'keeper',title:'Инструменты',status:'active'},project={id:'p',kind:'project',owner_id:'organizer',title:'Мастерская',status:'active'};
+  const row={id:'q',resource_id:'r',project_id:'p',resource_owner_id:'keeper',requester_id:'organizer',state:'agreed',revision:3,booking_policy_revision:1,booking_quantity:3,booking_unit:'piece',people:1,note:'Tools',starts_at:new Date(Date.now()-3600000).toISOString(),ends_at:new Date(Date.now()+3600000).toISOString(),handoff_revision:0,issued:0,received:0,return_claimed:0,return_confirmed:0};
+  window.handoffOptions={coop:resource,user:{id:'keeper'},owner:true,member:true,resources:[resource,project],rows:[row],drafts:{},histories:{},policies:{loadedAt:Date.now(),rows:[{resource_id:'r',owner_id:'keeper',revision:1,unit:'piece',capacity:3,available_from:'2026-01-01',available_until:'2030-02-01',conditions:'Temporary use'}]}};
+  window.renderHandoffTest=()=>document.body.innerHTML='<main>'+FolkoopRooms.renderBookings(handoffOptions)+'</main>';renderHandoffTest();
+ });
+ const issue=p.locator('.netHandoff[data-action="issue"]');await issue.locator('..').locator('summary').click();await issue.locator('[name="quantity"]').fill('2');await issue.locator('[name="note"]').fill('Два инструмента, чистые и исправные');
+ if(!await issue.evaluate(f=>f.checkValidity()))throw Error('Issue form invalid');if(await issue.locator('[name="booking_revision"]').inputValue()!=='3')throw Error('Lost booking basis');
+ if(await p.locator('.netHandoff[data-action="receive"]').count())throw Error('Owner may receive');
+ if(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Issue form overflow');
+ await p.evaluate(()=>{Object.assign(handoffOptions.rows[0],{issued:2,handoff_revision:1});handoffOptions.coop=handoffOptions.resources[1];handoffOptions.user={id:'organizer'};renderHandoffTest();});
+ if(await p.locator('button[value="cancel"],button[value="request"],button[value="offer"]').count())throw Error('Issued item may be freed by booking action');
+ const receive=p.locator('.netHandoff[data-action="receive"]');if(await receive.locator('[name="quantity"]').getAttribute('max')!=='2')throw Error('Wrong receipt maximum');
+ await p.evaluate(()=>{Object.assign(handoffOptions.rows[0],{received:1,return_claimed:1,handoff_revision:3,requester_disputed:true});handoffOptions.user={id:'keeper'};renderHandoffTest();});
+ if(await p.locator('.netHandoff[data-action="confirm_return"]').count())throw Error('Disputed return can be confirmed');
+ await p.evaluate(()=>{handoffOptions.rows[0].requester_disputed=false;renderHandoffTest();});
+ if(await p.locator('.netHandoff[data-action="confirm_return"] [name="quantity"]').getAttribute('max')!=='1')throw Error('Return confirm exceeds claim');
+ await p.evaluate(()=>{Object.assign(handoffOptions.rows[0],{correction:{issued:1,received:1,return_claimed:1,return_confirmed:1},correction_by:'keeper',handoff_revision:4,ends_at:new Date(Date.now()-1000).toISOString()});renderHandoffTest();});
+ if(await p.locator('.netHandoff[data-action="accept_correction"],.netHandoff[data-action="confirm_return"]').count())throw Error('Proposer accepts own correction or bypasses pending proposal');
+ if(!await p.getByText('Возврат просрочен: 2').count())throw Error('Missing overdue quantity');
+ await p.evaluate(()=>{handoffOptions.user={id:'organizer'};handoffOptions.drafts['handoff:q:accept_correction']={note:'Проверил и подтверждаю'};renderHandoffTest();});
+ const accept=p.locator('.netHandoff[data-action="accept_correction"]');if(await accept.locator('[name="note"]').inputValue()!=='Проверил и подтверждаю')throw Error('Draft lost');
+ await p.evaluate(()=>{handoffOptions.histories.q={revision:4,rows:[{revision:1,action:'issue',quantity:2,created_at:new Date().toISOString(),actor_id:'keeper',note:'<img src=x onerror=alert(1)>',snapshot:{issued:2}}]};handoffOptions.user={id:'observer'};handoffOptions.owner=false;renderHandoffTest();});
+ if(await p.locator('.netHandoff').count())throw Error('Observer has action forms');if(await p.locator('img').count())throw Error('Unescaped history note');
+ await p.evaluate(()=>{handoffOptions.policies.loadedAt=Date.now()-61000;renderHandoffTest();});if(await p.locator('form').count())throw Error('Stale data permits movement');
+ if(errors.length||writes.length)throw Error(JSON.stringify({errors,writes}));results.push({width,passed:true,errors,writes});await ctx.close();
+}}finally{await browser.close();}fs.writeFileSync('/tmp/fk-t07-handoff-browser.json',JSON.stringify(results,null,2));console.log(results);})().catch(e=>{console.error(e);process.exit(1)});

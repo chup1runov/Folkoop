@@ -77,7 +77,11 @@ async def main():
    await page.click('[data-story-prev]');await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')
    await page.locator('.story-dialog').screenshot(path=str(OUT/f'story-viewer-{width}-{theme}-{lang}.png'))
    box=await page.locator('.story-dialog').bounding_box();assert box['width']<=420 and box['x']>=0 and box['x']+box['width']<=width+1
-   await page.click('.story-more summary');page.once('dialog',lambda d:d.accept());await page.click('[data-story-report]');assert state['report']==1
+   await page.click('.story-more summary');page.once('dialog',lambda d:d.accept())
+   # Clicking returns before the asynchronous report request has necessarily completed.
+   async with page.expect_response(lambda r:r.url.endswith('/fk_report_story')):
+    await page.click('[data-story-report]')
+   assert state['report']==1
    await page.click('[data-story-link]');await expect(page).to_have_url(__import__('re').compile(r'#/projects$'));await expect(page.locator('.coop-summary')).to_contain_text('Synthetic story project')
    await page.goto(BASE+'#/me');await expect(page.locator('.story-circle')).to_have_count(1)
    await page.click('.story-circle');await expect(page.locator('.story-paper')).to_be_visible();await page.click('[data-story-reply]')

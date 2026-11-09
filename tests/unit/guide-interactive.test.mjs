@@ -26,7 +26,7 @@ test('story adapter selects only linked fixture objects and ignores non-Mura ses
  const end=network.indexOf("window.addEventListener('folkoop:guest-demo'",start);
  let handler;
  const scope={guestDemo:true,selected:'old',selectedCoop:null,selectedChat:null,data:null,
-  window:{addEventListener:(_,fn)=>{handler=fn;}},render:()=>{},
+  window:{addEventListener:(name,fn)=>{if(name==='folkoop:mura-story')handler=fn;}},render:()=>{},
   demoSnapshot:()=>({cooperations:[{id:'00000000-0000-4000-8000-000000000301'}],coopChats:[{cooperation_id:'00000000-0000-4000-8000-000000000301',conversation_id:'linked-chat'}]})};
  runInNewContext(network.slice(start,end),scope);
  handler({detail:{scene:'chat',id:'untrusted'}});

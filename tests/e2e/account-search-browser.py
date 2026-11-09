@@ -47,7 +47,8 @@ async def main():
    await expect(page.locator('#globalSearchButton')).to_be_focused()
    await search('дрель')
    await expect(page.locator('#accountSearchResults')).to_contain_text('Одолжить дрель')
-   await page.click('#accountSearchResults button')
+   # The workshop adds another drill result; select the intended local draft.
+   await page.locator('#accountSearchResults button').filter(has_text='Одолжить дрель').click()
    await expect(page).to_have_url(BASE+'#/me')
    await expect(page.locator('.account-search-match')).to_contain_text('Одолжить дрель')
    await search('VISITOR_PRIVATE_SENTINEL')

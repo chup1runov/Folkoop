@@ -129,8 +129,10 @@ async function inspectPendingEmailLink(){
  catch(e){if(emailLink!==pending)return;if(e.code==='AUTH_REQUIRED'){expireEmailLink();throw Object.assign(new Error('AUTH_LINK_EXPIRED'),{code:'AUTH_LINK_EXPIRED'});}throw Object.assign(e,{code:e.code==='NETWORK'?'AUTH_CONNECTION':'AUTH_SERVER'});}
 }
 
+let exchangeDraft={selected:[],fields:{}},exchangePacket=null,exchangeReadback=null,exchangeError='',exchangeInput='',exchangeLoadedAt=null,exchangeOwner=null;
+function exchangeForm(f){const fd=new FormData(f),fields={};for(const [key,value] of fd){const [id,k]=key.split('.');if(['quantity','unit','from','until','area','conditions'].includes(k))(fields[id]||={})[k]=String(value);}return {selected:fd.getAll('selected').map(String),fields};}
 let exportReport=null;
-api?.onChange(()=>{exportReport=null;});
+api?.onChange(()=>{exportReport=null;exchangeDraft={selected:[],fields:{}};exchangePacket=null;exchangeReadback=null;exchangeError='';exchangeInput='';exchangeOwner=null;exchangeLoadedAt=null;});
 
 let publicPageState=null,publicPageDraft=null;
 let selected=null,selectedChat=null,selectedCoop=null,data={profile:{},localDrafts:[],groups:[],memberships:[],posts:[],homePosts:[],directory:[],blocks:[],chats:[],chatMembers:[],chatInvites:[],chatProfiles:[],chatMessages:[],chatInbox:[],cooperations:[],coopMembers:[],coopChats:[],coopActivity:[],activityInbox:[],assignedTasks:[],myConfirmations:[],allProcesses:[],coopUpdates:[],projectTasks:[],commitments:[],purchaseOffers:[],purchaseChoice:[],purchaseProcess:[],purchaseConfirmations:[],economicFlows:[],economicFlowRoles:[]},notice='',busy=false,version=0,email='',otpCode='',pilotInvite='',policyAccepted=false,codeRequested=false,showLocalGuest=false,guestDemo=false,oauthPopup=null,profileDraft=null,groupDraft={},postDrafts={},chatDraft={title:'',members:[]},directTarget='',inviteTarget='',messageDrafts={},coopDraft={kind:'need',title:'',description:'',location:'',targetQuantity:'',unit:''},coopCreateOpen=false,coopEditDraft=null,coopUpdateDraft='',taskDraft={title:'',details:'',assignee:''},commitDraft={quantity:'',note:''},offerDraft=null,lifecycleDrafts={},economicFlowDraft={kind:'service',summary:''},economicFlowEditDrafts={},economicRoleDrafts={},economicSectionOpen=false;
@@ -555,6 +557,9 @@ function demoSnapshot(all=false){
   myConfirmations:[{cooperation_id:PURCHASE,user_id:DEMO_UID,quantity:2,decision:'pending',note:'',decided_at:null,collected_at:null,collected_note:'',updated_at:'2026-09-30T08:10:00Z'}],
   allProcesses:[{cooperation_id:PURCHASE,stage:'confirming',confirmation_deadline:demoPurchaseDeadline,external_order_reference:'',ordered_at:null,expected_delivery_at:null,delivery_note:'',delivered_at:null,pickup_place:'',pickup_start:null,pickup_end:null,result_note:'',finished_at:null,updated_at:'2026-09-30T08:10:00Z'}]
  };
+ const workshop=globalThis.FolkoopWorkshop.fixture(document.documentElement.lang);
+ cooperations.push(...workshop.cooperations);
+ coopMembers.push(...workshop.members);
  const chosen=all?null:selectedCoop;
  return {...base,
   posts:allPosts.filter(x=>all||!selected||x.community_id===selected),
@@ -880,6 +885,7 @@ function renderCooperation(u,r){
    </div>
   </section>`;
  }
+ if(guestDemo&&coop?.id===globalThis.FolkoopWorkshop.ids.project)return html+cbtn('back','back')+globalThis.FolkoopWorkshop.render({lang:document.documentElement.lang,escape:esc});
  if(coop){
   const membership=data.coopMembers.find(m=>m.cooperation_id===coop.id&&m.user_id===u.id);
   const member=!!membership,owner=coop.owner_id===u.id;
@@ -904,9 +910,17 @@ function renderCooperation(u,r){
   if(coop.kind==='purchase')html+=globalThis.FolkoopPurchaseJourney.render({coop,data,user:u,member,escape:esc,language:lang(),lifecycleText:lt,formatWhen,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo});
   if(myNextTask&&!(guestDemo&&coop.id===MEETING_PROJECT))html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderOverview({coop,decisions:data.decisions,meeting:data.meeting,tasks:data.projectTasks,members,name:id=>coopProfile(id)?.name||ct('noProfile'),loadedAt:data.loadedAt,online:navigator.onLine,taskBases:data.taskBases});
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderProgress({coop,user:u,tasks:data.projectTasks,taskBases:data.taskBases,roomRequests:data.roomRequests,roomRequestsError:data.roomRequestsError,resources:data.cooperations,meeting:data.meeting,loadedAt:data.loadedAt,online:navigator.onLine,name:id=>coopProfile(id)?.name||ct('noProfile')});
+  if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopBudget.renderOverview({coop,snapshot:data.projectBudget,name:id=>coopProfile(id)?.name||ct('noProfile')});
   html+=renderMeetingReadiness(coop,guestDemo);
-  if(coop.kind==='project'&&((!guestDemo&&member)||(guestDemo&&coop.id===MEETING_PROJECT)))html+=globalThis.FolkoopBudget.render({coop,user:u,owner,snapshot:data.projectBudget,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo,drafts:budgetDrafts[coop.id]||{}});
-  if(!guestDemo&&((coop.kind==='project'&&member)||(coop.kind==='resource'&&owner)))html+=globalThis.FolkoopRooms.render({coop,user:u,rows:data.roomRequests||[],error:data.roomRequestsError,resources:data.cooperations,drafts:roomDrafts,owner,member,name:id=>coopProfile(id)?.name||ct('noProfile')});
+  if(coop.kind==='project'&&((!guestDemo&&member)||(guestDemo&&coop.id===MEETING_PROJECT)))html+=globalThis.FolkoopBudget.render({coop,user:u,owner,snapshot:data.projectBudget,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo,drafts:budgetDrafts[coop.id]||{},documents:data.projectDocuments});
+  if(!guestDemo&&((coop.kind==='project'&&member)||(coop.kind==='resource'&&owner))){
+   const policies=data.bookingPolicies,configured=new Set((policies?.rows||[]).map(p=>p.resource_id));
+   const fresh=policies&&!policies.error&&!policies.stale&&Date.now()-policies.loadedAt<60000&&navigator.onLine!==false;
+   const opts={coop,user:u,rows:data.roomRequests||[],error:data.roomRequestsError,resources:data.cooperations,drafts:roomDrafts,owner,member,name:id=>coopProfile(id)?.name||ct('noProfile')};
+   html+=globalThis.FolkoopRooms.renderBookings({...opts,policies,histories:handoffHistories});
+   html+=globalThis.FolkoopRooms.render({...opts,rows:opts.rows.filter(r=>!r.booking_policy_revision&&!configured.has(r.resource_id)),resources:opts.resources.filter(r=>!configured.has(r.id)),owner:owner&&fresh});
+  }
   if(guestDemo&&coop.id===MEETING_PROJECT)html+=`<section class="card"><h3>${esc(globalThis.FolkoopRooms.text(0))}</h3><p>${esc(globalThis.FolkoopRooms.text(24))}</p><p class="meta">${esc(globalThis.FolkoopRooms.text(17))}</p></section>`;
   if(!guestDemo&&['need','project'].includes(coop.kind))html+=globalThis.FolkoopNeeds.render({coop,user:u,member,owner,snapshot:data.sharedNeed,draft:needDrafts[coop.id],name:id=>coopProfile(id)?.name||ct('noProfile')});
   if(guestDemo&&coop.id===MEETING_PROJECT)html+=`<section class="card"><h3>${esc(globalThis.FolkoopNeeds.text(0))} → ${esc(globalThis.FolkoopNeeds.text(11))}</h3><p>${esc(globalThis.FolkoopNeeds.text(12))}</p><p class="meta">${esc(globalThis.FolkoopNeeds.text(9))}</p></section>`;
@@ -918,7 +932,7 @@ function renderCooperation(u,r){
    const economicBody=economicFlowDomain.render({user:u,coop,owner,members,flows:data.economicFlows,flowRoles:data.economicFlowRoles,createDraft:economicFlowDraft,editDrafts:economicFlowEditDrafts,roleDrafts:economicRoleDrafts,readOnly:guestDemo});
    html+=coopDisclosure('economic-flow',economicFlowDomain.text('section'),data.economicFlows.length,economicBody,economicSectionOpen);
   }
-  if(member&&coop.kind==='project'&&(!guestDemo||coop.id===MEETING_PROJECT))html+=globalThis.FolkoopDecisions.render({snapshot:data.decisions,user:u,owner,organizer:coop.owner_id,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),tasks:data.projectTasks,drafts:decisionDrafts,project:coop.id,demo:guestDemo,active:['open','active'].includes(coop.status)});
+  if(member&&coop.kind==='project'&&(!guestDemo||coop.id===MEETING_PROJECT))html+=globalThis.FolkoopDecisions.render({snapshot:data.decisions,user:u,owner,organizer:coop.owner_id,name:id=>coopProfile(id)?.name||globalThis.FolkoopMeetings.text(28),tasks:data.projectTasks,taskBases:data.taskBases,drafts:decisionDrafts,project:coop.id,demo:guestDemo,active:['open','active'].includes(coop.status)});
   if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderDocuments({project:coop.id,snapshot:data.projectDocuments,decisions:data.decisions,tasks:data.projectTasks,user:u,owner,members,active:['open','active'].includes(coop.status),drafts:documentDrafts,histories:documentHistories,name:id=>coopProfile(id)?.name||ct('noProfile')});
   if(owner){
    const d=coopEditDraft||{title:coop.title,description:coop.description,location:coop.location_text,status:coop.status,targetQuantity:coop.target_quantity??'',unit:coop.unit||''};
@@ -1016,7 +1030,7 @@ function render(){
  }
  if(roomNotificationJump&&roomNotificationJump.target===selectedCoop&&!busy){
   const jump=roomNotificationJump;roomNotificationJump=null;
-  const input=[...host.querySelectorAll('.netRoomAction input[name="id"]')].find(x=>x.value===jump.request);
+  const input=[...host.querySelectorAll('.netRoomAction input[name="id"],.netBookingAction input[name="id"]')].find(x=>x.value===jump.request);
   const row=input?.closest('article');
   if(row){row.tabIndex=-1;row.focus({preventScroll:true});row.scrollIntoView({block:'center',behavior:'instant'});}
  }
@@ -1046,7 +1060,7 @@ function render(){
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
  else if(r==='me'){
-  html=profileDomain.render(u,{profileDraft,guestDemo})+(!guestDemo?profileDomain.renderExportReport(exportReport):'');
+  html=profileDomain.render(u,{profileDraft,guestDemo})+(!guestDemo?profileDomain.renderExportReport(exportReport)+globalThis.FolkoopExchange.render({rows:data.cooperations,user:u,draft:exchangeDraft,packet:exchangePacket,readback:exchangeReadback,error:exchangeError,input:exchangeInput}):'');
  }else if(r==='people'){
   html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
@@ -1109,7 +1123,7 @@ function render(){
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-discovery],[data-shared-step],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  const keep='[data-feedback],[data-workshop],[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-discovery],[data-shared-step],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
   // Stories own their local-only Mura actions; keep those controls usable.
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice)&&!b.closest('#accountStories'))b.hidden=true;});
@@ -1162,6 +1176,7 @@ let taskBasisDrafts={};
 let welcomeDrafts={};
 let taskHistories={};
 let needDrafts={};
+let handoffHistories={};
 let roomDrafts={};
 let roomNotificationJump=null;
 let documentNotificationJump=null;
@@ -1228,8 +1243,9 @@ async function load(){
  try{taskBasisNotifications=await api.taskBasisNotifications();taskBasisNotificationsLoadedAt=Date.now();}catch{taskBasisNotificationsError=true;}
  try{documentNotifications=await api.documentRevisionNotifications();}catch{documentNotificationsError=true;}
  try{meetingReminders=await api.meetingReminderInbox();}catch{meetingRemindersError=true;}
- let roomRequests=[],roomRequestsError=false;
+ let roomRequests=[],roomRequestsError=false,bookingPolicies=null;
  if((ownCoopMember&&selectedCooperation?.kind==='project')||(selectedCooperation?.kind==='resource'&&selectedCooperation.owner_id===u.id)){
+  try{bookingPolicies={rows:await api.bookingPolicies(),loadedAt:Date.now(),error:false};}catch{bookingPolicies={error:true};}
   try{roomRequests=await api.roomRequests(selectedCoop,selectedCooperation.kind==='resource');}catch{roomRequestsError=true;}
  }
  let sharedNeed=null;
@@ -1264,7 +1280,7 @@ async function load(){
   catch{meeting={error:true};}
  }
  if(v!==version)throw Object.assign(new Error('STALE'),{code:'STALE'});
- data={partialLoad:[...new Set([...sectionLoad.failed,...(api.takeCoverageWarnings?.()||[])])],chatHasMore:chatPage.hasMore,chatBefore:chatPage.before,profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,myTaskResults,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting,decisions,taskActions,taskActionsError,sharedNeed,roomRequests,roomRequestsError,roomNotifications,roomNotificationsError,meetingRoomAlerts,meetingRoomAlertsError};
+ data={partialLoad:[...new Set([...sectionLoad.failed,...(api.takeCoverageWarnings?.()||[])])],chatHasMore:chatPage.hasMore,chatBefore:chatPage.before,profile:profile[0]||{},groups,memberships,directory,blocks,posts,homePosts,chats,chatMembers,chatInvites,chatProfiles,chatMessages,chatInbox,cooperations,coopMembers,coopChats,coopActivity,activityInbox,assignedTasks,myConfirmations,allProcesses,myTaskResults,coopUpdates,projectTasks,commitments,purchaseOffers,purchaseChoice,purchaseProcess,purchaseConfirmations,economicFlows,economicFlowRoles,meeting,decisions,taskActions,taskActionsError,sharedNeed,roomRequests,roomRequestsError,bookingPolicies,roomNotifications,roomNotificationsError,meetingRoomAlerts,meetingRoomAlertsError};
  data.meetingActions=meetingActions;data.meetingActionsError=meetingActionsError;
  data.meetingReminders=meetingReminders;data.meetingRemindersError=meetingRemindersError;
  data.loadedAt=Date.now();liveRefreshError=false;
@@ -1293,6 +1309,8 @@ async function run(fn){
 }
 host.addEventListener('input',e=>{
  const f=e.target.form;if(!f)return;const v=Object.fromEntries(new FormData(f));
+ if(f.id==='netExchange'){exchangeDraft=exchangeForm(f);exchangePacket=null;exchangeError='';host.querySelector('[data-net="exchangeDownload"]')?.setAttribute('disabled','');}
+ if(f.id==='netExchangeRead'){exchangeInput=v.json||'';exchangeReadback=null;exchangeError='';f.parentElement.querySelector('.exchange-preview')?.remove();}
  if(f.classList.contains('netWelcome'))welcomeDrafts[v.project]={...v,enabled:v.enabled==='on'};
  if(f.classList.contains('netMeetingBudget'))meetingBudgetDrafts[selectedCoop+':'+v.version]=Object.fromEntries(Object.entries(v).filter(([key])=>key.startsWith('need_')).map(([key,value])=>[key.slice(5),value]));
  if(f.classList.contains('netBudget')){
@@ -1300,6 +1318,9 @@ host.addEventListener('input',e=>{
   (budgetDrafts[selectedCoop]||={})[key]=v;
  }
  if(f.classList.contains('netProjectDocument')){const key=selectedCoop+':'+(f.dataset.document||'new');documentDrafts[key]={...documentDrafts[key],...v,tasks:new FormData(f).getAll('tasks')};}
+ if(f.classList.contains('netHandoff'))roomDrafts['handoff:'+v.request+':'+f.dataset.action]={...v};
+ if(f.classList.contains('netBookingPolicy'))roomDrafts['booking-policy:'+v.resource]={...v};
+ if(f.classList.contains('netBookingAction')){const key=f.dataset.new?'booking-new:'+v.project+':'+v.resource:'booking:'+v.id;roomDrafts[key]={...roomDrafts[key],...v};}
  if(f.classList.contains('netRoomAction')){const key=f.dataset.new?'new:'+v.project:v.id;const old=roomDrafts[key];roomDrafts[key]={...old,...v};if(f.dataset.new&&old?.resource!==v.resource)delete roomDrafts[key].id;}
  if(f.id==='netNeedResponse')needDrafts[selectedCoop]={interested:v.interested==='on',can_help:v.can_help==='on',preferences:v.preferences||''};
  if(f.classList.contains('netTaskWork'))taskWorkDrafts[v.task]={note:v.note||''};
@@ -1337,6 +1358,12 @@ host.addEventListener('input',e=>{
 });
 host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequireAccount();return;}const f=e.target,values=Object.fromEntries(new FormData(f)),op=e.submitter?.value;
  run(async()=>{
+  if(f.id==='netExchange'){
+   exchangeDraft=exchangeForm(f);exchangePacket=null;exchangeError='';
+   try{exchangePacket=globalThis.FolkoopExchange.build({rows:data.cooperations,user:currentUser(),...exchangeDraft,loadedAt:data.loadedAt});exchangeLoadedAt=data.loadedAt;exchangeOwner=currentUser()?.id;}catch{exchangeError=Date.now()-data.loadedAt>=60000?'STALE':'INVALID';}return;
+  }
+  if(f.id==='netExchangeRead'){exchangeInput=values.json||'';exchangeReadback=null;exchangeError='';try{exchangeReadback=globalThis.FolkoopExchange.parse(exchangeInput);}catch{exchangeError='INVALID';}return;}
+
   if(f.classList.contains('netMeetingBudget')){
    const key=selectedCoop+':'+values.version;
    const choices=Object.fromEntries(Object.entries(values).filter(([name])=>name.startsWith('need_')).map(([name,value])=>[name.slice(5),value]));
@@ -1352,6 +1379,7 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
    if(['need','pledge','expense'].includes(action))v.amount=globalThis.FolkoopBudget.amount(v.amount);
    // Keep the request ID across uncertain network failures, including a page reload of data.
    // A changed form is a different request; the server rejects stale state transitions.
+   if(action==='terms'){const [document,revision]=String(v.document_choice||'').split(':');v.document=document;v.document_revision=revision;}
    const fingerprint=JSON.stringify(v),requestKey=project+':'+key;
    let request=budgetRequests[requestKey];
    if(request?.uncertain&&request.fingerprint!==fingerprint){
@@ -1472,6 +1500,21 @@ host.addEventListener('submit',e=>{e.preventDefault();if(guestDemo){guestRequire
   if(f.classList.contains('netRoomNotificationRead'))await api.readRoomNotifications(values.request,values.revision);
   if(f.classList.contains('netContributionNoticeRead')){await api.readContributionNotice(values.event);await load();notice=t('saved');return;}
   if(f.classList.contains('netMeetingBudgetNoticeRead')){await api.readMeetingBudgetNotice(values.project,values.version);await load();notice=t('saved');return;}
+  if(f.classList.contains('netHandoff')){
+   const key='handoff:'+values.request+':'+f.dataset.action;roomDrafts[key]={...values};
+   try{await api.resourceHandoffAction(values,f.dataset.action);}
+   catch(e){if(['HANDOFF_CONFLICT','HANDOFF_PENDING','HANDOFF_QUANTITY','ROOM_REVISION_CONFLICT','OWNER_CHANGED','BOOKING_CAPACITY_CONFLICT'].includes(e.code)){await load();notice=globalThis.FolkoopRooms.handoffText(22);return;}throw e;}
+   delete roomDrafts[key];delete handoffHistories[values.request];
+  }
+  if(f.classList.contains('netBookingPolicy')||f.classList.contains('netBookingAction')){
+   const policy=f.classList.contains('netBookingPolicy');
+   const key=policy?'booking-policy:'+values.resource:f.dataset.new?'booking-new:'+values.project+':'+values.resource:'booking:'+values.id;
+   const d=roomDrafts[key]={...roomDrafts[key],...values};
+   if(!policy&&f.dataset.new)d.id=d.id||crypto.randomUUID();
+   try{if(policy)await api.saveBookingPolicy(d);else await api.resourceUseAction(d,op);}
+   catch(e){if(['HANDOFF_PENDING','BOOKING_POLICY_CONFLICT','BOOKING_CAPACITY_CONFLICT','ROOM_REVISION_CONFLICT','OWNER_CHANGED'].includes(e.code)){await load();notice=globalThis.FolkoopRooms.bookingText(15);return;}throw e;}
+   delete roomDrafts[key];
+  }
   if(f.classList.contains('netRoomAction')){
    const key=f.dataset.new?'new:'+values.project:values.id;
    const d=roomDrafts[key]={...roomDrafts[key],...values};
@@ -1573,6 +1616,7 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='removeRole'){if(!confirm(t('confirm')))return;await api.removeEconomicFlowRole(flow,eb.dataset.user,eb.dataset.role);}
   await load();notice='';
  });return;}const cb=e.target.closest('[data-coop]');if(cb){const a=cb.dataset.coop,id=cb.dataset.id;const guestAllowed=new Set(['back','open','openLinkedChat','openNotify']);if(guestDemo&&!guestAllowed.has(a)){guestRequireAccount();return;}run(async()=>{
+  if(a==='handoffHistory'){const r=data.roomRequests?.find(r=>r.id===id);if(!r)return;const token=version,uid=currentUser()?.id;try{const rows=await api.resourceHandoffHistory(id);if(token!==version||uid!==currentUser()?.id)return;handoffHistories[id]={rows,revision:r.handoff_revision};}catch{if(token===version&&uid===currentUser()?.id)handoffHistories[id]={error:true};}return;}
   if(a==='back'){selectedCoop=null;coopEditDraft=null;coopUpdateDraft='';taskDraft={title:'',details:'',assignee:''};commitDraft={quantity:'',note:''};offerDraft=null;lifecycleDrafts={};resetEconomicFlowState();}
   if(a==='open'){if(selectedCoop!==id)resetEconomicFlowState();selectedCoop=id;economicSectionOpen=false;}
   if(a==='meetingRefresh'&&data.meeting?.error)meetingDraft=null;
@@ -1640,6 +1684,11 @@ host.addEventListener('click',e=>{const db=e.target.closest('[data-demo]');if(db
   if(a==='block')await api.block(id);if(a==='unblock')await api.block(id,false);
   if(a==='ban'){if(!confirm(t('ban')+'?'))return;await api.ban(selected,id);}
   if(a==='report'){const reason=prompt(t('reason'));if(reason===null)return;await api.report(id,reason);notice=t('reported');return;}
+  if(a==='exchangeDownload'){
+   if(!exchangePacket||exchangeOwner!==currentUser()?.id||exchangeLoadedAt!==data.loadedAt||Date.now()<exchangeLoadedAt||Date.now()-exchangeLoadedAt>=60000){exchangePacket=null;exchangeError='STALE';return;}
+   globalThis.FolkoopExchange.validate(exchangePacket);
+   const url=URL.createObjectURL(new Blob([JSON.stringify(exchangePacket,null,2)],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='folkoop-selected-objects-v1.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;
+  }
   if(a==='export'){
    exportReport=null;
    const exportUser=api.user()?.id,exportVersion=version,result=await api.exportOwn();
@@ -1691,7 +1740,7 @@ host.addEventListener('click',e=>{
 host.addEventListener('click',e=>{
  const button=e.target.closest?.('[data-project-next]');
  if(!button||guestDemo||busy)return;
- const selectors={tasks:'[data-coop-section="tasks"]',meeting:'.meeting-confirmations',decisions:'.project-decisions',budget:'.project-budget',meetingBudget:'.meeting-budget'};
+ const selectors={resources:'.resource-bookings',tasks:'[data-coop-section="tasks"]',meeting:'.meeting-confirmations',decisions:'.project-decisions',budget:'.project-budget',meetingBudget:'.meeting-budget'};
  const selector=selectors[button.dataset.projectNext];if(!selector)return;
  const target=host.querySelector(selector);if(!target)return;
  e.preventDefault();
@@ -1902,6 +1951,7 @@ window.addEventListener('folkoop:mura-story',e=>{
  data=demoSnapshot();
  render();
 });
+window.addEventListener('folkoop:workshop-open',()=>{if(!guestDemo)return;selectedCoop=globalThis.FolkoopWorkshop.ids.project;navigateNetwork('#/projects');load().then(()=>render());});
 window.addEventListener('folkoop:guest-demo',e=>{
  const detail=e.detail||{},temporary=detail.temporary===true;
  muraProfileStory=null;
@@ -1919,10 +1969,11 @@ window.addEventListener('folkoop:guest-demo',e=>{
   else if(!guestDemo&&sessionStorage.getItem('folkoop-entry-mode-v1')==='guest')sessionStorage.removeItem('folkoop-entry-mode-v1');
  }catch{}
  version++;selected=null;selectedChat=null;selectedCoop=null;notice='';
- if(guestDemo){showLocalGuest=false;const visitVersion=version;const target=detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{if(!guestDemo||version!==visitVersion)return;
+ if(guestDemo){showLocalGuest=false;const visitVersion=version;const target=detail.workshop&&globalThis.FolkoopWorkshop.isPaused()?'#/home':detail.target==='tour'?'#/me':(['center','together','projects'].includes(detail.target)?'#/'+detail.target:'#/home');load().then(()=>{if(!guestDemo||version!==visitVersion)return;
   // The tour restores its own route. An intermediate hashchange to /me can
   // arrive after that restoration and clear the selected story/card.
   if(detail.target!=='tour')navigateNetwork(target);
+  if(detail.workshop&&!globalThis.FolkoopWorkshop.isPaused())selectedCoop=globalThis.FolkoopWorkshop.ids.project;
   if(target==='#/together'&&['need','offer'].includes(detail.focusKind))selectedCoop=data.cooperations.find(x=>x.kind===detail.focusKind)?.id||null;render();if(detail.target==='tour')window.dispatchEvent(new CustomEvent('folkoop:mura-tour-ready'));}).catch(()=>render());}else if(detail.target==='account')run(async()=>{await api?.restore?.();if(currentUser())await load();});else render();
 });
 api?.onChange(()=>{globalThis.FolkoopStories.reset();documentDrafts={};documentHistories={};documentNotificationJump=null;taskBasisDrafts={};welcomeDrafts={};forYouWish='browse';forYouMode='discover';forYouSelected=null;forYouDrafts={};forYouSamples={};forYouPending={};forYouFocus=null;});
@@ -1944,10 +1995,10 @@ setInterval(refreshAccount,60000);
 window.addEventListener('focus',refreshAccount);
 window.addEventListener('online',refreshAccount);
 document.addEventListener('visibilitychange',refreshAccount);
-window.addEventListener('offline',()=>{if(!guestDemo&&data.meeting){data.meeting.stale=true;render();}});
-api?.onChange(()=>{meetingDraft=null;meetingOutcomeDraft=null;meetingRepeatDraft=null;decisionDrafts={};taskWorkDrafts={};taskHistories={};taskNotificationJump=null;needDrafts={};roomDrafts={};roomNotificationJump=null;});
+window.addEventListener('offline',()=>{if(!guestDemo&&data.bookingPolicies){data.bookingPolicies.stale=true;render();}if(!guestDemo&&data.meeting){data.meeting.stale=true;render();}});
+api?.onChange(()=>{meetingDraft=null;meetingOutcomeDraft=null;meetingRepeatDraft=null;decisionDrafts={};taskWorkDrafts={};taskHistories={};taskNotificationJump=null;needDrafts={};roomDrafts={};handoffHistories={};roomNotificationJump=null;});
 // Expire the visible snapshot without writing or manufacturing a live status.
-setInterval(()=>{if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
+setInterval(()=>{if(!guestDemo&&data.bookingPolicies&&!data.bookingPolicies.error&&!data.bookingPolicies.stale&&Date.now()-data.bookingPolicies.loadedAt>=60000){data.bookingPolicies.stale=true;if(!busy)render();}if(!guestDemo&&data.projectBudget&&!data.projectBudget.error&&!data.projectBudget.stale&&Date.now()-data.projectBudget.loadedAt>=60000){data.projectBudget.stale=true;if(!busy)render();}if(!guestDemo&&data.meeting&&!data.meeting.error&&!data.meeting.stale&&Date.now()-data.meeting.loadedAt>=60000){data.meeting.stale=true;if(!busy)render();}},5000);
 new MutationObserver(()=>{if(guestDemo)data=demoSnapshot();render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-cancel]')){clearEmailLink();pilotInvite='';policyAccepted=false;notice='';render();}});
 host.addEventListener('click',e=>{if(e.target.closest('[data-email-link-retry]'))run(inspectPendingEmailLink);});

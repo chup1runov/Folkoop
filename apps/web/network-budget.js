@@ -29,7 +29,7 @@ function amount(value){
 }
 const fmt=(n,kind)=>`${new Intl.NumberFormat(document.documentElement.lang||'en',{maximumFractionDigits:2}).format(n/100)} ${kind==='money'?'SEK':text(kind==='items'?41:40)}`;
 function totals(need,rows){
- const live=rows.filter(c=>c.need_id===need.id&&c.status!=='withdrawn');
+ const live=rows.filter(c=>c.need_id===need.id&&c.status!=='withdrawn'&&!(c.status==='promised'&&c.terms_current===false));
  const sum=status=>live.filter(c=>!status||c.status===status).reduce((a,c)=>a+Number(c.amount),0);
  const promised=sum(),received=sum('received');
  return {required:Number(need.amount),promised,submitted:sum('submitted'),received,uncovered:Math.max(0,need.amount-promised),remaining:Math.max(0,need.amount-received),excessPromised:Math.max(0,promised-need.amount),excessReceived:Math.max(0,received-need.amount)};
@@ -38,7 +38,7 @@ const field=(label,name,value='',extra='')=>`<label>${esc(text(label))}<input na
 function form(action,target,body='',values={}){
  return `<form class="netBudget" data-action="${action}" data-target="${esc(target)}">${Object.entries(values).map(([k,v])=>`<input type="hidden" name="${k}" value="${esc(v)}">`).join('')}${body}<button type="submit" class="button">${esc(text(actionIndex[action]))}</button></form>`;
 }
-function content({coop,user,owner,snapshot:s,name,demo=false,drafts={}}){
+function content({coop,user,owner,snapshot:s,name,demo=false,drafts={},documents}){
  const active=!demo&&['open','active'].includes(coop.status),needs=s.needs,rows=s.contributions;
  let html=`<p class="meta">${esc(text(28))}</p><p class="meta">${esc(text(43))}</p>`;
  const money=needs.filter(n=>!n.cancelled&&n.kind==='money');
@@ -53,12 +53,14 @@ function content({coop,user,owner,snapshot:s,name,demo=false,drafts={}}){
   html+=`<article class="budget-need"><h4>${esc(n.title)} <small>${esc(text(kindIndex[n.kind]))}</small></h4>`;
   if(n.cancelled)html+=`<p>${esc(text(23))}</p>`;
   else html+=`<dl class="budget-metrics">${[[1,t.required],[2,t.promised],[3,t.submitted],[4,t.received],[5,t.uncovered],[6,t.remaining],...(t.excessPromised?[[44,t.excessPromised]]:[]),...(t.excessReceived?[[45,t.excessReceived]]:[])].map(([i,v])=>`<div><dt>${esc(text(i))}</dt><dd>${esc(fmt(v,n.kind))}</dd></div>`).join('')}</dl>`;
+  html+=renderNeedTerms({need:n,snapshot:s,user,owner,active,documents,drafts});
   for(const c of rows.filter(x=>x.need_id===n.id)){
    const own=c.contributor_id===user.id,receiver=!own&&(owner||c.contributor_id===coop.owner_id);
    const vals={contribution:c.id,revision:c.revision};
    html+=`<div class="budget-contribution" data-contribution-row="${esc(c.id)}"><bdi>${esc(name(c.contributor_id))}</bdi> · ${esc(fmt(Number(c.amount),n.kind))}<p>${esc(text(statusIndex[c.status]))}${c.received_at?` · <bdi>${esc(name(c.received_by))}</bdi> · ${esc(new Date(c.received_at).toLocaleString())}`:''}</p>`;
+   html+=renderContributionTerms({contribution:c,need:n,snapshot:s,user,active:active&&!n.cancelled});
    if(active&&!n.cancelled){
-    if(own&&c.status==='promised')html+=form('submit',c.id,'',vals);
+    if(own&&c.status==='promised'&&c.terms_current!==false)html+=form('submit',c.id,'',vals);
     if(own&&['promised','submitted'].includes(c.status))html+=form('withdraw',c.id,'',vals);
     if(receiver&&c.status==='submitted')html+=form('confirm',c.id,'',vals)+form('return',c.id,field(25,'note',drafts['return:'+c.id]?.note,'required minlength="2" maxlength="500"'),vals);
     if(receiver&&c.status==='received')html+=`<details><summary>${esc(text(22))}</summary>${form('reopen',c.id,field(25,'note',drafts['reopen:'+c.id]?.note,'required minlength="2" maxlength="500"'),vals)}</details>`;
@@ -66,7 +68,8 @@ function content({coop,user,owner,snapshot:s,name,demo=false,drafts={}}){
    html+='</div>';
   }
   if(active&&!n.cancelled){
-   html+=form('pledge',n.id,field(15,'amount',d.amount,`required inputmode="decimal" placeholder="${n.kind==='money'?'50':'1'}"`),{need:n.id});
+   const linked=latestTerms(s,n);
+   if(!linked||personalTermsReady(s,linked,user))html+=form('pledge',n.id,field(15,'amount',d.amount,`required inputmode="decimal" placeholder="${n.kind==='money'?'50':'1'}"`)+(linked?`<label lang="${termsLang()}" dir="${['ar','fa'].includes(termsLang())?'rtl':'ltr'}"><input type="checkbox" required>${esc(termsText(14))}</label>`:''),{need:n.id,...(linked?{terms_revision:linked.revision}:{})});
    if(owner){
     if(n.kind==='money')html+=`<details><summary>${esc(text(37))}</summary>${form('expense',n.id,field(15,'amount',drafts['expense:'+n.id]?.amount,'required inputmode="decimal"')+field(25,'note',drafts['expense:'+n.id]?.note,'required minlength="2" maxlength="500"'),{need:n.id})}</details>`;
     if(!rows.some(c=>c.need_id===n.id&&c.status!=='withdrawn')&&!s.expenses.some(x=>x.need_id===n.id&&!x.voided))html+=form('cancel_need',n.id,'',{need:n.id});
@@ -82,7 +85,7 @@ function content({coop,user,owner,snapshot:s,name,demo=false,drafts={}}){
   const d=drafts['need:']||{};
   html+=`<details class="budget-create"><summary>${esc(text(13))}</summary>${form('need','',field(14,'title',d.title,'required minlength="2" maxlength="160"')+`<label>${esc(text(15))}<select name="kind">${Object.keys(kindIndex).map(k=>`<option value="${k}"${(d.kind||'money')===k?' selected':''}>${esc(text(kindIndex[k]))}</option>`).join('')}</select></label>`+field(15,'amount',d.amount,'required inputmode="decimal"'))}</details>`;
  }
- html+=`<details><summary>${esc(text(35))} · ${s.events.length}</summary><ol>${s.events.map(e=>{const c=rows.find(c=>c.id===e.payload.contribution),x=s.expenses.find(x=>x.id===e.payload.expense);const n=needs.find(n=>n.id===(e.payload.need||c?.need_id||x?.need_id||(e.action==='need'?e.id:null)));return `<li>${esc(new Date(e.created_at).toLocaleString())} · <bdi>${esc(name(e.actor_id))}</bdi> · ${esc(text(actionIndex[e.action])||e.action)} · ${esc(n?.title||'')}${e.payload.amount&&n?` · ${esc(fmt(Number(e.payload.amount),n.kind))}`:''}${e.payload.note?` — ${esc(e.payload.note)}`:''}</li>`;}).join('')}</ol></details>`;
+ html+=`<details><summary>${esc(text(35))} · ${s.events.length}</summary><ol>${s.events.map(e=>{const c=rows.find(c=>c.id===e.payload.contribution),x=s.expenses.find(x=>x.id===e.payload.expense);const n=needs.find(n=>n.id===(e.payload.need||c?.need_id||x?.need_id||(e.action==='need'?e.id:null)));return `<li>${esc(new Date(e.created_at).toLocaleString())} · <bdi>${esc(name(e.actor_id))}</bdi> · ${esc(['terms','accept_terms'].includes(e.action)?termsText(e.action==='terms'?5:6):(text(actionIndex[e.action])||e.action))} · ${esc(n?.title||'')}${e.payload.amount&&n?` · ${esc(fmt(Number(e.payload.amount),n.kind))}`:''}${e.payload.note?` — ${esc(e.payload.note)}`:''}</li>`;}).join('')}</ol></details>`;
  return html;
 }
 function example(){
@@ -94,10 +97,115 @@ function example(){
  const samplePolicy={project_title:text(29),author_id:'b',before_version:1,version:2,current_version:2,created_at:'2026-10-26T10:00:00Z',before_configured:true,before_items:[{need:'tea',title:text(32),kind:'money',amount:15000,mode:'promise'}],after_items:[{need:'tea',title:text(32),kind:'money',amount:15000,mode:'receipt'}],is_current:true,can_respond:true,roles:[{role:'attendee',confirmed:null}]};
  return `<details class="budget-example"><summary>${esc(text(29))}</summary>${content({coop:{status:'active'},user:{id:null},snapshot:{needs,contributions,expenses:[{need_id:'tea',amount:3000,note:text(32),recorded_by:'b'}],events:[]},demo:true,name})}${renderMeeting({snapshot:{terms:{version:1},ready:false,budget:{configured:true,ready:false,rows:exampleRows}},fresh:true,current:true,demo:true,name})}${renderInbox({snapshot:{rows:[sampleNotice],total:1,unread:1},name,demo:true})}${renderPolicyInbox({snapshot:{rows:[samplePolicy],total:1,unread:1},name,demo:true})}</details>`;
 }
+// Read-only projection of existing contribution records, never a second ledger.
+const overviewCopy={
+ ru:'Состояние вкладов|Организатор|Следующее действие по вкладам|Проверить получение|Найти недостающие обещания|Сообщить о выполнении обещания|Получение подтверждено по всем потребностям|Другой участник|Обещано всего включает переданное и подтверждённое: эти колонки не складываются. Подтверждения участников не доказывают внешний результат проекта.',
+ en:'Contribution overview|Organiser|Next contribution action|Check receipt|Find missing pledges|Report fulfilment of the pledge|Receipt confirmed for all needs|Another participant|Total promised includes reported and confirmed contributions: do not add these columns. Participant confirmations do not prove the external project outcome.',
+ sv:'Översikt över bidrag|Organisatör|Nästa steg för bidrag|Kontrollera mottagandet|Hitta återstående löften|Rapportera utfört löfte|Mottagandet bekräftat för alla behov|En annan deltagare|Totalt utlovat omfattar rapporterade och bekräftade bidrag: summera inte kolumnerna. Deltagarnas bekräftelser bevisar inte projektets externa resultat.',
+ uk:'Стан внесків|Організатор|Наступна дія щодо внесків|Перевірити отримання|Знайти відсутні обіцянки|Повідомити про виконання обіцянки|Отримання підтверджено для всіх потреб|Інший учасник|Загальна обіцянка включає передане й підтверджене: стовпці не додаються. Підтвердження учасників не доводять зовнішній результат проєкту.',
+ fi:'Panosten yhteenveto|Järjestäjä|Seuraava panoksiin liittyvä toimi|Tarkista vastaanotto|Etsi puuttuvat lupaukset|Ilmoita lupauksen toteutumisesta|Kaikkien tarpeiden vastaanotto vahvistettu|Toinen osallistuja|Luvattu yhteensä sisältää ilmoitetut ja vahvistetut panokset: älä laske sarakkeita yhteen. Osallistujien vahvistukset eivät todista hankkeen ulkoista tulosta.',
+ bs:'Pregled doprinosa|Organizator|Sljedeći korak za doprinose|Provjeriti prijem|Pronaći nedostajuća obećanja|Prijaviti ispunjenje obećanja|Prijem potvrđen za sve potrebe|Drugi učesnik|Ukupno obećano uključuje prijavljeno i potvrđeno: kolone se ne sabiraju. Potvrde učesnika ne dokazuju vanjski rezultat projekta.',
+ es:'Resumen de aportaciones|Organizador|Siguiente acción de aportaciones|Comprobar recepción|Buscar compromisos pendientes|Informar del cumplimiento|Recepción confirmada para todas las necesidades|Otro participante|El total prometido incluye lo declarado y confirmado: no se suman las columnas. Las confirmaciones no prueban el resultado externo del proyecto.',
+ ar:'ملخص المساهمات|المنظم|الخطوة التالية للمساهمات|التحقق من الاستلام|البحث عن التعهدات الناقصة|الإبلاغ عن تنفيذ التعهد|تأكد الاستلام لجميع الاحتياجات|مشارك آخر|إجمالي التعهدات يشمل المبلغ عنه والمؤكد: لا تجمع الأعمدة. تأكيدات المشاركين لا تثبت النتيجة الخارجية للمشروع.',
+ fa:'خلاصه مشارکت‌ها|برگزارکننده|اقدام بعدی مشارکت‌ها|بررسی دریافت|یافتن تعهدهای باقی‌مانده|اعلام انجام تعهد|دریافت برای همه نیازها تأیید شد|مشارکت‌کننده دیگر|کل تعهدها شامل موارد اعلام‌شده و تأییدشده است: ستون‌ها را جمع نکنید. تأیید مشارکت‌کنندگان نتیجه بیرونی پروژه را اثبات نمی‌کند.',
+ so:'Soo koobidda wax ku biirinta|Qabanqaabiye|Tallaabada xigta ee wax ku biirinta|Hubi helitaanka|Raadi ballanqaadyada maqan|Sheeg fulinta ballanqaadka|Helitaanka dhammaan baahiyaha waa la xaqiijiyey|Ka qaybqaate kale|Wadarta ballanqaadka waxaa ku jira la sheegay iyo la xaqiijiyey: ha isku darin tiirarka. Xaqiijinta ka qaybqaatayaasha ma caddayso natiijada dibadda ee mashruuca.',
+ ku:'Kurteya beşdariyan|Organîzator|Gava din a beşdariyan|Wergirtinê kontrol bike|Sozên kêm bibîne|Pêkanîna sozê ragihîne|Wergirtin ji bo hemû hewcedariyan pejirandî ye|Beşdarekî din|Tevahiya sozdayî radestkirina ragihandî û pejirandî jî dihewîne: stûnan li hev zêde neke. Pejirandinên beşdaran encama derveyî ya projeyê îspat nakin.'
+};
+function overviewModel(snapshot,now=Date.now(),online=globalThis.navigator?.onLine!==false){
+ const s=snapshot;
+ if(!online||!s||s.error||!Number.isFinite(s.loadedAt)||now-s.loadedAt<0||now-s.loadedAt>=60000||!Array.isArray(s.needs)||!Array.isArray(s.contributions))return null;
+ if(s.terms_version===1&&(!['terms','documents','consents'].every(k=>Array.isArray(s[k]))||s.contributions.some(c=>typeof c.terms_current!=='boolean')))return null;
+ const needs=s.needs,rows=s.contributions,validAmount=n=>Number.isSafeInteger(Number(n))&&Number(n)>0&&Number(n)<=100000000;
+ if(new Set(needs.map(n=>n.id)).size!==needs.length||new Set(rows.map(c=>c.id)).size!==rows.length||needs.some(n=>!n.id||!Object.hasOwn(kindIndex,n.kind)||!validAmount(n.amount))||rows.some(c=>!c.id||!needs.some(n=>n.id===c.need_id)||!Object.hasOwn(statusIndex,c.status)||!validAmount(c.amount)))return null;
+ return needs.filter(n=>!n.cancelled).map(need=>({need,...totals(need,rows),pending:rows.filter(c=>c.need_id===need.id&&c.status==='submitted'),pledges:rows.filter(c=>c.need_id===need.id&&c.status==='promised')}));
+}
+function renderOverview({coop,snapshot,name,now=Date.now(),online=globalThis.navigator?.onLine!==false}){
+ const tx=i=>esc((overviewCopy[document.documentElement.lang]||overviewCopy.en).split('|')[i]);
+ let html=`<section class="card contribution-overview"><h3>${tx(0)}</h3><p>${esc(coop.description||'')}</p><p>${tx(1)}: <bdi>${esc(name(coop.owner_id))}</bdi></p>`;
+ const model=overviewModel(snapshot,now,online);
+ if(!model)return html+`<p role="status">${esc(text(27))}</p><button type="button" class="button" data-net="refresh">${esc(text(27))}</button></section>`;
+ html+=`<p class="meta">${tx(8)}</p>`;
+ if(snapshot.contributions.some(c=>c.status==='promised'&&c.terms_current===false))html+=`<p lang="${termsLang()}" dir="${['ar','fa'].includes(termsLang())?'rtl':'ltr'}">${esc(termsText(19))}</p>`;
+ for(const row of model){
+  const n=row.need;
+  html+=`<article class="budget-need"><h4>${esc(n.title)} · ${esc(text(kindIndex[n.kind]))}</h4><dl class="budget-metrics">${[[1,row.required],[2,row.promised],[3,row.submitted],[4,row.received],[5,row.uncovered],[6,row.remaining]].map(([label,value])=>`<div><dt>${esc(text(label))}</dt><dd>${esc(fmt(value,n.kind))}</dd></div>`).join('')}</dl></article>`;
+ }
+ const renew=snapshot.contributions.find(c=>c.status==='promised'&&c.terms_current===false&&model.some(r=>r.need.id===c.need_id));
+ const pending=model.find(r=>r.pending.length),gap=model.find(r=>r.uncovered>0),pledge=model.find(r=>r.pledges.length);
+ let next;
+ if(pending){const c=pending.pending[0];next=`${tx(3)}: ${esc(pending.need.title)} — <bdi>${c.contributor_id===coop.owner_id?tx(7):esc(name(coop.owner_id))}</bdi>`;}
+ else if(renew)next=`${esc(termsText(6))}: ${esc(model.find(r=>r.need.id===renew.need_id).need.title)} — <bdi>${esc(name(renew.contributor_id))}</bdi>`;
+ else if(gap)next=`${tx(4)}: ${esc(gap.need.title)} — ${esc(fmt(gap.uncovered,gap.need.kind))} · <bdi>${esc(name(coop.owner_id))}</bdi>`;
+ else if(pledge)next=`${tx(5)}: ${esc(pledge.need.title)} — <bdi>${esc(name(pledge.pledges[0].contributor_id))}</bdi>`;
+ else next=model.length?tx(6):esc(text(26));
+ return html+`<p class="notice"><strong>${tx(2)}</strong>: ${next}</p></section>`;
+}
+
+// Presentation only. The future RPC must independently enforce the same contract.
+// Do not use this projection as authority to execute or record a contribution.
+function contributionTermsState({contribution:c,terms=[],documents=[],consents=[],loadedAt,now=Date.now(),online=true,error=false}){
+ const unknown={state:'unavailable',canSubmit:false,overdue:null};
+ if(!c?.cooperation_id||!c.need_id||!c.contributor_id||error||!online||!Number.isFinite(loadedAt)||now-loadedAt<0||now-loadedAt>=60000)return unknown;
+ if(c.terms_revision==null)return {state:'unlinked',canSubmit:false,overdue:null};
+ if(!Number.isInteger(c.terms_revision)||c.terms_revision<1||!Array.isArray(terms)||!Array.isArray(documents)||!Array.isArray(consents))return unknown;
+ const versions=terms.filter(t=>t.need_id===c.need_id&&t.cooperation_id===c.cooperation_id);
+ if(!versions.length||new Set(versions.map(t=>t.revision)).size!==versions.length||versions.some(t=>!Number.isInteger(t.revision)||t.revision<1))return unknown;
+ const accepted=versions.find(t=>t.revision===c.terms_revision),latest=versions.reduce((a,b)=>a.revision>b.revision?a:b);
+ if(!accepted||!accepted.document_id||!Number.isInteger(accepted.document_revision)||accepted.document_revision<1||!accepted.participation||!Number.isFinite(Date.parse(accepted.due_at)))return unknown;
+ const docs=documents.filter(d=>d.document_id===accepted.document_id&&d.cooperation_id===c.cooperation_id);
+ if(!docs.length||new Set(docs.map(d=>d.revision)).size!==docs.length||docs.some(d=>!Number.isInteger(d.revision)||d.revision<1))return unknown;
+ const exact=docs.find(d=>d.revision===accepted.document_revision);
+ if(!exact||!['rules','estimate'].includes(exact.kind))return unknown;
+ const overdue=now>Date.parse(accepted.due_at),basis={acceptedRevision:accepted.revision,latestRevision:latest.revision,documentRevision:accepted.document_revision,dueAt:accepted.due_at,participation:accepted.participation,overdue};
+ // Past receipt is historical evidence of the old basis, never consent to new terms.
+ if(['received','submitted'].includes(c.status))return {...basis,state:'historical',canSubmit:false};
+ if(c.status==='withdrawn')return {...basis,state:'withdrawn',canSubmit:false};
+ if(!['promised','submitted'].includes(c.status))return unknown;
+ if(latest.revision!==accepted.revision||docs.some(d=>d.revision>accepted.document_revision))return {...basis,state:'changed',canSubmit:false};
+ const personal=consents.filter(x=>x.document_id===accepted.document_id&&x.revision===accepted.document_revision&&x.cooperation_id===c.cooperation_id&&x.user_id===c.contributor_id);
+ if(personal.length>1)return unknown;
+ if(personal[0]?.confirmed!==true)return {...basis,state:personal[0]?.confirmed===false?'declined':'awaiting',canSubmit:false};
+ return {...basis,state:'current',canSubmit:c.status==='promised'};
+}
+
+// New copy is RU/EN draft; other locales use an explicitly marked English block until T11.
+const termsCopy={ru:['Условия вклада','Редакция','Срок — время устройства','Способ участия','Документ условий','Опубликовать новую редакцию','Принять условия этого вклада','Сначала лично подтвердите актуальный документ ниже в проекте. Затем примите условия вклада.','Открыть документ','Условия не привязаны','Условия изменились: требуется личное подтверждение','Личное согласие не получено или отозвано','Условия передачи сохранены','Просрочено: можно сообщить о фактическом исполнении','Я прочитал срок, способ участия и редакцию документа','Документы недоступны: обновите проект','Создайте правила или смету в документах проекта','Условия приняты','Вклад отозван','Обещания, требующие нового согласия, не включены в итог обещанного.'],en:['Contribution terms','Revision','Deadline — device time','How to participate','Terms document','Publish a new revision','Accept these contribution terms','First personally confirm the current document below in the project. Then accept the contribution terms.','Open document','Terms are not linked','Terms changed: personal acceptance required','Personal consent missing or withdrawn','Terms of actual delivery retained','Overdue: actual fulfilment can still be reported','I have read the deadline, participation method and document revision','Documents unavailable: refresh the project','Create rules or an estimate in project documents','Terms accepted','Contribution withdrawn','Pledges awaiting renewed consent are excluded from the promised total.']};
+Object.assign(termsCopy,globalThis.FolkoopFeatureCopy?.terms||{});
+function termsText(i){return (termsCopy[document.documentElement.lang]||termsCopy.en)[i];}
+function termsLang(){return Object.hasOwn(termsCopy,document.documentElement.lang)?document.documentElement.lang:'en';}
+function latestTerms(s,n){return (s.terms||[]).filter(t=>t.need_id===n.id).sort((a,b)=>b.revision-a.revision)[0];}
+function personalTermsReady(s,t,user){return !!t&&(s.documents||[]).some(d=>d.document_id===t.document_id&&d.revision===t.document_revision)&&!(s.documents||[]).some(d=>d.document_id===t.document_id&&d.revision>t.document_revision)&&(s.consents||[]).some(c=>c.document_id===t.document_id&&c.revision===t.document_revision&&c.user_id===user.id&&c.confirmed===true);}
+function termsHidden(values){return Object.entries(values).map(([k,v])=>`<input type="hidden" name="${k}" value="${esc(v)}">`).join('');}
+function termsDetails(t){return `<p>${esc(termsText(1))} ${t.revision} · ${esc(termsText(2))}: ${esc(new Date(t.due_at).toLocaleString())}</p><p>${esc(t.participation)}</p><p>${esc(termsText(4))}: ${esc(t.document_id)} · ${esc(termsText(1))} ${t.document_revision}</p>${Date.now()>Date.parse(t.due_at)?`<p>${esc(termsText(13))}</p>`:''}`;}
+function renderNeedTerms({need:n,snapshot:s,user,owner,active,documents,drafts}){
+ if(s.terms_version!==1)return '';
+ const t=latestTerms(s,n),d=drafts['terms:'+n.id]||{},docs=documents?.rows?.filter(x=>['rules','estimate'].includes(x.kind))||[];
+ let html=`<aside lang="${termsLang()}" dir="${['ar','fa'].includes(termsLang())?'rtl':'ltr'}"><h5>${esc(termsText(0))}</h5>${t?termsDetails(t):`<p>${esc(termsText(9))}</p>`}`;
+ if(t)html+=`<button type="button" class="button secondary" data-coop="openNotify" data-target-kind="project" data-id="${esc(n.cooperation_id)}" data-document="${esc(t.document_id)}">${esc(termsText(8))}</button>${personalTermsReady(s,t,user)?'':`<p>${esc(termsText(7))}</p>`}`;
+ if(owner&&active&&!n.cancelled){
+  if(!documents||documents.error)html+=`<p role="status">${esc(termsText(15))}</p>`;
+  else if(!docs.length)html+=`<p>${esc(termsText(16))}</p>`;
+  else html+=`<details><summary>${esc(termsText(5))}</summary><form class="netBudget" data-action="terms" data-target="${esc(n.id)}">${termsHidden({need:n.id,revision:t?.revision||0})}<label>${esc(termsText(4))}<select name="document_choice" required>${docs.map(x=>`<option value="${esc(x.document_id)}:${x.revision}"${d.document_choice===x.document_id+':'+x.revision?' selected':''}>${esc(x.title)} · ${x.revision}</option>`).join('')}</select></label><label>${esc(termsText(2))}<input type="datetime-local" name="due_at" required value="${esc(d.due_at||'')}"></label><label>${esc(termsText(3))}<textarea name="participation" required minlength="2" maxlength="500">${esc(d.participation||t?.participation||'')}</textarea></label><button type="submit" class="button">${esc(termsText(5))}</button></form></details>`;
+ }
+ return html+'</aside>';
+}
+function renderContributionTerms({contribution:c,need:n,snapshot:s,user,active}){
+ if(s.terms_version!==1)return '';
+ const current=contributionTermsState({contribution:c,...s}),t=latestTerms(s,n),basis=(s.terms||[]).find(x=>x.need_id===n.id&&x.revision===c.terms_revision);
+ const label={unlinked:9,changed:10,awaiting:11,declined:11,historical:12,withdrawn:18,current:17};
+ let html=`<aside lang="${termsLang()}" dir="${['ar','fa'].includes(termsLang())?'rtl':'ltr'}"><p>${esc(current.state==='unavailable'?text(27):termsText(label[current.state]))}</p>${basis?termsDetails(basis):''}`;
+ if(active&&c.contributor_id===user.id&&c.status==='promised'&&t&&c.terms_current!==true){
+  html+=`<p>${esc(termsText(6))}:</p>${termsDetails(t)}`;
+  if(personalTermsReady(s,t,user))html+=`<form class="netBudget" data-action="accept_terms" data-target="${esc(c.id)}">${termsHidden({contribution:c.id,revision:c.revision,terms_revision:t.revision})}<label><input type="checkbox" name="accept" required>${esc(termsText(14))}</label><button type="submit" class="button">${esc(termsText(6))}</button></form>`;
+  else html+=`<p>${esc(termsText(7))}</p>`;
+ }
+ return html+'</aside>';
+}
+
 function render(opts){
  if(opts.demo)return `<section class="card project-budget"><h3>${esc(text(0))}</h3>${example()}</section>`;
  const s=opts.snapshot;
- const ready=s&&!s.error&&['needs','contributions','expenses','events'].every(k=>Array.isArray(s[k]))&&Number.isFinite(s.loadedAt)&&Date.now()-s.loadedAt>=0&&Date.now()-s.loadedAt<60000&&globalThis.navigator?.onLine!==false;
+ const ready=s&&!s.error&&(s.terms_version!==1||(['terms','documents','consents'].every(k=>Array.isArray(s[k]))&&Array.isArray(s.contributions)&&s.contributions.every(c=>typeof c.terms_current==='boolean')))&&['needs','contributions','expenses','events'].every(k=>Array.isArray(s[k]))&&Number.isFinite(s.loadedAt)&&Date.now()-s.loadedAt>=0&&Date.now()-s.loadedAt<60000&&globalThis.navigator?.onLine!==false;
  return `<section class="card project-budget"><h3>${esc(text(0))}</h3>${ready?content(opts):`<p role="status">${esc(text(27))}</p><button type="button" class="button" data-net="refresh">${esc(text(27))}</button>`}${example()}</section>`;
 }
 // Draft notification translations, separate from imperative button labels.
@@ -215,5 +323,5 @@ function renderPolicyInbox({snapshot:s,name,demo=false}){
  }
  return html+(s.rows.length?'':`<p>${tx(14)}</p>`)+'</section>';
 }
-globalThis.FolkoopBudget=Object.freeze({render,text,amount,totals,renderInbox,noticeText,renderMeeting,meetingText,renderPolicyInbox,policyChanges});
+globalThis.FolkoopBudget=Object.freeze({contributionTermsState,renderOverview,overviewModel,render,text,amount,totals,renderInbox,noticeText,renderMeeting,meetingText,renderPolicyInbox,policyChanges});
 })();
