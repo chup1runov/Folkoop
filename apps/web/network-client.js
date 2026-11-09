@@ -407,6 +407,7 @@ function client(value,{transport=globalThis.fetch?.bind(globalThis),clock=Date.n
    const result=await rows('fk_task_work_events?select=task_id,revision,actor_id,action,note,created_at&task_id=eq.'+id(tid)+(before===null?'':'&revision=lt.'+integer(before,1,2147483647))+'&order=revision.desc&limit=51');
    return {rows:result.slice(0,50),more:result.length>50};
   },
+  myTaskResults(){const uid=id(user()?.id);return rows('fk_project_tasks?select=id,cooperation_id,assignee_id,title,work_stage,reviewed_by,reviewed_at&assignee_id=eq.'+uid+'&work_stage=eq.verified&order=reviewed_at.desc,id.asc&limit=100');},
   assignedTasks(){const uid=id(user()?.id);return rows('fk_project_tasks?select=id,cooperation_id,creator_id,assignee_id,title,details,status,created_at,updated_at&assignee_id=eq.'+uid+'&status=neq.done&order=updated_at.desc&limit=100');},
   myPurchaseConfirmations(){const uid=id(user()?.id);return rows('fk_purchase_confirmations?select=cooperation_id,user_id,quantity,decision,note,decided_at,collected_at,collected_note,updated_at&user_id=eq.'+uid+'&limit=200');},
   purchaseProcesses(){return rows('fk_purchase_process?select=cooperation_id,stage,confirmation_deadline,external_order_reference,ordered_at,expected_delivery_at,delivery_note,delivered_at,pickup_place,pickup_start,pickup_end,result_note,finished_at,updated_at&limit=200');},

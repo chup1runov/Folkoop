@@ -101,18 +101,18 @@
     {
       "id": "SRC-NETWORK-UI",
       "path": "apps/web/network-ui.js",
-      "status": "published-scoped-meeting-inbox-verified",
+      "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
-      "sha256": "107ac479ab8019d971884de60136db2bab625cc340e225f0fcf73ba400de9af6"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
+      "sha256": "dfef7e2136e0083351ee51543cf1d3997e7f09467b69ba9697285c60a18de78b"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
-      "status": "local-code",
+      "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
-      "sha256": "7b837e2aca97d3a560387825a48fe4558f6b688c0994d568e79ffbc886058592"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
+      "sha256": "dd03084c82e7040238e7238c5b592b8bab678188309ebd760437e6834be0cbf0"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -157,10 +157,10 @@
     {
       "id": "SRC-CI-WEBKIT-SMOKE",
       "path": "scripts/ci/webkit-smoke.sh",
-      "status": "local-ci-configuration",
+      "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-FOR-YOU-001 scoped diff: three options, join/update/inbox loop, safe Mura example, theme and browser regression; original tour preserved. Not a full application audit.",
-      "sha256": "f80c38c8a6a8620ffd6b004ea11986e60b32381b916c5c50d5159202dc7dd726"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
+      "sha256": "bac5b627315a13fcef89f2f8b30a824e2754f37c4564bf47460ebecd6fcc9e12"
     },
     {
       "id": "SRC-STAB-SPEC",
@@ -229,18 +229,34 @@
     {
       "id": "SRC-NETWORK-CLIENT",
       "path": "apps/web/network-client.js",
-      "status": "published-document-context-verified",
-      "checked_at": "2026-11-08",
-      "checked_scope": "FK-MURA-ENTRY-001 changed sections: unified routes, compact styles, public projection client, owner editor and notification preservation; local regression evidence, not independent review or deployed acceptance",
-      "sha256": "943c283a8ff8b585433641fd8f2ec79b0e34818cce052ff0f01d832aa471c73b"
+      "status": "implemented-tested-locally",
+      "checked_at": "2026-11-09",
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
+      "sha256": "591b8a2ddc2a7df61dc8de0303f135ad0ad4ce35d8064c284a74df5a29b55146"
     },
     {
       "id": "SRC-FOR-YOU-LOOP",
       "path": "apps/web/network-for-you.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-FOR-YOU-001 selection/progress/continuation helpers, 11 locale labels, failure and Mura semantics; no engagement or human language claim.",
-      "sha256": "52f9a3028510c4d20627b0ca95317d5f321431cbee50a82f55125b31dca989a7"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
+      "sha256": "82b86a9f9cf061b53d121d91e688ee9345536518cadc8967f9ade4a9c767462c"
+    },
+    {
+      "id": "SRC-DISCOVERY-HELPERS",
+      "path": "apps/web/network-discovery.js",
+      "status": "local-scoped-review",
+      "checked_at": "2026-11-09",
+      "checked_scope": "FK-DISCOVERY-002 primary sources, explicit preferences and verified task semantics; FOLKOOP retention effects unknown.",
+      "sha256": "cc7384890de58bb2b67913dd94e73f04d4782aa0fc8de5294b55c0029f65a9be"
+    },
+    {
+      "id": "SRC-DISCOVERY-RESEARCH",
+      "path": "docs/research/DISCOVERY_MECHANICS_20261109.md",
+      "status": "local-scoped-review",
+      "checked_at": "2026-11-09",
+      "checked_scope": "FK-DISCOVERY-002 primary sources, explicit preferences and verified task semantics; FOLKOOP retention effects unknown.",
+      "sha256": "dd3ada4e9ab4920abd9da13f383d9341d524d6503f38b3002c2e92ab7ee43971"
     }
   ]
 }

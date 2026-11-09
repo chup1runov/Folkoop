@@ -28,3 +28,4 @@ python3 tests/e2e/mura-cache-update-browser.py
 python3 tests/e2e/account-search-browser.py
 
 python3 tests/e2e/for-you-browser.py
+python3 tests/e2e/discovery-browser.py

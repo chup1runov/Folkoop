@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "FK-DISCOVERY-002",
+  "updated": "2026-11-09",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-DISCOVERY-002.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-09",
+    "scope": "Further discovery/gamification, checks/wiki/free publication; no paid services or real test posts"
+  },
+  "requirements": [
+    {
+      "id": "FK-DISCOVERY-002-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-R04",
+      "checks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-R05",
+      "checks": [
+        "C05"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-DISCOVERY-002-T01",
+      "status": "done",
+      "requirements": [
+        "FK-DISCOVERY-002-R01",
+        "FK-DISCOVERY-002-R02",
+        "FK-DISCOVERY-002-R03"
+      ],
+      "evidence": [
+        "FK-DISCOVERY-002-E01"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-T02",
+      "status": "done",
+      "requirements": [
+        "FK-DISCOVERY-002-R02",
+        "FK-DISCOVERY-002-R03",
+        "FK-DISCOVERY-002-R04"
+      ],
+      "evidence": [
+        "FK-DISCOVERY-002-E01"
+      ]
+    },
+    {
+      "id": "FK-DISCOVERY-002-T03",
+      "status": "in_progress",
+      "requirements": [
+        "FK-DISCOVERY-002-R05"
+      ],
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-DISCOVERY-002-E01",
+      "kind": "deterministic",
+      "result": "passed",
+      "checks": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-DISCOVERY-002.md"
+    }
+  ],
+  "open_questions": [],
+  "next_action": "Finish final target browser rerun, publish and check CI/live; append final evidence."
+}

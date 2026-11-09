@@ -1003,3 +1003,22 @@ html[data-reduce-motion=true] .mura-portrait-enter,html[data-reduce-motion=true]
 .folkoop-guide-actor.mura-react-step img,.folkoop-guide-actor.mura-react-done img{animation:mura-calm-arrive .24s ease-out both!important}
 @media(prefers-reduced-motion:reduce){.folkoop-guide-actor.mura-react-step img,.folkoop-guide-actor.mura-react-done img{animation:none!important}}
 html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}
+/* Discovery: compact explicit controls and an optional evidence-based goal. */
+.discovery-tabs,.discovery-card-actions,.discovery-pages{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.discovery-tabs{margin:10px 0 4px}
+.discovery-tabs button,.discovery-card-actions button,.discovery-pages button,.discovery-goal>button{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:8px 11px;min-height:44px;font:inherit;font-size:.85rem;cursor:pointer}
+.discovery-tabs [aria-pressed="true"],.discovery-card-actions [aria-pressed="true"]{background:var(--soft);border-color:var(--accent);color:var(--ink)}
+.discovery-card-actions{margin-top:8px}
+.discovery-card-actions>*{max-width:100%;overflow-wrap:anywhere}
+.discovery-pages{justify-content:space-between;margin:12px 0}
+.discovery-pages button:disabled{opacity:.45;cursor:default}
+.discovery-pages small{max-width:55%;color:var(--muted)}
+.discovery-storage{margin:4px 0 12px;font-size:.78rem}
+.discovery-goal{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink)}
+.discovery-goal summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:650}
+.discovery-goal p{margin:7px 0}
+.discovery-goal-progress{display:flex;align-items:center;gap:10px}
+.discovery-goal progress{height:10px;min-width:0;flex:1;accent-color:var(--accent)}
+.discovery-goal .text-button{display:block;white-space:normal;text-align:start}
+.discovery-demo{margin:12px 0 0}
+@media(prefers-reduced-motion:no-preference){.discovery-tabs button,.discovery-card-actions button{transition:background-color .15s,border-color .15s}}

@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
-const setup=(lang='ru')=>{const c={document:{documentElement:{lang}}};vm.runInNewContext(readFileSync('apps/web/network-for-you.js','utf8'),c);return c.FolkoopForYou;};
+const setup=(lang='ru')=>{const c={document:{documentElement:{lang}}};vm.runInNewContext(readFileSync('apps/web/network-discovery.js','utf8'),c);vm.runInNewContext(readFileSync('apps/web/network-for-you.js','utf8'),c);return c.FolkoopForYou;};
 const items=[
  {id:'a',kind:'project',status:'open',title:'Svenska tillsammans',description:'Språkcafé',created_at:'2026-10-19'},
  {id:'b',kind:'need',status:'active',title:'Помощь с садом',description:'Посадить цветы',created_at:'2026-10-18'},

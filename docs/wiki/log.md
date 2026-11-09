@@ -762,3 +762,5 @@ both database jobs passed: https://github.com/chup1runov/Folkoop/actions/runs/42
 503 local unit/integration checks passed; local browser runs recorded in the task.
 No live participant publication was sent. No physical iPhone, native-speaker or
 engagement-effect certification. Self-review, no independent agent. Historical log preserved.
+
+2026-11-09 FK-DISCOVERY-002 local implementation: saved/hidden browser-scoped IDs, finite diversified recommendations, optional seven-day verified-task goal. Initial unit/browser checks passed; final rerun/CI/deployment pending. Sources and causal-evidence limits: [research](../research/DISCOVERY_MECHANICS_20261109.md), [task](../workflow/tasks/FK-DISCOVERY-002.md). Old records preserved. No paid services or participant test posts.

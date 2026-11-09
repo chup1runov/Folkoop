@@ -50,3 +50,4 @@ python3 tests/e2e/navigation-settings-browser.py
 python3 tests/e2e/purchase-journey-browser.py
 
 python3 tests/e2e/for-you-browser.py
+python3 tests/e2e/discovery-browser.py
