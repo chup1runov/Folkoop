@@ -29,7 +29,7 @@ function language(value){return value==='ru'?'ru':'en';}
 function text(value){return copy[language(value)];}
 function fixture(lang){
  const c=text(lang),created_at='2026-11-09T10:00:00Z';
- const item=(key,kind,title,description,owner)=>({id:ids[key],owner_id:ids[owner],kind,title,description,location_text:'Göteborg · demo',status:'open',target_quantity:null,unit:'',created_at,updated_at:created_at});
+ const item=(key,kind,title,description,owner)=>({id:ids[key],owner_id:ids[owner],kind,title,description,location_text:'Göteborg',status:'open',target_quantity:null,unit:'',created_at,updated_at:created_at});
  return {cooperations:[item('project','project',c.title,c.goal,'mura'),item('room','resource',c.room,c.roomDescription,'johan'),item('tool','resource',c.tool,c.toolDescription,'anna'),item('need','need',c.need,c.needDescription,'mura'),item('offer','offer',c.offer,c.offerDescription,'johan')],members:['mura','anna','omar','johan'].map(person=>({cooperation_id:ids.project,user_id:ids[person],role:person==='mura'?'owner':'member',joined_at:created_at}))};
 }
 const progressKey='folkoop-workshop-progress-v1';

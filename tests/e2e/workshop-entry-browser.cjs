@@ -25,7 +25,8 @@ for(const width of [320,390,1366]){
  await page.locator('[data-workshop="exit"]').click();await page.locator('[data-entry="email"]:visible').waitFor();
  await page.reload();await page.locator('#folkoopEntryGate:not([hidden])').waitFor();
  if(await page.locator('[data-entry="email"]:visible').count())throw Error('Exit must clear auto-resume');
- await page.locator('[data-entry-language="en"]').click();await page.locator('[data-entry="guest"]').click();
+ // Entry language controls moved to Settings; seed the saved preference and reload.
+ await page.evaluate(()=>localStorage.setItem('folkoop-language','en'));await page.reload();await page.locator('#folkoopEntryGate:not([hidden])').waitFor();await page.locator('[data-entry="guest"]').click();
  await page.getByRole('heading',{name:'Shared workshop: the first repair day',exact:true}).waitFor();
  if(errors.length||writes.length)throw Error(JSON.stringify({errors,writes}));
  results.push({width,passed:true,writes,errors});await context.close();
@@ -39,7 +40,7 @@ const account=await browser.newContext({serviceWorkers:'block'});
  results.push({accountModePreservedBeforeOptIn:true,tourStoragePreserved:true});await account.close();
  const full=await browser.newContext({serviceWorkers:'block'});
  await full.route('**/*',r=>r.request().url().startsWith(BASE)?r.continue():r.abort());
- const fp=await full.newPage();await fp.goto(BASE+'?first-contact=guest-guide');await fp.locator('#entryGuestLanguage').selectOption('ru');await fp.locator('[data-entry="guest"]').click();await fp.locator('#onboarding:not([hidden])').waitFor();
+ const fp=await full.newPage();await fp.goto(BASE+'?first-contact=guest-guide');await fp.locator('[data-entry="guest"]').click();await fp.locator('#onboarding:not([hidden])').waitFor();
  if(await fp.locator('.workshop-story').count())throw Error('Short route replaced full tour');
  results.push({fullTourEntryPreserved:true});await full.close();
 }finally{await browser.close();}fs.writeFileSync('/tmp/fk-t03-browser.json',JSON.stringify(results,null,2));console.log(results);})().catch(e=>{console.error(e);process.exit(1)});
