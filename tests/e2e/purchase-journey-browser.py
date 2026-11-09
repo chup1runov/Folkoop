@@ -14,6 +14,10 @@ async def main():
    await p.goto(BASE);await p.locator('[data-entry="guest"]').click();await p.get_by_role('button',name='Осмотреться самому',exact=True).click()
    await p.goto(BASE+'#/settings');await p.locator('#appearanceTheme').select_option('dark')
    await p.locator('#mobilePrimaryNav [href="#/together"]').click();await p.locator('[data-coop="open"][data-id="00000000-0000-4000-8000-000000000302"]').click()
+   shared=p.locator('[data-shared-progress]');await expect(shared).to_contain_text('вымышленные данные')
+   await shared.locator('[data-shared-key=consent] summary').click();await shared.locator('[data-shared-key=consent] [data-shared-step]').click()
+   await expect(p.locator('[data-coop-section=purchase-progress]')).to_have_attribute('open','')
+   assert await p.locator('#networkPanel form:visible').count()==0
    journey=p.locator('[data-purchase-journey]');await expect(journey).to_be_visible();await expect(journey.locator('[aria-current="step"]')).to_have_text('3Согласие')
    await expect(journey).to_contain_text('Место выдачи ещё не согласовано')
    assert '1 окт. 2026' not in await journey.inner_text()
@@ -30,6 +34,13 @@ async def main():
    await journey.scroll_into_view_if_needed();await p.screenshot(path=str(OUT/f'purchase-{width}.png'))
    assert await p.evaluate('document.documentElement.scrollWidth<=innerWidth')
    assert not errors,errors
-   print('PASS purchase route, disclosure, no demo writes, viewport',width);await c.close()
+   print('PASS purchase route, disclosure, no demo writes, viewport',width)
+   await p.locator('[data-coop=back]').click();await p.locator('[data-coop=open][data-id="00000000-0000-4000-8000-000000000310"]').click()
+   shared=p.locator('[data-shared-progress]');await expect(shared).to_contain_text('вымышленные данные')
+   for key,target in [('people','.project-readiness'),('room','.project-readiness'),('resources','.project-budget'),('outcome','.meeting-outcome-story')]:
+    await shared.locator(f'[data-shared-key={key}] summary').click();await shared.locator(f'[data-shared-key={key}] [data-shared-step]').click()
+    assert await p.locator(target+' h3').first.evaluate('(n)=>n===document.activeElement'),key
+   assert await p.locator('#networkPanel form:visible').count()==0
+   print('PASS Mura meeting source jumps',width);await c.close()
   await browser.close()
 asyncio.run(main())

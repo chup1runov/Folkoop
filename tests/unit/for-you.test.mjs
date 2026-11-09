@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
-const setup=(lang='ru')=>{const c={document:{documentElement:{lang}}};vm.runInNewContext(readFileSync('apps/web/network-discovery.js','utf8'),c);vm.runInNewContext(readFileSync('apps/web/network-for-you.js','utf8'),c);return c.FolkoopForYou;};
+const setup=(lang='ru')=>{const c={document:{documentElement:{lang}}};vm.runInNewContext(readFileSync('apps/web/network-discovery.js','utf8'),c);vm.runInNewContext(readFileSync('apps/web/network-shared-progress.js','utf8'),c);vm.runInNewContext(readFileSync('apps/web/network-for-you.js','utf8'),c);return c.FolkoopForYou;};
 const items=[
  {id:'a',kind:'project',status:'open',title:'Svenska tillsammans',description:'Språkcafé',created_at:'2026-10-19'},
  {id:'b',kind:'need',status:'active',title:'Помощь с садом',description:'Посадить цветы',created_at:'2026-10-18'},
@@ -78,4 +78,11 @@ test('a later task or membership event is also a continuation',()=>{
  const html=f.journey({coop,user:'u',member:true,updates:[own],activity:[event],loadedAt:10,now:10});
  assert.match(html,/New task/);assert.match(html,/aria-current="step">Продолжение/);
  assert.equal(f.progress({coop,user:'u',updates:[own],activity:[{...event,actor_id:'u'}]}).event,undefined);
+});
+
+test('continuation gives a milestone reason only for an unread other-person event',()=>{
+ const f=setup(),event={cooperation_id:'a',cooperation_title:'Swedish',unread_count:1,last_actor_id:'other',last_event_type:'task_verified'},args={items:[],members:[{cooperation_id:'a',user_id:'u'}],user:'u',loadedAt:10,now:10,kindLabel:x=>x,inbox:[event]};
+ assert.match(f.render(args),/Подтверждён результат задачи/);
+ for(const override of [{last_actor_id:'u'},{unread_count:0},{cooperation_id:'else'}])assert.doesNotMatch(f.render({...args,inbox:[{...event,...override}]}),/Подтверждён результат задачи/);
+ assert.ok(f.render({...args,inbox:[{...event,last_actor_id:'u'}]}).includes(f.flowText(22)));
 });

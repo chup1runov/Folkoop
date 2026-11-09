@@ -1022,3 +1022,22 @@ html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}
 .discovery-goal .text-button{display:block;white-space:normal;text-align:start}
 .discovery-demo{margin:12px 0 0}
 @media(prefers-reduced-motion:no-preference){.discovery-tabs button,.discovery-card-actions button{transition:background-color .15s,border-color .15s}}
+/* Shared progress is a summary of records, never a new consent surface. */
+.shared-progress{padding:12px;margin:12px 0;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink)}
+.shared-progress>header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.shared-progress h3{font-size:1rem;margin:0}
+.shared-progress-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0}
+.shared-progress-grid>details{border:1px solid var(--line);border-radius:12px;min-width:0;background:var(--paper)}
+.shared-progress-grid summary{display:flex;gap:8px;align-items:center;padding:9px;min-height:48px;cursor:pointer;list-style:none}
+.shared-progress-grid summary::-webkit-details-marker{display:none}
+.shared-progress-grid summary strong,.shared-progress-grid summary small{display:block;overflow-wrap:anywhere}
+.shared-progress-grid summary strong{font-size:.87rem}.shared-progress-grid summary small{color:var(--muted);font-size:.76rem}
+.shared-step-symbol{border:1px solid var(--line);border-radius:50%;width:24px;height:24px;flex:0 0 24px;display:grid;place-items:center}
+[data-shared-state="done"] .shared-step-symbol{background:var(--soft);border-color:var(--accent);color:var(--ink)}
+.shared-step-evidence{padding:0 10px 10px;font-size:.83rem;overflow-wrap:anywhere}
+.shared-step-evidence ul{padding-inline-start:18px;margin:8px 0}.shared-step-evidence li{margin:7px 0}
+.shared-step-evidence li>span:not(.badge),.shared-step-evidence li>small{display:block}
+.shared-step-evidence .badge{font-size:.68rem}.shared-step-evidence .text-button,.shared-progress-next .text-button{min-height:44px;white-space:normal;text-align:start}
+.shared-progress-next{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:.84rem}
+.shared-progress-note{font-size:.75rem;color:var(--muted);margin-top:5px}.shared-progress-note summary{cursor:pointer}
+@media(max-width:440px){.shared-progress-grid{grid-template-columns:1fr}.shared-progress>header>.meta{font-size:.75rem}}

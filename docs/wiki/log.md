@@ -776,3 +776,13 @@ tests; targeted Chromium/WebKit 320/390/1366; existing contribution and Home
 regressions passed. Live Mura save/hide/restore/reload passed. Wiki current status
 updated; historical entries retained. Goal is verified in isolated API fixtures,
 not a new live-account completion; physical iPhone/human locale/retention unknown.
+
+2026-11-09 FK-SHARED-PROGRESS-003 local checkpoint: shared milestones derived
+from existing current records; named contribution and specific unread-event hints.
+522 unit/integration checks, Chromium/WebKit shared-progress and Mura source jumps
+passed; isolated API fixtures, no real participant posts. Author self-review found
+and fixed cross-project cancellation leakage and self-confirmed receipt attribution.
+Tests initially failed on an ambiguous nested heading locator and assumed fallback
+wording; corrected selectors/expectations without changing working UI behavior.
+Index/development-status/source registry updated after relevant source diff review.
+Publication and hosted checks pending; previous journal unchanged. No paid services.

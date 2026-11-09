@@ -900,6 +900,7 @@ function renderCooperation(u,r){
   }
   if(!guestDemo&&!member&&['open','active'].includes(coop.status))html+=`<p class="notice">${esc(globalThis.FolkoopForYou.text(18))}</p>`;
   html+=`<article class="card coop-summary"><div class="row"><div><span class="badge">${esc(kindLabel(coop.kind))}</span> <span class="badge muted-badge">${esc(statusLabel(coop.status))}</span></div><span class="meta">${esc(coop.location_text||'')}</span></div><h2>${esc(coop.title)}</h2><p class="coop-summary-description" style="white-space:pre-wrap">${esc(coop.description)}</p><div class="coop-summary-stats"><span><strong>${esc(String(members.length))}</strong><small>${esc(ct('members'))}</small></span>${coop.kind==='project'?`<span><strong>${esc(String(openTasks.length))}</strong><small>${esc(ct('todo'))}</small></span><span><strong>${esc(String(doneTasks.length))}</strong><small>${esc(ct('done'))}</small></span>`:coop.kind==='purchase'?`<span><strong>${esc(String(sum))} / ${esc(String(coop.target_quantity))}</strong><small>${esc(ct('progress'))} · ${esc(coop.unit)}</small></span>`:`<span><strong>${esc(String(data.coopUpdates.length))}</strong><small>${esc(ct('updates'))}</small></span>`}${unreadActivity?`<span><strong>${esc(String(unreadActivity))}</strong><small>${esc(at('unread'))}</small></span>`:''}</div>${!member&&['open','active'].includes(coop.status)?`<div class="actions">${cbtn('join','join',coop.id)}</div>`:''}</article>`;
+  if(member&&['project','purchase'].includes(coop.kind)&&(!guestDemo||coop.kind==='purchase'||coop.id===MEETING_PROJECT))html+=globalThis.FolkoopSharedProgress.render({coop,data,user:u,members,demo:guestDemo,demoMeeting:guestDemo&&coop.id===MEETING_PROJECT,name:id=>coopProfile(id)?.name||ct('noProfile'),online:navigator.onLine});
   if(coop.kind==='purchase')html+=globalThis.FolkoopPurchaseJourney.render({coop,data,user:u,member,escape:esc,language:lang(),lifecycleText:lt,formatWhen,name:id=>coopProfile(id)?.name||ct('noProfile'),demo:guestDemo});
   if(myNextTask&&!(guestDemo&&coop.id===MEETING_PROJECT))html+=`<aside class="coop-next-step"><span class="eyebrow">${esc(ht('nextStep'))}</span><strong>${esc(myNextTask.title)}</strong>${myNextTask.details?`<p>${esc(myNextTask.details)}</p>`:''}</aside>`;
   if(!guestDemo&&member&&coop.kind==='project')html+=globalThis.FolkoopDecisions.renderOverview({coop,decisions:data.decisions,meeting:data.meeting,tasks:data.projectTasks,members,name:id=>coopProfile(id)?.name||ct('noProfile'),loadedAt:data.loadedAt,online:navigator.onLine,taskBases:data.taskBases});
@@ -1102,7 +1103,7 @@ function render(){
   host.querySelectorAll('[data-coop-section="manage"]').forEach(x=>x.hidden=true);
   host.querySelectorAll('[data-net="refresh"]').forEach(b=>b.hidden=true);
   host.querySelectorAll('[data-net="logout"]').forEach(b=>{b.textContent=ht('demoExit');b.hidden=r!=='me';b.disabled=false;b.removeAttribute('aria-disabled');});
-  const keep='[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-discovery],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
+  const keep='[data-for-you-wish],[data-for-you-back],[data-for-you-sample],[data-discovery],[data-shared-step],[data-purchase-jump],[data-home="openCoop"],[data-home="openCommunity"],[data-net="open"],[data-net="back"],[data-net="openChat"],[data-net="backChats"],[data-net="logout"],[data-coop="open"],[data-coop="back"],[data-coop="openLinkedChat"],[data-coop="openNotify"]';
   const practice='[data-mura-answer],[data-mura-center-answer],[data-mura-profile-return],[data-mura-message-return],[data-mura-center-return],[data-mura-together-return]';
   host.querySelectorAll('button').forEach(b=>{if(!b.matches(keep)&&!b.matches(practice))b.hidden=true;});
  }
@@ -1670,6 +1671,15 @@ window.addEventListener('folkoop:subsection',e=>{
    target.focus({preventScroll:true});
   });
  }
+});
+host.addEventListener('click',e=>{
+ const button=e.target.closest('[data-shared-step]');if(!button||busy)return;
+ const selectors={meeting:guestDemo?'.project-readiness':'.meeting-confirmations',outcome:guestDemo?'.meeting-outcome-story':'.meeting-outcome',meetingBudget:'.meeting-budget',budget:'.project-budget',tasks:'[data-coop-section="tasks"]',decisions:'.project-decisions',offers:'[data-coop-section="offers"]',members:'[data-coop-section="members"]','purchase-progress':'[data-coop-section="purchase-progress"]'};
+ const selector=selectors[button.dataset.sharedStep],target=selector&&host.querySelector(selector);if(!target)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ for(let node=target;node&&node!==host;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true;
+ const destination=target.tagName==='DETAILS'?target.querySelector('summary'):target.querySelector('h3')||target;
+ destination.tabIndex=-1;destination.focus({preventScroll:true});target.scrollIntoView({block:'start',behavior:'instant'});
 });
 host.addEventListener('click',e=>{
  const button=e.target.closest?.('[data-project-next]');

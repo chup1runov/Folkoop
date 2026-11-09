@@ -103,16 +103,16 @@
       "path": "apps/web/network-ui.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
-      "sha256": "dfef7e2136e0083351ee51543cf1d3997e7f09467b69ba9697285c60a18de78b"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "sha256": "2058cb78de593da7ade122c3aad61b7a102a7257d59c9bf2e0137f0f18e7a8fb"
     },
     {
       "id": "SRC-MURA-CSS",
       "path": "apps/web/folkoop.css",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
-      "sha256": "dd03084c82e7040238e7238c5b592b8bab678188309ebd760437e6834be0cbf0"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "sha256": "4a6e2df06cca926e1f17a2eb603fafe197e069065e6943be649070ecb2fb89b5"
     },
     {
       "id": "SRC-TEST-PROGRESS",
@@ -159,8 +159,8 @@
       "path": "scripts/ci/webkit-smoke.sh",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
-      "sha256": "bac5b627315a13fcef89f2f8b30a824e2754f37c4564bf47460ebecd6fcc9e12"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "sha256": "b38c5b60c705c0c07701f23d97c2334320606518b577d2a33f8c4f187e99c585"
     },
     {
       "id": "SRC-STAB-SPEC",
@@ -239,8 +239,8 @@
       "path": "apps/web/network-for-you.js",
       "status": "implemented-tested-locally",
       "checked_at": "2026-11-09",
-      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.",
-      "sha256": "82b86a9f9cf061b53d121d91e688ee9345536518cadc8967f9ade4a9c767462c"
+      "checked_scope": "FK-DISCOVERY-002 scoped diff reviewed: local preferences, finite ranking, optional verified task goal, adapter read, safe Mura, theme and CI coverage. Existing functions preserved; not a full project or live database audit.; FK-SHARED-PROGRESS-003 reviewed diff: derived milestones, source navigation, unread hints and CI registration; local QA, hosted pending",
+      "sha256": "38762c51a1939f517394ca8e3d53f1b4404c1ffad097e1a477e2ba5e477b73a1"
     },
     {
       "id": "SRC-DISCOVERY-HELPERS",
@@ -257,6 +257,14 @@
       "checked_at": "2026-11-09",
       "checked_scope": "FK-DISCOVERY-002 primary sources, explicit preferences and verified task semantics; FOLKOOP retention effects unknown.",
       "sha256": "dd3ada4e9ab4920abd9da13f383d9341d524d6503f38b3002c2e92ab7ee43971"
+    },
+    {
+      "id": "SRC-SHARED-PROGRESS",
+      "path": "apps/web/network-shared-progress.js",
+      "status": "implemented-tested",
+      "checked_at": "2026-11-09",
+      "checked_scope": "Full derived state/renderer, current/version gates, records versus independent proof, locale drafts; 11 unit cases and Chromium/WebKit fixtures, hosted pending",
+      "sha256": "503bc3c4f5b85d76921b459b43ac9554444d49525261b7119b14ab9e32b51250"
     }
   ]
 }

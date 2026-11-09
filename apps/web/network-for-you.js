@@ -71,7 +71,7 @@ function continuations(inbox,members,user){
 }
 function renderContinuations(inbox,members,user){
  const rows=continuations(inbox,members,user);if(!rows.length)return '';
- return `<aside class="for-you-continuations" aria-label="${esc(flowText(8))}"><strong>${esc(flowText(8))}</strong>${rows.map(x=>`<button type="button" data-home="openCoop" data-for-you-open data-id="${esc(x.cooperation_id)}"><span>${esc(x.cooperation_title)}</span><small>${esc(flowText(22))} →</small></button>`).join('')}</aside>`;
+ return `<aside class="for-you-continuations" aria-label="${esc(flowText(8))}"><strong>${esc(flowText(8))}</strong>${rows.map(x=>`<button type="button" data-home="openCoop" data-for-you-open data-id="${esc(x.cooperation_id)}"><span>${esc(x.cooperation_title)}</span><small>${esc(x.last_actor_id!==user&&globalThis.FolkoopSharedProgress?.notice(x.last_event_type,x.last_label)||flowText(22))} →</small></button>`).join('')}</aside>`;
 }
 function progress({coop,user,updates=[],activity=[]}){
  const own=updates.filter(x=>x.cooperation_id===coop.id&&x.author_id===user).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)))[0];
