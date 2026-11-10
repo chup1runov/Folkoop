@@ -41,3 +41,10 @@ the rest of `network-ui.js` is unchanged except the copy import boundary. Hosted
 and browser acceptance must be recorded separately; no claim of passed tests until they report.
 Next slice after verification: identify an isolated pure UI formatter in the large module and
 move it behind an explicit, tested contract without touching Auth or RLS.
+
+## CI correction (2026-11-10)
+
+First PR CI surfaced existing source-location assumptions in locale and Mura contract tests,
+plus the i18n reviewer-corpus extractor. The tests continue to assert the same literals and
+fallback contracts, but now read the extracted copy file; runtime checks still read network-ui.js.
+This change does not relax assertions or change any translated text. Hosted CI rerun pending.
