@@ -1069,3 +1069,20 @@ html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}
 .story-archive{display:grid;gap:6px}.story-archive button{display:grid;gap:4px;text-align:start;white-space:normal;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface,#fff);color:var(--ink);cursor:pointer}.story-archive small{color:var(--muted)}
 .story-circle:focus-visible,.story-dialog button:focus-visible,.story-toolbar button:focus-visible{outline:2px solid #41b7ab;outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){.story-circle>span,.story-toolbar button{transition:transform .14s,background .14s}.story-circle:active>span,.story-toolbar button:active{transform:scale(.96)}}
+
+/* Compact mobile shell: corner search; creation lives in Together's second rail. */
+.mobile-context-dock>.mobile-context-create{display:none!important}
+@media(max-width:760px), (min-width:761px) and (max-width:900px) and (max-height:480px) and (orientation:landscape){
+ .topbar{height:0;min-height:0;padding:0;border:0;background:transparent;overflow:visible}
+ .topbar .brand,.topbar .location,.topbar .mobile-menu-toggle,.topbar #globalStartButton{display:none!important}
+ .topbar .shell-actions{position:absolute;top:8px;inset-inline-end:12px;margin:0}
+ .topbar #globalSearchButton{width:44px;height:44px;background:var(--surface,#fff);box-shadow:0 2px 10px #0000001a}
+ .layout{min-height:100dvh}
+ .content{padding-top:58px}
+ .mobile-context-dock>.mobile-context-create{display:inline-flex!important;flex:0 0 clamp(44px,calc((100vw - 28px)/5),76px);min-width:44px;min-height:44px;width:clamp(44px,calc((100vw - 28px)/5),76px);border:1px solid var(--accent);background:var(--soft);color:var(--accent);font-weight:800}
+ .mobile-context-dock>.mobile-context-create[aria-expanded="true"]{background:var(--accent);color:var(--surface,#fff)}
+ .mobile-context-dock>.mobile-context-create svg{width:20px;height:20px}
+ .shell-start-menu{top:auto;inset-inline-start:12px;inset-inline-end:auto;bottom:calc(106px + env(safe-area-inset-bottom));max-height:calc(100dvh - 130px);overflow-y:auto}
+}
+html[data-nav-style="icons"] .mobile-context-create>span{display:none}
+html[data-nav-style="text"] .mobile-context-create>svg{display:none}

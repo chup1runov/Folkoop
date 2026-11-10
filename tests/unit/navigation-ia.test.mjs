@@ -62,3 +62,17 @@ test('production primary navigation has visible labels and Center uses the canon
  assert(html.includes('id="globalStartButton"'));
  assert(!html.includes('<a href="#/home" class="brand"'));
 });
+
+test('mobile header keeps only corner search and Together owns the second-row create action',async()=>{
+ const html=await readFile('apps/web/folkoop.html','utf8');
+ const js=await readFile('apps/web/folkoop.js','utf8');
+ const css=await readFile('apps/web/folkoop.css','utf8');
+ assert(html.includes('id="globalSearchButton"'));
+ assert(js.includes("const create=active==='together'?"));
+ assert(js.includes('id="mobileCreateButton"'));
+ assert(js.includes('dock.innerHTML=create+items'));
+ assert(js.includes("if(action==='create'){e.stopPropagation();toggleStartMenu();return;}"));
+ assert(css.includes('.topbar .brand,.topbar .location,.topbar .mobile-menu-toggle,.topbar #globalStartButton{display:none!important}'));
+ assert(css.includes('.topbar #globalSearchButton{width:44px;height:44px'));
+ assert(css.includes('.mobile-context-dock>.mobile-context-create{display:inline-flex!important'));
+});

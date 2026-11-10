@@ -205,7 +205,8 @@ function renderMobileChrome(){
  const exitText=lang==='ru'?'Выйти из аккаунта Муры':lang==='sv'?'Lämna Muras konto':lang==='en'?'Leave Mura\'s account':(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoExit||t('me'));
  const muraPopover=lang==='ru'?'Ты внутри моего FOLKOOP. Смотри мои дела, людей, переписки, черновики и город — здесь ничего не нужно создавать.':lang==='sv'?'Du är inne i mitt FOLKOOP. Utforska mina saker, människor, samtal, utkast och staden — du behöver inte skapa något här.':lang==='en'?"You're inside my FOLKOOP. Explore my things, people, conversations, drafts and city — you don't need to create anything here.":(globalThis.FolkoopExtraCopy?.languages?.[lang]?.network?.home?.demoText||t('intro'));
  const popover=guest?'<aside class="mobile-demo-popover" hidden><strong>Mura</strong><p>'+esc(muraPopover)+'</p><button class="button secondary" type="button" data-action="tutorial">'+esc(t('repeatTutorial'))+'</button><button class="button secondary" type="button" data-mobile-action="exitmura">'+esc(exitText)+'</button></aside>':'';
- dock.innerHTML=items;
+ const create=active==='together'?'<button id="mobileCreateButton" class="mobile-context-create" type="button" data-mobile-action="create" aria-label="'+esc(t('create'))+'" title="'+esc(t('create'))+'" aria-expanded="false" aria-controls="globalStartMenu">'+icon('plus')+'<span>'+esc(t('create'))+'</span></button>':'';
+ dock.innerHTML=create+items;
  dock.hidden=!(guest||context.length);
  document.body.classList.toggle('mobile-context-visible',!dock.hidden);
  positionContextDock();
@@ -217,13 +218,14 @@ function closeMobileDemo(){
  if(pop)pop.hidden=true;if(button)button.setAttribute('aria-expanded','false');
 }
 function closeStartMenu(){
- const menu=$('#globalStartMenu'),button=$('#globalStartButton');
+ const menu=$('#globalStartMenu');
  if(menu)menu.hidden=true;
- if(button)button.setAttribute('aria-expanded','false');
+ document.querySelectorAll('#globalStartButton,#mobileCreateButton').forEach(button=>button.setAttribute('aria-expanded','false'));
 }
 function toggleStartMenu(){
- const menu=$('#globalStartMenu'),button=$('#globalStartButton');if(!menu||!button)return;
- const open=menu.hidden;menu.hidden=!open;button.setAttribute('aria-expanded',String(open));
+ const menu=$('#globalStartMenu');if(!menu)return;
+ const open=menu.hidden;menu.hidden=!open;
+ document.querySelectorAll('#globalStartButton,#mobileCreateButton').forEach(button=>button.setAttribute('aria-expanded',String(open)));
 }
 const SEARCH_COPY={
  ru:['Поиск по аккаунту','Поиск в доступных данных. Незагруженные переписки и внешние городские источники не включены.','Ничего не найдено'],
@@ -1374,7 +1376,7 @@ $('#language').addEventListener('change',e=>changeLanguage(e.target.value));
 $('#globalSearchButton')?.addEventListener('click',openGlobalSearch);
 $('#globalStartButton')?.addEventListener('click',e=>{e.stopPropagation();toggleStartMenu();});
 $('#globalStartMenu')?.addEventListener('click',e=>{const b=e.target.closest('[data-shell-create]');if(b)startFromShell(b.dataset.shellCreate);});
-document.addEventListener('click',e=>{if(!e.target.closest('#globalStartMenu,#globalStartButton'))closeStartMenu();});
+document.addEventListener('click',e=>{if(!e.target.closest('#globalStartMenu,#globalStartButton,#mobileCreateButton'))closeStartMenu();});
 function openSubsection(key){
  const parent=subsectionParent(key);if(!parent)return;
  subsection=key;document.documentElement.dataset.folkoopSubsection=key;try{sessionStorage.setItem(SUBSECTION_KEY,key);}catch{}
@@ -1440,6 +1442,7 @@ document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
  if(mobileAction){
   const action=mobileAction.dataset.mobileAction;
+  if(action==='create'){e.stopPropagation();toggleStartMenu();return;}
   if(action==='demo'){const pop=$('#mobileContextDock')?.querySelector('.mobile-demo-popover'),open=pop?.hidden!==false;if(pop)pop.hidden=!open;mobileAction.setAttribute('aria-expanded',String(open));return;}
   if(action==='exitmura'){closeMobileDemo();entryGateAfterMuraExit=true;showEntryGate('',true);return;}
   if(action==='signin'){closeMobileDemo();showEntryGate('',true);return;}
@@ -1632,7 +1635,7 @@ $('#skip').addEventListener('click',e=>{
  visibleMain?.setAttribute('tabindex','-1');
  visibleMain?.focus();
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!ensureEntryGate().hidden){const mode=sessionStorage.getItem(ENTRY_KEY);if(mode)hideEntryGate();return;}if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#globalStartMenu')?.hidden){closeStartMenu();return;}if(!ensureEntryGate().hidden){const mode=sessionStorage.getItem(ENTRY_KEY);if(mode)hideEntryGate();return;}if(onboardingOpen)finishOnboarding();else if(helperOpen){helperOpen=false;updateHelper();}else if(menuOpen)closeMenu();}});
 window.addEventListener('resize',()=>{positionContextDock();if(onboardingOpen)positionOnboarding(onboardingSteps[onboardingStep]);});
 ensureHelper();
 globalThis.FolkoopGuide?.home({instant:true});

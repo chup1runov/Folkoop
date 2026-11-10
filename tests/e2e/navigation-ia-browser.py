@@ -77,6 +77,18 @@ async def audit(browser,width,height):
  await expect(page.locator('#mobileContextDock [data-subsection="me"]')).to_have_attribute('aria-current','page')
 
  await page.click('#mobilePrimaryNav a[href="#/together"]')
+ if width<=760 or (width<=900 and height<=480):
+  await expect(page.locator('#brandHome')).to_be_hidden()
+  await expect(page.locator('#globalStartButton')).to_be_hidden()
+  await expect(page.locator('#globalSearchButton')).to_be_visible()
+  await expect(page.locator('#mobileContextDock #mobileCreateButton')).to_be_visible()
+  await page.locator('#mobileCreateButton').click()
+  await expect(page.locator('#globalStartMenu')).to_be_visible()
+  await page.keyboard.press('Escape')
+  await expect(page.locator('#globalStartMenu')).to_be_hidden()
+ else:
+  await expect(page.locator('#globalStartButton')).to_be_visible()
+  await expect(page.locator('#mobileCreateButton')).to_be_hidden()
  await expect(page.locator('#mobileContextDock [data-subsection^="projects-"]')).to_have_count(3)
  await page.click('#mobileContextDock [data-subsection="projects-overview"]')
  await expect(page.get_by_role('heading',name='Проекты Муры',exact=True)).to_have_count(1)
