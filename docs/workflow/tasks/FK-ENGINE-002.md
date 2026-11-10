@@ -42,3 +42,11 @@ unintended changes, revert the branch commit only; no database migration or Auth
 Source-range extraction compared against the original factory inputs; GitHub Actions
 CI and runtime/browser acceptance pending. Do not claim a full audit, independent
 review or deployment from the existence of these tests.
+
+## GitHub Actions trigger
+
+PR #293 is temporarily targeted at `main` solely to trigger the repository's
+`pull_request.branches: [main]` CI; it remains logically stacked on PR #292.
+After CI review, retarget #293 to the first refactor branch without merging or
+publishing either PR. A green combined run verifies the exact head, not independent
+human or physical-iPhone acceptance.
