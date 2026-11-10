@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const ui=await readFile('apps/web/network-ui.js','utf8');
+const view=await readFile('apps/web/network-view.js','utf8');
 const shell=await readFile('apps/web/folkoop.js','utf8');
 const css=await readFile('apps/web/folkoop.css','utf8');
 
@@ -12,8 +13,8 @@ test('project workspaces expose searchable assigned work and newest-first update
  assert.match(ui,/\['todo','doing'\]\.map\(status=>/);
  assert.match(ui,/data-project-view="updates"/);
  assert.match(ui,/String\(b.last_activity_at\).localeCompare\(String\(a.last_activity_at\)\)/);
- assert.match(ui,/id="networkProjectSearch"/);
- assert.match(ui,/id="projectSearchEmpty"/);
+ assert.match(view,/id="networkProjectSearch"/);
+ assert.match(view,/id="projectSearchEmpty"/);
  assert.match(css,/\.task-board\{grid-template-columns:1fr\}/);
 });
 
