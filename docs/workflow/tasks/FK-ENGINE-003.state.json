@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "FK-ENGINE-003",
+  "updated": "2026-11-10",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-ENGINE-003.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-10",
+    "scope": "Isolated draft PR moving route hash/subsection state; no deployment or backend changes"
+  },
+  "requirements": [
+    {
+      "id": "FK-ENGINE-003-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-003-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-003-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-003-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-ENGINE-003-T01",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-003-R01",
+        "FK-ENGINE-003-R02"
+      ],
+      "evidence": [
+        "FK-ENGINE-003-E01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-003-T02",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-003-R03"
+      ],
+      "evidence": [
+        "FK-ENGINE-003-E02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-003-T03",
+      "status": "pending",
+      "requirements": [
+        "FK-ENGINE-003-R04"
+      ],
+      "evidence": [
+        "FK-ENGINE-003-E03"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-ENGINE-003-E01",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C01",
+        "C02"
+      ],
+      "path": "tests/unit/network-navigation.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-003-E02",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C03"
+      ],
+      "path": "tests/unit/entry-script-order.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-003-E03",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-ENGINE-003.md"
+    }
+  ],
+  "open_questions": [
+    "Full CI and physical iPhone acceptance unavailable until browser verification."
+  ],
+  "next_action": "Review hosted CI results for stacked PR and check browser route/guest selection regressions before merging."
+}

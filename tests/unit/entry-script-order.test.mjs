@@ -16,6 +16,7 @@ test('entry shell waits for first-contact and network copy providers',()=>{
  }
  before('network-ui-copy.js','network-ui.js');
  before('network-view.js','network-ui.js');
+ before('network-navigation.js','network-ui.js');
  before('network-client.js','network-ui.js');
  before('network-mura-home.js','network-ui.js');
  before('folkoop.js','home-welcome.js');
