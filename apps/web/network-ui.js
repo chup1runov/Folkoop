@@ -29,15 +29,14 @@ const muraText=(section,key)=>{
  const pack=muraGuestCopy[lang()]||globalThis.FolkoopExtraCopy?.muraGuest?.[lang()];
  return guestDemo?pack?.[section]?.[key]:undefined;
 };
-const SUBSECTION_KEY='folkoop-subsection-v1';
-function currentSubsection(parent){
- let key=document.documentElement.dataset.folkoopSubsection||'';
- if(!key){try{key=sessionStorage.getItem(SUBSECTION_KEY)||'';}catch{}}
- if(parent==='home'&&key.startsWith('home-'))return key;
- if(parent==='projects'&&key.startsWith('projects-'))return key;
- if(parent==='messages'&&key.startsWith('messages-'))return key;
- return parent==='home'?'home-overview':parent==='projects'?'projects-overview':'messages-chats';
-}
+const networkNavigation=globalThis.FolkoopNetworkNavigation?.create({
+ getHash:()=>location.hash,
+ setHash:hash=>{location.hash=hash;},
+ getActiveSubsection:()=>document.documentElement.dataset.folkoopSubsection||'',
+ readSavedSubsection:key=>sessionStorage.getItem(key)||''
+});
+if(!networkNavigation)throw new Error('network-navigation.js must load before network-ui.js');
+const currentSubsection=parent=>networkNavigation.currentSubsection(parent);
 
 const t=k=>muraText('base',k)??(baseCopy[lang()]?.[k]||en[k]||k);
 const accountEntryCopy={
@@ -91,7 +90,6 @@ function resetEconomicFlowState(){
  data.economicFlows=[];data.economicFlowRoles=[];
  economicFlowDraft={kind:'service',summary:''};economicFlowEditDrafts={};economicRoleDrafts={};economicSectionOpen=false;
 }
-let internalHash='';
 const DEMO_UID='00000000-0000-4000-8000-000000000001';
 try{guestDemo=sessionStorage.getItem('folkoop-entry-mode-v1')==='guest';}catch{}
 const route=()=>FolkoopCore.route(location.hash);
@@ -590,7 +588,7 @@ window.addEventListener('folkoop:search-index',event=>{
  for(const d of snapshot.localDrafts||[])add(label('drafts'),d.title,d.body,'me',d.id);
  for(const u of snapshot.coopUpdates){const c=coop(u.cooperation_id);if(c)add(ct('updates'),c.title,u.body,c.kind==='project'?'projects':'together',c.id,u.body);}
 });
-function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
+function navigateNetwork(hash){networkNavigation.navigate(hash);}
 const uncertainMessageCopy={"ru": "Ответ сервера не получен: сообщение могло отправиться. Повторите отправку здесь — повтор использует ту же команду и не создаст дубль.", "en": "No server reply: the message may have been sent. Retry here; the same command will be reused without creating a duplicate.", "sv": "Inget serversvar: meddelandet kan ha skickats. Försök igen här; samma kommando används utan att skapa en dubblett.", "uk": "Немає відповіді сервера: повідомлення могло надіслатися. Повторіть тут — та сама команда не створить дубль.", "fi": "Palvelin ei vastannut: viesti on voitu lähettää. Yritä tässä uudelleen; sama komento estää kaksoiskappaleen.", "es": "El servidor no respondió: el mensaje puede haberse enviado. Reintenta aquí; se reutiliza la misma orden sin crear un duplicado.", "bs": "Server nije odgovorio: poruka je možda poslana. Pokušajte ponovo ovdje; ista naredba sprečava duplikat.", "ar": "لم يرد الخادم؛ ربما أُرسلت الرسالة. أعد المحاولة هنا؛ سيُستخدم الأمر نفسه دون إنشاء نسخة مكررة.", "fa": "سرور پاسخ نداد؛ ممکن است پیام ارسال شده باشد. همین‌جا دوباره تلاش کنید؛ همان فرمان استفاده می‌شود و پیام تکراری ایجاد نمی‌کند.", "so": "Server-ku ma jawaabin: farriinta waxaa laga yaabaa inay dirtay. Halkan ku celi; isla amarka ayaa la isticmaalayaa iyada oo aan nuqul kale la abuurin.", "ku": "Server bersiv neda: dibe ku peyam hatibe şandin. Li vir dîsa biceribîne; heman ferman tê bikaranîn û dubare nayê çêkirin."};
 const liveMessageCopy={"ru": "Автообновление в открытой вкладке, когда вы не вводите текст. Без сквозного шифрования.", "en": "Updates automatically in a visible tab while you are not editing. Not end-to-end encrypted.", "sv": "Uppdateras automatiskt i en synlig flik när du inte skriver. Inte end-to-end-krypterat.", "uk": "Автооновлення у відкритій вкладці, коли ви не вводите текст. Без наскрізного шифрування.", "fi": "Päivittyy automaattisesti näkyvässä välilehdessä, kun et muokkaa. Ei päästä päähän -salausta.", "es": "Se actualiza en una pestaña visible mientras no editas. Sin cifrado de extremo a extremo.", "bs": "Automatsko osvježavanje u vidljivoj kartici dok ne uređujete. Bez end-to-end šifriranja.", "ar": "تحديث تلقائي في علامة تبويب ظاهرة عندما لا تكتب. دون تشفير من طرف إلى طرف.", "fa": "وقتی در حال نوشتن نیستید، در زبانهٔ قابل‌مشاهده خودکار به‌روز می‌شود. رمزگذاری سرتاسری ندارد.", "so": "Si toos ah ayay u cusboonaataa tab muuqda marka aadan wax qorayn. Ma laha sirgelin gees-ilaa-gees ah.", "ku": "Di tabeke xuya de dema ku tu nenivîsî bixweber nû dibe. Şîfrekirina ji serî heta dawiyê tune ye."};
 const mt=k=>muraText('chat',k)??(!guestDemo&&['messagesDesc','notEncrypted'].includes(k)?liveMessageCopy[lang()]||liveMessageCopy.en:(chatCopy[lang()][k]||chatCopy.en[k]||k));
@@ -1638,7 +1636,7 @@ window.addEventListener('message',e=>{
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
  run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
 });
-window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;loadCurrentRoute();});
+window.addEventListener('hashchange',()=>{if(!networkNavigation.consumeHashChange())return;if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;loadCurrentRoute();});
 window.addEventListener('folkoop:subsection',e=>{
  const parent=e.detail?.parent,key=e.detail?.key;
  if(parent==='projects')selectedCoop=null;
