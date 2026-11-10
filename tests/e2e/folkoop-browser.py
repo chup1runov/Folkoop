@@ -153,7 +153,7 @@ async def main():
   await expect(page.locator('[name="name"]')).to_have_value('')
   assert await page.evaluate("localStorage.getItem('folkoop-workspace-v1')") is None
   await page.screenshot(path=str(OUT/'folkoop-my-page-mobile.png'),full_page=True)
-  await page.click('#brandHome');await page.screenshot(path=str(OUT/'folkoop-mobile.png'),full_page=True)
+  await page.click('#mobilePrimaryNav a[href="#/home"]');await page.screenshot(path=str(OUT/'folkoop-mobile.png'),full_page=True)
   results.append('Erase removes only FOLKOOP local data; mobile screens captured')
   assert not errors,errors
   await context.close()
