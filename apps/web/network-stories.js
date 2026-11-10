@@ -23,7 +23,7 @@ function groups(rows,seen={}) {
  return [...map.values()].map(items=>({items,name:items[0].author_name,id:items[0].author_id,unseen:items.some(s=>!seen[s.id])})).sort((a,b)=>Number(b.unseen)-Number(a.unseen)||Date.parse(b.items[0].created_at)-Date.parse(a.items[0].created_at));
 }
 function readSeen(key){try{const value=JSON.parse(localStorage.getItem(key)||'{}');return Object.fromEntries(Object.entries(value).filter(([id,at])=>/^[\w-]{1,80}$/.test(id)&&Number.isFinite(at)&&at>Date.now()-2*86400000).slice(-100));}catch{return {};}}
-let ctx=null,epoch=0,feedRevision=0,mountedRoute='',feed=[],dialog=null,draft=null,draftOwner='',examples=[],seen={},opener=null,collapsed=false,expiryTimer=null;
+let ctx=null,epoch=0,feedRevision=0,mountedRoute='',feed=[],dialog=null,draft=null,draftOwner='',examples=[],seen={},opener=null,expiryTimer=null;
 const tx=i=>esc(text(i));
 const key=()=>`folkoop-stories-seen-v1:${ctx.demo?'mura':ctx.user}`;
 function close(){clearTimeout(expiryTimer);expiryTimer=null;if(dialog){dialog.close();dialog.remove();dialog=null;}if(opener?.isConnected)opener.focus({preventScroll:true});}
@@ -41,9 +41,15 @@ function localStory(s){const match=/^mura-story-([0-2])$/.exec(s.id);if(match)s.
 function draw(){
  if(!ctx?.container.isConnected)return;
  const list=groups(active(feed),seen);
- ctx.container.innerHTML=`<details class="story-strip" ${collapsed?'':'open'}><summary>${tx(0)} <small>24 h</small></summary><div class="story-toolbar"><button type="button" data-story-new>＋ ${tx(1)}</button><button type="button" data-story-archive>${tx(2)}</button><button type="button" data-story-refresh aria-label="${tx(27)}">↻</button></div><div class="story-circles">${list.map(g=>`<button type="button" class="story-circle ${g.unseen?'unseen':'seen'}" data-story-author="${esc(g.id)}" aria-label="${esc(g.name)} · ${g.items.length}${g.unseen?'':' · '+tx(42)}"><span aria-hidden="true">${esc(g.name.slice(0,2))}</span><small>${esc(g.name)}</small></button>`).join('')}</div><p class="story-status" role="status">${list.length?'':tx(19)}</p>${ctx.demo?'':`<small>${tx(30)}</small>`}</details>`;
- ctx.container.querySelector('details').ontoggle=e=>{collapsed=!e.target.open;};
+ const mine=list.find(g=>g.id===ctx.user);
+ const others=list.filter(g=>g.id!==ctx.user);
+ const myName=ctx.demo?'Mura':(ctx.profiles?.find(p=>p.id===ctx.user)?.name||'');
+ const myInitials=myName.trim().slice(0,2)||'＋';
+ const myStoryName=({ru:'Моя история',en:'My story',sv:'Min händelse',uk:'Моя історія',fi:'Oma tarina',bs:'Moja priča',es:'Mi historia',ar:'قصتي',fa:'داستان من',so:'Sheekadayda',ku:'Çîroka min'})[document.documentElement.lang]||'My story';
+ const myTarget=mine?`data-story-author="${esc(mine.id)}" aria-label="${esc(myStoryName)} · ${mine.items.length}${mine.unseen?'':' · '+tx(42)}"`:`data-story-own-compose aria-label="${tx(1)}"`;
+ ctx.container.innerHTML=`<section class="story-strip" aria-label="${tx(0)}"><div class="story-strip-row"><div class="story-circles"><div class="story-own"><button type="button" class="story-circle story-own-circle ${mine?(mine.unseen?'unseen':'seen'):'seen'}" ${myTarget}><span aria-hidden="true">${esc(myInitials)}</span><small>${esc(myStoryName)}</small></button><button type="button" class="story-add-badge" data-story-new aria-label="${tx(1)}" title="${tx(1)}">+</button></div>${others.map(g=>`<button type="button" class="story-circle ${g.unseen?'unseen':'seen'}" data-story-author="${esc(g.id)}" aria-label="${esc(g.name)} · ${g.items.length}${g.unseen?'':' · '+tx(42)}"><span aria-hidden="true">${esc(g.name.slice(0,2))}</span><small>${esc(g.name)}</small></button>`).join('')}</div><div class="story-strip-actions"><button type="button" data-story-archive aria-label="${tx(2)}" title="${tx(2)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="4" rx="1"/><path d="M5 7v13h14V7M10 12h4"/></svg></button><button type="button" data-story-refresh aria-label="${tx(27)}" title="${tx(27)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.2 5.5M20 4v7h-7"/></svg></button></div></div><p class="story-status" role="status">${list.length?'':tx(19)}</p>${ctx.demo?'':`<small class="story-feed-note">${tx(30)}</small>`}</section>`;
  ctx.container.querySelector('[data-story-new]').onclick=compose;
+ ctx.container.querySelector('[data-story-own-compose]')?.addEventListener('click',compose);
  ctx.container.querySelector('[data-story-archive]').onclick=archive;
  ctx.container.querySelector('[data-story-refresh]').onclick=refresh;
  ctx.container.querySelectorAll('[data-story-author]').forEach(b=>b.onclick=()=>{const ordered=list.flatMap(g=>g.items);view(ordered,ordered.findIndex(s=>s.author_id===b.dataset.storyAuthor));});
@@ -118,7 +124,7 @@ function mount(context){
  epoch++;close();ctx=context;
  if(!ctx?.container){ctx=null;return;}
  const scope=(ctx.demo?'mura:':'real:')+ctx.user;
- if(scope!==draftOwner){draft=null;examples=[];collapsed=false;draftOwner=scope;}
+ if(scope!==draftOwner){draft=null;examples=[];draftOwner=scope;}
  seen=readSeen(key());void refresh();
 }
 globalThis.addEventListener?.('hashchange',()=>{if(mountedRoute!==(globalThis.location?.hash||'')){epoch++;close();}});

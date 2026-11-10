@@ -1047,15 +1047,25 @@ html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}
 @media(max-width:440px){.shared-progress-grid{grid-template-columns:1fr}.shared-progress>header>.meta{font-size:.75rem}}
 
 /* Compact story row and deliberately bounded, manual viewer. */
-.story-strip{margin:0 0 12px;padding:8px 10px;border:1px solid var(--line);border-radius:16px;background:var(--surface,#fff)}
-.story-strip>summary{font-size:14px;font-weight:650;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:32px}
-.story-strip small{color:var(--muted);font-size:11px}.story-toolbar{display:flex;gap:6px;align-items:center;margin:4px 0 8px}
-.story-toolbar button,.story-navigation button,.story-more button{border:1px solid var(--line);background:var(--surface,#fff);color:var(--ink);border-radius:10px;padding:7px 10px;min-height:38px;font-size:12px;cursor:pointer}
-.story-toolbar button:last-child{margin-inline-start:auto;min-width:40px}.story-circles{display:flex;gap:12px;overflow-x:auto;padding:3px 1px 6px;scrollbar-width:thin}
-.story-circle{flex:0 0 62px;min-width:0;border:0;background:transparent;color:var(--ink);padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}
-.story-circle>span{display:grid;place-items:center;width:48px;height:48px;border:2px solid var(--line);border-radius:50%;font-size:17px;font-weight:650;background:var(--surface,#fff);color:var(--ink)}
-.story-circle.unseen>span{border-color:#41b7ab;box-shadow:0 0 0 2px var(--surface,#fff),0 0 0 3px #2c807c}.story-circle small{display:block;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
-.story-status:empty{display:none}.story-status{font-size:13px;line-height:1.4;margin:6px 0;color:var(--ink)}
+/* Telegram-like stories: a single accessible, horizontal row on the profile. */
+.story-strip{margin:0 0 10px;padding:0;min-width:0;background:transparent;border:0}
+.story-strip-row{display:flex;align-items:flex-start;gap:4px;min-width:0;max-width:100%}
+.story-circles{display:flex;flex:1;min-width:0;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:4px 3px 6px}
+.story-circles::-webkit-scrollbar{display:none}
+.story-own{position:relative;flex:0 0 78px;scroll-snap-align:start}
+.story-circle{flex:0 0 68px;min-width:0;min-height:82px;border:0;background:transparent;color:var(--ink);padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px;scroll-snap-align:start}
+.story-own .story-circle{width:78px}
+.story-circle>span{display:grid;place-items:center;box-sizing:border-box;width:54px;height:54px;border:2px solid var(--line);border-radius:50%;font-size:18px;font-weight:650;background:var(--surface,#fff);color:var(--ink)}
+.story-circle.unseen>span{border-color:#41b7ab;box-shadow:0 0 0 2px var(--surface,#fff),0 0 0 3px #2c807c}
+.story-circle small{display:block;max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-size:11px;line-height:16px}
+.story-own small{max-width:78px}
+.story-add-badge{position:absolute;inset-inline-end:6px;top:37px;display:grid;place-items:center;box-sizing:border-box;width:25px;height:25px;border:2px solid var(--surface,#fff);border-radius:50%;background:var(--accent,#41b7ab);color:var(--surface,#fff);font-size:20px;font-weight:650;line-height:1;cursor:pointer}
+.story-strip-actions{display:flex;gap:0;flex:0 0 auto;align-items:flex-start;padding-top:12px}
+.story-strip-actions button{width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:12px;background:transparent;color:var(--muted);cursor:pointer}
+.story-strip-actions button:hover{background:var(--soft)}
+.story-strip-actions svg{width:19px;height:19px}
+.story-feed-note{position:absolute;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;width:1px;height:1px;padding:0;border:0}
+.story-status:empty{display:none}.story-status{font-size:13px;line-height:1.4;margin:2px 0 4px;color:var(--ink)}
 .story-dialog{box-sizing:border-box;width:min(420px,calc(100vw - 24px));max-width:420px;max-height:calc(100dvh - 36px);padding:14px;border:1px solid var(--line);border-radius:20px;background:var(--surface,#fff);color:var(--ink);box-shadow:0 16px 60px #0006;overflow:auto}
 .story-dialog::backdrop{background:#0009}.story-dialog>header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .story-dialog>header button{border:0;border-radius:50%;width:36px;height:36px;background:var(--surface,#fff);color:var(--ink);font-size:25px;cursor:pointer}.story-position{font-size:12px;color:var(--muted);margin-bottom:8px}
@@ -1067,8 +1077,8 @@ html[data-reduce-motion=true] .folkoop-guide-actor img{animation:none!important}
 .story-more{margin-top:10px;font-size:12px}.story-more>summary{cursor:pointer;padding:6px}.story-more[open]{display:flex;flex-wrap:wrap;gap:8px}.story-more small{display:block;margin:6px 0}
 .story-compose{display:grid;gap:10px}.story-compose label{display:grid;gap:4px;font-size:13px}.story-compose textarea,.story-compose select{box-sizing:border-box;width:100%;max-width:100%;font:inherit;font-size:16px;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--surface,#fff);color:var(--ink)}.story-compose textarea{resize:vertical;min-height:115px}
 .story-archive{display:grid;gap:6px}.story-archive button{display:grid;gap:4px;text-align:start;white-space:normal;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface,#fff);color:var(--ink);cursor:pointer}.story-archive small{color:var(--muted)}
-.story-circle:focus-visible,.story-dialog button:focus-visible,.story-toolbar button:focus-visible{outline:2px solid #41b7ab;outline-offset:3px}
-@media(prefers-reduced-motion:no-preference){.story-circle>span,.story-toolbar button{transition:transform .14s,background .14s}.story-circle:active>span,.story-toolbar button:active{transform:scale(.96)}}
+.story-circle:focus-visible,.story-add-badge:focus-visible,.story-strip-actions button:focus-visible,.story-dialog button:focus-visible{outline:2px solid #41b7ab;outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){.story-circle>span,.story-add-badge,.story-strip-actions button{transition:transform .14s,background .14s}.story-circle:active>span,.story-add-badge:active,.story-strip-actions button:active{transform:scale(.96)}}
 
 /* Compact mobile shell: corner search; creation lives in Together's second rail. */
 .mobile-context-dock>.mobile-context-create{display:none!important}

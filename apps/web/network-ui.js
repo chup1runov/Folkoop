@@ -1079,7 +1079,7 @@ function render(){
  const homeScope=['home','me'].includes(r)&&u?`home:${u.id}`:'';
  const openProfileEditors=homeScope&&host.dataset.homeScope===homeScope?['.profile-editor','.public-profile-editor','.public-preview'].filter(selector=>host.querySelector(selector)?.open):[];
  const openHomeSections=homeScope&&host.dataset.homeScope===homeScope?[...host.querySelectorAll('details[data-home-section][open]')].map(el=>el.dataset.homeSection):[];
- const showStories=u&&(['home','me'].includes(r)||(r==='together'&&!selectedCoop));
+ const showStories=u&&['home','me'].includes(r);
  if(showStories)html='<section id="accountStories"></section>'+html;
  host.innerHTML=demoBanner+muraProfilePractice(r)+muraCenterPractice(r)+html+`<p id="netStatus" role="status" aria-live="polite">${esc(notice)}</p>`;
  globalThis.FolkoopStories.mount(showStories?{container:host.querySelector('#accountStories'),api,user:u.id,demo:guestDemo,cooperations:data.cooperations||[],members:data.coopMembers||[],profiles:data.directory||[],contactIds:(data.chatMembers||[]).filter(m=>m.user_id!==u.id&&data.chats.some(c=>c.kind==='direct'&&c.id===m.conversation_id)).map(m=>m.user_id),
