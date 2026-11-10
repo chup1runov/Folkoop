@@ -69,9 +69,11 @@ jobs:
         with:
           path: _site
   webkit:
+    # Cold WebKit installation can take over eight minutes on GitHub runners.
+    # Allow the complete browser gate to run instead of timing out during setup.
     # Playwright 1.57.0 WebKit supports Ubuntu 24.04; ubuntu-latest is rolling to 26.04.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
