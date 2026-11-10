@@ -1,10 +1,10 @@
 # FOLKOOP Google OAuth pilot activation
 
-28 September 2026.
+Updated 10 November 2026.
 
 ## Status
 
-**Application scaffold prepared; Google provider still not enabled.**
+**Hosted Google provider enabled; application activation prepared for release. Real two-account acceptance remains pending.**
 
 FOLKOOP already has hosted invite-only admission. Before ordinary participants,
 two coupled gates remain: a genuinely usable Auth route and versioned
@@ -25,11 +25,11 @@ v0.25 prepared a fail-closed popup/callback flow behind `googleOAuthEnabled:fals
 
 FOLKOOP Pages origin:
 
-`https://chup1runov.github.io`
+`https://folkoop.pages.dev`
 
 Current FOLKOOP app:
 
-`https://chup1runov.github.io/Folkoop/`
+`https://folkoop.pages.dev/`
 
 Supabase project:
 
@@ -39,6 +39,18 @@ Supabase Google-provider callback URI:
 
 `https://cwvhkdqsrbllsykhccmb.supabase.co/auth/v1/callback`
 
+## Free setup checkpoint — 10 November 2026
+
+The owner requested working free authentication without buying a domain.
+A dedicated Google Cloud project was created without enabling billing.
+The owner accepted the Google API Services User Data Policy, created the Web
+OAuth client and entered its credentials directly into Supabase. After explicit
+owner confirmation, the Google provider was enabled and the exact Cloudflare
+callback was added to the redirect allow list. Hosted provider readiness passed.
+This change enables the application flag; real sign-in and two-account acceptance
+remain required after deployment. Only identity scopes are requested.
+No secret belongs in this document, application config, logs or commits.
+
 ## External setup gate
 
 These provider-side steps require access to a Google Cloud / Google Auth Platform account and cannot be completed from the currently connected project tools.
@@ -47,12 +59,13 @@ These provider-side steps require access to a Google Cloud / Google Auth Platfor
 
 For the initial two-account technical test, Google Auth Platform **Testing** mode is suitable.
 
-Current Google documentation states:
-- Testing mode supports up to **100 explicitly listed test users**.
-- A test user's authorization expires **7 days after consent**.
-- Development/testing apps do not need full OAuth verification, but users can see an unverified/test warning.
-
-That means Testing mode is acceptable for the first A/B hosted verification. For the planned three-week human pilot, either participants must re-authorize after seven days or the publishing/verification strategy must be reviewed before rollout. Do not silently treat the two-account test configuration as a production-ready identity setup.
+Google's current documentation makes an explicit exception for sign-in using
+only `openid`, `userinfo.email` and `userinfo.profile`: users do not need to be
+listed as test users, do not see the testing warning, and their authorization
+does not expire after seven days. The general 100-listed-user/seven-day testing
+rules must not be applied to this identity-only flow without that exception.
+Any added scope changes this assessment. Google account/Workspace restrictions
+can still block sign-in, so two real distinct accounts remain an acceptance gate.
 
 Primary Google references:
 - https://support.google.com/cloud/answer/15549945
@@ -74,7 +87,7 @@ Create an OAuth client with application type **Web application**.
 
 Authorized JavaScript origin:
 
-`https://chup1runov.github.io`
+`https://folkoop.pages.dev`
 
 Authorized redirect URI:
 
@@ -97,7 +110,7 @@ Keep the FOLKOOP production Site URL / allowed redirect configuration scoped to 
 
 The application should use a dedicated same-origin callback page such as:
 
-`https://chup1runov.github.io/Folkoop/auth-callback.html`
+`https://folkoop.pages.dev/auth-callback.html`
 
 That callback must be added to Supabase's allowed Redirect URLs before a live OAuth test.
 
@@ -204,9 +217,9 @@ Do not enable a paid Google Cloud feature or paid Supabase add-on to make social
 
 If a provider-side requirement would create a charge, stop and review it before activation.
 
-## Primary Supabase references checked 28 September 2026
+## Primary Supabase references (Google and audience rechecked 10 November 2026)
 
-- Google login: https://supabase.com/docs/guides/auth/social-login/auth-google
+- Google login: https://supabase.com/docs/guides/auth/social-sign-in/auth-google
 - Social login: https://supabase.com/docs/guides/auth/social-login
 - Redirect URLs: https://supabase.com/docs/guides/auth/redirect-urls
 - SMTP restriction: https://supabase.com/docs/guides/auth/auth-smtp

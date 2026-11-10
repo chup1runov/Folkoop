@@ -6,6 +6,6 @@ globalThis.FolkoopNetworkConfig=Object.freeze({
  url:'https://cwvhkdqsrbllsykhccmb.supabase.co',
  publishableKey:'sb_publishable_rL8EeJ8NHM2rRZJqq19FiA_i9po0sFq',
  emailRedirectUrl:'https://folkoop.pages.dev/',
- googleOAuthEnabled:false,
- oauthRedirectUrl:'https://chup1runov.github.io/Folkoop/auth-callback.html'
+ googleOAuthEnabled:true,
+ oauthRedirectUrl:'https://folkoop.pages.dev/auth-callback.html'
 });
