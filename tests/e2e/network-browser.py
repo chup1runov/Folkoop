@@ -399,7 +399,8 @@ async def main():
 
   await page.click('#mobilePrimaryNav [data-mobile-nav="messages"]')
   await expect(page.locator('#networkPanel')).to_contain_text('Сообщения')
-  await expect(page.locator('#networkMessageSearch')).to_be_visible()
+  await expect(page.locator('#networkMessageSearch')).to_have_count(0)
+  await expect(page.locator('#globalSearchButton')).to_be_visible()
   # API fixtures survive legitimate account background refreshes. DOM-only cards
   # could disappear mid-assertion and were not real renderer coverage.
   group='dddddddd-1111-4111-8111-dddddddddddd'
@@ -419,13 +420,14 @@ async def main():
   await expect(page.locator('[data-message-card][data-message-type="work"]')).to_be_visible()
   await expect(page.locator('[data-message-card][data-message-type="direct"]')).to_be_hidden()
   await expect(page.locator('[data-message-card][data-message-type="group"]')).to_be_hidden()
-  await page.fill('#networkMessageSearch','Synthetic Group Fern')
-  await expect(page.locator('[data-message-card][data-message-type="work"]')).to_be_hidden()
   await page.click('[data-message-kind="work"]')
   await expect(page.locator('[data-message-kind="work"]')).to_have_attribute('aria-pressed','false')
   await expect(page.locator('[data-message-card][data-message-type="group"]')).to_be_visible()
-  await expect(page.locator('[data-message-card][data-message-type="direct"]')).to_be_hidden()
-  await page.fill('#networkMessageSearch','')
+  await expect(page.locator('[data-message-card][data-message-type="direct"]')).to_be_visible()
+  await page.click('[data-message-kind="group"]')
+  await expect(page.locator('[data-message-card][data-message-type="group"]')).to_be_visible()
+  await expect(page.locator('[data-message-card][data-message-type="work"]')).to_be_hidden()
+  await page.click('[data-message-kind="group"]')
   await expect(page.locator('[data-message-card][data-message-type="direct"]')).to_be_visible()
   await expect(page.locator('[data-message-card][data-message-type="work"]')).to_be_visible()
   await page.click('.messages-hub [data-subsection="messages-invites"]')

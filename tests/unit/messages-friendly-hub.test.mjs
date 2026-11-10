@@ -6,9 +6,9 @@ const messaging=await readFile('apps/web/network-messaging.js','utf8');
 const ui=await readFile('apps/web/network-ui.js','utf8');
 const css=await readFile('apps/web/folkoop.css','utf8');
 
-test('Messages hub exposes browse-first search and explicit mode links',()=>{
+test('Messages hub keeps explicit modes while global search owns text queries',()=>{
   assert.match(messaging,/class="messages-hub"/);
-  assert.match(messaging,/id="networkMessageSearch"/);
+  assert.doesNotMatch(messaging,/id="networkMessageSearch"/);
   assert.match(messaging,/data-subsection="messages-direct"/);
   assert.match(messaging,/data-subsection="messages-groups"/);
 });
@@ -18,11 +18,11 @@ test('Messages cards preserve direct group and work-chat identity',()=>{
   assert.match(messaging,/const messageType=link\?'work':chatItem\.kind/);
 });
 
-test('Messages search and filters only change local presentation state',()=>{
-  assert.match(ui,/id!=='networkMessageSearch'/);
+test('Messages type filters only change local presentation state',()=>{
+  assert.doesNotMatch(ui,/networkMessageSearch/);
   assert.match(ui,/data-message-card/);
   assert.match(ui,/data-message-kind/);
-  assert.match(ui,/card\.hidden=!\(matches&&kindMatch\)/);
+  assert.match(ui,/card\.hidden=!matches/);
   assert.ok(!ui.includes("folkoop:message-search-write"));
 });
 

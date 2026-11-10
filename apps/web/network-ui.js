@@ -594,10 +594,15 @@ window.addEventListener('folkoop:search-index',event=>{
  const owner=currentUser()?.id;
  const scope=guestDemo;
  const label=key=>globalThis.FolkoopCopy.COPY[lang()][key]||globalThis.FolkoopCopy.COPY.en[key];
+ // Chat titles are often absent from message-based server search (empty chats).
+ // Only index conversations already visible to this account.
+ const visibleChats=[];
+ const normalizeSearch=value=>String(value||'').normalize('NFKC').toLocaleLowerCase(lang()).replace(/ё/g,'е');
+
  event.detail.handled=true;
- const add=(kind,title,body,target,id,needle=title,selector='article',messageId=null)=>{
+ const add=(kind,title,body,target,id,needle=title,selector='article',messageId=null,sink=event.detail.entries)=>{
   if(!title&&!body)return;
-  event.detail.entries.push({kind,title:title||kind,body:body||'',open:()=>{
+  sink.push({kind,title:title||kind,body:body||'',open:()=>{
    if(scope!==guestDemo||owner!==currentUser()?.id)return;
    selected=null;selectedChat=null;selectedCoop=null;
    if(target==='messages'){selectedChat=id;searchMessageTarget=messageId?{chat:id,id:messageId}:null;}
@@ -626,8 +631,11 @@ window.addEventListener('folkoop:search-index',event=>{
    const page=await api.searchAccount(query,after);
    if(scope!==guestDemo||owner!==currentUser()?.id)throw new Error('STALE');
    const before=event.detail.entries.length;
-   for(const row of page.rows)add(row.kind,row.title,row.body,row.route,row.parent_id,row.body,'article',row.kind==='messages'?row.id:null);
-   return {...page,rows:event.detail.entries.splice(before)};
+   for(const row of page.rows)add(row.kind,row.title,row.body,row.route,row.parent_id,row.body||row.title,'article',row.kind==='messages'?row.id:null);
+   const serverRows=event.detail.entries.splice(before);
+   const needle=normalizeSearch(query.trim());
+   const chatRows=after?[]:visibleChats.filter(row=>needle.split(/\s+/).every(term=>normalizeSearch(row.title+' '+row.body).includes(term)));
+   return {...page,rows:[...chatRows,...serverRows]};
   };
  }
  const coop=id=>snapshot.cooperations.find(x=>x.id===id);
@@ -638,6 +646,14 @@ window.addEventListener('folkoop:search-index',event=>{
  for(const m of snapshot.chatMessages){const chat=snapshot.chats.find(x=>x.id===m.conversation_id);if(chat)add(label('messages'),chat.title||label('messages'),m.body,'messages',chat.id,m.body,'.chat-messages article');}
  for(const d of snapshot.localDrafts||[])add(label('drafts'),d.title,d.body,'me',d.id);
  for(const u of snapshot.coopUpdates){const c=coop(u.cooperation_id);if(c)add(ct('updates'),c.title,u.body,c.kind==='project'?'projects':'together',c.id,u.body);}
+ for(const chat of snapshot.chats){
+  const visible=snapshot.chatMembers.some(m=>m.conversation_id===chat.id&&m.user_id===owner)||snapshot.chatInvites.some(i=>i.conversation_id===chat.id&&i.user_id===owner);
+  if(!visible)continue;
+  const other=snapshot.chatMembers.find(m=>m.conversation_id===chat.id&&m.user_id!==owner);
+  const name=chat.kind==='direct'?(snapshot.chatProfiles.find(p=>p.id===other?.user_id)||snapshot.directory.find(p=>p.id===other?.user_id))?.name||'':String(chat.title||'').trim();
+  if(name)add(label('messages'),name,'','messages',chat.id,name,'article',null,visibleChats);
+ }
+ if(guestDemo)event.detail.entries.push(...visibleChats);
 });
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
 const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
@@ -856,16 +872,17 @@ function coopDisclosure(key,title,count,body,open=false){
  return `<details class="coop-disclosure" data-coop-section="${esc(key)}"${open?' open':''}><summary><span>${esc(title)}</span>${count!==''?`<span class="coop-section-count">${esc(String(count))}</span>`:''}</summary><div class="coop-disclosure-body">${body}</div></details>`;
 }
 
-function projectSearch(){
- const label={en:'Search',sv:'Sök',ru:'Поиск',uk:'Пошук',fi:'Haku',bs:'Pretraga',ar:'بحث',fa:'جستجو',so:'Raadi',ku:'Lêgerîn',es:'Buscar'}[lang()]||'Search';
- return `<label class="project-search"><span>${esc(label)}</span><input id="networkProjectSearch" type="search" autocomplete="off"></label><p id="projectSearchEmpty" class="empty" role="status" hidden>${esc(ct('empty'))}</p>`;
-}
-
 function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource','project'];
  const list=data.cooperations.filter(x=>allowed.includes(x.kind));
  const coop=list.find(x=>x.id===selectedCoop);
  let html=`<div class="row"><div><h2>${esc(ct(projectMode?'projectsTitle':'togetherTitle'))}</h2><p class="meta">${esc(ct(projectMode?'projectDesc':'networkDesc'))}</p></div>${guestDemo?'':`<div>${btn('refresh','refresh')}${btn('logout','out')}</div>`}</div>`;
+ if(projectMode&&!coop){
+  const section=currentSubsection('projects');
+  html+=`<nav class="project-view-tabs" aria-label="${esc(ct('projectsTitle'))}">
+   ${[['projects-overview',ct('projectsTitle')],['projects-tasks',ct('tasks')],['projects-updates',ct('updates')]].map(([key,title])=>`<a href="#/projects" data-subsection="${key}"${section===key?' aria-current="page"':''}>${esc(title)}</a>`).join('')}
+  </nav>`;
+ }
  if(!projectMode&&!coop){
   html+=`<section class="together-hub" aria-labelledby="togetherHubTitle">
    <div class="together-hub-head"><p class="eyebrow">FOLKOOP</p><h3 id="togetherHubTitle">${esc(ct('togetherTitle'))}</h3><p>${esc(ct('networkDesc'))}</p></div>
@@ -878,7 +895,6 @@ function renderCooperation(u,r){
     <button type="button" data-home="createCoop" data-kind="purchase"><span aria-hidden="true">🛒</span><strong>${esc(kindLabel('purchase'))}</strong></button>
    </div>
    <div class="together-discovery-bar">
-    <label><span class="sr-only">${esc(t('search'))}</span><input id="networkCoopSearch" type="search" autocomplete="off" placeholder="${esc(t('search'))}"></label>
     <div class="together-filter-row" role="group" aria-label="${esc(ct('kind'))}">
      ${['need','offer','resource','project','purchase'].map(k=>`<button type="button" data-together-kind="${k}">${esc(kindLabel(k))}</button>`).join('')}
     </div>
@@ -984,17 +1000,16 @@ function renderCooperation(u,r){
    const rawView=currentSubsection('projects'),view=guestDemo&&rawView==='projects-mine'?'projects-overview':rawView;
   if(view==='projects-tasks'){
    const tasks=data.assignedTasks.filter(x=>x.assignee_id===u.id&&x.status!=='done');
-   html+=`<section class="project-workspace" data-project-view="tasks"><div class="row"><h3>${esc(ct('tasks'))} <span class="badge">${tasks.length}</span></h3><span class="meta">${esc(ht('task'))}</span></div>${projectSearch()}<div class="task-board">${['todo','doing'].map(status=>`<section class="task-column"><h4>${esc(ct(status))} <span class="badge">${tasks.filter(x=>x.status===status).length}</span></h4>${tasks.filter(x=>x.status===status).map(task=>{const project=list.find(x=>x.id===task.cooperation_id);return `<article class="card project-work-card" data-project-search-card><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<p class="meta">${esc(ct('empty'))}</p>`}</section>`).join('')}</div></section>`;
+   html+=`<section class="project-workspace" data-project-view="tasks"><div class="row"><h3>${esc(ct('tasks'))} <span class="badge">${tasks.length}</span></h3><span class="meta">${esc(ht('task'))}</span></div><div class="task-board">${['todo','doing'].map(status=>`<section class="task-column"><h4>${esc(ct(status))} <span class="badge">${tasks.filter(x=>x.status===status).length}</span></h4>${tasks.filter(x=>x.status===status).map(task=>{const project=list.find(x=>x.id===task.cooperation_id);return `<article class="card project-work-card"><span class="badge">${esc(ct(task.status))}</span><h3>${esc(task.title)}</h3><p>${esc(task.details||'')}</p><p class="meta">${esc(project?.title||ct('projectsTitle'))}</p>${project?cbtn('open','open',project.id):''}</article>`;}).join('')||`<p class="meta">${esc(ct('empty'))}</p>`}</section>`).join('')}</div></section>`;
    return html;
   }
   if(view==='projects-updates'){
    html+=activityDomain.renderRoomNotifications();
    html+=activityDomain.renderTaskActions();
    const updates=data.activityInbox.filter(x=>x.cooperation_kind==='project'&&x.last_activity_at).sort((a,b)=>String(b.last_activity_at).localeCompare(String(a.last_activity_at)));
-   html+=`<section class="project-workspace" data-project-view="updates"><h3>${esc(ct('updates'))}</h3><p class="meta">${esc(at('recentActivity'))}</p>${projectSearch()}<div class="project-timeline">${updates.map(x=>{const line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card project-work-card" data-project-search-card><time class="meta" datetime="${esc(x.last_activity_at)}">${esc(formatWhen(x.last_activity_at))}</time><div class="row"><h3>${esc(x.cooperation_title)}</h3>${Number(x.unread_count||0)?`<span class="net-count">${esc(String(x.unread_count))}</span>`:''}</div><p>${esc(line)}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
+   html+=`<section class="project-workspace" data-project-view="updates"><h3>${esc(ct('updates'))}</h3><p class="meta">${esc(at('recentActivity'))}</p><div class="project-timeline">${updates.map(x=>{const line=activityLabel({actor_id:x.last_actor_id,event_type:x.last_event_type,label:x.last_label},u);return `<article class="card project-work-card"><time class="meta" datetime="${esc(x.last_activity_at)}">${esc(formatWhen(x.last_activity_at))}</time><div class="row"><h3>${esc(x.cooperation_title)}</h3>${Number(x.unread_count||0)?`<span class="net-count">${esc(String(x.unread_count))}</span>`:''}</div><p>${esc(line)}</p>${abtn('openNotify','openActivity',x.cooperation_id)}</article>`;}).join('')||`<div class="empty"><p>${esc(at('noActivity'))}</p></div>`}</div></section>`;
    return html;
   }
-  html+=`<nav class="project-shortcuts" aria-label="${esc(ct('projectsTitle'))}"><a href="#/projects" data-subsection="projects-tasks"><strong>${data.assignedTasks.filter(x=>x.assignee_id===u.id&&x.status!=='done').length}</strong><span>${esc(ht('task'))}</span></a><a href="#/projects" data-subsection="projects-updates"><strong>${data.activityInbox.filter(x=>x.cooperation_kind==='project').reduce((sum,x)=>sum+Number(x.unread_count||0),0)}</strong><span>${esc(at('unread'))} · ${esc(ct('updates'))}</span></a></nav>${projectSearch()}`;
  }
  const kind=projectMode?'project':coopDraft.kind;
  if(!projectMode&&!guestDemo)html+=globalThis.FolkoopNeeds.template();
@@ -1764,24 +1779,6 @@ window.addEventListener('folkoop:start-cooperation',e=>{
  coopCreateOpen=true;selectedCoop=null;resetEconomicFlowState();
  navigateNetwork(kind==='project'?'#/projects':'#/together');
 });
-document.addEventListener('input',e=>{
- if(e.target?.id==='networkProjectSearch'){
-  const needle=e.target.value.trim().toLocaleLowerCase();
-  const cards=[...host.querySelectorAll('[data-project-search-card],[data-together-card]')];
-  for(const card of cards)card.hidden=!!needle&&!card.textContent.toLocaleLowerCase().includes(needle);
-  const empty=host.querySelector('#projectSearchEmpty');
-  if(empty)empty.hidden=!needle||cards.some(card=>!card.hidden);
-  return;
- }
- if(e.target?.id!=='networkCoopSearch')return;
- const needle=e.target.value.trim().toLocaleLowerCase();
- document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
-  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
-  card.dataset.searchMatch=matches?'1':'0';
-  const kindMatch=card.dataset.kindMatch!=='0';
-  card.hidden=!(matches&&kindMatch);
- });
-});
 document.addEventListener('click',e=>{
  const filter=e.target.closest?.('[data-together-kind]');if(!filter)return;
  const turnOff=filter.classList.contains('active');
@@ -1790,24 +1787,7 @@ document.addEventListener('click',e=>{
  if(!turnOff)filter.classList.add('active');
  document.querySelectorAll('#networkPanel [data-together-card]').forEach(card=>{
   const matches=kind==='all'||card.dataset.kind===kind;
-  card.dataset.kindMatch=matches?'1':'0';
-  const searchMatch=card.dataset.searchMatch!=='0';
-  card.hidden=!(matches&&searchMatch);
- });
-});
-document.addEventListener('input',e=>{
- if(e.target?.id==='networkContactSearch'){
-  const needle=e.target.value.trim().toLocaleLowerCase();
-  host.querySelectorAll('[data-contact-card]').forEach(card=>{card.hidden=!card.textContent.toLocaleLowerCase().includes(needle);});
-  return;
- }
- if(e.target?.id!=='networkMessageSearch')return;
- const needle=e.target.value.trim().toLocaleLowerCase();
- document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
-  const matches=!needle||card.textContent.toLocaleLowerCase().includes(needle);
-  card.dataset.searchMatch=matches?'1':'0';
-  const kindMatch=card.dataset.kindMatch!=='0';
-  card.hidden=!(matches&&kindMatch);
+  card.hidden=!matches;
  });
 });
 document.addEventListener('click',e=>{
@@ -1820,9 +1800,7 @@ document.addEventListener('click',e=>{
  if(!turnOff){filter.classList.add('active');filter.setAttribute('aria-pressed','true');}
  document.querySelectorAll('#networkPanel [data-message-card]').forEach(card=>{
   const matches=kind==='all'||card.dataset.messageType===kind;
-  card.dataset.kindMatch=matches?'1':'0';
-  const searchMatch=card.dataset.searchMatch!=='0';
-  card.hidden=!(matches&&searchMatch);
+  card.hidden=!matches;
  });
 });
 const muraTogetherCopy={"ru":["Попробуем вместе","Что бы ты уточнил перед следующим шагом? Это проба в истории Муры: ничего не отправляется.","Уточнить условия","Считать уже готовым","Да. Сначала договоримся с людьми; открытая карточка ещё не означает согласия.","Пока рано: просмотр карточки не подтверждает договорённость.","К историям «Вместе»","Мне нужен плиткорез только на выходные. Найди в карточке, что и где я ищу. Осталось согласовать срок и возврат.","Я могу помочь с фотографиями. Посмотри, что предлагаю. Сначала нужно обсудить задачу и разрешение на съёмку.","Вот грузовой велосипед соседа. Посмотри, кому он принадлежит. Доступность, получение и возврат надо согласовать с владельцем.","Мы собираем общую закупку дров. Посмотри количество и участников. Участие в закупке не означает, что заказ оформлен или оплачен.","Обмен растениями начинался с идеи. Посмотри участников и задачи, открой чат проекта. Предложение помочь ещё нужно согласовать."],"en":["Let’s try together","What would you clarify next? This is practice in Mura’s story: nothing is sent.","Clarify the terms","Treat it as done","Yes. Agree with the people first; an open card is not consent.","Not yet: viewing a card does not confirm an agreement.","Back to Together stories","I need a tile cutter for one weekend. Find what and where I need it. We still need to agree on timing and return.","I can help with photos. See what I offer. We need to discuss the task and permission to take photos.","Here is a neighbour’s cargo bike. Look at its owner. Availability, collection and return need their agreement.","We are coordinating firewood. Look at quantities and participants. Joining does not mean an order is placed or paid.","Our plant exchange started as an idea. Explore people and tasks, and open its chat. An offer to help still needs agreement."],"sv":["Prova tillsammans","Vad vill du klargöra härnäst? Detta är en övning i Muras berättelse; inget skickas.","Klargör villkoren","Betrakta det som klart","Ja. Kom överens med personerna först; ett öppet kort är inget samtycke.","Inte än: att läsa kortet bekräftar ingen överenskommelse.","Tillbaka till berättelserna","Jag behöver en kakelskärare en helg. Hitta vad och var. Tid och återlämning måste avtalas.","Jag kan hjälpa med foton. Läs erbjudandet; uppgift och tillstånd att fotografera behöver diskuteras.","Här är grannens lastcykel. Se vem som äger den. Tillgänglighet, hämtning och återlämning kräver en överenskommelse.","Vi samordnar vedinköp. Titta på mängder och deltagare. Deltagande är ingen beställning eller betalning.","Vårt växtbyte började som en idé. Se deltagare och uppgifter och öppna chatten. Hjälpen behöver avtalas."],"uk":["Спробуймо разом","Що уточнити далі? Це вправа в історії Мури; нічого не надсилається.","Уточнити умови","Вважати завершеним","Так. Спочатку домовимося; відкрита картка не означає згоди.","Ще рано: перегляд не підтверджує домовленість.","До історій «Разом»","Мені потрібен плиткоріз на вихідні. Знайди місце й потребу; узгодьмо строк і повернення.","Я допомагаю з фото. Подивись пропозицію; потрібно обговорити завдання й дозвіл на зйомку.","Це вантажний велосипед сусіда. Знайди власника; отримання й повернення треба узгодити.","Купуємо дрова разом. Подивись кількість і учасників; участь не означає оплату чи замовлення.","Обмін рослинами почався з ідеї. Подивись завдання й чат; допомога потребує домовленості."],"es":["Probemos juntos","¿Qué aclararías? Es una práctica de la historia; no se envía nada.","Aclarar condiciones","Darlo por terminado","Sí. Primero hay que acordarlo; una tarjeta abierta no es consentimiento.","Todavía no: leer no confirma un acuerdo.","Volver a las historias","Necesito un cortador un fin de semana. Busca qué y dónde; falta acordar plazo y devolución.","Ofrezco fotos. Mira la oferta; hay que acordar la tarea y el permiso para fotografiar.","Es la bicicleta de carga de un vecino. Busca al dueño; hay que acordar recogida y devolución.","Coordinamos leña. Mira cantidades y participantes; unirse no es comprar ni pagar.","El intercambio empezó como idea. Mira tareas y abre el chat; ofrecer ayuda requiere acuerdo."],"fi":["Kokeillaan yhdessä","Mitä selvittäisit? Tämä on harjoitus; mitään ei lähetetä.","Selvitä ehdot","Pidä valmiina","Kyllä. Sovi ensin; avoin kortti ei ole suostumus.","Ei vielä: lukeminen ei vahvista sopimusta.","Takaisin tarinoihin","Tarvitsen laattaleikkurin viikonlopuksi. Etsi tarve ja paikka; sovi aika ja palautus.","Tarjoan valokuvausta. Katso tarjousta; sovi tehtävä ja kuvauslupa.","Tämä on naapurin tavarapyörä. Etsi omistaja; sovi nouto ja palautus.","Hankimme polttopuita. Katso määrät ja ihmiset; liittyminen ei ole tilaus tai maksu.","Kasvinvaihto alkoi ideasta. Katso tehtävät ja keskustelu; avusta pitää sopia."],"bs":["Probajmo zajedno","Šta treba razjasniti? Ovo je vježba; ništa se ne šalje.","Razjasniti uslove","Smatrati završenim","Da. Prvo se dogovorimo; otvorena kartica nije saglasnost.","Ne još: čitanje ne potvrđuje dogovor.","Nazad na priče","Treba mi rezač pločica za vikend. Pronađi potrebu i mjesto; dogovorimo rok i povrat.","Nudim fotografisanje. Pogledaj ponudu; dogovorimo zadatak i dozvolu za snimanje.","Ovo je susjedov teretni bicikl. Pronađi vlasnika; dogovorimo preuzimanje i povrat.","Nabavljamo drva zajedno. Pogledaj količine i učesnike; članstvo nije narudžba ni uplata.","Razmjena biljaka počela je idejom. Pogledaj zadatke i chat; pomoć treba dogovoriti."],"ar":["لنجرب معًا","ماذا توضح؟ هذا تمرين في القصة؛ لا يُرسل شيء.","توضيح الشروط","اعتباره منتهيًا","نعم، نتفق أولًا؛ البطاقة المفتوحة ليست موافقة.","ليس بعد: القراءة لا تؤكد الاتفاق.","العودة للقصص","أحتاج قاطع بلاط لعطلة الأسبوع. ابحث عن الحاجة والمكان؛ نتفق على المدة والإرجاع.","أعرض التصوير. اقرأ العرض؛ نتفق على المهمة وإذن التصوير.","هذه دراجة شحن لجار. ابحث عن المالك؛ نتفق على الاستلام والإرجاع.","ننسق شراء الحطب. انظر للكميات والمشاركين؛ الانضمام ليس طلبًا أو دفعًا.","بدأ تبادل النباتات بفكرة. انظر للمهام وافتح الدردشة؛ المساعدة تحتاج اتفاقًا."],"fa":["با هم امتحان کنیم","چه چیزی روشن شود؟ این تمرین است؛ چیزی ارسال نمی‌شود.","روشن کردن شرایط","تمام‌شده بدانیم","بله، اول توافق کنیم؛ کارت باز رضایت نیست.","هنوز نه: خواندن توافق را تأیید نمی‌کند.","بازگشت به داستان‌ها","کاشی‌بُر برای آخر هفته لازم دارم. نیاز و مکان را پیدا کن؛ زمان و بازگرداندن را توافق کنیم.","عکاسی پیشنهاد می‌کنم. پیشنهاد را ببین؛ درباره کار و اجازه عکاسی توافق کنیم.","این دوچرخه باری همسایه است. مالک را پیدا کن؛ تحویل و بازگرداندن توافق لازم دارد.","خرید هیزم را هماهنگ می‌کنیم. مقدار و افراد را ببین؛ پیوستن سفارش یا پرداخت نیست.","تبادل گیاه از ایده شروع شد. کارها و چت را ببین؛ کمک توافق لازم دارد."],"so":["Aan wada tijaabino","Maxaa la caddeeyaa? Waa tababar sheekada ku jira; waxba lama dirayo.","Caddee shuruudaha","U arag inay dhammaatay","Haa, marka hore heshiis; kaar furan ma aha oggolaansho.","Weli ma aha: akhrisku heshiis ma xaqiijiyo.","Ku noqo sheekooyinka","Waxaan u baahanahay qalab gooya marmarka dhammaadka toddobaadka. Eeg baahida iyo goobta; heshiis waqtiga iyo celinta.","Sawirro ayaan bixiyaa. Eeg dalabka; heshiis hawsha iyo oggolaanshaha sawirka.","Waa baaskiilka xamuulka ee deriska. Eeg milkiilaha; heshiis qaadashada iyo celinta.","Xaabo ayaan wada iibsanaynaa. Eeg tirada iyo dadka; ku biiristu ma aha dalab ama lacag bixin.","Dhir-isweydaarsigu fikrad ayuu ka bilowday. Eeg hawlaha iyo chat-ka; caawintu heshiis bay u baahan tahay."],"ku":["Bi hev re biceribînin","Çi zelal bikin? Ev ceribandin e; tiştek nayê şandin.","Mercan zelal bike","Qediyayî bihesibîne","Erê, pêşî li hev bikin; karta vekirî ne razîbûn e.","Hê ne: xwendin lihevkirinê piştrast nake.","Vegere çîrokan","Amûra fayansê ji bo dawiya hefteyê lazim e. Hewcedarî û cih bibîne; dem û vegerandin li hev bikin.","Ez wênekêşiyê pêşniyar dikim. Pêşniyarê bibîne; kar û destûra wêneyê li hev bikin.","Ev bisîkleta barê cîran e. Xwedî bibîne; wergirtin û vegerandin li hev bikin.","Em êzingê bi hev re dikirin. Mîqdar û mirovan bibîne; tevlîbûn ne siparîş an dayîn e.","Guherandina nebatan bi fikrekê dest pê kir. Erk û sohbetê bibîne; alîkarî lihevkirinê dixwaze."]};

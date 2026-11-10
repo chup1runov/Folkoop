@@ -75,7 +75,7 @@ function create({
       const ids=new Set(discoverable.map(p=>p.id));
       for(const member of chatMembers)if(member.user_id!==user.id&&chatMembers.some(own=>own.user_id===user.id&&own.conversation_id===member.conversation_id))ids.add(member.user_id);
       const contacts=[...ids].map(id=>getProfile(id)||directory.find(p=>p.id===id)).filter(Boolean).sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),language));
-      return `<section class="messages-contacts"><h2>${escape(text[0])}</h2><p class="meta">${escape(text[6])}</p><label class="messages-contact-search">${escape(text[0])}<input id="networkContactSearch" type="search" autocomplete="off"></label><div class="messenger-contact-list">${contacts.map(person=>{
+      return `<section class="messages-contacts"><h2>${escape(text[0])}</h2><p class="meta">${escape(text[6])}</p><div class="messenger-contact-list">${contacts.map(person=>{
         const direct=chats.find(c=>c.kind==='direct'&&chatMembers.some(m=>m.conversation_id===c.id&&m.user_id===user.id)&&chatMembers.some(m=>m.conversation_id===c.id&&m.user_id===person.id));
         return `<article class="messenger-contact" data-contact-card><span class="messenger-avatar" aria-hidden="true">${initials(person.name)}</span><div><h3>${escape(person.name||'—')}</h3><p class="meta">${escape(person.skills||'')}</p></div>${direct?`<button type="button" class="messenger-open" data-net="openChat" data-id="${escape(direct.id)}" aria-label="${escape(chatText('conversation')+' · '+person.name)}"><span aria-hidden="true">›</span></button>`:guestDemo?'':`<a class="text-button" href="#/messages" data-subsection="messages-direct" data-contact-id="${escape(person.id)}">${escape(chatText('startDirect'))}</a>`}</article>`;
       }).join('')||`<p class="empty">${escape(chatText('noPeople'))}</p>`}</div></section>`;
@@ -146,7 +146,6 @@ function create({
         ${invitations.length?`<a href="#/messages" data-subsection="messages-invites"><span aria-hidden="true">✉</span><strong>${escape(chatText('invitations'))}</strong><small>${escape(String(invitations.length))}</small></a>`:''}
       </div>
       <div class="messages-discovery-bar">
-        <label><span class="sr-only">${escape(chatText('conversation'))}</span><input id="networkMessageSearch" type="search" autocomplete="off" placeholder="${escape(chatText('conversation'))}"></label>
         <div class="messages-filter-row" role="group" aria-label="${escape(chatText('conversation'))}">
           <button type="button" data-message-kind="direct" aria-pressed="false">${escape(chatText('direct'))}</button>
           <button type="button" data-message-kind="group" aria-pressed="false">${escape(chatText('groupChat'))}</button>

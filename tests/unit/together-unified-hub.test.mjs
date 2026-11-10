@@ -6,14 +6,17 @@ const ui=await readFile('apps/web/network-ui.js','utf8');
 const shell=await readFile('apps/web/folkoop.js','utf8');
 const css=await readFile('apps/web/folkoop.css','utf8');
 
-test('project workspaces expose searchable assigned work and newest-first updates without new writes',()=>{
+test('project workspaces retain assigned work and newest-first updates without duplicate searches',()=>{
  assert.match(ui,/data-project-view="tasks"/);
  assert.match(ui,/x.assignee_id===u.id&&x.status!=='done'/);
  assert.match(ui,/\['todo','doing'\]\.map\(status=>/);
  assert.match(ui,/data-project-view="updates"/);
  assert.match(ui,/String\(b.last_activity_at\).localeCompare\(String\(a.last_activity_at\)\)/);
- assert.match(ui,/id="networkProjectSearch"/);
- assert.match(ui,/id="projectSearchEmpty"/);
+ assert.doesNotMatch(ui,/id="networkProjectSearch"/);
+ assert.doesNotMatch(ui,/id="projectSearchEmpty"/);
+ assert.doesNotMatch(ui,/class="project-shortcuts"/);
+ assert.match(ui,/class="project-view-tabs"/);
+ assert.match(css,/\.project-view-tabs a\[aria-current="page"\]/);
  assert.match(css,/\.task-board\{grid-template-columns:1fr\}/);
 });
 
@@ -52,8 +55,8 @@ test('global Start delegates to signed-in network cooperation before local fallb
   assert.match(ui,/detail\.handled=true/);
 });
 
-test('global Search indexes the account without replacing the Together filter',()=>{
-  assert.match(ui,/id="networkCoopSearch"/);
+test('global Search indexes accessible data and Together retains kind filters',()=>{
+  assert.doesNotMatch(ui,/id="networkCoopSearch"/);
   assert.match(shell,/folkoop:search-index/);
   assert.match(shell,/dialog.showModal\(\)/);
   assert.match(ui,/guestDemo\?demoSnapshot\(true\):data/);
@@ -61,9 +64,9 @@ test('global Search indexes the account without replacing the Together filter',(
   assert.match(shell,/folkoop:network-rendered/);
 });
 
-test('Together hub keeps search and kind filters client-side and non-mutating',()=>{
-  assert.match(ui,/card\.dataset\.searchMatch/);
-  assert.match(ui,/card\.dataset\.kindMatch/);
+test('Together hub keeps kind filters client-side and non-mutating',()=>{
+  assert.doesNotMatch(ui,/card\.dataset\.searchMatch/);
+  assert.match(ui,/card\.hidden=!matches/);
   assert.match(css,/\.together-action-grid/);
   assert.match(css,/\.together-filter-row button\.active/);
 });

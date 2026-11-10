@@ -6,7 +6,7 @@ let storage;try{storage=localStorage;}catch{/* Memory-only mode. */}
 const store=C.workspace(storage);
 let lang='sv';try{const saved=storage?.getItem('folkoop-language');lang=C.LANGS.includes(saved)?saved:(navigator.language||'sv').split('-')[0];}catch{}
 if(!C.LANGS.includes(lang))lang='sv';
-let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, query='', frame=null, cityHandoff=null;
+let current=C.route(location.hash), formKind=null, scratch={}, profileScratch=null, frame=null, cityHandoff=null;
 const reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 const NAV_ORDER=['home','together','center','city','messages'];
 // Flags are supplementary locale cues, not a claim about a speaker's nationality.
@@ -228,17 +228,17 @@ function toggleStartMenu(){
  document.querySelectorAll('#globalStartButton,#mobileCreateButton').forEach(button=>button.setAttribute('aria-expanded',String(open)));
 }
 const SEARCH_COPY={
- ru:['Поиск по аккаунту','Поиск в доступных данных. Незагруженные переписки и внешние городские источники не включены.','Ничего не найдено'],
- en:['Search account','Search available data. Unloaded conversations and external city sources are not included.','No results'],
- sv:['Sök i kontot','Sök i tillgängliga uppgifter. Oladdade samtal och externa stadskällor ingår inte.','Inga resultat'],
- uk:['Пошук в акаунті','Пошук у доступних даних. Незавантажені розмови та зовнішні міські джерела не включено.','Нічого не знайдено'],
- fi:['Hae tililtä','Haku saatavilla olevista tiedoista. Lataamattomat keskustelut ja ulkoiset kaupunkilähteet eivät sisälly.','Ei tuloksia'],
- es:['Buscar en la cuenta','Busca en los datos disponibles. No incluye conversaciones sin cargar ni fuentes externas de la ciudad.','Sin resultados'],
- bs:['Pretraži račun','Pretraga dostupnih podataka. Neučitani razgovori i vanjski gradski izvori nisu uključeni.','Nema rezultata'],
- ar:['البحث في الحساب','البحث في البيانات المتاحة. لا يشمل المحادثات غير المحملة والمصادر الخارجية للمدينة.','لا توجد نتائج'],
- fa:['جست‌وجو در حساب','جست‌وجو در داده‌های موجود. گفت‌وگوهای بارگذاری‌نشده و منابع خارجی شهر شامل نمی‌شوند.','نتیجه‌ای یافت نشد'],
- so:['Ka raadi akoonka','Raadi xogta la heli karo. Wadahadallada aan la soo rarin iyo ilaha dibadda ee magaalada kuma jiraan.','Wax natiijo ah lama helin'],
- ku:['Di hesabê de bigere','Di daneyên berdest de lêgerîn. Axaftinên nehatine barkirin û çavkaniyên derveyî yên bajêr ne di nav de ne.','Encam tune']
+ ru:['Поиск по FOLKOOP','Поиск в доступных данных. Незагруженные переписки и внешние городские источники не включены.','Ничего не найдено'],
+ en:['Search FOLKOOP','Search available data. Unloaded conversations and external city sources are not included.','No results'],
+ sv:['Sök i FOLKOOP','Sök i tillgängliga uppgifter. Oladdade samtal och externa stadskällor ingår inte.','Inga resultat'],
+ uk:['Пошук у FOLKOOP','Пошук у доступних даних. Незавантажені розмови та зовнішні міські джерела не включено.','Нічого не знайдено'],
+ fi:['Hae FOLKOOPista','Haku saatavilla olevista tiedoista. Lataamattomat keskustelut ja ulkoiset kaupunkilähteet eivät sisälly.','Ei tuloksia'],
+ es:['Buscar en FOLKOOP','Busca en los datos disponibles. No incluye conversaciones sin cargar ni fuentes externas de la ciudad.','Sin resultados'],
+ bs:['Pretraži FOLKOOP','Pretraga dostupnih podataka. Neučitani razgovori i vanjski gradski izvori nisu uključeni.','Nema rezultata'],
+ ar:['البحث في FOLKOOP','البحث في البيانات المتاحة. لا يشمل المحادثات غير المحملة والمصادر الخارجية للمدينة.','لا توجد نتائج'],
+ fa:['جست‌وجو در FOLKOOP','جست‌وجو در داده‌های موجود. گفت‌وگوهای بارگذاری‌نشده و منابع خارجی شهر شامل نمی‌شوند.','نتیجه‌ای یافت نشد'],
+ so:['Ka raadi FOLKOOP','Raadi xogta la heli karo. Wadahadallada aan la soo rarin iyo ilaha dibadda ee magaalada kuma jiraan.','Wax natiijo ah lama helin'],
+ ku:['Li FOLKOOP bigere','Di daneyên berdest de lêgerîn. Axaftinên nehatine barkirin û çavkaniyên derveyî yên bajêr ne di nav de ne.','Encam tune']
 };
 function openGlobalSearch(){
  closeStartMenu();closeMobileDemo();capture();
@@ -308,8 +308,8 @@ function capture(){
 }
 function status(ok=true){$('#status').textContent=t(ok?(store.isPersistent()?'savedDevice':'savedMemory'):'failed');}
 function drafts(kinds){
- const items=store.get().drafts.filter(d=>(!kinds||kinds.includes(d.kind))&&(!query||(d.title+' '+d.body).toLocaleLowerCase().includes(query.toLocaleLowerCase())));
- if(!items.length)return `<div class="empty"><span class="empty-icon">${icon(current)}</span><h2>${esc(t(query?'noMatch':'noDrafts'))}</h2><p>${esc(t('noDraftsText'))}</p></div>`;
+ const items=store.get().drafts.filter(d=>!kinds||kinds.includes(d.kind));
+ if(!items.length)return `<div class="empty"><span class="empty-icon">${icon(current)}</span><h2>${esc(t('noDrafts'))}</h2><p>${esc(t('noDraftsText'))}</p></div>`;
  return `<div class="draft-grid">${items.map(d=>`<article class="card draft ${d.done?'complete':''}"><span class="badge">${esc(t(d.kind))}</span><h2>${esc(d.title)}</h2><p class="draft-body">${esc(d.body)}</p><p class="meta">${esc(t(d.done?'marked':'local'))}</p><div class="row"><button type="button" class="text-button" data-toggle="${d.id}">${esc(t(d.done?'undo':'done'))}</button><button type="button" class="text-button danger" data-delete="${d.id}">${esc(t('remove'))}</button></div></article>`).join('')}</div>`;
 }
 function form(){
@@ -1361,7 +1361,7 @@ function render(focus=false){
  if(current==='messages')body=head('messages','messageText')+a('people','people','button secondary');
  if(current==='projects'||current==='together'){
   const kinds=current==='projects'?['project']:['need','offer','purchase','resource'];
-  body=head(current+'Title',current+'Text')+`<div class="actions">${kinds.map(k=>button(k,k)).join('')}</div>`+form()+`<label class="search">${esc(t('search'))}<input id="draftSearch" type="search" value="${esc(query)}"></label><div id="draftList">${drafts(kinds)}</div>`;
+  body=head(current+'Title',current+'Text')+`<div class="actions">${kinds.map(k=>button(k,k)).join('')}</div>`+form()+`<div id="draftList">${drafts(kinds)}</div>`;
  }
  if(current==='city')body=cityShell();
  root.innerHTML=muraCityPractice()+body;if(current==='city'&&subsection!=='city-transport'&&citySupported(selectedCity()))showCity();else sendCity();
@@ -1437,7 +1437,7 @@ window.addEventListener('folkoop:helper-toggle',()=>{
  if(onboardingOpen)return;
  helperOpen=!helperOpen;updateHelper();
 });
-window.addEventListener('hashchange',()=>{if(onboardingOpen&&C.route(location.hash)!==(activeMuraStory?.route||onboardingSteps[onboardingStep].route)){restoreMuraPractice();activeMuraStory=null;saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;globalThis.FolkoopGuide?.syncModal?.();}capture();current=C.route(location.hash);query='';formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{if(onboardingOpen&&C.route(location.hash)!==(activeMuraStory?.route||onboardingSteps[onboardingStep].route)){restoreMuraPractice();activeMuraStory=null;saveTourProgress('paused');onboardingOpen=false;ensureOnboarding().hidden=true;globalThis.FolkoopGuide?.syncModal?.();}capture();current=C.route(location.hash);formKind=null;closeMenu();closeMobileDemo();closeStartMenu();render(true);window.scrollTo(0,0);});
 document.addEventListener('click',e=>{
  const mobileAction=e.target.closest('[data-mobile-action]');
  if(mobileAction){
@@ -1578,9 +1578,6 @@ document.addEventListener('click',e=>{
  }
 });
 window.addEventListener('folkoop:preferences',()=>{render();});
-document.addEventListener('input',e=>{
- if(e.target.id==='draftSearch'){query=e.target.value;$('#draftList').innerHTML=drafts(current==='projects'?['project']:['need','offer','purchase','resource']);}
-});
 document.addEventListener('change',e=>{
  if(e.target.id==='appearanceTheme'){themeChoice=['light','dark','system'].includes(e.target.value)?e.target.value:'system';try{storage?.setItem('folkoop-theme-v1',themeChoice);}catch{}applyAppearance();return;}
  if(e.target.id==='appearanceMotion'){quietMotion=e.target.checked;try{storage?.setItem('folkoop-reduce-motion-v1',String(quietMotion));}catch{}applyAppearance();return;}

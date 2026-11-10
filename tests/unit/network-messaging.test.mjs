@@ -111,7 +111,7 @@ test('default Messages view is browse-first and keeps creation behind explicit m
  const f=fixture(),d=domain(f);
  const html=d.render(f.user,{view:'messages-chats'});
  assert(html.includes('class="messages-hub"'));
- assert(html.includes('id="networkMessageSearch"'));
+ assert(!html.includes('id="networkMessageSearch"'));
  assert(html.includes('data-message-kind="direct"'));
  assert(html.includes('data-message-kind="group"'));
  assert(html.includes('data-message-kind="work"'));
