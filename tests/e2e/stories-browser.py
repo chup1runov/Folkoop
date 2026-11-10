@@ -58,7 +58,7 @@ async def main():
     await route.fulfill(body=json.dumps(result),content_type='application/json',headers=headers)
    await ctx.route('**/*',routing)
    page=await ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-   await page.goto(BASE+'#/me')
+   await page.goto(BASE+'#/me');await page.wait_for_load_state('networkidle')
    await page.fill('#netLogin [name=email]','synthetic@example.test');await page.click('#netLogin [value=code]')
    await page.fill('#netLogin [name=code]','123456');await page.check('#netLogin [name=policyAccepted]');await page.click('#netLogin [value=verify]')
    await expect(page.locator('.story-circle[data-story-author]')).to_have_count(1)
@@ -89,10 +89,10 @@ async def main():
     await page.click('[data-story-report]')
    assert state['report']==1
    await page.click('[data-story-link]');await expect(page).to_have_url(__import__('re').compile(r'#/projects$'));await expect(page.locator('.coop-summary')).to_contain_text('Synthetic story project')
-   await page.goto(BASE+'#/me');await expect(page.locator('.story-circle[data-story-author]')).to_have_count(1)
+   await page.goto(BASE+'#/me');await page.wait_for_load_state('networkidle');await expect(page.locator('.story-circle[data-story-author]')).to_have_count(1)
    await page.locator(f'.story-circle[data-story-author="{OTHER}"]').click();await expect(page.locator('.story-paper')).to_be_visible();await page.click('[data-story-reply]')
    await expect(page).to_have_url(__import__('re').compile(r'#/messages$'));await expect(page.locator('#netMessage')).to_be_visible();assert state['reply']==1
-   await page.goto(BASE+'#/me');await page.click('[data-story-new]')
+   await page.goto(BASE+'#/me');await page.wait_for_load_state('networkidle');await page.click('[data-story-new]')
    await page.fill('.story-compose textarea','My useful story');await page.select_option('.story-compose [name=cooperation]',PROJECT);await page.select_option('.story-compose [name=audience]','project')
    await page.click('.story-compose [type=submit]')
    await page.click('[data-story-close]');await page.click('[data-story-new]')
@@ -116,7 +116,7 @@ async def main():
    await page.locator(f'.story-circle[data-story-author="{OTHER}"]').click();await expect(page.locator('.story-paper')).to_be_visible();await page.keyboard.press('Escape');await expect(page.locator('.story-dialog')).to_have_count(0)
    await page.goto(BASE+'#/together')
    await expect(page.locator('#accountStories')).to_have_count(0)
-   await page.goto(BASE+'#/me')
+   await page.goto(BASE+'#/me');await page.wait_for_load_state('networkidle')
    await expect(page.locator('.story-own-circle')).to_have_count(1)
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
    assert errors==[],errors
