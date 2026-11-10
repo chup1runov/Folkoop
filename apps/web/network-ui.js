@@ -591,8 +591,6 @@ window.addEventListener('folkoop:search-index',event=>{
  for(const u of snapshot.coopUpdates){const c=coop(u.cooperation_id);if(c)add(ct('updates'),c.title,u.body,c.kind==='project'?'projects':'together',c.id,u.body);}
 });
 function navigateNetwork(hash){internalHash=hash;location.hash=hash;}
-const btn=(action,label,id='')=>`<button class="button secondary" type="button" data-net="${action}" data-id="${esc(id)}">${esc(t(label))}</button>`;
-const field=(name,label,value='',max=100,area=false)=>`<label>${esc(t(label))}${area?`<textarea name="${name}" maxlength="${max}" rows="3">${esc(value)}</textarea>`:`<input name="${name}" maxlength="${max}" value="${esc(value)}"${name==='name'?' required':''}>`}</label>`;
 const uncertainMessageCopy={"ru": "Ответ сервера не получен: сообщение могло отправиться. Повторите отправку здесь — повтор использует ту же команду и не создаст дубль.", "en": "No server reply: the message may have been sent. Retry here; the same command will be reused without creating a duplicate.", "sv": "Inget serversvar: meddelandet kan ha skickats. Försök igen här; samma kommando används utan att skapa en dubblett.", "uk": "Немає відповіді сервера: повідомлення могло надіслатися. Повторіть тут — та сама команда не створить дубль.", "fi": "Palvelin ei vastannut: viesti on voitu lähettää. Yritä tässä uudelleen; sama komento estää kaksoiskappaleen.", "es": "El servidor no respondió: el mensaje puede haberse enviado. Reintenta aquí; se reutiliza la misma orden sin crear un duplicado.", "bs": "Server nije odgovorio: poruka je možda poslana. Pokušajte ponovo ovdje; ista naredba sprečava duplikat.", "ar": "لم يرد الخادم؛ ربما أُرسلت الرسالة. أعد المحاولة هنا؛ سيُستخدم الأمر نفسه دون إنشاء نسخة مكررة.", "fa": "سرور پاسخ نداد؛ ممکن است پیام ارسال شده باشد. همین‌جا دوباره تلاش کنید؛ همان فرمان استفاده می‌شود و پیام تکراری ایجاد نمی‌کند.", "so": "Server-ku ma jawaabin: farriinta waxaa laga yaabaa inay dirtay. Halkan ku celi; isla amarka ayaa la isticmaalayaa iyada oo aan nuqul kale la abuurin.", "ku": "Server bersiv neda: dibe ku peyam hatibe şandin. Li vir dîsa biceribîne; heman ferman tê bikaranîn û dubare nayê çêkirin."};
 const liveMessageCopy={"ru": "Автообновление в открытой вкладке, когда вы не вводите текст. Без сквозного шифрования.", "en": "Updates automatically in a visible tab while you are not editing. Not end-to-end encrypted.", "sv": "Uppdateras automatiskt i en synlig flik när du inte skriver. Inte end-to-end-krypterat.", "uk": "Автооновлення у відкритій вкладці, коли ви не вводите текст. Без наскрізного шифрування.", "fi": "Päivittyy automaattisesti näkyvässä välilehdessä, kun et muokkaa. Ei päästä päähän -salausta.", "es": "Se actualiza en una pestaña visible mientras no editas. Sin cifrado de extremo a extremo.", "bs": "Automatsko osvježavanje u vidljivoj kartici dok ne uređujete. Bez end-to-end šifriranja.", "ar": "تحديث تلقائي في علامة تبويب ظاهرة عندما لا تكتب. دون تشفير من طرف إلى طرف.", "fa": "وقتی در حال نوشتن نیستید، در زبانهٔ قابل‌مشاهده خودکار به‌روز می‌شود. رمزگذاری سرتاسری ندارد.", "so": "Si toos ah ayay u cusboonaataa tab muuqda marka aadan wax qorayn. Ma laha sirgelin gees-ilaa-gees ah.", "ku": "Di tabeke xuya de dema ku tu nenivîsî bixweber nû dibe. Şîfrekirina ji serî heta dawiyê tune ye."};
 const mt=k=>muraText('chat',k)??(!guestDemo&&['messagesDesc','notEncrypted'].includes(k)?liveMessageCopy[lang()]||liveMessageCopy.en:(chatCopy[lang()][k]||chatCopy.en[k]||k));
@@ -602,21 +600,12 @@ const lt=k=>lifecycleCopy[lang()][k]||lifecycleCopy.en[k]||k;
 const at=k=>muraText('activity',k)??(activityCopy[lang()][k]||activityCopy.en[k]||k);
 const ht=k=>muraText('home',k)??(homeCopy[lang()][k]||homeCopy.en[k]||k);
 const st=k=>globalThis.FolkoopCopy?.COPY?.[lang()]?.[k]||globalThis.FolkoopCopy?.COPY?.en?.[k]||k;
+const viewTools=globalThis.FolkoopNetworkView?.create({escape:esc,accountText:t,cooperationText:ct,locale:lang});
+if(!viewTools)throw new Error('network-view.js must load before network-ui.js');
+const {btn,field,localDateTime,formatWhen,coopDisclosure,projectSearch}=viewTools;
 const abtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(at(key))}</button>`;
 
-function localDateTime(value){
- if(!value)return '';
- const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
- const pad=n=>String(n).padStart(2,'0');
- return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
-}
 
-function formatWhen(value){
- if(!value)return '';
- const d=new Date(value);if(!Number.isFinite(d.getTime()))return '';
- try{return new Intl.DateTimeFormat(lang(),{dateStyle:'medium',timeStyle:'short'}).format(d);}
- catch{return d.toISOString().slice(0,16).replace('T',' ');}
-}
 
 const cbtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ct(key))}</button>`;
 const obtn=(action,key,id='')=>`<button class="button secondary" type="button" data-coop="${action}" data-id="${esc(id)}">${esc(ot(key))}</button>`;
@@ -803,14 +792,7 @@ function renderMessages(u){
  })+'</section>';
 }
 
-function coopDisclosure(key,title,count,body,open=false){
- return `<details class="coop-disclosure" data-coop-section="${esc(key)}"${open?' open':''}><summary><span>${esc(title)}</span>${count!==''?`<span class="coop-section-count">${esc(String(count))}</span>`:''}</summary><div class="coop-disclosure-body">${body}</div></details>`;
-}
 
-function projectSearch(){
- const label={en:'Search',sv:'Sök',ru:'Поиск',uk:'Пошук',fi:'Haku',bs:'Pretraga',ar:'بحث',fa:'جستجو',so:'Raadi',ku:'Lêgerîn',es:'Buscar'}[lang()]||'Search';
- return `<label class="project-search"><span>${esc(label)}</span><input id="networkProjectSearch" type="search" autocomplete="off"></label><p id="projectSearchEmpty" class="empty" role="status" hidden>${esc(ct('empty'))}</p>`;
-}
 
 function renderCooperation(u,r){
  const projectMode=r==='projects',allowed=projectMode?['project']:['need','offer','purchase','resource','project'];

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "FK-ENGINE-002",
+  "updated": "2026-11-10",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-ENGINE-002.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-10",
+    "scope": "Stacked draft PR extracting presentation helpers, no deployment or data changes"
+  },
+  "requirements": [
+    {
+      "id": "FK-ENGINE-002-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-002-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-002-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-002-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-ENGINE-002-T01",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-002-R01",
+        "FK-ENGINE-002-R02"
+      ],
+      "evidence": [
+        "FK-ENGINE-002-E01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-002-T02",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-002-R03"
+      ],
+      "evidence": [
+        "FK-ENGINE-002-E02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-002-T03",
+      "status": "pending",
+      "requirements": [
+        "FK-ENGINE-002-R04"
+      ],
+      "evidence": [
+        "FK-ENGINE-002-E03"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-ENGINE-002-E01",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C01",
+        "C02"
+      ],
+      "path": "tests/unit/network-view.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-002-E02",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C03"
+      ],
+      "path": "tests/unit/entry-script-order.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-002-E03",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-ENGINE-002.md"
+    }
+  ],
+  "open_questions": [
+    "Hosted browser and production-build CI evidence missing pending the PR checks."
+  ],
+  "next_action": "Review hosted CI and failure modes; do not merge until the dependent PR is accepted and all behavioral gates pass."
+}
