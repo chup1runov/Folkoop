@@ -783,7 +783,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .project-view-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
 .project-view-tabs a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font-weight:650;text-decoration:none}
 .project-view-tabs a[aria-current="page"]{border-color:var(--accent);background:var(--soft);color:var(--accent)}
-@media(max-width:760px), (min-width:761px) and (max-width:900px) and (max-height:480px) and (orientation:landscape){.project-view-tabs{display:none}}
+.project-mobile-filters{display:none}
+@media(max-width:760px), (min-width:761px) and (max-width:900px) and (max-height:480px) and (orientation:landscape){.project-view-tabs{display:none}.project-mobile-filters{display:flex}}
 .task-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .task-column{min-width:0;background:rgba(23,107,107,.04);border-radius:18px;padding:14px}
 .task-column h4{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px}

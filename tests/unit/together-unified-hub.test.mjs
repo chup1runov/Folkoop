@@ -16,7 +16,10 @@ test('project workspaces retain assigned work and newest-first updates without d
  assert.doesNotMatch(ui,/id="projectSearchEmpty"/);
  assert.doesNotMatch(ui,/class="project-shortcuts"/);
  assert.match(ui,/class="project-view-tabs"/);
+ assert.match(ui,/\[\x27projects-mine\x27/);
+ assert.match(ui,/class="messages-filter-row project-mobile-filters"/);
  assert.match(css,/\.project-view-tabs a\[aria-current="page"\]/);
+ assert.match(css,/\.project-mobile-filters\{display:none\}/);
  assert.match(css,/\.task-board\{grid-template-columns:1fr\}/);
 });
 
