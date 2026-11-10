@@ -68,15 +68,11 @@ async def main():
    compact=await page.locator('.story-strip').bounding_box()
    assert compact['height']<=110,(width,compact)
    await page.locator('.story-strip').screenshot(path=str(OUT/f'story-strip-{width}-{theme}-{lang}.png'))
-   await page.goto(BASE+'#/together')
-   await expect(page.locator('#accountStories')).to_have_count(0)
-   await page.goto(BASE+'#/me')
-   await expect(page.locator('.story-circle[data-story-author]')).to_have_count(1)
    state['holdRefresh']=True
    await page.evaluate("window.dispatchEvent(new Event('focus'))")
    await asyncio.wait_for(refresh_started.wait(),5)
    await page.locator(f'.story-circle[data-story-author="{OTHER}"]').click();await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')
-   async with page.expect_response(lambda r:r.url.endswith('/fk_story_feed')):
+   async with page.expect_response(lambda r:'/fk_profiles?' in r.url):
     state['holdRefresh']=False;refresh_release.set()
    await expect(page.locator('.story-paper')).to_contain_text('Invitation 1')
    # A late event for the already mounted route must not close a new viewer.
@@ -118,6 +114,10 @@ async def main():
    await expect(page.locator('.story-status')).not_to_be_empty()
    state['feedError']=False;await page.click('[data-story-refresh]');await expect(page.locator('.story-circle[data-story-author]')).to_have_count(1)
    await page.locator(f'.story-circle[data-story-author="{OTHER}"]').click();await expect(page.locator('.story-paper')).to_be_visible();await page.keyboard.press('Escape');await expect(page.locator('.story-dialog')).to_have_count(0)
+   await page.goto(BASE+'#/together')
+   await expect(page.locator('#accountStories')).to_have_count(0)
+   await page.goto(BASE+'#/me')
+   await expect(page.locator('.story-own-circle')).to_have_count(1)
    assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
    assert errors==[],errors
    print(f'PASS {width}/{theme}/{lang}: viewer, reply, project, idempotent lost-response retry, archive, withdrawal, report, unavailable feed, bounds')
