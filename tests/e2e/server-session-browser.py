@@ -4,7 +4,7 @@ from playwright.async_api import async_playwright,expect
 BASE='http://localhost:4490/'
 async def main():
  async with async_playwright() as pw:
-  browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'))
+  browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox','--disable-dev-shm-usage'])
   for width in [1366,390]:
    ctx=await browser.new_context(viewport={'width':width,'height':844},service_workers='block')
    await ctx.add_init_script("sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-language','en');localStorage.setItem('folkoop-language-choice-v1','done');")
@@ -15,6 +15,7 @@ async def main():
    page=await ctx.new_page()
    diagnostics=[]
    ctx.on('response',lambda response: diagnostics.append({'path':'session','status':response.status}) if '/api/network/session' in response.url else None)
+   page.on('crash',lambda _: diagnostics.append({'page':'crashed'}))
    page.on('pageerror',lambda error: diagnostics.append({'pageerror':str(error)}))
    await page.goto(BASE+'?intro=0#/me')
    await page.wait_for_function('!!globalThis.FolkoopNetwork')
@@ -26,7 +27,8 @@ async def main():
     await expect(page.locator('#netProfile input[name="name"]')).to_have_value('Synthetic session person')
    except Exception:
     print('Synthetic OAuth diagnostics:',diagnostics,flush=True)
-    print('Synthetic UI:',await page.locator('#networkPanel').inner_text(),flush=True)
+    try: print('Synthetic UI:',await page.locator('#networkPanel').inner_text(timeout=1000),flush=True)
+    except Exception: print('Synthetic UI unavailable',flush=True)
     raise
    cookies=await ctx.cookies();cookie=next(c for c in cookies if c['name']=='__Host-folkoop-session')
    assert cookie['httpOnly'] and cookie['secure'] and cookie['sameSite']=='Strict'
