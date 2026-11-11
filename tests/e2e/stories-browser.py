@@ -15,6 +15,7 @@ async def main():
   browser=await pw.webkit.launch() if os.getenv('BROWSER_ENGINE')=='webkit' else await pw.chromium.launch(executable_path=shutil.which('chromium'))
   for width,theme,lang in [(320,'dark','ru'),(1366,'light','ru'),(390,'dark','ar')]:
    ctx=await browser.new_context(service_workers='block',viewport={'width':width,'height':844},color_scheme=theme)
+   await ctx.add_init_script("window.storyInteractionTrace=[];for(const type of ['pointerdown','pointerup','click'])document.addEventListener(type,e=>{if(e.target.closest('[data-story-new]'))storyInteractionTrace.push({type,at:performance.now(),route:location.hash})},true);const nativeClose=HTMLDialogElement.prototype.close;HTMLDialogElement.prototype.close=function(...args){if(this.classList.contains('story-dialog'))storyInteractionTrace.push({type:'close',at:performance.now(),route:location.hash,compose:!!this.querySelector('.story-compose'),stack:new Error().stack});return nativeClose.apply(this,args)}")
    await ctx.add_init_script("localStorage.setItem('folkoop-language',"+json.dumps(lang)+");localStorage.setItem('folkoop-language-choice-v1','done');localStorage.setItem('folkoop-theme',"+json.dumps(theme)+")")
    stories=[{'id':f'55555555-5555-4555-8555-{i:012d}','author_id':OTHER,'author_name':'Story friend','body':'Invitation '+str(i)+' <img src=x onerror=alert(1)>','tone':'teal' if i==1 else 'plum','audience':'network','cooperation_id':PROJECT if i==1 else None,'created_at':moment(-i),'expires_at':moment(24-i)} for i in [1,2]]
    state={'sent':[],'fail':True,'report':0,'reply':0,'feedError':False}
@@ -93,6 +94,12 @@ async def main():
    await page.locator(f'.story-circle[data-story-author="{OTHER}"]').click();await expect(page.locator('.story-paper')).to_be_visible();await page.click('[data-story-reply]')
    await expect(page).to_have_url(__import__('re').compile(r'#/messages$'));await expect(page.locator('#netMessage')).to_be_visible();assert state['reply']==1
    await page.goto(BASE+'#/me');await page.wait_for_load_state('networkidle');await page.click('[data-story-new]')
+   try: await expect(page.locator('.story-compose textarea')).to_be_visible()
+   except Exception:
+    print('Synthetic story interaction trace:',await page.evaluate('storyInteractionTrace'),flush=True)
+    print('Synthetic page errors:',errors,flush=True)
+    await page.screenshot(path=str(OUT/f'story-compose-failure-{width}-{lang}.png'))
+    raise
    await page.fill('.story-compose textarea','My useful story');await page.select_option('.story-compose [name=cooperation]',PROJECT);await page.select_option('.story-compose [name=audience]','project')
    await page.click('.story-compose [type=submit]')
    await page.click('[data-story-close]');await page.click('[data-story-new]')
