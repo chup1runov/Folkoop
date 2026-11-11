@@ -11,6 +11,8 @@ for _ in $(seq 1 20); do
 done
 export BASE_URL=http://127.0.0.1:4173/Folkoop/
 # Exercise Google popup -> callback -> UI -> real local session handler.
+# Pin this popup test to the Chromium revision paired with the pinned driver.
+python3 -m playwright install --only-shell chromium
 (
  node tests/support/session-server.mjs >/tmp/folkoop-session-test.log 2>&1 &
  SESSION_TEST_PID=$!
@@ -19,7 +21,7 @@ export BASE_URL=http://127.0.0.1:4173/Folkoop/
   if curl -fsS http://localhost:4490/network-config.js >/dev/null; then break; fi
   sleep .25
  done
- python3 tests/e2e/server-session-browser.py || { cat /tmp/folkoop-session-test.log; exit 1; }
+ DEBUG=pw:browser python3 tests/e2e/server-session-browser.py || { cat /tmp/folkoop-session-test.log; exit 1; }
 )
 python3 tests/support/city-regression.py tests/e2e/browser.py
 python3 tests/support/city-regression.py tests/e2e/about-browser.py

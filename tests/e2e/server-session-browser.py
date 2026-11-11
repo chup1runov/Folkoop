@@ -1,10 +1,10 @@
 """Local BFF + SQLite, synthetic Auth upstream; no real accounts or provider calls."""
-import asyncio,shutil
+import asyncio
 from playwright.async_api import async_playwright,expect
 BASE='http://localhost:4490/'
 async def main():
  async with async_playwright() as pw:
-  browser=await pw.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('google-chrome'),args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=await pw.chromium.launch(args=['--no-sandbox','--disable-dev-shm-usage'])
   for width in [1366,390]:
    ctx=await browser.new_context(viewport={'width':width,'height':844},service_workers='block')
    await ctx.add_init_script("sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-language','en');localStorage.setItem('folkoop-language-choice-v1','done');")
