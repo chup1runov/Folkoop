@@ -19,7 +19,7 @@ export BASE_URL=http://127.0.0.1:4173/Folkoop/
   if curl -fsS http://localhost:4490/network-config.js >/dev/null; then break; fi
   sleep .25
  done
- python3 tests/e2e/server-session-browser.py
+ python3 tests/e2e/server-session-browser.py || { cat /tmp/folkoop-session-test.log; exit 1; }
 )
 python3 tests/support/city-regression.py tests/e2e/browser.py
 python3 tests/support/city-regression.py tests/e2e/about-browser.py
