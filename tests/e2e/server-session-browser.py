@@ -8,9 +8,17 @@ async def main():
   for width in [1366,390]:
    ctx=await browser.new_context(viewport={'width':width,'height':844},service_workers='block')
    await ctx.add_init_script("sessionStorage.setItem('folkoop-entry-mode-v1','account');localStorage.setItem('folkoop-language','en');localStorage.setItem('folkoop-language-choice-v1','done');")
+   # Synthetic provider redirects back to loopback; production config still requires HTTPS.
+   async def google_callback(route):
+    await route.fulfill(status=302,headers={'Location':BASE+'auth-callback.html#access_token=synthetic-access-token-long&refresh_token=synthetic-refresh&expires_in=3600&provider_token=discard-provider'})
+   await ctx.route('https://abcdefghijklmnopqrst.supabase.co/auth/v1/authorize?**',google_callback)
    page=await ctx.new_page();await page.goto(BASE+'?intro=0#/me')
    await page.wait_for_function('!!globalThis.FolkoopNetwork')
-   await page.evaluate("async()=>{const c=FolkoopNetwork.client(FolkoopNetworkConfig);await c.completeOAuth('synthetic-access-token-long',3600,'',{termsAccepted:true,privacyAcknowledged:true},'synthetic-refresh');}")
+   await page.locator('[name="policyAccepted"]').check()
+   async with page.expect_popup() as popup_info:
+    await page.locator('[data-auth="google"]').click()
+   popup=await popup_info.value
+   await expect(page.locator('#netProfile input[name="name"]')).to_have_value('Synthetic session person')
    cookies=await ctx.cookies();cookie=next(c for c in cookies if c['name']=='__Host-folkoop-session')
    assert cookie['httpOnly'] and cookie['secure'] and cookie['sameSite']=='Strict'
    assert '__Host-folkoop-session' not in await page.evaluate('document.cookie')

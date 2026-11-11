@@ -39,16 +39,16 @@ function execute(hash,{opener=true,closed=false}={}){
 
 test('OAuth callback clears fragment and posts valid token only to same-origin opener',()=>{
   const token='a'.repeat(32);
-  const r=execute('#access_token='+token+'&expires_in=3600&refresh_token=must-not-forward');
+  const r=execute('#access_token='+token+'&expires_in=3600&refresh_token=synthetic-refresh&provider_token=do-not-forward-provider');
   assert.equal(r.replaced.length,1);
   assert.equal(r.replaced[0][2],'/Folkoop/auth-callback.html');
   assert.equal(r.messages.length,1);
   assert.equal(r.messages[0].targetOrigin,'https://example.test');
   assert.deepEqual(
     r.messages[0].payload,
-    {type:'folkoop-oauth',ok:true,accessToken:token,expiresIn:3600}
+    {type:'folkoop-oauth',ok:true,accessToken:token,expiresIn:3600,refreshToken:'synthetic-refresh'}
   );
-  assert(!JSON.stringify(r.messages[0].payload).includes('refresh_token'));
+  assert(!JSON.stringify(r.messages[0].payload).includes('do-not-forward-provider'));
   assert.equal(r.didClose,true);
 });
 

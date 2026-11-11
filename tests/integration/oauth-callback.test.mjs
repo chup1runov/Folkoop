@@ -4,9 +4,11 @@ import {readFile} from 'node:fs/promises';
 import {parse} from '../../apps/web/auth-callback-core.mjs';
 
 test('OAuth callback parser accepts access token and finite expiry',()=>{
- const r=parse('#access_token='+('a'.repeat(32))+'&expires_in=3600&refresh_token=must-not-be-used');
+ const r=parse('#access_token='+('a'.repeat(32))+'&expires_in=3600&refresh_token=synthetic-refresh&provider_token=discard-provider-token&provider_refresh_token=discard-provider-refresh');
  assert.equal(r.ok,true);assert.equal(r.accessToken,'a'.repeat(32));assert.equal(r.expiresIn,3600);
- assert(!('refreshToken' in r));
+ assert.equal(r.refreshToken,'synthetic-refresh');assert(!JSON.stringify(r).includes('discard-provider'));
+ assert.equal(parse('#access_token='+('a'.repeat(32))+'&expires_in=3600').refreshToken,undefined);
+ for(const value of ['', 'short', 'x'.repeat(12001)])assert.equal(parse('#access_token='+('a'.repeat(32))+'&expires_in=3600&refresh_token='+value).ok,false);
 });
 
 test('OAuth callback parser surfaces provider errors without tokens',()=>{
