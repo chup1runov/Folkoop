@@ -1718,7 +1718,7 @@ window.addEventListener('message',e=>{
  if(e.origin!==location.origin||!oauthPopup||e.source!==oauthPopup||e.data?.type!=='folkoop-oauth')return;
  const payload=e.data;oauthPopup=null;
  if(payload.ok!==true){notice=t('oauthFailed');render();return;}
- run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted});pilotInvite='';policyAccepted=false;await load();notice='';});
+ run(async()=>{await api.completeOAuth(payload.accessToken,payload.expiresIn,pilotInvite,{termsAccepted:policyAccepted,privacyAcknowledged:policyAccepted},payload.refreshToken);pilotInvite='';policyAccepted=false;await load();notice='';});
 });
 window.addEventListener('hashchange',()=>{if(internalHash&&location.hash===internalHash){internalHash='';return;}internalHash='';if(guestDemo){selected=null;selectedChat=null;selectedCoop=null;}version++;loadCurrentRoute();});
 window.addEventListener('folkoop:subsection',e=>{

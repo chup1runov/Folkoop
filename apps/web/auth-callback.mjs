@@ -35,7 +35,7 @@ export function completeOAuthCallback(env=globalThis){
   return {delivered:false,result};
  }
  const payload=result.ok
-  ? {type:'folkoop-oauth',ok:true,accessToken:result.accessToken,expiresIn:result.expiresIn}
+  ? {type:'folkoop-oauth',ok:true,accessToken:result.accessToken,expiresIn:result.expiresIn,...(result.refreshToken?{refreshToken:result.refreshToken}:{})}
   : {type:'folkoop-oauth',ok:false,error:result.error,errorDescription:result.errorDescription};
  windowRef.opener.postMessage(payload,env.location.origin);
  status.textContent=result.ok?copy.received:copy.failed;

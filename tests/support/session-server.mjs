@@ -9,7 +9,7 @@ const root=resolve('_site');
 createServer(async(req,res)=>{try{
  const url=new URL(req.url,'http://localhost:4490');
  if(url.pathname.startsWith('/api/network/')){let body='';for await(const chunk of req)body+=chunk;const r=await handle(new Request(url,{method:req.method,headers:req.headers,...(!['GET','HEAD'].includes(req.method)?{body}: {})}),env);res.writeHead(r.status,Object.fromEntries(r.headers));res.end(Buffer.from(await r.arrayBuffer()));return;}
- if(url.pathname.endsWith('/network-config.js')){res.setHeader('Content-Type','application/javascript');res.end('globalThis.FolkoopNetworkConfig='+JSON.stringify({enabled:true,serverSession:true,url:env.SUPABASE_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY})+';');return;}
+ if(url.pathname.endsWith('/network-config.js')){res.setHeader('Content-Type','application/javascript');res.end('globalThis.FolkoopNetworkConfig='+JSON.stringify({enabled:true,serverSession:true,googleOAuthEnabled:true,oauthRedirectUrl:'https://example.test/auth-callback.html',url:env.SUPABASE_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY})+';');return;}
  const path=resolve(root,'.'+(url.pathname==='/'?'/index.html':url.pathname));if(!path.startsWith(root+'/')){res.writeHead(403);res.end();return;}
  const data=await readFile(path);res.setHeader('Content-Type',({'.js':'application/javascript','.mjs':'application/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml'})[extname(path)]||'application/octet-stream');res.end(data);
 }catch{res.writeHead(404);res.end();}}).listen(4490,'127.0.0.1',()=>console.log('Synthetic session server ready'));

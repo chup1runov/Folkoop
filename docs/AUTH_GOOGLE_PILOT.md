@@ -19,7 +19,7 @@ Google OAuth is the preferred first candidate because it:
 
 This choice is for the controlled Göteborg pilot, not a permanent requirement that every future FOLKOOP user have a Google account.
 
-v0.25 prepared a fail-closed popup/callback flow behind `googleOAuthEnabled:false`. No Google button appears until the provider is configured and the flag is deliberately enabled. The callback may read the existing non-sensitive UI language preference from localStorage, but it does not persist Auth/session/provider tokens there or in sessionStorage. It clears the fragment and passes the short-lived Supabase access token only to the same-origin opener tab via `postMessage`; FOLKOOP then verifies `/auth/v1/user` and applies the normal invite gate.
+v0.25 prepared a fail-closed popup/callback flow behind `googleOAuthEnabled:false`. No Google button appears until the provider is configured and the flag is deliberately enabled. The callback may read the existing non-sensitive UI language preference from localStorage, but it does not persist Auth/session/provider tokens there or in sessionStorage. It clears the fragment and passes bounded Supabase access/refresh tokens only to the same-origin opener tab via `postMessage`; FOLKOOP then verifies `/auth/v1/user` and applies the normal invite gate.
 
 ## Current public endpoints
 
@@ -223,3 +223,15 @@ If a provider-side requirement would create a charge, stop and review it before 
 - Social login: https://supabase.com/docs/guides/auth/social-login
 - Redirect URLs: https://supabase.com/docs/guides/auth/redirect-urls
 - SMTP restriction: https://supabase.com/docs/guides/auth/auth-smtp
+
+## Server-session repair — 11 November 2026
+
+The original callback discarded the Supabase refresh token, so Google returned
+successfully but the deployed server-session endpoint rejected establishment.
+The popup now forwards that token transiently through the existing checked
+same-origin/source channel to the existing session POST. The server validates
+identity and admission, rotates the refresh token, and stores tokens encrypted
+behind an HttpOnly cookie. Neither token is persisted in browser storage and
+Google provider tokens are discarded. Access-only static callbacks remain
+compatible. The regression uses the real popup, callback and UI handler against
+a synthetic provider and the real local SQLite session handler.
