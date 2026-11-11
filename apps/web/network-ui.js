@@ -1070,13 +1070,11 @@ function render(){
    html=`<section class="pilot-login-shell"><h2>${esc(loginText('login'))}</h2><p class="pilot-login-intro">${esc(loginText('invite'))}</p><form id="netLogin" class="editor card pilot-login-card">${emailStart}${codeRequested?emailFinish:''}</form><button type="button" class="text-button pilot-local-toggle" data-net="localGuest">${esc(loginText('localContinue'))}</button></section>`;
   }
  }
- else if(r==='home'||r==='me'){html=profileDomain.render(u,{profileDraft,guestDemo})+(guestDemo?`<details class="for-you-demo" data-home-section="for-you"><summary>✦ ${esc(globalThis.FolkoopForYou.text(0))}</summary>${renderForYou(u)}</details>`+muraHomeDomain.render(u,{compact:true}):globalThis.FolkoopPublicProfile.editor(u.id,publicPageDraft||publicPageState,data.profile)+globalThis.FolkoopPublicProfile.render(Object.fromEntries(Object.entries(publicPageState?.content||{}).filter(([key])=>['thoughts','resources','ideas','achievements'].includes(key))),{identity:false})+renderHome(u));}
+ else if(r==='home'||r==='me'){html=profileDomain.render(u,{profileDraft,guestDemo})+(guestDemo?`<details class="for-you-demo" data-home-section="for-you"><summary>✦ ${esc(globalThis.FolkoopForYou.text(0))}</summary>${renderForYou(u)}</details>`+muraHomeDomain.render(u,{compact:true}):globalThis.FolkoopPublicProfile.editor(u.id,publicPageDraft||publicPageState,data.profile)+globalThis.FolkoopPublicProfile.render(Object.fromEntries(Object.entries(publicPageState?.content||{}).filter(([key])=>['thoughts','resources','ideas','achievements'].includes(key))),{identity:false})+renderHome(u)+(r==='me'?globalThis.FolkoopExchange.render({rows:data.cooperations,user:u,draft:exchangeDraft,packet:exchangePacket,readback:exchangeReadback,error:exchangeError,input:exchangeInput}):''));}
  else if(r==='settings'){html=guestDemo?'':profileDomain.render(u,{profileDraft,settings:true})+profileDomain.renderExportReport(exportReport);}
  else if(r==='messages'){html=renderMessages(u);}
  else if(r==='together'||r==='projects'){html=renderCooperation(u,r);}
- else if(r==='me'){
-  html=profileDomain.render(u,{profileDraft,guestDemo})+(!guestDemo?profileDomain.renderExportReport(exportReport)+globalThis.FolkoopExchange.render({rows:data.cooperations,user:u,draft:exchangeDraft,packet:exchangePacket,readback:exchangeReadback,error:exchangeError,input:exchangeInput}):'');
- }else if(r==='people'){
+ else if(r==='people'){
   html=guestDemo?renderMuraPeople(u):`<div class="row"><h2>${esc(t('directory'))}</h2><div>${btn('refresh','refresh')}${btn('logout','out')}</div></div><div class="draft-grid">${data.directory.map(p=>`<article class="card"><h3>${esc(p.name)}</h3><p>${esc(p.skills)}</p><p>${esc(p.about)}</p>${p.id!==u.id?btn('block','block',p.id):''}</article>`).join('')||esc(t('empty'))}</div>`;
  }else if(r==='communities'){
   html=communitiesDomain.render(u,{selected,groupDraft,postDrafts,guestDemo});
