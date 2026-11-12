@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const ui=await readFile('apps/web/network-ui.js','utf8');
+const copy=await readFile('apps/web/network-ui-copy.js','utf8');
 const css=await readFile('apps/web/folkoop.css','utf8');
 
 test('real-user My overview exposes three equal ways to use FOLKOOP',()=>{
@@ -21,7 +22,7 @@ test('Mura home keeps the dedicated illustrative renderer in all eleven language
 
 test('three-mode copy is available in all eleven production languages',()=>{
   for(const code of ['sv','en','ru','es','uk','fi','bs','ar','fa','so','ku']){
-    assert.match(ui,new RegExp('\\b'+code+':\\{browseTitle:'));
+    assert.match(copy,new RegExp('\\b'+code+':\\{browseTitle:'));
   }
 });
 

@@ -8,7 +8,8 @@ vm.runInContext(await readFile('apps/web/first-contact-preview.js','utf8'),ctx);
 const preview=ctx.FolkoopFirstContactPreview;
 const langs=['sv','en','ar','so','fa','fi','bs','ku','es','ru','uk'];
 const network=await readFile('apps/web/network-ui.js','utf8');
-const match=network.match(/const homeModesCopy=(\{[\s\S]*?\n\});/);
+const networkCopy=await readFile('apps/web/network-ui-copy.js','utf8');
+const match=networkCopy.match(/const homeModesCopy=(\{[\s\S]*?\n\});/);
 assert(match,'Existing 11-language Home-mode translations must be reused');
 const modeDict=Function('return ('+match[1]+')')();
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({
