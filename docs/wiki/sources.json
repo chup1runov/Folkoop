@@ -281,6 +281,14 @@
       "checked_at": "2026-11-09",
       "checked_scope": "Full new module/schema: audience/expiry/idempotency, bounded UI and Mura isolation. No native-language or retention-effect certification.; FK-STORIES-004 final runtime 1347be2: local and hosted test jobs passed, Cloudflare publication and live Mura acceptance observed; deployed SQL grants read back. Whole GitHub workflow failed before deploy with provider Internal server error; documentation-only retry 42673076327 failed with the same provider error before jobs started. GitHub Pages remains unupdated; Cloudflare is current. Supersedes earlier publication-pending checkpoints, not native-language or retention certification.; Later runtime 8470588 passed full CI/deploy 42680313379; publication residual cleared for GitHub Pages. Earlier failure/pending checkpoints are historical; no new hosted database or participant scenario claimed.",
       "sha256": "b29e99a515be8d8979e4a9e5b584e98c67bbfc8cf8b00941634107ff56600faf"
+    },
+    {
+      "id": "SRC-COOPTECH-CONTINUITY-20261116",
+      "path": "docs/research/COOPTECH_CONTINUITY_20261116.md",
+      "status": "dated-evidence-summary",
+      "checked_at": "2026-11-16",
+      "checked_scope": "Redacted discussion synthesis; local research and dated release/clarity evidence; no renewed live QA or complete chat coverage",
+      "sha256": "766f524542150200857f8a8584412b8202c7ebba77937725a28ade401f468b82"
     }
   ]
 }
