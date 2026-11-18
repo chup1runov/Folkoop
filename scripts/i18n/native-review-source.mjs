@@ -62,7 +62,7 @@ export async function getReviewCorpus(){
   const paths=[
    'apps/web/folkoop-core.js','apps/web/folkoop-i18n-extra.js',
    'apps/web/folkoop-copy.js','apps/web/folkoop.js',
-   'apps/web/home-welcome.js','apps/web/network-ui.js',
+   'apps/web/home-welcome.js','apps/web/network-ui-copy.js',
    'apps/web/auth-callback.mjs','apps/web/app.js',
    'apps/web/today.js','apps/web/about-copy.js',
     'apps/web/first-contact-preview.js','apps/web/public-profile.js'
@@ -80,7 +80,7 @@ export async function getReviewCorpus(){
   const tutorialTitles=parse(main,'tutorialTitles');
   const helper=parse(main,'helperCopy');
   const homeWelcome=parse(src['apps/web/home-welcome.js'],'copy');
-  const network=src['apps/web/network-ui.js'];
+  const network=src['apps/web/network-ui-copy.js'];
   const en=parse(network,'en');
   const networkBase={en,ru:parse(network,'ru',{en}),sv:parse(network,'sv',{en})};
   const chat=parse(network,'chatCopy');

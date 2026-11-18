@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "FK-ENGINE-001",
+  "updated": "2026-11-10",
+  "phase": "verification",
+  "spec": "docs/workflow/tasks/FK-ENGINE-001.md",
+  "authorization": {
+    "status": "accepted",
+    "date": "2026-11-10",
+    "scope": "Reversible client-side engine refactor on a draft PR, no deployment or backend changes"
+  },
+  "requirements": [
+    {
+      "id": "FK-ENGINE-001-R01",
+      "checks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-001-R02",
+      "checks": [
+        "C02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-001-R03",
+      "checks": [
+        "C03"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-001-R04",
+      "checks": [
+        "C04"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FK-ENGINE-001-T01",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-001-R01",
+        "FK-ENGINE-001-R02"
+      ],
+      "evidence": [
+        "FK-ENGINE-001-E01"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-001-T02",
+      "status": "in_progress",
+      "requirements": [
+        "FK-ENGINE-001-R03"
+      ],
+      "evidence": [
+        "FK-ENGINE-001-E02"
+      ]
+    },
+    {
+      "id": "FK-ENGINE-001-T03",
+      "status": "pending",
+      "requirements": [
+        "FK-ENGINE-001-R04"
+      ],
+      "evidence": [
+        "FK-ENGINE-001-E03"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "FK-ENGINE-001-E01",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C01",
+        "C02"
+      ],
+      "path": "tests/unit/network-ui-copy.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-001-E02",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C03"
+      ],
+      "path": "tests/unit/entry-script-order.test.mjs"
+    },
+    {
+      "id": "FK-ENGINE-001-E03",
+      "kind": "deterministic",
+      "result": "not-run",
+      "checks": [
+        "C04"
+      ],
+      "path": "docs/workflow/tasks/FK-ENGINE-001.md"
+    }
+  ],
+  "open_questions": [
+    "Confirm hosted CI, WebKit and browser startup on the PR head before merge."
+  ],
+  "next_action": "Review PR CI, verify Mura guest and signed-in routes, record evidence; do not deploy without review."
+}

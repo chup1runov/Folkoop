@@ -30,7 +30,9 @@ test('Mura browser acceptance protects the explicit-exit-only account boundary',
 });
 
 test('Mura copy separates personal voice from account/pilot system copy',async()=>{
- const source=await read('apps/web/network-ui.js');
+ const source=await read('apps/web/network-ui-copy.js');
+ const runtime=await read('apps/web/network-ui.js');
+ assert(runtime.includes('const networkUiCopy=globalThis.FolkoopNetworkUiCopy;'));
  assert(source.includes("messagesTitle:'Переписки Муры'"));
  assert(source.includes("networkDesc:'Что мне нужно, чем я могу помочь, чем мы делимся и что делаем вместе.'"));
  assert(source.includes("out:'Выйти из аккаунта Муры'"));

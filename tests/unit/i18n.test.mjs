@@ -59,18 +59,19 @@ const welcome=await readFile('apps/web/home-welcome.js','utf8');
 const homeWelcome=parseObject(welcome,'copy');
 
 const network=await readFile('apps/web/network-ui.js','utf8');
-const networkEn=parseObject(network,'en');
+const networkCopy=await readFile('apps/web/network-ui-copy.js','utf8');
+const networkEn=parseObject(networkCopy,'en');
 const networkBase={
  en:networkEn,
- ru:parseObject(network,'ru',{en:networkEn}),
- sv:parseObject(network,'sv',{en:networkEn})
+ ru:parseObject(networkCopy,'ru',{en:networkEn}),
+ sv:parseObject(networkCopy,'sv',{en:networkEn})
 };
-const chatCopy=parseObject(network,'chatCopy');
-const coopCopy=parseObject(network,'coopCopy');
-const offerCopy=parseObject(network,'offerCopy');
-const lifecycleCopy=parseObject(network,'lifecycleCopy');
-const activityCopy=parseObject(network,'activityCopy');
-const homeCopy=parseObject(network,'homeCopy');
+const chatCopy=parseObject(networkCopy,'chatCopy');
+const coopCopy=parseObject(networkCopy,'coopCopy');
+const offerCopy=parseObject(networkCopy,'offerCopy');
+const lifecycleCopy=parseObject(networkCopy,'lifecycleCopy');
+const activityCopy=parseObject(networkCopy,'activityCopy');
+const homeCopy=parseObject(networkCopy,'homeCopy');
 
 const auth=await readFile('apps/web/auth-callback.mjs','utf8');
 const authCopy=parseObject(auth,'copyByLanguage');
